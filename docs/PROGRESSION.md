@@ -315,3 +315,98 @@ Lv5でも挑戦できる。
 - 以前獲れなかった魚を獲れるようになった
 
 単純な「攻撃力の数字が増えた」にはしない。
+
+
+## 15. Career Progression
+
+CareerはAngler Levelとは別の軽量な成長軸として扱う。
+
+目的は仕事ゲームを作ることではなく、釣りによる人間的成長が生活へ返ってくる感覚を作ること。
+
+### Career State
+
+候補:
+
+- Career Level / Grade
+- Job Type
+- Salary Band
+- Work Style
+- Paid Leave
+- Commute Load
+- Job Satisfaction
+- Career Reputation
+
+すべてを数値としてUI表示する必要はない。
+
+### Cross-Skill Effects
+
+Angler側の能力やKnowledgeの一部を、仕事イベント解決時のModifierとして利用可能。
+
+例:
+
+- Detection → quality / mistake detection
+- Rigging → planning / preparation
+- Fighting → persistence
+- Knowledge → research
+- Relationships → communication / opportunities
+
+Cross-Skill効果は小〜中程度とし、仕事を攻略するために釣りSkillを振ることが最適解にならないようにする。
+
+### Career Events
+
+イベント例:
+
+- performance review
+- raise
+- promotion
+- bonus
+- transfer
+- job offer
+- remote work offer
+- flex-time offer
+- paid leave negotiation
+
+イベントは一定期間ごとに自動抽選し、必要な時だけ選択を求める。
+
+### 転職
+
+転職先は単純な上位互換にしない。
+
+例:
+
+高収入企業:
+- Income +
+- Free Time -
+
+リモート中心:
+- Income ±
+- Commute -
+- Weekday Fishing +
+
+安定企業:
+- Income 中
+- Paid Leave +
+- Overtime -
+
+釣り関連企業:
+- Income 可変
+- Fishing Reputation synergy +
+- Industry relationships +
+
+プレイヤーが「どんな釣り生活をしたいか」で選ぶ。
+
+### Money Philosophy
+
+資金難は選択に意味を持たせる程度にする。
+
+避けること:
+
+- 毎月の細かな税計算
+- 家賃滞納ゲーム
+- 食費不足
+- 借金地獄
+- 資金不足による長時間の強制労働
+
+通常給与だけでも基本的な釣りは継続できる。
+
+高価な車・船・全国遠征などが長期目標になる程度の経済バランスを目指す。
