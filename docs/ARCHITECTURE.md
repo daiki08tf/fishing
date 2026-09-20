@@ -1,0 +1,347 @@
+# Architecture
+
+## 1. 目的
+
+Fishingは長期的に大量の魚種・Spot・装備・条件を追加するゲームになる。
+
+そのため、初期実装から以下を守る。
+
+- UIとゲームロジックを分離
+- コンテンツデータとコードを分離
+- RNGを一元化
+- セーブ形式にVersionを持つ
+- 魚・Spot追加で既存ロジックを書き換えない
+- 現実データの出典を保持できる
+- モバイル操作を第一級として扱う
+
+## 2. 推奨技術構成
+
+初期案:
+
+- React
+- TypeScript
+- Vite
+- Zustand
+- Vitest
+- IndexedDB
+
+MVPではバックエンド必須にしない。
+
+```
+Browser
+  |
+  +-- UI
+  |
+  +-- Game Domain
+  |
+  +-- Content Data
+  |
+  +-- Local Save
+```
+
+将来的にクラウドセーブ・ランキング・大会等が必要になった時点でサーバーを追加する。
+
+## 3. レイヤー
+
+### UI
+
+表示と入力のみ。
+
+- Home
+- Calendar
+- Map
+- Spot
+- Fishing
+- Inventory
+- Tackle Setup
+- Codex
+- Shop
+- Garage
+- Reputation
+
+### Domain
+
+ゲームルール。
+
+- encounterEngine
+- fishGenerator
+- fishingEngine
+- progressionEngine
+- knowledgeEngine
+- reputationEngine
+- economyEngine
+- accessEngine
+- calendarEngine
+- environmentEngine
+
+### Content
+
+ゲームデータ。
+
+- fish species
+- regions
+- spots
+- gear
+- methods
+- transports
+- regulations
+- NPCs
+
+### Infrastructure
+
+- save/load
+- IndexedDB
+- migrations
+- seeded RNG
+- telemetry（必要になった場合）
+
+## 4. 推奨ディレクトリ
+
+```
+src/
+  app/
+
+  core/
+    access/
+    calendar/
+    economy/
+    encounter/
+    environment/
+    fishing/
+    knowledge/
+    progression/
+    reputation/
+    rng/
+
+  data/
+    fish/
+    gear/
+    methods/
+    regions/
+    regulations/
+    spots/
+    transport/
+
+  features/
+    calendar/
+    codex/
+    fishing/
+    garage/
+    home/
+    inventory/
+    map/
+    shop/
+    tackle/
+
+  store/
+
+  components/
+
+  types/
+
+tests/
+  core/
+  fixtures/
+
+docs/
+```
+
+## 5. Data Driven
+
+魚追加時の理想:
+
+```
+fish data追加
+↓
+validation PASS
+↓
+ゲーム内に登場
+```
+
+Encounter EngineやFishing Engineを魚ごとに書き換えない。
+
+Spotも同様。
+
+## 6. Fishing Engine
+
+ファイトは明確な状態を持つ。
+
+初期案:
+
+```
+IDLE
+CASTING
+WAITING
+BITE
+HOOK_WINDOW
+HOOKED
+FIGHTING
+LANDING
+LANDED
+
+FAILED:
+HOOK_MISSED
+HOOK_ESCAPE
+LINE_BREAK
+```
+
+魚のBehaviorはデータまたはStrategyとして注入する。
+
+UIから直接勝敗を決定しない。
+
+## 7. Encounter Engine
+
+入力例:
+
+- Spot
+- Date
+- Time
+- Weather
+- Water state
+- Tide
+- Player method
+- Lure / Bait
+- Knowledge
+
+出力:
+
+- Biteなし
+- Species candidate
+- Generated individual
+
+魚種選択と個体生成を分離する。
+
+## 8. Environment
+
+ゲーム内時間・環境は独立したDomainとして扱う。
+
+将来候補:
+
+- Season
+- Time
+- Weather
+- Air temperature
+- Water temperature
+- Rain
+- Wind
+- Tide
+- Current
+- Water level
+- Turbidity
+
+最初から全て実装せず、Phaseごとに追加する。
+
+## 9. Save
+
+セーブには必ずschemaVersionを持つ。
+
+例:
+
+```ts
+type SaveGame = {
+  schemaVersion: number
+  player: PlayerState
+  progression: PlayerProgression
+  inventory: InventoryState
+  knowledge: KnowledgeState
+  codex: CodexState
+  world: WorldState
+}
+```
+
+破壊的変更時はMigrationを用意する。
+
+## 10. RNG
+
+```ts
+interface RandomSource {
+  next(): number
+}
+```
+
+等の抽象化を通す。
+
+`Math.random()` をDomain内部へ散在させない。
+
+テストでは固定Seedを使う。
+
+## 11. Validation
+
+大量データを扱うためContent Validationを重要機能とする。
+
+検証例:
+
+- duplicate id
+- unknown speciesId
+- unknown regionId
+- invalid ranges
+- impossible probability
+- missing source
+- invalid month
+- negative size
+- weight model mismatch
+
+コンテンツ追加時にCIで検出できる形を目指す。
+
+## 12. 現実データとゲームデータ
+
+現実データとバランス値を混同しない。
+
+例:
+
+```
+Observed / sourced:
+最大サイズ記録
+生息地域
+季節傾向
+
+Game tuned:
+bite probability
+XP
+difficulty modifier
+knowledge gain
+```
+
+可能ならフィールドを分離する。
+
+## 13. テスト優先領域
+
+最優先:
+
+- XP計算
+- Level Up
+- Fish generation
+- size/weight constraints
+- Encounter weighting
+- access requirements
+- save migration
+- seeded RNG reproducibility
+
+UI snapshotよりDomainの決定論的テストを重視する。
+
+## 14. Mobile First
+
+基本操作はスマホで成立させる。
+
+Fishing画面の主要操作は少数にする。
+
+候補:
+
+- CAST
+- REEL
+- GIVE
+- DRAG
+
+PCではマウス/キーボードにも対応する。
+
+## 15. 初期段階でやらないこと
+
+- MMO
+- PvP
+- リアルタイムマルチ
+- 複雑なサーバー
+- 課金
+- ガチャ
+- 1000魚種の手入力
+- 全国Spotの完全再現
+- 高精度な流体シミュレーション
