@@ -386,3 +386,73 @@ type SourceRef = {
 - バランス検証
 
 UIコンポーネントから直接ランダム生成しない。
+
+
+## 17. Career
+
+仕事は軽量なサブシステムとしてデータ化する。
+
+```ts
+type CareerState = {
+  jobId: string
+  careerLevel: number
+
+  salaryBand: number
+
+  workStyle: {
+    remoteDays: number
+    flexTime: boolean
+    overtimeLoad: number
+    commuteMinutes: number
+  }
+
+  paidLeave: number
+  careerXp: number
+}
+```
+
+職種側:
+
+```ts
+type JobDefinition = {
+  id: string
+  name: string
+
+  salaryRange: Range
+
+  timeCost: number
+  overtimeProfile: number
+  commuteProfile?: number
+
+  remoteWork?: boolean
+  flexTime?: boolean
+
+  paidLeaveProfile: number
+
+  eventTable: string[]
+}
+```
+
+仕事の結果計算ではAngler Skillsの一部をCrossSkill Modifierとして参照できる。
+
+ただしCareerとAngler Levelは独立した状態として保存する。
+
+## 18. Economy Philosophy
+
+経済は詳細な家計シミュレーターにしない。
+
+内部的には以下程度で十分。
+
+```ts
+type FinanceState = {
+  cash: number
+  salaryIncome: number
+  simplifiedLivingCost: number
+}
+```
+
+生活費はまとめて自動控除する。
+
+プレイヤーが判断する主な支出は釣り関連資産・移動・遠征。
+
+経済バランスは「何を先に買うか」の迷いを作るために使い、通常の釣行そのものを長期間禁止するためには使わない。
