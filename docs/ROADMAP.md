@@ -137,13 +137,32 @@ Done条件:
 - fishing time
 - return home
 - trip planning
+- salary
 - money
 - shop
 - gear purchase
+- lightweight work resolution
+- career events
+- raise / promotion
+- job offers
+- work style modifiers
 
 仕事そのものをミニゲーム化しない。
 
-「自由時間と資金に限りがある」ことだけをゲーム性にする。
+仕事は週単位・イベント単位で軽く処理する。
+釣りSkillの一部が仕事イベントへ緩やかに影響する。
+
+転職先は年収だけでなく、
+
+- free time
+- commute
+- remote work
+- paid leave
+- overtime
+
+などに差を持たせ、釣りスタイルとの相性で選べるようにする。
+
+家賃・税金・食費等の細かな家計管理は行わず、「自由時間と資金に限りがある」ことだけをゲーム性にする。
 
 ## Phase 6 — Tackle System
 
