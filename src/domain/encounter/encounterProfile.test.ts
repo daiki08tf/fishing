@@ -69,13 +69,21 @@ describe('encounterWeight', () => {
     ).toBeCloseTo(0.75, 6)
   })
 
-  it('never goes negative', () => {
+  it('keeps a hostile affinity soft (never zero by affinity alone)', () => {
     const hostile = createTestSpecies({
       id: asFishSpeciesId('hostile-species'),
       methodAffinity: { lure: 0 },
     })
 
-    expect(encounterWeight({ species: hostile, presence: 1 }, profile())).toBe(0)
+    /*
+     * Phase 9.1: 相性は soft（下限 0.15）。0 にしてよいのは物理的に不可能な場合だけで、
+     * それは biteEligible = false として表す。
+     */
+    expect(encounterWeight({ species: hostile, presence: 1 }, profile())).toBeCloseTo(0.15, 6)
+  })
+
+  it('is zero only when the combination is physically impossible', () => {
+    expect(encounterWeight({ species, presence: 1, biteEligible: false }, profile())).toBe(0)
   })
 })
 
@@ -91,11 +99,19 @@ describe('biteChance', () => {
     expect(bad).toBeLessThan(base)
   })
 
-  it('clamps the affinity so a single item cannot dominate', () => {
+  it('keeps the affinity soft: capped at the maximum, never zero', () => {
     const extreme = biteChance(candidates, DEFAULT_FISHING_TUNING, profile({ biteAffinity: 99 }))
+    const hostile = biteChance(
+      [{ species, presence: 1 }],
+      DEFAULT_FISHING_TUNING,
+      profile({ biteAffinity: 0 }),
+    )
 
-    // 0.5 * 0.85 * 1.4 = 0.595
-    expect(extreme).toBeCloseTo(0.595, 6)
+    // Phase 9.1: 0.5（出現度）* 1.3（魚種の相性）* 0.85 * 1.8（soft 上限）
+    expect(extreme).toBeCloseTo(0.9945, 6)
+    expect(extreme).toBeLessThan(1)
+    // 相性 0 でも soft 下限（0.15）で確率は 0 にならない。
+    expect(hostile).toBeGreaterThan(0)
   })
 })
 

@@ -31,6 +31,18 @@ Phase 0〜9 を stable checkpoint として main へ統合する（integration b
 
 ## Phase 9（Living Water & Big Game）
 
+### Phase 9.1（Catchability / Bite Rules）
+
+- **Catchability is soft by default. Physical impossibility is the only normal hard gate.**
+- Rod / Reel / Line / Leader で魚種の eligibility を決めない（Bite / Fight の難しさにだけ効く）
+- 釣法・offering の相性は soft（0.15〜1.8）。相性だけで 0 にしない
+- ルアー / フックが魚に対して物理的に大きすぎる場合だけ Bite = 0
+  （小さすぎは可能のまま。保持・掛かりが悪くなる）
+- 物理サイズは実データ（lure.lengthMm / hookSizeRank / 魚の体長 + feedingProfile）で判定し、
+  サイズデータが無い餌は neutral として扱う（長さを捏造しない）
+- Engine へ渡すのは数値だけ（bite eligible / affinity / hook の掛かり・保持）
+- `npm run simulate:catchability` を追加（代表ケース + broad audit）
+
 - **Environment Domain** — `src/domain/environment`。WorldTime と地域の ClimateProfile
   から季節 / 時間帯 / 天候 / 潮 / 水温 / 濁り / 流れを決定論的に解決する。
   外部 API も Math.random も使わない。淡水は潮なし（null）

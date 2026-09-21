@@ -69,6 +69,25 @@ export type GearTuning = {
   readonly hookSizeMismatchWindowStrength: number
   /** ミスマッチした針は掛かりが浅く、外れやすい（保持力）。 */
   readonly hookSizeMismatchHoldingStrength: number
+  /** Phase 9.1: 魚に対して大きすぎて口に入らない針の rank 差（これ以上は Bite / Hook = 0）。 */
+  readonly hookSizeImpossibleGap: number
+  /** Phase 9.1: 小さすぎる針（大魚に小針）の掛かり / 保持の落ち方。0 にはしない。 */
+  readonly hookUndersizeStrength: number
+  readonly hookUndersizeWindowStrength: number
+  readonly hookUndersizeHoldingStrength: number
+  /**
+   * Phase 9.1: 釣法 × offering の相性（soft affinity）の許容範囲。
+   * excellent / good / neutral / poor / very poor を multiplier として表す。
+   * 物理的に不可能な場合だけ eligibility で 0 にする（ここでは 0 にしない）。
+   */
+  readonly methodAffinityMin: number
+  readonly methodAffinityMax: number
+  /**
+   * Phase 9.1: ロッドの想定重量に対して offering が軽すぎるときの
+   * presentation penalty（soft）。重いロッドで軽いルアーは扱いにくい。
+   */
+  readonly underRatedOfferingThreshold: number
+  readonly underRatedOfferingPenalty: number
   /** 釣法ごとの調整値。 */
   readonly methods: Readonly<Record<string, MethodTuning>>
 }
@@ -101,6 +120,14 @@ export const DEFAULT_GEAR_TUNING: GearTuning = {
   hookSizeMismatchStrength: 0.35,
   hookSizeMismatchWindowStrength: 0.3,
   hookSizeMismatchHoldingStrength: 0.4,
+  hookSizeImpossibleGap: 6,
+  hookUndersizeStrength: 0.18,
+  hookUndersizeWindowStrength: 0.12,
+  hookUndersizeHoldingStrength: 0.3,
+  methodAffinityMin: 0.15,
+  methodAffinityMax: 1.8,
+  underRatedOfferingThreshold: 0.08,
+  underRatedOfferingPenalty: 0.5,
   methods: {
     lure: { castDistance: 0.7, control: 0.6, biteAffinity: 1 },
     light_lure: { castDistance: 0.45, control: 0.75, biteAffinity: 1.05 },

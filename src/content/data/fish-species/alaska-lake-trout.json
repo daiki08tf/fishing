@@ -76,5 +76,11 @@
       "min": 8,
       "max": 13
     }
+  },
+  "feedingProfile": {
+    "preferredOfferingRatio": 0.17,
+    "largeOfferingPenaltyStart": 0.3,
+    "maxOfferingRatio": 0.45,
+    "mouthSizeFactor": 1.05
   }
 }

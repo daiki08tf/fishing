@@ -135,6 +135,16 @@ Skillが緩やかに改善してよい対象:
   Electronics アーキテクチャを巨大化しない（Search Water は反応と手がかりだけ）
 - Environment は再生成できるため Save を増やさない（v7 のまま）。Search Water の結果は
   釣行中の一時情報として保存しない
+- **Catchability is soft by default / Physical impossibility is the only normal hard gate**（Phase 9.1）。
+  タックルクラス（Rod / Reel / Line / Leader）で魚種の eligibility を決めない
+- 釣法・offering の相性は soft multiplier（目安: excellent 1.8 / good 1.3 / neutral 1.0 /
+  poor 0.5 / very poor 0.15）。相性だけを理由に確率を 0 にしない
+- ルアー / フックが魚に対して物理的に大きすぎる場合だけ Bite = 0 を許す。
+  小さすぎる場合は可能のまま（確率・保持・掛かりが悪くなる）
+- 物理サイズは実データ（ルアーの長さ・フックの rank・魚の体長と捕食プロファイル）で判断し、
+  具体 ID で分岐しない。サイズデータが無い offering（餌など）は neutral として扱う
+- ファイトの難しさは Bite 確率とは別に扱う（食いついた後の世界で表現する）
+- 「魚がいるのに食わない」を fishTable から消すことで表現しない
 
 ## 6. Phase 0 で定義する機械判定可能な制約
 
