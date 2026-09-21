@@ -1,5 +1,4 @@
-TAB NAME: hooks.csv>
-index,GearID,Brand,Series,HookType,Size,StrengthKg,GaugeMm,Penetration,HoldingPower,PriceJPY,Status
+GearID,Brand,Series,HookType,Size,StrengthKg,GaugeMm,Penetration,HoldingPower,PriceJPY,Status
 hook-0001,Owner's Edge,Single Series,Single,#14,1.5,0.38,83,58,380,FICTIONAL_CONTENT
 hook-0002,Owner's Edge,Single Series,Single,#12,3.3,0.43,82,60,420,FICTIONAL_CONTENT
 hook-0003,Owner's Edge,Single Series,Single,#10,5.1,0.49,81,62,460,FICTIONAL_CONTENT
