@@ -1,5 +1,4 @@
-TAB NAME: baits.csv>
-index,GearID,Brand,Name,BaitType,Presentation,TargetWater,PriceJPY,ConsumptionModel,Notes
+GearID,Brand,Name,BaitType,Presentation,TargetWater,PriceJPY,ConsumptionModel,Notes
 bait-001,Owner's Edge,Worm Mix,worm,bottom|float,freshwater|brackish,640,FUTURE_CONSUMABLE,Phase 6では消耗簡略化可
 bait-002,Gamakaze,Shrimp Pack,shrimp,float|bottom,salt|brackish,780,FUTURE_CONSUMABLE,Phase 6では消耗簡略化可
 bait-003,Gamakaze,Krill Block,krill,float|chumming,salt,920,FUTURE_CONSUMABLE,Phase 6では消耗簡略化可
