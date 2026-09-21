@@ -16,18 +16,12 @@ const roll = (presence: number, seed: number | string) =>
 
 describe('encounter engine', () => {
   it('derives a saturating bite chance from presence', () => {
-    expect(biteChance([candidate(1)], DEFAULT_FISHING_TUNING)).toBeCloseTo(
-      1 - Math.exp(-0.85),
-      5,
-    )
+    expect(biteChance([candidate(1)], DEFAULT_FISHING_TUNING)).toBeCloseTo(1 - Math.exp(-0.85), 5)
     expect(biteChance([candidate(0.5)], DEFAULT_FISHING_TUNING)).toBeCloseTo(
       1 - Math.exp(-0.425),
       5,
     )
-    expect(biteChance([candidate(2)], DEFAULT_FISHING_TUNING)).toBeCloseTo(
-      1 - Math.exp(-1.7),
-      5,
-    )
+    expect(biteChance([candidate(2)], DEFAULT_FISHING_TUNING)).toBeCloseTo(1 - Math.exp(-1.7), 5)
   })
 
   it('does not make a common neutral fish an almost automatic bite', () => {
