@@ -11,6 +11,7 @@ import { resolveFishingModifiers } from '../../domain/progression'
 import { resolveEnvironment, resolveFishingConditions } from '../../domain/environment'
 import type { EnvironmentSnapshot, FishingConditions } from '../../domain/environment'
 import { bestFishFinderOf, composeFishingModifiers, resolveTackle } from '../../domain/tackle'
+import { resolveBiteCompatibility } from '../../domain/tackle/biteCompatibility'
 import type { FishSpecies } from '../../domain/fish/FishSpecies'
 import { spotKnowledgeScore } from '../../domain/knowledge/spotKnowledge'
 import { NEUTRAL_FISHING_MODIFIERS } from '../../domain/fishing/PlayerFishingModifiers'
@@ -161,9 +162,18 @@ export const useFishingSession = (): FishingSession => {
 
   // 今いる Spot の魚種だけが Encounter 候補になる（環境の重みを掛ける）。
   const encounters = useMemo<readonly EncounterCandidate[]>(() => {
-    if (spot === undefined) {
+    if (spot === undefined || !content.ok) {
       return []
     }
+
+    /*
+     * Phase 9.1: Catchability is soft by default.
+     * 物理的に不可能（offering / hook が大きすぎる）場合だけ候補の Bite を 0 にし、
+     * それ以外は相性として multiplier で扱う（魚はそこにいるが食いにくい）。
+     */
+    const offering = content.value.gearById[String(loadout.offeringId)] ?? null
+    const hook = content.value.gearById[String(loadout.hookId)] ?? null
+    const rod = content.value.gearById[String(loadout.rodId)] ?? null
 
     return spot.fishTable.flatMap((occurrence) => {
       const found = species.find((entry) => entry.id === occurrence.speciesId)
@@ -173,10 +183,26 @@ export const useFishingSession = (): FishingSession => {
       }
 
       const environmentWeight = conditions?.speciesModifiers[String(found.id)] ?? 1
+      const bite = resolveBiteCompatibility({
+        species: found,
+        offering,
+        hook,
+        rod,
+        methodId: loadout.methodId,
+      })
 
-      return [{ species: found, presence: occurrence.basePresence * environmentWeight }]
+      return [
+        {
+          species: found,
+          presence: occurrence.basePresence * environmentWeight,
+          biteEligible: bite.eligible,
+          affinityMultiplier: bite.affinityMultiplier,
+          hookSuccessModifier: bite.hookSuccessModifier,
+          hookRetentionMultiplier: bite.hookRetentionMultiplier,
+        },
+      ]
     })
-  }, [spot, species, conditions])
+  }, [spot, species, conditions, content, loadout])
 
   const playerModifiers = useMemo(() => {
     const base =

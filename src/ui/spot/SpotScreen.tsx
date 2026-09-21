@@ -3,6 +3,7 @@ import { revealedFields } from '../../domain/knowledge/spotKnowledge'
 import { resolveEnvironment, resolveFishingConditions } from '../../domain/environment'
 import { NEUTRAL_FISHING_MODIFIERS } from '../../domain/fishing/PlayerFishingModifiers'
 import { bestFishFinderOf, resolveTackle } from '../../domain/tackle'
+import { resolveBiteCompatibility } from '../../domain/tackle/biteCompatibility'
 import { formatWorldTime } from '../../domain/world'
 import { spotKnowledgeScore } from '../../domain/knowledge/spotKnowledge'
 import { useAppStore } from '../../state/appStore'
@@ -118,6 +119,25 @@ export const SpotScreen = () => {
   const speciesNames = Object.fromEntries(
     spotSpecies.map((species) => [String(species.id), species.japaneseName]),
   )
+  /*
+   * Phase 9.1: 今の仕掛けで「食いつきやすい / 食いつきにくい / ルアーが大きすぎる」を出す。
+   * Knowledge が低いときは魚種名を出さない（既存の Knowledge policy）。
+   */
+  const knowsSpecies = fields.includes('main_species')
+  const offering = content.value.gearById[String(loadout.offeringId)] ?? null
+  const hook = content.value.gearById[String(loadout.hookId)] ?? null
+  const rod = content.value.gearById[String(loadout.rodId)] ?? null
+  const biteHints = spotSpecies.map((species, index) => ({
+    id: String(species.id),
+    name: knowsSpecies ? species.japaneseName : `魚種 ${String(index + 1)}（未確認）`,
+    labels: resolveBiteCompatibility({
+      species,
+      offering,
+      hook,
+      rod,
+      methodId: loadout.methodId,
+    }).labels,
+  }))
 
   const ratingWords = (value: number): string =>
     value >= 0.7 ? '高' : value >= 0.45 ? '普通' : '低'
@@ -195,6 +215,20 @@ export const SpotScreen = () => {
           Search Water（水を探る）
         </button>
         {notice === null ? null : <p className="notice">{notice}</p>}
+      </section>
+
+      <section className="panel">
+        <h3 className="panel__subheading">食いつき（今の仕掛け）</h3>
+        <p className="fishing__legend">
+          タックルクラスで釣れる魚は決まらない。食いつき・掛かり・ファイトの難しさが変わる。
+        </p>
+        <ul className="log">
+          {biteHints.map((entry) => (
+            <li key={entry.id}>
+              {entry.name}: {entry.labels.join(' / ')}
+            </li>
+          ))}
+        </ul>
       </section>
 
       <section className="panel">

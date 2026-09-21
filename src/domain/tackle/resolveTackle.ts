@@ -1,5 +1,7 @@
 import type { FishSpecies } from '../fish/FishSpecies'
 import { hookSizeRank, offeringTagsOf, type GearItem, type GearCategory } from '../gear/Gear'
+import { hookSizeFitFor } from './hookFit'
+import { resolveBiteCompatibility, type BiteCompatibility } from './biteCompatibility'
 import { lengthModelMedian } from '../fish/lengthModel'
 import { DEFAULT_GEAR_TUNING, type GearTuning } from '../gear/GearTuning'
 import {
@@ -51,75 +53,16 @@ export type ResolvedFishingSetup = {
   readonly encounterProfile: EncounterProfile
   readonly ratings: TackleRatings
   readonly compatibility: CompatibilityReport
+  /**
+   * Phase 9.1: 魚種を指定したときだけ解決される、物理的な食いつき適合。
+   * Rod / Reel / Line / Leader では変化しない（soft な Bite ルール）。
+   */
+  readonly biteCompatibility: BiteCompatibility | null
 }
 
 const clamp01 = (value: number): number => Math.min(1, Math.max(0, value))
 const clamp = (value: number, min: number, max: number): number =>
   Math.min(max, Math.max(min, value))
-
-/**
- * Phase 9: 魚の大きさに対して期待されるフックサイズ（rank）。
- * hookSizeRank は「大きい針ほど大きい値」。値は PROVISIONAL。
- */
-const EXPECTED_HOOK_RANK: readonly { readonly cm: number; readonly rank: number }[] = [
-  { cm: 15, rank: -9 },
-  { cm: 25, rank: -6 },
-  { cm: 40, rank: -1 },
-  { cm: 60, rank: 3 },
-  { cm: 90, rank: 6 },
-  { cm: 120, rank: 9 },
-]
-
-const expectedHookRank = (medianCm: number): number => {
-  const first = EXPECTED_HOOK_RANK[0] as { readonly cm: number; readonly rank: number }
-  const last = EXPECTED_HOOK_RANK[EXPECTED_HOOK_RANK.length - 1] as {
-    readonly cm: number
-    readonly rank: number
-  }
-
-  if (medianCm <= first.cm) {
-    return first.rank
-  }
-
-  if (medianCm >= last.cm) {
-    return last.rank
-  }
-
-  for (let index = 0; index < EXPECTED_HOOK_RANK.length - 1; index += 1) {
-    const left = EXPECTED_HOOK_RANK[index] as { readonly cm: number; readonly rank: number }
-    const right = EXPECTED_HOOK_RANK[index + 1] as { readonly cm: number; readonly rank: number }
-
-    if (medianCm >= left.cm && medianCm <= right.cm) {
-      const ratio = (medianCm - left.cm) / (right.cm - left.cm)
-      return left.rank + (right.rank - left.rank) * ratio
-    }
-  }
-
-  return last.rank
-}
-
-/**
- * フックサイズのミスマッチ（±2 rank までは許容）。
- * 大型魚に小さい針 / 小型魚に大きい針は、掛かりとアワセ猶予を落とす。
- */
-const hookSizeAdjustmentFor = (input: {
-  readonly hookRank: number
-  readonly medianCm: number
-  readonly tuning: GearTuning
-}): {
-  readonly success: number
-  readonly hookWindow: number
-  readonly holding: number
-} => {
-  const gap = Math.abs(input.hookRank - expectedHookRank(input.medianCm))
-  const severity = clamp((gap - 2) / 12, 0, 1)
-
-  return {
-    success: -input.tuning.hookSizeMismatchStrength * severity,
-    hookWindow: clamp(1 - input.tuning.hookSizeMismatchWindowStrength * severity, 0.7, 1),
-    holding: clamp(1 - input.tuning.hookSizeMismatchHoldingStrength * severity, 0.55, 1),
-  }
-}
 
 export const resolveTackle = (options: {
   readonly loadout: Loadout
@@ -194,8 +137,25 @@ export const resolveTackle = (options: {
     options.species === undefined ? null : lengthModelMedian(options.species.lengthModel)
   const hookSizeAdjustment =
     medianCm === null
-      ? { success: 0, hookWindow: 1, holding: 1 }
-      : hookSizeAdjustmentFor({ hookRank: hookSizeRank(hook), medianCm, tuning })
+      ? { success: 0, hookWindow: 1, holding: 1, impossible: false }
+      : hookSizeFitFor({ hookRank: hookSizeRank(hook), medianCm, tuning })
+
+  /*
+   * Phase 9.1: Catchability / Bite Rules。
+   * 魚種が分かるときだけ、物理的な食いつき適合（offering / hook のサイズ）を解決する。
+   * Rod / Reel / Line / Leader は eligibility に関与しない（soft のみ）。
+   */
+  const biteCompatibility =
+    options.species === undefined
+      ? null
+      : resolveBiteCompatibility({
+          species: options.species,
+          offering,
+          hook,
+          rod,
+          methodId: method.id,
+          tuning,
+        })
 
   const playerModifiers: PlayerFishingModifiers = {
     ...NEUTRAL_FISHING_MODIFIERS,
@@ -316,6 +276,7 @@ export const resolveTackle = (options: {
     },
     ratings,
     compatibility,
+    biteCompatibility,
   }
 }
 

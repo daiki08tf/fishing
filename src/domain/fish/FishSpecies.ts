@@ -15,6 +15,7 @@ import type {
 } from './profiles'
 import type { WeightModel } from './weightModel'
 import type { SpeciesEnvironmentAffinity } from '../environment/fishingConditions'
+import type { FeedingProfile } from '../tackle/biteCompatibility'
 
 /** 分類情報。DATA_MODEL.md §2 の taxonomy。 */
 export type Taxonomy = {
@@ -62,6 +63,12 @@ export type FishSpecies = {
    * 未設定は neutral（1）として扱う。
    */
   readonly environmentAffinity?: SpeciesEnvironmentAffinity
+
+  /**
+   * Phase 9.1: 捕食プロファイル（任意）。ルアーサイズの物理適合に使う。
+   * 未設定は既定（PROVISIONAL）を使う。餌はサイズデータが無いため soft のまま。
+   */
+  readonly feedingProfile?: FeedingProfile
 
   readonly lengthModel: LengthDistribution
   /** 体長-体重関係。Phase 2 で必須にした（体重は体長から導出する）。 */

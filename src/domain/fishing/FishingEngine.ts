@@ -145,6 +145,12 @@ export class FishingEngine {
   private tension = 0
   private fishState: FightingFishState | null = null
   private plan: WaitingPlan | null = null
+  /**
+   * Phase 9.1: ヒットした魚に対するフック適合（掛かり / 保持）。
+   * EncounterCandidate が運ぶ汎用の数値で、Engine は魚種も針の種類も知らない。
+   */
+  private hitHookSuccessModifier = 0
+  private hitHookRetentionMultiplier = 1
   private events: FishingEvent[] = []
 
   constructor(options: FishingEngineOptions) {
@@ -308,7 +314,7 @@ export class FishingEngine {
       Math.round(
         this.tuning.hookWindowTicks *
           this.playerModifiers.hookWindowMultiplier *
-          (1 + this.playerModifiers.hookSuccessModifier),
+          (1 + this.playerModifiers.hookSuccessModifier + this.hitHookSuccessModifier),
       ),
     )
   }
@@ -323,7 +329,9 @@ export class FishingEngine {
     return Math.max(
       1,
       Math.round(
-        this.tuning.slackTicksBeforeEscape * this.playerModifiers.slackToleranceMultiplier,
+        this.tuning.slackTicksBeforeEscape *
+          this.playerModifiers.slackToleranceMultiplier *
+          this.hitHookRetentionMultiplier,
       ),
     )
   }
@@ -377,6 +385,8 @@ export class FishingEngine {
     this.fishState = null
     this.plan = null
     this.tension = 0
+    this.hitHookSuccessModifier = 0
+    this.hitHookRetentionMultiplier = 1
     this.enterPhase('CASTING')
     this.events.push('CAST_STARTED')
   }
@@ -403,6 +413,9 @@ export class FishingEngine {
 
     const species = outcome.candidate.species
     this.encounterCount += 1
+    // Phase 9.1: その魚に対するフック適合（掛かり / 保持）をファイトへ引き継ぐ。
+    this.hitHookSuccessModifier = outcome.candidate.hookSuccessModifier ?? 0
+    this.hitHookRetentionMultiplier = outcome.candidate.hookRetentionMultiplier ?? 1
 
     /*
      * 乱数の消費順は固定（変更すると seed 再現性が壊れる）:

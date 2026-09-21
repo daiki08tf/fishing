@@ -24,6 +24,24 @@ export type { CompatibilityIssue, CompatibilityLevel, CompatibilityReport } from
 export { composeFishingModifiers, resolveTackle } from './resolveTackle'
 export type { EncounterProfile, ResolvedFishingSetup, TackleRatings } from './resolveTackle'
 
+// Phase 9.1: Catchability / Bite Rules（soft by default / 物理的不可能だけ hard zero）。
+export {
+  BITE_FIT_LABELS,
+  BITE_FIT_LEVELS,
+  DEFAULT_FEEDING_PROFILE,
+  methodOfferingAffinity,
+  offeringTagsOfItem,
+  resolveBiteCompatibility,
+} from './biteCompatibility'
+export type {
+  BiteCompatibility,
+  BiteCompatibilityReason,
+  BiteFitLevel,
+  FeedingProfile,
+} from './biteCompatibility'
+export { expectedHookRankFor, hookSizeFitFor } from './hookFit'
+export type { HookSizeFit } from './hookFit'
+
 export {
   addGear,
   bestFishFinderOf,

@@ -442,6 +442,60 @@ Fish Finder は Gear カテゴリ `electronics` として既存 Inventory に載
   `slackToleranceMultiplier`（保持）を下げる
 - Hard gate は作らない。軽いタックルでも獲れるが、ラインブレイク / フックアウトが増える
 
+## 10.3 Catchability / Bite Rules（Phase 9.1）
+
+釣りの基本原則:
+
+> **Catchability is soft by default.**
+> **Physical impossibility is the only normal hard gate.**
+> （釣り上げられるかは既定でソフト。物理的に不可能な場合だけが唯一のハードゲート。）
+
+- **Tackle class does not determine species eligibility** —
+  Rod / Reel / Line / Leader で「この魚種は釣れない」を作らない。
+  これらは Bite 確率・掛かり・ファイト・ラインブレイク・着地へ効く（soft）
+- **Method affinity is soft** — 釣法は Hard Gate にしない。
+  excellent 1.8 / good 1.3 / neutral 1.0 / poor 0.5 / very poor 0.15 の目安で
+  multiplier に解決し、0 にはしない
+- **Offering affinity is soft** — ルアー / 餌の種類が不向きでも確率を下げるだけ
+- **Oversized lure/hook may be physically impossible** — 魚に対して offering / hook が
+  物理的に大きすぎる場合だけ `eligible = false`（Bite = 0）を許す
+  - ルアーは `lengthMm` と魚種の `feedingProfile`（任意）で判定する。
+    餌などサイズデータが無い offering は neutral（長さを捏造しない）
+- **Undersized offering/hook remains possible** — 小さすぎる場合は
+  確率・保持・掛かりが悪くなるだけ（0 にしない）
+- **Fight difficulty is separate from bite probability** —
+  食いついた後の難しさ（テンション・保持・着地）は Fight 側で表現する
+
+判定は物理値と Content だけで行い、species ID / lure ID / hook ID では分岐しない。
+Engine へ渡すのは「bite eligible / bite multiplier / hook の掛かり・保持」の数値だけである。
+
+```ts
+type BiteCompatibility = {
+  eligible: boolean                  // false のときだけ Bite / Hook = 0
+  level: "excellent" | "good" | "neutral" | "poor" | "very_poor" | "impossible"
+  reason: "ok" | "offering_too_large" | "hook_too_large" | "offering_size_unknown"
+  affinityMultiplier: number         // soft（0.15〜1.8）。eligible=false なら 0
+  hookSuccessModifier: number        // 掛かり（加算）
+  hookRetentionMultiplier: number    // 保持（倍率）
+  labels: string[]                   // UI 表示用（食いつきやすい / ルアーが大きすぎる 等）
+}
+```
+
+Bite 確率の考え方（責務の分離）:
+
+```text
+Spot / fishTable                  → その魚がそこに存在するか（Encounter）
+Environment / Season / Time       → 存在 × 活性（Encounter / Bite）
+Method / Offering                 → 食いつきやすさ（soft）
+Offering / Hook の物理サイズ      → 食いつけるか（大きすぎるときだけ 0）
+Tackle（Rod / Reel / Line）       → 掛かり / ファイト / ブレイク / 着地
+Angler skill                      → 掛かり / ファイト
+Fish individual                   → 食い・ファイト・着地の難しさ
+```
+
+不向きな offering でも「魚はそこにいるが、なかなか食わない」を表現する
+（fishTable から魚を消さない）。
+
 ## 11. PlayerProgression
 
 ```ts
