@@ -5,6 +5,30 @@
 > 以下の Phase 6 / 6.5 節は履歴として残している。件数・Save version・次 Phase については、
 > この Phase 9 / 8 / 7A.1 / 7A 節と `.ai/current-task.md` を優先する。
 
+## STABLE CHECKPOINT — Phase 9
+
+Phase 0〜9 を stable checkpoint として main へ統合する（integration branch）。
+
+- World / Japan / Alaska expedition
+- Transport / physical access
+- Economy / Shop
+- Tackle
+- Environment / weather / tide / water
+- Fishing forecast
+- Offshore / Fish Finder
+- Big Game
+- Save v7
+
+最新の検証状況（integration/phase-9-stable 時点）:
+
+- `npm run check`: PASS（68 test files / 589 tests、typecheck / lint / format / validate / build）
+- `npm run validate:content`: PASS（653 records）
+- simulations: environment 8/8、big-game 9/9、expedition 12/12、transport 18/18、
+  tackle 11/11、catalog 9/9、day 9/9、trip 6/6、progression 9/9、
+  `simulate:fishing --seed demo` LANDED（182 ticks）、`sample:individuals` invalid=0
+- bundle: JS 724.72 kB（gzip 178.52 kB）、CSS 7.04 kB（gzip 1.86 kB）
+- Save schema: v7（Environment は日付・地域から再生成できるため保存しない）
+
 ## Phase 9（Living Water & Big Game）
 
 - **Environment Domain** — `src/domain/environment`。WorldTime と地域の ClimateProfile
