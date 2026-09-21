@@ -1,6 +1,6 @@
 # Handoff
 
-最終更新: Phase 11（Casting Distance & Fishing Zones）実装完了 / CI 検証中
+最終更新: Phase 11（Casting Distance & Fishing Zones）完了
 
 > 以下の古い Phase 節は履歴として残している。現在状態は
 > Phase 11 / 10.2 / 10.1 / 10 と `.ai/current-task.md` を優先する。
