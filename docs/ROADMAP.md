@@ -10,7 +10,15 @@
 
 データ構造は将来の1000魚種規模に耐えられるよう設計する。
 
-## Phase 0 — Foundation
+早期に検証すること:
+
+> 装備・Knowledge・Skill・Transportの成長によって、
+> アクセスできる世界が広がるか。
+
+この体験をPhase 4〜7で段階的に検証する。
+実装する機能の量ではなく、この体験が成立しているかを基準に判断する。
+
+## Phase 0 — Repository / Architecture / Deterministic Foundation
 
 目的:
 実装を始めても設計が崩れない土台。
@@ -25,12 +33,31 @@
 - content validation
 - save schema v1
 
+機械判定可能な制約:
+
+Phase 0では、CI / lint / testで機械的に判定できる制約のみを定義する。
+
+- Levelをlocation hard lockに使わない
+- Domain layerはReact / UIに依存しない
+- RNGは注入可能かつseed可能にする
+- Contentはtyped schemaでvalidateする
+- SaveはschemaVersionを必須とする
+- Domain testsはdeterministicにする
+- Fish generationは物理的制約を守る
+- 禁止layer dependencyをlint / testで検知する
+
+「設計書に存在しないコードをCIが意味的に検出する」ことは行わない。
+意味判定は機械的に安定しないためである。
+意味論的なProduct Scope逸脱の検出はhuman / code reviewの責務とする。
+詳細は [Decisions](DECISIONS.md) を参照。
+
 Done条件:
 
 - build PASS
 - tests PASS
 - fish data 1件をvalidationできる
 - deterministic RNG test PASS
+- 上記の機械判定可能な制約をCI / lint / testで検知できる
 
 ## Phase 1 — Fishing Vertical Slice
 
@@ -58,7 +85,7 @@ Done条件:
 - 同じSeedで同じ個体/挙動を再現
 - UIとDomainが分離
 
-## Phase 2 — Fish Individuals
+## Phase 2 — Fish Individuals & Variety
 
 - 10〜20魚種
 - length distribution
@@ -73,13 +100,15 @@ Done条件:
 - Aggressive
 - personal record
 
+魚種追加がコード変更ではなくContent追加で完結する構造を保つ。
+
 Done条件:
 
 - 同種を何度釣っても個体差を感じる
 - 非現実的なサイズ/重量が出ない
 - Codexに記録できる
 
-## Phase 3 — Angler Level
+## Phase 3 — Angler Progression
 
 - XP
 - Lv1〜100 curve
@@ -102,7 +131,7 @@ Done条件:
 - Levelがアクセスキーになっていない
 - 上達を操作上感じられる
 
-## Phase 4 — First Real Area
+## Phase 4 — First Playable Tokyo-area Loop
 
 最初の生活圏を作る。
 
@@ -128,7 +157,17 @@ Done条件:
 - simple weather
 - Spot Knowledge
 
-## Phase 5 — Life / Company Worker Loop
+minimal access / transport:
+
+このPhaseに、最小限のaccess / transportの概念を含める。
+
+- 徒歩 / 電車等の基本移動で到達できるSpotに限られる
+- Spot側はtransport requirementとしてアクセス条件を持つ
+- 完全な交通システムはこの時点では作らない
+
+「行ける場所が限られている」状態を、この時点で体験できるようにする。
+
+## Phase 5 — Life / Work / Economy
 
 - weekday
 - weekend
@@ -147,6 +186,14 @@ Done条件:
 - job offers
 - work style modifiers
 
+early vehicle ownership proof-of-concept:
+
+このPhaseに、車の所有が世界を広げる体験の最小検証を含める。
+
+- 移動手段が増えると到達可能Spotが増える
+- 購入費・維持費・自由時間とのトレードオフが発生する
+- 完全なTransport ProgressionはPhase 7で扱う
+
 仕事そのものをミニゲーム化しない。
 
 仕事は週単位・イベント単位で軽く処理する。
@@ -164,7 +211,7 @@ Done条件:
 
 家賃・税金・食費等の細かな家計管理は行わず、「自由時間と資金に限りがある」ことだけをゲーム性にする。
 
-## Phase 6 — Tackle System
+## Phase 6 — Tackle Depth
 
 - Rod
 - Reel
@@ -182,7 +229,7 @@ Done条件:
 目的:
 最適装備が1セットに固定されないこと。
 
-## Phase 7 — Transport
+## Phase 7 — Full Transport / Access Progression
 
 - train
 - bicycle
@@ -199,6 +246,24 @@ Done条件:
 が変化する。
 
 「車を買った瞬間に世界が広がる」体験を作る。
+
+Phase 4 / 5 で入れた最小のアクセス概念を、このPhaseで完成させる。
+
+- Transport種別の拡充
+- アクセス条件の統合
+  （transport / knowledge / permit / relationship / season等）
+- Access RequirementによるSpot解禁
+
+「Levelが上がったので解禁」ではなく、
+移動手段・装備・Knowledge・Skillの成長によって行ける場所が増える形にする。
+
+## Phase 8+ — 既存計画の継続
+
+Phase 8以降は既存計画を継続する。本調整では個別Phaseの内容を変更しない。
+
+- Phase 8: Reputation / Relationships
+- Phase 9: Boat
+- Phase 10: Regional Expansion
 
 ## Phase 8 — Reputation / Relationships
 
