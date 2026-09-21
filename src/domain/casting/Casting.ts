@@ -85,10 +85,7 @@ const closestLineCapacityM = (reel: ReelDefinition, line: LineDefinition): numbe
   return best?.capacityM ?? null
 }
 
-const offeringWeightG = (
-  offering: OfferingDefinition,
-  tuning: CastingTuning,
-): number =>
+const offeringWeightG = (offering: OfferingDefinition, tuning: CastingTuning): number =>
   offering.category === 'lure' ? offering.weightG : tuning.defaultBaitRigWeightG
 
 /**
@@ -146,11 +143,7 @@ export const resolveCastCapability = (input: {
       0.06 * method,
   )
 
-  const skillDistanceMultiplier = clamp(
-    1 + (input.skillCastingMultiplier - 1) * 0.18,
-    0.9,
-    1.12,
-  )
+  const skillDistanceMultiplier = clamp(1 + (input.skillCastingMultiplier - 1) * 0.18, 0.9, 1.12)
   const windDistanceMultiplier = input.windy ? tuning.windyDistanceMultiplier : 1
 
   const precisionBase =
@@ -173,9 +166,7 @@ export const resolveCastCapability = (input: {
 
   const capacityM = closestLineCapacityM(input.reel, input.line)
   const lineLimitedMax =
-    capacityM === null
-      ? tuning.maxHardCapM
-      : Math.max(8, capacityM - tuning.reserveLineM)
+    capacityM === null ? tuning.maxHardCapM : Math.max(8, capacityM - tuning.reserveLineM)
   const maxDistanceM = Math.min(rawMax, lineLimitedMax, tuning.maxHardCapM)
   const comfortableDistanceM = Math.min(rawComfortable, maxDistanceM * 0.82)
 
@@ -269,10 +260,7 @@ const landedZoneFor = (
 ): FishingZone => {
   const targetRange = target.castDistanceM
 
-  if (
-    targetRange === undefined ||
-    (distanceM >= targetRange.min && distanceM <= targetRange.max)
-  ) {
+  if (targetRange === undefined || (distanceM >= targetRange.min && distanceM <= targetRange.max)) {
     return target
   }
 
@@ -335,8 +323,7 @@ export const resolveCast = (input: {
     (desiredDistance - input.capability.comfortableDistanceM) /
       Math.max(1, input.capability.maxDistanceM - input.capability.comfortableDistanceM),
   )
-  const spreadM =
-    1.5 + 9 * (1 - input.capability.precision) + 7 * beyondComfort
+  const spreadM = 1.5 + 9 * (1 - input.capability.precision) + 7 * beyondComfort
   const shortBiasM = spreadM * (0.12 + 0.38 * beyondComfort)
   const randomErrorM = (input.random.next() - 0.5) * 2 * spreadM
   const actualDistanceM = round1(
@@ -345,11 +332,7 @@ export const resolveCast = (input: {
   const landed = landedZoneFor(input.zones, target, actualDistanceM)
 
   const quality: CastQuality =
-    landed.id === target.id
-      ? 'clean'
-      : actualDistanceM < range.min
-        ? 'short'
-        : 'long'
+    landed.id === target.id ? 'clean' : actualDistanceM < range.min ? 'short' : 'long'
 
   return {
     reachable: true,
@@ -362,7 +345,5 @@ export const resolveCast = (input: {
 }
 
 /** Zone を選んだことによる presence 倍率。未指定なら従来どおり 1。 */
-export const zoneAffinityMultiplier = (
-  occurrence: FishOccurrence,
-  zoneId: string,
-): number => Math.max(0, occurrence.zoneAffinity?.[zoneId] ?? 1)
+export const zoneAffinityMultiplier = (occurrence: FishOccurrence, zoneId: string): number =>
+  Math.max(0, occurrence.zoneAffinity?.[zoneId] ?? 1)
