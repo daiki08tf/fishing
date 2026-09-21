@@ -1,5 +1,7 @@
 import { useAppStore } from '../state/appStore'
+import { usePlayerStore } from '../state/playerStore'
 import { FishingScreen } from './fishing/FishingScreen'
+import { ProgressionScreen } from './progression/ProgressionScreen'
 
 /**
  * Phase 0B のアプリシェル。
@@ -22,6 +24,45 @@ export const AppShell = () => {
   const diagnosticsVisible = useAppStore((state) => state.diagnosticsVisible)
   const toggleDiagnostics = useAppStore((state) => state.toggleDiagnostics)
 
+  const hydrationStatus = usePlayerStore((state) => state.hydrationStatus)
+  const hydrationFailure = usePlayerStore((state) => state.hydrationFailure)
+  const startWithoutSave = usePlayerStore((state) => state.completeHydrationWithoutSave)
+
+  // 保存データの確認が終わるまで、ゲームの画面は出さない。
+  if (hydrationStatus === 'error') {
+    return (
+      <div className="app-shell">
+        <main className="app-shell__main">
+          <section className="panel">
+            <p className="app-shell__eyebrow">Save</p>
+            <h2 className="panel__heading">保存データを読み込めなかった</h2>
+            <p className="panel__body">
+              既存の保存は上書きしていません。新規で始めると、次のプレイから新しい保存になります。
+            </p>
+            <p className="fishing__legend">理由: {hydrationFailure?.message ?? 'unknown'}</p>
+            <button className="button button--primary" type="button" onClick={startWithoutSave}>
+              新規で始める
+            </button>
+          </section>
+        </main>
+      </div>
+    )
+  }
+
+  if (hydrationStatus !== 'ready') {
+    return (
+      <div className="app-shell">
+        <main className="app-shell__main">
+          <section className="panel">
+            <p className="app-shell__eyebrow">Save</p>
+            <h2 className="panel__heading">読み込み中</h2>
+            <p className="panel__body">保存データを確認しています。</p>
+          </section>
+        </main>
+      </div>
+    )
+  }
+
   if (activeScreen === 'fishing') {
     return (
       <div className="app-shell">
@@ -29,6 +70,23 @@ export const AppShell = () => {
           <FishingScreen
             onExit={() => {
               setActiveScreen('home')
+            }}
+          />
+        </main>
+      </div>
+    )
+  }
+
+  if (activeScreen === 'progression') {
+    return (
+      <div className="app-shell">
+        <main className="app-shell__main">
+          <ProgressionScreen
+            onExit={() => {
+              setActiveScreen('home')
+            }}
+            onStartFishing={() => {
+              setActiveScreen('fishing')
             }}
           />
         </main>
@@ -81,6 +139,16 @@ export const AppShell = () => {
             }}
           >
             釣りに行く
+          </button>
+
+          <button
+            className="button"
+            type="button"
+            onClick={() => {
+              setActiveScreen('progression')
+            }}
+          >
+            成長を見る（Angler Lv / Skill / Perk）
           </button>
 
           {diagnosticsVisible ? (

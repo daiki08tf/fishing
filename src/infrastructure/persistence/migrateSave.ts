@@ -1,5 +1,14 @@
-import { CURRENT_SAVE_SCHEMA_VERSION, type CurrentSave } from '../../domain/save/SaveGame'
-import { currentSaveSchema } from './saveSchema'
+import { totalXpForLevel } from '../../domain/progression/AnglerLevel'
+import { emptyRepetitionState } from '../../domain/progression/repetitionDecay'
+import { emptyCodexState } from '../../domain/codex'
+import {
+  CURRENT_SAVE_SCHEMA_VERSION,
+  SAVE_SCHEMA_VERSION_V1,
+  type CurrentSave,
+  type SaveGameV1,
+  type SaveGameV2,
+} from '../../domain/save/SaveGame'
+import { currentSaveSchema, saveGameV1Schema } from './saveSchema'
 
 /**
  * Save の migration 入口。ARCHITECTURE.md §9 に対応する。
@@ -9,8 +18,7 @@ import { currentSaveSchema } from './saveSchema'
  * - 失敗しても例外を投げず、理由を返す。呼び出し側が安全に初期状態へ倒せるようにする。
  * - 未知の（未来の）schemaVersion は読み込まない。壊れた解釈でデータを失わないため。
  *
- * Phase 0B では v1 しか存在しないため、実質は v1 -> v1 の検証である。
- * v2 を追加するときは migrateV1ToV2 を足し、この関数から順に適用する。
+ * v2 を追加するときは migrateV1ToV2 のような関数を足し、古い順に適用する。
  */
 
 export type SaveMigrationFailureReason =
@@ -40,6 +48,14 @@ const failure = (
   issues: readonly SaveMigrationIssue[] = [],
 ): SaveMigrationResult => ({ ok: false, reason, message, issues })
 
+const toIssues = (error: {
+  readonly issues: readonly { readonly path: readonly PropertyKey[]; readonly message: string }[]
+}): readonly SaveMigrationIssue[] =>
+  error.issues.map((issue) => ({
+    path: issue.path.map((segment) => String(segment)).join('.'),
+    message: issue.message,
+  }))
+
 const readSchemaVersion = (raw: Record<string, unknown>): number | null => {
   const value = raw['schemaVersion']
 
@@ -49,6 +65,35 @@ const readSchemaVersion = (raw: Record<string, unknown>): number | null => {
 
   return value
 }
+
+/**
+ * v1 → v2。
+ *
+ * v1 は累計 XP を持っていなかったので、レベルカーブから復元する
+ * （レベル到達に必要な累計 + 現在レベル内の XP）。
+ * Perk と反復状態は新設なので空から始める。
+ */
+export const migrateV1ToV2 = (v1: SaveGameV1): SaveGameV2 => ({
+  schemaVersion: CURRENT_SAVE_SCHEMA_VERSION,
+  createdAt: v1.createdAt,
+  updatedAt: v1.updatedAt,
+  knowledge: v1.knowledge,
+  career: v1.career,
+  finance: v1.finance,
+  // v1 は捕獲記録を持っていないので空から始める。
+  codex: emptyCodexState(),
+  progression: {
+    anglerLevel: v1.progression.anglerLevel,
+    anglerXp: v1.progression.anglerXp,
+    totalXp: totalXpForLevel(v1.progression.anglerLevel) + v1.progression.anglerXp,
+    skillPoints: v1.progression.skillPoints,
+    skills: v1.progression.skills,
+    unlockedPerks: [],
+    repetition: emptyRepetitionState(),
+    reputation: v1.progression.reputation,
+    methodProficiency: v1.progression.methodProficiency,
+  },
+})
 
 export const migrateSave = (raw: unknown): SaveMigrationResult => {
   if (typeof raw !== 'object' || raw === null || Array.isArray(raw)) {
@@ -71,26 +116,42 @@ export const migrateSave = (raw: unknown): SaveMigrationResult => {
     )
   }
 
-  if (schemaVersion < CURRENT_SAVE_SCHEMA_VERSION) {
-    // 旧 version はまだ存在しない。将来ここに migration を並べる。
+  if (schemaVersion < SAVE_SCHEMA_VERSION_V1) {
     return failure(
       'unsupported_older_version',
       `no migration path from save schemaVersion ${String(schemaVersion)}`,
     )
   }
 
+  if (schemaVersion === SAVE_SCHEMA_VERSION_V1) {
+    const parsed = saveGameV1Schema.safeParse(record)
+
+    if (!parsed.success) {
+      return failure(
+        'invalid_save',
+        'save data failed v1 schema validation',
+        toIssues(parsed.error),
+      )
+    }
+
+    const migrated = currentSaveSchema.safeParse(migrateV1ToV2(parsed.data))
+
+    if (!migrated.success) {
+      return failure(
+        'invalid_save',
+        'migrated save failed current schema validation',
+        toIssues(migrated.error),
+      )
+    }
+
+    return { ok: true, save: migrated.data, migratedFrom: SAVE_SCHEMA_VERSION_V1 }
+  }
+
   const parsed = currentSaveSchema.safeParse(record)
 
   if (!parsed.success) {
-    return failure(
-      'invalid_save',
-      'save data failed schema validation',
-      parsed.error.issues.map((issue) => ({
-        path: issue.path.map((segment) => String(segment)).join('.'),
-        message: issue.message,
-      })),
-    )
+    return failure('invalid_save', 'save data failed schema validation', toIssues(parsed.error))
   }
 
-  return { ok: true, save: parsed.data, migratedFrom: schemaVersion }
+  return { ok: true, save: parsed.data, migratedFrom: CURRENT_SAVE_SCHEMA_VERSION }
 }

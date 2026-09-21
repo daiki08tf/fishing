@@ -1,5 +1,9 @@
-import { asJobId } from '../../src/domain/ids'
+import { asFishIndividualId, asFishSpeciesId, asJobId } from '../../src/domain/ids'
+import { totalXpForLevel } from '../../src/domain/progression/AnglerLevel'
+import { emptyAnglerSkills } from '../../src/domain/progression/AnglerSkill'
+import { emptyRepetitionState } from '../../src/domain/progression/repetitionDecay'
 import type { SaveGameV1 } from '../../src/domain/save/SaveGame'
+import { SAVE_SCHEMA_VERSION_V2, type SaveGameV2 } from '../../src/domain/save/SaveGame'
 
 /**
  * 検証用の最小 Save（schema v1）。
@@ -24,6 +28,65 @@ export const createValidSaveV1 = (): SaveGameV1 => ({
     },
     reputation: 0,
     methodProficiency: {},
+  },
+  knowledge: { fish: {}, spots: {}, regions: {}, methods: {} },
+  career: {
+    jobId: asJobId('fixture-job'),
+    careerLevel: 1,
+    salaryBand: 1,
+    workStyle: {
+      remoteDays: 0,
+      flexTime: false,
+      overtimeLoad: 0,
+      commuteMinutes: 45,
+    },
+    paidLeave: 0,
+    careerXp: 0,
+  },
+  finance: {
+    cash: 0,
+    salaryIncome: 0,
+    simplifiedLivingCost: 0,
+  },
+})
+
+/** Phase 3 の現行 Save（schema v2）。 */
+export const createValidSaveV2 = (): SaveGameV2 => ({
+  schemaVersion: SAVE_SCHEMA_VERSION_V2,
+  createdAt: '2026-01-01T00:00:00.000Z',
+  updatedAt: '2026-02-01T00:00:00.000Z',
+  progression: {
+    anglerLevel: 3,
+    anglerXp: 40,
+    totalXp: totalXpForLevel(3) + 40,
+    skillPoints: 2,
+    skills: { ...emptyAnglerSkills(), fighting: 5 },
+    unlockedPerks: [],
+    repetition: { ...emptyRepetitionState(), species: { 'test-species': 3 } },
+    reputation: 0,
+    methodProficiency: {},
+  },
+  codex: {
+    species: {
+      'test-species': {
+        speciesId: asFishSpeciesId('test-species'),
+        catchCount: 2,
+        largestLengthCm: 31.2,
+        heaviestWeightKg: 0.512,
+        bestPercentile: 87.5,
+        caughtTraits: ['heavy'],
+        personalBest: {
+          individualId: asFishIndividualId('test-species#best'),
+          speciesId: asFishSpeciesId('test-species'),
+          lengthCm: 31.2,
+          weightKg: 0.512,
+          condition: 0.82,
+          percentile: 87.5,
+          traits: ['heavy'],
+          capturedAt: '2026-01-20T00:00:00.000Z',
+        },
+      },
+    },
   },
   knowledge: { fish: {}, spots: {}, regions: {}, methods: {} },
   career: {

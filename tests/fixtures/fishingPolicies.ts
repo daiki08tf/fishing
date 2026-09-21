@@ -39,6 +39,26 @@ export type FightOutcome = {
   readonly steps: number
 }
 
+/** 条件を満たすまで tick を進める（テスト用）。 */
+export const advanceUntil = (
+  engine: FishingEngine,
+  predicate: (snapshot: FishingSnapshot) => boolean,
+  maxTicks = 4000,
+): { readonly events: readonly FishingEvent[]; readonly ticks: number } => {
+  const events: FishingEvent[] = []
+
+  for (let index = 0; index < maxTicks; index += 1) {
+    const result = engine.tick()
+    events.push(...result.events)
+
+    if (predicate(result.snapshot)) {
+      return { events, ticks: index + 1 }
+    }
+  }
+
+  throw new Error(`condition was not reached within ${String(maxTicks)} ticks`)
+}
+
 /** 釣行が終わるまで操作と tick を繰り返す。 */
 export const runFightToTerminal = (engine: FishingEngine, maxSteps = 4000): FightOutcome => {
   const events: FishingEvent[] = []

@@ -28,18 +28,29 @@ describe('level is not a location hard lock', () => {
     expect(ACCESS_REQUIREMENT_KINDS).not.toContain('anglerLevel')
   })
 
-  it('has no level-gate fields in domain or content types', () => {
+  /*
+   * 探索範囲を「アクセス条件に関わるファイル」に限定する。
+   * Perk の `requiredLevel` はアクセス条件ではないため対象外
+   * （Level を場所の解禁キーにしない、という規則とは別物）。
+   */
+  const isAccessRelated = (path: string): boolean =>
+    path.startsWith('src/domain/access/') ||
+    path === 'src/domain/world/FishingSpot.ts' ||
+    path === 'src/content/schema/accessRequirement.ts' ||
+    path === 'src/content/schema/fishingSpot.ts'
+
+  it('has no level-gate fields in access related types', () => {
     const sources = readProjectSources()
     const pattern = /\b(requiredLevel|requiredAnglerLevel|minLevel|levelRequirement|levelLock)\b/
 
     const domainViolations = findForbiddenPatterns(sources, {
-      matches: (path) => path.startsWith('src/domain/') && !path.endsWith('.test.ts'),
+      matches: (path) => isAccessRelated(path) && path.startsWith('src/domain/'),
       pattern,
       reason: 'level must not gate access',
     })
 
     const contentViolations = findForbiddenPatterns(sources, {
-      matches: (path) => path.startsWith('src/content/schema/'),
+      matches: (path) => isAccessRelated(path) && path.startsWith('src/content/'),
       pattern,
       reason: 'level must not gate access',
     })

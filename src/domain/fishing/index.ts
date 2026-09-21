@@ -37,3 +37,10 @@ export type {
   FishingSnapshot,
   FishingTickResult,
 } from './FishingEngine'
+
+export {
+  ADDITIVE_MODIFIER_KEYS,
+  FISHING_MODIFIER_KEYS,
+  NEUTRAL_FISHING_MODIFIERS,
+} from './PlayerFishingModifiers'
+export type { FishingModifierKey, PlayerFishingModifiers } from './PlayerFishingModifiers'

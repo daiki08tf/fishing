@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { createValidSaveV1 } from '../../../tests/fixtures/save'
+import { createValidSaveV2 } from '../../../tests/fixtures/save'
 import { InMemorySaveRepository } from './inMemorySaveRepository'
 import { IndexedDbSaveRepository, IndexedDbUnavailableError } from './indexedDbSaveRepository'
 import { migrateSave } from './migrateSave'
@@ -12,7 +12,7 @@ describe('InMemorySaveRepository', () => {
 
   it('round-trips a save through the migration boundary', async () => {
     const repository = new InMemorySaveRepository()
-    const save = createValidSaveV1()
+    const save = createValidSaveV2()
 
     await repository.save(save)
 
@@ -22,7 +22,7 @@ describe('InMemorySaveRepository', () => {
 
   it('stores a copy, not a live reference', async () => {
     const repository = new InMemorySaveRepository()
-    const save = createValidSaveV1()
+    const save = createValidSaveV2()
 
     await repository.save(save)
     const loaded = await repository.loadRaw()
@@ -33,7 +33,7 @@ describe('InMemorySaveRepository', () => {
 
   it('clears the stored save', async () => {
     const repository = new InMemorySaveRepository()
-    await repository.save(createValidSaveV1())
+    await repository.save(createValidSaveV2())
     await repository.clear()
 
     await expect(repository.loadRaw()).resolves.toBeNull()
@@ -47,7 +47,7 @@ describe('IndexedDbSaveRepository', () => {
     const repository = new IndexedDbSaveRepository(undefined)
 
     await expect(repository.loadRaw()).rejects.toBeInstanceOf(IndexedDbUnavailableError)
-    await expect(repository.save(createValidSaveV1())).rejects.toBeInstanceOf(
+    await expect(repository.save(createValidSaveV2())).rejects.toBeInstanceOf(
       IndexedDbUnavailableError,
     )
     await expect(repository.clear()).rejects.toBeInstanceOf(IndexedDbUnavailableError)

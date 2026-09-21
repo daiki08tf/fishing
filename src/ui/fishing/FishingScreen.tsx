@@ -1,5 +1,6 @@
 import type { ConditionBand } from '../../domain/fish/fishCondition'
 import type { FishTrait } from '../../domain/fish/FishTrait'
+import { PERK_DEFINITIONS } from '../../domain/progression'
 import {
   ALLOWED_COMMANDS,
   isTerminalPhase,
@@ -9,6 +10,8 @@ import {
 } from '../../domain/fishing'
 import { FishingMeter } from './FishingMeter'
 import { useFishingSession } from './useFishingSession'
+import { usePlayerStore } from '../../state/playerStore'
+import { useAppStore } from '../../state/appStore'
 import '../styles/fishing.css'
 
 /**
@@ -133,7 +136,11 @@ export type FishingScreenProps = {
 }
 
 export const FishingScreen = ({ onExit }: FishingScreenProps) => {
-  const { contentError, snapshot, seed, codex, lastCatch, send, restart } = useFishingSession()
+  const { contentError, snapshot, seed, send, restart } = useFishingSession()
+  const codex = usePlayerStore((state) => state.codex)
+  const lastCatch = usePlayerStore((state) => state.lastCatch)
+  const progression = usePlayerStore((state) => state.progression)
+  const setActiveScreen = useAppStore((state) => state.setActiveScreen)
 
   if (contentError !== null) {
     return (
@@ -164,6 +171,15 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
       <header className="fishing__header">
         <button className="button button--ghost" type="button" onClick={onExit}>
           ← 戻る
+        </button>
+        <button
+          className="button button--ghost"
+          type="button"
+          onClick={() => {
+            setActiveScreen('progression')
+          }}
+        >
+          成長 Lv{progression.anglerLevel} / SP {progression.skillPoints}
         </button>
         <span className="fishing__seed">seed: {seed}</span>
       </header>
@@ -304,14 +320,42 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
         <h3 className="panel__subheading">自己記録</h3>
 
         {lastCatch === null ? null : (
-          <p className="notice">
-            {lastCatch.isFirstCatchOfSpecies ? '初記録' : null}
-            {lastCatch.isFirstCatchOfSpecies ? ' / ' : null}
-            {lastCatch.isPersonalBest ? '自己記録更新' : '記録更新なし'}
-            {lastCatch.newTraits.length === 0
-              ? null
-              : ` / 新Trait: ${lastCatch.newTraits.map((trait) => TRAIT_LABELS[trait]).join(', ')}`}
-          </p>
+          <div className="notice">
+            <p className="notice__title">
+              {lastCatch.speciesName} — +{lastCatch.xpGained} XP
+            </p>
+            <ul className="log">
+              <li>
+                サイズ帯 {lastCatch.sizeBand}（Base {lastCatch.baseXp} XP）
+              </li>
+              {lastCatch.decayMultiplier === 1 ? null : (
+                <li>反復減衰 ×{lastCatch.decayMultiplier.toFixed(2)}</li>
+              )}
+              {lastCatch.factors.map((factor) => (
+                <li key={factor.label}>
+                  {factor.label} +{factor.value} XP
+                </li>
+              ))}
+            </ul>
+            <p className="notice__tags">
+              {lastCatch.firstCatch ? <span className="badge badge--alert">初記録</span> : null}
+              {lastCatch.personalBest ? (
+                <span className="badge badge--alert">自己記録更新</span>
+              ) : null}
+              {lastCatch.unlockedPerks.length > 0 ? (
+                <span className="badge badge--alert">
+                  Perk:{' '}
+                  {lastCatch.unlockedPerks.map((perk) => PERK_DEFINITIONS[perk].name).join(', ')}
+                </span>
+              ) : null}
+            </p>
+            {lastCatch.levelsGained.length === 0 ? null : (
+              <p className="notice__level">
+                LEVEL UP → Lv{lastCatch.levelsGained[lastCatch.levelsGained.length - 1]}（Skill
+                Point +{lastCatch.skillPointsGained}）
+              </p>
+            )}
+          </div>
         )}
 
         {record === undefined ? (

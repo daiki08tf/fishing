@@ -10,3 +10,11 @@ export type KnowledgeState = {
   readonly regions: Readonly<Record<string, number>>
   readonly methods: Readonly<Record<string, number>>
 }
+
+/** 何も知らない状態。Phase 4 で釣行・観察によって増えていく。 */
+export const emptyKnowledgeState = (): KnowledgeState => ({
+  fish: {},
+  spots: {},
+  regions: {},
+  methods: {},
+})

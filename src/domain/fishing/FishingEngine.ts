@@ -10,6 +10,7 @@ import { SeededRandomSource } from '../rng/SeededRandomSource'
 import { createFightingFish } from './createFightingFish'
 import { decideBehavior, type FishBehavior } from './FishBehavior'
 import type { FightingFishState } from './FightingFish'
+import { NEUTRAL_FISHING_MODIFIERS, type PlayerFishingModifiers } from './PlayerFishingModifiers'
 import { DEFAULT_FISHING_TUNING, type FishingTuning } from './FishingTuning'
 import {
   isCommandAllowed,
@@ -52,6 +53,12 @@ export type FishingSnapshot = {
   readonly ticksInPhase: number
   readonly totalTicks: number
   readonly lastEvents: readonly FishingEvent[]
+  /** プレイヤーの技量による倍率（UI 表示用）。 */
+  readonly playerModifiers: PlayerFishingModifiers
+  /** アワセ猶予の実効 tick 数。 */
+  readonly effectiveHookWindowTicks: number
+  /** Detection が高いときだけ見える、アタリまでの残り tick。 */
+  readonly biteForecastTicks: number | null
 }
 
 export type FishingCommandOutcome =
@@ -79,6 +86,11 @@ export type FishingEngineOptions = {
   readonly seed: number | string
   /** 捕獲した個体に紐づける Spot。Phase 4 で本格化する。 */
   readonly spotId?: FishingSpotId
+  /**
+   * プレイヤーの技量による倍率（Progression 側で解決済みの値）。
+   * Engine は Skill や Level を知らない。
+   */
+  readonly playerModifiers?: PlayerFishingModifiers
   readonly tuning?: FishingTuning
   /** テストや特殊な用途向け。省略時は seed から決定論的な RandomSource を作る。 */
   readonly random?: RandomSource
@@ -108,6 +120,7 @@ type WaitingPlan = {
 
 export class FishingEngine {
   readonly tuning: FishingTuning
+  readonly playerModifiers: PlayerFishingModifiers
 
   private readonly encounters: readonly EncounterCandidate[]
   private readonly random: RandomSource
@@ -127,6 +140,7 @@ export class FishingEngine {
   constructor(options: FishingEngineOptions) {
     this.encounters = options.encounters
     this.tuning = options.tuning ?? DEFAULT_FISHING_TUNING
+    this.playerModifiers = options.playerModifiers ?? NEUTRAL_FISHING_MODIFIERS
     this.seedLabel = String(options.seed)
     this.random = options.random ?? new SeededRandomSource(options.seed)
     this.spotId = options.spotId
@@ -218,7 +232,7 @@ export class FishingEngine {
         break
 
       case 'HOOK_WINDOW':
-        if (this.ticksInPhase >= this.tuning.hookWindowTicks) {
+        if (this.ticksInPhase >= this.effectiveHookWindowTicks()) {
           this.events.push('HOOK_MISSED')
           this.enterPhase('HOOK_MISSED')
         }
@@ -264,7 +278,36 @@ export class FishingEngine {
       ticksInPhase: this.ticksInPhase,
       totalTicks: this.totalTicks,
       lastEvents: [...this.events],
+      playerModifiers: this.playerModifiers,
+      effectiveHookWindowTicks: this.effectiveHookWindowTicks(),
+      biteForecastTicks: this.biteForecastTicks(),
     }
+  }
+
+  /** アワセ猶予の実効 tick 数（Hooking などで広がる）。 */
+  effectiveHookWindowTicks(): number {
+    return Math.max(
+      1,
+      Math.round(this.tuning.hookWindowTicks * this.playerModifiers.hookWindowMultiplier),
+    )
+  }
+
+  /**
+   * Detection が高いときだけ、アタリまでの残り tick を開示する。
+   * 見えるかどうかは技量で決まり、結果そのものは変わらない。
+   */
+  private biteForecastTicks(): number | null {
+    const plan = this.plan
+
+    if (this.phase !== 'WAITING' || plan === null || !plan.willBite) {
+      return null
+    }
+
+    if (this.playerModifiers.detectionClarityMultiplier < this.tuning.detectionForecastThreshold) {
+      return null
+    }
+
+    return Math.max(0, plan.biteTick - this.ticksInPhase)
   }
 
   private fishSnapshot(): FishingFishSnapshot | null {
@@ -463,14 +506,21 @@ export class FishingEngine {
     const tensionMultiplier = running ? this.tuning.runTensionGainMultiplier : 1
     const efficiencyMultiplier = running ? this.tuning.runReelEfficiencyMultiplier : 1
 
-    const efficiency = this.reelEfficiency(this.tension) * efficiencyMultiplier
+    const efficiency =
+      this.reelEfficiency(this.tension) *
+      efficiencyMultiplier *
+      this.playerModifiers.reelEfficiencyMultiplier
     this.drainStamina(this.tuning.reelStaminaDrain * efficiency)
 
     // 強い魚ほど糸を引く。
     const powerMultiplier = 0.75 + 0.5 * state.fish.power
     this.tension = Math.min(
       this.tuning.maxTension,
-      this.tension + this.tuning.reelTensionGain * tensionMultiplier * powerMultiplier,
+      this.tension +
+        this.tuning.reelTensionGain *
+          tensionMultiplier *
+          powerMultiplier *
+          this.playerModifiers.tensionGainMultiplier,
     )
 
     this.resolveFightOutcome({ advanceSlack: false })
@@ -480,7 +530,9 @@ export class FishingEngine {
     const state = this.fishState
     const running = state !== null && state.behavior === 'run'
     const relief =
-      this.tuning.giveTensionRelief * (running ? this.tuning.runGiveTensionReliefMultiplier : 1)
+      this.tuning.giveTensionRelief *
+      (running ? this.tuning.runGiveTensionReliefMultiplier : 1) *
+      this.playerModifiers.giveEfficiencyMultiplier
 
     this.tension = Math.max(0, this.tension - relief)
     this.restoreStamina(this.tuning.giveStaminaRecovery)

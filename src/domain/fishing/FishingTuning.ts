@@ -62,6 +62,12 @@ export type FishingTuning = {
 
   /** 個体差の振れ幅（±）。 */
   readonly individualVariance: number
+
+  /**
+   * Detection（アタリの見え方）がこの倍率以上なら、
+   * UI に「アタリまでの残り tick」を開示する。
+   */
+  readonly detectionForecastThreshold: number
 }
 
 export const DEFAULT_FISHING_TUNING: FishingTuning = {
@@ -102,4 +108,6 @@ export const DEFAULT_FISHING_TUNING: FishingTuning = {
   fishExertionStaminaDrain: 0.0016,
 
   individualVariance: 0.15,
+
+  detectionForecastThreshold: 1.2,
 }

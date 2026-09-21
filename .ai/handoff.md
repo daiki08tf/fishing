@@ -1,6 +1,6 @@
 # Handoff
 
-最終更新: Phase 2（Fish Individuals & Variety）完了時点
+最終更新: Phase 3（Angler Progression）完了時点
 
 ## このプロジェクトは何か
 
@@ -26,7 +26,10 @@ Product Decision の SSOT は `docs/DECISIONS.md`。
 - Phase 0A: `docs: establish product decisions and roadmap`
 - Phase 0B: `chore: establish technical foundation for phase 0B`
 - Phase 1: `feat: implement fishing vertical slice`
-- Phase 2: Fish Individuals & Variety（本変更。`git log --oneline` で確認する）
+- Phase 2: `feat: formalize fish individuals and variety`
+- Phase 3: Angler Progression + Codex 永続化の整合性修正
+  （本変更。`git log --oneline` で確認する）
+- Phase 3.1: Save / Load の配線（起動時 hydration と autosave）
 
 コミットの位置は `git log --oneline` で確認する。
 本文書にはマシン固有の絶対パスや作業ディレクトリの UUID を記録しない。
@@ -35,59 +38,106 @@ Product Decision の SSOT は `docs/DECISIONS.md`。
 
 | Phase | 内容 | ゲームプレイ |
 |---|---|---|
-| 0A | 設計文書を worktree へ統合、`docs/DECISIONS.md` 追加 | なし |
-| 0B | 技術基盤（ビルド・テスト・層の強制・RNG・Content 検証・Save・PWA・CI） | なし |
+| 0A | 設計文書の統合、`docs/DECISIONS.md` | なし |
+| 0B | 技術基盤（ビルド・層の強制・RNG・Content 検証・Save・PWA・CI） | なし |
 | 1 | Fishing Vertical Slice（状態機械・ファイト・魚の行動・釣り画面） | 釣り 1 種 |
-| 2 | 個体生成（サイズ分布・体重・コンディション・Trait・百分位）と Codex / Record | 釣り 10 種 + 個体差 |
+| 2 | 個体生成（サイズ・体重・コンディション・Trait・百分位）と Codex | 釣り 10 種 + 個体差 |
+| 3 | Angler Progression（XP・Lv1〜100・7 Skill・Perk・Save v2） | 成長ループ |
+| 3.1 | Save / Load の配線（起動時 hydration・autosave・壊れた Save の扱い） | 再起動で成長と記録が残る |
 
-## Phase 2 で実装したもの
+## Phase 3.1 で実装したもの
 
 | 領域 | 内容 |
 |---|---|
-| 体長分布 | `src/domain/fish/lengthModel.ts`。`normal` / `lognormal` の判別 union。対数正規が「通常サイズが多く大型ほど急減する」形を作る |
-| 百分位 | `lengthPercentile`。分布の累積確率から 0〜100 を算出。Trophy 判定と記録の基礎 |
-| 体重 | `src/domain/fish/weightModel.ts`。W = a·L^b（a は g/cm^b）。独立した乱数では決めない |
-| コンディション | `src/domain/fish/fishCondition.ts`。0〜1 の内部値 + 表示区分（thin/standard/good/excellent）。体重に ±15% だけ効く |
-| Trait | `src/domain/fish/fishTraits.ts`。抽選と効果表（TraitModifiers）。Trophy / Heavy は乱数ではなくサイズ・体重から決まる |
-| 個体生成 | `src/domain/fish/generateFishIndividual.ts`。Species → Length → Condition → Weight → Percentile → Trait |
-| ファイト特性 | `src/domain/fishing/createFightingFish.ts`。個体と Trait 倍率から power / speed / stamina を導出 |
-| Codex | `src/domain/codex/`。捕獲数・最大・最重・最高百分位・Trait 種類・自己記録を純粋関数で更新 |
-| 魚種 | 検証用サンプル 10 種（`src/content/data/fish-species/`）。Engine は無改造 |
-| 検証ツール | `npm run sample:individuals`（統計 sanity check）/ `npm run simulate:fishing`（釣行シミュレーション） |
+| 配線 | `src/app/persistence/persistenceCoordinator.ts`。`SaveRepository → Coordinator → Store` の依存方向 |
+| 起動時 | `main.tsx` が `loadRaw → migrateSave → hydrateFromSave` を実行（Save 無しは初期状態で ready） |
+| Store | `hydrationStatus`（idle / hydrating / ready / error）と `hydrationFailure`、明示的な hydrate 経路 |
+| Autosave | 保存対象 slice（progression / codex）の変化だけを購読して保存。既定は debounce 0（取りこぼしを避ける） |
+| Guard | hydration が ready になるまで保存しない。Store の操作も ready 前は無効 |
+| 壊れた Save | 読み込まずに error 状態へ。**上書きしない**。UI から「新規で始める」で復帰できる |
+| UI | 起動直後の loading 表示と、読み込み失敗時の最小のエラー表示 |
 
-## 主要な設計判断（Phase 2）
+## Phase 3 で実装したもの
 
-1. **体長分布は判別 union にした** — Phase 0B の `{mean, sd, min, max}` は
-   「正規分布」1 種だけの最小表現だった。Phase 2 で `kind` を持つ union にし、
-   `lognormal` を追加した。将来 `empirical`（実測データ）を足すときも、
-   メンバーを 1 つ追加するだけで済む。
-2. **体重の単位を明示した** — `lengthWeightA` は **g/cm^b**（文献値をそのまま貼れる単位）、
-   戻り値は kg。実装中に単位を取り違えて「20cm の魚が 89kg」になるバグを作り、
-   統計チェック（体重 / 体長^3 が現実的な範囲か）で検出して修正した。
-   この検査はテストとスクリプトの両方に残してある。
-3. **Trophy は乱数にしない** — size percentile が閾値（既定は上位 1%）以上で付与する。
-   Heavy も標準体重比から決まる。「レア度は乱数ではなく、サイズ分布上の位置で決まる」
-   という設計（GAME_DESIGN.md §5.1 / §6）に対応する。
-4. **Trait の効果は表で持つ** — `TRAIT_MODIFIERS` に倍率を書き、
-   `combineTraitModifiers` で乗算合成する。FishingEngine は Trait 名を一切知らず、
-   合成済みの 2 つの倍率（run の起こりやすさ・持続時間）だけを受け取る。
-   **Trait を追加しても Engine は変わらない**。
-5. **乱数の消費順を固定** — Encounter（1〜2）→ 個体（体長 2 → コンディション 2 →
-   Trait 4）→ ファイト特性（3）→ 待ち tick（1）。Trait は成立しなくても必ず 4 回引く
-   （結果に依存して消費数が変わらないようにするため）。
-6. **Codex は純粋関数** — `recordCatch(state, entry)` が新しい state と
-   「初記録か」「自己記録か」「新 Trait か」を返す。UI はルールを持たない。
-   自己記録は**百分位が最も高い個体**とする。
-7. **魚種追加は Content 追加だけで完結する** — ブラウザは `import.meta.glob`、
-   Node は fs で同じディレクトリを読み、共通の `assembleBuiltInContent` で検証・組み立てる。
-   JSON を 1 つ足せば Encounter に登場する。カタログのコード変更も Engine の変更も要らない。
-8. **`weightModel` を必須にした** — 体重を体長から導出する以上、
-   係数が無い魚種は扱えない。Schema と Domain 型の両方で必須にした
-   （Phase 0B の「省略可」から変更）。
-9. **Codex はまだ Save に入れていない** — Save schema v2 と migration は
-   永続化を扱う Phase で行う。現状はアプリ実行中のみ保持する。
-10. **percentile はまだ XP に接続していない** — Phase 3 で接続する
-    （設計上も「Phase 2 では XP 等へまだ接続しない」と決められている）。
+| 領域 | 内容 |
+|---|---|
+| レベル | `src/domain/progression/AnglerLevel.ts`。Lv1〜100、複数レベル同時上昇、上限で XP を溜めない |
+| XP | `xpCalculation.ts`。`Base × Size × Challenge + Discovery Bonuses`（減衰は倍率部分のみ） |
+| サイズ倍率 | 上位 10% で ×1.5、上位 1% で ×3、上位 0.1% で ×8（Phase 2 の percentile を接続） |
+| 反復減衰 | `repetitionDecay.ts`。species / spot / method を別々に数え、初捕獲・自己記録・Trophy・高百分位・新 Spot・新釣法では減衰しない |
+| Skill | `AnglerSkill.ts`。7 Skill・0〜100・割り振りの検証・MVP の振り直し |
+| Skill Point | レベルごとに 1、10 の倍数レベルで +1。同時上昇でも取りこぼさない |
+| 修飾 | `playerFishingModifiers.ts`。Skill / Perk → `PlayerFishingModifiers`（9 種の倍率） |
+| Perk | `perks.ts`。6 種の定義（Level + Skill 条件）と解禁。効果は倍率表で解決 |
+| 捕獲解決 | `src/domain/catch/resolveCatch.ts`。記録 → 判定 → XP → 成長 を 1 箇所に固定 |
+| Save | schema v2 と v1→v2 migration（総 XP をカーブから復元、Perk / 反復は空から開始） |
+| Codex 永続化 | schema v2 に Codex（捕獲記録）を正式追加。v2 内で欠落を正規化し、破損は拒否する |
+| UI | 成長画面（Lv / XP / Skill Point / 7 Skill / Perk / 現在の効果）、釣り画面に XP 結果とレベルアップ表示 |
+| 検証 | `npm run simulate:progression`（反復・多様性・上限・決定論の 9 チェック） |
+
+## 主要な設計判断（Phase 3）
+
+1. **Engine は成長を知らない** — `FishingEngine` は `PlayerFishingModifiers` だけを受け取る。
+   Skill 名も Perk 名も Level も知らない。`tests/architecture/progression-boundaries.test.ts` が
+   Engine のソースに `anglerLevel|anglerXp|skillPoints|unlockedPerks|xpGained|codex` が
+   現れないことを検査している（検出できること自体も合成ソースで確認）。
+2. **レベルカーブは `80 + 12 × L^1.55`** — 序盤は数匹で上がり、後半は急に重くなる。
+   累計で Lv100 まで約 59.6 万 XP。シミュレーション上の目安は約 1.5 万匹
+   （PROVISIONAL。プレイテストで調整する）。
+3. **上限では XP を溜めない** — Lv100 に達したらレベル内 XP は 0 に固定し、
+   それ以上加算しない（`totalXp` は生涯累計として伸び続ける）。
+4. **減衰は「倍率のかかる部分」だけ** — Discovery Bonus（初捕獲・自己記録・Trophy 等）は
+   減衰させない。これにより「同じ魚を釣る楽しさ」と「新しい挑戦の価値」が両立する。
+5. **Skill は操作の成功を置き換えない**（DECISIONS.md §3）— 動かすのは
+   テンションの上がり方・REEL / GIVE の効率・アワセ猶予・アタリの見え方だけ。
+   自動捕獲やプレイヤー操作の排除はしていない。
+6. **Detection だけは UI 補助に接続した** — `detectionClarityMultiplier` が閾値
+   （既定 1.2）以上だと、WAITING 中に「アタリまでの残り tick」を開示する。
+   これは情報の補助であり、結果は変えない。
+7. **Casting / Landing / Rigging は将来用の interface** — 倍率として解決・保存されるが、
+   Phase 3 のファイトでは使っていない（Phase 6 以降のタックル・取り込み操作で使う）。
+8. **振り直しで Perk を取り直せない** — Skill をリセットすると、条件を満たさなくなった
+   Perk は未解禁に戻す。振り直しが無料の Perk 取得にならないようにするため。
+9. **捕獲処理は 1 箇所** — `resolveCatch` が記録・判定・XP・成長を順番に実行する。
+   UI もストアも First Catch や自己記録を判定しない。
+10. **プレイヤー状態はストア、釣行は画面ローカル** — Codex と Progression は
+    `src/state/playerStore.ts`（Zustand）が保持し、FishingEngine は釣り画面のフックが持つ。
+    Engine は「今の釣行」の状態であり、プレイヤー恒久の状態ではないため。
+11. **Save v2 と migration** — v1 は累計 XP を持っていなかったので、
+    カーブから「そのレベルに達する累計 + レベル内 XP」を復元する。Perk と反復状態は空から。
+12. **level-lock 検査の範囲を絞った** — `requiredLevel` は Perk の解禁条件として正当に使う。
+    検査対象を「アクセス条件に関わるファイル」に限定し、
+    「Level を場所の解禁キーにしない」という本来の意図を維持した。
+13. **Codex を Save v2 に追加した（schemaVersion は 2 のまま）** — Phase 3 の
+    First Catch / Personal Record 判定は Codex に依存するため、Codex を保存しないと
+    再起動のたびにボーナスを取り直せてしまう（XP の抜け道）。
+    版を上げるか v2 内で正規化するかを比較し、**v2 内の正規化**を選んだ:
+    - この Save は未リリースで、実際に書き出された v2 Save は存在しない
+      （アプリに保存/読み込みの配線がまだ無い）。v3 を切ると、
+      存在しない版のための migration を 1 段増やすことになる。
+    - 「キーが無い＝古い v2」は空の Codex へ正規化し、
+      「キーはあるが中身が不正」は拒否する。欠落と破損を区別するので、
+      壊れたデータを黙って捨てることはない。
+    将来 Codex 以外の破壊的変更（設計文書の player / inventory / world 追加など）を
+    入れるときに、まとめて v3 へ上げる。
+14. **永続化は Application 層の Coordinator が行う** — Store も Domain も
+    IndexedDB を知らない。Coordinator は `SaveRepository` と Store だけを受け取り、
+    migration は既存の `migrateSave` をそのまま使う。
+    これにより Domain に永続化処理を足さずに済んでいる。
+15. **hydration 前は絶対に書かない** — 購読は最初から張るが、書き込みの入口で
+    `hydrationStatus === 'ready'` を必ず確認する。初期状態で既存 Save を
+    上書きする事故（＝進行度の消失）を防ぐ。テストで再現して確認している。
+16. **hydration 直後に 1 回保存する** — 読み込んだ内容を書き戻すことで、
+    v1 から移行した Save や、欠落を正規化した Save が確定する。
+    書き込まれるのは必ず「読み込んだ状態」であり、初期状態ではない。
+17. **壊れた Save は error 状態で停止し、上書きしない** — 復旧は UI の
+    「新規で始める」から行う。このときも、プレイヤーが実際に釣るまで保存しない
+    （＝壊れた Save を勝手に消さない）。
+18. **Store の操作も ready 前は無効** — UI のガードだけに頼らず、
+    `recordCatch` / `spendSkillPoint` / `resetSkills` は hydration 前には何もしない。
+19. **新規プレイヤーの初期 Save は PROVISIONAL** — `createInitialSaveV2` が
+    career / finance を中立値で埋める（開始時の職種・資金は Phase 5 で決める）。
+    knowledge は空から始める。
 
 ## アーキテクチャ境界（Phase 0B から継続）
 
@@ -96,17 +146,21 @@ src/app   … 起動・配線（composition root）
 src/ui    … 表示と入力のみ
 src/state … Application / UI 状態（Zustand）
 src/domain… ゲームルールと契約（最内層）
+   ├ progression … XP / Level / Skill / Perk（Fishing の上位）
+   ├ catch        … 記録と成長をまとめる唯一の入口
+   ├ codex        … 捕獲記録
+   ├ fishing      … 状態機械とファイト（PlayerFishingModifiers のみ受け取る）
+   └ fish         … 魚種と個体生成
 src/content… データとその検証スキーマ
 src/infrastructure… 永続化などの実装
 ```
 
 - `src/domain` は **外部パッケージを一切 import しない**。
-  相対 import のみで `src/domain` 内に閉じる。
 - `src/domain` は React / DOM / Zustand / IndexedDB / ブラウザ API に依存しない。
   `tsconfig.domain.json`（`lib: ES2022`、`types: []`）で型レベルでも強制している。
+  Domain のテストも DOM / Node のグローバルを使わない（`structuredClone` は使えない）。
 - 乱数は `RandomSource` を注入して使う。`Math.random()` は Domain で禁止。
 - `src/ui` は infrastructure と `node:*` を import しない。
-- これらは `eslint.config.js` と `tests/architecture/` の両方で検査する。
 
 ### 意味論的なレビューについて
 
@@ -118,18 +172,15 @@ CI は「設計書に書かれていない機能を意味的に検出する」�
 ## 検証方法
 
 ```bash
-npm ci                      # 依存の再現
-npm run check               # typecheck → lint → format:check → validate:content → test → build
-npm run build               # 本番ビルド
-npm run dev                 # http://localhost:5173
-npm run dev:host            # 同一 LAN の実機（iPhone Safari など）から開く
-npm run validate:content    # Content の検証（不正なら非ゼロ終了）
-npm run sample:individuals  # 個体生成の統計 sanity check（既定 10,000 個体/魚種）
-npm run sample:individuals -- --species phase2-sample-fish-e --samples 50000
+npm ci                       # 依存の再現
+npm run check                # typecheck → lint → format:check → validate:content → test → build
+npm run build                # 本番ビルド
+npm run dev                  # http://localhost:5173
+npm run dev:host             # 同一 LAN の実機（iPhone Safari など）から開く
+npm run validate:content     # Content の検証（不正なら非ゼロ終了）
 npm run simulate:fishing -- --seed demo
-npm run simulate:fishing -- --seed demo --species phase2-sample-fish-e --verbose
-npm run simulate:fishing -- --seed demo --policy reel
-npm run simulate:fishing -- --seed demo --policy give
+npm run sample:individuals -- --samples 10000
+npm run simulate:progression -- --catches 2000
 ```
 
 ### モバイル実機での確認
@@ -138,51 +189,56 @@ npm run simulate:fishing -- --seed demo --policy give
 - PWA としてインストールするには secure context が必要である。
   `http://<IP>` は secure context ではないため、Service Worker は登録されない。
   実機で PWA を確認する場合は HTTPS で配信する（トンネル等）。
-  Service Worker が無くてもアプリは動作する設計にしてある。
-- Service Worker は本番ビルドでのみ登録する（開発中のキャッシュ事故を避けるため）。
+- Service Worker は本番ビルドでのみ登録する。
 
-### 直近の検証結果（Phase 2 完了時点）
+### 直近の検証結果（Phase 3 完了時点）
 
 - `npm run check`: PASS
 - `npm run build`: PASS
-- `npm run test:run`: 20 files / 150 tests PASS
-- `npm run validate:content`: PASS（11 件 = 魚種 10 + 釣り場 1）
-- `npm run sample:individuals`（10,000 個体 × 10 魚種）: すべて invalid=0。
-  例: サンプル魚A は length 16.3–38cm / weight 0.047–0.690kg / trophy 0.96%
-  （上位 1% 設定どおり）、buckets は common > p50-90 > p90-99 > p99+ と単調減少
-- `npm run simulate:fishing -- --species <id>`: 10 魚種すべて LANDED
-  （例: A 142 tick / E 207 tick / I 219 tick）
-- 連打の検証: REEL 連打 → LINE_BREAK（53 tick）、GIVE 連打 → HOOK_ESCAPE（66 tick）
-- 開発サーバー実測: root、釣り画面、カタログ、魚種 JSON がすべて 200。
-  `import.meta.glob` が魚種ファイルを解決していることも確認
-- バンドル: JS 345.96 kB（gzip 105.10 kB）、CSS 4.69 kB（gzip 1.45 kB）、167 modules
+- `npm run test:run`: 33 files / 279 tests PASS
+- `npm run validate:content`: PASS（11 件）
+- `npm run simulate:progression -- --catches 2000`:
+  反復（同一魚種）で Lv21 / 多様な釣りで Lv26、初捕獲 200 XP 対 反復 100 匹目 22 XP。
+  9 チェックすべて PASS（Lv100 到達・上限・溢れなし・決定論・複数レベル同時上昇・Perk 解禁）
+- `npm run sample:individuals`: 全魚種 invalid=0（Phase 2 から回帰なし）
+- `npm run simulate:fishing -- --seed demo`: LANDED（142 tick）。
+  **Phase 2 と完全に同じ結果**で、修飾が中立なら Engine の挙動が変わっていないことを確認
+- Codex 永続化の round trip: 保存 → JSON 経由で再読み込み → 実際に釣る、までを検証。
+  再読み込み後に同じ魚を釣っても First Catch / Personal Record ボーナスが再発生しない
+- Save / Load の配線: hydration 前の autosave 禁止、壊れた Save を上書きしないこと、
+  再読み込み後の減衰維持まで含めて確認
+- 開発サーバー実測: root / 成長画面 / playerStore / progression domain がすべて 200
+- バンドル: JS 363.47 kB（gzip 110.44 kB）、CSS 4.88 kB（gzip 1.48 kB）
 
 ## 未完了・既知のギャップ
 
-- 魚種は検証用サンプル 10 種。**現実の魚データではない**（名前も数値も暫定）。
-- Codex は Domain のみ。Save schema v2 と永続化は未実装（アプリ実行中だけ保持）。
-- `percentile` は XP / Reputation に未接続（Phase 3 以降）。
-- Trait の閾値・発生率・倍率はすべて `PROVISIONAL`。プレイテストで調整する。
-- 釣り場は 1 つ。地域・複数 Spot・時間帯・天候・潮は未実装（Phase 4）。
-- 装備・タックル・釣法は無い。REEL / GIVE の強さは常に同じ。
+- Reputation / Career / Money / Shop / 交通 / Calendar / Map / 装備は未実装（Phase 4 以降）。
+- Casting / Landing / Rigging の効果は「将来用の interface」。
+  数値は解決・保存されるが、Phase 3 のファイトでは使っていない。
+- Perk の効果は倍率表の範囲に留まる（本格的な Perk ツリーは未実装）。
+- 新規プレイヤーの career / finance は PROVISIONAL な中立値（Phase 5 で決める）。
+- IndexedDB adapter の自動テストは Fake による API 形状の確認に留まる
+  （実ブラウザでの永続化・バージョン管理・障害時の挙動は未検証）。
+- 複数タブの同時編集、Save の export / import、スロット選択、復旧 UI は未実装。
+- XP カーブ・減衰・Skill 効果はすべて `PROVISIONAL`。人間のプレイテストは未実施。
+- 魚種 10 種・釣り場 1 つはいずれも検証用サンプル（現実データではない）。
 - UI の自動テストは無い（意図的に Domain を優先）。
 - 実行時 Content 検証のため Zod をブラウザに含む（gzip +約 30 kB、Phase 1 からの継続課題）。
 - IndexedDB 実装は依然ブラウザでの自動テストが無い（Phase 0B からの持ち越し）。
-- 実データ由来の分布（`empirical`）は未実装。union に追加できる形にはなっている。
 
 ## 次の推奨タスク
 
-**Phase 3 — Angler Progression**（詳細は `.ai/current-task.md`）
+**Phase 4 — First Playable Tokyo-area Loop**（詳細は `.ai/current-task.md`）
 
-1. XP 計算と Lv1〜100 カーブを `src/domain/progression/` に実装する。
-2. Phase 2 の `percentile` をサイズ上位率ボーナスへ接続する。
-3. Skill（7 種）をファイトへ緩やかに効かせる（DECISIONS §3 の範囲内で）。
-4. XP 減衰と「新しい挑戦」ボーナスを入れ、反復が最適解にならないことをテストで示す。
-5. Level がアクセスキーになっていないことを機械的に検査し続ける。
+1. 東京近郊の Spot を 5〜10 件追加する（Content のみ。Engine は触らない）。
+2. `accessEngine` の最小実装（transport / knowledge 条件）と、行けない Spot の表現。
+3. カレンダー（平日 / 休日、時間帯）と移動時間の最小実装。
+4. Spot Knowledge（ボウズでも増える）と、情報の段階的開示。
+5. 「日を選ぶ → 釣り場へ → 釣る → 帰宅」の通しループを作る。
 
 ## ブロッカー
 
-- なし（Phase 2 の作業自体は完了）。
+- なし（Phase 3 の作業自体は完了）。
 - 補足: 実行環境によっては Git メタデータ（`.git`）への書き込みが制限され、
   `git add` / `git commit` が失敗することがある。
   その場合はユーザー側でコミットを実行し、本文書を更新する。

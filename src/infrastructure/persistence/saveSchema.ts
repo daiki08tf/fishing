@@ -1,6 +1,9 @@
 import { z } from 'zod'
-import { asJobId } from '../../domain/ids'
-import { CURRENT_SAVE_SCHEMA_VERSION } from '../../domain/save/SaveGame'
+import { FISH_TRAITS } from '../../domain/fish/FishTrait'
+import { asFishIndividualId, asFishSpeciesId, asJobId } from '../../domain/ids'
+import { PERK_IDS } from '../../domain/progression/perks'
+import { ANGLER_SKILL_MAX, ANGLER_SKILL_MIN } from '../../domain/progression/AnglerSkill'
+import { CURRENT_SAVE_SCHEMA_VERSION, SAVE_SCHEMA_VERSION_V1 } from '../../domain/save/SaveGame'
 
 /**
  * Save の実行時検証。ARCHITECTURE.md §9 に対応する。
@@ -65,7 +68,7 @@ const financeSchema = z.strictObject({
 })
 
 export const saveGameV1Schema = z.strictObject({
-  schemaVersion: z.literal(CURRENT_SAVE_SCHEMA_VERSION),
+  schemaVersion: z.literal(SAVE_SCHEMA_VERSION_V1),
   createdAt: isoDateTimeSchema,
   updatedAt: isoDateTimeSchema,
   progression: progressionSchema,
@@ -74,5 +77,86 @@ export const saveGameV1Schema = z.strictObject({
   finance: financeSchema,
 })
 
+const skillValueSchema = z.number().int().min(ANGLER_SKILL_MIN).max(ANGLER_SKILL_MAX)
+
+/** Phase 3 の成長状態。AnglerProgression と対応する。 */
+const anglerProgressionSchema = z.strictObject({
+  anglerLevel: z.number().int().min(1),
+  anglerXp: z.number().nonnegative(),
+  totalXp: z.number().nonnegative(),
+  skillPoints: z.number().int().nonnegative(),
+  skills: z.strictObject({
+    casting: skillValueSchema,
+    lineControl: skillValueSchema,
+    hooking: skillValueSchema,
+    fighting: skillValueSchema,
+    landing: skillValueSchema,
+    detection: skillValueSchema,
+    rigging: skillValueSchema,
+  }),
+  unlockedPerks: z.array(z.enum(PERK_IDS)),
+  repetition: z.strictObject({
+    species: z.record(z.string(), z.number().int().nonnegative()),
+    spots: z.record(z.string(), z.number().int().nonnegative()),
+    methods: z.record(z.string(), z.number().int().nonnegative()),
+  }),
+  reputation: z.number().nonnegative(),
+  methodProficiency: z.record(z.string(), z.number().nonnegative()),
+})
+
+/**
+ * Codex（捕獲記録）。Domain の CodexState / SpeciesRecord / FishRecordEntry と
+ * 同じ形を検証するだけで、記録のルール（何が自己記録か等）は持たない。
+ */
+const fishRecordEntrySchema = z.strictObject({
+  individualId: z.string().min(1).transform(asFishIndividualId),
+  speciesId: z.string().min(1).transform(asFishSpeciesId),
+  lengthCm: z.number().positive(),
+  weightKg: z.number().positive(),
+  condition: z.number().min(0).max(1),
+  percentile: z.number().min(0).max(100),
+  traits: z.array(z.enum(FISH_TRAITS)),
+  capturedAt: isoDateTimeSchema.optional(),
+})
+
+const speciesRecordSchema = z.strictObject({
+  speciesId: z.string().min(1).transform(asFishSpeciesId),
+  catchCount: z.number().int().nonnegative(),
+  largestLengthCm: z.number().positive(),
+  heaviestWeightKg: z.number().positive(),
+  bestPercentile: z.number().min(0).max(100),
+  caughtTraits: z.array(z.enum(FISH_TRAITS)),
+  personalBest: fishRecordEntrySchema,
+})
+
+const codexSchema = z.strictObject({
+  species: z.record(z.string(), speciesRecordSchema),
+})
+
+export const saveGameV2Schema = z.strictObject({
+  schemaVersion: z.literal(CURRENT_SAVE_SCHEMA_VERSION),
+  createdAt: isoDateTimeSchema,
+  updatedAt: isoDateTimeSchema,
+  progression: anglerProgressionSchema,
+  /*
+   * Codex は Phase 3 の途中で保存対象に加わった。
+   * そのため開発中の v2 Save（codex を持たない）も読み込めるよう、
+   * 省略時は空の Codex へ正規化する。
+   *
+   * 「欠落」と「破損」は区別する:
+   * - キーが無い（古い v2）→ 空の Codex で正規化して読み込む
+   * - キーはあるが中身が不正 → invalid_save として拒否する
+   */
+  /*
+   * 既定値は `emptyCodexState()` と同じ形。Domain の値は readonly 配列を持つため
+   * スキーマの出力型（mutable 配列）へは直接代入できないので、ここでは形を直接書く。
+   * 逆方向（スキーマ出力 → CodexState）は代入可能で、migration の戻り値はその経路で型が通る。
+   */
+  codex: codexSchema.default(() => ({ species: {} })),
+  knowledge: knowledgeSchema,
+  career: careerSchema,
+  finance: financeSchema,
+})
+
 /** 現行 version の Save スキーマ。Migration 後の検証に使う。 */
-export const currentSaveSchema = saveGameV1Schema
+export const currentSaveSchema = saveGameV2Schema
