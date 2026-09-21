@@ -129,7 +129,25 @@ export const biteChance = (
   // 仕掛け全体の相性（method × stealth × compatibility）。soft な範囲に収める。
   const affinity = profile === undefined ? 1 : clampAffinity(profile.biteAffinity)
 
-  return clamp01(maxEffectivePresence * tuning.biteChancePerPresence * affinity)
+  /*
+   * Phase 10.2 playtest tuning:
+   * 線形の確率だと、出現度や好条件が少し高いだけで Bite が 100% に張り付きやすく、
+   * 「投げればすぐ食う」感が強かった。
+   *
+   * effectivePresence をそのまま確率にせず「bite pressure」として扱い、
+   * 1 - exp(-pressure) の飽和カーブへ変換する。
+   * - 普通の魚はボウズ / 空振りが自然に混ざる
+   * - 良条件や高 presence は明確に有利
+   * - ただし有限の pressure では Bite が自動的に 100% にならない
+   *
+   * Catchability の soft/hard gate 原則は変えない。
+   */
+  const bitePressure = Math.max(
+    0,
+    maxEffectivePresence * tuning.biteChancePerPresence * affinity,
+  )
+
+  return clamp01(1 - Math.exp(-bitePressure))
 }
 
 /**
