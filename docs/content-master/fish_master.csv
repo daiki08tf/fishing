@@ -1,5 +1,4 @@
-TAB NAME: fish_master.csv>
-index,TargetID,和名,グループ,水域,主環境,候補釣法,ContentPriority,TypicalSize,TrophyThreshold,Season,TimeOfDay,Depth,DataStatus,SourceURL,Notes
+TargetID,和名,グループ,水域,主環境,候補釣法,ContentPriority,TypicalSize,TrophyThreshold,Season,TimeOfDay,Depth,DataStatus,SourceURL,Notes
 target-001,マアジ,沿岸小型魚,海水,港湾/沿岸/堤防,ライトルアー|サビキ|餌,Tokyo/Early,未設定,未設定,未設定,未設定,未設定,DRAFT_UNVERIFIED,,本番投入前にサイズ・季節・分布・規制・学名を個別確認
 target-002,マルアジ,沿岸小型魚,海水,港湾/沿岸/堤防,ライトルアー|サビキ|餌,Tokyo/Early,未設定,未設定,未設定,未設定,未設定,DRAFT_UNVERIFIED,,本番投入前にサイズ・季節・分布・規制・学名を個別確認
 target-003,ムロアジ,沿岸小型魚,海水,港湾/沿岸/堤防,ライトルアー|サビキ|餌,Tokyo/Early,未設定,未設定,未設定,未設定,未設定,DRAFT_UNVERIFIED,,本番投入前にサイズ・季節・分布・規制・学名を個別確認
