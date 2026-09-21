@@ -2,7 +2,13 @@ import { pathToFileURL } from 'node:url'
 import { loadContentFromDirectory } from '../src/content/load/nodeContent'
 import type { BuiltInContent } from '../src/content/catalog/assembleContent'
 import { DEFAULT_FISHING_TUNING } from '../src/domain/fishing/FishingTuning'
-import { FishingEngine, isTerminalPhase, type FishingSnapshot } from '../src/domain/fishing'
+import {
+  FishingEngine,
+  isTerminalPhase,
+  type FishingCommand,
+  type FishingSnapshot,
+} from '../src/domain/fishing'
+import { suggestBattleCommand } from '../src/domain/fishing/battle'
 import type { FishSpecies } from '../src/domain/fish/FishSpecies'
 import { asGearId } from '../src/domain/ids'
 import {
@@ -117,25 +123,46 @@ export type TacklePolicy = 'balanced' | 'aggressive'
 
 const AGGRESSIVE_TENSION_LIMIT = 0.93
 
-const chooseTackleCommand = (policy: TacklePolicy, snapshot: FishingSnapshot) => {
-  if (policy === 'balanced') {
-    return chooseCommand('balanced', snapshot)
-  }
-
+const chooseTackleCommand = (policy: TacklePolicy, snapshot: FishingSnapshot): FishingCommand => {
   if (snapshot.phase === 'IDLE') {
-    return 'cast' as const
+    return 'cast'
   }
 
   if (snapshot.phase === 'HOOK_WINDOW') {
-    return 'hook' as const
+    return 'hook'
   }
 
+  /*
+   * Phase 10: FIGHTING / LANDING はコマンド駆動。
+   * 状態に合わないコマンドを送ると拒否され、step が進まなくなる。
+   */
   if (snapshot.phase === 'FIGHTING') {
+    if (policy === 'balanced') {
+      return suggestBattleCommand({
+        phase: snapshot.phase,
+        tension: snapshot.tension,
+        maxTension: snapshot.maxTension,
+        behaviour: snapshot.battle?.behaviour ?? null,
+        hookHold: snapshot.battle?.hookHold ?? 0,
+      })
+    }
+
     const ratio = snapshot.tension / snapshot.maxTension
-    return ratio > AGGRESSIVE_TENSION_LIMIT ? ('give' as const) : ('reel' as const)
+    return ratio > AGGRESSIVE_TENSION_LIMIT ? 'give' : 'reel'
   }
 
-  return 'cast' as const
+  if (snapshot.phase === 'LANDING') {
+    // 取り込める体勢なら取り込む（aggressive でもここは無理をしない）。
+    return suggestBattleCommand({
+      phase: snapshot.phase,
+      tension: snapshot.tension,
+      maxTension: snapshot.maxTension,
+      behaviour: snapshot.battle?.behaviour ?? null,
+      hookHold: snapshot.battle?.hookHold ?? 0,
+    })
+  }
+
+  return chooseCommand('balanced', snapshot)
 }
 
 /** 1 回の釣りを最後まで進める。 */
@@ -148,12 +175,19 @@ const runFight = (
 
   while (!isTerminalPhase(engine.snapshot().phase) && steps < maxSteps) {
     const snapshot = engine.snapshot()
-    const outcome = engine.dispatch(chooseTackleCommand(policy, snapshot))
-    engine.tick()
+    const commandPhase =
+      snapshot.phase === 'FIGHTING' ||
+      snapshot.phase === 'LANDING' ||
+      snapshot.phase === 'IDLE' ||
+      snapshot.phase === 'HOOK_WINDOW'
 
-    if (outcome.accepted) {
-      steps += 1
+    if (commandPhase) {
+      engine.dispatch(chooseTackleCommand(policy, snapshot))
+    } else {
+      engine.tick()
     }
+
+    steps += 1
   }
 
   return engine.snapshot()

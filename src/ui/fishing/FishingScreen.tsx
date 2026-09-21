@@ -46,8 +46,8 @@ const PHASE_HINTS: Readonly<Record<FishingPhase, string>> = {
   BITE: 'アタリが出た',
   HOOK_WINDOW: '今アワセる（HOOK）',
   HOOKED: '乗った。ファイトに入る',
-  FIGHTING: 'テンションを見ながら REEL と GIVE を切り替える',
-  LANDING: '取り込み中',
+  FIGHTING: '魚の動き（走り / 突進 / 休み）を読み、コマンドを選ぶ',
+  LANDING: '暴れているなら待つ。落ち着いたら取り込む',
   LANDED: '釣り上げた',
   HOOK_MISSED: 'アワセが遅れた。もう一度キャストする',
   HOOK_ESCAPE: '糸を緩めすぎた。もう一度キャストする',
@@ -123,7 +123,7 @@ const FIGHT_COMMANDS: readonly FishingCommand[] = [
   'loosen_drag',
   'tighten_drag',
 ]
-const LANDING_COMMANDS: readonly FishingCommand[] = ['land', 'wait', 'hold', 'give']
+const LANDING_COMMANDS: readonly FishingCommand[] = ['land', 'wait']
 const PRE_FIGHT_COMMANDS: readonly FishingCommand[] = ['cast', 'hook']
 
 /** 百分位を釣り人の言葉にする。 */
@@ -260,9 +260,27 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
           <>
             <div className="fish__head">
               <h3 className="panel__subheading">{fish.speciesName}</h3>
-              <span className={`badge${fish.behavior === 'run' ? ' badge--alert' : ''}`}>
-                {BEHAVIOR_LABELS[fish.behavior]}
-              </span>
+              {/*
+                Phase 10: ファイト中は Battle 側の行動（走り / 突進 / 休み …）が
+                今の魚の状態である。battle が無いときは従来の表示。
+              */}
+              {snapshot.battle === null ? (
+                <span className={`badge${fish.behavior === 'run' ? ' badge--alert' : ''}`}>
+                  {BEHAVIOR_LABELS[fish.behavior]}
+                </span>
+              ) : (
+                <span
+                  className={`badge${
+                    snapshot.battle.behaviour === 'run' ||
+                    snapshot.battle.behaviour === 'surge' ||
+                    snapshot.battle.behaviour === 'second_run'
+                      ? ' badge--alert'
+                      : ''
+                  }`}
+                >
+                  {snapshot.battle.behaviourLabel}
+                </span>
+              )}
             </div>
 
             <dl className="fish__facts">

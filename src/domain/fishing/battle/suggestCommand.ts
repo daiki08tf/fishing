@@ -17,7 +17,21 @@ export const suggestBattleCommand = (input: {
   const tensionRatio = input.maxTension <= 0 ? 0 : input.tension / input.maxTension
 
   if (input.phase === 'LANDING') {
-    return input.hookHold > 0.5 && tensionRatio < 0.75 ? 'land' : 'wait'
+    /*
+     * まだ暴れている（走り / 突進 / 再加速 / 首振り）なら待つ。
+     * 落ち着いていて、保持とテンションに余裕があれば取り込む。
+     */
+    const struggling =
+      input.behaviour === 'run' ||
+      input.behaviour === 'surge' ||
+      input.behaviour === 'second_run' ||
+      input.behaviour === 'head_shake'
+
+    if (struggling) {
+      return 'wait'
+    }
+
+    return input.hookHold > 0.35 && tensionRatio < 0.85 ? 'land' : 'wait'
   }
 
   if (input.phase !== 'FIGHTING') {

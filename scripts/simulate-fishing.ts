@@ -154,7 +154,9 @@ export const simulateFishing = (options: SimulationOptions): SimulationResult =>
     encounters,
     seed: options.seed,
     spotId: spot.id,
-    ...(tackle === null ? {} : { playerModifiers: tackle.playerModifiers, encounterProfile: tackle.encounterProfile }),
+    ...(tackle === null
+      ? {}
+      : { playerModifiers: tackle.playerModifiers, encounterProfile: tackle.encounterProfile }),
   })
 
   const lines: string[] = [
@@ -177,9 +179,7 @@ export const simulateFishing = (options: SimulationOptions): SimulationResult =>
       const outcome = engine.dispatch(command)
 
       for (const event of outcome.events) {
-        lines.push(
-          `step ${String(steps).padStart(4)} | ${snapshot.phase} | ${command} | ${event}`,
-        )
+        lines.push(`step ${String(steps).padStart(4)} | ${snapshot.phase} | ${command} | ${event}`)
       }
 
       if (options.verbose) {

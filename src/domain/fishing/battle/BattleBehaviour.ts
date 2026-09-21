@@ -67,16 +67,21 @@ export const behaviourWeights = (input: {
   const tired = 1 - clamp(input.context.staminaRatio, 0, 1)
   const runScale = 0.35 + 0.65 * clamp(input.context.staminaRatio, 0, 1)
   const near = 1 - clamp(input.context.distanceM / 45, 0, 1)
+  /*
+   * 近くまで寄せた魚は長く走れない（走り / 突進 / 潜行は出にくい）。
+   * これが無いと「寄せては走られて」を延々と繰り返す膠着が起きる。
+   */
+  const roomToRun = 0.45 + 0.55 * (1 - near)
 
   return {
     normal: 0.5,
-    run: 0.26 * input.profile.runTendency * runScale,
-    surge: 0.16 * input.profile.aggression * runScale,
+    run: 0.26 * input.profile.runTendency * runScale * roomToRun,
+    surge: 0.16 * input.profile.aggression * runScale * roomToRun,
     head_shake: 0.22 * input.profile.headShakeTendency * (0.5 + 0.5 * near),
-    dive: 0.2 * input.profile.diveTendency * runScale,
+    dive: 0.2 * input.profile.diveTendency * runScale * roomToRun,
     come_toward: 0.12 * (0.4 + 0.6 * near),
     rest: 0.06 + 0.7 * tired,
-    second_run: tired > 0.6 ? 0.22 * input.profile.aggression : 0,
+    second_run: tired > 0.6 ? 0.22 * input.profile.aggression * roomToRun : 0,
   }
 }
 

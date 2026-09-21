@@ -486,6 +486,7 @@ export class FishingEngine {
       traitModifiers: generated.traitModifiers,
       random: this.random,
       tuning: this.tuning,
+      battleTuning: this.battleTuning,
     })
 
     this.fishState = {
@@ -565,7 +566,10 @@ export class FishingEngine {
     const distanceM =
       this.battleTuning.initialDistanceBaseM +
       this.battleTuning.initialDistancePerSizeM * profile.sizeFactor
-    const hookHoldCapacity = Math.max(0.01, this.hitHookRetentionMultiplier * profile.hookHoldCapacity)
+    const hookHoldCapacity = Math.max(
+      0.01,
+      this.hitHookRetentionMultiplier * profile.hookHoldCapacity,
+    )
 
     // フッキング直後は魚が引いてラインが張っている状態から始める。
     this.tension = maxTension * this.battleTuning.initialTensionRatio

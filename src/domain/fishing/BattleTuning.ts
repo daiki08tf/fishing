@@ -26,10 +26,24 @@ export type BattleTuning = {
   readonly powerReelDistanceMultiplier: number
   readonly powerReelStaminaMultiplier: number
   readonly powerReelTensionMultiplier: number
+  /**
+   * 「魚の重さで巻き取れなさ」の幅。
+   * 小さいほど大型魚でも素直に寄り、大きいほど大型魚が寄らない（ファイトが長い）。
+   */
+  readonly reelPullMin: number
+  readonly reelPullMax: number
   readonly holdDistanceMultiplier: number
   readonly holdStaminaMultiplier: number
   readonly holdTensionGain: number
   readonly giveTensionRelief: number
+  /**
+   * 走っている魚がラインを引く分（1 step あたり）。
+   * 同じ引きでも、耐えられるテンション（maxTension）が低いタックルほど
+   * 「上限に対する割合」が大きく上がる。これが Light の break リスクになる。
+   */
+  readonly fishPullTensionGain: number
+  /** 走り中は送っても負荷が抜けきらない（GIVE の効き）。 */
+  readonly runGiveReliefMultiplier: number
   readonly giveDistanceM: number
   readonly giveStaminaRecovery: number
 
@@ -72,16 +86,20 @@ export const DEFAULT_BATTLE_TUNING: BattleTuning = {
 
   landingDistanceM: 6,
 
-  reelDistanceM: 4.2,
+  reelDistanceM: 5.5,
   reelStaminaDrain: 0.018,
   reelTensionGain: 0.06,
   powerReelDistanceMultiplier: 1.8,
   powerReelStaminaMultiplier: 2.3,
-  powerReelTensionMultiplier: 2.5,
+  powerReelTensionMultiplier: 4.2,
+  reelPullMin: 0.55,
+  reelPullMax: 2.6,
   holdDistanceMultiplier: 0.25,
   holdStaminaMultiplier: 0.35,
   holdTensionGain: 0.012,
   giveTensionRelief: 0.13,
+  fishPullTensionGain: 0.12,
+  runGiveReliefMultiplier: 0.75,
   giveDistanceM: 1,
   giveStaminaRecovery: 0.003,
 

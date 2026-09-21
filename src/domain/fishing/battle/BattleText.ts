@@ -31,7 +31,10 @@ const TEMPLATES: Readonly<Record<BattleTextKey, readonly string[]>> = {
   normal_hold: ['魚は一定の抵抗を続けている。', '手応えは変わらない。'],
   reel_effective: ['巻き取れて、魚が近づいた。', 'ラインが素直に入っていく。'],
   reel_heavy: ['巻いたが、重くてあまり寄らない。', 'ロッドが深く曲がり、距離が詰まらない。'],
-  power_reel_danger: ['強く巻いた。ラインが鋭く張り詰める。', '強引に寄せた。テンションが跳ね上がった。'],
+  power_reel_danger: [
+    '強く巻いた。ラインが鋭く張り詰める。',
+    '強引に寄せた。テンションが跳ね上がった。',
+  ],
   give_relief: ['ラインを送ると、負荷が抜けた。', '糸を送って、テンションが落ち着いた。'],
   give_slack_risk: ['送りすぎた。ラインが緩む。', '糸がたるみ、手応えが薄くなった。'],
   drag_loosened: ['ドラグを緩めた。', 'ドラグを少し戻した。'],
@@ -64,49 +67,50 @@ export const behaviourHint = (
   variant: number,
 ): string => {
   const tier = knowledgeScore >= 60 ? 'high' : knowledgeScore >= 25 ? 'mid' : 'low'
-  const tables: Readonly<Record<BattleBehaviour, Readonly<Record<'low' | 'mid' | 'high', string>>>>
-    = {
-      run: {
-        low: '魚が向きを変えた。',
-        mid: '魚が沖へ向きを変えた。走り出しそうだ。',
-        high: '魚が沖へ向いた。次は強い走りになる。',
-      },
-      surge: {
-        low: '魚が力を込めた。',
-        mid: '魚が体を固めた。突進の予兆がある。',
-        high: '次の瞬間に強い突進が来る。',
-      },
-      head_shake: {
-        low: '魚が体勢を変えた。',
-        mid: '魚が首を振る兆候がある。',
-        high: '次の瞬間に強く首を振りそうだ。',
-      },
-      dive: {
-        low: '魚の角度が変わった。',
-        mid: '魚が下へ向き始めた。',
-        high: '深く潜る。ロッドを下げて受けよう。',
-      },
-      come_toward: {
-        low: 'ラインの角度が変わった。',
-        mid: '魚がこちらへ向かっている。',
-        high: '魚が急接近する。糸が緩みやすい。',
-      },
-      second_run: {
-        low: '魚が息を吹き返した。',
-        mid: '魚が再加速しそうだ。',
-        high: '疲れたと思ったが、もう一度走る。',
-      },
-      rest: {
-        low: '抵抗が弱まった。',
-        mid: '抵抗が弱まり、ラインの動きが落ち着いた。',
-        high: '魚が休んでいる。ここが寄せる好機だ。',
-      },
-      normal: {
-        low: '魚は動き続けている。',
-        mid: '魚は一定のペースで抵抗している。',
-        high: '魚はまだ余力を残して抵抗している。',
-      },
-    }
+  const tables: Readonly<
+    Record<BattleBehaviour, Readonly<Record<'low' | 'mid' | 'high', string>>>
+  > = {
+    run: {
+      low: '魚が向きを変えた。',
+      mid: '魚が沖へ向きを変えた。走り出しそうだ。',
+      high: '魚が沖へ向いた。次は強い走りになる。',
+    },
+    surge: {
+      low: '魚が力を込めた。',
+      mid: '魚が体を固めた。突進の予兆がある。',
+      high: '次の瞬間に強い突進が来る。',
+    },
+    head_shake: {
+      low: '魚が体勢を変えた。',
+      mid: '魚が首を振る兆候がある。',
+      high: '次の瞬間に強く首を振りそうだ。',
+    },
+    dive: {
+      low: '魚の角度が変わった。',
+      mid: '魚が下へ向き始めた。',
+      high: '深く潜る。ロッドを下げて受けよう。',
+    },
+    come_toward: {
+      low: 'ラインの角度が変わった。',
+      mid: '魚がこちらへ向かっている。',
+      high: '魚が急接近する。糸が緩みやすい。',
+    },
+    second_run: {
+      low: '魚が息を吹き返した。',
+      mid: '魚が再加速しそうだ。',
+      high: '疲れたと思ったが、もう一度走る。',
+    },
+    rest: {
+      low: '抵抗が弱まった。',
+      mid: '抵抗が弱まり、ラインの動きが落ち着いた。',
+      high: '魚が休んでいる。ここが寄せる好機だ。',
+    },
+    normal: {
+      low: '魚は動き続けている。',
+      mid: '魚は一定のペースで抵抗している。',
+      high: '魚はまだ余力を残して抵抗している。',
+    },
+  }
   void variant
 
   return tables[behaviour][tier]

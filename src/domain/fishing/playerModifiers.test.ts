@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { advanceUntil } from '../../../tests/fixtures/fishingPolicies'
-import { createTestSpecies } from '../../../tests/fixtures/species'
+import { createBigTestSpecies } from '../../../tests/fixtures/species'
 import { FishingEngine } from './FishingEngine'
 import { DEFAULT_FISHING_TUNING } from './FishingTuning'
 import { NEUTRAL_FISHING_MODIFIERS, type PlayerFishingModifiers } from './PlayerFishingModifiers'
@@ -10,9 +10,13 @@ import { NEUTRAL_FISHING_MODIFIERS, type PlayerFishingModifiers } from './Player
  * Engine は Skill 名も Level も知らない。
  */
 
+/*
+ * ファイトの差（テンション・スタミナ）を見るため、大きめの魚を使う。
+ * 小型魚は Phase 10 の Text Battle では 1〜3 コマンドで終わってしまう。
+ */
 const createEngine = (playerModifiers?: Partial<PlayerFishingModifiers>): FishingEngine =>
   new FishingEngine({
-    encounters: [{ species: createTestSpecies(), presence: 2 }],
+    encounters: [{ species: createBigTestSpecies(), presence: 2 }],
     seed: 'modifiers',
     playerModifiers: { ...NEUTRAL_FISHING_MODIFIERS, ...playerModifiers },
   })
@@ -78,19 +82,47 @@ describe('player fishing modifiers', () => {
   })
 
   it('drops the tension faster with a give efficiency multiplier', () => {
-    const neutral = createEngine()
-    const skilled = createEngine({ giveEfficiencyMultiplier: 2 })
+    // 強いライン（maxTension）で組む。ここで見たいのは GIVE の効きだけである。
+    const neutral = createEngine({ maxTensionMultiplier: 2.5 })
+    const skilled = createEngine({ maxTensionMultiplier: 2.5, giveEfficiencyMultiplier: 2 })
 
     driveToFight(neutral)
     driveToFight(skilled)
-    for (let index = 0; index < 6; index += 1) {
+
+    /*
+     * テンションを上げてからラインを送る。
+     * Text Battle では 1 コマンド = 1 step なので、寄り切る / 切れる前に止める。
+     */
+    for (let index = 0; index < 8; index += 1) {
+      const neutralSnapshot = neutral.snapshot()
+      const skilledSnapshot = skilled.snapshot()
+      const ratio = Math.max(
+        neutralSnapshot.tension / neutralSnapshot.maxTension,
+        skilledSnapshot.tension / skilledSnapshot.maxTension,
+      )
+
+      if (
+        ratio > 0.7 ||
+        neutralSnapshot.phase !== 'FIGHTING' ||
+        skilledSnapshot.phase !== 'FIGHTING'
+      ) {
+        break
+      }
+
       neutral.reel()
       skilled.reel()
     }
 
+    const before = neutral.snapshot().tension
     neutral.give()
     skilled.give()
 
+    /*
+     * Phase 10: 走っている / 突進している魚は、送っても負荷が抜けきらない
+     * （テンションが下がらないことがある）。ここで見るのは
+     * 「GIVE の効きが良い方が必ず低い」ことである。
+     */
+    expect(skilled.snapshot().tension).toBeLessThan(before)
     expect(skilled.snapshot().tension).toBeLessThan(neutral.snapshot().tension)
   })
 

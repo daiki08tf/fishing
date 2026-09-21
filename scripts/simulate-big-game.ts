@@ -1,5 +1,6 @@
 import { pathToFileURL } from 'node:url'
 import { loadContentFromDirectory } from '../src/content/load/nodeContent'
+import type { BuiltInContent } from '../src/content/catalog/assembleContent'
 import type { GearItem, RodDefinition } from '../src/domain/gear/Gear'
 import { FishingEngine } from '../src/domain/fishing'
 import { createInitialProgression, resolveFishingModifiers } from '../src/domain/progression'
@@ -69,6 +70,67 @@ const percentile = <T>(items: readonly T[], ratio: number, value: (item: T) => n
   return sorted[index] as T
 }
 
+/**
+ * ロッドのパワー帯と「装備の価格帯（0〜1）」から Loadout を組む。
+ *
+ * 具体 ID を書かず、Content の実スペック（価格・maxDragKg・strengthKg・weightG）から選ぶ。
+ * simulate:big-game と simulate:text-battle が同じ物差しを使うために共有する。
+ */
+export const buildTackleLoadout = (input: {
+  readonly content: BuiltInContent
+  readonly rodPower: RodDefinition['power']
+  readonly gearRatio: number
+}): Loadout => {
+  const rods = input.content.gear.filter((item): item is RodDefinition => item.category === 'rod')
+  const reels = input.content.gear.filter((item) => item.category === 'reel')
+  const lineGear = input.content.gear.filter((item) => item.category === 'line')
+  const leaderGear = input.content.gear.filter((item) => item.category === 'leader')
+  const hooks = input.content.gear.filter((item) => item.category === 'hook')
+  const lures = input.content.gear.filter((item) => item.category === 'lure')
+  const pick = (
+    items: readonly GearItem[],
+    ratio: number,
+    value: (item: GearItem) => number,
+  ): GearItem => percentile(items, ratio, value)
+
+  const rodCandidates = rods.filter((rod) => rod.power === input.rodPower)
+  const rod = pick(
+    rodCandidates.length === 0 ? rods : rodCandidates,
+    0.5,
+    (item) => item.price,
+  ) as RodDefinition
+  const reel = pick(reels, input.gearRatio, (item) =>
+    item.category === 'reel' ? item.maxDragKg : 0,
+  )
+  const line = pick(lineGear, input.gearRatio, (item) =>
+    item.category === 'line' ? item.strengthKg : 0,
+  )
+  const leader = pick(leaderGear, input.gearRatio, (item) =>
+    item.category === 'leader' ? item.strengthKg : 0,
+  )
+  const hook = pick(hooks, input.gearRatio, (item) =>
+    item.category === 'hook' ? item.strengthKg : 0,
+  )
+  const offeringCandidates = lures.filter(
+    (lure) => lure.weightG >= rod.minLureWeightG && lure.weightG <= rod.maxLureWeightG,
+  )
+  const offering = pick(
+    offeringCandidates.length === 0 ? lures : offeringCandidates,
+    input.gearRatio,
+    (item) => (item.category === 'lure' ? item.weightG : 0),
+  )
+
+  return {
+    rodId: rod.id,
+    reelId: reel.id,
+    lineId: line.id,
+    leaderId: leader.id,
+    hookId: hook.id,
+    offeringId: offering.id,
+    methodId: 'lure',
+  }
+}
+
 export const simulateBigGame = (): BigGameResult => {
   const content = loadContentFromDirectory()
   const lines: string[] = []
@@ -77,61 +139,14 @@ export const simulateBigGame = (): BigGameResult => {
     perks: [],
   })
 
-  const rods = content.gear.filter((item): item is RodDefinition => item.category === 'rod')
-  const reels = content.gear.filter((item) => item.category === 'reel')
-  const lineGear = content.gear.filter((item) => item.category === 'line')
-  const leaderGear = content.gear.filter((item) => item.category === 'leader')
-  const hooks = content.gear.filter((item) => item.category === 'hook')
-  const lures = content.gear.filter((item) => item.category === 'lure')
-  const pick = (
-    items: readonly GearItem[],
-    ratio: number,
-    value: (item: GearItem) => number,
-  ): GearItem => percentile(items, ratio, value)
-
-  const rodFor = (power: RodDefinition['power']): RodDefinition => {
-    const candidates = rods.filter((rod) => rod.power === power)
-    return pick(
-      candidates.length === 0 ? rods : candidates,
-      0.5,
-      (item) => item.price,
-    ) as RodDefinition
-  }
-  const offeringFor = (rod: RodDefinition, ratio: number): GearItem => {
-    const candidates = lures.filter(
-      (lure) => lure.weightG >= rod.minLureWeightG && lure.weightG <= rod.maxLureWeightG,
-    )
-    const pool = candidates.length === 0 ? lures : candidates
-    return pick(pool, ratio, (item) => (item.category === 'lure' ? item.weightG : 0))
-  }
-
   const buildSetup = (
     label: string,
     rodPower: RodDefinition['power'],
     gearRatio: number,
   ): Setup => {
-    const rod = rodFor(rodPower)
-    const reel = pick(reels, gearRatio, (item) => (item.category === 'reel' ? item.maxDragKg : 0))
-    const line = pick(lineGear, gearRatio, (item) =>
-      item.category === 'line' ? item.strengthKg : 0,
-    )
-    const leader = pick(leaderGear, gearRatio, (item) =>
-      item.category === 'leader' ? item.strengthKg : 0,
-    )
-    const hook = pick(hooks, gearRatio, (item) => (item.category === 'hook' ? item.strengthKg : 0))
-    const offering = offeringFor(rod, gearRatio)
-
     return {
       label,
-      loadout: {
-        rodId: rod.id,
-        reelId: reel.id,
-        lineId: line.id,
-        leaderId: leader.id,
-        hookId: hook.id,
-        offeringId: offering.id,
-        methodId: 'lure',
-      },
+      loadout: buildTackleLoadout({ content, rodPower, gearRatio }),
     }
   }
 

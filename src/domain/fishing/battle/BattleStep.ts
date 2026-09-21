@@ -45,13 +45,7 @@ export type BattleNumbers = {
   readonly step: number
 }
 
-export type BattleCommand =
-  | 'reel'
-  | 'power_reel'
-  | 'hold'
-  | 'give'
-  | 'loosen_drag'
-  | 'tighten_drag'
+export type BattleCommand = 'reel' | 'power_reel' | 'hold' | 'give' | 'loosen_drag' | 'tighten_drag'
 
 export type BattleOutcome = 'continue' | 'landing' | 'line_break' | 'hook_escape'
 
@@ -73,17 +67,19 @@ type BehaviourModifiers = {
   readonly tension: number
   readonly hookLoss: number
   readonly stamina: number
+  /** その行動のときに魚がラインを引く強さ（テンションの押し上げ）。 */
+  readonly pull: number
 }
 
 const BEHAVIOUR_MODIFIERS: Readonly<Record<BattleBehaviour, BehaviourModifiers>> = {
-  normal: { distance: 1, tension: 1, hookLoss: 0, stamina: 1 },
-  run: { distance: 0.35, tension: 1.9, hookLoss: 0.012, stamina: 1.15 },
-  surge: { distance: 0.2, tension: 2.5, hookLoss: 0.03, stamina: 1.3 },
-  head_shake: { distance: 0.55, tension: 1.35, hookLoss: 0.05, stamina: 0.9 },
-  dive: { distance: 0.45, tension: 1.5, hookLoss: 0.02, stamina: 1.1 },
-  come_toward: { distance: 1.6, tension: 0.6, hookLoss: 0.01, stamina: 0.8 },
-  rest: { distance: 1.5, tension: 0.5, hookLoss: 0, stamina: 1.4 },
-  second_run: { distance: 0.25, tension: 2.2, hookLoss: 0.02, stamina: 1.25 },
+  normal: { distance: 1, tension: 1, hookLoss: 0, stamina: 1, pull: 0.15 },
+  run: { distance: 0.35, tension: 2.4, hookLoss: 0.012, stamina: 1.15, pull: 1 },
+  surge: { distance: 0.2, tension: 3.2, hookLoss: 0.03, stamina: 1.3, pull: 1.5 },
+  head_shake: { distance: 0.55, tension: 1.5, hookLoss: 0.05, stamina: 0.9, pull: 0.6 },
+  dive: { distance: 0.45, tension: 1.7, hookLoss: 0.02, stamina: 1.1, pull: 0.9 },
+  come_toward: { distance: 1.6, tension: 0.6, hookLoss: 0.01, stamina: 0.8, pull: 0.1 },
+  rest: { distance: 1.5, tension: 0.5, hookLoss: 0, stamina: 1.4, pull: 0 },
+  second_run: { distance: 0.25, tension: 2.8, hookLoss: 0.02, stamina: 1.25, pull: 1.1 },
 }
 
 /** ドラグの効き（硬いほど止まるがテンションが上がる）。 */
@@ -150,14 +146,17 @@ export const stepBattle = (input: {
   }
 
   const sizeGain = 1 + 0.55 * (profile.sizeFactor - 1)
-  const sizePull = clamp(1 / (0.55 + 0.35 * profile.sizeFactor), 0.8, 2.6)
+  const sizePull = clamp(
+    1 / (0.55 + 0.35 * profile.sizeFactor),
+    tuning.reelPullMin,
+    tuning.reelPullMax,
+  )
   const pullMultiplier = Math.max(0.5, profile.burstPower)
   const reelPower = sizePull * modifiers.reelEfficiencyMultiplier * behaviourModifiers.distance
   const tensionScale = behaviourModifiers.tension * dragTensionFactor(numbers.drag, tuning)
   const tensionGainBase = tuning.reelTensionGain * modifiers.tensionGainMultiplier
   const staminaDrainScale = behaviourModifiers.stamina / Math.max(0.4, profile.endurance)
-  const running =
-    behaviour === 'run' || behaviour === 'surge' || behaviour === 'second_run'
+  const running = behaviour === 'run' || behaviour === 'surge' || behaviour === 'second_run'
 
   let tension = numbers.tension
   let stamina = numbers.stamina
@@ -179,13 +178,20 @@ export const stepBattle = (input: {
       stamina = Math.max(
         0,
         stamina -
-          tuning.reelStaminaDrain * staminaMultiplier * reelPower * staminaDrainScale *
+          tuning.reelStaminaDrain *
+            staminaMultiplier *
+            reelPower *
+            staminaDrainScale *
             modifiers.reelEfficiencyMultiplier,
       )
       tension = Math.min(
         numbers.maxTension,
-        tension + tensionGainBase * tensionMultiplier * tensionScale *
-          (0.75 + 0.5 * pullMultiplier) * (behaviour === 'rest' ? 0.5 : 1),
+        tension +
+          tensionGainBase *
+            tensionMultiplier *
+            tensionScale *
+            (0.75 + 0.5 * pullMultiplier) *
+            (behaviour === 'rest' ? 0.5 : 1),
       )
       hookHold -= behaviourModifiers.hookLoss * (isPower ? 1.4 : 1)
       log.push(
@@ -225,7 +231,10 @@ export const stepBattle = (input: {
       nextDistance += tuning.giveDistanceM * sizeGain * dragDistanceFactor(numbers.drag, tuning)
       tension = Math.max(
         0,
-        tension - tuning.giveTensionRelief * modifiers.giveEfficiencyMultiplier,
+        tension -
+          tuning.giveTensionRelief *
+            modifiers.giveEfficiencyMultiplier *
+            (running ? tuning.runGiveReliefMultiplier : 1),
       )
       stamina = Math.min(
         numbers.staminaMax,
@@ -269,10 +278,31 @@ export const stepBattle = (input: {
             : 1
     const runGain =
       (behaviour === 'surge' ? 3 : behaviour === 'second_run' ? 3.2 : 1.8) *
-      sizeGain * dragDistanceFactor(drag, tuning) * (0.7 + 0.3 * profile.burstPower) *
+      sizeGain *
+      dragDistanceFactor(drag, tuning) *
+      (0.7 + 0.3 * profile.burstPower) *
       commandScale
 
     nextDistance += runGain
+  }
+
+  /*
+   * 魚がラインを引く分。
+   *
+   * 走っている / 突進している魚は、こちらが何をしていてもテンションを押し上げる。
+   * 同じ引きでも「耐えられるテンション（maxTension）」が低いタックルほど
+   * 上限に対する割合は大きく上がるので、軽いタックルは break しやすい。
+   * ここは数値だけを見る（魚種名も行動名の意味も知らない）。
+   */
+  const pullTension =
+    tuning.fishPullTensionGain *
+    behaviourModifiers.pull *
+    (0.6 + 0.4 * pullMultiplier) *
+    // 小さい魚はラインを引けない（小型魚のファイトを長くも危険にもしない）。
+    clamp(0.35 * profile.sizeFactor, 0.25, 1.0)
+
+  if (pullTension > 0) {
+    tension = Math.min(numbers.maxTension, tension + pullTension)
   }
 
   // スラック（緩みすぎ）はフックを痛める。
@@ -365,13 +395,22 @@ export const attemptLanding = (input: {
     numbers.behaviour === 'head_shake'
 
   if (input.command === 'wait') {
-    const distance = numbers.distanceM + (struggling ? 4 : 1.5)
-    const stamina = Math.min(numbers.staminaMax, numbers.stamina + 0.02)
-    const tension = Math.max(0, numbers.tension - 0.1 * modifiers.giveEfficiencyMultiplier)
+    /*
+     * 待つ = 魚が落ち着くのを待つ。無理に取り込まない代わりに距離は少し開くが、
+     * 様子（行動）は変わるので、いずれ落ち着いて取り込める。
+     * ここで大きく距離が開くと「待つ」が膠着の原因になるため、控えめにする。
+     */
+    const distance = numbers.distanceM + (struggling ? 1.5 : 0.5)
+    const stamina = Math.min(numbers.staminaMax, numbers.stamina + 0.01)
+    const tension = Math.max(0, numbers.tension - 0.06 * modifiers.giveEfficiencyMultiplier)
     // 待っている間も魚の様子は変わる（落ち着けば取り込める）。
     const rolled = rollBehaviour({
       profile: input.profile,
-      context: { staminaRatio, tensionRatio: ratio(numbers.tension, numbers.maxTension), distanceM: distance },
+      context: {
+        staminaRatio,
+        tensionRatio: ratio(numbers.tension, numbers.maxTension),
+        distanceM: distance,
+      },
       random,
     })
 
@@ -386,7 +425,9 @@ export const attemptLanding = (input: {
         pendingBehaviour: null,
         step: numbers.step + 1,
       },
-      log: [struggling ? battleText('landing_failed', variant) : battleText('normal_hold', variant)],
+      log: [
+        struggling ? battleText('landing_failed', variant) : battleText('normal_hold', variant),
+      ],
       events,
       outcome: 'continue',
     }
@@ -403,7 +444,12 @@ export const attemptLanding = (input: {
     0.05,
     0.9,
   )
-  const success = random.next() < chance * modifiers.landingStabilityMultiplier
+  /*
+   * Tackle（landing stability）は成功率に掛かるが、上限は 1.0 未満に抑える。
+   * ここが 1.0 を超えると「落ち着いていれば必ず取り込める」になり、
+   * 取り込みの駆け引きが死ぬ。
+   */
+  const success = random.next() < clamp(chance * modifiers.landingStabilityMultiplier, 0.05, 0.95)
 
   if (success) {
     log.push(battleText('landing_success', variant))
