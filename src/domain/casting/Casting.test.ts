@@ -1,10 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import type {
-  LineDefinition,
-  LureDefinition,
-  ReelDefinition,
-  RodDefinition,
-} from '../gear/Gear'
+import type { LineDefinition, LureDefinition, ReelDefinition, RodDefinition } from '../gear/Gear'
 import { SeededRandomSource } from '../rng/SeededRandomSource'
 import { asGearId } from '../ids'
 import type { FishingZone } from '../world/FishingSpot'
