@@ -50,6 +50,24 @@
 
 「あと1回」「あと1匹」「次の休日はあそこへ」という継続欲を中心に設計する。
 
+### 3.1 ヒット・ファイト（Phase 10）
+
+Fishing combat is decision-driven, not button-spam driven.
+
+ヒットしてからのファイトは、完全ターン制のテキストバトルにする。
+
+- one command = one meaningful battle step（1 コマンド = 1 step。連打では有利にならない）
+- fish behaviours are telegraphed（魚の行動は文章の予兆を挟んでから起きる）
+- commands are contextual（同じコマンドでも、魚の行動と状態で意味が変わる）
+- high tension and slack are both dangerous（張りすぎ = ラインブレイク / 緩みすぎ = フックアウト）
+- tackle changes the margin for error（装備は成功率ではなく「失敗の余地」を変える）
+- light tackle can still land big fish（Hard gate は作らない。判断が良ければ獲れる）
+- small fish fights stay short（小さい魚は 1〜3 コマンド。テンポを守る）
+- text is presentation; structured events are domain truth
+  （文章は UI の表現。判定は Domain の数値とイベントで行う）
+
+プレイヤーは反射神経ではなく、状況を読んで次の一手を選ぶ。
+
 ## 4. 世界設計
 
 ### 4.1 日本全体を巨大なゲームワールドとして扱う

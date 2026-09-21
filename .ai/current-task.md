@@ -2,15 +2,73 @@
 
 ## Phase
 
-**Phase 9 — Living Water & Big Game**
+**Phase 10 — Text Fishing Battle**
 
 状態: **完了**
+
+釣りのファイト（HOOKED 以降）を、REEL / GIVE 中心の操作から
+「魚の行動を文章で読み、コマンドを選ぶ」ターン制バトルへ進めた。
+Encounter → Bite → Hook（Phase 9 / 9.1）と、Phase 9 までの構造
+（World / Expedition / Access / Economy / Environment / FishingEngine）は作り直していない。
+
+## Phase 10 で実装したもの
+
+### Text Fishing Battle（`src/domain/fishing/battle`）
+
+- `BattleBehaviour` 8 種（normal / run / surge / head_shake / dive / come_toward / rest /
+  second_run）。魚種名・国では分岐せず、重みは fightProfile / Trait / 個体サイズから解決する
+- `FishBattleProfile`（sizeFactor / runTendency / aggression / diveTendency /
+  headShakeTendency / burstPower / endurance / hookHoldCapacity）
+- `stepBattle` = 1 コマンド 1 step。コマンドは reel / power_reel / hold / give /
+  loosen_drag / tighten_drag。同じコマンドでも魚の行動 × テンション × ドラッグで結果が変わる
+- 予兆（telegraph）を 1 step 前に文章で出してから行動が発動する。
+  `behaviourHint` は Knowledge 3 段階（低 = 曖昧 / 中 / 高 = 具体的）
+- 距離（m）/ ドラッグ / フック保持 / スラックを導入。
+  高テンション = LINE_BREAK、緩みすぎ = HOOK_ESCAPE の両方が危険
+- LANDING は `land` / `wait`。暴れているうちに取り込むと失敗し、保持が削れる
+- `simulate:text-battle` 用の Reactive 戦略（読んで選ぶ）も Domain の
+  `suggestBattleCommand` を土台にしている
+
+### FishingEngine（境界は維持）
+
+- FIGHTING / LANDING は tick では進まず、コマンドだけで進む
+  （WAITING / BITE / HOOK_WINDOW / HOOKED は従来どおり tick）
+- `battle` / `battleLog` を snapshot へ追加（UI 表示用。最新 12 行だけ保持）
+- `knowledgeScore` は予兆の文章にだけ効き、結果は変えない
+- 魚種 ID・国・装備 ID・行動名の意味を Engine に持ち込まない（resolved な数値だけ）
+
+### 大型魚のバランス（Phase 9 の思想を維持）
+
+- 走っている魚はラインを引く（`fishPullTensionGain`）。耐えられるテンションが低い
+  タックルほど上限に対する割合が大きく上がるため、Light は break しやすい
+- POWER_REEL は距離効率が高いがテンション上昇が大きい（連打 = 高リスク）
+- 結果（simulate:big-game）: Chinook は Light 68% → Balanced 78% → Heavy 85%、
+  Halibut は 57% → 84% → 87%（着地率）。0% / 100% に張り付かない
+- simulate:tackle: 大型では Power が最も取り込み、小型では Finesse が掛けやすい（維持）
+
+### UI
+
+- FISHING: text battle panel（行動ラベル / 距離 / ドラッグ Loose-Normal-Tight /
+  フック保持 / Step / ログ / コマンド / AUTO）
+- AUTO は safe heuristic（`suggestBattleCommand`）で 1 step ずつ進む。
+  大型魚では手動で読む方が有利（AUTO は最適解ではない）
+- 取り込み（LAND）もコマンドなので、釣果の記録を
+  tick / コマンド両方の経路で同じ処理（`resolveSessionEnd`）へ通す
+
+### 検証
+
+- `npm run simulate:text-battle`（新規）: 小型 / 中型 / Chinook / Halibut ×
+  Always Reel / Always Power / Always Give / Reactive を比較し、10 checks で PASS / FAIL。
+  「Reactive が単一コマンド連打より強い」「Always Give は slack で失敗する」を固定する
+- 専用テスト `src/domain/fishing/battle/battle.test.ts`（コマンド = 1 step、
+  tick では進まない、行動ごとの効き方、ドラッグ、取り込み、予兆 / Knowledge、決定論）
+- 旧テスト（FishingEngine / playerModifiers）は「command-step 前提」へ更新した
+
+## Phase 9 で実装したもの（履歴）
 
 「同じ釣り場でも季節・時間・天候・潮・水で釣れ方が変わる」と
 「Boat / Offshore / Heavy Tackle で大型魚を狙う」を実装した。Phase 8 までの構造
 （World / Expedition / Access / Economy / FishingEngine）は作り直していない。
-
-## Phase 9 で実装したもの
 
 ### Environment Domain（`src/domain/environment`）
 

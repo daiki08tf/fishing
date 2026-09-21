@@ -12,8 +12,18 @@ import type { Range } from '../primitives'
 import type { RandomSource } from '../rng/RandomSource'
 import { SeededRandomSource } from '../rng/SeededRandomSource'
 import { createFightingFish } from './createFightingFish'
-import { decideBehavior, type FishBehavior } from './FishBehavior'
+import type { FishBehavior } from './FishBehavior'
 import type { FightingFishState } from './FightingFish'
+import { DEFAULT_BATTLE_TUNING, type BattleTuning } from './BattleTuning'
+import {
+  attemptLanding,
+  BATTLE_BEHAVIOUR_LABELS,
+  stepBattle,
+  type BattleBehaviour,
+  type BattleCommand,
+  type BattleNumbers,
+} from './battle'
+import { battleText } from './battle/BattleText'
 import { NEUTRAL_FISHING_MODIFIERS, type PlayerFishingModifiers } from './PlayerFishingModifiers'
 import { DEFAULT_FISHING_TUNING, type FishingTuning } from './FishingTuning'
 import {
@@ -46,6 +56,23 @@ export type FishingFishSnapshot = {
   readonly modifiers: TraitModifiers
 }
 
+/**
+ * Phase 10: Text Fishing Battle の表示に必要な状態。
+ * Engine は文章の材料（行動・距離・保持・ドラグ・ログ）だけを返し、
+ * 見せ方は UI が決める。
+ */
+export type FishingBattleSnapshot = {
+  readonly behaviour: BattleBehaviour
+  readonly behaviourLabel: string
+  readonly distanceM: number
+  readonly hookHold: number
+  readonly drag: number
+  readonly step: number
+  readonly log: readonly string[]
+  /** 取り込み可能（LANDING 中は true）。 */
+  readonly landingReady: boolean
+}
+
 export type FishingSnapshot = {
   readonly phase: FishingPhase
   readonly tension: number
@@ -63,6 +90,8 @@ export type FishingSnapshot = {
   readonly effectiveHookWindowTicks: number
   /** Detection が高いときだけ見える、アタリまでの残り tick。 */
   readonly biteForecastTicks: number | null
+  /** Phase 10: Text Battle の状態（FIGHTING / LANDING のときだけ）。 */
+  readonly battle: FishingBattleSnapshot | null
 }
 
 export type FishingCommandOutcome =
@@ -101,6 +130,13 @@ export type FishingEngineOptions = {
    */
   readonly encounterProfile?: EncounterProfile
   readonly tuning?: FishingTuning
+  /** Phase 10: Text Battle の調整値。 */
+  readonly battleTuning?: BattleTuning
+  /**
+   * Phase 10: その Spot の Knowledge（0〜100）。
+   * 予兆（telegraph）の文章の精度にだけ使う（結果は変えない）。
+   */
+  readonly knowledgeScore?: number
   /** テストや特殊な用途向け。省略時は seed から決定論的な RandomSource を作る。 */
   readonly random?: RandomSource
 }
@@ -151,6 +187,11 @@ export class FishingEngine {
    */
   private hitHookSuccessModifier = 0
   private hitHookRetentionMultiplier = 1
+  /** Phase 10: Text Battle の状態。 */
+  private battle: BattleNumbers | null = null
+  private battleLog: string[] = []
+  private readonly battleTuning: BattleTuning
+  private readonly knowledgeScore: number
   private events: FishingEvent[] = []
 
   constructor(options: FishingEngineOptions) {
@@ -161,6 +202,8 @@ export class FishingEngine {
     this.random = options.random ?? new SeededRandomSource(options.seed)
     this.spotId = options.spotId
     this.encounterProfile = options.encounterProfile
+    this.battleTuning = options.battleTuning ?? DEFAULT_BATTLE_TUNING
+    this.knowledgeScore = options.knowledgeScore ?? 0
   }
 
   // ---------------------------------------------------------------- commands
@@ -211,10 +254,16 @@ export class FishingEngine {
         this.startFight()
         break
       case 'reel':
-        this.applyReel()
-        break
+      case 'power_reel':
+      case 'hold':
       case 'give':
-        this.applyGive()
+      case 'loosen_drag':
+      case 'tighten_drag':
+        this.stepTextBattle(command)
+        break
+      case 'land':
+      case 'wait':
+        this.stepLanding(command)
         break
       case 'reset':
         this.resetSession()
@@ -257,19 +306,16 @@ export class FishingEngine {
 
       case 'HOOKED':
         if (this.ticksInPhase >= this.tuning.hookedTicks) {
-          this.enterPhase('FIGHTING')
+          this.startTextBattle()
         }
         break
 
+      /*
+       * Phase 10: FIGHTING / LANDING はコマンド駆動（完全ターン制）。
+       * tick では何も起きない（連打しても有利にならない）。
+       */
       case 'FIGHTING':
-        this.advanceFight()
-        break
-
       case 'LANDING':
-        if (this.ticksInPhase >= this.tuning.landingTicks) {
-          this.events.push('LANDED')
-          this.enterPhase('LANDED')
-        }
         break
 
       default:
@@ -298,6 +344,7 @@ export class FishingEngine {
       playerModifiers: this.playerModifiers,
       effectiveHookWindowTicks: this.effectiveHookWindowTicks(),
       biteForecastTicks: this.biteForecastTicks(),
+      battle: this.battleSnapshot(),
     }
   }
 
@@ -385,6 +432,8 @@ export class FishingEngine {
     this.fishState = null
     this.plan = null
     this.tension = 0
+    this.battle = null
+    this.battleLog = []
     this.hitHookSuccessModifier = 0
     this.hitHookRetentionMultiplier = 1
     this.enterPhase('CASTING')
@@ -437,6 +486,7 @@ export class FishingEngine {
       traitModifiers: generated.traitModifiers,
       random: this.random,
       tuning: this.tuning,
+      battleTuning: this.battleTuning,
     })
 
     this.fishState = {
@@ -486,6 +536,8 @@ export class FishingEngine {
     this.fishState = null
     this.plan = null
     this.tension = 0
+    this.battle = null
+    this.battleLog = []
     this.totalTicks = 0
     // 同じ seed で最初からやり直せば、同じ個体が再び現れる。
     this.encounterCount = 0
@@ -493,13 +545,15 @@ export class FishingEngine {
     this.events.push('SESSION_RESET')
   }
 
-  // ------------------------------------------------------------------- fight
+  // ------------------------------------------------------- text battle (Phase 10)
 
   /**
-   * tick ごとのファイト進行。
-   * プレイヤーが何もしないと、テンションは自然に抜け、魚は自力で消耗する。
+   * ファイト開始（HOOKED 完了時）。
+   *
+   * 初期距離は魚の大きさ（個体の重さ）で決まる。小さい魚は近く、大型は遠い。
+   * フック保持は Phase 9.1 の保持能力（hookRetentionMultiplier）を上限にする。
    */
-  private advanceFight(): void {
+  private startTextBattle(): void {
     const state = this.fishState
 
     if (state === null) {
@@ -507,175 +561,151 @@ export class FishingEngine {
       return
     }
 
-    this.tension = Math.max(0, this.tension - this.tuning.passiveTensionDecay)
-
-    const decision = decideBehavior({
-      state: {
-        behavior: state.behavior,
-        runTicksRemaining: state.behaviorRunTicksRemaining,
-      },
-      context: {
-        speed: state.fish.speed,
-        staminaRatio: state.fish.staminaMax === 0 ? 0 : state.stamina / state.fish.staminaMax,
-        runChanceMultiplier: state.fish.modifiers.runChanceMultiplier,
-        runDurationMultiplier: state.fish.modifiers.runDurationMultiplier,
-      },
-      random: this.random,
-      tuning: this.tuning,
-    })
-
-    if (decision.changed) {
-      this.events.push(decision.behavior === 'run' ? 'RUN_STARTED' : 'RUN_ENDED')
-    }
-
-    this.fishState = {
-      ...state,
-      behavior: decision.behavior,
-      behaviorRunTicksRemaining: decision.runTicksRemaining,
-    }
-
-    const exertionMultiplier = decision.behavior === 'run' ? this.tuning.runExertionMultiplier : 1
-    this.drainStamina(this.tuning.fishExertionStaminaDrain * exertionMultiplier)
-
-    // 走っている魚は竿を引き込む。GIVE しても糸が緩みきらないのはこのため。
-    if (decision.behavior === 'run') {
-      this.tension = Math.min(
-        this.effectiveMaxTension(),
-        this.tension + this.tuning.runPullTensionGain * state.fish.pullMultiplier,
-      )
-    }
-
-    this.resolveFightOutcome({ advanceSlack: true })
-  }
-
-  private applyReel(): void {
-    const state = this.fishState
-
-    if (state === null) {
-      return
-    }
-
-    const running = state.behavior === 'run'
-    const tensionMultiplier = running ? this.tuning.runTensionGainMultiplier : 1
-    const efficiencyMultiplier = running ? this.tuning.runReelEfficiencyMultiplier : 1
-
-    const efficiency =
-      this.reelEfficiency(this.tension) *
-      efficiencyMultiplier *
-      this.playerModifiers.reelEfficiencyMultiplier
-    this.drainStamina(this.tuning.reelStaminaDrain * efficiency)
-
-    // 強い魚ほど糸を引く。
-    // Phase 9: 大型個体ほど同じ操作でもテンションが上がりやすい。
-    const powerMultiplier = (0.75 + 0.5 * state.fish.power) * state.fish.pullMultiplier
-    this.tension = Math.min(
-      this.effectiveMaxTension(),
-      this.tension +
-        this.tuning.reelTensionGain *
-          tensionMultiplier *
-          powerMultiplier *
-          this.playerModifiers.tensionGainMultiplier,
+    const profile = state.fish.battleProfile
+    const maxTension = this.effectiveMaxTension()
+    const distanceM =
+      this.battleTuning.initialDistanceBaseM +
+      this.battleTuning.initialDistancePerSizeM * profile.sizeFactor
+    const hookHoldCapacity = Math.max(
+      0.01,
+      this.hitHookRetentionMultiplier * profile.hookHoldCapacity,
     )
 
-    this.resolveFightOutcome({ advanceSlack: false })
-  }
-
-  private applyGive(): void {
-    const state = this.fishState
-    const running = state !== null && state.behavior === 'run'
-    const relief =
-      this.tuning.giveTensionRelief *
-      (running ? this.tuning.runGiveTensionReliefMultiplier : 1) *
-      this.playerModifiers.giveEfficiencyMultiplier
-
-    this.tension = Math.max(0, this.tension - relief)
-    this.restoreStamina(this.tuning.giveStaminaRecovery)
-    this.resolveFightOutcome({ advanceSlack: false })
-  }
-
-  /**
-   * テンション帯による REEL の効率。
-   * 緩みすぎていると糸が張っておらず、魚を寄せられない。
-   */
-  private reelEfficiency(tension: number): number {
-    if (tension >= this.tuning.optimalTensionMin) {
-      return 1
+    // フッキング直後は魚が引いてラインが張っている状態から始める。
+    this.tension = maxTension * this.battleTuning.initialTensionRatio
+    this.battle = {
+      tension: this.tension,
+      maxTension,
+      stamina: state.stamina,
+      staminaMax: state.fish.staminaMax,
+      distanceM: Math.round(distanceM * 10) / 10,
+      hookHold: Math.min(this.battleTuning.hookHoldInitial, hookHoldCapacity),
+      drag: this.battleTuning.dragDefault,
+      behaviour: 'normal',
+      behaviourStepsRemaining: 1,
+      pendingBehaviour: null,
+      slackSteps: 0,
+      step: 0,
     }
-
-    const ratio = tension / this.tuning.optimalTensionMin
-    return this.tuning.slackReelEfficiency + (1 - this.tuning.slackReelEfficiency) * ratio
+    this.battleLog = [
+      battleText('behaviour_start', 0),
+      `距離 ${String(Math.round(distanceM * 10) / 10)}m からファイト開始。`,
+    ]
+    this.enterPhase('FIGHTING')
   }
 
-  private drainStamina(amount: number): void {
+  /** 1 コマンド = 1 step。魚の行動 × コマンド × 状態で結果が変わる。 */
+  private stepTextBattle(command: BattleCommand): void {
     const state = this.fishState
+    const battle = this.battle
 
-    if (state === null) {
-      return
-    }
-
-    // Phase 9: 大型個体は粘る（同じ時間では疲れにくい）。
-    const drained = amount / state.fish.enduranceMultiplier
-
-    this.fishState = { ...state, stamina: Math.max(0, state.stamina - drained) }
-  }
-
-  private restoreStamina(amount: number): void {
-    const state = this.fishState
-
-    if (state === null) {
-      return
-    }
-
-    this.fishState = {
-      ...state,
-      stamina: Math.min(state.fish.staminaMax, state.stamina + amount),
-    }
-  }
-
-  /**
-   * ファイトの決着判定。優先順位は「ラインブレイク → フックが外れる → 取り込み」。
-   * 同じ瞬間に複数が成立する場合は、より重い失敗を優先する。
-   *
-   * 糸が緩んでいる時間（slack）は**時間の経過**で判定する。
-   * プレイヤーの操作回数で決めると、連打するほど不利になる
-   * （＝操作速度がゲーム性になってしまう）ため、tick のときだけ進める。
-   */
-  private resolveFightOutcome(options: { readonly advanceSlack: boolean }): void {
-    const state = this.fishState
-
-    if (state === null) {
+    if (state === null || battle === null) {
       this.enterPhase('IDLE')
       return
     }
 
-    if (this.tension >= this.effectiveMaxTension()) {
-      this.events.push('LINE_BREAK')
-      this.enterPhase('LINE_BREAK')
+    const result = stepBattle({
+      numbers: battle,
+      command,
+      profile: state.fish.battleProfile,
+      modifiers: this.playerModifiers,
+      tuning: this.battleTuning,
+      random: this.random,
+      knowledgeScore: this.knowledgeScore,
+    })
+
+    this.applyBattleResult(result.numbers, result.log)
+    this.events.push(...result.events)
+
+    switch (result.outcome) {
+      case 'line_break':
+        this.enterPhase('LINE_BREAK')
+        break
+      case 'hook_escape':
+        this.enterPhase('HOOK_ESCAPE')
+        break
+      case 'landing':
+        this.enterPhase('LANDING')
+        break
+      default:
+        break
+    }
+  }
+
+  /** LANDING: 取り込む（LAND）か、待つ（WAIT）。 */
+  private stepLanding(command: 'land' | 'wait'): void {
+    const state = this.fishState
+    const battle = this.battle
+
+    if (state === null || battle === null) {
+      this.enterPhase('IDLE')
       return
     }
 
-    if (this.tension >= this.tuning.slackTensionThreshold) {
-      if (state.slackTicks !== 0) {
-        this.fishState = { ...state, slackTicks: 0 }
-      }
-    } else {
-      const elapsedSlack = options.advanceSlack ? 1 : 0
-      const slackTicks = state.slackTicks + elapsedSlack
+    const result = attemptLanding({
+      numbers: battle,
+      command,
+      profile: state.fish.battleProfile,
+      modifiers: this.playerModifiers,
+      tuning: this.battleTuning,
+      random: this.random,
+    })
 
-      if (slackTicks !== state.slackTicks) {
-        this.fishState = { ...state, slackTicks }
-      }
+    this.applyBattleResult(result.numbers, result.log)
+    this.events.push(...result.events)
 
-      if (slackTicks >= this.effectiveSlackTicksBeforeEscape()) {
-        this.events.push('HOOK_ESCAPE')
-        this.enterPhase('HOOK_ESCAPE')
-        return
-      }
+    if (result.outcome === 'landing') {
+      this.enterPhase('LANDED')
+      return
     }
 
-    if (state.stamina <= 0) {
-      this.events.push('FISH_TIRED')
-      this.enterPhase('LANDING')
+    if (result.outcome === 'hook_escape') {
+      this.enterPhase('HOOK_ESCAPE')
+      return
+    }
+
+    // 待っているうちに距離が開いたら、また掛け合い（FIGHTING）に戻る。
+    if (result.numbers.distanceM > this.battleTuning.landingDistanceM) {
+      this.enterPhase('FIGHTING')
+    }
+  }
+
+  private applyBattleResult(numbers: BattleNumbers, log: readonly string[]): void {
+    const state = this.fishState
+
+    this.battle = numbers
+    this.tension = numbers.tension
+
+    if (state !== null) {
+      this.fishState = { ...state, stamina: numbers.stamina, slackTicks: numbers.slackSteps }
+    }
+
+    for (const line of log) {
+      this.battleLog.push(line)
+    }
+
+    // ログは最新 12 件だけ持つ（巨大なログにしない）。
+    if (this.battleLog.length > 12) {
+      this.battleLog = this.battleLog.slice(this.battleLog.length - 12)
+    }
+  }
+
+  private battleSnapshot(): FishingBattleSnapshot | null {
+    const battle = this.battle
+
+    if (battle === null) {
+      return null
+    }
+
+    return {
+      behaviour: battle.behaviour,
+      behaviourLabel: BATTLE_BEHAVIOUR_LABELS[battle.behaviour],
+      distanceM: Math.round(battle.distanceM * 10) / 10,
+      hookHold: Math.round(battle.hookHold * 100) / 100,
+      drag: Math.round(battle.drag * 100) / 100,
+      step: battle.step,
+      log: [...this.battleLog],
+      landingReady: this.phase === 'LANDING',
     }
   }
 }

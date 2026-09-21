@@ -2,8 +2,7 @@ import { pathToFileURL } from 'node:url'
 import { loadContentFromDirectory } from '../src/content/load/nodeContent'
 import { biteChance, rollEncounter } from '../src/domain/encounter/encounterEngine'
 import type { EncounterCandidate } from '../src/domain/encounter/encounterEngine'
-import { DEFAULT_FISHING_TUNING, FishingEngine, isTerminalPhase } from '../src/domain/fishing'
-import type { FishingEvent } from '../src/domain/fishing'
+import { DEFAULT_FISHING_TUNING, FishingEngine } from '../src/domain/fishing'
 import type { FishSpecies } from '../src/domain/fish/FishSpecies'
 import { lengthModelMedian } from '../src/domain/fish/lengthModel'
 import { hookSizeRank } from '../src/domain/gear/Gear'
@@ -17,7 +16,7 @@ import {
 } from '../src/domain/tackle'
 import type { Loadout } from '../src/domain/tackle'
 import { SeededRandomSource } from '../src/domain/rng/SeededRandomSource'
-import { chooseCommand } from './simulate-fishing'
+import { runFishingToTerminal } from './simulate-fishing'
 
 /**
  * Catchability / Bite Rules の確認（Phase 9.1）。
@@ -47,14 +46,6 @@ export type CatchabilityResult = {
   readonly checks: readonly CatchabilityCheck[]
   readonly fingerprint: string
 }
-
-const END_EVENTS: readonly FishingEvent[] = [
-  'LANDED',
-  'HOOK_MISSED',
-  'HOOK_ESCAPE',
-  'LINE_BREAK',
-  'NO_BITE',
-]
 
 export const simulateCatchability = (): CatchabilityResult => {
   const content = loadContentFromDirectory()
@@ -342,20 +333,7 @@ export const simulateCatchability = (): CatchabilityResult => {
         playerModifiers: modifiers,
         encounterProfile: tackle.encounterProfile,
       })
-      let guard = 0
-
-      while (guard < 4000) {
-        engine.dispatch(chooseCommand('balanced', engine.snapshot()))
-        const ticked = engine.tick()
-        guard += 1
-
-        if (
-          ticked.events.some((event) => END_EVENTS.includes(event)) ||
-          isTerminalPhase(ticked.snapshot.phase)
-        ) {
-          break
-        }
-      }
+      runFishingToTerminal(engine, 'balanced')
 
       if (engine.snapshot().phase === 'LANDED') {
         landed += 1

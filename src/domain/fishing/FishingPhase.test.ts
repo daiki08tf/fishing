@@ -40,12 +40,19 @@ describe('fishing state machine definition', () => {
   it('only accepts commands that belong to the phase', () => {
     expect(ALLOWED_COMMANDS.IDLE).toEqual(['cast'])
     expect(ALLOWED_COMMANDS.HOOK_WINDOW).toEqual(['hook'])
-    expect(ALLOWED_COMMANDS.FIGHTING).toEqual(['reel', 'give'])
+    expect(ALLOWED_COMMANDS.FIGHTING).toEqual([
+      'reel',
+      'power_reel',
+      'hold',
+      'give',
+      'loosen_drag',
+      'tighten_drag',
+    ])
     expect(ALLOWED_COMMANDS.CASTING).toEqual([])
     expect(ALLOWED_COMMANDS.WAITING).toEqual([])
     expect(ALLOWED_COMMANDS.BITE).toEqual([])
     expect(ALLOWED_COMMANDS.HOOKED).toEqual([])
-    expect(ALLOWED_COMMANDS.LANDING).toEqual([])
+    expect(ALLOWED_COMMANDS.LANDING).toEqual(['land', 'wait'])
   })
 
   it('cannot be skipped or rewound by player commands', () => {
@@ -84,9 +91,12 @@ describe('fishing state machine definition', () => {
   })
 
   it('marks the phases that advance on their own', () => {
-    for (const phase of ['CASTING', 'WAITING', 'BITE', 'HOOKED', 'LANDING'] as const) {
+    // Phase 10: FIGHTING / LANDING はコマンド駆動（自動では進まない）。
+    for (const phase of ['CASTING', 'WAITING', 'BITE', 'HOOKED'] as const) {
       expect(isAutoAdvancingPhase(phase)).toBe(true)
     }
+
+    expect(isAutoAdvancingPhase('LANDING')).toBe(false)
 
     expect(isAutoAdvancingPhase('IDLE')).toBe(false)
     expect(isAutoAdvancingPhase('HOOK_WINDOW')).toBe(false)
@@ -100,7 +110,19 @@ describe('fishing state machine definition', () => {
   })
 
   it('exposes the documented commands and events', () => {
-    expect(FISHING_COMMANDS).toEqual(['cast', 'hook', 'reel', 'give', 'reset'])
+    expect(FISHING_COMMANDS).toEqual([
+      'cast',
+      'hook',
+      'reel',
+      'power_reel',
+      'hold',
+      'give',
+      'loosen_drag',
+      'tighten_drag',
+      'land',
+      'wait',
+      'reset',
+    ])
     expect(FISHING_EVENTS).toContain('LINE_BREAK')
     expect(FISHING_EVENTS).toContain('HOOK_ESCAPE')
     expect(FISHING_EVENTS).toContain('HOOK_MISSED')

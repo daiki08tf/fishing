@@ -1,9 +1,52 @@
 # Handoff
 
-最終更新: Phase 9（Living Water & Big Game）完了
+最終更新: Phase 10（Text Fishing Battle）完了
 
 > 以下の Phase 6 / 6.5 節は履歴として残している。件数・Save version・次 Phase については、
-> この Phase 9 / 8 / 7A.1 / 7A 節と `.ai/current-task.md` を優先する。
+> この Phase 10 / 9 / 8 / 7A.1 / 7A 節と `.ai/current-task.md` を優先する。
+
+## Phase 10（Text Fishing Battle）
+
+Hooked 以降を「文章で魚の行動を読み、コマンドを選ぶ」ターン制バトルへ進めた。
+Encounter → Bite → Hook（Phase 9.1）は変更していない。
+
+- **Fishing combat is decision-driven, not button-spam driven.**
+- 1 コマンド = 1 意味のある battle step。FIGHTING / LANDING は tick では進まない
+  （連打しても有利にならない）
+- 魚の行動は 8 種の generic behaviour。魚種名・国では分岐せず、
+  fightProfile / Trait / 個体サイズから解決した数値だけで決まる
+- 行動は文章の予兆（telegraph）を挟んでから発動する。Knowledge が高いと予兆が具体的になる
+- コマンドは固定ダメージボタンではない。RUN 中の POWER_REEL は危険、REST は巻き取り好機、
+  COME_TOWARD は巻くほど良い、HEAD_SHAKE は保持を削る
+- 高テンション（LINE_BREAK）と slack（HOOK_ESCAPE）の両方を危険にした。
+  Always Reel / Always Power / Always Give のどれも最適解にならない
+- タックルは「失敗の余地」を変える（Light でも大型魚は獲れるが break が増える）
+- 小魚 1〜3 コマンド / 中型 数コマンド / 大型・記録級 15〜30+
+- Domain は BattleEvent / behaviour / numeric result を返し、文章は presentation
+- UI: FISHING に text battle panel（行動・距離・ドラッグ・フック保持・ログ・AUTO）
+- `npm run simulate:text-battle` を追加（4 scenario × 4 strategy、10 checks）
+
+検証状況（phase-10-text-fishing-battle 時点）:
+
+- `npm run check`: PASS（70 test files / 617 tests、typecheck / lint / format / validate / build）
+- `npm run validate:content`: PASS（653 records）
+- simulations: text-battle 10/10、catchability 14/14、environment 8/8、big-game 9/9、
+  expedition 12/12、transport 18/18、tackle 11/11、catalog 9/9、day 9/9、trip 6/6、
+  progression 9/9、`simulate:fishing --seed demo` LANDED（44 ticks / 48 steps）、
+  `sample:individuals` invalid=0
+- `simulate:fishing --seed demo` の 182 ticks は、tick 駆動のファイトを
+  コマンド駆動の battle に置き換えたため変化した（battle の主指標は step 数）
+- bundle: JS 745.81 kB（gzip 185.50 kB）、CSS 7.04 kB（gzip 1.86 kB）
+- Save schema: v7 のまま（battle は釣行中の一時状態なので保存しない）
+
+UI の通し確認（この sandbox では Chrome headless が起動できないため jsdom + React DOM）:
+
+- CAST → WAITING → BITE → HOOK → FIGHTING → コマンド（数 step）→ LANDING → LAND → LANDED
+  （Codex に記録される）
+- GIVE 連打 → HOOK_ESCAPE、POWER_REEL 連打 → LINE_BREAK、AUTO で決着
+- 確認手順: `npm i --no-save --cache <cache-dir> jsdom` の上で
+  `npx vitest run --environment jsdom <一時テスト>`（テストは commit しない）
+- この確認で「コマンドで取り込んだ釣果が Codex に入らない」バグを見つけて修正した
 
 ## STABLE CHECKPOINT — Phase 9
 

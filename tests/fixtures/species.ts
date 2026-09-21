@@ -24,3 +24,26 @@ export const createTestSpecies = (overrides: Partial<FishSpecies> = {}): FishSpe
   rarity: 1,
   ...overrides,
 })
+
+/**
+ * 大型魚のテスト用魚種（現実の魚ではない）。
+ *
+ * Phase 10 の Text Fishing Battle では、小型魚のファイトは 1〜3 コマンドで終わる。
+ * 「テンション / フック保持 / 距離」の駆け引きを検証するには、
+ * ある程度の大きさ（初期距離・引きの強さ）を持つ魚が必要になる。
+ */
+export const createBigTestSpecies = (overrides: Partial<FishSpecies> = {}): FishSpecies =>
+  createTestSpecies({
+    id: asFishSpeciesId('test-big-species'),
+    japaneseName: 'テスト大型魚',
+    lengthModel: {
+      kind: 'normal',
+      meanCm: 95,
+      standardDeviationCm: 6,
+      minCm: 80,
+      maxCm: 120,
+    },
+    conditionModel: { variability: 0.3 },
+    fightProfile: { strength: 0.8, stamina: 0.8, speed: 0.7 },
+    ...overrides,
+  })

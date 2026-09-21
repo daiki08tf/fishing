@@ -146,6 +146,30 @@ Skillが緩やかに改善してよい対象:
 - ファイトの難しさは Bite 確率とは別に扱う（食いついた後の世界で表現する）
 - 「魚がいるのに食わない」を fishTable から消すことで表現しない
 
+### Phase 10 — Text Fishing Battle（HOOKED 以降）
+
+- **Fishing combat is decision-driven, not button-spam driven.**
+  1 コマンド = 1 battle step。同じボタンを速く連打しても有利にならない
+  （FIGHTING / LANDING は tick では進まず、プレイヤーのコマンドだけで進む）
+- 魚の行動は 8 種の generic な behaviour（normal / run / surge / head_shake / dive /
+  come_toward / rest / second_run）。魚種名や国では分岐せず、
+  既存の fightProfile・Trait・個体サイズから解決した数値だけで重みが決まる
+- 行動は文章で予兆（telegraph）を出してから発動する。
+  「読んで次の一手を選ぶ」ことがゲームの中心であり、反射神経は要求しない
+- コマンドは固定ダメージボタンではない。同じ REEL でも、魚の行動・テンション・
+  タックルで結果が変わる（RUN 中の POWER_REEL は危険、COME_TOWARD 中の REEL は有効）
+- 高テンション（LINE_BREAK）と slack（HOOK_ESCAPE）の両方を危険にする。
+  「常に GIVE / 常に REEL / 常に POWER_REEL」が最適解にならない
+- タックルは「失敗の余地（margin）」を変える。Light でも大型魚は理論上獲れるが、
+  effective tension limit が低く、break / hook escape が増える。
+  Heavy は安定するが、掛かり（Bite / Hook）では万能ではない
+- 小さい魚のファイトは短い（1〜3 コマンド）。大型・記録級は長い（15〜30+）。
+  戦闘の長さは個体とタックルとプレイヤーの判断で変わる
+- Domain は BattleEvent / behaviour / numeric result を返し、文章は UI の表現である。
+  Domain の判定を文章文字列で行わない
+- Knowledge は予兆の文章の精度にだけ効く（結果は変えない）。
+  Knowledge が低くてもゲームは成立する
+
 ## 6. Phase 0 で定義する機械判定可能な制約
 
 Phase 0では、CI / lint / testで機械的に判定できる制約だけを定義する。

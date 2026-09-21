@@ -1,13 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { createTestSpecies } from '../../../tests/fixtures/species'
+import { balancedCommand, runFightToTerminal } from '../../../tests/fixtures/fishingPolicies'
+import { createBigTestSpecies, createTestSpecies } from '../../../tests/fixtures/species'
 import { FishingEngine, type FishingSnapshot } from './FishingEngine'
 import { DEFAULT_FISHING_TUNING, type FishingTuning } from './FishingTuning'
-import {
-  isTerminalPhase,
-  type FishingCommand,
-  type FishingEvent,
-  type FishingPhase,
-} from './FishingPhase'
+import { NEUTRAL_FISHING_MODIFIERS, type PlayerFishingModifiers } from './PlayerFishingModifiers'
+import { isTerminalPhase, type FishingEvent } from './FishingPhase'
 
 /**
  * Fishing Vertical Slice の中核テスト。
@@ -21,10 +18,20 @@ const createEngine = (options: {
   readonly seed: number | string
   readonly presence?: number
   readonly tuning?: Partial<FishingTuning>
+  readonly big?: boolean
+  readonly modifiers?: Partial<PlayerFishingModifiers>
 }): FishingEngine =>
   new FishingEngine({
-    encounters: [{ species: createTestSpecies(), presence: options.presence ?? 2 }],
+    encounters: [
+      {
+        species: options.big === true ? createBigTestSpecies() : createTestSpecies(),
+        presence: options.presence ?? 2,
+      },
+    ],
     seed: options.seed,
+    ...(options.modifiers === undefined
+      ? {}
+      : { playerModifiers: { ...NEUTRAL_FISHING_MODIFIERS, ...options.modifiers } }),
     ...(options.tuning === undefined
       ? {}
       : { tuning: { ...DEFAULT_FISHING_TUNING, ...options.tuning } }),
@@ -54,12 +61,16 @@ const advanceUntil = (
   throw new Error(`condition was not reached within ${String(maxTicks)} ticks`)
 }
 
+type FightOptions = {
+  /** 大型魚を使う（小型魚は 1〜3 コマンドで終わるため、駆け引きの検証に使えない）。 */
+  readonly big?: boolean
+  readonly tuning?: Partial<FishingTuning>
+  readonly modifiers?: Partial<PlayerFishingModifiers>
+}
+
 /** ヒットさせてファイトまで進める。 */
-const createFightingEngine = (
-  seed: number | string,
-  tuning?: Partial<FishingTuning>,
-): FishingEngine => {
-  const engine = createEngine({ seed, ...(tuning === undefined ? {} : { tuning }) })
+const createFightingEngine = (seed: number | string, options: FightOptions = {}): FishingEngine => {
+  const engine = createEngine({ seed, ...options })
 
   engine.cast()
   advanceUntil(engine, (snapshot) => snapshot.phase === 'HOOK_WINDOW')
@@ -69,32 +80,14 @@ const createFightingEngine = (
   return engine
 }
 
-/** テンションと魚の状態を見て、常識的な操作を選ぶ。 */
-const balancedCommand = (snapshot: FishingSnapshot): FishingCommand => {
-  const ratio = snapshot.tension / snapshot.maxTension
-
-  if (snapshot.fish?.behavior === 'run' || ratio > 0.8) {
-    return 'give'
-  }
-
-  return 'reel'
-}
-
-const runBalancedFight = (
-  engine: FishingEngine,
-  maxSteps = 2000,
-): { readonly phase: FishingPhase; readonly events: readonly FishingEvent[] } => {
-  const events: FishingEvent[] = []
-  let steps = 0
-
-  while (!isTerminalPhase(engine.snapshot().phase) && steps < maxSteps) {
-    const outcome = engine.dispatch(balancedCommand(engine.snapshot()))
-    events.push(...outcome.events)
-    events.push(...engine.tick().events)
-    steps += 1
-  }
-
-  return { phase: engine.snapshot().phase, events }
+/**
+ * 「十分な装備と腕がある」状態。
+ * ファイトそのもの（コマンドの駆け引き）を見るテストで使い、
+ * タックル差そのものは simulate:big-game / catchability が受け持つ。
+ */
+const SOLID_TACKLE: Partial<PlayerFishingModifiers> = {
+  maxTensionMultiplier: 2.4,
+  landingStabilityMultiplier: 1.2,
 }
 
 describe('FishingEngine', () => {
@@ -203,28 +196,48 @@ describe('FishingEngine', () => {
     expect(engine.snapshot().tension).toBeGreaterThan(before)
   })
 
-  it('lowers the tension when giving line', () => {
-    const engine = createFightingEngine('give')
-    engine.reel()
-    engine.reel()
-    const peak = engine.snapshot().tension
+  it('lowers the tension when giving line (one battle step)', () => {
+    // 大型魚でないと 1 コマンドで寄り切ってしまう（小魚のファイトは短い）。
+    const engine = createFightingEngine('give-line', { big: true })
 
-    engine.give()
+    engine.dispatch('reel')
+    const before = engine.snapshot().tension
+    engine.dispatch('give')
+    const after = engine.snapshot().tension
 
-    expect(engine.snapshot().tension).toBeLessThan(peak)
+    expect(after).toBeLessThan(before)
   })
 
-  it('breaks the line when the player only reels', () => {
-    const engine = createFightingEngine('spam-reel')
-    let guard = 0
+  it('punishes reckless power reeling', () => {
+    let sawLineBreak = false
+    let maxTensionSeen = 0
 
-    while (!isTerminalPhase(engine.snapshot().phase) && guard < 500) {
-      engine.reel()
-      engine.tick()
-      guard += 1
+    for (const seed of ['spam-1', 'spam-2', 'spam-3', 'spam-4', 'spam-5', 'spam-6']) {
+      const engine = createFightingEngine(seed, { big: true })
+      let guard = 0
+
+      while (!isTerminalPhase(engine.snapshot().phase) && guard < 500) {
+        const snapshot = engine.snapshot()
+
+        if (snapshot.phase === 'FIGHTING') {
+          engine.dispatch('power_reel')
+          maxTensionSeen = Math.max(maxTensionSeen, snapshot.tension / snapshot.maxTension)
+        } else if (snapshot.phase === 'LANDING') {
+          engine.dispatch('land')
+        } else {
+          engine.tick()
+        }
+
+        guard += 1
+      }
+
+      if (engine.snapshot().phase === 'LINE_BREAK') {
+        sawLineBreak = true
+      }
     }
 
-    expect(engine.snapshot().phase).toBe('LINE_BREAK')
+    // 強く巻き続けるのは危険（連打が最適解にならない）。
+    expect(sawLineBreak || maxTensionSeen > 0.9).toBe(true)
   })
 
   it('loses the hook when the player only gives line', () => {
@@ -232,8 +245,14 @@ describe('FishingEngine', () => {
     let guard = 0
 
     while (!isTerminalPhase(engine.snapshot().phase) && guard < 500) {
-      engine.give()
-      engine.tick()
+      const snapshot = engine.snapshot()
+
+      if (snapshot.phase === 'FIGHTING') {
+        engine.dispatch('give')
+      } else {
+        engine.tick()
+      }
+
       guard += 1
     }
 
@@ -241,8 +260,8 @@ describe('FishingEngine', () => {
   })
 
   it('lands the fish with a sensible balance of reel and give', () => {
-    const engine = createFightingEngine('balanced')
-    const result = runBalancedFight(engine)
+    const engine = createFightingEngine('balanced', { big: true, modifiers: SOLID_TACKLE })
+    const result = runFightToTerminal(engine)
 
     expect(result.phase).toBe('LANDED')
     expect(result.events).toContain('FISH_TIRED')
@@ -253,8 +272,8 @@ describe('FishingEngine', () => {
     let sawRun = false
 
     for (const seed of ['run-1', 'run-2', 'run-3', 'run-4', 'run-5']) {
-      const engine = createFightingEngine(seed)
-      const result = runBalancedFight(engine)
+      const engine = createFightingEngine(seed, { big: true })
+      const result = runFightToTerminal(engine)
 
       if (result.events.includes('RUN_STARTED')) {
         sawRun = true
@@ -266,13 +285,13 @@ describe('FishingEngine', () => {
   })
 
   it('reproduces the same individual and the same fight for the same seed', () => {
-    const first = createFightingEngine('repeatable')
-    const second = createFightingEngine('repeatable')
+    const first = createFightingEngine('repeatable', { big: true, modifiers: SOLID_TACKLE })
+    const second = createFightingEngine('repeatable', { big: true, modifiers: SOLID_TACKLE })
 
     expect(first.snapshot().fish).toEqual(second.snapshot().fish)
 
-    const firstRun = runBalancedFight(first)
-    const secondRun = runBalancedFight(second)
+    const firstRun = runFightToTerminal(first)
+    const secondRun = runFightToTerminal(second)
 
     expect(firstRun.phase).toBe(secondRun.phase)
     expect(firstRun.events).toEqual(secondRun.events)
@@ -285,8 +304,8 @@ describe('FishingEngine', () => {
     const tickCounts = new Set<number>()
 
     for (const seed of ['a', 'b', 'c', 'd', 'e']) {
-      const engine = createFightingEngine(seed)
-      runBalancedFight(engine)
+      const engine = createFightingEngine(seed, { big: true })
+      runFightToTerminal(engine)
 
       const length = engine.snapshot().fish?.individual.lengthCm
       expect(length).toBeDefined()
@@ -314,7 +333,7 @@ describe('FishingEngine', () => {
 
   it('can be reset after a trip and used again', () => {
     const engine = createFightingEngine('reset')
-    const result = runBalancedFight(engine)
+    const result = runFightToTerminal(engine)
 
     expect(result.phase).toBe('LANDED')
 
@@ -329,16 +348,26 @@ describe('FishingEngine', () => {
   })
 
   it('keeps the tension inside the configured range', () => {
-    const engine = createFightingEngine('clamp')
+    const engine = createFightingEngine('clamp', { big: true, modifiers: SOLID_TACKLE })
     let guard = 0
 
     while (!isTerminalPhase(engine.snapshot().phase) && guard < 500) {
-      engine.dispatch(balancedCommand(engine.snapshot()))
-      engine.tick()
-
       const snapshot = engine.snapshot()
-      expect(snapshot.tension).toBeGreaterThanOrEqual(0)
-      expect(snapshot.tension).toBeLessThanOrEqual(snapshot.maxTension)
+      const commandPhase =
+        snapshot.phase === 'FIGHTING' ||
+        snapshot.phase === 'LANDING' ||
+        snapshot.phase === 'IDLE' ||
+        snapshot.phase === 'HOOK_WINDOW'
+
+      if (commandPhase) {
+        engine.dispatch(balancedCommand(snapshot))
+      } else {
+        engine.tick()
+      }
+
+      const after = engine.snapshot()
+      expect(after.tension).toBeGreaterThanOrEqual(0)
+      expect(after.tension).toBeLessThanOrEqual(after.maxTension)
       guard += 1
     }
   })

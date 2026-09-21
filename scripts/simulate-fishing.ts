@@ -1,5 +1,9 @@
 import { pathToFileURL } from 'node:url'
 import { loadContentFromDirectory } from '../src/content/load/nodeContent'
+import { suggestBattleCommand } from '../src/domain/fishing/battle'
+import { asGearId } from '../src/domain/ids'
+import { createStarterLoadout } from '../src/domain/tackle/Loadout'
+import { resolveTackle } from '../src/domain/tackle/resolveTackle'
 import {
   FishingEngine,
   isTerminalPhase,
@@ -43,8 +47,6 @@ export type SimulationResult = {
   readonly lines: readonly string[]
 }
 
-const BALANCED_TENSION_LIMIT = 0.8
-
 export const chooseCommand = (
   policy: SimulationPolicy,
   snapshot: FishingSnapshot,
@@ -57,19 +59,62 @@ export const chooseCommand = (
     return 'hook'
   }
 
-  if (snapshot.phase === 'FIGHTING') {
+  // Phase 10: Text Battle は 1 コマンド = 1 step。
+  if (snapshot.phase === 'FIGHTING' || snapshot.phase === 'LANDING') {
+    if (snapshot.phase === 'LANDING') {
+      return policy === 'give' ? 'wait' : 'land'
+    }
+
     if (policy === 'reel') {
       return 'reel'
     }
+
     if (policy === 'give') {
       return 'give'
     }
 
-    const ratio = snapshot.tension / snapshot.maxTension
-    return snapshot.fish?.behavior === 'run' || ratio > BALANCED_TENSION_LIMIT ? 'give' : 'reel'
+    // balanced: テンションと魚の行動を読む（Reactive 戦略）。
+    return suggestBattleCommand({
+      phase: snapshot.phase,
+      tension: snapshot.tension,
+      maxTension: snapshot.maxTension,
+      behaviour: snapshot.battle?.behaviour ?? null,
+      hookHold: snapshot.battle?.hookHold ?? 0,
+    })
   }
 
   return 'reel'
+}
+
+/**
+ * Phase 10: FIGHTING / LANDING はコマンド駆動なので、
+ * 「コマンドを送る段階」と「tick で進む段階」を分けて最後まで進める。
+ */
+export const runFishingToTerminal = (
+  engine: FishingEngine,
+  policy: SimulationPolicy,
+  maxSteps = 4000,
+): number => {
+  let steps = 0
+
+  while (!isTerminalPhase(engine.snapshot().phase) && steps < maxSteps) {
+    const snapshot = engine.snapshot()
+    const commandPhase =
+      snapshot.phase === 'FIGHTING' ||
+      snapshot.phase === 'LANDING' ||
+      snapshot.phase === 'IDLE' ||
+      snapshot.phase === 'HOOK_WINDOW'
+
+    if (commandPhase) {
+      engine.dispatch(chooseCommand(policy, snapshot))
+    } else {
+      engine.tick()
+    }
+
+    steps += 1
+  }
+
+  return steps
 }
 
 export const simulateFishing = (options: SimulationOptions): SimulationResult => {
@@ -96,10 +141,22 @@ export const simulateFishing = (options: SimulationOptions): SimulationResult =>
     throw new Error(`no encounter candidate for species: ${String(options.speciesId)}`)
   }
 
+  /*
+   * Phase 10: Text Battle はタックル（テンション上限・フック保持・距離の引き）を使う。
+   * シミュレータは Starter タックルで回す（装備を変えた比較は simulate:big-game / tackle）。
+   */
+  const tackle = resolveTackle({
+    loadout: createStarterLoadout(asGearId),
+    gear: content.gear,
+    methods: content.methods,
+  })
   const engine = new FishingEngine({
     encounters,
     seed: options.seed,
     spotId: spot.id,
+    ...(tackle === null
+      ? {}
+      : { playerModifiers: tackle.playerModifiers, encounterProfile: tackle.encounterProfile }),
   })
 
   const lines: string[] = [
@@ -112,36 +169,42 @@ export const simulateFishing = (options: SimulationOptions): SimulationResult =>
 
   while (!isTerminalPhase(engine.snapshot().phase) && steps < options.maxSteps) {
     const snapshot = engine.snapshot()
-    const command = chooseCommand(options.policy, snapshot)
-    const outcome = engine.dispatch(command)
+    const battlePhase = snapshot.phase === 'FIGHTING' || snapshot.phase === 'LANDING'
+    const acceptsCommand =
+      battlePhase || snapshot.phase === 'IDLE' || snapshot.phase === 'HOOK_WINDOW'
 
-    for (const event of outcome.events) {
-      lines.push(
-        `tick ${String(snapshot.totalTicks).padStart(4)} | ${snapshot.phase} | ${command} | ${event}`,
-      )
-    }
+    if (acceptsCommand) {
+      // Phase 10: FIGHTING / LANDING は 1 コマンド = 1 battle step。
+      const command = chooseCommand(options.policy, snapshot)
+      const outcome = engine.dispatch(command)
 
-    const tick = engine.tick()
+      for (const event of outcome.events) {
+        lines.push(`step ${String(steps).padStart(4)} | ${snapshot.phase} | ${command} | ${event}`)
+      }
 
-    for (const event of tick.events) {
-      lines.push(
-        `tick ${String(tick.snapshot.totalTicks).padStart(4)} | ${tick.snapshot.phase} | tick | ${event}`,
-      )
-    }
+      if (options.verbose) {
+        const battle = outcome.snapshot.battle
+        lines.push(
+          `step ${String(steps).padStart(4)} | ${outcome.snapshot.phase.padEnd(11)} | ${command.padEnd(12)} | ${
+            battle === null
+              ? `tension ${outcome.snapshot.tension.toFixed(2)}`
+              : `dist ${String(battle.distanceM).padStart(5)}m | tension ${outcome.snapshot.tension.toFixed(2)} | hold ${battle.hookHold.toFixed(2)} | ${battle.behaviour}`
+          }`,
+        )
+      }
 
-    if (options.verbose) {
-      const state = engine.snapshot()
-      const fish = state.fish
-      lines.push(
-        `tick ${String(state.totalTicks).padStart(4)} | ${state.phase.padEnd(11)} | tension ${state.tension
-          .toFixed(3)
-          .padStart(5)} | stamina ${
-          fish === null ? '   -  ' : fish.stamina.toFixed(3).padStart(5)
-        } | ${fish === null ? '-' : fish.behavior} | ${command}`,
-      )
-    }
+      if (outcome.accepted) {
+        steps += 1
+      }
+    } else {
+      const tick = engine.tick()
 
-    if (outcome.accepted) {
+      for (const event of tick.events) {
+        lines.push(
+          `tick ${String(tick.snapshot.totalTicks).padStart(4)} | ${tick.snapshot.phase} | tick | ${event}`,
+        )
+      }
+
       steps += 1
     }
   }

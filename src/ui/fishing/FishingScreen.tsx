@@ -9,6 +9,8 @@ import {
   type FishingEvent,
   type FishingPhase,
 } from '../../domain/fishing'
+import { useEffect, useState } from 'react'
+import { suggestBattleCommand } from '../../domain/fishing/battle'
 import { FishingMeter } from './FishingMeter'
 import { useFishingSession } from './useFishingSession'
 import { usePlayerStore } from '../../state/playerStore'
@@ -44,8 +46,8 @@ const PHASE_HINTS: Readonly<Record<FishingPhase, string>> = {
   BITE: 'アタリが出た',
   HOOK_WINDOW: '今アワセる（HOOK）',
   HOOKED: '乗った。ファイトに入る',
-  FIGHTING: 'テンションを見ながら REEL と GIVE を切り替える',
-  LANDING: '取り込み中',
+  FIGHTING: '魚の動き（走り / 突進 / 休み）を読み、コマンドを選ぶ',
+  LANDING: '暴れているなら待つ。落ち着いたら取り込む',
   LANDED: '釣り上げた',
   HOOK_MISSED: 'アワセが遅れた。もう一度キャストする',
   HOOK_ESCAPE: '糸を緩めすぎた。もう一度キャストする',
@@ -102,12 +104,27 @@ const EVENT_LABELS: Readonly<Record<FishingEvent, string>> = {
 const ACTION_LABELS: Readonly<Record<FishingCommand, string>> = {
   cast: 'CAST',
   hook: 'HOOK',
-  reel: 'REEL',
-  give: 'GIVE',
+  reel: '巻く',
+  power_reel: '強く巻く',
+  hold: '耐える',
+  give: 'ラインを送る',
+  loosen_drag: 'ドラグ −',
+  tighten_drag: 'ドラグ ＋',
+  land: '取り込む',
+  wait: '待つ',
   reset: 'RESET',
 }
 
-const FIGHT_COMMANDS: readonly FishingCommand[] = ['cast', 'hook', 'reel', 'give']
+const FIGHT_COMMANDS: readonly FishingCommand[] = [
+  'reel',
+  'power_reel',
+  'hold',
+  'give',
+  'loosen_drag',
+  'tighten_drag',
+]
+const LANDING_COMMANDS: readonly FishingCommand[] = ['land', 'wait']
+const PRE_FIGHT_COMMANDS: readonly FishingCommand[] = ['cast', 'hook']
 
 /** 百分位を釣り人の言葉にする。 */
 const rarityLabel = (percentile: number): string => {
@@ -143,6 +160,38 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
   const lastCatch = usePlayerStore((state) => state.lastCatch)
   const progression = usePlayerStore((state) => state.progression)
   const setActiveScreen = useAppStore((state) => state.setActiveScreen)
+  const [auto, setAuto] = useState(false)
+
+  /*
+   * AUTO（おまかせ）: trivial な相手を早く進めるための補助。
+   * 1 回の待ち時間で 1 step だけ進む（連打で有利にならない設計は変えない）。
+   * Large / Trophy では手動の方が有利（AUTO は最適解ではない）。
+   */
+  useEffect(() => {
+    if (!auto || snapshot === null) {
+      return
+    }
+
+    if (snapshot.phase !== 'FIGHTING' && snapshot.phase !== 'LANDING') {
+      return
+    }
+
+    const timer = window.setTimeout(() => {
+      send(
+        suggestBattleCommand({
+          phase: snapshot.phase,
+          tension: snapshot.tension,
+          maxTension: snapshot.maxTension,
+          behaviour: snapshot.battle?.behaviour ?? null,
+          hookHold: snapshot.battle?.hookHold ?? 0,
+        }),
+      )
+    }, 260)
+
+    return () => {
+      window.clearTimeout(timer)
+    }
+  }, [auto, snapshot, send])
 
   if (contentError !== null) {
     return (
@@ -211,9 +260,27 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
           <>
             <div className="fish__head">
               <h3 className="panel__subheading">{fish.speciesName}</h3>
-              <span className={`badge${fish.behavior === 'run' ? ' badge--alert' : ''}`}>
-                {BEHAVIOR_LABELS[fish.behavior]}
-              </span>
+              {/*
+                Phase 10: ファイト中は Battle 側の行動（走り / 突進 / 休み …）が
+                今の魚の状態である。battle が無いときは従来の表示。
+              */}
+              {snapshot.battle === null ? (
+                <span className={`badge${fish.behavior === 'run' ? ' badge--alert' : ''}`}>
+                  {BEHAVIOR_LABELS[fish.behavior]}
+                </span>
+              ) : (
+                <span
+                  className={`badge${
+                    snapshot.battle.behaviour === 'run' ||
+                    snapshot.battle.behaviour === 'surge' ||
+                    snapshot.battle.behaviour === 'second_run'
+                      ? ' badge--alert'
+                      : ''
+                  }`}
+                >
+                  {snapshot.battle.behaviourLabel}
+                </span>
+              )}
             </div>
 
             <dl className="fish__facts">
@@ -276,10 +343,80 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
         </p>
       </section>
 
+      {snapshot.battle === null ? null : (
+        <section className="panel">
+          <p className="fishing__phase-code">{snapshot.battle.behaviourLabel}</p>
+          <h3 className="panel__subheading">
+            {snapshot.phase === 'LANDING' ? '取り込みの体勢' : 'ファイト'}
+          </h3>
+
+          <FishingMeter
+            label="Hook hold"
+            value={snapshot.battle.hookHold}
+            max={1}
+            tone="stamina"
+            valueText={`${Math.round(snapshot.battle.hookHold * 100)}%`}
+          />
+          <dl className="record">
+            <div>
+              <dt>Distance</dt>
+              <dd>{snapshot.battle.distanceM} m</dd>
+            </div>
+            <div>
+              <dt>Drag</dt>
+              <dd>
+                {snapshot.battle.drag <= 0.35
+                  ? 'Loose'
+                  : snapshot.battle.drag >= 0.7
+                    ? 'Tight'
+                    : 'Normal'}{' '}
+                ({Math.round(snapshot.battle.drag * 100)}%)
+              </dd>
+            </div>
+            <div>
+              <dt>Step</dt>
+              <dd>{snapshot.battle.step}</dd>
+            </div>
+          </dl>
+
+          <ul className="log">
+            {snapshot.battle.log.slice(-8).map((line, index) => (
+              <li key={`${String(index)}-${line}`}>{line}</li>
+            ))}
+          </ul>
+
+          <div className="controls">
+            {(snapshot.phase === 'LANDING' ? LANDING_COMMANDS : FIGHT_COMMANDS).map((command) => (
+              <button
+                className={`control${command === 'land' ? ' control--accent' : ''}`}
+                key={command}
+                type="button"
+                disabled={!allowed.includes(command)}
+                onClick={() => {
+                  send(command)
+                }}
+              >
+                {ACTION_LABELS[command]}
+              </button>
+            ))}
+          </div>
+
+          <button
+            className="control"
+            type="button"
+            onClick={() => {
+              setAuto((current) => !current)
+            }}
+          >
+            AUTO（おまかせ）: {auto ? 'ON' : 'OFF'}
+          </button>
+        </section>
+      )}
+
       <section className="panel">
         <h3 className="panel__subheading">操作</h3>
         <div className="controls">
-          {FIGHT_COMMANDS.map((command) => (
+          {PRE_FIGHT_COMMANDS.map((command) => (
             <button
               className={`control${command === 'hook' ? ' control--accent' : ''}`}
               key={command}

@@ -1,3 +1,4 @@
+import { suggestBattleCommand } from '../../src/domain/fishing/battle'
 import {
   isTerminalPhase,
   type FishingCommand,
@@ -14,8 +15,6 @@ import {
  * テンションを見て REEL と GIVE を切り替える。
  */
 
-const BALANCED_TENSION_LIMIT = 0.8
-
 export const balancedCommand = (snapshot: FishingSnapshot): FishingCommand => {
   if (snapshot.phase === 'IDLE') {
     return 'cast'
@@ -25,9 +24,18 @@ export const balancedCommand = (snapshot: FishingSnapshot): FishingCommand => {
     return 'hook'
   }
 
-  if (snapshot.phase === 'FIGHTING') {
-    const ratio = snapshot.tension / snapshot.maxTension
-    return snapshot.fish?.behavior === 'run' || ratio > BALANCED_TENSION_LIMIT ? 'give' : 'reel'
+  if (snapshot.phase === 'FIGHTING' || snapshot.phase === 'LANDING') {
+    /*
+     * Phase 10: Text Fishing Battle では 1 コマンド = 1 step。
+     * テンションと魚の行動を読んで選ぶ（連打では有利にならない）。
+     */
+    return suggestBattleCommand({
+      phase: snapshot.phase,
+      tension: snapshot.tension,
+      maxTension: snapshot.maxTension,
+      behaviour: snapshot.battle?.behaviour ?? null,
+      hookHold: snapshot.battle?.hookHold ?? 0,
+    })
   }
 
   return 'reel'
@@ -59,15 +67,27 @@ export const advanceUntil = (
   throw new Error(`condition was not reached within ${String(maxTicks)} ticks`)
 }
 
-/** 釣行が終わるまで操作と tick を繰り返す。 */
+/**
+ * 釣行が終わるまで進める。
+ *
+ * Phase 10 以降、FIGHTING / LANDING はコマンド駆動（完全ターン制）である。
+ * それ以外の段階は tick で自動的に進む。
+ */
 export const runFightToTerminal = (engine: FishingEngine, maxSteps = 4000): FightOutcome => {
   const events: FishingEvent[] = []
   let steps = 0
 
   while (!isTerminalPhase(engine.snapshot().phase) && steps < maxSteps) {
-    const outcome = engine.dispatch(balancedCommand(engine.snapshot()))
-    events.push(...outcome.events)
-    events.push(...engine.tick().events)
+    const snapshot = engine.snapshot()
+    const battlePhase = snapshot.phase === 'FIGHTING' || snapshot.phase === 'LANDING'
+
+    if (battlePhase || snapshot.phase === 'IDLE' || snapshot.phase === 'HOOK_WINDOW') {
+      const outcome = engine.dispatch(balancedCommand(snapshot))
+      events.push(...outcome.events)
+    } else {
+      events.push(...engine.tick().events)
+    }
+
     steps += 1
   }
 

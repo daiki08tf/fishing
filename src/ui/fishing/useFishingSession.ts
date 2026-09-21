@@ -241,6 +241,8 @@ export const useFishingSession = (): FishingSession => {
       seed: session.seed,
       spotId: spot.id,
       playerModifiers,
+      // Phase 10: Knowledge は予兆（telegraph）の文章精度にだけ効く。
+      knowledgeScore: spotKnowledgeScore(knowledge, String(spot.id)),
       ...(encounterProfile === undefined ? {} : { encounterProfile }),
     })
 
@@ -248,40 +250,41 @@ export const useFishingSession = (): FishingSession => {
     setSnapshot(engine.snapshot())
   }, [content, session, playerModifiers, encounterProfile, encounters, encountersKey, spot])
 
-  const isRunning = snapshot !== null && !isTerminalPhase(snapshot.phase)
+  /*
+   * Phase 10: FIGHTING / LANDING はコマンド駆動（完全ターン制）。
+   * tick は進めない（連打や待ち時間で有利にならない）。
+   */
+  const isRunning =
+    snapshot !== null &&
+    !isTerminalPhase(snapshot.phase) &&
+    snapshot.phase !== 'FIGHTING' &&
+    snapshot.phase !== 'LANDING'
 
-  useEffect(() => {
-    if (!isRunning) {
-      return
-    }
-
-    const engine = engineRef.current
-
-    if (engine === null) {
-      return
-    }
-
-    const interval = window.setInterval(() => {
-      const result = engine.tick()
-      setSnapshot(result.snapshot)
-
-      const ended = result.events.find((event) => SESSION_END_EVENTS.includes(event))
+  /*
+   * 釣行の終わり（LANDED / 失敗）を世界へ反映する。
+   *
+   * Phase 10: 取り込みは最後の 1 コマンド（LAND）で決まる。
+   * tick でもコマンドでも同じ処理を通すために 1 か所へまとめる。
+   */
+  const resolveSessionEnd = useCallback(
+    (events: readonly FishingEvent[], final: FishingSnapshot): void => {
+      const ended = events.find((event) => SESSION_END_EVENTS.includes(event))
 
       if (ended === undefined || spot === undefined) {
         return
       }
 
       const landed = ended === 'LANDED'
-      const individual = result.snapshot.fish?.individual
+      const individual = final.fish?.individual
 
       // LANDED のときだけ記録と成長を反映する。
       if (landed && individual !== undefined && content.ok) {
-        const species = content.value.speciesById[String(individual.speciesId)]
+        const caughtSpecies = content.value.speciesById[String(individual.speciesId)]
 
-        if (species !== undefined) {
+        if (caughtSpecies !== undefined) {
           recordCatch({
             individual,
-            species,
+            species: caughtSpecies,
             spotId: String(spot.id),
             capturedAt: new Date().toISOString(),
           })
@@ -297,22 +300,53 @@ export const useFishingSession = (): FishingSession => {
         xpGained,
         ...(landed && individual !== undefined ? { caughtLengthCm: individual.lengthCm } : {}),
       })
-    }, engine.tuning.tickMs)
+    },
+    [content, recordAttempt, recordCatch, spot],
+  )
 
-    return () => {
-      window.clearInterval(interval)
+  useEffect(() => {
+    if (!isRunning) {
+      return
     }
-  }, [isRunning, session, content, recordCatch, recordAttempt, spot, encountersKey])
 
-  const send = useCallback((command: FishingCommand) => {
     const engine = engineRef.current
 
     if (engine === null) {
       return
     }
 
-    setSnapshot(engine.dispatch(command).snapshot)
-  }, [])
+    const interval = window.setInterval(() => {
+      const result = engine.tick()
+      setSnapshot(result.snapshot)
+      resolveSessionEnd(result.events, result.snapshot)
+    }, engine.tuning.tickMs)
+
+    return () => {
+      window.clearInterval(interval)
+    }
+  }, [isRunning, session, encountersKey, resolveSessionEnd])
+
+  const send = useCallback(
+    (command: FishingCommand) => {
+      const engine = engineRef.current
+
+      if (engine === null) {
+        return
+      }
+
+      const outcome = engine.dispatch(command)
+      setSnapshot(outcome.snapshot)
+
+      /*
+       * Phase 10: FIGHTING / LANDING は tick では進まない。
+       * 最後の LAND もコマンドなので、ここでも終了処理を通す。
+       */
+      if (outcome.accepted) {
+        resolveSessionEnd(outcome.events, outcome.snapshot)
+      }
+    },
+    [resolveSessionEnd],
+  )
 
   const restart = useCallback((seed?: string) => {
     setSession((previous) => ({

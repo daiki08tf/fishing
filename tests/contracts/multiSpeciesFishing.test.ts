@@ -7,6 +7,7 @@ import {
   toRecordEntry,
 } from '../../src/domain/codex'
 import { FishingEngine } from '../../src/domain/fishing'
+import { NEUTRAL_FISHING_MODIFIERS } from '../../src/domain/fishing/PlayerFishingModifiers'
 import { asFishSpeciesId } from '../../src/domain/ids'
 import { createTestSpecies } from '../fixtures/species'
 import { runFightToTerminal } from '../fixtures/fishingPolicies'
@@ -20,6 +21,21 @@ import { runFightToTerminal } from '../fixtures/fishingPolicies'
  */
 
 const content = loadContentFromDirectory()
+
+/**
+ * 軽量タックル相当の倍率（Phase 10 の Text Battle は装備で結果が変わる）。
+ *
+ * 装備なし（neutral）だと大型魚はほぼ獲れないが、軽いタックルなら
+ * 「難しいが獲れる」になる。ここで見たいのは魚種ごとの分岐が無いことなので、
+ * 現実的なタックル相当の倍率で「どの魚種も獲れる」ことを確認する。
+ */
+const LIGHT_TACKLE_MODIFIERS = {
+  ...NEUTRAL_FISHING_MODIFIERS,
+  maxTensionMultiplier: 1.25,
+  reelEfficiencyMultiplier: 1.5,
+  giveEfficiencyMultiplier: 1.3,
+  landingStabilityMultiplier: 1.2,
+}
 
 describe('multi species fishing', () => {
   it('loads the sample species and builds encounters from the spot', () => {
@@ -37,10 +53,14 @@ describe('multi species fishing', () => {
        * 1 つの seed では大型個体が逃げることがある。
        * 「その魚種を獲れる」ことは、複数 seed のうち 1 回以上で確認する。
        */
-      const outcomes = ['multispecies', 'multispecies#2', 'multispecies#3'].map((seed) => {
+      const seeds = Array.from({ length: 8 }, (_, index) =>
+        index === 0 ? 'multispecies' : `multispecies#${String(index + 1)}`,
+      )
+      const outcomes = seeds.map((seed) => {
         const engine = new FishingEngine({
           encounters: [{ species, presence: 1 }],
           seed,
+          playerModifiers: LIGHT_TACKLE_MODIFIERS,
         })
 
         return { outcome: runFightToTerminal(engine), engine }
@@ -59,7 +79,7 @@ describe('multi species fishing', () => {
   })
 
   it('produces different fight lengths for different species', () => {
-    const ticks = new Set<number>()
+    const lengths = new Set<number>()
 
     for (const species of content.species) {
       const engine = new FishingEngine({
@@ -67,12 +87,12 @@ describe('multi species fishing', () => {
         seed: 'variety',
       })
 
-      runFightToTerminal(engine)
-      ticks.add(engine.snapshot().totalTicks)
+      // Phase 10: ファイトの長さは battle step（コマンド数）で見る。
+      lengths.add(runFightToTerminal(engine).steps)
     }
 
-    // サイズもスタミナも違うので、同じ tick 数にはならない。
-    expect(ticks.size).toBeGreaterThan(3)
+    // サイズもスタミナも違うので、同じ長さにはならない。
+    expect(lengths.size).toBeGreaterThan(3)
   })
 
   it('fights a species that was never part of the content', () => {
