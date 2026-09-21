@@ -1,0 +1,14 @@
+TAB NAME: brands.csv>
+index,BrandID,Name,JP_Name,Style,Specialty,Tagline,Tags,PriceBand,Differentiation,Status
+brand-shimara,Shimara,シマラ,Japan-style,総合 / 滑らかさ,滑らかさは、武器になる。,balanced|smooth-drag|precision,中〜高,ドラグ初動・巻きの滑らかさ・総合バランス,PROTOTYPE_PARODY
+brand-daiva,Daiva,ダイヴァ,Japan-style,軽量 / 高感度,感度の先へ。,lightweight|response|sensitivity,中〜高,軽量・低慣性・レスポンス,PROTOTYPE_PARODY
+brand-arvo-garsen,Arvo Garsen,アーヴォ・ガーセン,Global-style,剛性 / パワー,強さに妥協はいらない。,rigidity|torque|power,中,重めだが剛性・巻上トルク・高負荷安定性,PROTOTYPE_PARODY
+brand-gamakaze,Gamakaze,ガマカゼ,Japan-style,実戦 / フック / 磯,掛けて、獲る。,reliability|hooking|abrasion,中〜高,高負荷安定・フック・磯/餌釣り,PROTOTYPE_PARODY
+brand-major-crest,Major Crest,メジャークレスト,Japan-style,コスパ / 入門〜中級,信頼を、もっと身近に。,value|versatility|starter,低〜中,価格を抑えつつ実用性能を確保,PROTOTYPE_PARODY
+brand-tail-walker,Tail Walker,テイルウォーカー,Japan-style,ルアー / オフショア,水辺を、もっと遠くへ。,specialist|shore|offshore,中,特定釣法に尖ったモデル,PROTOTYPE_PARODY
+brand-evergreen-field,Evergreen Field,エバーグリーンフィールド,Japan-style,バス / ルアー / 高級,一投に、理由を。,precision|lure|high-end,高,操作系ルアー・高感度ロッド,PROTOTYPE_PARODY
+brand-megaburst,Megaburst,メガバースト,Japan-style,デザイン / ルアー,水を、デザインする。,design|action|casting,中〜高,アクション・外観・キャスト性能,PROTOTYPE_PARODY
+brand-yamashiro,Yamashiro,ヤマシロ,Japan-style,エギ / 海ルアー,潮を読む、形にする。,egi|salt-lure|presentation,中,エギ・海ルアー・プレゼンテーション,PROTOTYPE_PARODY
+brand-owners-edge,Owner's Edge,オーナーズエッジ,Japan-style,フック / 仕掛け,最後の一点で、逃がさない。,hook|terminal|reliability,低〜中,フック・ターミナルタックル,PROTOTYPE_PARODY
+brand-river-craft,River Craft,リバークラフト,Japan-style,渓流 / トラウト,流れを、読む。,trout|stream|finesse,中,渓流・トラウト・小型プラグに特化,PROTOTYPE_PARODY
+brand-blue-horizon,Blue Horizon,ブルーホライズン,Global-style,Big Game / Offshore,その先の一匹へ。,big-game|offshore|heavy,高,大型番手・オフショア・強度重視,PROTOTYPE_PARODY
