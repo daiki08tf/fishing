@@ -14,18 +14,19 @@ import { loadContentFromDirectory } from '../../src/content/load/nodeContent'
  */
 export const FIXTURE_CONTENT_ROOT = resolve(process.cwd(), 'tests/fixtures/content')
 
-/** 検証用魚種の id。テスト / simulation から名前で参照するための定数。 */
+/**
+ * 検証用魚種（サンプル魚 A〜J）のうち、テスト / simulation が名前で参照するもの。
+ * 他の検証用魚は、参照したいテストができたときにここへ足す。
+ */
 export const SAMPLE_SPECIES = {
+  /** サンプル魚 A。小型の基準。 */
   small: 'phase1-sample-fish',
-  lightSalt: 'phase2-sample-fish-b',
-  salt: 'phase2-sample-fish-c',
-  freshRiver: 'phase2-sample-fish-d',
+  /** サンプル魚 E。中型の基準（Text Battle の中型シナリオ）。 */
   bigSalt: 'phase2-sample-fish-e',
+  /** サンプル魚 F。小型淡水の基準（Text Battle の小型シナリオ）。 */
   smallFresh: 'phase2-sample-fish-f',
-  midSalt: 'phase2-sample-fish-g',
-  brackish: 'phase2-sample-fish-h',
+  /** サンプル魚 I。大型の基準（Tackle / Big Game の比較）。 */
   bigOffshore: 'phase2-sample-fish-i',
-  surf: 'phase2-sample-fish-j',
 } as const
 
 /** runtime Content + 検証用魚種。 */
