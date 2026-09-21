@@ -1,5 +1,4 @@
-TAB NAME: brands.csv>
-index,BrandID,Name,JP_Name,Style,Specialty,Tagline,Tags,PriceBand,Differentiation,Status
+BrandID,Name,JP_Name,Style,Specialty,Tagline,Tags,PriceBand,Differentiation,Status
 brand-shimara,Shimara,シマラ,Japan-style,総合 / 滑らかさ,滑らかさは、武器になる。,balanced|smooth-drag|precision,中〜高,ドラグ初動・巻きの滑らかさ・総合バランス,PROTOTYPE_PARODY
 brand-daiva,Daiva,ダイヴァ,Japan-style,軽量 / 高感度,感度の先へ。,lightweight|response|sensitivity,中〜高,軽量・低慣性・レスポンス,PROTOTYPE_PARODY
 brand-arvo-garsen,Arvo Garsen,アーヴォ・ガーセン,Global-style,剛性 / パワー,強さに妥協はいらない。,rigidity|torque|power,中,重めだが剛性・巻上トルク・高負荷安定性,PROTOTYPE_PARODY
