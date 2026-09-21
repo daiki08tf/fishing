@@ -1,0 +1,32 @@
+{
+  "id": "gamakaze-seiran-1000hg",
+  "name": "SEIRAN 1000HG",
+  "price": 7800,
+  "category": "reel",
+  "brandId": "gamakaze",
+  "seriesId": "gamakaze-seiran",
+  "reelType": "spinning",
+  "sizeClass": 1000,
+  "variant": "HG",
+  "size": 1000,
+  "gearRatio": 6,
+  "maxDragKg": 3.2,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 1.6,
+      "capacityM": 132
+    },
+    {
+      "lineStrengthKg": 4.8,
+      "capacityM": 44
+    }
+  ],
+  "retrieveCmPerTurn": 74,
+  "weightG": 175,
+  "smoothness": 0.62,
+  "control": 0.64,
+  "dragStartup": 0.66,
+  "rigidity": 0.66,
+  "windingTorque": 0.64,
+  "response": 0.59
+}

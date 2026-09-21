@@ -1,0 +1,7 @@
+{
+  "id": "new-zealand",
+  "name": "ニュージーランド",
+  "domestic": false,
+  "currency": { "code": "NZD", "symbol": "$" },
+  "dataStatus": "provisional"
+}

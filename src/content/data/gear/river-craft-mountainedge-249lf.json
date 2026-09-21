@@ -1,0 +1,21 @@
+{
+  "id": "river-craft-mountainedge-249lf",
+  "name": "MOUNTAINEDGE 249LF",
+  "price": 20500,
+  "category": "rod",
+  "brandId": "river-craft",
+  "seriesId": "river-craft-mountainedge",
+  "seriesCategory": "mebaring",
+  "lengthM": 2.49,
+  "power": "L",
+  "action": "fast",
+  "minLureWeightG": 1,
+  "maxLureWeightG": 8,
+  "recommendedLineMinKg": 2,
+  "recommendedLineMaxKg": 5,
+  "weightG": 148,
+  "sensitivity": 0.72,
+  "control": 0.7,
+  "fightingPower": 0.56,
+  "castingProfile": 0.56
+}

@@ -1,0 +1,21 @@
+{
+  "id": "shimara-solvia-155ulm",
+  "name": "SOLVIA 155ULM",
+  "price": 19300,
+  "category": "rod",
+  "brandId": "shimara",
+  "seriesId": "shimara-solvia",
+  "seriesCategory": "trout",
+  "lengthM": 1.55,
+  "power": "UL",
+  "action": "moderate",
+  "minLureWeightG": 1,
+  "maxLureWeightG": 7,
+  "recommendedLineMinKg": 1.5,
+  "recommendedLineMaxKg": 4,
+  "weightG": 127,
+  "sensitivity": 0.64,
+  "control": 0.7,
+  "fightingPower": 0.6,
+  "castingProfile": 0.35
+}

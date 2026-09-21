@@ -1,0 +1,32 @@
+{
+  "id": "gamakaze-kishin-6000pg",
+  "name": "KISHIN 6000PG",
+  "price": 38000,
+  "category": "reel",
+  "brandId": "gamakaze",
+  "seriesId": "gamakaze-kishin",
+  "reelType": "spinning",
+  "sizeClass": 6000,
+  "variant": "PG",
+  "size": 6000,
+  "gearRatio": 4.6,
+  "maxDragKg": 16.7,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 8.3,
+      "capacityM": 274
+    },
+    {
+      "lineStrengthKg": 25,
+      "capacityM": 91
+    }
+  ],
+  "retrieveCmPerTurn": 91,
+  "weightG": 348,
+  "smoothness": 0.62,
+  "control": 0.56,
+  "dragStartup": 0.66,
+  "rigidity": 0.74,
+  "windingTorque": 0.72,
+  "response": 0.59
+}

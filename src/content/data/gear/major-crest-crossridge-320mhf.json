@@ -1,0 +1,21 @@
+{
+  "id": "major-crest-crossridge-320mhf",
+  "name": "CROSSRIDGE 320MHF",
+  "price": 21800,
+  "category": "rod",
+  "brandId": "major-crest",
+  "seriesId": "major-crest-crossridge",
+  "seriesCategory": "surf",
+  "lengthM": 3.2,
+  "power": "MH",
+  "action": "fast",
+  "minLureWeightG": 15,
+  "maxLureWeightG": 60,
+  "recommendedLineMinKg": 10,
+  "recommendedLineMaxKg": 25,
+  "weightG": 200,
+  "sensitivity": 0.63,
+  "control": 0.58,
+  "fightingPower": 0.61,
+  "castingProfile": 0.78
+}

@@ -1,0 +1,19 @@
+{
+  "id": "blue-horizon-popper-90-flash",
+  "name": "Popper 90 Flash",
+  "price": 1400,
+  "category": "lure",
+  "brandId": "blue-horizon",
+  "seriesId": "blue-horizon-pelagic-x",
+  "lureType": "popper",
+  "weightG": 12,
+  "lengthMm": 90,
+  "depthRangeM": {
+    "min": 0,
+    "max": 0.5
+  },
+  "retrieveStyle": "pop",
+  "action": "pop",
+  "visualProfile": "flash",
+  "targetProfile": ["mid"]
+}

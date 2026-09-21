@@ -1,0 +1,18 @@
+{
+  "id": "tail-walker-stickbait-127-flash",
+  "name": "Stickbait 127 Flash",
+  "price": 2200,
+  "category": "lure",
+  "brandId": "tail-walker",
+  "lureType": "stickbait",
+  "weightG": 30,
+  "lengthMm": 127,
+  "depthRangeM": {
+    "min": 0,
+    "max": 1.5
+  },
+  "retrieveStyle": "sweep",
+  "action": "walk",
+  "visualProfile": "flash",
+  "targetProfile": ["large"]
+}

@@ -1,0 +1,32 @@
+{
+  "id": "shimara-vanedge-4000",
+  "name": "VANEDGE 4000",
+  "price": 20300,
+  "category": "reel",
+  "brandId": "shimara",
+  "seriesId": "shimara-vanedge",
+  "reelType": "spinning",
+  "sizeClass": 4000,
+  "variant": "STD",
+  "size": 4000,
+  "gearRatio": 5.2,
+  "maxDragKg": 10.3,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 5.2,
+      "capacityM": 258
+    },
+    {
+      "lineStrengthKg": 15.5,
+      "capacityM": 87
+    }
+  ],
+  "retrieveCmPerTurn": 99,
+  "weightG": 237,
+  "smoothness": 0.66,
+  "control": 0.68,
+  "dragStartup": 0.74,
+  "rigidity": 0.61,
+  "windingTorque": 0.6,
+  "response": 0.69
+}

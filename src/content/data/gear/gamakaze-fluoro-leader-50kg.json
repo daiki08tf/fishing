@@ -1,0 +1,14 @@
+{
+  "id": "gamakaze-fluoro-leader-50kg",
+  "name": "Fluoro Leader 50kg",
+  "price": 5100,
+  "category": "leader",
+  "brandId": "gamakaze",
+  "seriesId": "gamakaze-fluoro-leader",
+  "material": "fluorocarbon",
+  "strengthKg": 50,
+  "diameterMm": 0.707,
+  "abrasionResistance": 0.93,
+  "visibility": 0.34,
+  "lengthM": 1.5
+}

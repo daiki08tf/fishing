@@ -1,0 +1,32 @@
+{
+  "id": "shimara-stellion-18000hg",
+  "name": "STELLION 18000HG",
+  "price": 97000,
+  "category": "reel",
+  "brandId": "shimara",
+  "seriesId": "shimara-stellion",
+  "reelType": "spinning",
+  "sizeClass": 18000,
+  "variant": "HG",
+  "size": 18000,
+  "gearRatio": 5.7,
+  "maxDragKg": 28.8,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 14.4,
+      "capacityM": 629
+    },
+    {
+      "lineStrengthKg": 43.2,
+      "capacityM": 210
+    }
+  ],
+  "retrieveCmPerTurn": 159,
+  "weightG": 730,
+  "smoothness": 0.76,
+  "control": 0.46,
+  "dragStartup": 0.74,
+  "rigidity": 0.69,
+  "windingTorque": 0.6,
+  "response": 0.62
+}

@@ -1,0 +1,32 @@
+{
+  "id": "daiva-certex-20000hg",
+  "name": "CERTEX 20000HG",
+  "price": 107400,
+  "category": "reel",
+  "brandId": "daiva",
+  "seriesId": "daiva-certex",
+  "reelType": "spinning",
+  "sizeClass": 20000,
+  "variant": "HG",
+  "size": 20000,
+  "gearRatio": 5.7,
+  "maxDragKg": 29.7,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 14.8,
+      "capacityM": 703
+    },
+    {
+      "lineStrengthKg": 44.5,
+      "capacityM": 234
+    }
+  ],
+  "retrieveCmPerTurn": 174,
+  "weightG": 739,
+  "smoothness": 0.72,
+  "control": 0.46,
+  "dragStartup": 0.62,
+  "rigidity": 0.66,
+  "windingTorque": 0.58,
+  "response": 0.67
+}

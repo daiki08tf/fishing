@@ -1,0 +1,46 @@
+{
+  "id": "fixture-spot-0001",
+  "name": "検証用ダミー釣り場",
+  "regionId": "fixture-region-0001",
+  "environment": "fixture-environment",
+  "dataStatus": "provisional",
+  "travelOptions": [
+    {
+      "id": "fixture-train-route",
+      "transportTypes": ["train"],
+      "requiredCapabilities": ["public_transport"],
+      "features": [],
+      "baseMinutes": 30,
+      "distanceKm": 20,
+      "baseOneWayCost": 420
+    }
+  ],
+  "access": [
+    { "kind": "capability", "capability": "public_transport" },
+    { "kind": "season", "months": [4, 5, 6, 7, 8, 9, 10] },
+    { "kind": "knowledge", "minimum": 10 }
+  ],
+  "habitatTags": ["fixture-habitat-shallow", "fixture-habitat-pier"],
+  "depth": { "depthRangeM": { "min": 1, "max": 8 } },
+  "fishTable": [
+    {
+      "speciesId": "fixture-species-0001",
+      "basePresence": 1,
+      "time": { "periods": ["dawn", "evening"] }
+    }
+  ],
+  "regulations": ["fixture-regulation-0001"],
+  "knowledgeConfig": {
+    "reveals": [
+      { "field": "depth", "minKnowledge": 20 },
+      { "field": "season_pattern", "minKnowledge": 50 }
+    ]
+  },
+  "sourceRefs": [
+    {
+      "id": "fixture-source-0002",
+      "title": "検証用ダミー出典（釣り場）",
+      "publisher": "fixture-publisher"
+    }
+  ]
+}

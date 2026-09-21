@@ -1,0 +1,7 @@
+{
+  "id": "lure",
+  "name": "ルアー",
+  "description": "擬似餌を動かして食わせる。広く探れる。",
+  "requiresOffering": "lure",
+  "offeringTags": []
+}

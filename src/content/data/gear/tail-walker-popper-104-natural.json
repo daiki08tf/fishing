@@ -1,0 +1,18 @@
+{
+  "id": "tail-walker-popper-104-natural",
+  "name": "Popper 104 Natural",
+  "price": 2200,
+  "category": "lure",
+  "brandId": "tail-walker",
+  "lureType": "popper",
+  "weightG": 30,
+  "lengthMm": 104,
+  "depthRangeM": {
+    "min": 0,
+    "max": 0.5
+  },
+  "retrieveStyle": "pop",
+  "action": "pop",
+  "visualProfile": "natural",
+  "targetProfile": ["large"]
+}

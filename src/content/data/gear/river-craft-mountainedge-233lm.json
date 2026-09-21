@@ -1,0 +1,21 @@
+{
+  "id": "river-craft-mountainedge-233lm",
+  "name": "MOUNTAINEDGE 233LM",
+  "price": 22200,
+  "category": "rod",
+  "brandId": "river-craft",
+  "seriesId": "river-craft-mountainedge",
+  "seriesCategory": "trout",
+  "lengthM": 2.33,
+  "power": "L",
+  "action": "moderate",
+  "minLureWeightG": 2,
+  "maxLureWeightG": 12,
+  "recommendedLineMinKg": 2,
+  "recommendedLineMaxKg": 6,
+  "weightG": 144,
+  "sensitivity": 0.68,
+  "control": 0.7,
+  "fightingPower": 0.56,
+  "castingProfile": 0.52
+}

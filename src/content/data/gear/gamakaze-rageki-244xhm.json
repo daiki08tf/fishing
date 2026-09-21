@@ -1,0 +1,21 @@
+{
+  "id": "gamakaze-rageki-244xhm",
+  "name": "RAGEKI 244XHM",
+  "price": 37700,
+  "category": "rod",
+  "brandId": "gamakaze",
+  "seriesId": "gamakaze-rageki",
+  "seriesCategory": "big_game",
+  "lengthM": 2.44,
+  "power": "XH",
+  "action": "moderate",
+  "minLureWeightG": 60,
+  "maxLureWeightG": 200,
+  "recommendedLineMinKg": 25,
+  "recommendedLineMaxKg": 60,
+  "weightG": 182,
+  "sensitivity": 0.63,
+  "control": 0.64,
+  "fightingPower": 0.74,
+  "castingProfile": 0.55
+}

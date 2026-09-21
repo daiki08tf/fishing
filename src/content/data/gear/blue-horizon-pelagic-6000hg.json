@@ -1,0 +1,32 @@
+{
+  "id": "blue-horizon-pelagic-6000hg",
+  "name": "PELAGIC 6000HG",
+  "price": 37100,
+  "category": "reel",
+  "brandId": "blue-horizon",
+  "seriesId": "blue-horizon-pelagic",
+  "reelType": "spinning",
+  "sizeClass": 6000,
+  "variant": "HG",
+  "size": 6000,
+  "gearRatio": 5.7,
+  "maxDragKg": 16,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 8,
+      "capacityM": 285
+    },
+    {
+      "lineStrengthKg": 24,
+      "capacityM": 95
+    }
+  ],
+  "retrieveCmPerTurn": 119,
+  "weightG": 356,
+  "smoothness": 0.6,
+  "control": 0.52,
+  "dragStartup": 0.6,
+  "rigidity": 0.7,
+  "windingTorque": 0.71,
+  "response": 0.56
+}

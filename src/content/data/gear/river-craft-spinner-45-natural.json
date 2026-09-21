@@ -1,0 +1,19 @@
+{
+  "id": "river-craft-spinner-45-natural",
+  "name": "Spinner 45 Natural",
+  "price": 900,
+  "category": "lure",
+  "brandId": "river-craft",
+  "seriesId": "river-craft-flowminnow",
+  "lureType": "spinner",
+  "weightG": 2,
+  "lengthMm": 45,
+  "depthRangeM": {
+    "min": 0.5,
+    "max": 3.5
+  },
+  "retrieveStyle": "steady",
+  "action": "flutter",
+  "visualProfile": "natural",
+  "targetProfile": ["small"]
+}

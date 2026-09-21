@@ -1,0 +1,32 @@
+{
+  "id": "blue-horizon-abysspower-20000hg",
+  "name": "ABYSSPOWER 20000HG",
+  "price": 121500,
+  "category": "reel",
+  "brandId": "blue-horizon",
+  "seriesId": "blue-horizon-abysspower",
+  "reelType": "spinning",
+  "sizeClass": 20000,
+  "variant": "HG",
+  "size": 20000,
+  "gearRatio": 5.7,
+  "maxDragKg": 36.6,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 18.3,
+      "capacityM": 569
+    },
+    {
+      "lineStrengthKg": 54.9,
+      "capacityM": 190
+    }
+  ],
+  "retrieveCmPerTurn": 146,
+  "weightG": 886,
+  "smoothness": 0.6,
+  "control": 0.4,
+  "dragStartup": 0.6,
+  "rigidity": 0.78,
+  "windingTorque": 0.71,
+  "response": 0.56
+}

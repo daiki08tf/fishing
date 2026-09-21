@@ -1,0 +1,32 @@
+{
+  "id": "gamakaze-gokuto-5000",
+  "name": "GOKUTO 5000",
+  "price": 21400,
+  "category": "reel",
+  "brandId": "gamakaze",
+  "seriesId": "gamakaze-gokuto",
+  "reelType": "spinning",
+  "sizeClass": 5000,
+  "variant": "STD",
+  "size": 5000,
+  "gearRatio": 5.2,
+  "maxDragKg": 13,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 6.5,
+      "capacityM": 271
+    },
+    {
+      "lineStrengthKg": 19.5,
+      "capacityM": 90
+    }
+  ],
+  "retrieveCmPerTurn": 98,
+  "weightG": 294,
+  "smoothness": 0.62,
+  "control": 0.58,
+  "dragStartup": 0.66,
+  "rigidity": 0.66,
+  "windingTorque": 0.64,
+  "response": 0.59
+}

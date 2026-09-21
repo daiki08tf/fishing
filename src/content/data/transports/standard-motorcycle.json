@@ -1,0 +1,16 @@
+{
+  "id": "standard-motorcycle",
+  "name": "中古ミドルクラスバイク",
+  "transportType": "motorcycle",
+  "ownershipModel": "owned",
+  "purchasePrice": 280000,
+  "travelCostModel": { "kind": "per_km", "yenPerKm": 12, "minimumOneWayCost": 100 },
+  "travelTimeModifier": 0.55,
+  "maxRangeKm": 250,
+  "cargo": { "gearUnits": 2, "maxWeightKg": 20 },
+  "capabilities": ["road_access"],
+  "requiredRouteFeatures": [],
+  "launchCapability": "none",
+  "boatCapability": "none",
+  "passengerCapacity": 1
+}

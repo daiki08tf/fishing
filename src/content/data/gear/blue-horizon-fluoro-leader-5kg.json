@@ -1,0 +1,14 @@
+{
+  "id": "blue-horizon-fluoro-leader-5kg",
+  "name": "Fluoro Leader 5kg",
+  "price": 1300,
+  "category": "leader",
+  "brandId": "blue-horizon",
+  "seriesId": "blue-horizon-fluoro-leader",
+  "material": "fluorocarbon",
+  "strengthKg": 5,
+  "diameterMm": 0.224,
+  "abrasionResistance": 0.93,
+  "visibility": 0.34,
+  "lengthM": 1.5
+}

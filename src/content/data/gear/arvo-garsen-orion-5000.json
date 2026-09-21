@@ -1,0 +1,32 @@
+{
+  "id": "arvo-garsen-orion-5000",
+  "name": "ORION 5000",
+  "price": 12200,
+  "category": "reel",
+  "brandId": "arvo-garsen",
+  "seriesId": "arvo-garsen-orion",
+  "reelType": "spinning",
+  "sizeClass": 5000,
+  "variant": "STD",
+  "size": 5000,
+  "gearRatio": 5.2,
+  "maxDragKg": 13.1,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 6.5,
+      "capacityM": 271
+    },
+    {
+      "lineStrengthKg": 19.6,
+      "capacityM": 90
+    }
+  ],
+  "retrieveCmPerTurn": 92,
+  "weightG": 323,
+  "smoothness": 0.58,
+  "control": 0.53,
+  "dragStartup": 0.58,
+  "rigidity": 0.68,
+  "windingTorque": 0.68,
+  "response": 0.55
+}

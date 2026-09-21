@@ -1,0 +1,32 @@
+{
+  "id": "shimara-stellion-30000pg",
+  "name": "STELLION 30000PG",
+  "price": 126400,
+  "category": "reel",
+  "brandId": "shimara",
+  "seriesId": "shimara-stellion",
+  "reelType": "spinning",
+  "sizeClass": 30000,
+  "variant": "PG",
+  "size": 30000,
+  "gearRatio": 4.6,
+  "maxDragKg": 37.1,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 18.6,
+      "capacityM": 925
+    },
+    {
+      "lineStrengthKg": 55.7,
+      "capacityM": 309
+    }
+  ],
+  "retrieveCmPerTurn": 122,
+  "weightG": 949,
+  "smoothness": 0.76,
+  "control": 0.46,
+  "dragStartup": 0.74,
+  "rigidity": 0.69,
+  "windingTorque": 0.67,
+  "response": 0.62
+}

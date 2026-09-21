@@ -1,0 +1,42 @@
+{
+  "id": "hokkaido-coast",
+  "name": "北国の海岸（磯・沖）",
+  "regionId": "hokkaido",
+  "areaId": "hokkaido-east",
+  "environment": "bay_shore",
+  "dataStatus": "provisional",
+  "access": [],
+  "travelOptions": [
+    {
+      "id": "hokkaido-coast-walk",
+      "transportTypes": ["walk"],
+      "requiredCapabilities": ["reachable_on_foot"],
+      "features": [],
+      "baseMinutes": 40,
+      "distanceKm": 3,
+      "baseOneWayCost": 0
+    },
+    {
+      "id": "hokkaido-coast-road",
+      "transportTypes": ["rental_car"],
+      "requiredCapabilities": ["road_access"],
+      "features": ["vehicle_rental"],
+      "baseMinutes": 55,
+      "distanceKm": 38,
+      "baseOneWayCost": 0
+    }
+  ],
+  "habitatTags": ["hokkaido-sample-coast", "hokkaido-sample-surf"],
+  "depth": { "depthRangeM": { "min": 2, "max": 25 } },
+  "fishTable": [
+    { "speciesId": "hokkaido-masu-salmon", "basePresence": 0.35 },
+    { "speciesId": "phase2-sample-fish-c", "basePresence": 0.5 },
+    { "speciesId": "phase2-sample-fish-i", "basePresence": 0.3 }
+  ],
+  "knowledgeConfig": {
+    "reveals": [
+      { "field": "main_species", "minKnowledge": 20 },
+      { "field": "habitat", "minKnowledge": 50 }
+    ]
+  }
+}

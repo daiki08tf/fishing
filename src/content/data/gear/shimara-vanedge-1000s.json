@@ -1,0 +1,32 @@
+{
+  "id": "shimara-vanedge-1000s",
+  "name": "VANEDGE 1000S",
+  "price": 11500,
+  "category": "reel",
+  "brandId": "shimara",
+  "seriesId": "shimara-vanedge",
+  "reelType": "spinning",
+  "sizeClass": 1000,
+  "variant": "S",
+  "size": 1000,
+  "gearRatio": 5.2,
+  "maxDragKg": 3.1,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 1.6,
+      "capacityM": 116
+    },
+    {
+      "lineStrengthKg": 4.7,
+      "capacityM": 39
+    }
+  ],
+  "retrieveCmPerTurn": 64,
+  "weightG": 150,
+  "smoothness": 0.66,
+  "control": 0.72,
+  "dragStartup": 0.74,
+  "rigidity": 0.61,
+  "windingTorque": 0.6,
+  "response": 0.69
+}

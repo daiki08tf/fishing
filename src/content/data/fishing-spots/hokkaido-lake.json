@@ -1,0 +1,32 @@
+{
+  "id": "hokkaido-lake",
+  "name": "北国の湖（ヒメマス）",
+  "regionId": "hokkaido",
+  "areaId": "hokkaido-central",
+  "environment": "lake",
+  "dataStatus": "provisional",
+  "access": [{ "kind": "capability", "capability": "road_access" }],
+  "travelOptions": [
+    {
+      "id": "hokkaido-lake-road",
+      "transportTypes": ["rental_car"],
+      "requiredCapabilities": ["road_access"],
+      "features": ["vehicle_rental"],
+      "baseMinutes": 60,
+      "distanceKm": 40,
+      "baseOneWayCost": 0
+    }
+  ],
+  "habitatTags": ["hokkaido-sample-lake", "hokkaido-sample-deep"],
+  "depth": { "depthRangeM": { "min": 3, "max": 35 } },
+  "fishTable": [
+    { "speciesId": "hokkaido-ame-masu", "basePresence": 0.45 },
+    { "speciesId": "phase2-sample-fish-e", "basePresence": 0.5 }
+  ],
+  "knowledgeConfig": {
+    "reveals": [
+      { "field": "main_species", "minKnowledge": 20 },
+      { "field": "depth", "minKnowledge": 50 }
+    ]
+  }
+}

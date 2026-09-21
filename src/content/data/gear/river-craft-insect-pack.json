@@ -1,0 +1,10 @@
+{
+  "id": "river-craft-insect-pack",
+  "name": "Insect Pack",
+  "price": 2040,
+  "category": "bait",
+  "brandId": "river-craft",
+  "baitType": "insect",
+  "presentation": "drift/float",
+  "targetProfile": ["small", "mid"]
+}

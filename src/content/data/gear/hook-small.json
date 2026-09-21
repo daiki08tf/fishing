@@ -1,0 +1,14 @@
+{
+  "id": "hook-small",
+  "name": "小型フック 10番",
+  "price": 400,
+  "category": "hook",
+  "brandId": "owners-edge",
+  "seriesId": "legacy-hook-small",
+  "series": "SASAME",
+  "size": 10,
+  "strengthKg": 2.5,
+  "hookType": "single",
+  "penetration": 0.75,
+  "holdingPower": 0.4
+}

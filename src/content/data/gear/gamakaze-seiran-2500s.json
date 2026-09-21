@@ -1,0 +1,32 @@
+{
+  "id": "gamakaze-seiran-2500s",
+  "name": "SEIRAN 2500S",
+  "price": 9700,
+  "category": "reel",
+  "brandId": "gamakaze",
+  "seriesId": "gamakaze-seiran",
+  "reelType": "spinning",
+  "sizeClass": 2500,
+  "variant": "S",
+  "size": 2500,
+  "gearRatio": 5.2,
+  "maxDragKg": 5.4,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 2.7,
+      "capacityM": 229
+    },
+    {
+      "lineStrengthKg": 8.1,
+      "capacityM": 76
+    }
+  ],
+  "retrieveCmPerTurn": 74,
+  "weightG": 213,
+  "smoothness": 0.62,
+  "control": 0.62,
+  "dragStartup": 0.66,
+  "rigidity": 0.66,
+  "windingTorque": 0.64,
+  "response": 0.59
+}

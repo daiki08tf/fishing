@@ -1,0 +1,32 @@
+{
+  "id": "major-crest-crosslink-6000pg",
+  "name": "CROSSLINK 6000PG",
+  "price": 13800,
+  "category": "reel",
+  "brandId": "major-crest",
+  "seriesId": "major-crest-crosslink",
+  "reelType": "spinning",
+  "sizeClass": 6000,
+  "variant": "PG",
+  "size": 6000,
+  "gearRatio": 4.6,
+  "maxDragKg": 13.6,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 6.8,
+      "capacityM": 335
+    },
+    {
+      "lineStrengthKg": 20.4,
+      "capacityM": 112
+    }
+  ],
+  "retrieveCmPerTurn": 89,
+  "weightG": 358,
+  "smoothness": 0.55,
+  "control": 0.52,
+  "dragStartup": 0.55,
+  "rigidity": 0.58,
+  "windingTorque": 0.66,
+  "response": 0.58
+}

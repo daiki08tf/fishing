@@ -1,0 +1,8 @@
+{
+  "id": "tail-walker",
+  "name": "Tail Walker",
+  "description": "テイルウォーカー。ショア・オフショアなど特定の釣法に尖ったモデルを出す。（架空ブランド。検証用）",
+  "specialties": ["specialist", "shore", "offshore"],
+  "countryStyle": "japan_domestic",
+  "tagline": "水辺を、もっと遠くへ。"
+}

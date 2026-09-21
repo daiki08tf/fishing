@@ -1,0 +1,21 @@
+{
+  "id": "megaburst-levantis-271mlf",
+  "name": "LEVANTIS 271MLF",
+  "price": 32000,
+  "category": "rod",
+  "brandId": "megaburst",
+  "seriesId": "megaburst-levantis",
+  "seriesCategory": "eging",
+  "lengthM": 2.71,
+  "power": "ML",
+  "action": "fast",
+  "minLureWeightG": 5,
+  "maxLureWeightG": 25,
+  "recommendedLineMinKg": 4,
+  "recommendedLineMaxKg": 10,
+  "weightG": 159,
+  "sensitivity": 0.71,
+  "control": 0.67,
+  "fightingPower": 0.58,
+  "castingProfile": 0.61
+}

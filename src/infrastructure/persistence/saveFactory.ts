@@ -1,0 +1,91 @@
+import { emptyCodexState, type CodexState } from '../../domain/codex'
+import {
+  createInitialTransportState,
+  type PlayerTransportState,
+} from '../../domain/access/Transport'
+import { createInitialFinanceState, type FinanceState } from '../../domain/economy/FinanceState'
+import {
+  createInitialExpeditionState,
+  type ExpeditionState,
+} from '../../domain/expedition/Expedition'
+import { asGearId, asRegionId, asTransportId, type ShopItemId } from '../../domain/ids'
+import { emptyKnowledgeState } from '../../domain/knowledge/KnowledgeState'
+import type { KnowledgeState } from '../../domain/knowledge/KnowledgeState'
+import type { IsoDateTime } from '../../domain/primitives'
+import type { AnglerProgression } from '../../domain/progression/AnglerProgression'
+import { createInitialProgression } from '../../domain/progression/AnglerProgression'
+import { CURRENT_SAVE_SCHEMA_VERSION, type SaveGameV7 } from '../../domain/save/SaveGame'
+import {
+  createStarterInventory,
+  createStarterLoadout,
+  type Loadout,
+} from '../../domain/tackle/Loadout'
+import type { Inventory } from '../../domain/tackle/Inventory'
+import { createInitialWorld, type WorldState } from '../../domain/world/worldSession'
+import { DEFAULT_WORLD_TUNING } from '../../domain/world/WorldTuning'
+
+/**
+ * プレイヤーの状態から Save を組み立てる。
+ *
+ * ここは値を運ぶだけで、記録や成長のルールは持たない
+ * （Codex の中身は Domain が作ったものをそのまま入れる）。
+ * 開始時の資金・職種などは呼び出し側が決める。
+ */
+
+export type SaveSourceState = {
+  readonly progression: AnglerProgression
+  readonly codex: CodexState
+  readonly world: WorldState
+  readonly transport: PlayerTransportState
+  readonly expedition: ExpeditionState
+  readonly knowledge: KnowledgeState
+  readonly finance: FinanceState
+  readonly purchases?: readonly ShopItemId[]
+  readonly inventory: Inventory
+  readonly loadout: Loadout
+  /** 現在時刻。呼び出し側が渡す（Domain は時計を持たない）。 */
+  readonly now: IsoDateTime
+  /** 初回保存時のみ指定する。省略すると now を使う。 */
+  readonly createdAt?: IsoDateTime
+}
+
+export const createSave = (source: SaveSourceState): SaveGameV7 => ({
+  schemaVersion: CURRENT_SAVE_SCHEMA_VERSION,
+  createdAt: source.createdAt ?? source.now,
+  updatedAt: source.now,
+  progression: source.progression,
+  codex: source.codex,
+  world: source.world,
+  transport: source.transport,
+  expedition: source.expedition,
+  knowledge: source.knowledge,
+  finance: source.finance,
+  purchases: source.purchases ?? [],
+  inventory: source.inventory,
+  loadout: source.loadout,
+})
+
+/**
+ * PROVISIONAL — 新規プレイヤーの初期 Save。
+ *
+ * career / finance は Phase 5（仕事・経済）で正式に決まる。
+ * それまでは「まだ決まっていない」ことを示す中立な値で埋める
+ * （開始時の職種・資金は設計上の決定であり、ここで勝手に決めない）。
+ *
+ * knowledge は空から始める（Phase 4 で釣行・観察により増える）。
+ */
+export const createInitialSave = (options: { readonly now: IsoDateTime }): SaveGameV7 => ({
+  schemaVersion: CURRENT_SAVE_SCHEMA_VERSION,
+  createdAt: options.now,
+  updatedAt: options.now,
+  progression: createInitialProgression(),
+  codex: emptyCodexState(),
+  world: createInitialWorld(),
+  transport: createInitialTransportState(asTransportId),
+  expedition: createInitialExpeditionState(asRegionId(DEFAULT_WORLD_TUNING.homeRegionId)),
+  knowledge: emptyKnowledgeState(),
+  finance: createInitialFinanceState(),
+  purchases: [],
+  inventory: createStarterInventory(asGearId),
+  loadout: createStarterLoadout(asGearId),
+})

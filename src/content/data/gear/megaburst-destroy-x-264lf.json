@@ -1,0 +1,21 @@
+{
+  "id": "megaburst-destroy-x-264lf",
+  "name": "DESTROY-X 264LF",
+  "price": 31100,
+  "category": "rod",
+  "brandId": "megaburst",
+  "seriesId": "megaburst-destroy-x",
+  "seriesCategory": "eging",
+  "lengthM": 2.64,
+  "power": "L",
+  "action": "fast",
+  "minLureWeightG": 3,
+  "maxLureWeightG": 18,
+  "recommendedLineMinKg": 3,
+  "recommendedLineMaxKg": 8,
+  "weightG": 157,
+  "sensitivity": 0.71,
+  "control": 0.67,
+  "fightingPower": 0.58,
+  "castingProfile": 0.59
+}

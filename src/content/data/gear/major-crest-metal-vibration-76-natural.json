@@ -1,0 +1,18 @@
+{
+  "id": "major-crest-metal-vibration-76-natural",
+  "name": "Metal Vibration 76 Natural",
+  "price": 2100,
+  "category": "lure",
+  "brandId": "major-crest",
+  "lureType": "metal_vibration",
+  "weightG": 28,
+  "lengthMm": 76,
+  "depthRangeM": {
+    "min": 4,
+    "max": 15
+  },
+  "retrieveStyle": "steady/lift-fall",
+  "action": "vibration",
+  "visualProfile": "natural",
+  "targetProfile": ["large"]
+}

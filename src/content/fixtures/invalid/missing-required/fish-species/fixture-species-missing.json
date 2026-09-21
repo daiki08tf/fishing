@@ -1,0 +1,9 @@
+{
+  "id": "fixture-species-missing",
+  "japaneseName": "必須項目欠落のダミー種",
+  "waterTypes": ["salt"],
+  "distribution": ["fixture-region-0001"],
+  "habitats": [],
+  "fightProfile": { "strength": 0.2, "stamina": 0.2, "speed": 0.2 },
+  "rarity": 1
+}

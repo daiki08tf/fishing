@@ -1,0 +1,7 @@
+{
+  "id": "mexico",
+  "name": "メキシコ",
+  "domestic": false,
+  "currency": { "code": "MXN", "symbol": "$" },
+  "dataStatus": "provisional"
+}

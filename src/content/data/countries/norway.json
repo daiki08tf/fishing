@@ -1,0 +1,7 @@
+{
+  "id": "norway",
+  "name": "ノルウェー",
+  "domestic": false,
+  "currency": { "code": "NOK", "symbol": "kr" },
+  "dataStatus": "provisional"
+}

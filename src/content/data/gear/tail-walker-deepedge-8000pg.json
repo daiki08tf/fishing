@@ -1,0 +1,32 @@
+{
+  "id": "tail-walker-deepedge-8000pg",
+  "name": "DEEPEDGE 8000PG",
+  "price": 38700,
+  "category": "reel",
+  "brandId": "tail-walker",
+  "seriesId": "tail-walker-deepedge",
+  "reelType": "spinning",
+  "sizeClass": 8000,
+  "variant": "PG",
+  "size": 8000,
+  "gearRatio": 4.6,
+  "maxDragKg": 20.8,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 10.4,
+      "capacityM": 312
+    },
+    {
+      "lineStrengthKg": 31.2,
+      "capacityM": 104
+    }
+  ],
+  "retrieveCmPerTurn": 92,
+  "weightG": 460,
+  "smoothness": 0.58,
+  "control": 0.48,
+  "dragStartup": 0.58,
+  "rigidity": 0.72,
+  "windingTorque": 0.74,
+  "response": 0.58
+}

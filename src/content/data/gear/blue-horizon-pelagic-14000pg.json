@@ -1,0 +1,32 @@
+{
+  "id": "blue-horizon-pelagic-14000pg",
+  "name": "PELAGIC 14000PG",
+  "price": 77300,
+  "category": "reel",
+  "brandId": "blue-horizon",
+  "seriesId": "blue-horizon-pelagic",
+  "reelType": "spinning",
+  "sizeClass": 14000,
+  "variant": "PG",
+  "size": 14000,
+  "gearRatio": 4.6,
+  "maxDragKg": 29.4,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 14.7,
+      "capacityM": 454
+    },
+    {
+      "lineStrengthKg": 44.1,
+      "capacityM": 151
+    }
+  ],
+  "retrieveCmPerTurn": 100,
+  "weightG": 710,
+  "smoothness": 0.6,
+  "control": 0.4,
+  "dragStartup": 0.6,
+  "rigidity": 0.7,
+  "windingTorque": 0.79,
+  "response": 0.56
+}

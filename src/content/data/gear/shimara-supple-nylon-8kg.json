@@ -1,0 +1,15 @@
+{
+  "id": "shimara-supple-nylon-8kg",
+  "name": "SUPPLE NYLON 8kg",
+  "price": 1800,
+  "category": "line",
+  "brandId": "shimara",
+  "seriesId": "shimara-supple-nylon",
+  "lineType": "nylon",
+  "strengthKg": 8,
+  "diameterMm": 0.297,
+  "stretch": 0.86,
+  "abrasionResistance": 0.68,
+  "visibility": 0.5,
+  "sensitivity": 0.74
+}

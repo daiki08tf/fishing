@@ -1,0 +1,10 @@
+{
+  "id": "yamashiro-squid-strip",
+  "name": "Squid Strip",
+  "price": 1060,
+  "category": "bait",
+  "brandId": "yamashiro",
+  "baitType": "squid",
+  "presentation": "bottom",
+  "targetProfile": ["mid", "large"]
+}

@@ -1,0 +1,19 @@
+{
+  "id": "yamashiro-soft-plastic-93-natural",
+  "name": "Soft Plastic 93 Natural",
+  "price": 1500,
+  "category": "lure",
+  "brandId": "yamashiro",
+  "seriesId": "yamashiro-marinebeat",
+  "lureType": "soft_plastic",
+  "weightG": 10,
+  "lengthMm": 93,
+  "depthRangeM": {
+    "min": 1,
+    "max": 20
+  },
+  "retrieveStyle": "jighead/texas",
+  "action": "fall",
+  "visualProfile": "natural",
+  "targetProfile": ["mid"]
+}

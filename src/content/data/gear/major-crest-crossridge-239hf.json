@@ -1,0 +1,21 @@
+{
+  "id": "major-crest-crossridge-239hf",
+  "name": "CROSSRIDGE 239HF",
+  "price": 26900,
+  "category": "rod",
+  "brandId": "major-crest",
+  "seriesId": "major-crest-crossridge",
+  "seriesCategory": "casting",
+  "lengthM": 2.39,
+  "power": "H",
+  "action": "fast",
+  "minLureWeightG": 30,
+  "maxLureWeightG": 120,
+  "recommendedLineMinKg": 15,
+  "recommendedLineMaxKg": 40,
+  "weightG": 187,
+  "sensitivity": 0.63,
+  "control": 0.62,
+  "fightingPower": 0.66,
+  "castingProfile": 0.54
+}

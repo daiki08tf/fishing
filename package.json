@@ -1,0 +1,58 @@
+{
+  "name": "fishing",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Fishing - a realistic modern-Japan fishing hack-and-slash game.",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "dev:host": "vite --host",
+    "build": "tsc --noEmit -p tsconfig.json && vite build",
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.domain.json",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "validate:content": "tsx scripts/validate-content.ts",
+    "simulate:fishing": "tsx scripts/simulate-fishing.ts",
+    "sample:individuals": "tsx scripts/sample-individuals.ts",
+    "simulate:progression": "tsx scripts/simulate-progression.ts",
+    "simulate:trip": "tsx scripts/simulate-trip.ts",
+    "simulate:day": "tsx scripts/simulate-day.ts",
+    "simulate:tackle": "tsx scripts/simulate-tackle.ts",
+    "simulate:catalog": "tsx scripts/simulate-catalog.ts",
+    "simulate:transport": "tsx scripts/simulate-transport.ts",
+    "simulate:expedition": "tsx scripts/simulate-expedition.ts",
+    "simulate:environment": "tsx scripts/simulate-environment.ts",
+    "simulate:big-game": "tsx scripts/simulate-big-game.ts",
+    "check": "npm run typecheck && npm run lint && npm run format:check && npm run validate:content && npm run test:run && npm run build"
+  },
+  "dependencies": {
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "zod": "^4.6.5",
+    "zustand": "^5.0.15"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^26.6.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.1",
+    "eslint": "^10.11.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.7",
+    "globals": "^17.12.0",
+    "prettier": "^3.9.8",
+    "tsx": "^4.23.15",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.70.0",
+    "vite": "^8.3.0",
+    "vitest": "^5.0.1"
+  }
+}

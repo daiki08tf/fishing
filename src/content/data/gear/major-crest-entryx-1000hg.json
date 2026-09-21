@@ -1,0 +1,32 @@
+{
+  "id": "major-crest-entryx-1000hg",
+  "name": "ENTRYX 1000HG",
+  "price": 4000,
+  "category": "reel",
+  "brandId": "major-crest",
+  "seriesId": "major-crest-entryx",
+  "reelType": "spinning",
+  "sizeClass": 1000,
+  "variant": "HG",
+  "size": 1000,
+  "gearRatio": 6,
+  "maxDragKg": 2.8,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 1.4,
+      "capacityM": 151
+    },
+    {
+      "lineStrengthKg": 4.2,
+      "capacityM": 50
+    }
+  ],
+  "retrieveCmPerTurn": 73,
+  "weightG": 180,
+  "smoothness": 0.55,
+  "control": 0.61,
+  "dragStartup": 0.55,
+  "rigidity": 0.58,
+  "windingTorque": 0.59,
+  "response": 0.58
+}

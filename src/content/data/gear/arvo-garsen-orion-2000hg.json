@@ -1,0 +1,32 @@
+{
+  "id": "arvo-garsen-orion-2000hg",
+  "name": "ORION 2000HG",
+  "price": 6700,
+  "category": "reel",
+  "brandId": "arvo-garsen",
+  "seriesId": "arvo-garsen-orion",
+  "reelType": "spinning",
+  "sizeClass": 2000,
+  "variant": "HG",
+  "size": 2000,
+  "gearRatio": 6,
+  "maxDragKg": 4.4,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 2.2,
+      "capacityM": 241
+    },
+    {
+      "lineStrengthKg": 6.6,
+      "capacityM": 80
+    }
+  ],
+  "retrieveCmPerTurn": 77,
+  "weightG": 204,
+  "smoothness": 0.58,
+  "control": 0.59,
+  "dragStartup": 0.58,
+  "rigidity": 0.68,
+  "windingTorque": 0.68,
+  "response": 0.55
+}

@@ -1,0 +1,21 @@
+{
+  "id": "gamakaze-rageki-320xhm",
+  "name": "RAGEKI 320XHM",
+  "price": 34300,
+  "category": "rod",
+  "brandId": "gamakaze",
+  "seriesId": "gamakaze-rageki",
+  "seriesCategory": "shore_jigging",
+  "lengthM": 3.2,
+  "power": "XH",
+  "action": "moderate",
+  "minLureWeightG": 50,
+  "maxLureWeightG": 150,
+  "recommendedLineMinKg": 20,
+  "recommendedLineMaxKg": 45,
+  "weightG": 205,
+  "sensitivity": 0.63,
+  "control": 0.61,
+  "fightingPower": 0.74,
+  "castingProfile": 0.78
+}

@@ -1,0 +1,19 @@
+{
+  "id": "yamashiro-small-jig-45-natural",
+  "name": "Small Jig 45 Natural",
+  "price": 1200,
+  "category": "lure",
+  "brandId": "yamashiro",
+  "seriesId": "yamashiro-marinebeat",
+  "lureType": "jig",
+  "weightG": 3,
+  "lengthMm": 45,
+  "depthRangeM": {
+    "min": 2,
+    "max": 8
+  },
+  "retrieveStyle": "jerk/fall",
+  "action": "slide",
+  "visualProfile": "natural",
+  "targetProfile": ["small"]
+}

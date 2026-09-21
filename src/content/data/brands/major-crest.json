@@ -1,0 +1,8 @@
+{
+  "id": "major-crest",
+  "name": "Major Crest",
+  "description": "メジャークレスト。価格を抑えつつ実用性能を確保する入門〜中級向け。（架空ブランド。検証用）",
+  "specialties": ["value", "versatility", "starter"],
+  "countryStyle": "japan_domestic",
+  "tagline": "信頼を、もっと身近に。"
+}

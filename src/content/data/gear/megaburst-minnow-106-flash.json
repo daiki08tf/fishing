@@ -1,0 +1,19 @@
+{
+  "id": "megaburst-minnow-106-flash",
+  "name": "Minnow 106 Flash",
+  "price": 1900,
+  "category": "lure",
+  "brandId": "megaburst",
+  "seriesId": "megaburst-visionarc",
+  "lureType": "minnow",
+  "weightG": 14,
+  "lengthMm": 106,
+  "depthRangeM": {
+    "min": 0.5,
+    "max": 3.5
+  },
+  "retrieveStyle": "steady/twitch",
+  "action": "dart",
+  "visualProfile": "flash",
+  "targetProfile": ["mid"]
+}

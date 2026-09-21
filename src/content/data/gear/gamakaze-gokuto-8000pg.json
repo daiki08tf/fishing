@@ -1,0 +1,32 @@
+{
+  "id": "gamakaze-gokuto-8000pg",
+  "name": "GOKUTO 8000PG",
+  "price": 37800,
+  "category": "reel",
+  "brandId": "gamakaze",
+  "seriesId": "gamakaze-gokuto",
+  "reelType": "spinning",
+  "sizeClass": 8000,
+  "variant": "PG",
+  "size": 8000,
+  "gearRatio": 4.6,
+  "maxDragKg": 20,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 10,
+      "capacityM": 325
+    },
+    {
+      "lineStrengthKg": 30,
+      "capacityM": 108
+    }
+  ],
+  "retrieveCmPerTurn": 94,
+  "weightG": 451,
+  "smoothness": 0.62,
+  "control": 0.51,
+  "dragStartup": 0.66,
+  "rigidity": 0.66,
+  "windingTorque": 0.72,
+  "response": 0.59
+}

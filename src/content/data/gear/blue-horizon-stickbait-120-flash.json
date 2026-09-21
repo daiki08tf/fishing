@@ -1,0 +1,19 @@
+{
+  "id": "blue-horizon-stickbait-120-flash",
+  "name": "Stickbait 120 Flash",
+  "price": 1800,
+  "category": "lure",
+  "brandId": "blue-horizon",
+  "seriesId": "blue-horizon-pelagic-x",
+  "lureType": "stickbait",
+  "weightG": 20,
+  "lengthMm": 120,
+  "depthRangeM": {
+    "min": 0,
+    "max": 1.5
+  },
+  "retrieveStyle": "sweep",
+  "action": "walk",
+  "visualProfile": "flash",
+  "targetProfile": ["mid"]
+}

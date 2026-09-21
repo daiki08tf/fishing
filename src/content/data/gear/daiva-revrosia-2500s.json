@@ -1,0 +1,32 @@
+{
+  "id": "daiva-revrosia-2500s",
+  "name": "REVROSIA 2500S",
+  "price": 8600,
+  "category": "reel",
+  "brandId": "daiva",
+  "seriesId": "daiva-revrosia",
+  "reelType": "spinning",
+  "sizeClass": 2500,
+  "variant": "S",
+  "size": 2500,
+  "gearRatio": 5.2,
+  "maxDragKg": 5,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 2.5,
+      "capacityM": 247
+    },
+    {
+      "lineStrengthKg": 7.5,
+      "capacityM": 82
+    }
+  ],
+  "retrieveCmPerTurn": 84,
+  "weightG": 190,
+  "smoothness": 0.62,
+  "control": 0.66,
+  "dragStartup": 0.62,
+  "rigidity": 0.59,
+  "windingTorque": 0.58,
+  "response": 0.67
+}

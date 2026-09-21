@@ -1,0 +1,10 @@
+{
+  "id": "owners-edge-sandworm-pack",
+  "name": "Sandworm Pack",
+  "price": 1760,
+  "category": "bait",
+  "brandId": "owners-edge",
+  "baitType": "sandworm",
+  "presentation": "bottom",
+  "targetProfile": ["small", "mid"]
+}

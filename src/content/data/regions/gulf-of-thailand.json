@@ -1,0 +1,31 @@
+{
+  "id": "gulf-of-thailand",
+  "countryId": "thailand",
+  "name": "タイランド湾",
+  "stage": "planned",
+  "dataStatus": "provisional",
+  "base": {
+    "id": "thailand-base",
+    "name": "Gulf Fishing Base",
+    "areaId": "gulf-island"
+  },
+  "areas": [
+    {
+      "id": "gulf-island",
+      "name": "Island / Coastal"
+    }
+  ],
+  "climate": {
+    "annualMeanWaterC": 28,
+    "seasonalSwingC": 3,
+    "weatherWeights": {
+      "clear": 30,
+      "cloudy": 30,
+      "light_rain": 18,
+      "rain": 18,
+      "windy": 4
+    },
+    "tidePhaseOffset": 0.15,
+    "tideRange": "small"
+  }
+}

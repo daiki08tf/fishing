@@ -1,0 +1,19 @@
+{
+  "id": "river-craft-small-plug-45-natural",
+  "name": "Small Plug 45 Natural",
+  "price": 900,
+  "category": "lure",
+  "brandId": "river-craft",
+  "seriesId": "river-craft-flowminnow",
+  "lureType": "minnow",
+  "weightG": 2,
+  "lengthMm": 45,
+  "depthRangeM": {
+    "min": 0.3,
+    "max": 2
+  },
+  "retrieveStyle": "steady/twitch",
+  "action": "dart",
+  "visualProfile": "natural",
+  "targetProfile": ["small"]
+}

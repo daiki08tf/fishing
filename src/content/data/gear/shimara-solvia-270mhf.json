@@ -1,0 +1,21 @@
+{
+  "id": "shimara-solvia-270mhf",
+  "name": "SOLVIA 270MHF",
+  "price": 31200,
+  "category": "rod",
+  "brandId": "shimara",
+  "seriesId": "shimara-solvia",
+  "seriesCategory": "light_shore_jigging",
+  "lengthM": 2.7,
+  "power": "MH",
+  "action": "fast",
+  "minLureWeightG": 15,
+  "maxLureWeightG": 60,
+  "recommendedLineMinKg": 10,
+  "recommendedLineMaxKg": 25,
+  "weightG": 170,
+  "sensitivity": 0.68,
+  "control": 0.66,
+  "fightingPower": 0.65,
+  "castingProfile": 0.66
+}

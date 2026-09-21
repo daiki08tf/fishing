@@ -1,0 +1,19 @@
+{
+  "id": "yamashiro-minnow-92-flash",
+  "name": "Minnow 92 Flash",
+  "price": 1400,
+  "category": "lure",
+  "brandId": "yamashiro",
+  "seriesId": "yamashiro-marinebeat",
+  "lureType": "minnow",
+  "weightG": 7,
+  "lengthMm": 92,
+  "depthRangeM": {
+    "min": 0.5,
+    "max": 3.5
+  },
+  "retrieveStyle": "steady/twitch",
+  "action": "dart",
+  "visualProfile": "flash",
+  "targetProfile": ["small"]
+}

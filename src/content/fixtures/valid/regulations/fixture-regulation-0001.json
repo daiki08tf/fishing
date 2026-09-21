@@ -1,0 +1,14 @@
+{
+  "id": "fixture-regulation-0001",
+  "type": "closed_season",
+  "regionId": "fixture-region-0001",
+  "months": [1, 2],
+  "validFrom": "2026-01-01",
+  "sourceRefs": [
+    {
+      "id": "fixture-source-0003",
+      "title": "検証用ダミー出典（規則）",
+      "verifiedAt": "2026-01-01"
+    }
+  ]
+}

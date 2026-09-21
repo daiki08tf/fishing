@@ -1,0 +1,18 @@
+{
+  "id": "daiva-soft-plastic-72-flash",
+  "name": "Soft Plastic 72 Flash",
+  "price": 900,
+  "category": "lure",
+  "brandId": "daiva",
+  "lureType": "soft_plastic",
+  "weightG": 3,
+  "lengthMm": 72,
+  "depthRangeM": {
+    "min": 1,
+    "max": 20
+  },
+  "retrieveStyle": "jighead/texas",
+  "action": "fall",
+  "visualProfile": "flash",
+  "targetProfile": ["small"]
+}

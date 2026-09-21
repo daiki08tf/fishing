@@ -1,0 +1,308 @@
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import type { EncounterCandidate } from '../../domain/encounter/encounterEngine'
+import {
+  FishingEngine,
+  isTerminalPhase,
+  type FishingCommand,
+  type FishingSnapshot,
+} from '../../domain/fishing'
+import type { FishingEvent } from '../../domain/fishing'
+import { resolveFishingModifiers } from '../../domain/progression'
+import { resolveEnvironment, resolveFishingConditions } from '../../domain/environment'
+import type { EnvironmentSnapshot, FishingConditions } from '../../domain/environment'
+import { bestFishFinderOf, composeFishingModifiers, resolveTackle } from '../../domain/tackle'
+import type { FishSpecies } from '../../domain/fish/FishSpecies'
+import { spotKnowledgeScore } from '../../domain/knowledge/spotKnowledge'
+import { NEUTRAL_FISHING_MODIFIERS } from '../../domain/fishing/PlayerFishingModifiers'
+import { usePlayerStore } from '../../state/playerStore'
+import { useContentOrError } from '../world/useContentOrError'
+
+/**
+ * 釣行 1 回分のセッション。
+ *
+ * どの魚が釣れるかは「今いる Spot の fishTable」で決まる。
+ * FishingEngine 自身は Spot を知らない（Encounter 候補を渡されるだけ）。
+ *
+ * 1 回の釣り（キャスト〜結果）が終わったら、その結果を World へ返す:
+ *   時間が進み、Knowledge が増える（釣れなくても）。
+ */
+
+/** 1 回の釣りが終わったことを示すイベント。 */
+const SESSION_END_EVENTS: readonly FishingEvent[] = [
+  'LANDED',
+  'HOOK_MISSED',
+  'HOOK_ESCAPE',
+  'LINE_BREAK',
+  'NO_BITE',
+]
+
+export type FishingSession = {
+  readonly contentError: string | null
+  readonly snapshot: FishingSnapshot | null
+  readonly spotName: string | null
+  /** Phase 9: 今の環境と釣況（UI 表示用）。 */
+  readonly environment: EnvironmentSnapshot | null
+  readonly conditions: FishingConditions | null
+  /** このセッションの seed。同じ seed なら同じ経過を再現できる。 */
+  readonly seed: string
+  readonly send: (command: FishingCommand) => void
+  /** 新しい seed でやり直す。seed を渡すと同じ経過を再挑戦できる。 */
+  readonly restart: (seed?: string) => void
+}
+
+const createSessionSeed = (): string => `s${Date.now().toString(36)}`
+
+export const useFishingSession = (): FishingSession => {
+  const [session, setSession] = useState(() => ({ seed: createSessionSeed(), nonce: 0 }))
+  const engineRef = useRef<FishingEngine | null>(null)
+  const [snapshot, setSnapshot] = useState<FishingSnapshot | null>(null)
+
+  const content = useContentOrError()
+  const world = usePlayerStore((state) => state.world)
+  const progression = usePlayerStore((state) => state.progression)
+  const loadout = usePlayerStore((state) => state.loadout)
+  const inventory = usePlayerStore((state) => state.inventory)
+  const knowledge = usePlayerStore((state) => state.knowledge)
+  const lastSearch = usePlayerStore((state) => state.lastSearch)
+  const recordCatch = usePlayerStore((state) => state.recordCatch)
+  const recordAttempt = usePlayerStore((state) => state.recordAttempt)
+
+  const spot = useMemo(() => {
+    if (!content.ok || world.currentSpotId === null) {
+      return undefined
+    }
+
+    return content.value.spots.find((entry) => entry.id === world.currentSpotId)
+  }, [content, world.currentSpotId])
+
+  /** 今いる Spot の魚種（Encounter 候補の元）。 */
+  const species = useMemo<readonly FishSpecies[]>(() => {
+    if (!content.ok || spot === undefined) {
+      return []
+    }
+
+    return spot.fishTable.flatMap((occurrence) => {
+      const found = content.value.speciesById[String(occurrence.speciesId)]
+      return found === undefined ? [] : [found]
+    })
+  }, [content, spot])
+
+  // 技量は Progression 側で解決する。
+  const skillModifiers = useMemo(
+    () =>
+      resolveFishingModifiers({
+        skills: progression.skills,
+        perks: progression.unlockedPerks,
+      }),
+    [progression.skills, progression.unlockedPerks],
+  )
+
+  /*
+   * 装備は Tackle 側で解決する。
+   * Engine へは「合成済みの倍率」と「Encounter の重み付け」だけを渡し、
+   * Gear の名前もカテゴリも見せない。
+   */
+  const tackle = useMemo(() => {
+    if (!content.ok) {
+      return null
+    }
+
+    return resolveTackle({
+      loadout,
+      gear: content.value.gear,
+      methods: content.value.methods,
+    })
+  }, [content, loadout])
+
+  /*
+   * Phase 9: 環境（季節 / 時間 / 天候 / 潮 / 水）を解決し、
+   * 釣況（Encounter 重み・Fight 倍率）へ写す。
+   * Engine へは解決済みの数値だけを渡す（雨・潮・国は見せない）。
+   */
+  const environment = useMemo(() => {
+    if (!content.ok || spot === undefined) {
+      return null
+    }
+
+    const region = content.value.regionById[String(spot.regionId)]
+
+    if (region === undefined) {
+      return null
+    }
+
+    return resolveEnvironment({
+      time: world.time,
+      climate: region.climate,
+      regionId: String(region.id),
+      environment: spot.environment,
+    })
+  }, [content, spot, world.time])
+
+  const finder = content.ok ? bestFishFinderOf(inventory, content.value.gear) : null
+  const searchSign =
+    lastSearch !== null && spot !== undefined && lastSearch.spotId === String(spot.id)
+      ? lastSearch.sign
+      : null
+
+  const conditions = useMemo(() => {
+    if (environment === null) {
+      return null
+    }
+
+    return resolveFishingConditions({
+      environment,
+      species,
+      tackleModifiers: tackle?.playerModifiers ?? NEUTRAL_FISHING_MODIFIERS,
+      hasFishFinder: finder !== null,
+      searchSign,
+      knowledgeScore: spot === undefined ? 0 : spotKnowledgeScore(knowledge, String(spot.id)),
+    })
+  }, [environment, species, tackle, finder, searchSign, knowledge, spot])
+
+  // 今いる Spot の魚種だけが Encounter 候補になる（環境の重みを掛ける）。
+  const encounters = useMemo<readonly EncounterCandidate[]>(() => {
+    if (spot === undefined) {
+      return []
+    }
+
+    return spot.fishTable.flatMap((occurrence) => {
+      const found = species.find((entry) => entry.id === occurrence.speciesId)
+
+      if (found === undefined) {
+        return []
+      }
+
+      const environmentWeight = conditions?.speciesModifiers[String(found.id)] ?? 1
+
+      return [{ species: found, presence: occurrence.basePresence * environmentWeight }]
+    })
+  }, [spot, species, conditions])
+
+  const playerModifiers = useMemo(() => {
+    const base =
+      tackle === null
+        ? skillModifiers
+        : composeFishingModifiers(skillModifiers, tackle.playerModifiers)
+
+    return conditions === null ? base : composeFishingModifiers(base, conditions.playerModifiers)
+  }, [skillModifiers, tackle, conditions])
+
+  const encounterProfile = useMemo(() => {
+    if (tackle === null) {
+      return undefined
+    }
+
+    return {
+      methodId: tackle.encounterProfile.methodId,
+      offeringTags: tackle.encounterProfile.offeringTags,
+      biteAffinity:
+        tackle.encounterProfile.biteAffinity * (conditions?.biteAffinityMultiplier ?? 1),
+    }
+  }, [tackle, conditions])
+
+  const encountersKey = spot === undefined ? 'none' : String(spot.id)
+
+  // セッション開始（Spot・seed・技量が変わったとき）。
+  useEffect(() => {
+    if (!content.ok || spot === undefined) {
+      engineRef.current = null
+      setSnapshot(null)
+      return
+    }
+
+    const engine = new FishingEngine({
+      encounters,
+      seed: session.seed,
+      spotId: spot.id,
+      playerModifiers,
+      ...(encounterProfile === undefined ? {} : { encounterProfile }),
+    })
+
+    engineRef.current = engine
+    setSnapshot(engine.snapshot())
+  }, [content, session, playerModifiers, encounterProfile, encounters, encountersKey, spot])
+
+  const isRunning = snapshot !== null && !isTerminalPhase(snapshot.phase)
+
+  useEffect(() => {
+    if (!isRunning) {
+      return
+    }
+
+    const engine = engineRef.current
+
+    if (engine === null) {
+      return
+    }
+
+    const interval = window.setInterval(() => {
+      const result = engine.tick()
+      setSnapshot(result.snapshot)
+
+      const ended = result.events.find((event) => SESSION_END_EVENTS.includes(event))
+
+      if (ended === undefined || spot === undefined) {
+        return
+      }
+
+      const landed = ended === 'LANDED'
+      const individual = result.snapshot.fish?.individual
+
+      // LANDED のときだけ記録と成長を反映する。
+      if (landed && individual !== undefined && content.ok) {
+        const species = content.value.speciesById[String(individual.speciesId)]
+
+        if (species !== undefined) {
+          recordCatch({
+            individual,
+            species,
+            spotId: String(spot.id),
+            capturedAt: new Date().toISOString(),
+          })
+        }
+      }
+
+      // 釣れても釣れなくても時間は進み、Knowledge も増える。
+      const xpGained = landed ? (usePlayerStore.getState().lastCatch?.xpGained ?? 0) : 0
+
+      recordAttempt({
+        spot,
+        outcome: landed ? 'landed' : 'failed',
+        xpGained,
+        ...(landed && individual !== undefined ? { caughtLengthCm: individual.lengthCm } : {}),
+      })
+    }, engine.tuning.tickMs)
+
+    return () => {
+      window.clearInterval(interval)
+    }
+  }, [isRunning, session, content, recordCatch, recordAttempt, spot, encountersKey])
+
+  const send = useCallback((command: FishingCommand) => {
+    const engine = engineRef.current
+
+    if (engine === null) {
+      return
+    }
+
+    setSnapshot(engine.dispatch(command).snapshot)
+  }, [])
+
+  const restart = useCallback((seed?: string) => {
+    setSession((previous) => ({
+      seed: seed ?? createSessionSeed(),
+      nonce: previous.nonce + 1,
+    }))
+  }, [])
+
+  return {
+    contentError: content.ok ? null : content.message,
+    snapshot,
+    spotName: spot?.name ?? null,
+    environment,
+    conditions,
+    seed: session.seed,
+    send,
+    restart,
+  }
+}

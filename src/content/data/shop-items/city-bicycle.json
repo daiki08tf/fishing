@@ -1,0 +1,8 @@
+{
+  "id": "city-bicycle",
+  "name": "シティサイクル",
+  "description": "近郊の河川や駅から離れた短距離ルートへ自由に動ける。積載は少ない。",
+  "price": 35000,
+  "category": "vehicle",
+  "grantsTransportId": "city-bicycle"
+}

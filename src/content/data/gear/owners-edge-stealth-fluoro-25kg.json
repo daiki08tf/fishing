@@ -1,0 +1,15 @@
+{
+  "id": "owners-edge-stealth-fluoro-25kg",
+  "name": "STEALTH FLUORO 25kg",
+  "price": 4000,
+  "category": "line",
+  "brandId": "owners-edge",
+  "seriesId": "owners-edge-stealth-fluoro",
+  "lineType": "fluorocarbon",
+  "strengthKg": 25,
+  "diameterMm": 0.575,
+  "stretch": 0.58,
+  "abrasionResistance": 0.88,
+  "visibility": 0.32,
+  "sensitivity": 0.62
+}

@@ -1,0 +1,21 @@
+{
+  "id": "shimara-solvia-183ulf",
+  "name": "SOLVIA 183ULF",
+  "price": 17600,
+  "category": "rod",
+  "brandId": "shimara",
+  "seriesId": "shimara-solvia",
+  "seriesCategory": "ajing",
+  "lengthM": 1.83,
+  "power": "UL",
+  "action": "fast",
+  "minLureWeightG": 0.5,
+  "maxLureWeightG": 5,
+  "recommendedLineMinKg": 1.5,
+  "recommendedLineMaxKg": 4,
+  "weightG": 135,
+  "sensitivity": 0.68,
+  "control": 0.7,
+  "fightingPower": 0.6,
+  "castingProfile": 0.41
+}

@@ -1,0 +1,13 @@
+{
+  "id": "starter-nylon-line",
+  "name": "スターターナイロン 3号",
+  "price": 0,
+  "category": "line",
+  "lineType": "nylon",
+  "strengthKg": 4,
+  "diameterMm": 0.235,
+  "stretch": 0.6,
+  "abrasionResistance": 0.45,
+  "visibility": 0.35,
+  "sensitivity": 0.35
+}

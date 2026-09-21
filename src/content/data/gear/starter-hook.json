@@ -1,0 +1,11 @@
+{
+  "id": "starter-hook",
+  "name": "スターターフック 6番",
+  "price": 0,
+  "category": "hook",
+  "size": 6,
+  "strengthKg": 4,
+  "hookType": "single",
+  "penetration": 0.55,
+  "holdingPower": 0.5
+}

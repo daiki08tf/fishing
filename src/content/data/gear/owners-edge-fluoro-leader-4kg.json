@@ -1,0 +1,14 @@
+{
+  "id": "owners-edge-fluoro-leader-4kg",
+  "name": "Fluoro Leader 4kg",
+  "price": 1000,
+  "category": "leader",
+  "brandId": "owners-edge",
+  "seriesId": "owners-edge-fluoro-leader",
+  "material": "fluorocarbon",
+  "strengthKg": 4,
+  "diameterMm": 0.2,
+  "abrasionResistance": 0.93,
+  "visibility": 0.34,
+  "lengthM": 1.5
+}

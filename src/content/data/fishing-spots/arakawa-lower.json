@@ -1,0 +1,83 @@
+{
+  "id": "arakawa-lower",
+  "name": "荒川 下流",
+  "regionId": "tokyo-area",
+  "areaId": "tokyo",
+  "environment": "river",
+  "dataStatus": "provisional",
+  "access": [
+    {
+      "kind": "capability",
+      "capability": "public_transport"
+    }
+  ],
+  "travelOptions": [
+    {
+      "id": "rail-route",
+      "transportTypes": ["train"],
+      "requiredCapabilities": ["public_transport"],
+      "features": [],
+      "baseMinutes": 32,
+      "distanceKm": 18,
+      "baseOneWayCost": 420
+    },
+    {
+      "id": "bus-route",
+      "transportTypes": ["bus"],
+      "requiredCapabilities": ["public_transport"],
+      "features": [],
+      "baseMinutes": 45,
+      "distanceKm": 18,
+      "baseOneWayCost": 520
+    }
+  ],
+  "habitatTags": ["phase1-sample-shallow", "phase1-sample-river"],
+  "depth": {
+    "depthRangeM": {
+      "min": 1,
+      "max": 6
+    }
+  },
+  "fishTable": [
+    {
+      "speciesId": "phase1-sample-fish",
+      "basePresence": 0.8
+    },
+    {
+      "speciesId": "phase2-sample-fish-b",
+      "basePresence": 0.5
+    },
+    {
+      "speciesId": "phase2-sample-fish-d",
+      "basePresence": 0.6
+    },
+    {
+      "speciesId": "phase2-sample-fish-g",
+      "basePresence": 0.4
+    },
+    {
+      "speciesId": "phase2-sample-fish-j",
+      "basePresence": 0.5
+    }
+  ],
+  "knowledgeConfig": {
+    "reveals": [
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "time_pattern",
+        "minKnowledge": 40
+      },
+      {
+        "field": "habitat",
+        "minKnowledge": 60
+      },
+      {
+        "field": "season_pattern",
+        "minKnowledge": 80
+      }
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "id": "tail-walker-oceanedge-256mhf",
+  "name": "OCEANEDGE 256MHF",
+  "price": 28700,
+  "category": "rod",
+  "brandId": "tail-walker",
+  "seriesId": "tail-walker-oceanedge",
+  "seriesCategory": "rockfish",
+  "lengthM": 2.56,
+  "power": "MH",
+  "action": "fast",
+  "minLureWeightG": 7,
+  "maxLureWeightG": 40,
+  "recommendedLineMinKg": 8,
+  "recommendedLineMaxKg": 18,
+  "weightG": 176,
+  "sensitivity": 0.66,
+  "control": 0.66,
+  "fightingPower": 0.67,
+  "castingProfile": 0.58
+}

@@ -1,0 +1,21 @@
+{
+  "id": "river-craft-mountainedge-203uls",
+  "name": "MOUNTAINEDGE 203ULS",
+  "price": 42600,
+  "category": "rod",
+  "brandId": "river-craft",
+  "seriesId": "river-craft-mountainedge",
+  "seriesCategory": "trout",
+  "lengthM": 2.03,
+  "power": "UL",
+  "action": "slow",
+  "minLureWeightG": 0.5,
+  "maxLureWeightG": 5,
+  "recommendedLineMinKg": 1,
+  "recommendedLineMaxKg": 4,
+  "weightG": 135,
+  "sensitivity": 0.64,
+  "control": 0.7,
+  "fightingPower": 0.56,
+  "castingProfile": 0.46
+}

@@ -1,0 +1,18 @@
+{
+  "id": "major-crest-spoon-61-flash",
+  "name": "Spoon 61 Flash",
+  "price": 1000,
+  "category": "lure",
+  "brandId": "major-crest",
+  "lureType": "spoon",
+  "weightG": 5,
+  "lengthMm": 61,
+  "depthRangeM": {
+    "min": 0.5,
+    "max": 3.5
+  },
+  "retrieveStyle": "steady/fall",
+  "action": "flutter",
+  "visualProfile": "flash",
+  "targetProfile": ["small"]
+}

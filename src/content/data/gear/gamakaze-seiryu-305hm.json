@@ -1,0 +1,21 @@
+{
+  "id": "gamakaze-seiryu-305hm",
+  "name": "SEIRYU 305HM",
+  "price": 33500,
+  "category": "rod",
+  "brandId": "gamakaze",
+  "seriesId": "gamakaze-seiryu",
+  "seriesCategory": "shore_jigging",
+  "lengthM": 3.05,
+  "power": "H",
+  "action": "moderate",
+  "minLureWeightG": 30,
+  "maxLureWeightG": 100,
+  "recommendedLineMinKg": 15,
+  "recommendedLineMaxKg": 35,
+  "weightG": 200,
+  "sensitivity": 0.63,
+  "control": 0.61,
+  "fightingPower": 0.74,
+  "castingProfile": 0.74
+}

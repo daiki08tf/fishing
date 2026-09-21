@@ -1,0 +1,18 @@
+{
+  "id": "major-crest-metal-vibration-69-flash",
+  "name": "Metal Vibration 69 Flash",
+  "price": 1800,
+  "category": "lure",
+  "brandId": "major-crest",
+  "lureType": "metal_vibration",
+  "weightG": 20,
+  "lengthMm": 69,
+  "depthRangeM": {
+    "min": 4,
+    "max": 15
+  },
+  "retrieveStyle": "steady/lift-fall",
+  "action": "vibration",
+  "visualProfile": "flash",
+  "targetProfile": ["mid"]
+}

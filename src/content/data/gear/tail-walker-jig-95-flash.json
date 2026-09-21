@@ -1,0 +1,18 @@
+{
+  "id": "tail-walker-jig-95-flash",
+  "name": "Jig 95 Flash",
+  "price": 4600,
+  "category": "lure",
+  "brandId": "tail-walker",
+  "lureType": "jig",
+  "weightG": 80,
+  "lengthMm": 95,
+  "depthRangeM": {
+    "min": 4,
+    "max": 15
+  },
+  "retrieveStyle": "jerk/fall",
+  "action": "slide",
+  "visualProfile": "flash",
+  "targetProfile": ["large", "big"]
+}

@@ -1,0 +1,32 @@
+{
+  "id": "tail-walker-deepedge-30000pg",
+  "name": "DEEPEDGE 30000PG",
+  "price": 88900,
+  "category": "reel",
+  "brandId": "tail-walker",
+  "seriesId": "tail-walker-deepedge",
+  "reelType": "spinning",
+  "sizeClass": 30000,
+  "variant": "PG",
+  "size": 30000,
+  "gearRatio": 4.6,
+  "maxDragKg": 40.5,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 20.3,
+      "capacityM": 848
+    },
+    {
+      "lineStrengthKg": 60.8,
+      "capacityM": 283
+    }
+  ],
+  "retrieveCmPerTurn": 112,
+  "weightG": 1037,
+  "smoothness": 0.58,
+  "control": 0.41,
+  "dragStartup": 0.58,
+  "rigidity": 0.72,
+  "windingTorque": 0.74,
+  "response": 0.58
+}

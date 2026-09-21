@@ -1,0 +1,18 @@
+{
+  "id": "shimara-jig-67-flash",
+  "name": "Jig 67 Flash",
+  "price": 1800,
+  "category": "lure",
+  "brandId": "shimara",
+  "lureType": "jig",
+  "weightG": 20,
+  "lengthMm": 67,
+  "depthRangeM": {
+    "min": 4,
+    "max": 15
+  },
+  "retrieveStyle": "jerk/fall",
+  "action": "slide",
+  "visualProfile": "flash",
+  "targetProfile": ["mid"]
+}

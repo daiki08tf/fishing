@@ -1,0 +1,21 @@
+{
+  "id": "major-crest-crossridge-229lf",
+  "name": "CROSSRIDGE 229LF",
+  "price": 9900,
+  "category": "rod",
+  "brandId": "major-crest",
+  "seriesId": "major-crest-crossridge",
+  "seriesCategory": "mebaring",
+  "lengthM": 2.29,
+  "power": "L",
+  "action": "fast",
+  "minLureWeightG": 1,
+  "maxLureWeightG": 8,
+  "recommendedLineMinKg": 2,
+  "recommendedLineMaxKg": 5,
+  "weightG": 160,
+  "sensitivity": 0.63,
+  "control": 0.62,
+  "fightingPower": 0.57,
+  "castingProfile": 0.52
+}

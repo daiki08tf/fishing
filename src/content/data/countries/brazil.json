@@ -1,0 +1,7 @@
+{
+  "id": "brazil",
+  "name": "ブラジル",
+  "domestic": false,
+  "currency": { "code": "BRL", "symbol": "R$" },
+  "dataStatus": "provisional"
+}

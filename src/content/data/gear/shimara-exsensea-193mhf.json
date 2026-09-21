@@ -1,0 +1,21 @@
+{
+  "id": "shimara-exsensea-193mhf",
+  "name": "EXSENSEA 193MHF",
+  "price": 21900,
+  "category": "rod",
+  "brandId": "shimara",
+  "seriesId": "shimara-exsensea",
+  "seriesCategory": "bass",
+  "lengthM": 1.93,
+  "power": "MH",
+  "action": "fast",
+  "minLureWeightG": 7,
+  "maxLureWeightG": 28,
+  "recommendedLineMinKg": 6,
+  "recommendedLineMaxKg": 14,
+  "weightG": 148,
+  "sensitivity": 0.68,
+  "control": 0.7,
+  "fightingPower": 0.65,
+  "castingProfile": 0.43
+}

@@ -1,0 +1,21 @@
+{
+  "id": "megaburst-levantis-279mlf",
+  "name": "LEVANTIS 279MLF",
+  "price": 28600,
+  "category": "rod",
+  "brandId": "megaburst",
+  "seriesId": "megaburst-levantis",
+  "seriesCategory": "seabass",
+  "lengthM": 2.79,
+  "power": "ML",
+  "action": "fast",
+  "minLureWeightG": 5,
+  "maxLureWeightG": 28,
+  "recommendedLineMinKg": 5,
+  "recommendedLineMaxKg": 12,
+  "weightG": 161,
+  "sensitivity": 0.71,
+  "control": 0.67,
+  "fightingPower": 0.58,
+  "castingProfile": 0.63
+}

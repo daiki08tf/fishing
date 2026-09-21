@@ -1,0 +1,32 @@
+{
+  "id": "shimara-stellion-14000hg",
+  "name": "STELLION 14000HG",
+  "price": 80900,
+  "category": "reel",
+  "brandId": "shimara",
+  "seriesId": "shimara-stellion",
+  "reelType": "spinning",
+  "sizeClass": 14000,
+  "variant": "HG",
+  "size": 14000,
+  "gearRatio": 5.7,
+  "maxDragKg": 25.8,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 12.9,
+      "capacityM": 517
+    },
+    {
+      "lineStrengthKg": 38.7,
+      "capacityM": 172
+    }
+  ],
+  "retrieveCmPerTurn": 151,
+  "weightG": 624,
+  "smoothness": 0.76,
+  "control": 0.46,
+  "dragStartup": 0.74,
+  "rigidity": 0.69,
+  "windingTorque": 0.6,
+  "response": 0.62
+}

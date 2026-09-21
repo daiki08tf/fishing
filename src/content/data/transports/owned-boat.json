@@ -1,0 +1,16 @@
+{
+  "id": "owned-boat",
+  "name": "小型プレジャーボート",
+  "transportType": "owned_boat",
+  "ownershipModel": "owned",
+  "purchasePrice": 4800000,
+  "travelCostModel": { "kind": "per_km", "yenPerKm": 60, "minimumOneWayCost": 3000 },
+  "travelTimeModifier": 0.42,
+  "maxRangeKm": 150,
+  "cargo": { "gearUnits": 14, "maxWeightKg": 350 },
+  "capabilities": ["boat_required", "offshore", "island_access"],
+  "requiredRouteFeatures": ["marina"],
+  "launchCapability": "marina",
+  "boatCapability": "offshore",
+  "passengerCapacity": 6
+}

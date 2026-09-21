@@ -1,0 +1,32 @@
+{
+  "id": "daiva-certex-14000hg",
+  "name": "CERTEX 14000HG",
+  "price": 81900,
+  "category": "reel",
+  "brandId": "daiva",
+  "seriesId": "daiva-certex",
+  "reelType": "spinning",
+  "sizeClass": 14000,
+  "variant": "HG",
+  "size": 14000,
+  "gearRatio": 5.7,
+  "maxDragKg": 24.8,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 12.4,
+      "capacityM": 538
+    },
+    {
+      "lineStrengthKg": 37.2,
+      "capacityM": 179
+    }
+  ],
+  "retrieveCmPerTurn": 163,
+  "weightG": 586,
+  "smoothness": 0.72,
+  "control": 0.46,
+  "dragStartup": 0.62,
+  "rigidity": 0.66,
+  "windingTorque": 0.58,
+  "response": 0.67
+}

@@ -1,0 +1,18 @@
+{
+  "id": "daiva-vibration-79-natural",
+  "name": "Vibration 79 Natural",
+  "price": 1500,
+  "category": "lure",
+  "brandId": "daiva",
+  "lureType": "vibration",
+  "weightG": 14,
+  "lengthMm": 79,
+  "depthRangeM": {
+    "min": 4,
+    "max": 15
+  },
+  "retrieveStyle": "steady/lift-fall",
+  "action": "vibration",
+  "visualProfile": "natural",
+  "targetProfile": ["mid"]
+}

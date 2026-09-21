@@ -1,0 +1,18 @@
+{
+  "id": "daiva-vibration-72-flash",
+  "name": "Vibration 72 Flash",
+  "price": 1300,
+  "category": "lure",
+  "brandId": "daiva",
+  "lureType": "vibration",
+  "weightG": 10,
+  "lengthMm": 72,
+  "depthRangeM": {
+    "min": 4,
+    "max": 15
+  },
+  "retrieveStyle": "steady/lift-fall",
+  "action": "vibration",
+  "visualProfile": "flash",
+  "targetProfile": ["mid"]
+}

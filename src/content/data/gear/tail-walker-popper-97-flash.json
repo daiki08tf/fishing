@@ -1,0 +1,18 @@
+{
+  "id": "tail-walker-popper-97-flash",
+  "name": "Popper 97 Flash",
+  "price": 1700,
+  "category": "lure",
+  "brandId": "tail-walker",
+  "lureType": "popper",
+  "weightG": 18,
+  "lengthMm": 97,
+  "depthRangeM": {
+    "min": 0,
+    "max": 0.5
+  },
+  "retrieveStyle": "pop",
+  "action": "pop",
+  "visualProfile": "flash",
+  "targetProfile": ["mid"]
+}

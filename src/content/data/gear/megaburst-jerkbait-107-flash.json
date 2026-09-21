@@ -1,0 +1,18 @@
+{
+  "id": "megaburst-jerkbait-107-flash",
+  "name": "Jerkbait 107 Flash",
+  "price": 1700,
+  "category": "lure",
+  "brandId": "megaburst",
+  "lureType": "jerkbait",
+  "weightG": 10,
+  "lengthMm": 107,
+  "depthRangeM": {
+    "min": 0.5,
+    "max": 3.5
+  },
+  "retrieveStyle": "jerk/pause",
+  "action": "jerk",
+  "visualProfile": "flash",
+  "targetProfile": ["mid"]
+}

@@ -1,0 +1,18 @@
+{
+  "id": "major-crest-spoon-68-natural",
+  "name": "Spoon 68 Natural",
+  "price": 1100,
+  "category": "lure",
+  "brandId": "major-crest",
+  "lureType": "spoon",
+  "weightG": 7,
+  "lengthMm": 68,
+  "depthRangeM": {
+    "min": 0.5,
+    "max": 3.5
+  },
+  "retrieveStyle": "steady/fall",
+  "action": "flutter",
+  "visualProfile": "natural",
+  "targetProfile": ["small"]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "owners-edge-single-series-11-0",
+  "name": "Single Series 11/0",
+  "price": 1010,
+  "category": "hook",
+  "brandId": "owners-edge",
+  "seriesId": "owners-edge-single-series",
+  "size": -11,
+  "strengthKg": 28.5,
+  "gaugeMm": 1.21,
+  "hookType": "single",
+  "penetration": 0.65,
+  "holdingPower": 0.87
+}

@@ -1,0 +1,21 @@
+{
+  "id": "shimara-exsensea-340mm",
+  "name": "EXSENSEA 340MM",
+  "price": 37200,
+  "category": "rod",
+  "brandId": "shimara",
+  "seriesId": "shimara-exsensea",
+  "seriesCategory": "bait_fishing",
+  "lengthM": 3.4,
+  "power": "M",
+  "action": "moderate",
+  "minLureWeightG": 3,
+  "maxLureWeightG": 30,
+  "recommendedLineMinKg": 4,
+  "recommendedLineMaxKg": 12,
+  "weightG": 181,
+  "sensitivity": 0.64,
+  "control": 0.66,
+  "fightingPower": 0.6,
+  "castingProfile": 0.77
+}

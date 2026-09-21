@@ -1,0 +1,21 @@
+{
+  "id": "tail-walker-oceanedge-310mf",
+  "name": "OCEANEDGE 310MF",
+  "price": 25300,
+  "category": "rod",
+  "brandId": "tail-walker",
+  "seriesId": "tail-walker-oceanedge",
+  "seriesCategory": "seabass",
+  "lengthM": 3.1,
+  "power": "M",
+  "action": "fast",
+  "minLureWeightG": 10,
+  "maxLureWeightG": 45,
+  "recommendedLineMinKg": 7,
+  "recommendedLineMaxKg": 16,
+  "weightG": 182,
+  "sensitivity": 0.66,
+  "control": 0.62,
+  "fightingPower": 0.63,
+  "castingProfile": 0.7
+}

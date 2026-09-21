@@ -1,0 +1,15 @@
+{
+  "id": "shimara-sensing-pe-2kg",
+  "name": "SENSING PE 2kg",
+  "price": 2000,
+  "category": "line",
+  "brandId": "shimara",
+  "seriesId": "shimara-sensing-pe",
+  "lineType": "pe",
+  "strengthKg": 2,
+  "diameterMm": 0.099,
+  "stretch": 0.25,
+  "abrasionResistance": 0.63,
+  "visibility": 0.88,
+  "sensitivity": 0.94
+}

@@ -1,0 +1,21 @@
+{
+  "id": "megaburst-destroy-x-254mlf",
+  "name": "DESTROY-X 254MLF",
+  "price": 27700,
+  "category": "rod",
+  "brandId": "megaburst",
+  "seriesId": "megaburst-destroy-x",
+  "seriesCategory": "chinning",
+  "lengthM": 2.54,
+  "power": "ML",
+  "action": "fast",
+  "minLureWeightG": 3,
+  "maxLureWeightG": 18,
+  "recommendedLineMinKg": 4,
+  "recommendedLineMaxKg": 10,
+  "weightG": 154,
+  "sensitivity": 0.71,
+  "control": 0.71,
+  "fightingPower": 0.58,
+  "castingProfile": 0.57
+}

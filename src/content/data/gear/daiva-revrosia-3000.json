@@ -1,0 +1,32 @@
+{
+  "id": "daiva-revrosia-3000",
+  "name": "REVROSIA 3000",
+  "price": 9700,
+  "category": "reel",
+  "brandId": "daiva",
+  "seriesId": "daiva-revrosia",
+  "reelType": "spinning",
+  "sizeClass": 3000,
+  "variant": "STD",
+  "size": 3000,
+  "gearRatio": 5.2,
+  "maxDragKg": 6.9,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 3.5,
+      "capacityM": 257
+    },
+    {
+      "lineStrengthKg": 10.4,
+      "capacityM": 87
+    }
+  ],
+  "retrieveCmPerTurn": 92,
+  "weightG": 213,
+  "smoothness": 0.62,
+  "control": 0.65,
+  "dragStartup": 0.62,
+  "rigidity": 0.59,
+  "windingTorque": 0.58,
+  "response": 0.67
+}

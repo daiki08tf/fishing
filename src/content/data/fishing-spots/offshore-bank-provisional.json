@@ -1,0 +1,58 @@
+{
+  "id": "offshore-bank-provisional",
+  "name": "湾外 沖の瀬（検証用）",
+  "regionId": "tokyo-area",
+  "areaId": "chiba",
+  "environment": "offshore",
+  "dataStatus": "provisional",
+  "access": [
+    {
+      "kind": "capability",
+      "capability": "boat_required"
+    },
+    {
+      "kind": "capability",
+      "capability": "offshore"
+    }
+  ],
+  "travelOptions": [
+    {
+      "id": "marina-offshore-route",
+      "transportTypes": ["rental_boat", "owned_boat"],
+      "requiredCapabilities": ["boat_required", "offshore"],
+      "features": ["boat_rental", "marina"],
+      "baseMinutes": 120,
+      "distanceKm": 35,
+      "baseOneWayCost": 0
+    }
+  ],
+  "habitatTags": ["phase1-sample-deep"],
+  "depth": {
+    "depthRangeM": {
+      "min": 20,
+      "max": 80
+    }
+  },
+  "fishTable": [
+    {
+      "speciesId": "phase2-sample-fish-e",
+      "basePresence": 0.5
+    },
+    {
+      "speciesId": "phase2-sample-fish-i",
+      "basePresence": 0.5
+    }
+  ],
+  "knowledgeConfig": {
+    "reveals": [
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "habitat",
+        "minKnowledge": 60
+      }
+    ]
+  }
+}

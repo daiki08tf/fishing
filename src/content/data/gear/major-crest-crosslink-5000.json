@@ -1,0 +1,32 @@
+{
+  "id": "major-crest-crosslink-5000",
+  "name": "CROSSLINK 5000",
+  "price": 10700,
+  "category": "reel",
+  "brandId": "major-crest",
+  "seriesId": "major-crest-crosslink",
+  "reelType": "spinning",
+  "sizeClass": 5000,
+  "variant": "STD",
+  "size": 5000,
+  "gearRatio": 5.2,
+  "maxDragKg": 11.3,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 5.7,
+      "capacityM": 310
+    },
+    {
+      "lineStrengthKg": 17,
+      "capacityM": 104
+    }
+  ],
+  "retrieveCmPerTurn": 96,
+  "weightG": 302,
+  "smoothness": 0.55,
+  "control": 0.55,
+  "dragStartup": 0.55,
+  "rigidity": 0.58,
+  "windingTorque": 0.59,
+  "response": 0.58
+}

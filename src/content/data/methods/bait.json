@@ -1,0 +1,7 @@
+{
+  "id": "bait",
+  "name": "餌釣り",
+  "description": "餌を付けて待つ。魚を選びやすい。",
+  "requiresOffering": "bait",
+  "offeringTags": []
+}

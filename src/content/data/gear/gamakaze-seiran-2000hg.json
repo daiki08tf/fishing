@@ -1,0 +1,32 @@
+{
+  "id": "gamakaze-seiran-2000hg",
+  "name": "SEIRAN 2000HG",
+  "price": 8700,
+  "category": "reel",
+  "brandId": "gamakaze",
+  "seriesId": "gamakaze-seiran",
+  "reelType": "spinning",
+  "sizeClass": 2000,
+  "variant": "HG",
+  "size": 2000,
+  "gearRatio": 6,
+  "maxDragKg": 4.3,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 2.1,
+      "capacityM": 252
+    },
+    {
+      "lineStrengthKg": 6.4,
+      "capacityM": 83
+    }
+  ],
+  "retrieveCmPerTurn": 82,
+  "weightG": 191,
+  "smoothness": 0.62,
+  "control": 0.64,
+  "dragStartup": 0.66,
+  "rigidity": 0.66,
+  "windingTorque": 0.64,
+  "response": 0.59
+}

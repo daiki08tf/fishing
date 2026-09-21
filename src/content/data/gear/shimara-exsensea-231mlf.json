@@ -1,0 +1,21 @@
+{
+  "id": "shimara-exsensea-231mlf",
+  "name": "EXSENSEA 231MLF",
+  "price": 27000,
+  "category": "rod",
+  "brandId": "shimara",
+  "seriesId": "shimara-exsensea",
+  "seriesCategory": "eging",
+  "lengthM": 2.31,
+  "power": "ML",
+  "action": "fast",
+  "minLureWeightG": 5,
+  "maxLureWeightG": 25,
+  "recommendedLineMinKg": 4,
+  "recommendedLineMaxKg": 10,
+  "weightG": 149,
+  "sensitivity": 0.68,
+  "control": 0.7,
+  "fightingPower": 0.6,
+  "castingProfile": 0.52
+}

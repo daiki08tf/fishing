@@ -1,0 +1,7 @@
+{
+  "id": "light_lure",
+  "name": "ライトルアー",
+  "description": "軽量なルアーで小型〜中型を狙う。繊細だが飛距離は出にくい。",
+  "requiresOffering": "lure",
+  "offeringTags": ["minnow", "soft_plastic", "spoon"]
+}

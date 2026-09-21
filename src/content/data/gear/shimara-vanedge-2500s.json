@@ -1,0 +1,32 @@
+{
+  "id": "shimara-vanedge-2500s",
+  "name": "VANEDGE 2500S",
+  "price": 14900,
+  "category": "reel",
+  "brandId": "shimara",
+  "seriesId": "shimara-vanedge",
+  "reelType": "spinning",
+  "sizeClass": 2500,
+  "variant": "S",
+  "size": 2500,
+  "gearRatio": 5.2,
+  "maxDragKg": 5.2,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 2.6,
+      "capacityM": 238
+    },
+    {
+      "lineStrengthKg": 7.8,
+      "capacityM": 79
+    }
+  ],
+  "retrieveCmPerTurn": 78,
+  "weightG": 187,
+  "smoothness": 0.66,
+  "control": 0.7,
+  "dragStartup": 0.74,
+  "rigidity": 0.61,
+  "windingTorque": 0.6,
+  "response": 0.69
+}

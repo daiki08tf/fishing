@@ -1,0 +1,21 @@
+{
+  "id": "major-crest-crossridge-290mf",
+  "name": "CROSSRIDGE 290MF",
+  "price": 16700,
+  "category": "rod",
+  "brandId": "major-crest",
+  "seriesId": "major-crest-crossridge",
+  "seriesCategory": "seabass",
+  "lengthM": 2.9,
+  "power": "M",
+  "action": "fast",
+  "minLureWeightG": 10,
+  "maxLureWeightG": 45,
+  "recommendedLineMinKg": 7,
+  "recommendedLineMaxKg": 16,
+  "weightG": 179,
+  "sensitivity": 0.63,
+  "control": 0.58,
+  "fightingPower": 0.57,
+  "castingProfile": 0.65
+}

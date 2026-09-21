@@ -1,0 +1,19 @@
+{
+  "id": "blue-horizon-pencil-107-flash",
+  "name": "Pencil 107 Flash",
+  "price": 1700,
+  "category": "lure",
+  "brandId": "blue-horizon",
+  "seriesId": "blue-horizon-pelagic-x",
+  "lureType": "topwater",
+  "weightG": 18,
+  "lengthMm": 107,
+  "depthRangeM": {
+    "min": 0,
+    "max": 0.5
+  },
+  "retrieveStyle": "walk",
+  "action": "walk",
+  "visualProfile": "flash",
+  "targetProfile": ["mid"]
+}

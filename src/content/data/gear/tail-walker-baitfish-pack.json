@@ -1,0 +1,10 @@
+{
+  "id": "tail-walker-baitfish-pack",
+  "name": "Baitfish Pack",
+  "price": 1200,
+  "category": "bait",
+  "brandId": "tail-walker",
+  "baitType": "fish",
+  "presentation": "live/dead bait",
+  "targetProfile": ["large", "big"]
+}

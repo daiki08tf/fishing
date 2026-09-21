@@ -1,0 +1,86 @@
+{
+  "id": "alaska-dolly-varden",
+  "japaneseName": "ドリーバーデン（暫定）",
+  "waterTypes": ["fresh", "brackish"],
+  "distribution": ["alaska"],
+  "habitats": ["alaska-sample-river", "alaska-sample-gravel"],
+  "depthRange": {
+    "min": 1,
+    "max": 15
+  },
+  "temperatureRange": {
+    "min": 4,
+    "max": 14
+  },
+  "seasonality": {
+    "months": [6, 7, 8, 9]
+  },
+  "timeActivity": {
+    "periods": ["dawn", "morning", "evening"]
+  },
+  "currentPreference": {
+    "preference": "slow"
+  },
+  "diet": ["alaska-sample-prey"],
+  "baits": ["roe", "worm", "shrimp"],
+  "lureCategories": ["spoon", "minnow", "soft_plastic", "jig"],
+  "fishingMethods": ["light_lure", "lure", "bait"],
+  "methodAffinity": {
+    "lure": 1.1,
+    "light_lure": 1.15,
+    "bait": 1.1,
+    "bottom": 0.9
+  },
+  "offeringAffinity": {
+    "spoon": 1.2,
+    "minnow": 1.1,
+    "roe": 1.15,
+    "small": 1.1,
+    "mid": 1.05
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 38,
+    "dispersion": 0.17,
+    "minCm": 15,
+    "maxCm": 70
+  },
+  "weightModel": {
+    "lengthWeightA": 0.0098,
+    "lengthWeightB": 3.05
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "traitConfiguration": {
+    "trophyPercentileThreshold": 1,
+    "strongRunnerChance": 0.1
+  },
+  "fightProfile": {
+    "strength": 0.55,
+    "stamina": 0.6,
+    "speed": 0.5
+  },
+  "rarity": 1.4,
+  "environmentAffinity": {
+    "preferredSeasons": ["summer", "autumn"],
+    "preferredTimeOfDay": ["dawn", "evening"],
+    "weatherAffinity": {
+      "clear": 1.0,
+      "cloudy": 1.05,
+      "light_rain": 1.05,
+      "rain": 1.0,
+      "windy": 0.9
+    },
+    "flowAffinity": {
+      "none": 0.95,
+      "slow": 1.05,
+      "moderate": 1.15,
+      "strong": 0.95
+    },
+    "preferredTemperatureC": {
+      "min": 6,
+      "max": 12
+    }
+  }
+}

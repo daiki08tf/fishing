@@ -1,0 +1,18 @@
+{
+  "id": "daiva-shad-88-flash",
+  "name": "Shad 88 Flash",
+  "price": 1500,
+  "category": "lure",
+  "brandId": "daiva",
+  "lureType": "shad",
+  "weightG": 14,
+  "lengthMm": 88,
+  "depthRangeM": {
+    "min": 0.5,
+    "max": 3.5
+  },
+  "retrieveStyle": "steady",
+  "action": "wobble",
+  "visualProfile": "flash",
+  "targetProfile": ["mid"]
+}

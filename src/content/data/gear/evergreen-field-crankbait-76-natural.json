@@ -1,0 +1,19 @@
+{
+  "id": "evergreen-field-crankbait-76-natural",
+  "name": "Crankbait 76 Natural",
+  "price": 1900,
+  "category": "lure",
+  "brandId": "evergreen-field",
+  "seriesId": "evergreen-field-combatra",
+  "lureType": "crankbait",
+  "weightG": 14,
+  "lengthMm": 76,
+  "depthRangeM": {
+    "min": 2,
+    "max": 8
+  },
+  "retrieveStyle": "steady",
+  "action": "wobble",
+  "visualProfile": "natural",
+  "targetProfile": ["mid"]
+}

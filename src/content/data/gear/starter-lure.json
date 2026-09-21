@@ -1,0 +1,14 @@
+{
+  "id": "starter-lure",
+  "name": "スターターミノー 7g",
+  "price": 0,
+  "category": "lure",
+  "lureType": "minnow",
+  "weightG": 7,
+  "lengthMm": 70,
+  "depthRangeM": { "min": 0.3, "max": 1.8 },
+  "retrieveStyle": "steady",
+  "action": "wobble",
+  "visualProfile": "natural",
+  "targetProfile": ["small", "mid"]
+}
