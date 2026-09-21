@@ -1,5 +1,4 @@
-TAB NAME: lines.csv>
-index,GearID,Brand,Series,LineType,StrengthKg,DiameterMm,Stretch,AbrasionResistance,Visibility,Sensitivity,PriceJPY,Status
+GearID,Brand,Series,LineType,StrengthKg,DiameterMm,Stretch,AbrasionResistance,Visibility,Sensitivity,PriceJPY,Status
 line-0001,Major Crest,BASIC NYLON,Nylon,2,0.156,0.82,0.62,0.55,0.7,1100,FICTIONAL_CONTENT
 line-0002,Major Crest,BASIC NYLON,Nylon,3,0.191,0.82,0.62,0.55,0.7,1200,FICTIONAL_CONTENT
 line-0003,Major Crest,BASIC NYLON,Nylon,4,0.22,0.82,0.62,0.55,0.7,1400,FICTIONAL_CONTENT
