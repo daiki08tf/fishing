@@ -1,5 +1,4 @@
-TAB NAME: brand_series.csv>
-index,SeriesID,Brand,Series,Category,Tier,Description,Status
+SeriesID,Brand,Series,Category,Tier,Description,Status
 shimara-nexara,Shimara,NEXARA,reel,entry,入門・丈夫・扱いやすい,FICTIONAL_CONTENT
 shimara-stradia,Shimara,STRADIA,reel,mid,万能・滑らかなドラグ,FICTIONAL_CONTENT
 shimara-vanedge,Shimara,VANEDGE,reel,light,軽量・低慣性,FICTIONAL_CONTENT
