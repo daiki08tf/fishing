@@ -33,28 +33,9 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      - name: Format export
-        run: |
-          npx prettier --write .
-          for f in \
-            src/content/data/fishing-spots/alaska-coastal-bay.json \
-            src/content/data/fishing-spots/arakawa-lower.json \
-            src/content/data/fishing-spots/brackish-mouth.json \
-            src/content/data/fishing-spots/forest-reservoir-arm.json \
-            src/content/data/fishing-spots/hokkaido-coast.json \
-            src/content/data/fishing-spots/tama-river-lower.json \
-            src/domain/casting/Casting.test.ts \
-            src/domain/casting/Casting.ts \
-            src/domain/encounter/encounterEngine.test.ts \
-            src/domain/encounter/encounterEngine.ts \
-            src/ui/fishing/FishingScreen.tsx \
-            src/ui/fishing/useFishingSession.ts
-          do
-            echo "::FORMAT_FILE::$f"
-            base64 -w0 "$f"
-            echo
-          done
-          exit 1
+      # 検証では書き換えない。整形の確認のみを行う。
+      - name: Format check
+        run: npm run format:check
 
       - name: Validate content
         run: npm run validate:content
