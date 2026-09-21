@@ -4,6 +4,28 @@
   "name": "クイーンズランド",
   "stage": "planned",
   "dataStatus": "provisional",
-  "base": { "id": "queensland-base", "name": "Queensland Fishing Base", "areaId": "reef" },
-  "areas": [{ "id": "reef", "name": "Reef / Coastal" }]
+  "base": {
+    "id": "queensland-base",
+    "name": "Queensland Fishing Base",
+    "areaId": "reef"
+  },
+  "areas": [
+    {
+      "id": "reef",
+      "name": "Reef / Coastal"
+    }
+  ],
+  "climate": {
+    "annualMeanWaterC": 24,
+    "seasonalSwingC": 5,
+    "weatherWeights": {
+      "clear": 40,
+      "cloudy": 28,
+      "light_rain": 14,
+      "rain": 12,
+      "windy": 6
+    },
+    "tidePhaseOffset": 0.2,
+    "tideRange": "small"
+  }
 }

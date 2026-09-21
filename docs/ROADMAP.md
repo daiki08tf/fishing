@@ -314,11 +314,40 @@ Levelとは完全に独立。
 
 ## Phase 9 — Boat
 
+### Phase 9 — Living Water & Big Game（完了）
+
+「同じ釣り場でも、季節・時間・天候・潮・水の状態で魚の活性や釣れ方が変わる」と
+「Boat / Offshore / Heavy Tackle で大型魚を狙う」を実装した。
+
+- Environment Domain（`src/domain/environment`）
+  - Season / TimeOfDay / Weather / Tide / WaterCondition を WorldTime と
+    地域の気候プロファイル（Content）から決定論的に解決する（外部 API なし）
+  - 淡水は潮なし（null）。地域ごとの気候の違いは Content（climate）に置く
+- Fishing Conditions Resolver
+  - Environment + Spot + Species + Method + Tackle → resolved numerical modifiers
+    （Encounter 重み / bite / 視認性 / テンション）
+  - 魚種は Content の環境嗜好（季節 / 時間帯 / 天候 / 潮 / 流れ / 水温）を持つ
+  - 条件が悪くても重みは 0 にならない（下限 0.35）
+- 大型魚のファイト
+  - 個体サイズに応じて引き（pull）と粘り（endurance）が上がる
+  - ライン強度 / リーダー強度 / リールのドラッグが「耐えられるテンション」に効く
+  - フックサイズと魚の大きさのミスマッチは掛かり・保持・アワセ猶予を落とす
+  - Heavy は大型魚で安定するが、小型魚では万能ではない（hard gate にはしない）
+- 簡易 Fish Finder（Gear カテゴリ electronics）+ Search Water
+  - 所持していれば反応が詳しくなる（魚種の手がかり）。持っていなくても釣れる
+- 釣況の表示（HOME / MAP / SPOT / FISHING）。細かい modifier は出さない
+- `npm run simulate:environment` / `npm run simulate:big-game`
+
+意図的に対象外: 天気予報 API / 天文潮汐 / 気圧 / 月齢 / 塩分 / 溶存酸素 /
+操船 / GPS / ソナー描画 / 燃料 / 船体ダメージ / 魚の回遊シミュレーション。
+
+### Phase 9 の残り（Boat）
+
 - boat driving gameplay
-- fish finder
 
 Kayak / rental boat / owned boat、launch point、offshore access、最小 running / rental cost は
-Phase 7A の Access 基盤へ前倒しした。Phase 9 は操船体験とボート固有装備を扱う。
+Phase 7A の Access 基盤へ前倒しし、Fish Finder（簡易）は Phase 9 で実装した。
+操船体験そのものは今後の Phase で扱う。
 
 岸と沖で生態系が変わることを体験させる。
 

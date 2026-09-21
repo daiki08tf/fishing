@@ -29,8 +29,19 @@ export type GearTuning = {
   /** ライン強度（kg）を扱えるテンションへ写す範囲。 */
   readonly lineStrengthRangeKg: Range
   readonly lineStrengthMultiplierRange: { readonly min: number; readonly max: number }
+  /**
+   * Phase 9: リーダー強度（kg）を扱えるテンションへ写す範囲。
+   * 弱いリーダーは break threshold を下げ、適切なリーダーは上げる。
+   */
+  readonly leaderStrengthRangeKg: Range
+  readonly leaderStrengthMultiplierRange: { readonly min: number; readonly max: number }
+  /** Phase 9: リールのドラッグ力を「耐えられるテンション」へ写す強さ。 */
+  readonly reelDragTensionStrength: number
+  readonly reelDragTensionRangeKg: Range
   /** ラインの視認されにくさをヒットへ写す強さ。 */
   readonly visibilityStrength: number
+  /** Phase 9: 太いライン（直径 mm）がヒットを減らす強さ。 */
+  readonly lineDiameterBitePenalty: number
   /** リールのドラッグ・滑らかさを効率へ写す強さ。 */
   readonly reelDragStrength: number
   readonly reelSmoothnessStrength: number
@@ -50,6 +61,14 @@ export type GearTuning = {
   /** フックの掛かり・保持を見え方へ写す強さ。 */
   readonly hookPenetrationStrength: number
   readonly hookHoldingStrength: number
+  /**
+   * Phase 9: フックサイズと魚の大きさのミスマッチをフッキングへ写す強さ。
+   * 大型魚に小さい針 / 小型魚に大きい針は掛かりが悪くなる。
+   */
+  readonly hookSizeMismatchStrength: number
+  readonly hookSizeMismatchWindowStrength: number
+  /** ミスマッチした針は掛かりが浅く、外れやすい（保持力）。 */
+  readonly hookSizeMismatchHoldingStrength: number
   /** 釣法ごとの調整値。 */
   readonly methods: Readonly<Record<string, MethodTuning>>
 }
@@ -62,9 +81,14 @@ export const DEFAULT_GEAR_TUNING: GearTuning = {
   sensitivityStrength: 0.4,
   castingStrength: 0.45,
   lineStretchRelief: 0.2,
-  lineStrengthRangeKg: { min: 2, max: 12 },
-  lineStrengthMultiplierRange: { min: 0.9, max: 1.6 },
+  lineStrengthRangeKg: { min: 2, max: 30 },
+  lineStrengthMultiplierRange: { min: 0.95, max: 2 },
+  leaderStrengthRangeKg: { min: 3, max: 40 },
+  leaderStrengthMultiplierRange: { min: -0.15, max: 0.45 },
+  reelDragTensionStrength: 0.35,
+  reelDragTensionRangeKg: { min: 2, max: 40 },
   visibilityStrength: 0.25,
+  lineDiameterBitePenalty: 0.5,
   reelDragStrength: 0.3,
   reelSmoothnessStrength: 0.25,
   reelTorqueStrength: 0.2,
@@ -74,6 +98,9 @@ export const DEFAULT_GEAR_TUNING: GearTuning = {
   weightControlStrength: 0.1,
   hookPenetrationStrength: 0.3,
   hookHoldingStrength: 0.35,
+  hookSizeMismatchStrength: 0.35,
+  hookSizeMismatchWindowStrength: 0.3,
+  hookSizeMismatchHoldingStrength: 0.4,
   methods: {
     lure: { castDistance: 0.7, control: 0.6, biteAffinity: 1 },
     light_lure: { castDistance: 0.45, control: 0.75, biteAffinity: 1.05 },

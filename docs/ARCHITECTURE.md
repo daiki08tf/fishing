@@ -309,6 +309,26 @@ Encounter → FishingEngine
 - 遠征の計画と費用は Domain（`src/domain/expedition`）に置き、UI は結果を表示するだけにする
 - 「違う地域の Spot へは行けない」は WorldSession が強制する（Store の入口でも先に伝える）
 
+### Environment / Fishing Conditions（Phase 9）
+
+```text
+WorldTime + Region Climate（Content）+ Spot の environment
+  ↓  resolveEnvironment（決定論的・外部 API なし）
+EnvironmentSnapshot（季節 / 時間帯 / 天候 / 潮 / 水温 / 濁り / 流れ）
+  ↓  resolveFishingConditions（+ Species の環境嗜好 + 釣法 + 装備）
+resolved numerical modifiers（Encounter 重み / bite / 視認性 / テンション）
+  ↓
+Encounter / FishingEngine
+```
+
+- `FishingEngine` は季節・天候・潮・国・魚種名を知らない（数値だけを受け取る）
+- 環境は (日付, 地域, Spot の環境) から再生成できるため Save に載せない
+- 魚種の環境嗜好は Content（`environmentAffinity`）。未設定は neutral
+- 釣況 summary は表示用の要約であり、唯一の真実にはしない（modifier が本体）
+- 大型魚は個体サイズから pull / endurance を解決する（魚種分岐を Engine に足さない）
+- 装備（ライン / リーダー / ドラッグ / フックサイズ）は Tackle Resolver が
+  数値へ写す。Engine は Gear の名前もカテゴリも知らない
+
 ## 10. RNG
 
 ```ts

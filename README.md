@@ -56,13 +56,22 @@
 
 ## Current Status
 
-Phase 8 — Japan & International Expedition 完了（Phase 7A.1 の修正を含む）。
+Phase 9 — Living Water & Big Game 完了（Phase 8 / 7A.1 を含む）。
 
 東京の HOME から国内（北海道）・海外（アラスカ）へ遠征し、現地の拠点から
 レンタカー / 徒歩 / レンタルボートで釣り場へ通い、Codex に記録して帰国できる。
-世界は World → Country → Region → Area → Spot の Content で表現し、
-Transport / Access / Economy / FishingEngine は Phase 7A までの構造をそのまま使う。
-地域の解放に Angler Level は使わない（資金・許可・移動手段・Knowledge で広がる）。
+
+Phase 9 で「同じ釣り場でも季節・時間・天候・潮・水の状態で釣れ方が変わる」ようにした。
+Environment は WorldTime と地域の気候プロファイル（Content）から決定論的に解決し、
+釣況（Encounter の重み・ファイトの倍率）へ写して FishingEngine には数値だけを渡す。
+大型魚（Chinook / Halibut）はサイズに応じて強く引くようになり、
+ライン強度・リーダー・ドラッグ・フックサイズの適正が着地率に効く。
+
+```sh
+npm run check
+npm run simulate:environment
+npm run simulate:big-game
+```
 
 ```sh
 npm run check

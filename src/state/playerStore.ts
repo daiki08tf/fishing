@@ -10,6 +10,11 @@ import {
 import { resolveCatch } from '../domain/catch'
 import { emptyCodexState, type CodexState } from '../domain/codex'
 import {
+  searchWater as resolveSearchWater,
+  type EnvironmentSnapshot,
+  type SearchSign,
+} from '../domain/environment'
+import {
   createInitialExpeditionState,
   permitIdsForAccess,
   remainingExpeditionDays,
@@ -120,6 +125,17 @@ export type LastCatchSummary = {
   readonly factors: readonly { readonly label: string; readonly value: number }[]
 }
 
+/**
+ * Search Water（Phase 9）の結果。
+ * 遠征 / 釣行の途中でだけ意味を持つ情報なので Save には載せない。
+ */
+export type SearchOutcome = {
+  readonly spotId: string
+  readonly sign: SearchSign
+  readonly speciesIds: readonly string[]
+  readonly at: WorldTime
+}
+
 export type RecordCatchInput = {
   readonly individual: FishIndividual
   readonly species: FishSpecies
@@ -192,6 +208,7 @@ export type PlayerStoreState = PersistedPlayerSlice & {
   readonly hydrationFailure: HydrationFailure | null
   readonly lastCatch: LastCatchSummary | null
   readonly skillAllocationError: SkillAllocationFailure | null
+  readonly lastSearch: SearchOutcome | null
 
   beginHydration(): void
   /** 保存済みの状態を適用する。Domain の副作用（XP 加算や記録判定）は起こさない。 */
@@ -228,6 +245,16 @@ export type PlayerStoreState = PersistedPlayerSlice & {
   purchaseItem(item: ShopItem): { readonly ok: boolean; readonly message: string | null }
   /** 翌朝まで休む（時間を進める）。 */
   sleep(): { readonly ok: boolean; readonly message: string | null }
+  /**
+   * Search Water（Boat / Offshore など）。Environment と魚種は UI が渡す
+   * （Store は Content を読み込まない）。結果は釣りの Encounter に少し効く。
+   */
+  searchWater(input: {
+    readonly spot: FishingSpot
+    readonly species: readonly FishSpecies[]
+    readonly environment: EnvironmentSnapshot
+    readonly hasFishFinder: boolean
+  }): { readonly ok: boolean; readonly message: string | null }
   /** 遠征に出発する（費用を払い、時間を進め、現地の拠点へ移る）。 */
   startExpedition(plan: ExpeditionPlan): TripActionResult
   /** 遠征を終えて home region へ帰る（時間が進む）。 */
@@ -260,6 +287,7 @@ const createInitialState = (): PersistedPlayerSlice & {
   readonly hydrationFailure: HydrationFailure | null
   readonly lastCatch: LastCatchSummary | null
   readonly skillAllocationError: SkillAllocationFailure | null
+  readonly lastSearch: SearchOutcome | null
 } => ({
   hydrationStatus: 'idle',
   hydrationFailure: null,
@@ -275,6 +303,7 @@ const createInitialState = (): PersistedPlayerSlice & {
   loadout: createStarterLoadout(asGearId),
   lastCatch: null,
   skillAllocationError: null,
+  lastSearch: null,
 })
 
 /**
@@ -309,6 +338,7 @@ export const createPlayerStore = () =>
         loadout: save.loadout,
         lastCatch: null,
         skillAllocationError: null,
+        lastSearch: null,
       })
     },
 
@@ -523,6 +553,8 @@ export const createPlayerStore = () =>
         world: arrived.context.world,
         knowledge: arrived.context.knowledge,
         finance: settledFinance,
+        // 別の釣り場へ移ったら Search Water の結果は無効になる。
+        lastSearch: null,
       })
 
       return { ok: true, message: null }
@@ -588,6 +620,7 @@ export const createPlayerStore = () =>
         world: home.context.world,
         knowledge: home.context.knowledge,
         finance: settledFinance,
+        lastSearch: null,
       })
 
       return { ok: true, message: null }
@@ -752,6 +785,48 @@ export const createPlayerStore = () =>
       set({ world: { ...world, time: next }, finance: settled })
 
       return { ok: true, message: `翌朝まで休んだ（${formatWorldTime(next)}）` }
+    },
+
+    /**
+     * 水を探る（簡易 Fish Finder）。
+     *
+     * Spot にいるときだけ意味がある。結果は同じ Spot の釣りにだけ効く。
+     */
+    searchWater: (input) => {
+      if (get().hydrationStatus !== 'ready') {
+        return { ok: false, message: '読み込み中' }
+      }
+
+      const { world } = get()
+      const spot = input.spot
+
+      if (world.phase !== 'AT_SPOT') {
+        return { ok: false, message: '釣り場でだけ水を探れる' }
+      }
+
+      if (world.currentSpotId !== spot.id) {
+        return { ok: false, message: '今いる釣り場と違う' }
+      }
+
+      const result = resolveSearchWater({
+        environment: input.environment,
+        regionId: String(spot.regionId),
+        spotId: String(spot.id),
+        time: world.time,
+        species: input.species,
+        hasFishFinder: input.hasFishFinder,
+      })
+
+      set({
+        lastSearch: {
+          spotId: String(spot.id),
+          sign: result.sign,
+          speciesIds: result.speciesIds,
+          at: world.time,
+        },
+      })
+
+      return { ok: true, message: result.label }
     },
 
     /**

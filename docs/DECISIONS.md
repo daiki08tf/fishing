@@ -119,6 +119,22 @@ Skillが緩やかに改善してよい対象:
 - Permit は遠征予約に含める簡易な所持リストとし、`permit` 条件を持つ Spot にだけ効く
 - 追加した魚（アラスカ / 北海道）は PROVISIONAL とし、既存の FishIndividual /
   Trait / FightEngine をそのまま使う（新しい魚生成システムを作らない）
+- Environment（季節 / 時間帯 / 天候 / 潮 / 水）は WorldTime と地域の気候プロファイル
+  （Content）から決定論的に解決する。天気・潮汐の外部 API は使わず、Math.random も
+  Domain に入れない。商用の気象・潮汐シミュレーションは作らない
+- Environment を FishingEngine へ直接渡さない。Conditions Resolver が
+  resolved numerical modifiers へ写し、Engine は数値だけを受け取る
+- 地域ごとの違いは Content（climate / 魚種の environmentAffinity）に置き、
+  国・地域・魚種による分岐を Engine に書かない。天候の乱数も「同じ日付・地域なら同じ」にする
+- 条件が悪くても魚種の Encounter 重みを 0 にしない（下限 0.35）。「絶対に釣れない」を作らず、
+  good / neutral / poor の差だけを感じさせる
+- 大型魚は「Hard gate」ではなく確率で難しくする。軽いタックルでも獲れるが、
+  ラインブレイク / フックアウトが増える（理想は Light でも理論上は獲れること）
+- 大型個体の強さは個体サイズから解決し、魚種固有の分岐を Engine に足さない
+- Fish Finder は Gear カテゴリ `electronics`（1 種）として既存 Inventory に載せる。
+  Electronics アーキテクチャを巨大化しない（Search Water は反応と手がかりだけ）
+- Environment は再生成できるため Save を増やさない（v7 のまま）。Search Water の結果は
+  釣行中の一時情報として保存しない
 
 ## 6. Phase 0 で定義する機械判定可能な制約
 

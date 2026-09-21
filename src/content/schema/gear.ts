@@ -2,6 +2,7 @@ import { z } from 'zod'
 import { asBrandId, asGearId } from '../../domain/ids'
 import {
   BAIT_TYPES,
+  ELECTRONICS_KINDS,
   HOOK_TYPES,
   LINE_TYPES,
   LURE_TYPES,
@@ -155,6 +156,16 @@ export const baitSchema = z.strictObject({
   targetProfile: z.array(nonEmptyString),
 })
 
+/** 電子機器（Phase 9）。装備スロットには入らない。 */
+export const electronicsSchema = z.strictObject({
+  ...base,
+  category: z.literal('electronics'),
+  kind: z.enum(ELECTRONICS_KINDS),
+  detectionDepthM: z.number().positive(),
+  accuracy: z.number().min(0).max(1),
+  weightG: z.number().positive(),
+})
+
 /** カテゴリで判別する union。 */
 export const gearItemSchema = z.union([
   rodSchema,
@@ -164,4 +175,5 @@ export const gearItemSchema = z.union([
   hookSchema,
   lureSchema,
   baitSchema,
+  electronicsSchema,
 ])

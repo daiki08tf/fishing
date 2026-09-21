@@ -65,5 +65,32 @@
     "stamina": 0.95,
     "speed": 0.35
   },
-  "rarity": 4
+  "rarity": 4,
+  "environmentAffinity": {
+    "preferredSeasons": ["summer"],
+    "preferredTimeOfDay": ["morning", "daytime"],
+    "weatherAffinity": {
+      "clear": 1.1,
+      "cloudy": 1.0,
+      "light_rain": 0.95,
+      "rain": 0.9,
+      "windy": 0.8
+    },
+    "tideAffinity": {
+      "low": 1.0,
+      "rising": 1.1,
+      "high": 1.0,
+      "falling": 1.05
+    },
+    "flowAffinity": {
+      "none": 0.95,
+      "slow": 1.0,
+      "moderate": 1.05,
+      "strong": 1.05
+    },
+    "preferredTemperatureC": {
+      "min": 6,
+      "max": 10
+    }
+  }
 }

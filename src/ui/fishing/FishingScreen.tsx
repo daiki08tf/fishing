@@ -1,6 +1,7 @@
 import type { ConditionBand } from '../../domain/fish/fishCondition'
 import type { FishTrait } from '../../domain/fish/FishTrait'
 import { PERK_DEFINITIONS } from '../../domain/progression'
+import { CONDITION_SUMMARY_LABELS, TIDE_LABELS, WEATHER_LABELS } from '../../domain/environment'
 import {
   ALLOWED_COMMANDS,
   isTerminalPhase,
@@ -136,7 +137,8 @@ export type FishingScreenProps = {
 }
 
 export const FishingScreen = ({ onExit }: FishingScreenProps) => {
-  const { contentError, snapshot, spotName, seed, send, restart } = useFishingSession()
+  const { contentError, snapshot, spotName, environment, conditions, seed, send, restart } =
+    useFishingSession()
   const codex = usePlayerStore((state) => state.codex)
   const lastCatch = usePlayerStore((state) => state.lastCatch)
   const progression = usePlayerStore((state) => state.progression)
@@ -189,6 +191,13 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
       <section className="panel">
         <p className="fishing__phase-code">{snapshot.phase}</p>
         <h2 className="panel__heading">{PHASE_LABELS[snapshot.phase]}</h2>
+        {environment === null || conditions === null ? null : (
+          <p className="fishing__legend">
+            {WEATHER_LABELS[environment.weather]} /{' '}
+            {environment.tide === null ? '潮なし' : TIDE_LABELS[environment.tide]} / 水温{' '}
+            {environment.water.temperatureC}℃ / 釣況 {CONDITION_SUMMARY_LABELS[conditions.summary]}
+          </p>
+        )}
         <p className="panel__body">{PHASE_HINTS[snapshot.phase]}</p>
       </section>
 

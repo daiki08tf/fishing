@@ -29,13 +29,15 @@
   - 北海道: Phase 8。北国の河川 / 湖 / 海岸（すべて `dataStatus: provisional`）
 - `countries/*.json`（9 件。`domestic` と表示用 currency metadata）
 - `regions/*.json`（10 件。`stage: playable` は東京近郊 / 北海道 / アラスカ。
-  他は将来拡張用の `planned`。階層は Country → Region → Area → Spot）
+  他は将来拡張用の `planned`。階層は Country → Region → Area → Spot。
+  Phase 9 で `climate`（水温の年平均 / 季節の振れ幅 / 天候の出やすさ / 潮の位相）を持つ）
 - `expeditions/*.json`（2 件。北海道 / アラスカ。航空券（往復）・宿泊・許可の費用）
 - `transports/*.json`（徒歩・公共交通・二輪・車・SUV・Kayak・Boat の 11 件）
-- `gear/*.json`（Rod / Reel / Line / Leader / Hook / Lure / Bait）
+- `gear/*.json`（Rod / Reel / Line / Leader / Hook / Lure / Bait / Electronics）
+  - Phase 9: `electronics` カテゴリ（`basic-fish-finder`。装備スロットには入らない）
 - `methods/*.json`（`lure` / `light_lure` / `bait` / `bottom`）
-- `brands/*.json`（架空ブランド 12 件。**性能倍率を持たない**）
-- `gear-series/*.json`（Brand → Series → Model の Series。表示と整理の概念）
+- `brands/*.json`（架空ブランド 13 件。**性能倍率を持たない**）
+- `gear-series/*.json`（Brand → Series → Model の Series。表示と整理の概念。89 件）
 - `shop-items/*.json`（中古コンパクトカーなど）
 
 `gear/` は `content/master-draft` ブランチの Content Master（CSV）から
@@ -59,6 +61,10 @@
 魚種の `methodAffinity` / `offeringAffinity` も
 **検証用の暫定値**であり、生物学的事実ではない。
 目的は「同じ Spot でも釣法・offering で Encounter の重みが変わる」ことの検証である。
+
+Phase 9 で魚種に `environmentAffinity`（季節 / 時間帯 / 天候 / 潮 / 流れ / 水温の嗜好）を
+追加した。これも **検証用の暫定値**であり、生物学的な事実ではない。
+未設定の魚は neutral（1）として扱う。
 
 ### 実在の場所を扱うときの約束
 

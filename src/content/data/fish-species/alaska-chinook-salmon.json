@@ -60,9 +60,36 @@
     "aggressiveChance": 0.12
   },
   "fightProfile": {
-    "strength": 0.85,
+    "strength": 0.9,
     "stamina": 0.9,
-    "speed": 0.7
+    "speed": 0.8
   },
-  "rarity": 3.5
+  "rarity": 3.5,
+  "environmentAffinity": {
+    "preferredSeasons": ["summer"],
+    "preferredTimeOfDay": ["dawn", "morning", "evening"],
+    "weatherAffinity": {
+      "clear": 1.05,
+      "cloudy": 1.1,
+      "light_rain": 1.05,
+      "rain": 0.95,
+      "windy": 0.9
+    },
+    "tideAffinity": {
+      "low": 0.9,
+      "rising": 1.15,
+      "high": 1.05,
+      "falling": 1.0
+    },
+    "flowAffinity": {
+      "none": 0.95,
+      "slow": 1.0,
+      "moderate": 1.1,
+      "strong": 0.95
+    },
+    "preferredTemperatureC": {
+      "min": 8,
+      "max": 13
+    }
+  }
 }

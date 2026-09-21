@@ -600,6 +600,7 @@ export const simulateCatalog = (): CatalogSimulationResult => {
     hook: countBy('hook'),
     lure: countBy('lure'),
     bait: countBy('bait'),
+    electronics: countBy('electronics'),
   }
 
   lines.push('=== content ===')
@@ -627,10 +628,11 @@ export const simulateCatalog = (): CatalogSimulationResult => {
   )
 
   checks.push({
-    label: `カテゴリ別の件数が目標レンジに入っている（Brands 8〜12: ${String(
+    label: `カテゴリ別の件数が目標レンジに入っている（Brands 8〜13: ${String(
       content.brands.length,
     )}）`,
-    ok: volumeOk && content.brands.length >= 8 && content.brands.length <= 12,
+    // Phase 9 で電子機器ブランド（Deep Scan）を 1 つ足したため上限を 13 にした。
+    ok: volumeOk && content.brands.length >= 8 && content.brands.length <= 13,
   })
 
   // --- ブランド別件数 ---------------------------------------------------

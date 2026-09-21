@@ -63,6 +63,17 @@ export type FishingTuning = {
   /** 個体差の振れ幅（±）。 */
   readonly individualVariance: number
 
+  /*
+   * Phase 9: 大型個体の引き。
+   *
+   * 基準サイズ（体長分布の中央値）の魚を 1.0 とし、大きい個体ほど強く引く。
+   * 「軽いタックルでも理論上は獲れるが、ラインブレイク / フックアウトが増える」を作る。
+   */
+  readonly bigFishPullStrength: number
+  readonly bigFishEnduranceStrength: number
+  readonly bigFishPullMin: number
+  readonly bigFishPullMax: number
+
   /**
    * Detection（アタリの見え方）がこの倍率以上なら、
    * UI に「アタリまでの残り tick」を開示する。
@@ -108,6 +119,11 @@ export const DEFAULT_FISHING_TUNING: FishingTuning = {
   fishExertionStaminaDrain: 0.0016,
 
   individualVariance: 0.15,
+
+  bigFishPullStrength: 2,
+  bigFishEnduranceStrength: 0.7,
+  bigFishPullMin: 0.75,
+  bigFishPullMax: 3,
 
   detectionForecastThreshold: 1.2,
 }

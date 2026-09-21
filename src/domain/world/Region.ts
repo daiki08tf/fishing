@@ -1,4 +1,5 @@
 import type { AreaId, CountryId, RegionId } from '../ids'
+import type { ClimateProfile } from '../environment/Environment'
 
 /** 地域階層の種別。DATA_MODEL.md §5 に対応する。 */
 export const REGION_TYPES = ['country', 'prefecture', 'area', 'water_system', 'water_body'] as const
@@ -74,4 +75,6 @@ export type RegionDefinition = {
   /** この地域にいるときの拠点。 */
   readonly base: RegionBase
   readonly areas: readonly RegionArea[]
+  /** Phase 9: 地域の気候プロファイル（Environment の解決に使う）。 */
+  readonly climate: ClimateProfile
 }

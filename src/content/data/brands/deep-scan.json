@@ -1,0 +1,8 @@
+{
+  "id": "deep-scan",
+  "name": "Deep Scan",
+  "description": "ディープスキャン。船用電子機器のブランド（架空ブランド。検証用）。魚群探知の反応と情報の見せ方で差をつける。",
+  "specialties": ["electronics", "fish-finder", "readability"],
+  "countryStyle": "overseas_general",
+  "tagline": "水の中を、先に読む。"
+}

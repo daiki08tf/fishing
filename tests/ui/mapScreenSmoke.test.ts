@@ -42,4 +42,10 @@ describe('map screen travel options', () => {
     expect(html).toContain('必要: この釣り場へ行ける移動手段の所有（Shop で購入）')
     expect(html).not.toContain('必要: 道路からのアクセス')
   })
+
+  it('shows the fishing condition of each spot (Phase 9)', () => {
+    expect(html).toContain('釣況:')
+    // Knowledge が低いときは曖昧な表現になる（魚種名を出さない）。
+    expect(html).toContain('気配')
+  })
 })

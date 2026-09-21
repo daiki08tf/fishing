@@ -4,6 +4,28 @@
   "name": "ブリティッシュコロンビア",
   "stage": "planned",
   "dataStatus": "provisional",
-  "base": { "id": "bc-base", "name": "BC Fishing Base", "areaId": "bc-coast" },
-  "areas": [{ "id": "bc-coast", "name": "Coastal Rivers" }]
+  "base": {
+    "id": "bc-base",
+    "name": "BC Fishing Base",
+    "areaId": "bc-coast"
+  },
+  "areas": [
+    {
+      "id": "bc-coast",
+      "name": "Coastal Rivers"
+    }
+  ],
+  "climate": {
+    "annualMeanWaterC": 9,
+    "seasonalSwingC": 8,
+    "weatherWeights": {
+      "clear": 18,
+      "cloudy": 40,
+      "light_rain": 16,
+      "rain": 16,
+      "windy": 10
+    },
+    "tidePhaseOffset": 0.4,
+    "tideRange": "moderate"
+  }
 }

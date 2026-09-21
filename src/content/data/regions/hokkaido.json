@@ -4,9 +4,32 @@
   "name": "北海道",
   "stage": "playable",
   "dataStatus": "provisional",
-  "base": { "id": "hokkaido-base", "name": "北海道 ベース", "areaId": "hokkaido-central" },
+  "base": {
+    "id": "hokkaido-base",
+    "name": "北海道 ベース",
+    "areaId": "hokkaido-central"
+  },
   "areas": [
-    { "id": "hokkaido-central", "name": "道央" },
-    { "id": "hokkaido-east", "name": "道東" }
-  ]
+    {
+      "id": "hokkaido-central",
+      "name": "道央"
+    },
+    {
+      "id": "hokkaido-east",
+      "name": "道東"
+    }
+  ],
+  "climate": {
+    "annualMeanWaterC": 12,
+    "seasonalSwingC": 11,
+    "weatherWeights": {
+      "clear": 28,
+      "cloudy": 32,
+      "light_rain": 12,
+      "rain": 8,
+      "windy": 10
+    },
+    "tidePhaseOffset": 0.35,
+    "tideRange": "moderate"
+  }
 }

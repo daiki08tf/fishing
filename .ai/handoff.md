@@ -1,9 +1,32 @@
 # Handoff
 
-最終更新: Phase 8（Japan & International Expedition）完了
+最終更新: Phase 9（Living Water & Big Game）完了
 
 > 以下の Phase 6 / 6.5 節は履歴として残している。件数・Save version・次 Phase については、
-> この Phase 8 / 7A.1 / 7A 節と `.ai/current-task.md` を優先する。
+> この Phase 9 / 8 / 7A.1 / 7A 節と `.ai/current-task.md` を優先する。
+
+## Phase 9（Living Water & Big Game）
+
+- **Environment Domain** — `src/domain/environment`。WorldTime と地域の ClimateProfile
+  から季節 / 時間帯 / 天候 / 潮 / 水温 / 濁り / 流れを決定論的に解決する。
+  外部 API も Math.random も使わない。淡水は潮なし（null）
+- **Fishing Conditions Resolver** — Environment + Spot + Species + 釣法 + 装備から
+  resolved numerical modifiers（Encounter 重み / bite / 視認性 / テンション）を作る。
+  FishingEngine は数値だけを受け取る（季節・天候・潮・国・魚種名を知らない）
+- **Content** — `regions[].climate`（10 地域）と魚種の `environmentAffinity`（16 種）。
+  条件が悪くても Encounter 重みは 0 にしない（下限 0.35）
+- **Big Game** — 個体サイズから pull / endurance を解決。ライン / リーダー / ドラッグ /
+  ロッドが耐えられるテンションに効き、フックサイズのミスマッチは掛かりと保持を落とす。
+  Light / Balanced / Heavy の差が出る（Heavy が大型魚で安定、小型魚では万能ではない）
+- **Fish Finder** — Gear カテゴリ `electronics`（1 種）+ Search Water。
+  所持していれば反応が詳しい。持っていなくても釣れる。Save は v7 のまま
+- **UI** — HOME の「今日の条件」、MAP の釣況、SPOT の条件 + Search Water、
+  FISHING の条件 1 行
+- 検証: `npm run check` PASS、`validate:content` 653 records、
+  `simulate:environment` 8/8、`simulate:big-game` 9/9、既存 simulate 群 PASS
+- 注意: `simulate:fishing --seed demo` は 174 → 181 ticks に変化した（意図的）。
+  Phase 9 でライン / リーダー / ドラッグを break threshold へ接続し、
+  個体サイズが引きに効くようになったため
 
 ## このプロジェクトは何か
 

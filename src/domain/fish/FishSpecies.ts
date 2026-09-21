@@ -14,6 +14,7 @@ import type {
   TimeProfile,
 } from './profiles'
 import type { WeightModel } from './weightModel'
+import type { SpeciesEnvironmentAffinity } from '../environment/fishingConditions'
 
 /** 分類情報。DATA_MODEL.md §2 の taxonomy。 */
 export type Taxonomy = {
@@ -55,6 +56,12 @@ export type FishSpecies = {
   readonly methodAffinity?: Readonly<Record<string, number>>
   /** offering のタグとの相性（lureType / targetProfile → 倍率）。 */
   readonly offeringAffinity?: Readonly<Record<string, number>>
+
+  /**
+   * Phase 9: 環境（季節 / 時間帯 / 天候 / 潮 / 流れ / 水温）の嗜好。
+   * 未設定は neutral（1）として扱う。
+   */
+  readonly environmentAffinity?: SpeciesEnvironmentAffinity
 
   readonly lengthModel: LengthDistribution
   /** 体長-体重関係。Phase 2 で必須にした（体重は体長から導出する）。 */

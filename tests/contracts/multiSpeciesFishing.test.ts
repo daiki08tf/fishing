@@ -32,15 +32,25 @@ describe('multi species fishing', () => {
 
   it('lands every species in the content', () => {
     for (const species of content.species) {
-      const engine = new FishingEngine({
-        encounters: [{ species, presence: 1 }],
-        seed: 'multispecies',
+      /*
+       * Phase 9 で個体サイズが引きの強さに効くようになったため、
+       * 1 つの seed では大型個体が逃げることがある。
+       * 「その魚種を獲れる」ことは、複数 seed のうち 1 回以上で確認する。
+       */
+      const outcomes = ['multispecies', 'multispecies#2', 'multispecies#3'].map((seed) => {
+        const engine = new FishingEngine({
+          encounters: [{ species, presence: 1 }],
+          seed,
+        })
+
+        return { outcome: runFightToTerminal(engine), engine }
       })
+      const landed = outcomes.find((entry) => entry.outcome.phase === 'LANDED')
 
-      const outcome = runFightToTerminal(engine)
-      const individual = engine.snapshot().fish?.individual
+      expect(landed, `${String(species.id)} was not landed`).toBeDefined()
 
-      expect(outcome.phase, `${String(species.id)} was not landed`).toBe('LANDED')
+      const individual = landed?.engine.snapshot().fish?.individual
+
       expect(individual).toBeDefined()
       expect(individual?.speciesId).toBe(species.id)
       expect(individual?.weightKg).toBeGreaterThan(0)

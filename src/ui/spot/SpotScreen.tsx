@@ -1,11 +1,15 @@
+import { useState } from 'react'
 import { revealedFields } from '../../domain/knowledge/spotKnowledge'
-import { resolveTackle } from '../../domain/tackle'
+import { resolveEnvironment, resolveFishingConditions } from '../../domain/environment'
+import { NEUTRAL_FISHING_MODIFIERS } from '../../domain/fishing/PlayerFishingModifiers'
+import { bestFishFinderOf, resolveTackle } from '../../domain/tackle'
 import { formatWorldTime } from '../../domain/world'
 import { spotKnowledgeScore } from '../../domain/knowledge/spotKnowledge'
 import { useAppStore } from '../../state/appStore'
 import { usePlayerStore } from '../../state/playerStore'
 import { ContentErrorPanel } from '../world/ContentErrorPanel'
 import { useContentOrError } from '../world/useContentOrError'
+import { ConditionPanel } from '../world/ConditionPanel'
 
 /**
  * 釣り場。到着後はここを拠点にする。
@@ -37,7 +41,11 @@ export const SpotScreen = () => {
   const world = usePlayerStore((state) => state.world)
   const knowledge = usePlayerStore((state) => state.knowledge)
   const loadout = usePlayerStore((state) => state.loadout)
+  const inventory = usePlayerStore((state) => state.inventory)
+  const lastSearch = usePlayerStore((state) => state.lastSearch)
+  const searchWater = usePlayerStore((state) => state.searchWater)
   const returnHome = usePlayerStore((state) => state.returnHome)
+  const [notice, setNotice] = useState<string | null>(null)
 
   if (!content.ok) {
     return <ContentErrorPanel message={content.message} />
@@ -79,6 +87,37 @@ export const SpotScreen = () => {
     gear: content.value.gear,
     methods: content.value.methods,
   })
+  const region = content.value.regionById[String(spot.regionId)]
+  const environment =
+    region === undefined
+      ? null
+      : resolveEnvironment({
+          time: world.time,
+          climate: region.climate,
+          regionId: String(region.id),
+          environment: spot.environment,
+        })
+  const spotSpecies = spot.fishTable.flatMap((occurrence) => {
+    const species = content.value.speciesById[String(occurrence.speciesId)]
+    return species === undefined ? [] : [species]
+  })
+  const finder = bestFishFinderOf(inventory, content.value.gear)
+  const searchSign =
+    lastSearch !== null && lastSearch.spotId === String(spot.id) ? lastSearch.sign : null
+  const conditions =
+    environment === null
+      ? null
+      : resolveFishingConditions({
+          environment,
+          species: spotSpecies,
+          tackleModifiers: tackle?.playerModifiers ?? NEUTRAL_FISHING_MODIFIERS,
+          hasFishFinder: finder !== null,
+          searchSign,
+          knowledgeScore: Math.round(score),
+        })
+  const speciesNames = Object.fromEntries(
+    spotSpecies.map((species) => [String(species.id), species.japaneseName]),
+  )
 
   const ratingWords = (value: number): string =>
     value >= 0.7 ? '高' : value >= 0.45 ? '普通' : '低'
@@ -118,6 +157,45 @@ export const SpotScreen = () => {
           <p className="fishing__legend">思ったように釣れないときは、タックルを見直してみる。</p>
         </section>
       )}
+
+      {environment === null || conditions === null ? null : (
+        <ConditionPanel
+          time={world.time}
+          environment={environment}
+          conditions={conditions}
+          speciesNames={speciesNames}
+          searchSign={searchSign}
+        />
+      )}
+
+      <section className="panel">
+        <h3 className="panel__subheading">水を探る</h3>
+        <p className="panel__body">
+          {finder === null
+            ? 'Fish Finder は未所持（目視と勘で探る。所持すると反応が詳しくなる）'
+            : `Fish Finder: ${finder.name}（精度 ${finder.accuracy.toFixed(2)}）`}
+        </p>
+        <button
+          className="button"
+          type="button"
+          onClick={() => {
+            if (environment === null) {
+              return
+            }
+
+            const result = searchWater({
+              spot,
+              species: spotSpecies,
+              environment,
+              hasFishFinder: finder !== null,
+            })
+            setNotice(result.message)
+          }}
+        >
+          Search Water（水を探る）
+        </button>
+        {notice === null ? null : <p className="notice">{notice}</p>}
+      </section>
 
       <section className="panel">
         <h3 className="panel__subheading">分かっていること</h3>

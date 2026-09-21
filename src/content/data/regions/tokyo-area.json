@@ -4,10 +4,36 @@
   "name": "東京近郊",
   "stage": "playable",
   "dataStatus": "provisional",
-  "base": { "id": "tokyo-area-home", "name": "Tokyo Area Home", "areaId": "tokyo" },
+  "base": {
+    "id": "tokyo-area-home",
+    "name": "Tokyo Area Home",
+    "areaId": "tokyo"
+  },
   "areas": [
-    { "id": "tokyo", "name": "東京" },
-    { "id": "kanagawa", "name": "神奈川" },
-    { "id": "chiba", "name": "千葉" }
-  ]
+    {
+      "id": "tokyo",
+      "name": "東京"
+    },
+    {
+      "id": "kanagawa",
+      "name": "神奈川"
+    },
+    {
+      "id": "chiba",
+      "name": "千葉"
+    }
+  ],
+  "climate": {
+    "annualMeanWaterC": 18,
+    "seasonalSwingC": 9,
+    "weatherWeights": {
+      "clear": 30,
+      "cloudy": 30,
+      "light_rain": 12,
+      "rain": 8,
+      "windy": 6
+    },
+    "tidePhaseOffset": 0.1,
+    "tideRange": "moderate"
+  }
 }

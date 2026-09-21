@@ -6,6 +6,12 @@ import {
 } from '../../domain/economy'
 import { formatDuration } from '../../domain/world'
 import { spotKnowledgeScore } from '../../domain/knowledge/spotKnowledge'
+import {
+  resolveEnvironment,
+  resolveFishingConditions,
+  CONDITION_SUMMARY_LABELS,
+} from '../../domain/environment'
+import { NEUTRAL_FISHING_MODIFIERS } from '../../domain/fishing/PlayerFishingModifiers'
 import { useAppStore } from '../../state/appStore'
 import { usePlayerStore } from '../../state/playerStore'
 import { ContentErrorPanel } from '../world/ContentErrorPanel'
@@ -141,6 +147,26 @@ export const MapScreen = () => {
                 ? undefined
                 : region?.areas.find((candidate) => candidate.id === spot.areaId)
             const canGo = inRegion && access.accessible && (readiness?.affordable ?? false)
+            const spotRegion = content.value.regionById[String(spot.regionId)]
+            const conditions =
+              spotRegion === undefined
+                ? null
+                : resolveFishingConditions({
+                    environment: resolveEnvironment({
+                      time: world.time,
+                      climate: spotRegion.climate,
+                      regionId: String(spotRegion.id),
+                      environment: spot.environment,
+                    }),
+                    species: spot.fishTable.flatMap((occurrence) => {
+                      const species = content.value.speciesById[String(occurrence.speciesId)]
+                      return species === undefined ? [] : [species]
+                    }),
+                    tackleModifiers: NEUTRAL_FISHING_MODIFIERS,
+                    hasFishFinder: false,
+                    searchSign: null,
+                    knowledgeScore: spotKnowledgeScore(knowledge, spotId),
+                  })
 
             return (
               <li className="spot-card" key={spotId}>
@@ -165,6 +191,12 @@ export const MapScreen = () => {
                 <p className="spot-card__meta">
                   この釣り場の知識 {Math.round(score)}% / 魚種 {spot.fishTable.length} 種
                 </p>
+                {conditions === null || !inRegion ? null : (
+                  <p className="spot-card__meta">
+                    釣況: {CONDITION_SUMMARY_LABELS[conditions.summary]} /{' '}
+                    {conditions.activityLabel}
+                  </p>
+                )}
 
                 {!inRegion || options.length === 0 ? null : (
                   <ul className="travel-options">

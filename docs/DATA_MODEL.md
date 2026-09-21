@@ -370,6 +370,78 @@ Transport 候補の解決は
 「4 分速いだけの高額な候補を黙って選び、高い往復費を課す」ことを避ける。
 費用は `costComponents`（運賃 / 走行費 / レンタル料）を内訳として表示する。
 
+## 10.2 Environment と釣況（Phase 9）
+
+WorldTime を SSOT として、環境を決定論的に解決する（外部 API も Math.random も使わない）。
+
+```ts
+type ClimateProfile = {          // Region Content（地域ごとの傾向）
+  annualMeanWaterC: number
+  seasonalSwingC: number
+  weatherWeights: Record<Weather, number>
+  tidePhaseOffset: number        // 0〜1（満潮の位相）
+  tideRange: "small" | "moderate" | "large"
+}
+
+type EnvironmentSnapshot = {
+  date: string                   // YYYY-MM-DD
+  month: number
+  season: "spring" | "summer" | "autumn" | "winter"
+  timeOfDay: "dawn" | "morning" | "daytime" | "evening" | "night"
+  weather: "clear" | "cloudy" | "light_rain" | "rain" | "windy"
+  tide: "low" | "rising" | "high" | "falling" | null   // 淡水は null
+  water: {
+    kind: "freshwater" | "brackish" | "saltwater"
+    temperatureC: number
+    clarity: number              // 0（濁り）〜1（澄んでいる）
+    flow: "none" | "slow" | "moderate" | "strong"
+    wind: "calm" | "breezy" | "strong"
+  }
+}
+```
+
+魚種は Content に環境嗜好（任意）を持つ。未設定は neutral（1）。
+
+```ts
+type SpeciesEnvironmentAffinity = {
+  preferredSeasons?: Season[]
+  preferredTimeOfDay?: TimeOfDay[]
+  weatherAffinity?: Record<Weather, number>
+  tideAffinity?: Record<Tide, number>
+  flowAffinity?: Record<WaterFlow, number>
+  preferredTemperatureC?: { min: number; max: number }
+}
+```
+
+Fishing Conditions Resolver は Environment と Spot・魚種・釣法・装備から
+**resolved numerical modifiers** を作る。FishingEngine は環境そのものを知らない。
+
+```ts
+type FishingConditions = {
+  summary: "excellent" | "good" | "fair" | "tough"     // 表示用（唯一の真実ではない）
+  score: number
+  speciesModifiers: Record<speciesId, number>          // Encounter の重み（0.35〜2.4）
+  biteAffinityMultiplier: number
+  playerModifiers: PlayerFishingModifiers              // 視認性 / テンションなど
+  notes: string[]                                       // 天候 / 潮 / 水温 / 流れ
+  activityLabel: string
+  speciesHintIds: string[]                              // Knowledge / Fish Finder で精度が変わる
+}
+```
+
+環境は日付・地域・Spot の種類から再生成できるため、Save には保存しない（v7 のまま）。
+Fish Finder は Gear カテゴリ `electronics` として既存 Inventory に載せる。
+
+### 大型魚のファイト（Phase 9）
+
+- 個体サイズ（基準サイズとの比）から `pullMultiplier` / `enduranceMultiplier` を導出し、
+  「大きい個体ほど強く引く・疲れにくい」を作る（魚種名や国では分岐しない）
+- 装備側は ライン強度 / リーダー強度 / リールのドラッグ / ロッドの fightingPower から
+  `maxTensionMultiplier`（耐えられるテンション）を解決する
+- フックサイズと魚の大きさのミスマッチは `hookSuccessModifier`（アワセ猶予）と
+  `slackToleranceMultiplier`（保持）を下げる
+- Hard gate は作らない。軽いタックルでも獲れるが、ラインブレイク / フックアウトが増える
+
 ## 11. PlayerProgression
 
 ```ts

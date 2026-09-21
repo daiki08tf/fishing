@@ -528,7 +528,7 @@ export class FishingEngine {
     if (decision.behavior === 'run') {
       this.tension = Math.min(
         this.effectiveMaxTension(),
-        this.tension + this.tuning.runPullTensionGain,
+        this.tension + this.tuning.runPullTensionGain * state.fish.pullMultiplier,
       )
     }
 
@@ -553,7 +553,8 @@ export class FishingEngine {
     this.drainStamina(this.tuning.reelStaminaDrain * efficiency)
 
     // 強い魚ほど糸を引く。
-    const powerMultiplier = 0.75 + 0.5 * state.fish.power
+    // Phase 9: 大型個体ほど同じ操作でもテンションが上がりやすい。
+    const powerMultiplier = (0.75 + 0.5 * state.fish.power) * state.fish.pullMultiplier
     this.tension = Math.min(
       this.effectiveMaxTension(),
       this.tension +
@@ -599,7 +600,10 @@ export class FishingEngine {
       return
     }
 
-    this.fishState = { ...state, stamina: Math.max(0, state.stamina - amount) }
+    // Phase 9: 大型個体は粘る（同じ時間では疲れにくい）。
+    const drained = amount / state.fish.enduranceMultiplier
+
+    this.fishState = { ...state, stamina: Math.max(0, state.stamina - drained) }
   }
 
   private restoreStamina(amount: number): void {

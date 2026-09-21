@@ -21,6 +21,13 @@ export type FightingFish = {
   /** 最大スタミナ（0〜1 の相対値）。0 になれば取り込める。 */
   readonly staminaMax: number
   /**
+   * Phase 9: 大型個体の引き（基準サイズ = 1.0）。
+   * Engine は「その個体がどれだけ引くか」だけを見て、魚種名や国を知らない。
+   */
+  readonly pullMultiplier: number
+  /** Phase 9: 大型個体の粘り（スタミナの減りにくさ）。基準サイズ = 1.0。 */
+  readonly enduranceMultiplier: number
+  /**
    * Trait から合成済みの倍率。
    * Engine は Trait 名を一切知らず、この倍率だけを見る。
    * これにより Trait 追加で Engine を書き換えずに済む。

@@ -4,7 +4,10 @@
   "waterTypes": ["salt", "brackish"],
   "distribution": ["phase1-sample-region"],
   "habitats": ["phase1-sample-deep"],
-  "depthRange": { "min": 8, "max": 40 },
+  "depthRange": {
+    "min": 8,
+    "max": 40
+  },
   "lengthModel": {
     "kind": "lognormal",
     "medianCm": 45,
@@ -12,7 +15,12 @@
     "minCm": 20,
     "maxCm": 63
   },
-  "methodAffinity": { "lure": 1.15, "light_lure": 0.85, "bait": 1, "bottom": 0.95 },
+  "methodAffinity": {
+    "lure": 1.15,
+    "light_lure": 0.85,
+    "bait": 1,
+    "bottom": 0.95
+  },
   "offeringAffinity": {
     "vibration": 1.15,
     "jig": 1,
@@ -20,9 +28,41 @@
     "cut": 1.05,
     "large": 1.15
   },
-  "weightModel": { "lengthWeightA": 0.0085, "lengthWeightB": 3.0 },
-  "conditionModel": { "variability": 0.45 },
-  "traitConfiguration": { "trophyPercentileThreshold": 0.8 },
-  "fightProfile": { "strength": 0.6, "stamina": 0.6, "speed": 0.45 },
-  "rarity": 2
+  "weightModel": {
+    "lengthWeightA": 0.0085,
+    "lengthWeightB": 3.0
+  },
+  "conditionModel": {
+    "variability": 0.45
+  },
+  "traitConfiguration": {
+    "trophyPercentileThreshold": 0.8
+  },
+  "fightProfile": {
+    "strength": 0.6,
+    "stamina": 0.6,
+    "speed": 0.45
+  },
+  "rarity": 2,
+  "environmentAffinity": {
+    "preferredSeasons": ["summer", "autumn"],
+    "preferredTimeOfDay": ["night", "dawn"],
+    "weatherAffinity": {
+      "clear": 1.0,
+      "cloudy": 1.1,
+      "light_rain": 1.05,
+      "rain": 1.0,
+      "windy": 0.9
+    },
+    "tideAffinity": {
+      "low": 0.9,
+      "rising": 1.15,
+      "high": 1.1,
+      "falling": 1.0
+    },
+    "preferredTemperatureC": {
+      "min": 18,
+      "max": 26
+    }
+  }
 }

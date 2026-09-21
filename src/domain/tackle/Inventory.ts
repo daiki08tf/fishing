@@ -1,5 +1,5 @@
 import type { GearId } from '../ids'
-import type { GearItem } from '../gear/Gear'
+import { isElectronics, type ElectronicsDefinition, type GearItem } from '../gear/Gear'
 
 /**
  * 所持しているタックル。
@@ -36,3 +36,21 @@ export const ownedGearInCategory = (
   gear: readonly GearItem[],
   category: GearItem['category'],
 ): readonly GearItem[] => ownedGearOf(inventory, gear).filter((item) => item.category === category)
+
+/** 所持している電子機器（Phase 9）。装備スロットには入らない。 */
+export const ownedElectronicsOf = (
+  inventory: Inventory,
+  gear: readonly GearItem[],
+): readonly ElectronicsDefinition[] => ownedGearOf(inventory, gear).filter(isElectronics)
+
+/**
+ * 所持している Fish Finder（精度が最も高いもの）。無ければ null。
+ * 具体 ID は見ず、Content の kind と精度だけを使う。
+ */
+export const bestFishFinderOf = (
+  inventory: Inventory,
+  gear: readonly GearItem[],
+): ElectronicsDefinition | null =>
+  ownedElectronicsOf(inventory, gear)
+    .filter((item) => item.kind === 'fish_finder')
+    .sort((left, right) => right.accuracy - left.accuracy)[0] ?? null

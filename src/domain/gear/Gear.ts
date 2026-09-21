@@ -12,7 +12,17 @@ import type { Range } from '../primitives'
  * - 耐久性・破損・ルアーロスト・強化・クラフトは扱わない（Phase 6 の非目標）。
  */
 
-export const GEAR_CATEGORIES = ['rod', 'reel', 'line', 'leader', 'hook', 'lure', 'bait'] as const
+export const GEAR_CATEGORIES = [
+  'rod',
+  'reel',
+  'line',
+  'leader',
+  'hook',
+  'lure',
+  'bait',
+  /** Phase 9: ボート / 沖で使う電子機器（現状は Fish Finder のみ）。 */
+  'electronics',
+] as const
 export type GearCategory = (typeof GEAR_CATEGORIES)[number]
 
 export const GEAR_CATEGORY_LABELS: Readonly<Record<GearCategory, string>> = {
@@ -23,7 +33,12 @@ export const GEAR_CATEGORY_LABELS: Readonly<Record<GearCategory, string>> = {
   hook: 'フック',
   lure: 'ルアー',
   bait: '餌',
+  electronics: '電子機器',
 }
+
+/** 電子機器の種別。Phase 9 は Fish Finder のみ（アーキテクチャを巨大化しない）。 */
+export const ELECTRONICS_KINDS = ['fish_finder'] as const
+export type ElectronicsKind = (typeof ELECTRONICS_KINDS)[number]
 
 /** ロッドのパワー。表示と相性の判断に使う（Engine の if 分岐には使わない）。 */
 export const ROD_POWERS = ['UL', 'L', 'ML', 'M', 'MH', 'H', 'XH'] as const
@@ -304,6 +319,27 @@ export type GearItem =
   | HookDefinition
   | LureDefinition
   | BaitDefinition
+  | ElectronicsDefinition
+
+/**
+ * 電子機器（Phase 9）。装備スロットには入らず、所持しているだけで効果がある。
+ * 探知深度・精度は Content に置き、Engine は具体名を知らない。
+ */
+export type ElectronicsDefinition = {
+  readonly id: GearId
+  readonly category: 'electronics'
+  readonly name: string
+  readonly price: number
+  readonly brandId?: BrandId
+  readonly seriesId?: string
+  readonly series?: string
+  readonly kind: ElectronicsKind
+  /** 反応が取れる水深（m）。 */
+  readonly detectionDepthM: number
+  /** 反応の精度（0〜1）。高いほど Search Water の情報が詳しい。 */
+  readonly accuracy: number
+  readonly weightG: number
+}
 
 /** offering = 実際に魚へ見せるもの（ルアーまたは餌）。 */
 export type OfferingDefinition = LureDefinition | BaitDefinition
@@ -315,6 +351,9 @@ export const isLeader = (gear: GearItem): gear is LeaderDefinition => gear.categ
 export const isHook = (gear: GearItem): gear is HookDefinition => gear.category === 'hook'
 export const isOffering = (gear: GearItem): gear is OfferingDefinition =>
   gear.category === 'lure' || gear.category === 'bait'
+
+export const isElectronics = (gear: GearItem): gear is ElectronicsDefinition =>
+  gear.category === 'electronics'
 
 export const gearById = (items: readonly GearItem[], id: GearId): GearItem | undefined =>
   items.find((item) => item.id === id)

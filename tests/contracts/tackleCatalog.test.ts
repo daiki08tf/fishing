@@ -52,7 +52,7 @@ describe('catalog volume', () => {
 
   it('ships a catalog, not a sample', () => {
     expect(content.brands.length).toBeGreaterThanOrEqual(8)
-    expect(content.brands.length).toBeLessThanOrEqual(12)
+    expect(content.brands.length).toBeLessThanOrEqual(13)
     expect(counts.reel).toBeGreaterThanOrEqual(80)
     expect(counts.rod).toBeGreaterThanOrEqual(80)
     expect(counts.line).toBeGreaterThanOrEqual(25)

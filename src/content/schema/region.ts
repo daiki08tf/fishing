@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import { asAreaId, asCountryId, asRegionId } from '../../domain/ids'
 import { REGION_STAGES, WORLD_DATA_STATUSES } from '../../domain/world/Region'
+import { WEATHERS } from '../../domain/environment/Environment'
 import { nonEmptyString } from './primitives'
 
 const areaSchema = z.strictObject({
@@ -12,6 +13,18 @@ const baseSchema = z.strictObject({
   id: nonEmptyString,
   name: nonEmptyString,
   areaId: nonEmptyString.transform(asAreaId),
+})
+
+/**
+ * 地域の気候プロファイル（Phase 9）。
+ * 気象モデルではなく「地域ごとの傾向」だけを持つ（PROVISIONAL）。
+ */
+const climateSchema = z.strictObject({
+  annualMeanWaterC: z.number(),
+  seasonalSwingC: z.number().nonnegative(),
+  weatherWeights: z.record(z.enum(WEATHERS), z.number().nonnegative()),
+  tidePhaseOffset: z.number().min(0).max(1),
+  tideRange: z.enum(['small', 'moderate', 'large']),
 })
 
 /**
@@ -29,6 +42,7 @@ export const regionSchema = z
     dataStatus: z.enum(WORLD_DATA_STATUSES),
     base: baseSchema,
     areas: z.array(areaSchema).min(1),
+    climate: climateSchema,
   })
   .superRefine((region, context) => {
     if (!region.areas.some((area) => area.id === region.base.areaId)) {

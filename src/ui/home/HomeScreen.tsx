@@ -2,11 +2,20 @@ import { useState } from 'react'
 import { recordedSpeciesCount } from '../../domain/codex'
 import { formatYen } from '../../domain/economy'
 import { remainingExpeditionDays } from '../../domain/expedition'
+import {
+  pickSummaryEnvironment,
+  resolveEnvironment,
+  resolveFishingConditions,
+} from '../../domain/environment'
+import { NEUTRAL_FISHING_MODIFIERS } from '../../domain/fishing/PlayerFishingModifiers'
+import { bestFishFinderOf, resolveTackle } from '../../domain/tackle'
 import { DAY_OF_WEEK_LABELS, dayOfWeekOf, formatWorldTime, isWeekend } from '../../domain/world'
+import { spotKnowledgeScore } from '../../domain/knowledge/spotKnowledge'
 import { useAppStore } from '../../state/appStore'
 import { usePlayerStore } from '../../state/playerStore'
 import { ContentErrorPanel } from '../world/ContentErrorPanel'
 import { useContentOrError } from '../world/useContentOrError'
+import { ConditionPanel } from '../world/ConditionPanel'
 
 /**
  * 自宅。釣行の起点。
@@ -27,6 +36,8 @@ export const HomeScreen = () => {
   const finance = usePlayerStore((state) => state.finance)
   const sleep = usePlayerStore((state) => state.sleep)
   const expedition = usePlayerStore((state) => state.expedition)
+  const loadout = usePlayerStore((state) => state.loadout)
+  const inventory = usePlayerStore((state) => state.inventory)
 
   if (!content.ok) {
     return <ContentErrorPanel message={content.message} />
@@ -40,6 +51,47 @@ export const HomeScreen = () => {
     (spot) => evaluateSpot(spot, content.value.transports).accessible,
   )
   const currentRegion = content.value.regionById[String(world.currentRegionId)]
+  const summarySpot = pickSummaryEnvironment(
+    content.value.spots.filter((spot) => String(spot.regionId) === String(world.currentRegionId)),
+  )
+  const environment =
+    summarySpot === undefined || currentRegion === undefined
+      ? null
+      : resolveEnvironment({
+          time: world.time,
+          climate: currentRegion.climate,
+          regionId: String(currentRegion.id),
+          environment: summarySpot.environment,
+        })
+  const summarySpecies =
+    summarySpot === undefined
+      ? []
+      : summarySpot.fishTable.flatMap((occurrence) => {
+          const species = content.value.speciesById[String(occurrence.speciesId)]
+          return species === undefined ? [] : [species]
+        })
+  const tackle = resolveTackle({
+    loadout,
+    gear: content.value.gear,
+    methods: content.value.methods,
+  })
+  const conditions =
+    environment === null
+      ? null
+      : resolveFishingConditions({
+          environment,
+          species: summarySpecies,
+          tackleModifiers: tackle?.playerModifiers ?? NEUTRAL_FISHING_MODIFIERS,
+          hasFishFinder: bestFishFinderOf(inventory, content.value.gear) !== null,
+          searchSign: null,
+          knowledgeScore:
+            summarySpot === undefined
+              ? 0
+              : Math.round(spotKnowledgeScore(knowledge, String(summarySpot.id))),
+        })
+  const speciesNames = Object.fromEntries(
+    content.value.species.map((species) => [String(species.id), species.japaneseName]),
+  )
   const trip = world.trip
   const monthlyFree = finance.salaryIncome - finance.simplifiedLivingCost
 
@@ -147,6 +199,15 @@ export const HomeScreen = () => {
 
         {notice === null ? null : <p className="notice">{notice}</p>}
       </section>
+
+      {environment === null || conditions === null ? null : (
+        <ConditionPanel
+          time={world.time}
+          environment={environment}
+          conditions={conditions}
+          speciesNames={speciesNames}
+        />
+      )}
 
       {trip === null ? null : (
         <section className="panel">

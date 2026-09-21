@@ -2,15 +2,75 @@
 
 ## Phase
 
-**Phase 8 — Japan & International Expedition**
+**Phase 9 — Living Water & Big Game**
 
 状態: **完了**
+
+「同じ釣り場でも季節・時間・天候・潮・水で釣れ方が変わる」と
+「Boat / Offshore / Heavy Tackle で大型魚を狙う」を実装した。Phase 8 までの構造
+（World / Expedition / Access / Economy / FishingEngine）は作り直していない。
+
+## Phase 9 で実装したもの
+
+### Environment Domain（`src/domain/environment`）
+
+- Season / TimeOfDay / Weather / Tide / WaterCondition を WorldTime と地域の
+  ClimateProfile（Content）から決定論的に解決する（`resolveEnvironment`）
+- 天候は「同じ日付・同じ地域なら同じ」。外部 API も Math.random も使わない
+- 潮は半日周潮の近似（745 分周期）で low → rising → high → falling。
+  淡水 Spot は `tide: null`（UI は「なし（淡水）」）
+- 水の状態: 水温（地域の年平均 + 季節 + 日々の揺れ + 天候）、濁り、流れ、風。
+  雨 → 流れ ↑・濁り ↑ の分かりやすい関係だけを持つ（物理シミュレーションはしない）
+- Content: `regions[].climate`（10 地域）と魚種の `environmentAffinity`（代表 16 種）
+
+### Fishing Conditions Resolver
+
+- `resolveFishingConditions` が Environment + Spot + Species + 釣法 + 装備から
+  resolved numerical modifiers を作る
+  - 魚種ごとの Encounter 重み（0.35〜2.4。**0 にしない**）
+  - biteAffinity（ヒットの出やすさ）
+  - playerModifiers（視認性 / テンション上昇。装備の倍率と合成する）
+  - 表示用の summary（excellent / good / fair / tough）・気配・狙いやすい魚
+- FishingEngine は季節・天候・潮・国・魚種名を知らない（数値だけを受け取る）
+- Knowledge が低いときは魚種名を絞る（既存 Knowledge policy を尊重）
+
+### 大型魚のファイト（Big Game）
+
+- 個体サイズ（体長分布の中央値基準）から `pullMultiplier` / `enduranceMultiplier` を解決。
+  同じ魚種でも大型個体は強く引く・疲れにくい
+- ライン強度 / リーダー強度 / リールのドラッグ / ロッドの fightingPower が
+  `maxTensionMultiplier`（耐えられるテンション）に効く
+- フックサイズと魚の大きさのミスマッチは掛かり（アワセ猶予）と保持を落とす
+- Hard gate は作らない。Light でも獲れるが、ラインブレイク / フックアウトが増える
+- 結果（simulate:big-game）: Chinook は Light 55% → Balanced 61% → Heavy 81%、
+  Halibut は 52% → 63% → 96%（着地率）。小型魚では Light の land/cast が Heavy 以上
+
+### Fish Finder / Search Water
+
+- Gear カテゴリ `electronics`（Deep Scan ブランド / FINDER series / ベーシック魚探 ¥24,000）
+- Spot で「Search Water」。反応（weak / moderate / strong / large）と、
+  所持していれば魚種の手がかりが出る。持っていなくても釣れる
+- 反応は釣行中の Encounter に少し効く（Save には載せない）
+
+### UI
+
+- HOME: 「今日の条件」（日時 / 時間帯 / 天候 / 潮 / 水温 / 濁り / 流れ / 釣況 / 狙いやすい魚）
+- MAP: Spot ごとの釣況（Good / Fair など）と気配
+- SPOT: 条件パネル + Search Water + Fish Finder の所持状態
+- FISHING: 天候 / 潮 / 水温 / 釣況の 1 行
+
+### 検証
+
+- `npm run simulate:environment`（新規）: 東京湾岸の時間帯・潮、アラスカの季節、
+  淡水の雨、決定論、潮の変化、下限 0.35 を 8 checks で PASS / FAIL
+- `npm run simulate:big-game`（新規）: Chinook / Halibut / 小型魚 × Light / Balanced / Heavy を
+  各 200 fight で比較し、9 checks で PASS / FAIL
+
+## Phase 8 で実装したもの（履歴）
 
 「東京の会社員が、近所の釣りから始めて、金と装備を揃えて世界中へ釣りに行く」骨格を
 一通り遊べる形にした。Phase 7A.1 までの構造（TransportDefinition / capability access /
 ResolvedTravelOption / AccessEngine / Save）は作り直していない。
-
-## Phase 8 で実装したもの
 
 ### World Hierarchy（Content 駆動）
 

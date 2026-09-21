@@ -102,6 +102,11 @@ export const gearSpecsOf = (gear: GearItem): readonly string[] => {
       ]
     case 'bait':
       return [`${gear.baitType} / ${gear.presentation}`]
+    case 'electronics':
+      return [
+        `${gear.kind} / 探知 ${String(gear.detectionDepthM)}m`,
+        `精度 ${gear.accuracy.toFixed(2)} / 自重 ${String(gear.weightG)}g`,
+      ]
   }
 }
 

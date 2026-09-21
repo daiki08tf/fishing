@@ -28,6 +28,8 @@
     "simulate:catalog": "tsx scripts/simulate-catalog.ts",
     "simulate:transport": "tsx scripts/simulate-transport.ts",
     "simulate:expedition": "tsx scripts/simulate-expedition.ts",
+    "simulate:environment": "tsx scripts/simulate-environment.ts",
+    "simulate:big-game": "tsx scripts/simulate-big-game.ts",
     "check": "npm run typecheck && npm run lint && npm run format:check && npm run validate:content && npm run test:run && npm run build"
   },
   "dependencies": {
