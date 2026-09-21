@@ -1,0 +1,9 @@
+{
+  "id": "nordland",
+  "countryId": "norway",
+  "name": "ノルウェー北部",
+  "stage": "planned",
+  "dataStatus": "provisional",
+  "base": { "id": "nordland-base", "name": "Nordland Fishing Base", "areaId": "fjord" },
+  "areas": [{ "id": "fjord", "name": "Fjord / Coastal" }]
+}

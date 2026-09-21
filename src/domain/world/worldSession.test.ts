@@ -79,7 +79,7 @@ describe('world session', () => {
     expect(spotKnowledgeScore(context.knowledge, 'test-spot')).toBe(
       DEFAULT_WORLD_TUNING.firstVisitKnowledge,
     )
-    expect(regionKnowledgeScore(context.knowledge, 'test-region')).toBe(
+    expect(regionKnowledgeScore(context.knowledge, String(createTestSpot().regionId))).toBe(
       DEFAULT_WORLD_TUNING.firstVisitRegionKnowledge,
     )
     expect(context.world.discoveredSpotIds).toEqual(['test-spot'])

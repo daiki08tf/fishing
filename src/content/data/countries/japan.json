@@ -1,0 +1,7 @@
+{
+  "id": "japan",
+  "name": "日本",
+  "domestic": true,
+  "currency": { "code": "JPY", "symbol": "¥" },
+  "dataStatus": "provisional"
+}

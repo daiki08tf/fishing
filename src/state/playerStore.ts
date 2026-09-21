@@ -9,6 +9,14 @@ import {
 } from '../domain/access/Transport'
 import { resolveCatch } from '../domain/catch'
 import { emptyCodexState, type CodexState } from '../domain/codex'
+import {
+  createInitialExpeditionState,
+  permitIdsForAccess,
+  remainingExpeditionDays,
+  type ActiveExpedition,
+  type ExpeditionPlan,
+  type ExpeditionState,
+} from '../domain/expedition'
 import type { FishIndividual } from '../domain/fish/FishIndividual'
 import type { FishSpecies } from '../domain/fish/FishSpecies'
 import type { GearId, TransportId } from '../domain/ids'
@@ -50,19 +58,31 @@ import {
   type LoadoutFailure,
   type LoadoutSlot,
 } from '../domain/tackle'
-import { formatWorldTime, sleepUntilMorning, type WorldTime } from '../domain/world/WorldTime'
+import {
+  advanceMinutes,
+  formatWorldTime,
+  MINUTES_PER_DAY,
+  sleepUntilMorning,
+  type WorldTime,
+} from '../domain/world/WorldTime'
 import type { FishingSpot } from '../domain/world/FishingSpot'
+import { DEFAULT_WORLD_TUNING } from '../domain/world/WorldTuning'
 import {
   arriveAtSpot,
   arriveHome,
   createInitialWorld,
   leaveForSpot,
   leaveSpot,
+  moveToRegion,
   recordFishingAttempt,
   type WorldState,
 } from '../domain/world/worldSession'
 import { fastestTravelOption } from '../domain/access/accessEngine'
-import { asGearId, asTransportId } from '../domain/ids'
+import { addRegionKnowledge } from '../domain/knowledge/regionKnowledge'
+import { asGearId, asRegionId, asTransportId } from '../domain/ids'
+
+/** 遠征の初回訪問で得る地域 Knowledge（PROVISIONAL）。 */
+const EXPEDITION_REGION_KNOWLEDGE = 20
 
 /**
  * Save に載る状態（Player + World）をまとめて持つストア。
@@ -122,6 +142,8 @@ export type PersistedPlayerSlice = {
   readonly world: WorldState
   /** Phase 7A: World から独立した利用可能・所有 Transport。 */
   readonly transport: PlayerTransportState
+  /** Phase 8: 遠征（現在の遠征・訪問済み地域・所持している許可）。 */
+  readonly expedition: ExpeditionState
   readonly knowledge: KnowledgeState
   readonly finance: FinanceState
   readonly purchases: readonly ShopItemId[]
@@ -206,6 +228,12 @@ export type PlayerStoreState = PersistedPlayerSlice & {
   purchaseItem(item: ShopItem): { readonly ok: boolean; readonly message: string | null }
   /** 翌朝まで休む（時間を進める）。 */
   sleep(): { readonly ok: boolean; readonly message: string | null }
+  /** 遠征に出発する（費用を払い、時間を進め、現地の拠点へ移る）。 */
+  startExpedition(plan: ExpeditionPlan): TripActionResult
+  /** 遠征を終えて home region へ帰る（時間が進む）。 */
+  endExpedition(): TripActionResult
+  /** 遠征中の残り日数（表示用）。 */
+  expeditionRemainingDays(): number
   /** 装備を差し替える（Domain の Loadout / Compatibility で検証する）。 */
   equipGear(
     input: TackleCatalog & { readonly slot: LoadoutSlot; readonly gearId: GearId | null },
@@ -239,6 +267,7 @@ const createInitialState = (): PersistedPlayerSlice & {
   progression: createInitialProgression(),
   world: createInitialWorld(),
   transport: createInitialTransportState(asTransportId),
+  expedition: createInitialExpeditionState(asRegionId(DEFAULT_WORLD_TUNING.homeRegionId)),
   knowledge: emptyKnowledgeState(),
   finance: createInitialFinanceState(),
   purchases: [],
@@ -272,6 +301,7 @@ export const createPlayerStore = () =>
         codex: save.codex,
         world: save.world,
         transport: save.transport,
+        expedition: save.expedition,
         knowledge: save.knowledge,
         finance: save.finance,
         purchases: save.purchases,
@@ -375,13 +405,15 @@ export const createPlayerStore = () =>
     },
 
     evaluateSpot: (spot, transports) => {
-      const { transport, knowledge } = get()
+      const { transport, knowledge, expedition } = get()
 
       return evaluateAccess({
         spot,
         transports,
         playerTransports: transport,
         knowledge,
+        permitsEnabled: true,
+        permits: permitIdsForAccess(expedition),
       })
     },
 
@@ -392,6 +424,8 @@ export const createPlayerStore = () =>
         transports,
         playerTransports: state.transport,
         knowledge: state.knowledge,
+        permitsEnabled: true,
+        permits: permitIdsForAccess(state.expedition),
       })
       const cost = roundTripCostFor(travelOption)
 
@@ -408,12 +442,25 @@ export const createPlayerStore = () =>
         return { ok: false, reason: 'state', message: '読み込み中' }
       }
 
-      const { world, transport, knowledge, finance } = get()
+      const { world, transport, knowledge, finance, expedition } = get()
+
+      // Phase 8: 今いる地域の釣り場にしか行けない（Domain も leaveForSpot で強制する）。
+      // 入口で先に見て、許可や費用より「遠征が必要」を優先して伝える。
+      if (String(spot.regionId) !== String(world.currentRegionId)) {
+        return {
+          ok: false,
+          reason: 'access',
+          message: '今いる地域と違う釣り場へは行けない（遠征で移動する）',
+        }
+      }
+
       const access = evaluateAccess({
         spot,
         transports,
         playerTransports: transport,
         knowledge,
+        permitsEnabled: true,
+        permits: permitIdsForAccess(expedition),
       })
 
       if (!access.accessible) {
@@ -451,6 +498,7 @@ export const createPlayerStore = () =>
         spot,
         transports,
         playerTransports: transport,
+        permits: permitIdsForAccess(expedition),
         ...(transportId === undefined ? {} : { transportId }),
       })
 
@@ -515,12 +563,13 @@ export const createPlayerStore = () =>
         return { ok: false, reason: 'state', message: '読み込み中' }
       }
 
-      const { world, transport, knowledge, finance } = get()
+      const { world, transport, knowledge, finance, expedition } = get()
       const left = leaveSpot({
         context: { world, knowledge },
         spot,
         transports,
         playerTransports: transport,
+        permits: permitIdsForAccess(expedition),
       })
 
       if (!left.ok) {
@@ -703,6 +752,140 @@ export const createPlayerStore = () =>
       set({ world: { ...world, time: next }, finance: settled })
 
       return { ok: true, message: `翌朝まで休んだ（${formatWorldTime(next)}）` }
+    },
+
+    /**
+     * 遠征に出発する。
+     *
+     * 予約（費用の支払い）→ 航空移動の時間送り → 現地の拠点へ移動、を 1 回で行う。
+     * 判定は Domain（planExpedition の結果と Economy の残高）だけを使う。
+     */
+    startExpedition: (plan) => {
+      if (get().hydrationStatus !== 'ready') {
+        return { ok: false, reason: 'state', message: '読み込み中' }
+      }
+
+      const { world, knowledge, finance, expedition } = get()
+
+      if (world.phase !== 'HOME') {
+        return { ok: false, reason: 'state', message: '釣り場にいる間は遠征を開始できない' }
+      }
+
+      if (expedition.current !== null) {
+        return { ok: false, reason: 'state', message: 'すでに遠征中である' }
+      }
+
+      const paid = spendCash(finance, {
+        kind: 'travel',
+        amount: plan.totalCostYen,
+        label: `${plan.name}（航空券・宿泊など）`,
+        at: formatWorldTime(world.time),
+      })
+
+      if (!paid.ok) {
+        return { ok: false, reason: 'cost', message: paid.message }
+      }
+
+      const moved = moveToRegion({
+        context: { world, knowledge },
+        regionId: plan.regionId,
+        minutes: plan.outboundMinutes,
+      })
+
+      if (!moved.ok) {
+        return { ok: false, reason: 'state', message: moved.message }
+      }
+
+      const firstVisit = !expedition.visitedRegionIds.includes(plan.regionId)
+      const nextKnowledge = firstVisit
+        ? addRegionKnowledge(
+            moved.context.knowledge,
+            String(plan.regionId),
+            EXPEDITION_REGION_KNOWLEDGE,
+          )
+        : moved.context.knowledge
+      const current: ActiveExpedition = {
+        definitionId: plan.definitionId,
+        regionId: plan.regionId,
+        countryId: plan.countryId,
+        regionName: plan.regionName,
+        baseId: plan.baseId,
+        baseName: plan.baseName,
+        startedAt: world.time,
+        arriveAt: moved.context.world.time,
+        plannedReturnAt: advanceMinutes(moved.context.world.time, plan.nights * MINUTES_PER_DAY),
+        returnMinutes: plan.returnMinutes,
+        nights: plan.nights,
+        lodgingName: plan.lodging.name,
+        totalCostYen: plan.totalCostYen,
+      }
+      const settled = settleAfterAdvance(paid.finance, world.time, moved.context.world.time)
+
+      set({
+        world: moved.context.world,
+        knowledge: nextKnowledge,
+        finance: settled,
+        expedition: {
+          ...expedition,
+          current,
+          visitedRegionIds: firstVisit
+            ? [...expedition.visitedRegionIds, plan.regionId]
+            : expedition.visitedRegionIds,
+          permits:
+            plan.permitId !== null && !expedition.permits.includes(plan.permitId)
+              ? [...expedition.permits, plan.permitId]
+              : expedition.permits,
+        },
+      })
+
+      return { ok: true, message: null }
+    },
+
+    /** 遠征を終えて home region へ帰る。航空移動の時間だけが進む。 */
+    endExpedition: () => {
+      if (get().hydrationStatus !== 'ready') {
+        return { ok: false, reason: 'state', message: '読み込み中' }
+      }
+
+      const { world, knowledge, finance, expedition } = get()
+      const current = expedition.current
+
+      if (current === null) {
+        return { ok: false, reason: 'state', message: '遠征していない' }
+      }
+
+      if (world.phase !== 'HOME') {
+        return { ok: false, reason: 'state', message: '釣り場にいる間は帰れない' }
+      }
+
+      const homeRegionId = asRegionId(DEFAULT_WORLD_TUNING.homeRegionId)
+      const moved = moveToRegion({
+        context: { world, knowledge },
+        regionId: homeRegionId,
+        minutes: current.returnMinutes,
+      })
+
+      if (!moved.ok) {
+        return { ok: false, reason: 'state', message: moved.message }
+      }
+
+      const settled = settleAfterAdvance(finance, world.time, moved.context.world.time)
+
+      set({
+        world: moved.context.world,
+        finance: settled,
+        expedition: { ...expedition, current: null },
+      })
+
+      return { ok: true, message: null }
+    },
+
+    expeditionRemainingDays: () => {
+      const { expedition, world } = get()
+
+      return expedition.current === null
+        ? 0
+        : remainingExpeditionDays(expedition.current, world.time)
     },
   }))
 

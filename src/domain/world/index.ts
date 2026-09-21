@@ -29,6 +29,7 @@ export {
   createInitialWorld,
   leaveForSpot,
   leaveSpot,
+  moveToRegion,
   recordFishingAttempt,
   WORLD_EVENTS,
   WORLD_PHASES,

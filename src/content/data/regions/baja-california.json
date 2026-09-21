@@ -1,0 +1,9 @@
+{
+  "id": "baja-california",
+  "countryId": "mexico",
+  "name": "バハ・カリフォルニア",
+  "stage": "planned",
+  "dataStatus": "provisional",
+  "base": { "id": "baja-base", "name": "Baja Fishing Base", "areaId": "baja-coast" },
+  "areas": [{ "id": "baja-coast", "name": "Coastal / Offshore" }]
+}

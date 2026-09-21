@@ -12,6 +12,8 @@ export type WorldTuning = {
   readonly startTime: WorldTime
   readonly homeLocationId: string
   readonly homeLocationName: string
+  /** Phase 8: 自宅のある地域。遠征の起点 / 終点。 */
+  readonly homeRegionId: string
 
   /** 1 回の釣り（キャスト〜結果）で消費するゲーム内時間。 */
   readonly fishingAttemptMinutes: number
@@ -30,6 +32,7 @@ export const DEFAULT_WORLD_TUNING: WorldTuning = {
   startTime: { year: 2026, month: 5, day: 2, hour: 6, minute: 0 },
   homeLocationId: 'tokyo-area-home',
   homeLocationName: 'Tokyo Area Home',
+  homeRegionId: 'tokyo-area',
 
   fishingAttemptMinutes: 20,
 

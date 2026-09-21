@@ -1,0 +1,65 @@
+{
+  "id": "hokkaido-masu-salmon",
+  "japaneseName": "サクラマス（暫定）",
+  "waterTypes": ["fresh", "salt"],
+  "distribution": ["hokkaido"],
+  "habitats": ["hokkaido-sample-river", "hokkaido-sample-coast"],
+  "depthRange": {
+    "min": 1,
+    "max": 20
+  },
+  "temperatureRange": {
+    "min": 5,
+    "max": 15
+  },
+  "seasonality": {
+    "months": [4, 5, 6, 9, 10]
+  },
+  "timeActivity": {
+    "periods": ["dawn", "evening"]
+  },
+  "currentPreference": {
+    "preference": "moderate"
+  },
+  "diet": ["hokkaido-sample-prey"],
+  "baits": ["roe", "worm"],
+  "lureCategories": ["spoon", "minnow", "spinner"],
+  "fishingMethods": ["light_lure", "lure", "bait"],
+  "methodAffinity": {
+    "lure": 1.1,
+    "light_lure": 1.2,
+    "bait": 1.05,
+    "bottom": 0.85
+  },
+  "offeringAffinity": {
+    "spoon": 1.2,
+    "minnow": 1.15,
+    "roe": 1.1,
+    "small": 1.1,
+    "mid": 1.05
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 48,
+    "dispersion": 0.15,
+    "minCm": 25,
+    "maxCm": 80
+  },
+  "weightModel": {
+    "lengthWeightA": 0.0098,
+    "lengthWeightB": 3.05
+  },
+  "conditionModel": {
+    "variability": 0.45
+  },
+  "traitConfiguration": {
+    "trophyPercentileThreshold": 1,
+    "strongRunnerChance": 0.12
+  },
+  "fightProfile": {
+    "strength": 0.6,
+    "stamina": 0.7,
+    "speed": 0.65
+  },
+  "rarity": 2
+}

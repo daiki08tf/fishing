@@ -27,7 +27,16 @@ export type SimulationOptions = {
   readonly maxSteps: number
   readonly verbose: boolean
   readonly speciesId?: string
+  /**
+   * 釣り場。省略すると国内の基準 Spot（荒川 下流）を使う。
+   *
+   * Phase 8 で Content が増えたため、`content.primarySpot`（ファイル順の先頭）に
+   * 頼ると海外 Spot が基準になってしまう。回帰の基準を固定するために明示する。
+   */
+  readonly spotId?: string
 }
+
+const DEFAULT_SIMULATION_SPOT_ID = 'arakawa-lower'
 
 export type SimulationResult = {
   readonly exitCode: number
@@ -65,10 +74,23 @@ export const chooseCommand = (
 
 export const simulateFishing = (options: SimulationOptions): SimulationResult => {
   const content = loadContentFromDirectory()
+  const spot = content.spots.find(
+    (candidate) => String(candidate.id) === (options.spotId ?? DEFAULT_SIMULATION_SPOT_ID),
+  )
+
+  if (spot === undefined) {
+    throw new Error(`no spot content for: ${String(options.spotId ?? DEFAULT_SIMULATION_SPOT_ID)}`)
+  }
+
+  const spotEncounters = spot.fishTable.flatMap((occurrence) => {
+    const species = content.speciesById[String(occurrence.speciesId)]
+
+    return species === undefined ? [] : [{ species, presence: occurrence.basePresence }]
+  })
   const encounters =
     options.speciesId === undefined
-      ? content.encounters
-      : content.encounters.filter((candidate) => String(candidate.species.id) === options.speciesId)
+      ? spotEncounters
+      : spotEncounters.filter((candidate) => String(candidate.species.id) === options.speciesId)
 
   if (encounters.length === 0) {
     throw new Error(`no encounter candidate for species: ${String(options.speciesId)}`)
@@ -77,7 +99,7 @@ export const simulateFishing = (options: SimulationOptions): SimulationResult =>
   const engine = new FishingEngine({
     encounters,
     seed: options.seed,
-    spotId: content.primarySpot.id,
+    spotId: spot.id,
   })
 
   const lines: string[] = [
@@ -149,6 +171,7 @@ const parseArguments = (argv: readonly string[]): SimulationOptions => {
   let maxSteps = 4000
   let verbose = false
   let speciesId: string | undefined
+  let spotId: string | undefined
 
   for (let index = 0; index < argv.length; index += 1) {
     const argument = argv[index]
@@ -182,6 +205,12 @@ const parseArguments = (argv: readonly string[]): SimulationOptions => {
       continue
     }
 
+    if (argument === '--spot' && value !== undefined) {
+      spotId = value
+      index += 1
+      continue
+    }
+
     if (argument === '--verbose') {
       verbose = true
     }
@@ -193,6 +222,7 @@ const parseArguments = (argv: readonly string[]): SimulationOptions => {
     maxSteps,
     verbose,
     ...(speciesId === undefined ? {} : { speciesId }),
+    ...(spotId === undefined ? {} : { spotId }),
   }
 }
 

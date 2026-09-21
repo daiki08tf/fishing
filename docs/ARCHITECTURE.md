@@ -285,6 +285,30 @@ Phase 7A の現行 schema は v6。v3〜v5 の `world.availableTransports` は m
 旧 `car` と Phase 5 の `used-compact-car` 購入履歴は `used-compact-car` ownership へ移し、
 Progression / Codex / World / Knowledge / Finance / Purchases / Inventory / Loadout を保持する。
 
+Phase 8 の現行 schema は v7。World に `currentRegionId`（今いる地域）を足し、
+遠征（`expedition`: current / visitedRegionIds / permits）を独立ブロックにする。
+v6 からの migration は「home region を与え、遠征を空で作る」だけで、他のブロックは保持する。
+
+### Expedition（Phase 8）
+
+依存とデータの流れは次の順に固定する。
+
+```text
+Country / Region / Expedition Content + 資金
+  ↓
+expedition Domain（planExpedition / 残り日数）
+  ↓
+Economy（費用の支払い） + WorldSession（時間と currentRegionId の移動）
+  ↓
+現地では Phase 7A の Transport / Access
+  ↓
+Encounter → FishingEngine
+```
+
+- `FishingEngine` は国・地域・航空券・宿泊・許可の名前を知らない（resolved な数値だけを受け取る）
+- 遠征の計画と費用は Domain（`src/domain/expedition`）に置き、UI は結果を表示するだけにする
+- 「違う地域の Spot へは行けない」は WorldSession が強制する（Store の入口でも先に伝える）
+
 ## 10. RNG
 
 ```ts

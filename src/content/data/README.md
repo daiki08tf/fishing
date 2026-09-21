@@ -7,6 +7,9 @@
 - `fish-species`
 - `fishing-spots`
 - `transports`
+- `countries`（Phase 8: 国）
+- `regions`（Phase 8: 地域。base / areas を持つ）
+- `expeditions`（Phase 8: 遠征。航空券・宿泊・許可）
 - `regulations`
 - `shop-items`
 - `brands`
@@ -18,10 +21,16 @@
 
 **検証用サンプル**だけを持つ。
 
-- `fish-species/phase1-sample-fish.json` （サンプル魚A）
-- `fish-species/phase2-sample-fish-b.json` 〜 `phase2-sample-fish-j.json`
-- `fishing-spots/*.json`（東京近郊を模した 13 件。うち 5 件は Transport 検証用。
-  `suburban-road-lake` は Phase 7A.1 で rental car の一般道 route 検証用に追加した）
+- `fish-species/*.json`（検証用 22 件。うち 12 件は Phase 8 のアラスカ / 北海道の魚）
+- `fishing-spots/*.json`（22 件。東京近郊 13 / アラスカ 6 / 北海道 3）
+  - 東京近郊: うち 5 件が Transport 検証用。`suburban-road-lake` は Phase 7A.1 で追加
+  - アラスカ: Phase 8。Salmon River / Mountain River / Coastal Bay / Offshore Grounds /
+    Glacier Creek / Trophy Lake（すべて `dataStatus: provisional`）
+  - 北海道: Phase 8。北国の河川 / 湖 / 海岸（すべて `dataStatus: provisional`）
+- `countries/*.json`（9 件。`domestic` と表示用 currency metadata）
+- `regions/*.json`（10 件。`stage: playable` は東京近郊 / 北海道 / アラスカ。
+  他は将来拡張用の `planned`。階層は Country → Region → Area → Spot）
+- `expeditions/*.json`（2 件。北海道 / アラスカ。航空券（往復）・宿泊・許可の費用）
 - `transports/*.json`（徒歩・公共交通・二輪・車・SUV・Kayak・Boat の 11 件）
 - `gear/*.json`（Rod / Reel / Line / Leader / Hook / Lure / Bait）
 - `methods/*.json`（`lure` / `light_lure` / `bait` / `bottom`）

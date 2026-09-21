@@ -40,6 +40,8 @@ export const MapScreen = () => {
    * 未選択のときは最も安い候補を既定にする（速いだけの高額な候補を黙って選ばない）。
    */
   const [selectedTransportIds, setSelectedTransportIds] = useState<Record<string, string>>({})
+  /** 表示する地域。既定は今いる地域（Phase 8）。 */
+  const [selectedRegionId, setSelectedRegionId] = useState<string | null>(null)
 
   if (!content.ok) {
     return <ContentErrorPanel message={content.message} />
@@ -63,6 +65,19 @@ export const MapScreen = () => {
     )
   }
 
+  const currentRegionId = String(world.currentRegionId)
+  const regionId = selectedRegionId ?? currentRegionId
+  const regions = content.value.regions
+    .filter((region) => region.stage === 'playable' || String(region.id) === currentRegionId)
+    .slice()
+    .sort(
+      (left, right) =>
+        left.countryId.localeCompare(right.countryId) || left.name.localeCompare(right.name),
+    )
+  const region = content.value.regionById[regionId]
+  const regionSpots = content.value.spots.filter((spot) => String(spot.regionId) === regionId)
+  const inRegion = regionId === currentRegionId
+
   return (
     <div className="fishing">
       <header className="fishing__header">
@@ -79,13 +94,37 @@ export const MapScreen = () => {
 
       <section className="panel">
         <p className="fishing__phase-code">MAP</p>
-        <h2 className="panel__heading">東京近郊の釣り場</h2>
-        <p className="panel__body">行けない釣り場は理由が出る。移動すると時間が進む。</p>
+        <h2 className="panel__heading">{region?.name ?? regionId} の釣り場</h2>
+        <p className="panel__body">
+          行けない釣り場は理由が出る。移動すると時間が進む。
+          {inRegion
+            ? ''
+            : `（今は ${content.value.regionById[currentRegionId]?.name ?? currentRegionId} にいる）`}
+        </p>
+        <div className="tabs">
+          {regions.map((candidate) => {
+            const country = content.value.countryById[String(candidate.countryId)]
+            const active = String(candidate.id) === regionId
+
+            return (
+              <button
+                className={`button${active ? ' button--primary' : ' button--ghost'}`}
+                key={String(candidate.id)}
+                type="button"
+                onClick={() => {
+                  setSelectedRegionId(String(candidate.id))
+                }}
+              >
+                {country === undefined ? candidate.name : `${country.name} / ${candidate.name}`}
+              </button>
+            )
+          })}
+        </div>
       </section>
 
       <section>
         <ul className="spots">
-          {content.value.spots.map((spot) => {
+          {regionSpots.map((spot) => {
             const spotId = String(spot.id)
             const access = evaluateSpot(spot, content.value.transports)
             const options = access.travelOptions
@@ -97,30 +136,37 @@ export const MapScreen = () => {
               selected === null ? null : evaluateTrip(spot, selected, content.value.transports)
             const score = spotKnowledgeScore(knowledge, spotId)
             const discovered = world.discoveredSpotIds.includes(spot.id)
-            const canGo = access.accessible && (readiness?.affordable ?? false)
+            const area =
+              spot.areaId === undefined
+                ? undefined
+                : region?.areas.find((candidate) => candidate.id === spot.areaId)
+            const canGo = inRegion && access.accessible && (readiness?.affordable ?? false)
 
             return (
               <li className="spot-card" key={spotId}>
                 <div className="spot-card__head">
                   <h3 className="panel__subheading">{spot.name}</h3>
                   <span className={`badge${access.accessible ? '' : ' badge--alert'}`}>
-                    {access.accessible
-                      ? selected === null
-                        ? '到達手段なし'
-                        : `${selected.transportName} ${formatDuration(selected.minutes)}`
-                      : 'アクセス不可'}
+                    {!inRegion
+                      ? '遠征が必要'
+                      : access.accessible
+                        ? selected === null
+                          ? '到達手段なし'
+                          : `${selected.transportName} ${formatDuration(selected.minutes)}`
+                        : 'アクセス不可'}
                   </span>
                 </div>
                 <p className="spot-card__meta">
                   {ENVIRONMENT_LABELS[spot.environment] ?? spot.environment}
                   {spot.dataStatus === 'provisional' ? ' / 暫定データ' : ''}
+                  {area === undefined ? '' : ` / ${area.name}`}
                   {discovered ? ' / 訪問済み' : ''}
                 </p>
                 <p className="spot-card__meta">
                   この釣り場の知識 {Math.round(score)}% / 魚種 {spot.fishTable.length} 種
                 </p>
 
-                {options.length === 0 ? null : (
+                {!inRegion || options.length === 0 ? null : (
                   <ul className="travel-options">
                     {options.map((option) => {
                       const optionId = String(option.transportId)
@@ -187,16 +233,20 @@ export const MapScreen = () => {
                   </button>
                 ) : (
                   <ul className="blocked">
-                    {access.accessible
-                      ? [
-                          <li key="cost">
-                            交通費が足りない
-                            {selected === null ? '' : `（${String(readiness?.roundTripCost)}円）`}
-                          </li>,
-                        ]
-                      : access.blockedReasons.map((reason) => (
-                          <li key={`${reason.kind}-${reason.label}`}>{reason.label}</li>
-                        ))}
+                    {!inRegion ? (
+                      <li key="region">現在この地域にいません（EXPEDITION で遠征する）</li>
+                    ) : access.accessible ? (
+                      [
+                        <li key="cost">
+                          交通費が足りない
+                          {selected === null ? '' : `（${String(readiness?.roundTripCost)}円）`}
+                        </li>,
+                      ]
+                    ) : (
+                      access.blockedReasons.map((reason) => (
+                        <li key={`${reason.kind}-${reason.label}`}>{reason.label}</li>
+                      ))
+                    )}
                   </ul>
                 )}
               </li>

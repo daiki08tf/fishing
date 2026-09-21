@@ -11,6 +11,8 @@ import type { FishingMethod } from '../src/domain/method/FishingMethod'
 import type { ShopItem } from '../src/domain/shop/ShopItem'
 import type { FishingSpot } from '../src/domain/world/FishingSpot'
 import type { TransportDefinition } from '../src/domain/access/Transport'
+import type { ExpeditionDefinition } from '../src/domain/expedition/Expedition'
+import type { Country, RegionDefinition } from '../src/domain/world/Region'
 
 /**
  * Content 検証 CLI。
@@ -94,6 +96,9 @@ export const runValidateContent = (argv: readonly string[], cwd: string): Valida
     brands: of<BrandDefinition>('brands'),
     gearSeries: of<GearSeries>('gear-series'),
     transports: of<TransportDefinition>('transports'),
+    countries: of<Country>('countries'),
+    regions: of<RegionDefinition>('regions'),
+    expeditions: of<ExpeditionDefinition>('expeditions'),
   })
 
   if (referenceIssues.length > 0) {

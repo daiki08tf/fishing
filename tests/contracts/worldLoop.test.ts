@@ -179,7 +179,11 @@ describe('world loop', () => {
     })
 
     const left = leaveForSpot({
-      context: { world: createInitialWorld(), knowledge: emptyKnowledgeState() },
+      // Phase 8: 今いる地域と一致していれば、Content に無い Spot にも行ける。
+      context: {
+        world: { ...createInitialWorld(), currentRegionId: asRegionId('invented-region') },
+        knowledge: emptyKnowledgeState(),
+      },
       spot: inventedSpot,
       ...transportContext,
     })

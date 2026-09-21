@@ -1,0 +1,37 @@
+{
+  "id": "alaska-offshore-grounds",
+  "name": "Offshore Grounds",
+  "regionId": "alaska",
+  "areaId": "coastal",
+  "environment": "offshore",
+  "dataStatus": "provisional",
+  "access": [
+    { "kind": "capability", "capability": "boat_required" },
+    { "kind": "capability", "capability": "offshore" },
+    { "kind": "permit", "permitId": "alaska-fishing-permit" }
+  ],
+  "travelOptions": [
+    {
+      "id": "marina-offshore",
+      "transportTypes": ["rental_boat", "owned_boat"],
+      "requiredCapabilities": ["boat_required", "offshore"],
+      "features": ["boat_rental", "marina"],
+      "baseMinutes": 150,
+      "distanceKm": 60,
+      "baseOneWayCost": 0
+    }
+  ],
+  "habitatTags": ["alaska-sample-offshore", "alaska-sample-deep"],
+  "depth": { "depthRangeM": { "min": 30, "max": 200 } },
+  "fishTable": [
+    { "speciesId": "alaska-pacific-halibut", "basePresence": 0.7 },
+    { "speciesId": "alaska-chinook-salmon", "basePresence": 0.4 },
+    { "speciesId": "alaska-coho-salmon", "basePresence": 0.35 }
+  ],
+  "knowledgeConfig": {
+    "reveals": [
+      { "field": "main_species", "minKnowledge": 20 },
+      { "field": "depth", "minKnowledge": 50 }
+    ]
+  }
+}

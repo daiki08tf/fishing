@@ -2,11 +2,18 @@
   "id": "managed-freshwater",
   "name": "管理釣り場",
   "regionId": "tokyo-area",
+  "areaId": "kanagawa",
   "environment": "managed_pond",
   "dataStatus": "provisional",
   "access": [
-    { "kind": "capability", "capability": "public_transport" },
-    { "kind": "permit", "permitId": "fee-fishing-ticket" }
+    {
+      "kind": "capability",
+      "capability": "public_transport"
+    },
+    {
+      "kind": "permit",
+      "permitId": "fee-fishing-ticket"
+    }
   ],
   "travelOptions": [
     {
@@ -20,15 +27,32 @@
     }
   ],
   "habitatTags": ["phase1-sample-stream"],
-  "depth": { "depthRangeM": { "min": 1, "max": 4 } },
+  "depth": {
+    "depthRangeM": {
+      "min": 1,
+      "max": 4
+    }
+  },
   "fishTable": [
-    { "speciesId": "phase2-sample-fish-d", "basePresence": 0.8 },
-    { "speciesId": "phase2-sample-fish-f", "basePresence": 0.6 }
+    {
+      "speciesId": "phase2-sample-fish-d",
+      "basePresence": 0.8
+    },
+    {
+      "speciesId": "phase2-sample-fish-f",
+      "basePresence": 0.6
+    }
   ],
   "knowledgeConfig": {
     "reveals": [
-      { "field": "main_species", "minKnowledge": 20 },
-      { "field": "time_pattern", "minKnowledge": 40 }
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "time_pattern",
+        "minKnowledge": 40
+      }
     ]
   }
 }

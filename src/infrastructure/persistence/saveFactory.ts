@@ -4,13 +4,17 @@ import {
   type PlayerTransportState,
 } from '../../domain/access/Transport'
 import { createInitialFinanceState, type FinanceState } from '../../domain/economy/FinanceState'
-import { asGearId, asTransportId, type ShopItemId } from '../../domain/ids'
+import {
+  createInitialExpeditionState,
+  type ExpeditionState,
+} from '../../domain/expedition/Expedition'
+import { asGearId, asRegionId, asTransportId, type ShopItemId } from '../../domain/ids'
 import { emptyKnowledgeState } from '../../domain/knowledge/KnowledgeState'
 import type { KnowledgeState } from '../../domain/knowledge/KnowledgeState'
 import type { IsoDateTime } from '../../domain/primitives'
 import type { AnglerProgression } from '../../domain/progression/AnglerProgression'
 import { createInitialProgression } from '../../domain/progression/AnglerProgression'
-import { CURRENT_SAVE_SCHEMA_VERSION, type SaveGameV6 } from '../../domain/save/SaveGame'
+import { CURRENT_SAVE_SCHEMA_VERSION, type SaveGameV7 } from '../../domain/save/SaveGame'
 import {
   createStarterInventory,
   createStarterLoadout,
@@ -18,6 +22,7 @@ import {
 } from '../../domain/tackle/Loadout'
 import type { Inventory } from '../../domain/tackle/Inventory'
 import { createInitialWorld, type WorldState } from '../../domain/world/worldSession'
+import { DEFAULT_WORLD_TUNING } from '../../domain/world/WorldTuning'
 
 /**
  * プレイヤーの状態から Save を組み立てる。
@@ -32,6 +37,7 @@ export type SaveSourceState = {
   readonly codex: CodexState
   readonly world: WorldState
   readonly transport: PlayerTransportState
+  readonly expedition: ExpeditionState
   readonly knowledge: KnowledgeState
   readonly finance: FinanceState
   readonly purchases?: readonly ShopItemId[]
@@ -43,7 +49,7 @@ export type SaveSourceState = {
   readonly createdAt?: IsoDateTime
 }
 
-export const createSave = (source: SaveSourceState): SaveGameV6 => ({
+export const createSave = (source: SaveSourceState): SaveGameV7 => ({
   schemaVersion: CURRENT_SAVE_SCHEMA_VERSION,
   createdAt: source.createdAt ?? source.now,
   updatedAt: source.now,
@@ -51,6 +57,7 @@ export const createSave = (source: SaveSourceState): SaveGameV6 => ({
   codex: source.codex,
   world: source.world,
   transport: source.transport,
+  expedition: source.expedition,
   knowledge: source.knowledge,
   finance: source.finance,
   purchases: source.purchases ?? [],
@@ -67,7 +74,7 @@ export const createSave = (source: SaveSourceState): SaveGameV6 => ({
  *
  * knowledge は空から始める（Phase 4 で釣行・観察により増える）。
  */
-export const createInitialSave = (options: { readonly now: IsoDateTime }): SaveGameV6 => ({
+export const createInitialSave = (options: { readonly now: IsoDateTime }): SaveGameV7 => ({
   schemaVersion: CURRENT_SAVE_SCHEMA_VERSION,
   createdAt: options.now,
   updatedAt: options.now,
@@ -75,6 +82,7 @@ export const createInitialSave = (options: { readonly now: IsoDateTime }): SaveG
   codex: emptyCodexState(),
   world: createInitialWorld(),
   transport: createInitialTransportState(asTransportId),
+  expedition: createInitialExpeditionState(asRegionId(DEFAULT_WORLD_TUNING.homeRegionId)),
   knowledge: emptyKnowledgeState(),
   finance: createInitialFinanceState(),
   purchases: [],

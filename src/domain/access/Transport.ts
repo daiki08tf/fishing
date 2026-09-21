@@ -138,7 +138,16 @@ export const grantOwnedTransport = (
 })
 
 export type TravelCostComponentKind =
-  'fare' | 'running_cost' | 'rental' | 'toll' | 'parking' | 'ferry' | 'lodging' | 'other'
+  | 'fare'
+  | 'running_cost'
+  | 'rental'
+  | 'toll'
+  | 'parking'
+  | 'ferry'
+  | 'lodging'
+  | 'flight'
+  | 'permit'
+  | 'other'
 
 export type TravelCostComponent = {
   readonly kind: TravelCostComponentKind

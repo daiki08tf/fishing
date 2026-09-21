@@ -1,0 +1,13 @@
+{
+  "id": "alaska",
+  "countryId": "united-states",
+  "name": "アラスカ",
+  "stage": "playable",
+  "dataStatus": "provisional",
+  "base": { "id": "alaska-base", "name": "Alaska Fishing Base", "areaId": "kenai" },
+  "areas": [
+    { "id": "kenai", "name": "Kenai-like River Area" },
+    { "id": "mountain", "name": "Mountain River Area" },
+    { "id": "coastal", "name": "Coastal / Offshore Area" }
+  ]
+}

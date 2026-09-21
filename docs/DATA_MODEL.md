@@ -136,6 +136,7 @@ type FishingSpot = {
   name: string
 
   regionId: string
+  areaId?: string      // Phase 8: Region 内の Area
 
   environment: EnvironmentType
 
@@ -262,6 +263,64 @@ AccessEngine は ID や名称では分岐しない。
 `baseOneWayCost` は従来どおり片道の固定費で、往復時に 2 倍する。
 レンタル料は `rentalCost` として 1 釣行に 1 回だけ加算する。将来の ferry / highway /
 parking / lodging は cost component を増やして扱う。
+
+## 9.1 World Hierarchy と Expedition（Phase 8）
+
+世界は Content の階層で表す。巨大な WorldManager は作らない。
+
+```text
+World → Country（countries）→ Region（regions）→ Area（regions[].areas）→ FishingSpot
+```
+
+```ts
+type Country = {
+  id: string
+  name: string
+  domestic: boolean                 // 国内 / 海外は表示と予算の区別にだけ使う
+  currency?: { code: string; symbol: string }   // 表示用。換算はしない
+  dataStatus: "provisional" | "verified"
+}
+
+type RegionDefinition = {
+  id: string
+  countryId: string
+  name: string
+  stage: "playable" | "planned"     // planned は将来拡張用（Spot / Expedition を持たない）
+  dataStatus: "provisional" | "verified"
+  base: { id: string; name: string; areaId: string }   // 遠征中の拠点（HOME 相当）
+  areas: { id: string; name: string }[]
+}
+
+type ExpeditionDefinition = {
+  id: string
+  regionId: string
+  name: string
+  dataStatus: "provisional" | "verified"
+  flight: {
+    transportType: "domestic_flight" | "international_flight"
+    name: string
+    oneWayCostYen: number
+    oneWayMinutes: number
+  }
+  nights: { default: number; min: number; max: number }
+  lodgings: { id: string; name: string; nightlyCostYen: number }[]
+  permit?: { permitId: string; name: string; costYen: number }
+}
+```
+
+遠征は「航空券（往復）＋宿泊＋許可」を 1 回で予約する。費用は既存 Economy の円だけで
+数え、新通貨・為替・予約番号・座席は持たない。計画は `planExpedition` が作り、
+UI はその結果（合計・内訳・滞在日数・移動時間）を表示するだけである。
+
+現地での移動は Phase 7A の Transport / Access をそのまま使う
+（例: Alaska Base → rental car → Salmon River、Alaska Base → rental boat → Offshore Grounds）。
+国・地域による分岐は Content（route と transportTypes）に置き、Engine には書かない。
+
+`WorldState.currentRegionId` が「今いる地域」を持ち、**違う地域の Spot へは行けない**
+（遠征で移動する）。拠点は Region の `base` なので、自宅も現地ベースも同じ扱いになる。
+
+Permit は `ExpeditionState.permits` に載り、AccessEngine の `permit` 条件にだけ効く
+（法規の詳細は扱わない）。Angler Level は地域の解放条件に存在しない。
 
 ## 10. AccessRequirement
 

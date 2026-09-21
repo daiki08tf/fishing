@@ -8,6 +8,9 @@ import { fishingSpotSchema } from './fishingSpot'
 import { fishSpeciesSchema } from './fishSpecies'
 import { regulationSchema } from './regulation'
 import { transportSchema } from './transport'
+import { countrySchema } from './country'
+import { regionSchema } from './region'
+import { expeditionSchema } from './expedition'
 
 /**
  * Content の種別とスキーマの対応。
@@ -25,6 +28,9 @@ export const CONTENT_SCHEMAS = {
   'gear-series': gearSeriesSchema,
   gear: gearItemSchema,
   methods: methodSchema,
+  countries: countrySchema,
+  regions: regionSchema,
+  expeditions: expeditionSchema,
 } as const
 
 export type ContentKind = keyof typeof CONTENT_SCHEMAS
@@ -116,6 +122,24 @@ export const parseContentRecord = (kind: ContentKind, value: unknown): ContentPa
         ? { ok: true, value: result.data }
         : { ok: false, issues: toIssues(result.error) }
     }
+    case 'countries': {
+      const result = countrySchema.safeParse(value)
+      return result.success
+        ? { ok: true, value: result.data }
+        : { ok: false, issues: toIssues(result.error) }
+    }
+    case 'regions': {
+      const result = regionSchema.safeParse(value)
+      return result.success
+        ? { ok: true, value: result.data }
+        : { ok: false, issues: toIssues(result.error) }
+    }
+    case 'expeditions': {
+      const result = expeditionSchema.safeParse(value)
+      return result.success
+        ? { ok: true, value: result.data }
+        : { ok: false, issues: toIssues(result.error) }
+    }
   }
 }
 
@@ -139,3 +163,6 @@ export {
   seasonalProfileSchema,
   timeProfileSchema,
 } from './profiles'
+export { countrySchema } from './country'
+export { regionSchema } from './region'
+export { expeditionSchema } from './expedition'

@@ -13,6 +13,9 @@ export type Brand<TValue, TName extends string> = TValue & { readonly __brand: T
 export type FishSpeciesId = Brand<string, 'FishSpeciesId'>
 export type FishIndividualId = Brand<string, 'FishIndividualId'>
 export type RegionId = Brand<string, 'RegionId'>
+export type CountryId = Brand<string, 'CountryId'>
+export type AreaId = Brand<string, 'AreaId'>
+export type ExpeditionId = Brand<string, 'ExpeditionId'>
 export type FishingSpotId = Brand<string, 'FishingSpotId'>
 export type TransportId = Brand<string, 'TransportId'>
 export type RegulationId = Brand<string, 'RegulationId'>
@@ -27,6 +30,9 @@ export type ShopItemId = Brand<string, 'ShopItemId'>
 export const asFishSpeciesId = (value: string): FishSpeciesId => value as FishSpeciesId
 export const asFishIndividualId = (value: string): FishIndividualId => value as FishIndividualId
 export const asRegionId = (value: string): RegionId => value as RegionId
+export const asCountryId = (value: string): CountryId => value as CountryId
+export const asAreaId = (value: string): AreaId => value as AreaId
+export const asExpeditionId = (value: string): ExpeditionId => value as ExpeditionId
 export const asFishingSpotId = (value: string): FishingSpotId => value as FishingSpotId
 export const asTransportId = (value: string): TransportId => value as TransportId
 export const asRegulationId = (value: string): RegulationId => value as RegulationId

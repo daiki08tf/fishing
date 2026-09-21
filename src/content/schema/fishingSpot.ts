@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { asFishingSpotId, asRegionId, asRegulationId } from '../../domain/ids'
+import { asAreaId, asFishingSpotId, asRegionId, asRegulationId } from '../../domain/ids'
 import { accessRequirementSchema } from './accessRequirement'
 import { currentProfileSchema, depthProfileSchema } from './profiles'
 import { fishOccurrenceSchema } from './fishOccurrence'
@@ -36,6 +36,8 @@ export const fishingSpotSchema = z.strictObject({
   id: nonEmptyString.transform(asFishingSpotId),
   name: nonEmptyString,
   regionId: nonEmptyString.transform(asRegionId),
+  /** Phase 8: Region 内の Area。省略可（Area を持たない地域もある）。 */
+  areaId: nonEmptyString.transform(asAreaId).optional(),
 
   environment: nonEmptyString,
 

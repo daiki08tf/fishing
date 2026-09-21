@@ -1,4 +1,4 @@
-import type { FishingSpotId, RegionId, RegulationId } from '../ids'
+import type { AreaId, FishingSpotId, RegionId, RegulationId } from '../ids'
 import type { AccessCapability, RouteFeature, TransportType } from '../access/Transport'
 import type { SourceRef } from '../source/SourceRef'
 import type { CurrentProfile, DepthProfile } from '../fish/profiles'
@@ -70,6 +70,8 @@ export type FishingSpot = {
   readonly id: FishingSpotId
   readonly name: string
   readonly regionId: RegionId
+  /** Phase 8: Region 内の Area（省略可）。 */
+  readonly areaId?: AreaId
 
   readonly environment: EnvironmentType
 

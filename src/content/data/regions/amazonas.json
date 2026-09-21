@@ -1,0 +1,9 @@
+{
+  "id": "amazonas",
+  "countryId": "brazil",
+  "name": "アマゾナス",
+  "stage": "planned",
+  "dataStatus": "provisional",
+  "base": { "id": "amazonas-base", "name": "Amazon Fishing Base", "areaId": "amazon-river" },
+  "areas": [{ "id": "amazon-river", "name": "Amazon River" }]
+}

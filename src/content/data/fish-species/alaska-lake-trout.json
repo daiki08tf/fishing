@@ -1,0 +1,65 @@
+{
+  "id": "alaska-lake-trout",
+  "japaneseName": "レイクトラウト（暫定）",
+  "waterTypes": ["fresh"],
+  "distribution": ["alaska"],
+  "habitats": ["alaska-sample-lake", "alaska-sample-deep"],
+  "depthRange": {
+    "min": 3,
+    "max": 45
+  },
+  "temperatureRange": {
+    "min": 4,
+    "max": 12
+  },
+  "seasonality": {
+    "months": [5, 6, 7, 8, 9]
+  },
+  "timeActivity": {
+    "periods": ["dawn", "day"]
+  },
+  "currentPreference": {
+    "preference": "none"
+  },
+  "diet": ["alaska-sample-prey"],
+  "baits": ["cut", "fish", "roe"],
+  "lureCategories": ["spoon", "jig", "minnow"],
+  "fishingMethods": ["lure", "bait", "bottom"],
+  "methodAffinity": {
+    "lure": 1.05,
+    "light_lure": 0.85,
+    "bait": 1.15,
+    "bottom": 1.1
+  },
+  "offeringAffinity": {
+    "spoon": 1.15,
+    "jig": 1.1,
+    "cut": 1.15,
+    "mid": 1.1,
+    "large": 1.05
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 55,
+    "dispersion": 0.17,
+    "minCm": 25,
+    "maxCm": 100
+  },
+  "weightModel": {
+    "lengthWeightA": 0.0105,
+    "lengthWeightB": 3.05
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "traitConfiguration": {
+    "trophyPercentileThreshold": 1,
+    "strongRunnerChance": 0.12
+  },
+  "fightProfile": {
+    "strength": 0.6,
+    "stamina": 0.6,
+    "speed": 0.5
+  },
+  "rarity": 2.2
+}

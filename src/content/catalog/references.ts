@@ -12,6 +12,8 @@ import {
   type TransportDefinition,
 } from '../../domain/access/Transport'
 import type { KnowledgeState } from '../../domain/knowledge/KnowledgeState'
+import type { ExpeditionDefinition } from '../../domain/expedition/Expedition'
+import type { Country, RegionDefinition } from '../../domain/world/Region'
 import {
   SLOT_CATEGORIES,
   STARTER_GEAR_IDS,
@@ -44,6 +46,9 @@ export type ContentReferenceInput = {
   readonly brands: readonly BrandDefinition[]
   readonly gearSeries?: readonly GearSeries[]
   readonly transports?: readonly TransportDefinition[]
+  readonly countries?: readonly Country[]
+  readonly regions?: readonly RegionDefinition[]
+  readonly expeditions?: readonly ExpeditionDefinition[]
 }
 
 /** offering の相性タグとして使える語彙（lureType / baitType / gear の targetProfile）。 */
@@ -173,6 +178,9 @@ export const validateContentReferences = (
   const issues: ContentReferenceIssue[] = []
   const gearSeries = input.gearSeries ?? []
   const transports = input.transports ?? []
+  const countries = input.countries ?? []
+  const regions = input.regions ?? []
+  const expeditions = input.expeditions ?? []
   const speciesIds = new Set(input.species.map((entry) => String(entry.id)))
   const gearById = new Map(input.gear.map((entry) => [String(entry.id), entry]))
   const methodIds = new Set(input.methods.map((entry) => entry.id))
@@ -181,6 +189,8 @@ export const validateContentReferences = (
   const offeringTags = knownOfferingTags(input.gear)
   const transportById = new Map(transports.map((entry) => [String(entry.id), entry]))
   const transportTypes = new Set(transports.map((entry) => entry.transportType))
+  const countryIds = new Set(countries.map((entry) => String(entry.id)))
+  const regionById = new Map(regions.map((entry) => [String(entry.id), entry]))
   /*
    * Tackle（Gear + Method）が同梱されていない部分的な Content 集合
    * （検証用 fixture など）では、Tackle を前提にした参照検査はできない。
@@ -232,6 +242,66 @@ export const validateContentReferences = (
     'transports',
     transports.map((entry) => String(entry.id)),
   )
+  duplicate(
+    'countries',
+    countries.map((entry) => String(entry.id)),
+  )
+  duplicate(
+    'regions',
+    regions.map((entry) => String(entry.id)),
+  )
+  duplicate(
+    'expeditions',
+    expeditions.map((entry) => String(entry.id)),
+  )
+
+  // 0b. 世界階層（Phase 8）: Country → Region → Area → Spot。
+  for (const region of regions) {
+    if (!countryIds.has(String(region.countryId))) {
+      issues.push({
+        path: `regions/${String(region.id)}`,
+        message: `unknown countryId ${String(region.countryId)}`,
+      })
+    }
+  }
+
+  for (const spot of input.spots) {
+    const region = regionById.get(String(spot.regionId))
+
+    if (regions.length > 0 && region === undefined) {
+      issues.push({
+        path: `fishing-spots/${String(spot.id)}`,
+        message: `unknown regionId ${String(spot.regionId)}`,
+      })
+    }
+
+    if (
+      spot.areaId !== undefined &&
+      region !== undefined &&
+      !region.areas.some((area) => area.id === spot.areaId)
+    ) {
+      issues.push({
+        path: `fishing-spots/${String(spot.id)}`,
+        message: `unknown areaId ${String(spot.areaId)} for region ${String(spot.regionId)}`,
+      })
+    }
+  }
+
+  for (const expedition of expeditions) {
+    const region = regionById.get(String(expedition.regionId))
+
+    if (region === undefined) {
+      issues.push({
+        path: `expeditions/${String(expedition.id)}`,
+        message: `unknown regionId ${String(expedition.regionId)}`,
+      })
+    } else if (region.stage !== 'playable') {
+      issues.push({
+        path: `expeditions/${String(expedition.id)}`,
+        message: `region ${String(region.id)} is not playable`,
+      })
+    }
+  }
 
   // 1. Spot の fishTable は実在する魚種を指す。
   for (const spot of input.spots) {

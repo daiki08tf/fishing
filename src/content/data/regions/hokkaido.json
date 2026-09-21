@@ -1,0 +1,12 @@
+{
+  "id": "hokkaido",
+  "countryId": "japan",
+  "name": "北海道",
+  "stage": "playable",
+  "dataStatus": "provisional",
+  "base": { "id": "hokkaido-base", "name": "北海道 ベース", "areaId": "hokkaido-central" },
+  "areas": [
+    { "id": "hokkaido-central", "name": "道央" },
+    { "id": "hokkaido-east", "name": "道東" }
+  ]
+}

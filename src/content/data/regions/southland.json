@@ -1,0 +1,9 @@
+{
+  "id": "southland",
+  "countryId": "new-zealand",
+  "name": "サウスランド",
+  "stage": "planned",
+  "dataStatus": "provisional",
+  "base": { "id": "southland-base", "name": "Southland Fishing Base", "areaId": "fiord" },
+  "areas": [{ "id": "fiord", "name": "Fiord / River" }]
+}

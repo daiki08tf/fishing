@@ -2,9 +2,15 @@
   "id": "sheltered-kayak-cove",
   "name": "湾内 カヤック進水エリア",
   "regionId": "tokyo-area",
+  "areaId": "chiba",
   "environment": "nearshore",
   "dataStatus": "provisional",
-  "access": [{ "kind": "capability", "capability": "kayak_launch" }],
+  "access": [
+    {
+      "kind": "capability",
+      "capability": "kayak_launch"
+    }
+  ],
   "travelOptions": [
     {
       "id": "sheltered-launch",
@@ -17,15 +23,32 @@
     }
   ],
   "habitatTags": ["phase1-sample-shallow", "phase1-sample-surf"],
-  "depth": { "depthRangeM": { "min": 2, "max": 12 } },
+  "depth": {
+    "depthRangeM": {
+      "min": 2,
+      "max": 12
+    }
+  },
   "fishTable": [
-    { "speciesId": "phase2-sample-fish-c", "basePresence": 0.6 },
-    { "speciesId": "phase2-sample-fish-g", "basePresence": 0.5 }
+    {
+      "speciesId": "phase2-sample-fish-c",
+      "basePresence": 0.6
+    },
+    {
+      "speciesId": "phase2-sample-fish-g",
+      "basePresence": 0.5
+    }
   ],
   "knowledgeConfig": {
     "reveals": [
-      { "field": "main_species", "minKnowledge": 20 },
-      { "field": "time_pattern", "minKnowledge": 40 }
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "time_pattern",
+        "minKnowledge": 40
+      }
     ]
   }
 }

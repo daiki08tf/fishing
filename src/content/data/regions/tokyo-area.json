@@ -1,0 +1,13 @@
+{
+  "id": "tokyo-area",
+  "countryId": "japan",
+  "name": "東京近郊",
+  "stage": "playable",
+  "dataStatus": "provisional",
+  "base": { "id": "tokyo-area-home", "name": "Tokyo Area Home", "areaId": "tokyo" },
+  "areas": [
+    { "id": "tokyo", "name": "東京" },
+    { "id": "kanagawa", "name": "神奈川" },
+    { "id": "chiba", "name": "千葉" }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "id": "queensland",
+  "countryId": "australia",
+  "name": "クイーンズランド",
+  "stage": "planned",
+  "dataStatus": "provisional",
+  "base": { "id": "queensland-base", "name": "Queensland Fishing Base", "areaId": "reef" },
+  "areas": [{ "id": "reef", "name": "Reef / Coastal" }]
+}

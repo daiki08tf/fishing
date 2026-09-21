@@ -2,11 +2,15 @@ import { z } from 'zod'
 import { TRANSACTION_KINDS } from '../../domain/economy/FinanceState'
 import { FISH_TRAITS } from '../../domain/fish/FishTrait'
 import {
+  asCountryId,
+  asExpeditionId,
   asFishIndividualId,
   asFishSpeciesId,
   asFishingSpotId,
   asGearId,
   asJobId,
+  asPermitId,
+  asRegionId,
   asShopItemId,
   asTransportId,
 } from '../../domain/ids'
@@ -19,6 +23,7 @@ import {
   SAVE_SCHEMA_VERSION_V4,
   SAVE_SCHEMA_VERSION_V5,
   SAVE_SCHEMA_VERSION_V6,
+  SAVE_SCHEMA_VERSION_V7,
 } from '../../domain/save/SaveGame'
 import { WORLD_PHASES } from '../../domain/world/worldSession'
 
@@ -305,8 +310,8 @@ const tripSchema = legacyTripSchema.extend({
   transportId: z.string().min(1).transform(asTransportId).nullable(),
 })
 
-/** 現行 World。Transport ownership は独立した transport block に置く。 */
-const worldSchema = z.strictObject({
+/** v6 の World。Transport ownership は独立した transport block に置く。 */
+const worldSchemaV6 = z.strictObject({
   time: worldTimeSchema,
   phase: z.enum(WORLD_PHASES),
   homeLocationId: z.string().min(1),
@@ -327,7 +332,7 @@ export const saveGameV6Schema = z.strictObject({
   updatedAt: isoDateTimeSchema,
   progression: anglerProgressionSchema,
   codex: codexSchema.default(() => ({ species: {} })),
-  world: worldSchema,
+  world: worldSchemaV6,
   transport: transportStateSchema,
   knowledge: knowledgeSchema,
   finance: financeSchema,
@@ -336,5 +341,51 @@ export const saveGameV6Schema = z.strictObject({
   loadout: loadoutSchema,
 })
 
+/** Phase 8 の World。今いる地域（currentRegionId）を持つ。 */
+const worldSchemaV7 = worldSchemaV6.extend({
+  currentRegionId: z.string().min(1).transform(asRegionId),
+})
+
+/** 進行中の遠征。 */
+const activeExpeditionSchema = z.strictObject({
+  definitionId: z.string().min(1).transform(asExpeditionId),
+  regionId: z.string().min(1).transform(asRegionId),
+  countryId: z.string().min(1).transform(asCountryId),
+  regionName: z.string().min(1),
+  baseId: z.string().min(1),
+  baseName: z.string().min(1),
+  startedAt: worldTimeSchema,
+  arriveAt: worldTimeSchema,
+  plannedReturnAt: worldTimeSchema,
+  returnMinutes: z.number().int().nonnegative(),
+  nights: z.number().int().nonnegative(),
+  lodgingName: z.string().min(1),
+  totalCostYen: z.number().int().nonnegative(),
+})
+
+/** 遠征 state。現在の遠征・訪問済み地域・所持している許可。 */
+const expeditionStateSchema = z.strictObject({
+  current: activeExpeditionSchema.nullable(),
+  visitedRegionIds: z.array(z.string().min(1).transform(asRegionId)),
+  permits: z.array(z.string().min(1).transform(asPermitId)),
+})
+
+/** 現行 Save（Phase 8）。 */
+export const saveGameV7Schema = z.strictObject({
+  schemaVersion: z.literal(SAVE_SCHEMA_VERSION_V7),
+  createdAt: isoDateTimeSchema,
+  updatedAt: isoDateTimeSchema,
+  progression: anglerProgressionSchema,
+  codex: codexSchema.default(() => ({ species: {} })),
+  world: worldSchemaV7,
+  transport: transportStateSchema,
+  expedition: expeditionStateSchema,
+  knowledge: knowledgeSchema,
+  finance: financeSchema,
+  purchases: z.array(z.string().min(1).transform(asShopItemId)),
+  inventory: inventorySchema,
+  loadout: loadoutSchema,
+})
+
 /** 現行 version の Save スキーマ。Migration 後の検証に使う。 */
-export const currentSaveSchema = saveGameV6Schema
+export const currentSaveSchema = saveGameV7Schema

@@ -8,6 +8,7 @@ import type { AnglerProgression } from '../progression/AnglerProgression'
 import type { Inventory } from '../tackle/Inventory'
 import type { Loadout } from '../tackle/Loadout'
 import type { PlayerTransportState } from '../access/Transport'
+import type { ExpeditionState } from '../expedition/Expedition'
 import type { FishingSpotId, ShopItemId } from '../ids'
 import type { WorldTime } from '../world/WorldTime'
 import type { WorldPhase, WorldState } from '../world/worldSession'
@@ -24,6 +25,8 @@ import type { WorldPhase, WorldState } from '../world/worldSession'
  * v4: Economy（Phase 5）。資金の詳細（月次精算・履歴）と購入済み商品を保存する。
  * v5: Tackle（Phase 6）。所持している Gear（inventory）と現在の装備（loadout）を保存する。
  * v6: Transport（Phase 7A）。所有・利用可能 Transport を World から独立して保存する。
+ * v7: Expedition（Phase 8）。World に地域（currentRegionId）を足し、
+ *     遠征（current / 訪問済み地域 / 許可）を独立ブロックで保存する。
  */
 
 export const SAVE_SCHEMA_VERSION_V1 = 1 as const
@@ -32,8 +35,9 @@ export const SAVE_SCHEMA_VERSION_V3 = 3 as const
 export const SAVE_SCHEMA_VERSION_V4 = 4 as const
 export const SAVE_SCHEMA_VERSION_V5 = 5 as const
 export const SAVE_SCHEMA_VERSION_V6 = 6 as const
+export const SAVE_SCHEMA_VERSION_V7 = 7 as const
 
-export const CURRENT_SAVE_SCHEMA_VERSION = SAVE_SCHEMA_VERSION_V6
+export const CURRENT_SAVE_SCHEMA_VERSION = SAVE_SCHEMA_VERSION_V7
 
 export type SaveSchemaVersion = typeof CURRENT_SAVE_SCHEMA_VERSION
 
@@ -177,14 +181,19 @@ export type SaveGameV5 = {
   readonly loadout: Loadout
 }
 
-/** 現行の Save（Phase 7A）。Transport ownership は World と別の Domain state。 */
+/**
+ * v6 の World。Phase 8 で `currentRegionId` が増えたため、migration 入力として残す。
+ */
+export type LegacyWorldStateV6 = Omit<WorldState, 'currentRegionId'>
+
+/** Phase 7A の Save。Transport ownership は World と別の Domain state。 */
 export type SaveGameV6 = {
   readonly schemaVersion: typeof SAVE_SCHEMA_VERSION_V6
   readonly createdAt: IsoDateTime
   readonly updatedAt: IsoDateTime
   readonly progression: AnglerProgression
   readonly codex: CodexState
-  readonly world: WorldState
+  readonly world: LegacyWorldStateV6
   readonly transport: PlayerTransportState
   readonly knowledge: KnowledgeState
   readonly finance: FinanceState
@@ -193,4 +202,26 @@ export type SaveGameV6 = {
   readonly loadout: Loadout
 }
 
-export type CurrentSave = SaveGameV6
+/**
+ * 現行の Save（Phase 8）。
+ *
+ * World が地域（currentRegionId）を持ち、遠征（ExpeditionState）が独立ブロックになる。
+ * 遠征中の拠点・訪問済み地域・所持している許可をここで保持する。
+ */
+export type SaveGameV7 = {
+  readonly schemaVersion: typeof SAVE_SCHEMA_VERSION_V7
+  readonly createdAt: IsoDateTime
+  readonly updatedAt: IsoDateTime
+  readonly progression: AnglerProgression
+  readonly codex: CodexState
+  readonly world: WorldState
+  readonly transport: PlayerTransportState
+  readonly expedition: ExpeditionState
+  readonly knowledge: KnowledgeState
+  readonly finance: FinanceState
+  readonly purchases: readonly ShopItemId[]
+  readonly inventory: Inventory
+  readonly loadout: Loadout
+}
+
+export type CurrentSave = SaveGameV7

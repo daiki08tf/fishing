@@ -105,6 +105,20 @@ Skillが緩やかに改善してよい対象:
   持っている capability を「不足」と表示しない
 - 移動手段はプレイヤーが選ぶ。既定は最も安い候補とし、速いだけの高額な候補を
   黙って選ばない（費用の内訳も出す）
+- 世界は Country → Region → Area → Spot の Content 階層で表す。巨大な WorldManager を
+  作らない。地域を「今いる場所（world.currentRegionId）」として持ち、違う地域の Spot へは
+  遠征で移動してから行く
+- 国内（北海道）と海外（アラスカ）は同じ Expedition の仕組みで扱う。海外専用システムを
+  作らない。違いは Content（航空券の費用・時間、宿泊、許可）だけに置く
+- 遠征の費用は「航空券（往復）＋宿泊＋許可」をまとめて予約する。空港・パスポート・ビザ・
+  手荷物・座席・為替・実際の予約・現地法規の詳細はシミュレーションしない
+- 現地の移動は Phase 7A の Transport / Access をそのまま使う。国・地域による分岐は
+  Content に置き、Engine（AccessEngine / FishingEngine）には書かない
+- 地域の解放条件に Angler Level を使わない。行けるかどうかは資金・許可・移動手段・
+  Knowledge で決まる（Lv1 でも金と許可があればアラスカへ行ける）
+- Permit は遠征予約に含める簡易な所持リストとし、`permit` 条件を持つ Spot にだけ効く
+- 追加した魚（アラスカ / 北海道）は PROVISIONAL とし、既存の FishIndividual /
+  Trait / FightEngine をそのまま使う（新しい魚生成システムを作らない）
 
 ## 6. Phase 0 で定義する機械判定可能な制約
 

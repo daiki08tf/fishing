@@ -1,0 +1,7 @@
+{
+  "id": "canada",
+  "name": "カナダ",
+  "domestic": false,
+  "currency": { "code": "CAD", "symbol": "$" },
+  "dataStatus": "provisional"
+}

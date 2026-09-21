@@ -276,6 +276,24 @@ Boat だけが offshore capability を提供する。
 
 ## Phase 8+ — 既存計画の継続
 
+### Phase 8 — Japan & International Expedition（完了）
+
+世界を「行ける場所」として広げる最小の形を作った。
+
+- World → Country → Region → Area → Spot の Content 階層（`countries` / `regions`）
+- 遠征（Expedition）: 航空券（往復）・宿泊・許可をまとめて予約し、
+  WorldTime を進めて現地の拠点へ移る（`expeditions`）
+- 国内（北海道）と海外（アラスカ）を同じ仕組みで扱う（専用システムを作らない）
+- Alaska Base を拠点に、Phase 7A の Transport / Access をそのまま使って現地を移動する
+- アラスカの魚（Salmon / Trout / Char / Halibut）を PROVISIONAL として追加。
+  既存の FishIndividual / Trait / FightEngine をそのまま使う
+- 簡易 Permit（遠征予約に含める）。Permit が必要な Spot にだけ効く
+- Save v7（world.currentRegionId と expedition block）
+- `npm run simulate:expedition`
+
+意図的に対象外: 空港 / パスポート / ビザ / 手荷物 / 為替 / 実際の予約 /
+天候 / 潮 / 水温 / 実道路 routing。
+
 Phase 8以降は既存計画を継続する。本調整では個別Phaseの内容を変更しない。
 
 - Phase 8: Reputation / Relationships

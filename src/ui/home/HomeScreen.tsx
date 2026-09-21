@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { recordedSpeciesCount } from '../../domain/codex'
 import { formatYen } from '../../domain/economy'
+import { remainingExpeditionDays } from '../../domain/expedition'
 import { DAY_OF_WEEK_LABELS, dayOfWeekOf, formatWorldTime, isWeekend } from '../../domain/world'
 import { useAppStore } from '../../state/appStore'
 import { usePlayerStore } from '../../state/playerStore'
@@ -25,29 +26,43 @@ export const HomeScreen = () => {
   const evaluateSpot = usePlayerStore((state) => state.evaluateSpot)
   const finance = usePlayerStore((state) => state.finance)
   const sleep = usePlayerStore((state) => state.sleep)
+  const expedition = usePlayerStore((state) => state.expedition)
 
   if (!content.ok) {
     return <ContentErrorPanel message={content.message} />
   }
 
-  const accessible = content.value.spots.filter(
+  const current = expedition.current
+  const localSpots = content.value.spots.filter(
+    (spot) => String(spot.regionId) === String(world.currentRegionId),
+  )
+  const accessible = localSpots.filter(
     (spot) => evaluateSpot(spot, content.value.transports).accessible,
   )
+  const currentRegion = content.value.regionById[String(world.currentRegionId)]
   const trip = world.trip
   const monthlyFree = finance.salaryIncome - finance.simplifiedLivingCost
 
   return (
     <div className="fishing">
       <section className="panel">
-        <p className="app-shell__eyebrow">Tokyo Area Home</p>
+        <p className="app-shell__eyebrow">
+          {current === null
+            ? (currentRegion?.base.name ?? 'Tokyo Area Home')
+            : `${current.regionName} / ${current.baseName}`}
+        </p>
         <h2 className="panel__heading">{formatWorldTime(world.time)}</h2>
         <p className="panel__body">
           {DAY_OF_WEEK_LABELS[dayOfWeekOf(world.time)]}曜日
           {isWeekend(world.time) ? '（休日）' : ''} / Angler Lv {progression.anglerLevel}
+          {current === null
+            ? ''
+            : ` / 遠征中（残り ${String(remainingExpeditionDays(current, world.time))} 日）`}
         </p>
         <p className="fishing__legend">
           今月の自由資金 {formatYen(monthlyFree)}（給与 {formatYen(finance.salaryIncome)} − 生活費{' '}
           {formatYen(finance.simplifiedLivingCost)}）
+          {current === null ? '' : ' / 遠征費は出発時に支払い済み'}
         </p>
         <dl className="record">
           <div>
@@ -57,7 +72,7 @@ export const HomeScreen = () => {
           <div>
             <dt>行ける釣り場</dt>
             <dd>
-              {accessible.length} / {content.value.spots.length}
+              {accessible.length} / {localSpots.length}（{currentRegion?.name ?? 'この地域'}）
             </dd>
           </div>
           <div>
@@ -70,7 +85,7 @@ export const HomeScreen = () => {
           </div>
           <div>
             <dt>地域の知識</dt>
-            <dd>{Math.round(knowledge.regions['tokyo-area'] ?? 0)}%</dd>
+            <dd>{Math.round(knowledge.regions[String(world.currentRegionId)] ?? 0)}%</dd>
           </div>
         </dl>
 
@@ -82,6 +97,15 @@ export const HomeScreen = () => {
           }}
         >
           釣りに行く（釣り場を選ぶ）
+        </button>
+        <button
+          className="button"
+          type="button"
+          onClick={() => {
+            setActiveScreen('expedition')
+          }}
+        >
+          {current === null ? '遠征・旅行（EXPEDITION）' : '遠征の状況（EXPEDITION）'}
         </button>
         <button
           className="button"

@@ -1,5 +1,12 @@
-import { asFishIndividualId, asFishSpeciesId, asJobId, asTransportId } from '../../src/domain/ids'
+import {
+  asFishIndividualId,
+  asFishSpeciesId,
+  asJobId,
+  asRegionId,
+  asTransportId,
+} from '../../src/domain/ids'
 import { createInitialTransportState } from '../../src/domain/access/Transport'
+import { createInitialExpeditionState } from '../../src/domain/expedition'
 import { asGearId } from '../../src/domain/ids'
 import { totalXpForLevel } from '../../src/domain/progression/AnglerLevel'
 import { emptyAnglerSkills } from '../../src/domain/progression/AnglerSkill'
@@ -11,15 +18,18 @@ import {
   SAVE_SCHEMA_VERSION_V4,
   SAVE_SCHEMA_VERSION_V5,
   SAVE_SCHEMA_VERSION_V6,
+  SAVE_SCHEMA_VERSION_V7,
   type LegacyWorldState,
   type SaveGameV2,
   type SaveGameV3,
   type SaveGameV4,
   type SaveGameV5,
   type SaveGameV6,
+  type SaveGameV7,
 } from '../../src/domain/save/SaveGame'
 import { createStarterInventory, createStarterLoadout } from '../../src/domain/tackle/Loadout'
 import { createInitialWorld } from '../../src/domain/world/worldSession'
+import { DEFAULT_WORLD_TUNING } from '../../src/domain/world/WorldTuning'
 
 /**
  * 検証用の最小 Save（schema v1）。
@@ -184,9 +194,11 @@ export const createValidSaveV5 = (): SaveGameV5 => {
   }
 }
 
-/** Phase 7A の現行 Save（schema v6）。Transport ownership が独立した。 */
+/** Phase 7A の Save（schema v6）。Transport ownership が独立した。 */
 export const createValidSaveV6 = (): SaveGameV6 => {
   const v5 = createValidSaveV5()
+  // v6 の World は currentRegionId を持たない（Phase 8 で増えた）。
+  const { currentRegionId: _currentRegionId, ...legacyWorld } = createInitialWorld()
 
   return {
     schemaVersion: SAVE_SCHEMA_VERSION_V6,
@@ -194,12 +206,33 @@ export const createValidSaveV6 = (): SaveGameV6 => {
     updatedAt: v5.updatedAt,
     progression: v5.progression,
     codex: v5.codex,
-    world: createInitialWorld(),
+    world: legacyWorld,
     transport: createInitialTransportState(asTransportId),
     knowledge: v5.knowledge,
     finance: v5.finance,
     purchases: v5.purchases,
     inventory: v5.inventory,
     loadout: v5.loadout,
+  }
+}
+
+/** Phase 8 の現行 Save（schema v7）。World が地域を持ち、遠征ブロックが加わった。 */
+export const createValidSaveV7 = (): SaveGameV7 => {
+  const v6 = createValidSaveV6()
+
+  return {
+    schemaVersion: SAVE_SCHEMA_VERSION_V7,
+    createdAt: v6.createdAt,
+    updatedAt: v6.updatedAt,
+    progression: v6.progression,
+    codex: v6.codex,
+    world: createInitialWorld(),
+    transport: v6.transport,
+    expedition: createInitialExpeditionState(asRegionId(DEFAULT_WORLD_TUNING.homeRegionId)),
+    knowledge: v6.knowledge,
+    finance: v6.finance,
+    purchases: v6.purchases,
+    inventory: v6.inventory,
+    loadout: v6.loadout,
   }
 }

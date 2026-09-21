@@ -1,6 +1,6 @@
 import { evaluateAccess, fastestTravelOption } from '../access/accessEngine'
 import type { PlayerTransportState, TransportDefinition } from '../access/Transport'
-import type { FishingSpotId, TransportId } from '../ids'
+import type { FishingSpotId, RegionId, TransportId } from '../ids'
 import type { KnowledgeState } from '../knowledge/KnowledgeState'
 import { addRegionKnowledge } from '../knowledge/regionKnowledge'
 import { addSpotKnowledge } from '../knowledge/spotKnowledge'
@@ -43,6 +43,8 @@ export type WorldState = {
   readonly time: WorldTime
   readonly phase: WorldPhase
   readonly homeLocationId: string
+  /** Phase 8: 今いる地域。遠征中は現地の地域になる。 */
+  readonly currentRegionId: RegionId
   readonly currentSpotId: FishingSpotId | null
   /** 到着予定（TRAVELLING / RETURNING_HOME のとき）。 */
   readonly arrivalTime: WorldTime | null
@@ -57,6 +59,7 @@ export type WorldContext = {
 
 export const WORLD_EVENTS = [
   'LEFT_HOME',
+  'ARRIVED_AT_REGION',
   'ARRIVED_AT_SPOT',
   'SPOT_DISCOVERED',
   'FISHING_ATTEMPT',
@@ -66,7 +69,8 @@ export const WORLD_EVENTS = [
 
 export type WorldEvent = (typeof WORLD_EVENTS)[number]
 
-export type WorldFailureReason = 'not_at_home' | 'not_at_spot' | 'inaccessible' | 'no_travel_option'
+export type WorldFailureReason =
+  'not_at_home' | 'not_at_spot' | 'inaccessible' | 'not_in_region' | 'no_travel_option'
 
 export type WorldActionResult =
   | {
@@ -84,6 +88,7 @@ export const createInitialWorld = (tuning: WorldTuning = DEFAULT_WORLD_TUNING): 
   time: tuning.startTime,
   phase: 'HOME',
   homeLocationId: tuning.homeLocationId,
+  currentRegionId: tuning.homeRegionId as RegionId,
   currentSpotId: null,
   arrivalTime: null,
   trip: null,
@@ -105,6 +110,8 @@ export const leaveForSpot = (input: {
   readonly transports: readonly TransportDefinition[]
   readonly playerTransports: PlayerTransportState
   readonly transportId?: TransportId
+  /** 所持している許可（遊漁券など）。 */
+  readonly permits?: readonly string[]
   readonly tuning?: WorldTuning
 }): WorldActionResult => {
   const { world, knowledge } = input.context
@@ -113,11 +120,22 @@ export const leaveForSpot = (input: {
     return { ok: false, reason: 'not_at_home', message: '自宅にいないため出発できない' }
   }
 
+  // Phase 8: 遠征していない地域の Spot へは行けない（同じ地域にいるときだけ）。
+  if (world.currentRegionId !== input.spot.regionId) {
+    return {
+      ok: false,
+      reason: 'not_in_region',
+      message: '今いる地域と違う釣り場へは行けない（遠征で移動する）',
+    }
+  }
+
   const access = evaluateAccess({
     spot: input.spot,
     transports: input.transports,
     playerTransports: input.playerTransports,
     knowledge,
+    permitsEnabled: true,
+    ...(input.permits === undefined ? {} : { permits: input.permits }),
   })
 
   if (!access.accessible) {
@@ -215,6 +233,39 @@ export const arriveAtSpot = (input: {
 }
 
 /**
+ * 拠点を移す（Phase 8 の遠征）。
+ *
+ * 航空移動の所要時間をそのまま渡す（乗継・空港手続きは扱わない）。
+ * 自宅 → 現地ベース、現地ベース → 自宅の両方に使う。
+ */
+export const moveToRegion = (input: {
+  readonly context: WorldContext
+  readonly regionId: RegionId
+  readonly minutes: number
+}): WorldActionResult => {
+  const { world, knowledge } = input.context
+
+  if (world.phase !== 'HOME') {
+    return { ok: false, reason: 'not_at_home', message: '釣り場にいる間は地域を移動できない' }
+  }
+
+  return {
+    ok: true,
+    events: ['ARRIVED_AT_REGION'],
+    context: {
+      knowledge,
+      world: {
+        ...world,
+        time: advanceMinutes(world.time, Math.max(0, Math.round(input.minutes))),
+        currentRegionId: input.regionId,
+        currentSpotId: null,
+        arrivalTime: null,
+      },
+    },
+  }
+}
+
+/**
  * 釣り 1 回分の結果を世界へ反映する。
  * 成功でも失敗でも時間は進み、Knowledge も増える（ボウズを無駄にしない）。
  */
@@ -281,6 +332,7 @@ export const leaveSpot = (input: {
   readonly spot: FishingSpot
   readonly transports: readonly TransportDefinition[]
   readonly playerTransports: PlayerTransportState
+  readonly permits?: readonly string[]
   readonly tuning?: WorldTuning
 }): WorldActionResult => {
   const { world, knowledge } = input.context
@@ -298,6 +350,8 @@ export const leaveSpot = (input: {
     transports: input.transports,
     playerTransports: input.playerTransports,
     knowledge,
+    permitsEnabled: true,
+    ...(input.permits === undefined ? {} : { permits: input.permits }),
   })
   const outboundTransportId = world.trip?.transportId ?? null
   const option =

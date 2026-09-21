@@ -2,9 +2,11 @@ import { totalXpForLevel } from '../../domain/progression/AnglerLevel'
 import { emptyRepetitionState } from '../../domain/progression/repetitionDecay'
 import { emptyCodexState } from '../../domain/codex'
 import { createInitialTransportState, grantOwnedTransport } from '../../domain/access/Transport'
-import { asGearId, asTransportId, type TransportId } from '../../domain/ids'
+import { createInitialExpeditionState } from '../../domain/expedition'
+import { asGearId, asRegionId, asTransportId, type TransportId } from '../../domain/ids'
 import { createStarterLoadout, starterInventoryIds } from '../../domain/tackle/Loadout'
 import { createInitialWorld } from '../../domain/world/worldSession'
+import { DEFAULT_WORLD_TUNING } from '../../domain/world/WorldTuning'
 import {
   CURRENT_SAVE_SCHEMA_VERSION,
   SAVE_SCHEMA_VERSION_V1,
@@ -12,6 +14,7 @@ import {
   SAVE_SCHEMA_VERSION_V3,
   SAVE_SCHEMA_VERSION_V4,
   SAVE_SCHEMA_VERSION_V5,
+  SAVE_SCHEMA_VERSION_V6,
   type CurrentSave,
   type LegacyTransportType,
   type LegacyWorldState,
@@ -21,6 +24,7 @@ import {
   type SaveGameV4,
   type SaveGameV5,
   type SaveGameV6,
+  type SaveGameV7,
 } from '../../domain/save/SaveGame'
 import {
   currentSaveSchema,
@@ -29,6 +33,7 @@ import {
   saveGameV3Schema,
   saveGameV4Schema,
   saveGameV5Schema,
+  saveGameV6Schema,
 } from './saveSchema'
 
 /**
@@ -240,7 +245,7 @@ export const migrateV5ToV6 = (v5: SaveGameV5): SaveGameV6 => {
   }
 
   return {
-    schemaVersion: CURRENT_SAVE_SCHEMA_VERSION,
+    schemaVersion: SAVE_SCHEMA_VERSION_V6,
     createdAt: v5.createdAt,
     updatedAt: v5.updatedAt,
     progression: v5.progression,
@@ -258,7 +263,34 @@ export const migrateV5ToV6 = (v5: SaveGameV5): SaveGameV6 => {
   }
 }
 
-const toCurrent = (save: SaveGameV4): SaveGameV6 => migrateV5ToV6(migrateV4ToV5(save))
+/**
+ * v6 → v7（Phase 8）。
+ *
+ * World に今いる地域（currentRegionId）を足し、遠征ブロックを空で作る。
+ * Progression / Codex / Transport / Knowledge / Finance / Purchases / Inventory /
+ * Loadout はそのまま保持する。
+ */
+export const migrateV6ToV7 = (v6: SaveGameV6): SaveGameV7 => ({
+  schemaVersion: CURRENT_SAVE_SCHEMA_VERSION,
+  createdAt: v6.createdAt,
+  updatedAt: v6.updatedAt,
+  progression: v6.progression,
+  codex: v6.codex,
+  world: {
+    ...v6.world,
+    currentRegionId: asRegionId(DEFAULT_WORLD_TUNING.homeRegionId),
+  },
+  transport: v6.transport,
+  expedition: createInitialExpeditionState(asRegionId(DEFAULT_WORLD_TUNING.homeRegionId)),
+  knowledge: v6.knowledge,
+  finance: v6.finance,
+  purchases: v6.purchases,
+  inventory: v6.inventory,
+  loadout: v6.loadout,
+})
+
+const toCurrent = (save: SaveGameV4): SaveGameV7 =>
+  migrateV6ToV7(migrateV5ToV6(migrateV4ToV5(save)))
 
 export const migrateSave = (raw: unknown): SaveMigrationResult => {
   if (typeof raw !== 'object' || raw === null || Array.isArray(raw)) {
@@ -399,7 +431,7 @@ export const migrateSave = (raw: unknown): SaveMigrationResult => {
       )
     }
 
-    const migrated = currentSaveSchema.safeParse(migrateV5ToV6(parsed.data))
+    const migrated = currentSaveSchema.safeParse(migrateV6ToV7(migrateV5ToV6(parsed.data)))
 
     if (!migrated.success) {
       return failure(
@@ -410,6 +442,30 @@ export const migrateSave = (raw: unknown): SaveMigrationResult => {
     }
 
     return { ok: true, save: migrated.data, migratedFrom: SAVE_SCHEMA_VERSION_V5 }
+  }
+
+  if (schemaVersion === SAVE_SCHEMA_VERSION_V6) {
+    const parsed = saveGameV6Schema.safeParse(record)
+
+    if (!parsed.success) {
+      return failure(
+        'invalid_save',
+        'save data failed v6 schema validation',
+        toIssues(parsed.error),
+      )
+    }
+
+    const migrated = currentSaveSchema.safeParse(migrateV6ToV7(parsed.data))
+
+    if (!migrated.success) {
+      return failure(
+        'invalid_save',
+        'migrated save failed current schema validation',
+        toIssues(migrated.error),
+      )
+    }
+
+    return { ok: true, save: migrated.data, migratedFrom: SAVE_SCHEMA_VERSION_V6 }
   }
 
   const parsed = currentSaveSchema.safeParse(record)

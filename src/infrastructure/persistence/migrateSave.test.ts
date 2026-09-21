@@ -6,23 +6,49 @@ import {
   createValidSaveV4,
   createValidSaveV5,
   createValidSaveV6,
+  createValidSaveV7,
 } from '../../../tests/fixtures/save'
 import { asShopItemId } from '../../domain/ids'
 import { migrateSave } from './migrateSave'
 
 describe('migrateSave', () => {
   it('loads a valid current save', () => {
-    const result = migrateSave(createValidSaveV6())
+    const result = migrateSave(createValidSaveV7())
 
     expect(result.ok).toBe(true)
 
     if (result.ok) {
-      expect(result.migratedFrom).toBe(6)
-      expect(result.save.schemaVersion).toBe(6)
+      expect(result.migratedFrom).toBe(7)
+      expect(result.save.schemaVersion).toBe(7)
       expect(result.save.progression.anglerLevel).toBe(3)
       expect(result.save.progression.unlockedPerks).toEqual([])
       expect(result.save.progression.repetition.species['test-species']).toBe(3)
     }
+  })
+
+  it('migrates a v6 save into v7 with the home region and an empty expedition', () => {
+    const v6 = createValidSaveV6()
+    const result = migrateSave(v6)
+
+    expect(result.ok).toBe(true)
+    if (!result.ok) {
+      return
+    }
+
+    expect(result.migratedFrom).toBe(6)
+    expect(result.save.schemaVersion).toBe(7)
+    expect(result.save.world.currentRegionId).toBe('tokyo-area')
+    expect(result.save.expedition.current).toBeNull()
+    expect(result.save.expedition.visitedRegionIds).toEqual(['tokyo-area'])
+    expect(result.save.expedition.permits).toEqual([])
+    // 既存ブロックは失わない。
+    expect(result.save.progression).toEqual(v6.progression)
+    expect(result.save.codex).toEqual(v6.codex)
+    expect(result.save.transport).toEqual(v6.transport)
+    expect(result.save.knowledge).toEqual(v6.knowledge)
+    expect(result.save.finance).toEqual(v6.finance)
+    expect(result.save.inventory).toEqual(v6.inventory)
+    expect(result.save.loadout).toEqual(v6.loadout)
   })
 
   it('grants the starter tackle when migrating a v4 save through the current version', () => {
@@ -36,7 +62,7 @@ describe('migrateSave', () => {
     }
 
     expect(result.migratedFrom).toBe(4)
-    expect(result.save.schemaVersion).toBe(6)
+    expect(result.save.schemaVersion).toBe(7)
 
     // 成長・記録・世界・知識・資金・購入は失わない。
     expect(result.save.progression).toEqual(v4.progression)
@@ -70,7 +96,7 @@ describe('migrateSave', () => {
     }
 
     expect(result.migratedFrom).toBe(5)
-    expect(result.save.schemaVersion).toBe(6)
+    expect(result.save.schemaVersion).toBe(7)
     expect(result.save.transport.ownedTransportIds).toContain('used-compact-car')
     expect(result.save.transport.availableTransportIds).toContain('used-compact-car')
     expect(result.save.progression).toEqual(v5.progression)
@@ -93,7 +119,7 @@ describe('migrateSave', () => {
     }
 
     expect(result.migratedFrom).toBe(1)
-    expect(result.save.schemaVersion).toBe(6)
+    expect(result.save.schemaVersion).toBe(7)
 
     // 既存の成長は保持する。
     expect(result.save.progression.anglerLevel).toBe(v1.progression.anglerLevel)
@@ -136,7 +162,7 @@ describe('migrateSave', () => {
     }
 
     expect(result.migratedFrom).toBe(2)
-    expect(result.save.schemaVersion).toBe(6)
+    expect(result.save.schemaVersion).toBe(7)
 
     // 成長と記録は失わない。
     expect(result.save.progression).toEqual(v2.progression)

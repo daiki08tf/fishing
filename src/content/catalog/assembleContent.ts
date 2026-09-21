@@ -7,13 +7,18 @@ import type { FishingMethod } from '../../domain/method/FishingMethod'
 import type { FishingSpot } from '../../domain/world/FishingSpot'
 import type { ShopItem } from '../../domain/shop/ShopItem'
 import type { TransportDefinition } from '../../domain/access/Transport'
+import type { ExpeditionDefinition } from '../../domain/expedition/Expedition'
+import type { Country, RegionDefinition } from '../../domain/world/Region'
 import {
   brandSchema,
+  countrySchema,
+  expeditionSchema,
   fishingSpotSchema,
   fishSpeciesSchema,
   gearItemSchema,
   gearSeriesSchema,
   methodSchema,
+  regionSchema,
   shopItemSchema,
   transportSchema,
 } from '../schema'
@@ -33,6 +38,13 @@ export type BuiltInContent = {
   readonly shopItems: readonly ShopItem[]
   readonly transports: readonly TransportDefinition[]
   readonly transportById: Readonly<Record<string, TransportDefinition>>
+  /** Phase 8: 世界階層（Country / Region）と遠征定義。 */
+  readonly countries: readonly Country[]
+  readonly countryById: Readonly<Record<string, Country>>
+  readonly regions: readonly RegionDefinition[]
+  readonly regionById: Readonly<Record<string, RegionDefinition>>
+  readonly expeditions: readonly ExpeditionDefinition[]
+  readonly expeditionById: Readonly<Record<string, ExpeditionDefinition>>
   /** Phase 6: Rod / Reel / Line / Leader / Hook / Lure / Bait。 */
   readonly gear: readonly GearItem[]
   readonly gearById: Readonly<Record<string, GearItem>>
@@ -125,6 +137,45 @@ const parseTransport = (source: string, value: unknown): TransportDefinition => 
   return parsed.data
 }
 
+const parseCountry = (source: string, value: unknown): Country => {
+  const parsed = countrySchema.safeParse(value)
+
+  if (!parsed.success) {
+    throw new ContentValidationError(
+      'countries',
+      formatIssues('countries', source, parsed.error.issues),
+    )
+  }
+
+  return parsed.data
+}
+
+const parseRegion = (source: string, value: unknown): RegionDefinition => {
+  const parsed = regionSchema.safeParse(value)
+
+  if (!parsed.success) {
+    throw new ContentValidationError(
+      'regions',
+      formatIssues('regions', source, parsed.error.issues),
+    )
+  }
+
+  return parsed.data
+}
+
+const parseExpedition = (source: string, value: unknown): ExpeditionDefinition => {
+  const parsed = expeditionSchema.safeParse(value)
+
+  if (!parsed.success) {
+    throw new ContentValidationError(
+      'expeditions',
+      formatIssues('expeditions', source, parsed.error.issues),
+    )
+  }
+
+  return parsed.data
+}
+
 const parseGear = (source: string, value: unknown): GearItem => {
   const parsed = gearItemSchema.safeParse(value)
 
@@ -203,6 +254,9 @@ export const assembleBuiltInContent = (input: {
   readonly spots: readonly ContentSource[]
   readonly shopItems?: readonly ContentSource[]
   readonly transports?: readonly ContentSource[]
+  readonly countries?: readonly ContentSource[]
+  readonly regions?: readonly ContentSource[]
+  readonly expeditions?: readonly ContentSource[]
   readonly gear?: readonly ContentSource[]
   readonly gearSeries?: readonly ContentSource[]
   readonly methods?: readonly ContentSource[]
@@ -213,6 +267,11 @@ export const assembleBuiltInContent = (input: {
   const shopItems = (input.shopItems ?? []).map((entry) => parseShopItem(entry.source, entry.value))
   const transports = (input.transports ?? []).map((entry) =>
     parseTransport(entry.source, entry.value),
+  )
+  const countries = (input.countries ?? []).map((entry) => parseCountry(entry.source, entry.value))
+  const regions = (input.regions ?? []).map((entry) => parseRegion(entry.source, entry.value))
+  const expeditions = (input.expeditions ?? []).map((entry) =>
+    parseExpedition(entry.source, entry.value),
   )
   const gear = (input.gear ?? []).map((entry) => parseGear(entry.source, entry.value))
   const gearSeries = (input.gearSeries ?? []).map((entry) =>
@@ -232,6 +291,9 @@ export const assembleBuiltInContent = (input: {
   const brandById: Record<string, BrandDefinition> = {}
   const gearSeriesById: Record<string, GearSeries> = {}
   const transportById: Record<string, TransportDefinition> = {}
+  const countryById: Record<string, Country> = {}
+  const regionById: Record<string, RegionDefinition> = {}
+  const expeditionById: Record<string, ExpeditionDefinition> = {}
 
   for (const entry of species) {
     speciesById[String(entry.id)] = entry
@@ -257,6 +319,18 @@ export const assembleBuiltInContent = (input: {
     transportById[String(entry.id)] = entry
   }
 
+  for (const entry of countries) {
+    countryById[String(entry.id)] = entry
+  }
+
+  for (const entry of regions) {
+    regionById[String(entry.id)] = entry
+  }
+
+  for (const entry of expeditions) {
+    expeditionById[String(entry.id)] = entry
+  }
+
   // 参照切れは実行時カタログの入口で止める（Domain へ不正な Content を渡さない）。
   const referenceIssues = validateContentReferences({
     species,
@@ -267,6 +341,9 @@ export const assembleBuiltInContent = (input: {
     brands,
     gearSeries,
     transports,
+    countries,
+    regions,
+    expeditions,
   })
 
   if (referenceIssues.length > 0) {
@@ -283,6 +360,12 @@ export const assembleBuiltInContent = (input: {
     shopItems,
     transports,
     transportById,
+    countries,
+    countryById,
+    regions,
+    regionById,
+    expeditions,
+    expeditionById,
     gear,
     gearById,
     methods,

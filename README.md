@@ -56,14 +56,16 @@
 
 ## Current Status
 
-Phase 7A.1 — Transport / Access Domain 完了（独立レビューの最小修正を含む）。
+Phase 8 — Japan & International Expedition 完了（Phase 7A.1 の修正を含む）。
 
-徒歩・公共交通・自転車・二輪・車・SUV・カヤック・レンタル船・所有船を
-data-driven Content として扱い、Spot の物理 access capability、所有・レンタル費、
-移動時間、Save v6 migration を実装している。世界の解放に Angler Level は使わない。
-Map では利用できる移動手段と費用を並べ、既定は最も安い候補を選ぶ。
+東京の HOME から国内（北海道）・海外（アラスカ）へ遠征し、現地の拠点から
+レンタカー / 徒歩 / レンタルボートで釣り場へ通い、Codex に記録して帰国できる。
+世界は World → Country → Region → Area → Spot の Content で表現し、
+Transport / Access / Economy / FishingEngine は Phase 7A までの構造をそのまま使う。
+地域の解放に Angler Level は使わない（資金・許可・移動手段・Knowledge で広がる）。
 
 ```sh
 npm run check
 npm run simulate:transport
+npm run simulate:expedition
 ```

@@ -1,9 +1,9 @@
 # Handoff
 
-最終更新: Phase 7A.1（Transport / Access Domain の最小修正）完了
+最終更新: Phase 8（Japan & International Expedition）完了
 
 > 以下の Phase 6 / 6.5 節は履歴として残している。件数・Save version・次 Phase については、
-> この Phase 7A.1 / 7A 節と `.ai/current-task.md` を優先する。
+> この Phase 8 / 7A.1 / 7A 節と `.ai/current-task.md` を優先する。
 
 ## このプロジェクトは何か
 
@@ -45,6 +45,37 @@ Product Decision の SSOT は `docs/DECISIONS.md`。
 - Phase 7A.1: 独立レビューの実害指摘の最小修正（motorcycle / rental car の route
   coverage・Access 失敗理由の正確さ・移動手段の選択 UI・費用内訳表示・
   `findUnusableTransports`。Save version は v6 のまま）
+- Phase 8: Japan & International Expedition（World 階層・遠征・Alaska / 北海道・
+  簡易 Permit・Save v7・`simulate:expedition`）
+
+## Phase 8（Japan & International Expedition）
+
+- **世界階層** — `countries` / `regions`（base と areas を持つ）Content を追加し、
+  World → Country → Region → Area → Spot を表現する。`stage: planned` の地域定義だけを
+  Canada / Norway / Australia / New Zealand / Brazil / Mexico / Thailand に置き、
+  World model が Alaska 専用でないことを確認した
+- **遠征** — `src/domain/expedition` に ExpeditionDefinition / ExpeditionPlan /
+  ActiveExpedition / ExpeditionState を追加。`planExpedition` が航空券（往復）・宿泊・
+  許可を合計し、WorldTime を進めて現地の拠点（Region.base）へ移る
+- **国内 / 海外** — 北海道（domestic_flight）とアラスカ（international_flight）を
+  同じ仕組みで扱う。違いは Content の費用・時間・宿泊・許可だけ
+- **Alaska** — 拠点 Alaska Fishing Base、Spot 6 件、魚 10 種（Salmon 5 / Trout 2 /
+  Char 2 / Halibut）。既存の FishIndividual / Trait / FightEngine をそのまま使う
+- **現地の移動** — Phase 7A の Transport / Access を再利用（walk / rental car /
+  rental boat）。国・地域による分岐は Engine に書かない
+- **Permit** — 遠征予約に含めて `expedition.permits` に保存し、AccessEngine の
+  `permit` 条件にだけ効かせる
+- **Save v7** — `world.currentRegionId` と `expedition` を追加。v6 からは
+  「home region を与え、遠征を空で作る」だけで移行する（他ブロックは保持）
+- **UI** — EXPEDITION 画面（行き先・費用内訳・泊数・宿泊・開始）、遠征中の状況と帰国、
+  MAP の地域タブ（今いない地域は釣行不可）、HOME の拠点 / 残り日数
+- **Knowledge / Level** — 初訪問の地域で Region Knowledge +20（PROVISIONAL）。
+  ボウズでも Knowledge が増える既存仕様は不変。Angler Level は地域の解禁条件ではない
+- 最終検証: `npm run check` PASS（65 files / 574 tests）、`validate:content` 649 records、
+  `simulate:transport` 18/18、`simulate:expedition` 12/12、bundle JS 702.06 kB
+  （gzip 172.27 kB）/ CSS 7.04 kB（gzip 1.86 kB）
+- 注意: この sandbox では Chrome headless が起動しないため、UI の通しは
+  jsdom + React DOM のクリック操作（27/27 PASS）で確認した。実ブラウザでの目視は未実施
 
 ## Phase 7A.1（Transport / Access Domain の最小修正）
 

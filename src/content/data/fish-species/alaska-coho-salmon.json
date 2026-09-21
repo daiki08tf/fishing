@@ -1,0 +1,66 @@
+{
+  "id": "alaska-coho-salmon",
+  "japaneseName": "ギンザケ（暫定）",
+  "waterTypes": ["fresh", "salt"],
+  "distribution": ["alaska"],
+  "habitats": ["alaska-sample-river", "alaska-sample-bay"],
+  "depthRange": {
+    "min": 1,
+    "max": 25
+  },
+  "temperatureRange": {
+    "min": 7,
+    "max": 15
+  },
+  "seasonality": {
+    "months": [8, 9, 10]
+  },
+  "timeActivity": {
+    "periods": ["dawn", "evening"]
+  },
+  "currentPreference": {
+    "preference": "moderate"
+  },
+  "diet": ["alaska-sample-prey"],
+  "baits": ["roe", "cut", "shrimp"],
+  "lureCategories": ["spoon", "minnow", "jig"],
+  "fishingMethods": ["lure", "bait"],
+  "methodAffinity": {
+    "lure": 1.15,
+    "light_lure": 0.85,
+    "bait": 1.05,
+    "bottom": 0.95
+  },
+  "offeringAffinity": {
+    "spoon": 1.2,
+    "minnow": 1.15,
+    "roe": 1.1,
+    "mid": 1.1,
+    "large": 1.1
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 60,
+    "dispersion": 0.14,
+    "minCm": 30,
+    "maxCm": 100
+  },
+  "weightModel": {
+    "lengthWeightA": 0.0105,
+    "lengthWeightB": 3.05
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "traitConfiguration": {
+    "trophyPercentileThreshold": 1,
+    "strongRunnerChance": 0.12,
+    "aggressiveChance": 0.1
+  },
+  "fightProfile": {
+    "strength": 0.7,
+    "stamina": 0.8,
+    "speed": 0.75
+  },
+  "rarity": 2.5
+}

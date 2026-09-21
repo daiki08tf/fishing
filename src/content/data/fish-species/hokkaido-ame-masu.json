@@ -1,0 +1,65 @@
+{
+  "id": "hokkaido-ame-masu",
+  "japaneseName": "アメマス（暫定）",
+  "waterTypes": ["fresh", "brackish"],
+  "distribution": ["hokkaido"],
+  "habitats": ["hokkaido-sample-river", "hokkaido-sample-lake"],
+  "depthRange": {
+    "min": 1,
+    "max": 18
+  },
+  "temperatureRange": {
+    "min": 4,
+    "max": 14
+  },
+  "seasonality": {
+    "months": [5, 6, 7, 8, 9, 10]
+  },
+  "timeActivity": {
+    "periods": ["dawn", "morning", "evening"]
+  },
+  "currentPreference": {
+    "preference": "slow"
+  },
+  "diet": ["hokkaido-sample-prey"],
+  "baits": ["worm", "roe", "insect"],
+  "lureCategories": ["spoon", "spinner", "minnow"],
+  "fishingMethods": ["light_lure", "lure", "bait"],
+  "methodAffinity": {
+    "lure": 1.05,
+    "light_lure": 1.2,
+    "bait": 1.1,
+    "bottom": 0.9
+  },
+  "offeringAffinity": {
+    "spoon": 1.2,
+    "spinner": 1.15,
+    "worm": 1.15,
+    "small": 1.15,
+    "mid": 1
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 35,
+    "dispersion": 0.16,
+    "minCm": 15,
+    "maxCm": 62
+  },
+  "weightModel": {
+    "lengthWeightA": 0.0095,
+    "lengthWeightB": 3.05
+  },
+  "conditionModel": {
+    "variability": 0.45
+  },
+  "traitConfiguration": {
+    "trophyPercentileThreshold": 1,
+    "strongRunnerChance": 0.1
+  },
+  "fightProfile": {
+    "strength": 0.5,
+    "stamina": 0.55,
+    "speed": 0.55
+  },
+  "rarity": 1.4
+}

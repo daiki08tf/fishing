@@ -1,0 +1,7 @@
+{
+  "id": "australia",
+  "name": "オーストラリア",
+  "domestic": false,
+  "currency": { "code": "AUD", "symbol": "$" },
+  "dataStatus": "provisional"
+}

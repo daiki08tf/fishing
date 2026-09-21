@@ -1,0 +1,7 @@
+{
+  "id": "united-states",
+  "name": "アメリカ合衆国",
+  "domestic": false,
+  "currency": { "code": "USD", "symbol": "$" },
+  "dataStatus": "provisional"
+}

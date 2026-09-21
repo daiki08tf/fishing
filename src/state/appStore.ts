@@ -10,7 +10,7 @@ import { create } from 'zustand'
 
 export type AppStatus = 'booting' | 'ready'
 
-/** 実装済みの画面。Phase 5 で shop、Phase 6 で tackle を追加した。 */
+/** 実装済みの画面。Phase 5 で shop、Phase 6 で tackle、Phase 8 で expedition を追加した。 */
 export const APP_SCREENS = [
   'home',
   'map',
@@ -19,6 +19,7 @@ export const APP_SCREENS = [
   'progression',
   'shop',
   'tackle',
+  'expedition',
 ] as const
 export type AppScreen = (typeof APP_SCREENS)[number]
 

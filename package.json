@@ -27,6 +27,7 @@
     "simulate:tackle": "tsx scripts/simulate-tackle.ts",
     "simulate:catalog": "tsx scripts/simulate-catalog.ts",
     "simulate:transport": "tsx scripts/simulate-transport.ts",
+    "simulate:expedition": "tsx scripts/simulate-expedition.ts",
     "check": "npm run typecheck && npm run lint && npm run format:check && npm run validate:content && npm run test:run && npm run build"
   },
   "dependencies": {

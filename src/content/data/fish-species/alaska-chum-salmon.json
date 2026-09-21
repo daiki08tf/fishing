@@ -1,0 +1,65 @@
+{
+  "id": "alaska-chum-salmon",
+  "japaneseName": "シロザケ（暫定）",
+  "waterTypes": ["fresh", "salt"],
+  "distribution": ["alaska"],
+  "habitats": ["alaska-sample-river", "alaska-sample-gravel"],
+  "depthRange": {
+    "min": 1,
+    "max": 20
+  },
+  "temperatureRange": {
+    "min": 4,
+    "max": 13
+  },
+  "seasonality": {
+    "months": [8, 9, 10]
+  },
+  "timeActivity": {
+    "periods": ["dawn", "evening"]
+  },
+  "currentPreference": {
+    "preference": "moderate"
+  },
+  "diet": ["alaska-sample-prey"],
+  "baits": ["roe", "cut"],
+  "lureCategories": ["spoon", "jig"],
+  "fishingMethods": ["lure", "bait", "bottom"],
+  "methodAffinity": {
+    "lure": 1,
+    "light_lure": 0.75,
+    "bait": 1.15,
+    "bottom": 1.05
+  },
+  "offeringAffinity": {
+    "spoon": 1.05,
+    "roe": 1.2,
+    "cut": 1.1,
+    "mid": 1.05,
+    "large": 1.05
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 65,
+    "dispersion": 0.14,
+    "minCm": 35,
+    "maxCm": 105
+  },
+  "weightModel": {
+    "lengthWeightA": 0.0112,
+    "lengthWeightB": 3.05
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "traitConfiguration": {
+    "trophyPercentileThreshold": 1,
+    "strongRunnerChance": 0.11
+  },
+  "fightProfile": {
+    "strength": 0.7,
+    "stamina": 0.8,
+    "speed": 0.55
+  },
+  "rarity": 2
+}

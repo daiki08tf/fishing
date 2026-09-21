@@ -1,0 +1,69 @@
+{
+  "id": "alaska-pacific-halibut",
+  "japaneseName": "オヒョウ（暫定）",
+  "waterTypes": ["salt"],
+  "distribution": ["alaska"],
+  "habitats": ["alaska-sample-offshore", "alaska-sample-deep"],
+  "depthRange": {
+    "min": 20,
+    "max": 200
+  },
+  "temperatureRange": {
+    "min": 3,
+    "max": 10
+  },
+  "seasonality": {
+    "months": [5, 6, 7, 8, 9]
+  },
+  "timeActivity": {
+    "periods": ["day", "morning"]
+  },
+  "tidePreference": {
+    "preference": "any"
+  },
+  "currentPreference": {
+    "preference": "moderate"
+  },
+  "diet": ["alaska-sample-prey"],
+  "baits": ["cut", "fish", "squid"],
+  "lureCategories": ["jig", "metal_vibration"],
+  "fishingMethods": ["bottom", "bait", "lure"],
+  "methodAffinity": {
+    "lure": 0.95,
+    "light_lure": 0.5,
+    "bait": 1.25,
+    "bottom": 1.3
+  },
+  "offeringAffinity": {
+    "jig": 1.25,
+    "cut": 1.2,
+    "fish": 1.15,
+    "big": 1.25,
+    "large": 1.1
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 110,
+    "dispersion": 0.2,
+    "minCm": 50,
+    "maxCm": 220
+  },
+  "weightModel": {
+    "lengthWeightA": 0.0135,
+    "lengthWeightB": 3.05
+  },
+  "conditionModel": {
+    "variability": 0.55
+  },
+  "traitConfiguration": {
+    "trophyPercentileThreshold": 1,
+    "strongRunnerChance": 0.18,
+    "heavyWeightRatioThreshold": 1.1
+  },
+  "fightProfile": {
+    "strength": 0.95,
+    "stamina": 0.95,
+    "speed": 0.35
+  },
+  "rarity": 4
+}

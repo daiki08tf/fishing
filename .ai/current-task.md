@@ -2,13 +2,87 @@
 
 ## Phase
 
-**Phase 7A.1 — Transport / Access Domain の最小修正**
+**Phase 8 — Japan & International Expedition**
 
 状態: **完了**
 
-Phase 7A（Transport / Access Domain）の独立レビューで出た実害のある指摘を、Phase 7B へ
-進む前に最小修正した。Phase 7A の構造（TransportDefinition / capability access /
-ResolvedTravelOption / Save v6）は作り直していない。
+「東京の会社員が、近所の釣りから始めて、金と装備を揃えて世界中へ釣りに行く」骨格を
+一通り遊べる形にした。Phase 7A.1 までの構造（TransportDefinition / capability access /
+ResolvedTravelOption / AccessEngine / Save）は作り直していない。
+
+## Phase 8 で実装したもの
+
+### World Hierarchy（Content 駆動）
+
+- 新しい Content: `countries`（9 件）/ `regions`（10 件）/ `expeditions`（2 件）
+- 階層は World → Country → Region → Area → Spot。`regions[].areas` と Spot の
+  `areaId` で Area を持つ（巨大な WorldManager は作らない）
+- Region は `base`（現地の拠点 = HOME 相当）と `stage`（playable / planned）を持つ
+- 東京近郊 13 Spot に `areaId`（Tokyo / Kanagawa / Chiba）を付与
+- 将来拡張用に Canada / Norway / Australia / New Zealand / Brazil / Mexico / Thailand の
+  Region 定義だけを `planned` として追加（World model が Alaska 専用でないことの確認）
+
+### Expedition Domain（`src/domain/expedition`）
+
+- `ExpeditionDefinition`（航空券・宿泊・許可）/ `ExpeditionPlan` / `ActiveExpedition` /
+  `ExpeditionState`（current / visitedRegionIds / permits）
+- `planExpedition` が「航空券（往復）＋宿泊（泊数×単価）＋許可」を合計し、内訳を
+  cost component（flight / lodging / permit）で返す。泊数は min〜max に丸める
+- `remainingExpeditionDays` が残り日数を返す
+- 新通貨・為替・予約番号・座席・空港手続きは持たない
+
+### 国内 / 海外の共通化
+
+- 北海道（国内・domestic_flight）とアラスカ（海外・international_flight）を
+  同じ `ExpeditionDefinition` と Store action で扱う（海外専用システムを作らない）
+- WorldState に `currentRegionId` を追加。違う地域の Spot へは行けない
+  （`leaveForSpot` が `not_in_region` で拒否し、Map は「遠征が必要」と表示する）
+- 地域の移動は `moveToRegion`（時間を進めて地域を変える）だけ
+
+### Alaska（第 1 の海外地域）
+
+- 拠点 `Alaska Fishing Base`、Area は Kenai-like / Mountain / Coastal-Offshore
+- Spot 6 件（Salmon River / Mountain River / Coastal Bay / Offshore Grounds /
+  Glacier Creek / Trophy Lake）。すべて `dataStatus: provisional`
+- 魚 10 種（Chinook / Coho / Sockeye / Chum / Pink / Rainbow Trout / Dolly Varden /
+  Arctic Char / Pacific Halibut / Lake Trout）。既存の FishIndividual / Trait /
+  FightEngine をそのまま使う（新しい魚生成システムは作らない）
+- 北海道 Spot 3 件と魚 2 種（サクラマス / アメマス）。既存のサンプル魚も併用
+- 現地の移動は Phase 7A の Transport / Access をそのまま使う
+  （walk / rental car（vehicle_rental）/ rental boat（boat_rental + marina））
+
+### Permit / Season / Knowledge
+
+- 遠征予約に含めた Permit を `expedition.permits` に持ち、AccessEngine の `permit`
+  条件にだけ効かせる（評価時は `permitsEnabled: true`）
+- 天候・潮・水温は作らず、季節は Content の `seasonality.months` のみ（Phase 9 へ）
+- 初めての地域に入ると Region Knowledge +20（PROVISIONAL）。ボウズでも増える既存仕様は不変
+
+### UI
+
+- `EXPEDITION` 画面（HOME → 遠征・旅行）。行き先 / 国・地域 / 拠点 / 航空移動時間 /
+  泊数（±） / 宿泊の選択 / 費用内訳 / 総額 / 所持金 / 開始可否を表示する
+- 遠征中は「遠征中: 地域」「残り N 日」「拠点」「現地の釣り場数」と「東京へ帰る」を出す
+- MAP を世界対応にした（国内 / 海外の地域タブ。今いない地域は「現在この地域にいません」
+  と表示して釣行不可）。Spot には Area 名を出す
+- HOME は現在の拠点と遠征の残り日数を出す
+
+### Save v7
+
+- `world.currentRegionId` と `expedition`（current / visitedRegionIds / permits）を追加
+- v6 → v7 migration は「home region を与え、遠征を空で作る」だけ。他のブロックは保持
+- 遠征中の Save / reload で地域・拠点・残り日数・許可が残る
+
+### 検証
+
+- `npm run simulate:expedition`（新規）: 東京 → アラスカ予約 → 時間進行 → Alaska Base →
+  レンタカー → Salmon River → Chinook を含む Encounter → 釣り → Codex 記録 → 拠点 →
+  帰国、を 12 checks で PASS / FAIL（費用 / 時間 / 地域 / 現地移動 / 許可 / 魚 /
+  記録 / 帰国 / Save / Level 非依存 / 決定論）
+
+## Phase 7A.1（履歴）
+
+Phase 7A の独立レビューで出た実害のある指摘の最小修正。Phase 7A の構造は作り直していない。
 
 ### Phase 7A.1 の修正
 
@@ -121,7 +195,7 @@ Phase 7B 候補:
 
 ## Final verification
 
-- `npm run check`: PASS（62 files / 557 tests）
+- `npm run check`: PASS（65 files / 574 tests）
 - `npm run simulate:catalog`: PASS
 - `npm run simulate:tackle`: PASS
 - `npm run simulate:day`: PASS
@@ -129,9 +203,13 @@ Phase 7B 候補:
 - `npm run simulate:progression -- --catches 2000`: PASS
 - `npm run simulate:fishing -- --seed demo`: PASS（LANDED / 174 ticks）
 - `npm run sample:individuals -- --samples 10000`: PASS（全魚種 invalid=0）
-- `npm run validate:content`: PASS（607 records）
+- `npm run validate:content`: PASS（649 records）
 - `npm run simulate:transport`: PASS（18/18 checks）
+- `npm run simulate:expedition`: PASS（12/12 checks）
 - 維持した値: upper lake 95 分 / 往復 ¥1,800、東京湾岸 往復 ¥840、fishing demo 174 ticks、
   simulate:day の現金推移
-- production bundle: JS 660.66 kB（gzip 165.01 kB）、CSS 6.86 kB（gzip 1.81 kB）
+- UI の通し（HOME → EXPEDITION → アラスカ → MAP → Salmon River → FISHING → 拠点 → 帰国）を
+  jsdom + React DOM のクリック操作で確認（27/27 ステップ PASS）。この sandbox では
+  Chrome headless が起動できないため、実ブラウザでの目視確認は未実施
+- production bundle: JS 702.06 kB（gzip 172.27 kB）、CSS 7.04 kB（gzip 1.86 kB）
   - eager Content による Vite の 500 kB warning は継続。Phase 7B 以降の code splitting 候補。

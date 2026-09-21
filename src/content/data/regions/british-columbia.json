@@ -1,0 +1,9 @@
+{
+  "id": "british-columbia",
+  "countryId": "canada",
+  "name": "ブリティッシュコロンビア",
+  "stage": "planned",
+  "dataStatus": "provisional",
+  "base": { "id": "bc-base", "name": "BC Fishing Base", "areaId": "bc-coast" },
+  "areas": [{ "id": "bc-coast", "name": "Coastal Rivers" }]
+}
