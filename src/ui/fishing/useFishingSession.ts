@@ -10,7 +10,23 @@ import type { FishingEvent } from '../../domain/fishing'
 import { resolveFishingModifiers } from '../../domain/progression'
 import { resolveEnvironment, resolveFishingConditions } from '../../domain/environment'
 import type { EnvironmentSnapshot, FishingConditions } from '../../domain/environment'
-import { bestFishFinderOf, composeFishingModifiers, resolveTackle } from '../../domain/tackle'
+import {
+  DEFAULT_GEAR_TUNING,
+  bestFishFinderOf,
+  composeFishingModifiers,
+  resolveGearForLoadout,
+  resolveTackle,
+} from '../../domain/tackle'
+import {
+  fishingZonesForSpot,
+  resolveCast,
+  resolveCastCapability,
+  zoneAffinityMultiplier,
+  type CastCapability,
+  type ResolvedCast,
+} from '../../domain/casting'
+import type { FishingZone } from '../../domain/world/FishingSpot'
+import { SeededRandomSource } from '../../domain/rng/SeededRandomSource'
 import { resolveBiteCompatibility } from '../../domain/tackle/biteCompatibility'
 import type { FishSpecies } from '../../domain/fish/FishSpecies'
 import { spotKnowledgeScore } from '../../domain/knowledge/spotKnowledge'
@@ -46,6 +62,13 @@ export type FishingSession = {
   readonly conditions: FishingConditions | null
   /** このセッションの seed。同じ seed なら同じ経過を再現できる。 */
   readonly seed: string
+  /** Phase 11: Spot 内で狙える水域。 */
+  readonly fishingZones: readonly FishingZone[]
+  readonly targetZoneId: string | null
+  readonly castCapability: CastCapability | null
+  readonly resolvedCast: ResolvedCast | null
+  readonly canCast: boolean
+  readonly selectTargetZone: (zoneId: string) => void
   readonly send: (command: FishingCommand) => void
   /** 新しい seed でやり直す。seed を渡すと同じ経過を再挑戦できる。 */
   readonly restart: (seed?: string) => void
@@ -55,6 +78,7 @@ const createSessionSeed = (): string => `s${Date.now().toString(36)}`
 
 export const useFishingSession = (): FishingSession => {
   const [session, setSession] = useState(() => ({ seed: createSessionSeed(), nonce: 0 }))
+  const [targetZoneId, setTargetZoneId] = useState<string | null>(null)
   const engineRef = useRef<FishingEngine | null>(null)
   const [snapshot, setSnapshot] = useState<FishingSnapshot | null>(null)
 
@@ -75,6 +99,15 @@ export const useFishingSession = (): FishingSession => {
 
     return content.value.spots.find((entry) => entry.id === world.currentSpotId)
   }, [content, world.currentSpotId])
+
+  const fishingZones = useMemo(
+    () => (spot === undefined ? [] : fishingZonesForSpot(spot)),
+    [spot],
+  )
+  const activeTargetZoneId =
+    targetZoneId !== null && fishingZones.some((zone) => zone.id === targetZoneId)
+      ? targetZoneId
+      : (fishingZones[0]?.id ?? null)
 
   /** 今いる Spot の魚種（Encounter 候補の元）。 */
   const species = useMemo<readonly FishSpecies[]>(() => {
@@ -115,6 +148,14 @@ export const useFishingSession = (): FishingSession => {
     })
   }, [content, loadout])
 
+  const castingGear = useMemo(() => {
+    if (!content.ok) {
+      return null
+    }
+
+    return resolveGearForLoadout(loadout, content.value.gear)
+  }, [content, loadout])
+
   /*
    * Phase 9: 環境（季節 / 時間 / 天候 / 潮 / 水）を解決し、
    * 釣況（Encounter 重み・Fight 倍率）へ写す。
@@ -138,6 +179,42 @@ export const useFishingSession = (): FishingSession => {
       environment: spot.environment,
     })
   }, [content, spot, world.time])
+
+  const castCapability = useMemo<CastCapability | null>(() => {
+    if (castingGear === null) {
+      return null
+    }
+
+    return resolveCastCapability({
+      rod: castingGear.rod,
+      reel: castingGear.reel,
+      line: castingGear.line,
+      offering: castingGear.offering,
+      methodCastDistance: DEFAULT_GEAR_TUNING.methods[loadout.methodId]?.castDistance ?? 0.5,
+      skillCastingMultiplier: skillModifiers.castingPrecisionMultiplier,
+      windy: environment?.weather === 'windy',
+    })
+  }, [castingGear, loadout.methodId, skillModifiers.castingPrecisionMultiplier, environment])
+
+  const resolvedCast = useMemo<ResolvedCast | null>(() => {
+    if (
+      castCapability === null ||
+      activeTargetZoneId === null ||
+      fishingZones.length === 0 ||
+      spot === undefined
+    ) {
+      return null
+    }
+
+    return resolveCast({
+      zones: fishingZones,
+      targetZoneId: activeTargetZoneId,
+      capability: castCapability,
+      random: new SeededRandomSource(
+        `${session.seed}:cast:${String(spot.id)}:${activeTargetZoneId}`,
+      ),
+    })
+  }, [castCapability, activeTargetZoneId, fishingZones, session.seed, spot])
 
   const finder = content.ok ? bestFishFinderOf(inventory, content.value.gear) : null
   const searchSign =
@@ -183,6 +260,12 @@ export const useFishingSession = (): FishingSession => {
       }
 
       const environmentWeight = conditions?.speciesModifiers[String(found.id)] ?? 1
+      const landedZoneId =
+        resolvedCast !== null && resolvedCast.reachable
+          ? resolvedCast.landedZoneId
+          : activeTargetZoneId
+      const zoneWeight =
+        landedZoneId === null ? 1 : zoneAffinityMultiplier(occurrence, landedZoneId)
       const bite = resolveBiteCompatibility({
         species: found,
         offering,
@@ -194,7 +277,7 @@ export const useFishingSession = (): FishingSession => {
       return [
         {
           species: found,
-          presence: occurrence.basePresence * environmentWeight,
+          presence: occurrence.basePresence * environmentWeight * zoneWeight,
           biteEligible: bite.eligible,
           affinityMultiplier: bite.affinityMultiplier,
           hookSuccessModifier: bite.hookSuccessModifier,
@@ -202,7 +285,7 @@ export const useFishingSession = (): FishingSession => {
         },
       ]
     })
-  }, [spot, species, conditions, content, loadout])
+  }, [spot, species, conditions, content, loadout, resolvedCast, activeTargetZoneId])
 
   const playerModifiers = useMemo(() => {
     const base =
@@ -226,7 +309,10 @@ export const useFishingSession = (): FishingSession => {
     }
   }, [tackle, conditions])
 
-  const encountersKey = spot === undefined ? 'none' : String(spot.id)
+  const encountersKey =
+    spot === undefined
+      ? 'none'
+      : `${String(spot.id)}:${activeTargetZoneId ?? 'no-zone'}`
 
   /*
    * セッションの入力（Encounter・倍率・Knowledge）。
@@ -241,12 +327,16 @@ export const useFishingSession = (): FishingSession => {
     playerModifiers,
     encounterProfile,
     knowledgeScore: spotKnowledgeScore(knowledge, spot === undefined ? '' : String(spot.id)),
+    initialFightDistanceM:
+      resolvedCast !== null && resolvedCast.reachable ? resolvedCast.actualDistanceM : undefined,
   })
   sessionInputsRef.current = {
     encounters,
     playerModifiers,
     encounterProfile,
     knowledgeScore: spotKnowledgeScore(knowledge, spot === undefined ? '' : String(spot.id)),
+    initialFightDistanceM:
+      resolvedCast !== null && resolvedCast.reachable ? resolvedCast.actualDistanceM : undefined,
   }
 
   // セッション開始（Spot・seed が変わったとき）。釣行中は作り直さない。
@@ -265,6 +355,9 @@ export const useFishingSession = (): FishingSession => {
       playerModifiers: inputs.playerModifiers,
       // Phase 10: Knowledge は予兆（telegraph）の文章精度にだけ効く。
       knowledgeScore: inputs.knowledgeScore,
+      ...(inputs.initialFightDistanceM === undefined
+        ? {}
+        : { initialFightDistanceM: inputs.initialFightDistanceM }),
       ...(inputs.encounterProfile === undefined
         ? {}
         : { encounterProfile: inputs.encounterProfile }),
@@ -350,11 +443,13 @@ export const useFishingSession = (): FishingSession => {
     }
   }, [isRunning, session, encountersKey, resolveSessionEnd])
 
+  const canCast = resolvedCast?.reachable === true
+
   const send = useCallback(
     (command: FishingCommand) => {
       const engine = engineRef.current
 
-      if (engine === null) {
+      if (engine === null || (command === 'cast' && !canCast)) {
         return
       }
 
@@ -369,7 +464,16 @@ export const useFishingSession = (): FishingSession => {
         resolveSessionEnd(outcome.events, outcome.snapshot)
       }
     },
-    [resolveSessionEnd],
+    [canCast, resolveSessionEnd],
+  )
+
+  const selectTargetZone = useCallback(
+    (zoneId: string) => {
+      if (fishingZones.some((zone) => zone.id === zoneId)) {
+        setTargetZoneId(zoneId)
+      }
+    },
+    [fishingZones],
   )
 
   const restart = useCallback((seed?: string) => {
@@ -386,6 +490,12 @@ export const useFishingSession = (): FishingSession => {
     environment,
     conditions,
     seed: session.seed,
+    fishingZones,
+    targetZoneId: activeTargetZoneId,
+    castCapability,
+    resolvedCast,
+    canCast,
+    selectTargetZone,
     send,
     restart,
   }
