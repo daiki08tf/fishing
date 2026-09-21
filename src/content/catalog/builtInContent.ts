@@ -26,6 +26,21 @@ const shopItemModules = import.meta.glob<unknown>('../data/shop-items/*.json', {
   import: 'default',
 })
 
+const gearModules = import.meta.glob<unknown>('../data/gear/*.json', {
+  eager: true,
+  import: 'default',
+})
+
+const methodModules = import.meta.glob<unknown>('../data/methods/*.json', {
+  eager: true,
+  import: 'default',
+})
+
+const brandModules = import.meta.glob<unknown>('../data/brands/*.json', {
+  eager: true,
+  import: 'default',
+})
+
 /** glob の順序に依存しないよう、ファイル名で安定させる。 */
 const toSources = (modules: Record<string, unknown>): readonly ContentSource[] =>
   Object.entries(modules)
@@ -37,4 +52,7 @@ export const loadBuiltInContent = (): BuiltInContent =>
     species: toSources(speciesModules),
     spots: toSources(spotModules),
     shopItems: toSources(shopItemModules),
+    gear: toSources(gearModules),
+    methods: toSources(methodModules),
+    brands: toSources(brandModules),
   })

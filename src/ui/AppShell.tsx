@@ -6,6 +6,7 @@ import { MapScreen } from './map/MapScreen'
 import { ProgressionScreen } from './progression/ProgressionScreen'
 import { SpotScreen } from './spot/SpotScreen'
 import { ShopScreen } from './shop/ShopScreen'
+import { TackleScreen } from './tackle/TackleScreen'
 import './styles/world.css'
 
 /**
@@ -84,6 +85,7 @@ export const AppShell = () => {
           />
         ) : null}
         {activeScreen === 'shop' ? <ShopScreen /> : null}
+        {activeScreen === 'tackle' ? <TackleScreen /> : null}
       </main>
     </div>
   )

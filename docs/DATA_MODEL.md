@@ -284,9 +284,32 @@ type KnowledgeState = {
 
 ## 13. Gear
 
-実在製品を使うか架空ブランドを使うかは後で決定する。
+Phase 6 で実装した。ブランドは**架空**とし、実在ブランドは同じ形のまま
+Content を追加して載せる（`docs/DECISIONS.md` §1）。ブランド自体は性能を持たず、
+性能差は各製品の現実由来スペックで表現する。
 
-コアデータとして必要なもの:
+### Brand / Series / Model
+
+```
+Brand（架空）
+└ Series（製品シリーズ。表示・整理の概念）
+   └ Model（Rod / Reel / ... の1製品）
+```
+
+- Series は UI / Content の整理概念であり、FishingEngine は Series 名を知らない。
+- Reel は標準化された `sizeClass`（1000〜30000）を持てる。
+  番手は整理軸であり、実性能は `gearRatio` / `retrieveCmPerTurn` / `maxDragKg` /
+  `weightG` / `lineCapacity` / `smoothness` / `control` から解決する。
+- Rod は `power` / `action` と、Series の用途カテゴリ（Ajing / Seabass / Surf 等）を持つ。
+- `sizeClass` / `series` は Engine の分岐条件にしない（装備を増やしても Engine は変わらない）。
+
+### 現実属性とゲーム調整値の分離
+
+Content に置くのは**現実由来の属性**（長さ・ルアー重量域・ドラッグ力・ライン強度・
+号数・ギア比など）だけである。ゲーム上の係数（感度係数・control 補正・相性スケール）は
+`GearTuning` 側の調整値として分離する。
+
+### コアデータ
 
 ### Rod
 
@@ -309,10 +332,28 @@ type KnowledgeState = {
 
 ### Line
 
-- material
+- material（nylon / fluorocarbon / PE）
 - diameter
 - strength
 - stretch
+- abrasionResistance
+- visibility
+
+### Leader
+
+- material
+- strength
+- diameter
+- abrasionResistance
+- visibility
+
+### Hook
+
+- size
+- strength
+- hookType
+- penetration
+- holdingPower
 
 ### Lure
 
@@ -321,10 +362,41 @@ type KnowledgeState = {
 - weight
 - depth
 - action
-- buoyancy
+- visualProfile
 - targetProfile
 
+### Bait
+
+- baitType
+- presentation
+- targetProfile
+
+### Method（釣法）
+
+`lure` / `light_lure` / `bait` / `bottom`。
+釣法 × offering（Lure / Bait）の相性が Encounter の重みを変える。
+「特定の offering でないと釣れない」hard lock は作らない。
+
+### Loadout / Inventory
+
+```ts
+type Loadout = {
+  rodId: GearId
+  reelId: GearId
+  lineId: GearId
+  leaderId: GearId | null  // リーダー無しも可
+  hookId: GearId
+  offeringId: GearId       // Lure または Bait
+  methodId: string
+}
+
+type Inventory = { ownedGearIds: GearId[] }
+```
+
 装備効果は現実の性能として説明できる範囲を基本とする。
+
+互換性は `fatal / warning / suboptimal / good / excellent` を区別し、
+**致命的な組み合わせだけ**を装備不可とする。多少外れた構成は使える。
 
 ## 14. Regulation
 

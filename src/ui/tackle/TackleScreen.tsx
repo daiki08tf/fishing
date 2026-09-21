@@ -1,0 +1,326 @@
+import { useState } from 'react'
+import type { GearId } from '../../domain/ids'
+import {
+  GEAR_CATEGORY_LABELS,
+  brandLabelOf,
+  type GearItem,
+  type OfferingDefinition,
+} from '../../domain/gear/Gear'
+import {
+  COMPATIBILITY_LABELS,
+  LOADOUT_SLOTS,
+  SLOT_CATEGORIES,
+  evaluateCompatibility,
+  ownedGearInCategory,
+  resolveTackle,
+  slotGearId,
+  withSlot,
+  type Loadout,
+  type LoadoutSlot,
+} from '../../domain/tackle'
+import { useAppStore } from '../../state/appStore'
+import { usePlayerStore } from '../../state/playerStore'
+import { ContentErrorPanel } from '../world/ContentErrorPanel'
+import { useContentOrError } from '../world/useContentOrError'
+
+/**
+ * TACKLE 画面（Phase 6）。
+ *
+ * 「何を使って、どう狙うか」を決める場所。
+ * ここは**表示と選択だけ**を行い、互換性の判定は Domain（compatibility /
+ * resolveTackle）に任せる。UI でルールを再実装しない。
+ */
+
+const SLOT_LABELS: Readonly<Record<LoadoutSlot, string>> = {
+  rod: 'ロッド',
+  reel: 'リール',
+  line: 'ライン',
+  leader: 'リーダー',
+  hook: 'フック',
+  offering: '仕掛け（ルアー / 餌）',
+}
+
+const labelOf = (gear: GearItem, brands: Parameters<typeof brandLabelOf>[1]): string => {
+  const brand = brandLabelOf(gear, brands)
+  const series = 'series' in gear && typeof gear.series === 'string' ? gear.series : ''
+  const family = [brand, series].filter((part) => part.length > 0).join(' ')
+
+  return family.length === 0 ? gear.name : `${gear.name}（${family}）`
+}
+
+/** offering の主要スペック（選択の判断材料）。 */
+const offeringSpec = (offering: OfferingDefinition): string =>
+  offering.category === 'lure'
+    ? `${String(offering.weightG)}g / ${String(offering.lengthMm)}mm / ${offering.lureType}`
+    : `${offering.baitType} / ${offering.presentation}`
+
+const gearSpec = (gear: GearItem): string => {
+  switch (gear.category) {
+    case 'rod':
+      return `${String(gear.lengthM)}m / ${gear.power} / ${gear.action} / ${String(
+        gear.minLureWeightG,
+      )}–${String(gear.maxLureWeightG)}g`
+    case 'reel':
+      return `${String(gear.size)}番 ${gear.variant ?? ''} / ドラッグ ${String(
+        gear.maxDragKg,
+      )}kg / ${String(gear.gearRatio)}`
+    case 'line':
+      return `${gear.lineType} / ${String(gear.strengthKg)}kg / ${String(gear.diameterMm)}mm`
+    case 'leader':
+      return `${gear.material} / ${String(gear.strengthKg)}kg / 耐摩耗 ${String(
+        gear.abrasionResistance,
+      )}`
+    case 'hook':
+      return `${String(gear.size)}番 / ${gear.hookType} / 掛かり ${String(gear.penetration)}`
+    case 'lure':
+      return offeringSpec(gear)
+    case 'bait':
+      return offeringSpec(gear)
+  }
+}
+
+const scoreLabel = (value: number): string =>
+  `${'■'.repeat(Math.max(1, Math.round(value * 5)))}${'□'.repeat(
+    Math.max(0, 5 - Math.round(value * 5)),
+  )}`
+
+export const TackleScreen = () => {
+  const content = useContentOrError()
+  const setActiveScreen = useAppStore((state) => state.setActiveScreen)
+  const loadout = usePlayerStore((state) => state.loadout)
+  const inventory = usePlayerStore((state) => state.inventory)
+  const equipGear = usePlayerStore((state) => state.equipGear)
+  const setMethod = usePlayerStore((state) => state.setMethod)
+  const worldPhase = usePlayerStore((state) => state.world.phase)
+  const [message, setMessage] = useState<string | null>(null)
+
+  if (!content.ok) {
+    return <ContentErrorPanel message={content.message} />
+  }
+
+  const { gear, methods, brands } = content.value
+  const catalog = { gear, methods }
+  const method = methods.find((entry) => entry.id === loadout.methodId)
+  const report = method === undefined ? null : evaluateCompatibility({ loadout, gear, method })
+  const setup = resolveTackle({ loadout, gear, methods })
+
+  const nameOf = (gearId: GearId | null): string => {
+    if (gearId === null) {
+      return 'なし'
+    }
+
+    const item = gear.find((entry) => entry.id === gearId)
+    return item === undefined ? '不明な装備' : labelOf(item, brands)
+  }
+
+  return (
+    <div className="fishing">
+      <header className="fishing__header">
+        <button
+          className="button button--ghost"
+          type="button"
+          onClick={() => {
+            setActiveScreen(worldPhase === 'AT_SPOT' ? 'spot' : 'home')
+          }}
+        >
+          ← {worldPhase === 'AT_SPOT' ? '釣り場' : '自宅'}
+        </button>
+        <span className="fishing__seed">TACKLE</span>
+      </header>
+
+      <section className="panel">
+        <p className="fishing__phase-code">CURRENT LOADOUT</p>
+        <h2 className="panel__heading">今のタックル</h2>
+        {report === null ? (
+          <p className="panel__body">釣法が不明である。読み込み直してほしい。</p>
+        ) : (
+          <p className={`badge${report.fatal ? ' badge--alert' : ''}`}>
+            {COMPATIBILITY_LABELS[report.level]}（適合 {report.score.toFixed(2)}）
+          </p>
+        )}
+        <dl className="record">
+          {LOADOUT_SLOTS.map((slot) => (
+            <div key={slot}>
+              <dt>{SLOT_LABELS[slot]}</dt>
+              <dd>{nameOf(slotGearId(loadout, slot))}</dd>
+            </div>
+          ))}
+          <div>
+            <dt>釣法</dt>
+            <dd>{method?.name ?? '不明'}</dd>
+          </div>
+        </dl>
+      </section>
+
+      {report === null ? null : (
+        <section className="panel">
+          <h3 className="panel__subheading">互換性</h3>
+          <ul className="log">
+            {report.issues.map((issue) => (
+              <li key={`${issue.level}:${issue.message}`}>
+                [{COMPATIBILITY_LABELS[issue.level]}] {issue.message}
+              </li>
+            ))}
+          </ul>
+          {setup === null ? null : (
+            <dl className="record">
+              <div>
+                <dt>パワー</dt>
+                <dd>{scoreLabel(setup.ratings.power)}</dd>
+              </div>
+              <div>
+                <dt>繊細さ</dt>
+                <dd>{scoreLabel(setup.ratings.finesse)}</dd>
+              </div>
+              <div>
+                <dt>飛距離</dt>
+                <dd>{scoreLabel(setup.ratings.distance)}</dd>
+              </div>
+              <div>
+                <dt>主導権</dt>
+                <dd>{scoreLabel(setup.ratings.control)}</dd>
+              </div>
+            </dl>
+          )}
+        </section>
+      )}
+
+      {message === null ? null : <p className="notice">{message}</p>}
+
+      <section className="panel">
+        <h3 className="panel__subheading">釣法</h3>
+        <ul className="spots">
+          {methods.map((entry) => {
+            const candidate: Loadout = { ...loadout, methodId: entry.id }
+            const candidateReport = evaluateCompatibility({
+              loadout: candidate,
+              gear,
+              method: entry,
+            })
+            const current = entry.id === loadout.methodId
+
+            return (
+              <li className="spot-card" key={entry.id}>
+                <div className="spot-card__head">
+                  <h4 className="panel__subheading">{entry.name}</h4>
+                  <span className={`badge${candidateReport.fatal ? ' badge--alert' : ''}`}>
+                    {current ? '使用中' : COMPATIBILITY_LABELS[candidateReport.level]}
+                  </span>
+                </div>
+                <p className="spot-card__meta">{entry.description}</p>
+                <button
+                  className="control"
+                  type="button"
+                  disabled={current || candidateReport.fatal}
+                  onClick={() => {
+                    const result = setMethod({ ...catalog, methodId: entry.id })
+                    setMessage(result.ok ? `${entry.name} に変えた` : result.message)
+                  }}
+                >
+                  {current ? '使用中' : 'この釣法にする'}
+                </button>
+              </li>
+            )
+          })}
+        </ul>
+      </section>
+
+      {LOADOUT_SLOTS.map((slot) => {
+        const category = SLOT_CATEGORIES[slot][0]
+        const owned = category === undefined ? [] : ownedGearInCategory(inventory, gear, category)
+        const currentId = slotGearId(loadout, slot)
+
+        return (
+          <section className="panel" key={slot}>
+            <h3 className="panel__subheading">{SLOT_LABELS[slot]}</h3>
+            <ul className="spots">
+              {slot === 'leader' ? (
+                <li className="spot-card">
+                  <div className="spot-card__head">
+                    <h4 className="panel__subheading">リーダーなし</h4>
+                    <span className="badge">{currentId === null ? '使用中' : '未使用'}</span>
+                  </div>
+                  <p className="spot-card__meta">
+                    リーダーを外すと根ズレに弱くなるが、結び目は減る。
+                  </p>
+                  <button
+                    className="control"
+                    type="button"
+                    disabled={currentId === null}
+                    onClick={() => {
+                      const result = equipGear({ ...catalog, slot, gearId: null })
+                      setMessage(result.ok ? 'リーダーを外した' : result.message)
+                    }}
+                  >
+                    リーダーを外す
+                  </button>
+                </li>
+              ) : null}
+
+              {owned.map((item) => {
+                const candidate = withSlot(loadout, slot, item.id)
+                const candidateMethod = methods.find((entry) => entry.id === candidate.methodId)
+                const candidateReport =
+                  candidateMethod === undefined
+                    ? null
+                    : evaluateCompatibility({
+                        loadout: candidate,
+                        gear,
+                        method: candidateMethod,
+                      })
+                const fatal = candidateReport?.fatal ?? false
+                const current = currentId === item.id
+
+                return (
+                  <li className="spot-card" key={String(item.id)}>
+                    <div className="spot-card__head">
+                      <h4 className="panel__subheading">{labelOf(item, brands)}</h4>
+                      <span className={`badge${fatal ? ' badge--alert' : ''}`}>
+                        {current
+                          ? '装備中'
+                          : fatal
+                            ? '使用不可'
+                            : candidateReport?.level === undefined
+                              ? GEAR_CATEGORY_LABELS[item.category]
+                              : COMPATIBILITY_LABELS[candidateReport.level]}
+                      </span>
+                    </div>
+                    <p className="spot-card__meta">{gearSpec(item)}</p>
+                    {fatal && candidateReport !== null ? (
+                      <p className="blocked">
+                        {candidateReport.issues.find((issue) => issue.level === 'fatal')?.message}
+                      </p>
+                    ) : null}
+                    <button
+                      className="control"
+                      type="button"
+                      disabled={current || fatal}
+                      onClick={() => {
+                        const result = equipGear({ ...catalog, slot, gearId: item.id })
+                        setMessage(result.ok ? `${item.name} を装備した` : result.message)
+                      }}
+                    >
+                      {current ? '装備中' : 'これを装備'}
+                    </button>
+                  </li>
+                )
+              })}
+            </ul>
+          </section>
+        )
+      })}
+
+      <section className="panel">
+        <button
+          className="button"
+          type="button"
+          onClick={() => {
+            setActiveScreen('shop')
+          }}
+        >
+          店で装備を買う
+        </button>
+      </section>
+    </div>
+  )
+}

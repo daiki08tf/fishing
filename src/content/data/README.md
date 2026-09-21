@@ -8,18 +8,30 @@
 - `fishing-spots`
 - `transports`
 - `regulations`
+- `shop-items`
+- `brands`
+- `gear`（Rod / Reel / Line / Leader / Hook / Lure / Bait）
+- `methods`（釣法）
 
-## 現在の内容（Phase 4 時点）
+## 現在の内容（Phase 6 時点）
 
-**検証用サンプル**だけを持つ。魚種 10 件と釣り場 8 件。
+**検証用サンプル**だけを持つ。
 
 - `fish-species/phase1-sample-fish.json` （サンプル魚A）
 - `fish-species/phase2-sample-fish-b.json` 〜 `phase2-sample-fish-j.json`
 - `fishing-spots/*.json`（東京近郊を模した 8 件。魚種は Spot ごとに異なる）
+- `gear/*.json`（Rod / Reel / Line / Leader / Hook / Lure / Bait の 23 件）
+- `methods/*.json`（`lure` / `light_lure` / `bait` / `bottom`）
+- `brands/*.json`（架空ブランド 10 件。**性能倍率を持たない**）
+- `shop-items/*.json`（中古コンパクトカーなど）
 
 魚種も釣り場も、現実の魚・場所を表すものではない。
 名前もパラメータも暫定であり、釣りのループを成立させるための入力である
 （`id` は `phase1-sample-` / `phase2-sample-` で始まる）。
+
+魚種の `methodAffinity` / `offeringAffinity` も
+**検証用の暫定値**であり、生物学的事実ではない。
+目的は「同じ Spot でも釣法・offering で Encounter の重みが変わる」ことの検証である。
 
 ### 実在の場所を扱うときの約束
 
@@ -51,6 +63,26 @@
 2. `npm run validate:content` が通ることを確認する。
 
 これだけで Map に並び、Access Engine が行けるかどうかを判定する。
+
+## 装備（Gear）を追加する手順
+
+1. `gear/` に JSON を 1 つ追加する。
+   - 現実由来の属性だけを書く（長さ・ルアー重量域・ドラッグ力・ライン強度など）
+   - ゲーム調整の係数は書かない（`src/domain/gear/GearTuning.ts` 側）
+   - `brandId` / `series` は任意。書く場合は `brands/` に実在する id を指す
+   - Reel は `sizeClass`（1000〜30000）と `variant`（`S` / `HG` など）を持てる
+2. `npm run validate:content` が通ることを確認する（参照切れもここで検出する）。
+
+これだけで Shop に並び、Tackle 画面で選択できる。
+**FishingEngine の変更も、Tackle Resolver の変更も要らない。**
+
+## ブランドを追加する手順
+
+1. `brands/` に JSON を 1 つ追加する。
+2. Gear の `brandId` から参照する。
+
+ブランドは表示と整理のためだけの属性である。
+**ブランドに性能倍率を持たせない**（性能差は各製品のスペックで表現する）。
 
 検証:
 

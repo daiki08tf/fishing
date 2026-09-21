@@ -23,6 +23,8 @@ import {
 export type ContentLocation = {
   readonly kind: ContentKind
   readonly filePath: string
+  /** スキーマを通った値。Catalog の参照検査に使う。 */
+  readonly value: unknown
 }
 
 export type ContentDiagnostic = {
@@ -119,7 +121,7 @@ export const loadContentDirectory = (root: string): ContentLoadResult => {
         continue
       }
 
-      locations.push({ kind, filePath })
+      locations.push({ kind, filePath, value: result.value })
     }
   }
 

@@ -11,6 +11,13 @@
     "minCm": 10,
     "maxCm": 32
   },
+  "methodAffinity": { "lure": 1, "light_lure": 1.1, "bait": 1.05, "bottom": 1.05 },
+  "offeringAffinity": {
+    "worm": 1.15,
+    "soft_plastic": 1.1,
+    "small": 1.1,
+    "mid": 1.05
+  },
   "weightModel": { "lengthWeightA": 0.0105, "lengthWeightB": 3.05 },
   "conditionModel": { "variability": 0.5 },
   "fightProfile": { "strength": 0.4, "stamina": 0.4, "speed": 0.45 },

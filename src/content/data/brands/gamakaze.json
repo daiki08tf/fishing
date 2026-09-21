@@ -1,0 +1,8 @@
+{
+  "id": "gamakaze",
+  "name": "Gamakaze",
+  "description": "フックの太さと鋭さで知られる架空のブランド。検証用。",
+  "specialties": ["hook"],
+  "countryStyle": "japan_domestic",
+  "tagline": "掛けてからが、本番。"
+}

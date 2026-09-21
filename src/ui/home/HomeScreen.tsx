@@ -85,6 +85,15 @@ export const HomeScreen = () => {
           className="button"
           type="button"
           onClick={() => {
+            setActiveScreen('tackle')
+          }}
+        >
+          タックルを組む
+        </button>
+        <button
+          className="button"
+          type="button"
+          onClick={() => {
             setActiveScreen('shop')
           }}
         >

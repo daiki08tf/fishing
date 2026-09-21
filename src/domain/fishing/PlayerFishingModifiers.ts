@@ -6,7 +6,8 @@
  * これにより、Skill や Perk が増えても Engine は変わらない。
  *
  * 倍率はすべて 1.0 が「効果なし」。
- * 例外は hookSuccessModifier で、これは 0 が「効果なし」の加算値。
+ * 例外は hookSuccessModifier で、これは 0 が「効果なし」の加算値である
+ * （アワセ猶予を少し広げる。フックの掛かりや Hooking の技量で増える）。
  */
 
 export const FISHING_MODIFIER_KEYS = [

@@ -1,4 +1,8 @@
-import { rollEncounter, type EncounterCandidate } from '../encounter/encounterEngine'
+import {
+  rollEncounter,
+  type EncounterCandidate,
+  type EncounterProfile,
+} from '../encounter/encounterEngine'
 import type { FishIndividual } from '../fish/FishIndividual'
 import { conditionBand, type ConditionBand } from '../fish/fishCondition'
 import type { TraitModifiers } from '../fish/fishTraits'
@@ -91,6 +95,11 @@ export type FishingEngineOptions = {
    * Engine は Skill や Level を知らない。
    */
   readonly playerModifiers?: PlayerFishingModifiers
+  /**
+   * 釣法と offering による Encounter の重み付け（Tackle 側で解決済みの値）。
+   * Engine は装備の名前もカテゴリも知らない。
+   */
+  readonly encounterProfile?: EncounterProfile
   readonly tuning?: FishingTuning
   /** テストや特殊な用途向け。省略時は seed から決定論的な RandomSource を作る。 */
   readonly random?: RandomSource
@@ -126,6 +135,7 @@ export class FishingEngine {
   private readonly random: RandomSource
   private readonly seedLabel: string
   private readonly spotId: FishingSpotId | undefined
+  private readonly encounterProfile: EncounterProfile | undefined
 
   private phase: FishingPhase = 'IDLE'
   private ticksInPhase = 0
@@ -144,6 +154,7 @@ export class FishingEngine {
     this.seedLabel = String(options.seed)
     this.random = options.random ?? new SeededRandomSource(options.seed)
     this.spotId = options.spotId
+    this.encounterProfile = options.encounterProfile
   }
 
   // ---------------------------------------------------------------- commands
@@ -284,11 +295,21 @@ export class FishingEngine {
     }
   }
 
-  /** アワセ猶予の実効 tick 数（Hooking などで広がる）。 */
+  /**
+   * アワセ猶予の実効 tick 数。
+   *
+   * Hooking（技量）とフックの掛かり（装備）で広がる。
+   * 0 が「効果なし」の加算値である hookSuccessModifier もここで寄与させ、
+   * 解決済み modifier を Engine 側で死なせない。
+   */
   effectiveHookWindowTicks(): number {
     return Math.max(
       1,
-      Math.round(this.tuning.hookWindowTicks * this.playerModifiers.hookWindowMultiplier),
+      Math.round(
+        this.tuning.hookWindowTicks *
+          this.playerModifiers.hookWindowMultiplier *
+          (1 + this.playerModifiers.hookSuccessModifier),
+      ),
     )
   }
 
@@ -371,6 +392,7 @@ export class FishingEngine {
       candidates: this.encounters,
       random: this.random,
       tuning: this.tuning,
+      ...(this.encounterProfile === undefined ? {} : { profile: this.encounterProfile }),
     })
 
     if (outcome.kind === 'no_bite') {

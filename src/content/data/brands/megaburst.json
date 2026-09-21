@@ -1,0 +1,8 @@
+{
+  "id": "megaburst",
+  "name": "Megaburst",
+  "description": "ミノーとバイブレーションを中心に扱う架空のルアーブランド。検証用。",
+  "specialties": ["minnow", "vibration", "hard_lure"],
+  "countryStyle": "international",
+  "tagline": "動きで、食わせる。"
+}

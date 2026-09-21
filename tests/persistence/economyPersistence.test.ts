@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { createPersistenceCoordinator } from '../../src/app/persistence/persistenceCoordinator'
 import { createInitialFinanceState } from '../../src/domain/economy/FinanceState'
 import { asShopItemId } from '../../src/domain/ids'
-import type { CurrentSave, SaveGameV4 } from '../../src/domain/save/SaveGame'
+import type { CurrentSave } from '../../src/domain/save/SaveGame'
 import { InMemorySaveRepository } from '../../src/infrastructure/persistence/inMemorySaveRepository'
 import { migrateSave } from '../../src/infrastructure/persistence/migrateSave'
 import { createInitialSave } from '../../src/infrastructure/persistence/saveFactory'
@@ -11,7 +11,7 @@ import {
   createValidSaveV1,
   createValidSaveV2,
   createValidSaveV3,
-  createValidSaveV4,
+  createValidSaveV5,
 } from '../fixtures/save'
 import { createTestSpot } from '../fixtures/spots'
 
@@ -20,7 +20,7 @@ import { createTestSpot } from '../fixtures/spots'
  * progression / codex / world / knowledge を絶対に失わないことも確認する。
  */
 
-const reload = async (save: SaveGameV4): Promise<CurrentSave> => {
+const reload = async (save: CurrentSave): Promise<CurrentSave> => {
   const repository = new InMemorySaveRepository()
   await repository.save(save)
 
@@ -52,20 +52,20 @@ describe('economy persistence', () => {
         },
       ],
     }
-    const restored = await reload({ ...createValidSaveV4(), finance })
+    const restored = await reload({ ...createValidSaveV5(), finance })
 
     expect(restored.finance).toEqual(finance)
   })
 
   it('round trips the purchases', async () => {
     const purchases = [asShopItemId('used-compact-car')]
-    const restored = await reload({ ...createValidSaveV4(), purchases })
+    const restored = await reload({ ...createValidSaveV5(), purchases })
 
     expect(restored.purchases).toEqual(purchases)
   })
 
   it('round trips the owned transport', async () => {
-    const save = createValidSaveV4()
+    const save = createValidSaveV5()
     const restored = await reload({
       ...save,
       world: { ...save.world, availableTransports: ['walk', 'train', 'bus', 'car'] },
@@ -100,7 +100,7 @@ describe('economy persistence', () => {
       expect(result.ok).toBe(true)
 
       if (result.ok) {
-        expect(result.save.schemaVersion).toBe(4)
+        expect(result.save.schemaVersion).toBe(5)
         expect(result.save.world.phase).toBe('HOME')
       }
     }
@@ -108,7 +108,7 @@ describe('economy persistence', () => {
 
   it('rejects a malformed finance block', () => {
     const broken = {
-      ...createValidSaveV4(),
+      ...createValidSaveV5(),
       finance: { ...createInitialFinanceState(), lastSettledMonth: 'May' },
     }
 
@@ -116,7 +116,7 @@ describe('economy persistence', () => {
   })
 
   it('does not persist a work schedule at all', () => {
-    const save = createValidSaveV4() as unknown as Record<string, unknown>
+    const save = createValidSaveV5() as unknown as Record<string, unknown>
 
     // 仕事の予定（勤務時間・有給）はゲームシステムではないので保存しない。
     expect(save['schedule']).toBeUndefined()
@@ -125,7 +125,7 @@ describe('economy persistence', () => {
 
   it('does not autosave before hydration completes', async () => {
     const repository = new InMemorySaveRepository()
-    await repository.save(createValidSaveV4())
+    await repository.save(createValidSaveV5())
 
     const store = createPlayerStore()
     const coordinator = createPersistenceCoordinator({ repository, store })
@@ -136,9 +136,9 @@ describe('economy persistence', () => {
 
     await coordinator.start()
 
-    const loaded = (await repository.loadRaw()) as SaveGameV4
+    const loaded = (await repository.loadRaw()) as CurrentSave
 
-    expect(loaded.finance.cash).toBe(createValidSaveV4().finance.cash)
+    expect(loaded.finance.cash).toBe(createValidSaveV5().finance.cash)
     coordinator.stop()
   })
 
@@ -160,7 +160,7 @@ describe('economy persistence', () => {
 
     await coordinator.flush()
 
-    const saved = (await repository.loadRaw()) as SaveGameV4
+    const saved = (await repository.loadRaw()) as CurrentSave
 
     expect(saved.finance.transactions.length).toBeGreaterThan(0)
     expect(saved.finance.cash).toBeLessThan(createInitialFinanceState().cash)

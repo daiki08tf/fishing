@@ -1,13 +1,15 @@
 import { z } from 'zod'
-import { asGearId } from '../../domain/ids'
+import { asBrandId, asGearId } from '../../domain/ids'
 import {
   BAIT_TYPES,
   HOOK_TYPES,
   LINE_TYPES,
   LURE_TYPES,
+  REEL_SIZE_CLASSES,
   REEL_TYPES,
   ROD_ACTIONS,
   ROD_POWERS,
+  ROD_SERIES_CATEGORIES,
 } from '../../domain/gear/Gear'
 import { nonEmptyString } from './primitives'
 
@@ -20,7 +22,14 @@ import { nonEmptyString } from './primitives'
 
 const id = nonEmptyString.transform(asGearId)
 const price = z.number().int().nonnegative()
-const base = { id, name: nonEmptyString, price }
+
+/** ブランド・シリーズは任意。あれば参照が存在することを Catalog 側で確かめる。 */
+const family = {
+  brandId: nonEmptyString.transform(asBrandId).optional(),
+  series: nonEmptyString.optional(),
+}
+
+const base = { id, name: nonEmptyString, price, ...family }
 
 export const rodSchema = z
   .strictObject({
@@ -29,6 +38,7 @@ export const rodSchema = z
     lengthM: z.number().positive(),
     power: z.enum(ROD_POWERS),
     action: z.enum(ROD_ACTIONS),
+    seriesCategory: z.enum(ROD_SERIES_CATEGORIES).optional(),
     minLureWeightG: z.number().nonnegative(),
     maxLureWeightG: z.number().positive(),
     recommendedLineMinKg: z.number().positive(),
@@ -52,6 +62,8 @@ export const reelSchema = z.strictObject({
   ...base,
   category: z.literal('reel'),
   reelType: z.enum(REEL_TYPES),
+  sizeClass: z.union(REEL_SIZE_CLASSES.map((size) => z.literal(size))).optional(),
+  variant: nonEmptyString.optional(),
   size: z.number().positive(),
   gearRatio: z.number().positive(),
   maxDragKg: z.number().positive(),

@@ -1,4 +1,5 @@
 import { gearItemSchema } from './gear'
+import { brandSchema } from './brand'
 import { methodSchema } from './method'
 import { shopItemSchema } from './shopItem'
 import type { z } from 'zod'
@@ -19,6 +20,7 @@ export const CONTENT_SCHEMAS = {
   transports: transportSchema,
   regulations: regulationSchema,
   'shop-items': shopItemSchema,
+  brands: brandSchema,
   gear: gearItemSchema,
   methods: methodSchema,
 } as const
@@ -37,7 +39,12 @@ export type ContentIssue = {
 }
 
 export type ContentParseResult =
-  { readonly ok: true } | { readonly ok: false; readonly issues: readonly ContentIssue[] }
+  | {
+      readonly ok: true
+      /** スキーマを通った値（正規化済み。id は branded になっている）。 */
+      readonly value: unknown
+    }
+  | { readonly ok: false; readonly issues: readonly ContentIssue[] }
 
 const toIssues = (error: z.ZodError): readonly ContentIssue[] =>
   error.issues.map((issue) => ({
@@ -55,36 +62,57 @@ export const parseContentRecord = (kind: ContentKind, value: unknown): ContentPa
   switch (kind) {
     case 'fish-species': {
       const result = fishSpeciesSchema.safeParse(value)
-      return result.success ? { ok: true } : { ok: false, issues: toIssues(result.error) }
+      return result.success
+        ? { ok: true, value: result.data }
+        : { ok: false, issues: toIssues(result.error) }
     }
     case 'fishing-spots': {
       const result = fishingSpotSchema.safeParse(value)
-      return result.success ? { ok: true } : { ok: false, issues: toIssues(result.error) }
+      return result.success
+        ? { ok: true, value: result.data }
+        : { ok: false, issues: toIssues(result.error) }
     }
     case 'transports': {
       const result = transportSchema.safeParse(value)
-      return result.success ? { ok: true } : { ok: false, issues: toIssues(result.error) }
+      return result.success
+        ? { ok: true, value: result.data }
+        : { ok: false, issues: toIssues(result.error) }
     }
     case 'regulations': {
       const result = regulationSchema.safeParse(value)
-      return result.success ? { ok: true } : { ok: false, issues: toIssues(result.error) }
+      return result.success
+        ? { ok: true, value: result.data }
+        : { ok: false, issues: toIssues(result.error) }
     }
     case 'shop-items': {
       const result = shopItemSchema.safeParse(value)
-      return result.success ? { ok: true } : { ok: false, issues: toIssues(result.error) }
+      return result.success
+        ? { ok: true, value: result.data }
+        : { ok: false, issues: toIssues(result.error) }
+    }
+    case 'brands': {
+      const result = brandSchema.safeParse(value)
+      return result.success
+        ? { ok: true, value: result.data }
+        : { ok: false, issues: toIssues(result.error) }
     }
     case 'gear': {
       const result = gearItemSchema.safeParse(value)
-      return result.success ? { ok: true } : { ok: false, issues: toIssues(result.error) }
+      return result.success
+        ? { ok: true, value: result.data }
+        : { ok: false, issues: toIssues(result.error) }
     }
     case 'methods': {
       const result = methodSchema.safeParse(value)
-      return result.success ? { ok: true } : { ok: false, issues: toIssues(result.error) }
+      return result.success
+        ? { ok: true, value: result.data }
+        : { ok: false, issues: toIssues(result.error) }
     }
   }
 }
 
 export { fishingSpotSchema, fishSpeciesSchema, regulationSchema, transportSchema }
+export { brandSchema } from './brand'
 export { accessRequirementSchema } from './accessRequirement'
 export { conditionModelSchema } from './conditionModel'
 export { fishOccurrenceSchema } from './fishOccurrence'

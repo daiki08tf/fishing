@@ -12,6 +12,14 @@
     "minCm": 8,
     "maxCm": 26
   },
+  "methodAffinity": { "lure": 0.95, "light_lure": 1.2, "bait": 0.95, "bottom": 0.85 },
+  "offeringAffinity": {
+    "minnow": 1.15,
+    "spoon": 1.05,
+    "worm": 1.1,
+    "small": 1.2,
+    "topwater": 1.05
+  },
   "weightModel": { "lengthWeightA": 0.011, "lengthWeightB": 3.1 },
   "conditionModel": { "variability": 0.55 },
   "traitConfiguration": { "strongRunnerChance": 0.12 },

@@ -1,4 +1,5 @@
 import { asFishIndividualId, asFishSpeciesId, asJobId } from '../../src/domain/ids'
+import { asGearId } from '../../src/domain/ids'
 import { totalXpForLevel } from '../../src/domain/progression/AnglerLevel'
 import { emptyAnglerSkills } from '../../src/domain/progression/AnglerSkill'
 import { emptyRepetitionState } from '../../src/domain/progression/repetitionDecay'
@@ -7,10 +8,13 @@ import {
   SAVE_SCHEMA_VERSION_V2,
   SAVE_SCHEMA_VERSION_V3,
   SAVE_SCHEMA_VERSION_V4,
+  SAVE_SCHEMA_VERSION_V5,
   type SaveGameV2,
   type SaveGameV3,
   type SaveGameV4,
+  type SaveGameV5,
 } from '../../src/domain/save/SaveGame'
+import { createStarterInventory, createStarterLoadout } from '../../src/domain/tackle/Loadout'
 import { createInitialWorld } from '../../src/domain/world/worldSession'
 
 /**
@@ -139,5 +143,24 @@ export const createValidSaveV4 = (): SaveGameV4 => {
     // Career ブロックはゲームシステムではないので保存しない。
     finance: { ...v3.finance, lastSettledMonth: null, transactions: [] },
     purchases: [],
+  }
+}
+
+/** Phase 6 の現行 Save（schema v5）。所持 Gear と装備が加わった。 */
+export const createValidSaveV5 = (): SaveGameV5 => {
+  const v4 = createValidSaveV4()
+
+  return {
+    schemaVersion: SAVE_SCHEMA_VERSION_V5,
+    createdAt: v4.createdAt,
+    updatedAt: v4.updatedAt,
+    progression: v4.progression,
+    codex: v4.codex,
+    world: v4.world,
+    knowledge: v4.knowledge,
+    finance: v4.finance,
+    purchases: v4.purchases,
+    inventory: createStarterInventory(asGearId),
+    loadout: createStarterLoadout(asGearId),
   }
 }

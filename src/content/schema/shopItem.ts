@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { asShopItemId } from '../../domain/ids'
+import { asGearId, asShopItemId } from '../../domain/ids'
 import { SHOP_CATEGORIES } from '../../domain/shop/ShopItem'
 import { nonEmptyString } from './primitives'
 import { transportTypeSchema } from './transport'
@@ -13,4 +13,10 @@ export const shopItemSchema = z.strictObject({
   price: z.number().int().positive(),
   category: z.enum(SHOP_CATEGORIES),
   grantsTransport: transportTypeSchema.optional(),
+  /**
+   * 購入すると所持 Inventory へ入る Gear。
+   * 「1 商品 = 1 セット」のような束ね売りを表現できる（通常の Gear 単品は
+   * `gear` Content から直接買えるため、ここには書かなくてよい）。
+   */
+  grantsGearId: nonEmptyString.transform(asGearId).optional(),
 })

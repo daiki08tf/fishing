@@ -12,6 +12,14 @@
     "minCm": 20,
     "maxCm": 63
   },
+  "methodAffinity": { "lure": 1.15, "light_lure": 0.85, "bait": 1, "bottom": 0.95 },
+  "offeringAffinity": {
+    "vibration": 1.15,
+    "jig": 1,
+    "spoon": 1,
+    "cut": 1.05,
+    "large": 1.15
+  },
   "weightModel": { "lengthWeightA": 0.0085, "lengthWeightB": 3.0 },
   "conditionModel": { "variability": 0.45 },
   "traitConfiguration": { "trophyPercentileThreshold": 0.8 },

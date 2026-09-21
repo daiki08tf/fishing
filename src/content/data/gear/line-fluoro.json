@@ -3,6 +3,8 @@
   "name": "フロロカーボン 2号",
   "price": 2400,
   "category": "line",
+  "brandId": "yamashiro",
+  "series": "FLUORO LINE",
   "lineType": "fluorocarbon",
   "strengthKg": 3,
   "diameterMm": 0.165,

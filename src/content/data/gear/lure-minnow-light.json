@@ -3,6 +3,8 @@
   "name": "軽量ミノー 4g",
   "price": 1600,
   "category": "lure",
+  "brandId": "megaburst",
+  "series": "MINNOW 55",
   "lureType": "minnow",
   "weightG": 4,
   "lengthMm": 55,

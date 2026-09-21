@@ -1,12 +1,18 @@
 import { emptyCodexState, type CodexState } from '../../domain/codex'
 import { createInitialFinanceState, type FinanceState } from '../../domain/economy/FinanceState'
-import type { ShopItemId } from '../../domain/ids'
+import { asGearId, type ShopItemId } from '../../domain/ids'
 import { emptyKnowledgeState } from '../../domain/knowledge/KnowledgeState'
 import type { KnowledgeState } from '../../domain/knowledge/KnowledgeState'
 import type { IsoDateTime } from '../../domain/primitives'
 import type { AnglerProgression } from '../../domain/progression/AnglerProgression'
 import { createInitialProgression } from '../../domain/progression/AnglerProgression'
-import { CURRENT_SAVE_SCHEMA_VERSION, type SaveGameV4 } from '../../domain/save/SaveGame'
+import { CURRENT_SAVE_SCHEMA_VERSION, type SaveGameV5 } from '../../domain/save/SaveGame'
+import {
+  createStarterInventory,
+  createStarterLoadout,
+  type Loadout,
+} from '../../domain/tackle/Loadout'
+import type { Inventory } from '../../domain/tackle/Inventory'
 import { createInitialWorld, type WorldState } from '../../domain/world/worldSession'
 
 /**
@@ -24,13 +30,15 @@ export type SaveSourceState = {
   readonly knowledge: KnowledgeState
   readonly finance: FinanceState
   readonly purchases?: readonly ShopItemId[]
+  readonly inventory: Inventory
+  readonly loadout: Loadout
   /** 現在時刻。呼び出し側が渡す（Domain は時計を持たない）。 */
   readonly now: IsoDateTime
   /** 初回保存時のみ指定する。省略すると now を使う。 */
   readonly createdAt?: IsoDateTime
 }
 
-export const createSave = (source: SaveSourceState): SaveGameV4 => ({
+export const createSave = (source: SaveSourceState): SaveGameV5 => ({
   schemaVersion: CURRENT_SAVE_SCHEMA_VERSION,
   createdAt: source.createdAt ?? source.now,
   updatedAt: source.now,
@@ -40,6 +48,8 @@ export const createSave = (source: SaveSourceState): SaveGameV4 => ({
   knowledge: source.knowledge,
   finance: source.finance,
   purchases: source.purchases ?? [],
+  inventory: source.inventory,
+  loadout: source.loadout,
 })
 
 /**
@@ -51,7 +61,7 @@ export const createSave = (source: SaveSourceState): SaveGameV4 => ({
  *
  * knowledge は空から始める（Phase 4 で釣行・観察により増える）。
  */
-export const createInitialSave = (options: { readonly now: IsoDateTime }): SaveGameV4 => ({
+export const createInitialSave = (options: { readonly now: IsoDateTime }): SaveGameV5 => ({
   schemaVersion: CURRENT_SAVE_SCHEMA_VERSION,
   createdAt: options.now,
   updatedAt: options.now,
@@ -61,4 +71,6 @@ export const createInitialSave = (options: { readonly now: IsoDateTime }): SaveG
   knowledge: emptyKnowledgeState(),
   finance: createInitialFinanceState(),
   purchases: [],
+  inventory: createStarterInventory(asGearId),
+  loadout: createStarterLoadout(asGearId),
 })

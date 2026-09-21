@@ -5,6 +5,8 @@ import type { KnowledgeState } from '../knowledge/KnowledgeState'
 import type { IsoDateTime } from '../primitives'
 import type { PlayerProgression } from '../progression/PlayerProgression'
 import type { AnglerProgression } from '../progression/AnglerProgression'
+import type { Inventory } from '../tackle/Inventory'
+import type { Loadout } from '../tackle/Loadout'
 import type { WorldState } from '../world/worldSession'
 import type { ShopItemId } from '../ids'
 
@@ -18,14 +20,16 @@ import type { ShopItemId } from '../ids'
  *     反復状態に加え、Codex（捕獲記録）を保存する。
  * v3: World（Phase 4）。ゲーム内時間・現在位置・発見済み Spot・移動手段・釣行記録を保存する。
  * v4: Economy（Phase 5）。資金の詳細（月次精算・履歴）と購入済み商品を保存する。
+ * v5: Tackle（Phase 6）。所持している Gear（inventory）と現在の装備（loadout）を保存する。
  */
 
 export const SAVE_SCHEMA_VERSION_V1 = 1 as const
 export const SAVE_SCHEMA_VERSION_V2 = 2 as const
 export const SAVE_SCHEMA_VERSION_V3 = 3 as const
 export const SAVE_SCHEMA_VERSION_V4 = 4 as const
+export const SAVE_SCHEMA_VERSION_V5 = 5 as const
 
-export const CURRENT_SAVE_SCHEMA_VERSION = SAVE_SCHEMA_VERSION_V4
+export const CURRENT_SAVE_SCHEMA_VERSION = SAVE_SCHEMA_VERSION_V5
 
 export type SaveSchemaVersion = typeof CURRENT_SAVE_SCHEMA_VERSION
 
@@ -109,4 +113,27 @@ export type SaveGameV4 = {
   readonly purchases: readonly ShopItemId[]
 }
 
-export type CurrentSave = SaveGameV4
+/**
+ * 現行の Save（Phase 6）。
+ *
+ * inventory は「所持している Gear」、loadout は「今使っているタックル」である。
+ * どちらも Domain の型をそのまま保存する（Save 層で別のルールを作らない）。
+ * 性能・互換性の解決は保存しない（Content が変われば再解決する）。
+ *
+ * v4 と同じく、Career / 仕事の予定はゲームシステムではないため保存しない。
+ */
+export type SaveGameV5 = {
+  readonly schemaVersion: typeof SAVE_SCHEMA_VERSION_V5
+  readonly createdAt: IsoDateTime
+  readonly updatedAt: IsoDateTime
+  readonly progression: AnglerProgression
+  readonly codex: CodexState
+  readonly world: WorldState
+  readonly knowledge: KnowledgeState
+  readonly finance: FinanceState
+  readonly purchases: readonly ShopItemId[]
+  readonly inventory: Inventory
+  readonly loadout: Loadout
+}
+
+export type CurrentSave = SaveGameV5

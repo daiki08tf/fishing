@@ -1,3 +1,5 @@
 export { assembleBuiltInContent, ContentValidationError } from './assembleContent'
 export type { BuiltInContent, ContentSource } from './assembleContent'
+export { knownOfferingTags, validateContentReferences } from './references'
+export type { ContentReferenceInput, ContentReferenceIssue } from './references'
 export { loadBuiltInContent } from './builtInContent'

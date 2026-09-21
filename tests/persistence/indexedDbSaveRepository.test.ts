@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { IndexedDbSaveRepository } from '../../src/infrastructure/persistence/indexedDbSaveRepository'
-import { createValidSaveV4 } from '../fixtures/save'
+import { createValidSaveV5 } from '../fixtures/save'
 
 /**
  * IndexedDB adapter の API 形状テスト。
@@ -130,7 +130,7 @@ describe('IndexedDbSaveRepository', () => {
 
   it('round trips a save', async () => {
     const repository = createRepository()
-    const save = createValidSaveV4()
+    const save = createValidSaveV5()
 
     await repository.save(save)
 
@@ -139,7 +139,7 @@ describe('IndexedDbSaveRepository', () => {
 
   it('clears the stored save', async () => {
     const repository = createRepository()
-    await repository.save(createValidSaveV4())
+    await repository.save(createValidSaveV5())
     await repository.clear()
 
     await expect(repository.loadRaw()).resolves.toBeNull()
@@ -150,9 +150,9 @@ describe('IndexedDbSaveRepository', () => {
     const first = new IndexedDbSaveRepository(factory as unknown as IDBFactory)
     const second = new IndexedDbSaveRepository(factory as unknown as IDBFactory)
 
-    await first.save(createValidSaveV4())
+    await first.save(createValidSaveV5())
 
-    await expect(second.loadRaw()).resolves.toEqual(createValidSaveV4())
+    await expect(second.loadRaw()).resolves.toEqual(createValidSaveV5())
   })
 
   it('fails clearly when IndexedDB is unavailable', async () => {

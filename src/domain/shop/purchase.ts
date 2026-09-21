@@ -1,7 +1,7 @@
 import type { TransportType } from '../access/Transport'
 import type { FinanceState } from '../economy/FinanceState'
 import { formatYen, spendCash } from '../economy/finance'
-import type { ShopItemId } from '../ids'
+import type { GearId, ShopItemId } from '../ids'
 import type { WorldTime } from '../world/WorldTime'
 import { ownsItem, type ShopItem } from './ShopItem'
 
@@ -21,6 +21,8 @@ export type PurchaseResult =
       readonly finance: FinanceState
       readonly ownedItemIds: readonly ShopItemId[]
       readonly grantedTransport: TransportType | null
+      /** 購入で手に入る Gear（束ね売り）。所持への追加は呼び出し側が行う。 */
+      readonly grantedGearId: GearId | null
     }
   | { readonly ok: false; readonly reason: PurchaseFailure; readonly message: string }
 
@@ -55,5 +57,6 @@ export const purchaseShopItem = (options: {
     finance: paid.finance,
     ownedItemIds: [...options.ownedItemIds, options.item.id],
     grantedTransport: options.item.grantsTransport ?? null,
+    grantedGearId: options.item.grantsGearId ?? null,
   }
 }

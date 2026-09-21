@@ -1,0 +1,8 @@
+{
+  "id": "evergreen-field",
+  "name": "Evergreen Field",
+  "description": "スプーンや天然素材の餌を扱う架空のブランド。検証用。",
+  "specialties": ["spoon", "bait"],
+  "countryStyle": "japan_domestic",
+  "tagline": "自然に、似せる。"
+}

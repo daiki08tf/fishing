@@ -3,6 +3,8 @@
   "name": "バイブレーション 14g",
   "price": 1800,
   "category": "lure",
+  "brandId": "megaburst",
+  "series": "VIBRATION 65",
   "lureType": "vibration",
   "weightG": 14,
   "lengthMm": 68,

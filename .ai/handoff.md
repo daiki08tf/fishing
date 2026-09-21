@@ -1,6 +1,6 @@
 # Handoff
 
-最終更新: Phase 3（Angler Progression）完了時点
+最終更新: Phase 6（Tackle Depth）完了
 
 ## このプロジェクトは何か
 
@@ -32,6 +32,9 @@ Product Decision の SSOT は `docs/DECISIONS.md`。
 - Phase 3.1: Save / Load の配線（起動時 hydration と autosave）
 - Phase 4: World / Time / Access / Spot Knowledge（自宅から釣りへ行って帰るループ）
 - Phase 5: Economy / Calendar / Shop / Transport（給料・生活費・有給・中古車）
+- Phase 6: Tackle Depth（Gear 7 カテゴリ・Loadout・互換性・Tackle Resolver・
+  架空ブランド・Save v5）。前セッションの基盤 `feat: add economy and tackle foundation`
+  を引き継いで完成させた
 
 コミットの位置は `git log --oneline` で確認する。
 本文書にはマシン固有の絶対パスや作業ディレクトリの UUID を記録しない。
@@ -48,6 +51,75 @@ Product Decision の SSOT は `docs/DECISIONS.md`。
 | 3.1 | Save / Load の配線（起動時 hydration・autosave・壊れた Save の扱い） | 再起動で成長と記録が残る |
 | 4 | World（ゲーム内時間・移動・Spot・Access・Knowledge）と Map / Spot 画面 | 自宅から釣りへ行って帰る |
 | 5 | Economy / Schedule / Shop（給料・生活費・有給・中古車購入） | 働きながら釣りに行く生活ループ |
+| 6 | Tackle Depth（Gear 7 カテゴリ・Loadout・互換性・Tackle Resolver・架空ブランド） | 装備を組んで狙う |
+
+## Phase 6（Tackle Depth）で実装したもの
+
+前セッション分の基盤は checkpoint commit `19ed43f`
+（`feat: add economy and tackle foundation`）にあり、working tree は clean だった。
+このセッションは**それを再利用**して残作業（配線・Save・UI・テスト）だけを実装した。
+基盤の作り直しや別方式への差し替えはしていない。
+
+| 領域 | 内容 |
+|---|---|
+| Gear（基盤） | `src/domain/gear/Gear.ts` — Rod / Reel / Line / Leader / Hook / Lure / Bait の型。`GearTuning.ts` にゲーム調整値を分離 |
+| Brand | `src/domain/gear/Brand.ts` — 架空ブランド。**性能倍率を持たない**（表示・整理の属性） |
+| Method | `src/domain/method/FishingMethod.ts` — lure / light_lure / bait / bottom |
+| Loadout | `src/domain/tackle/Loadout.ts` — スロット・Starter gear・装備変更の検証（存在 / 所有 / カテゴリ） |
+| Inventory | `src/domain/tackle/Inventory.ts` — `ownedGearIds` のみ（耐久・消費を扱わない） |
+| Compatibility | `src/domain/tackle/compatibility.ts` — fatal / warning / suboptimal / good / excellent |
+| Resolver | `src/domain/tackle/resolveTackle.ts` — `ResolvedFishingSetup` / `EncounterProfile` / `composeFishingModifiers` |
+| Modifier | `PlayerFishingModifiers` に `maxTensionMultiplier` / `slackToleranceMultiplier`。Engine は解決済み modifier だけを使う |
+| Catalog | `assembleContent` / `builtInContent` / `nodeContent` が gear・methods・brands を実行時カタログへ載せる。参照切れは `references.ts` が検出する |
+| Encounter | `encounterEngine.ts` の `EncounterProfile`（method / offering の重み付け）と `speciesAffinity`。魚種ごとの相性は Content |
+| Save | schema **v5**（inventory / loadout）。v4 → v5 migration で Starter gear と有効な Starter loadout を付与 |
+| Store | `equipGear` / `setMethod` / `purchaseGear` / hydrate / autosave slice。判定は Domain に委ねる |
+| Shop | Gear 商品を Content から並べる。購入は cash 減少 + `ownedGearIds` 追加（自動装備はしない） |
+| UI | TACKLE 画面（Current Loadout / 互換性 / 所有 Gear からの選択）、SHOP の Gear 一覧、SPOT のタックル要約 |
+| 検証 | `npm run simulate:tackle`（Starter / Finesse / Balanced / Power の比較） |
+
+### Phase 6 の主な設計判断
+
+1. **互換性は「使用不可」を最小にする** — `fatal` だけが装備不可。
+   warning / suboptimal は使用可能（現実でも外れた道具は使える）。
+   例: ロッド上限の 1.3 倍を超えるルアーだけが fatal。
+2. **フックの掛かりを Engine に接続した** — `hookSuccessModifier` は 0 が基準の加算値で、
+   `effectiveHookWindowTicks` を広げる。これまで Engine から使われていなかった
+   （Skill の Hooking だけが値を動かしていた）ため、フック装備が釣りへ効く経路を追加した。
+3. **フックのサイズ判定を修正** — フックは「数字が大きいほど小さい針」。
+   旧実装は大小が逆だったため、大型魚に小さい針 / 小型魚に大きい針で警告するよう直した。
+4. **ブランドは性能を持たない**（DECISIONS §1）— 性能差は各製品の現実由来スペックで表現する。
+5. **Series / sizeClass は Engine の分岐条件にしない** — 商品を増やしても Engine は変わらない。
+   `tests/contracts/tackleContent.test.ts` が「新 Gear を足しても Engine 改造が要らない」ことを、
+   `tests/architecture/tackle-boundaries.test.ts` が「fishing / encounter domain に具体 Gear ID が
+   現れない」ことを検査する。
+6. **Save は v4 → v5 の 1 段だけ**（まだリリース前なので migration chain を増やさない）。
+   v4 以前のプレイヤーには Starter gear 一式と有効な Starter loadout を付与し、
+   「何も買えず釣りができない」状態を作らない。
+7. **ShopItem.grantsGearId を追加** — 「1 商品 = セット売り」を Content で表現できる。
+   参照切れは validate:content が検出する。
+
+### Phase 6 の検証結果（このセッション）
+
+- `npm run check`: PASS（typecheck / lint / format / validate:content / test / build）
+- `npm run test:run`: **54 files / 482 tests PASS**（Phase 6 開始時は 45 files / 377 tests）
+- `npm run validate:content`: PASS（**56 件**。魚種 10 + 釣り場 8 + Gear 23 + Methods 4 + Brands 10 + 商品 1）
+- `npm run simulate:tackle`: 11 チェックすべて PASS。
+  大型（phase2-sample-fish-i）を 9 割まで攻める操作では
+  Power 100% / Starter 67% / Balanced 49% / Finesse 22% が取り込みに成功し、
+  LINE_BREAK は Finesse 94 回・Power 0 回。
+  小型と大型が混ざる場所では Finesse が小型 86 / 大型 30、Power が小型 37 / 大型 79 を掛ける
+- `npm run simulate:day`: 9 チェックすべて PASS（変化なし）
+- `npm run simulate:trip`: 6 チェックすべて PASS（変化なし）
+- `npm run simulate:progression -- --catches 2000`: 9 チェックすべて PASS（変化なし）
+- `npm run simulate:fishing -- --seed demo`: LANDED（174 tick。Phase 4 から変化なし。
+  このスクリプトはタックルを渡さないため、中立条件の挙動は保たれている）
+- `npm run sample:individuals -- --samples 10000`: 全魚種 invalid=0（変化なし）
+- バンドル: JS 447.06 kB（gzip 133.24 kB）、CSS 5.36 kB（gzip 1.55 kB）
+- 開発サーバー実測: `/` 200、TACKLE 画面 / SHOP 画面 / builtInContent /
+  tackle domain / playerStore / gear JSON / brand JSON / method JSON がすべて 200
+- UI スモーク（`tests/ui/tackleScreenSmoke.test.ts`）: 新規ゲームの初期状態で
+  TACKLE 画面が Starter 装備を描画し、SHOP が Gear とブランドを並べることを確認
 
 ## Phase 5 で実装したもの
 
@@ -295,6 +367,7 @@ npm run validate:content     # Content の検証（不正なら非ゼロ終了�
 npm run simulate:fishing -- --seed demo
 npm run sample:individuals -- --samples 10000
 npm run simulate:progression -- --catches 2000
+npm run simulate:tackle        # Starter / Finesse / Balanced / Power の比較
 ```
 
 ### モバイル実機での確認
@@ -348,52 +421,66 @@ npm run simulate:progression -- --catches 2000
 
 ## 未完了・既知のギャップ
 
-- Reputation / Career / Money / Shop / 交通 / Calendar / Map / 装備は未実装（Phase 4 以降）。
-- Casting / Landing / Rigging の効果は「将来用の interface」。
-  数値は解決・保存されるが、Phase 3 のファイトでは使っていない。
+- Reputation / Boat / 全国 Map / 天候・潮は未実装（Phase 7 以降）。
+- Casting / Landing / Rigging の効果は引き続き「将来用の interface」。
+  数値は解決・保存されるが、ファイトでは使っていない。
+  Casting はタックルの `castingPrecisionMultiplier` へ合成されるが、UI の演出はまだ無い。
 - Perk の効果は倍率表の範囲に留まる（本格的な Perk ツリーは未実装）。
-- 新規プレイヤーの career / finance は PROVISIONAL な中立値（Phase 5 で決める）。
 - 釣り場は 8 件ですべて `provisional`（検証データではない）。実データの投入はしていない。
 - 天候・潮・時間帯による釣果変化はまだ無い（`timeActivity` は Content にあるが未使用）。
-- Calendar は「曜日の判定」まで。仕事・給与・有給は Phase 5。
-- 車・ボートなどの所有は無い。Access は transport tag の有無だけを見る。
+- Calendar は「日付・曜日の判定」まで。曜日は混雑・大会・イベントへまだ接続していない。
+- ボートなどの所有は無い。Access は transport tag の有無だけを見る。
 - **UI は画面配信までしか確認していない**。ブラウザ自動操作が無いため、
-  HOME → MAP → SPOT → FISHING → SPOT → HOME のクリック操作は未確認。
+  HOME → MAP → SPOT → FISHING → SPOT → HOME → TACKLE → SHOP の
+  クリック操作は未確認（新規ゲーム初期状態の描画だけスモークテストで確認）。
 - 釣行の途中終了からの完全復元は Phase 4 の対象外（安全な checkpoint として
   「現在時刻・位置・Knowledge・釣行記録」までを保存する）。
+- Phase 6 の残り:
+  - 装備の互換性スコアは PROVISIONAL。人間のプレイテストによる調整は未実施。
+  - FishSpecies の `methodAffinity` / `offeringAffinity`、Bait / Lure の
+    `targetProfile` は検証用の暫定値（生物学的事実ではない）。
+  - Gear は 23 件（Rod / Reel / Line / Leader / Hook / Lure / Bait）。
+    Rod 200+ / Reel 150+ / Lure 500+ の拡張は Content 追加だけで可能な構造だが、
+    実際にその量は投入していない。
+  - Reel の `sizeClass` は 1000〜30000 を定義しているが、投入済みは 1000 / 2500 / 4000 のみ。
+  - 装備の耐久・破損・ルアーロスト・売却・中古市場は無い（意図的に未実装）。
+  - Bait は Phase 6 では無限使用（数量管理はしない）。
+  - 装備による `castingPrecisionMultiplier` / `detectionClarityMultiplier` /
+    `landingStabilityMultiplier` の一部は、まだファイトの数値へ直接は効かない。
 - Phase 5 の残り:
   - 車の維持費（`simpleVehicleMonthlyCost`）は構造だけ用意し、まだ請求していない。
   - 車種スペック・ローン・保険・駐車場・車検・故障・ガソリン残量は扱わない。
   - 遠征費・宿泊・フェリーは未実装。
   - 天候・潮・時間帯による釣果変化はまだ無い。
-  - **UI のクリック操作は未確認**（画面配信までしか見ていない）。
-  - 曜日は保持しているが、まだ釣果や混雑に使っていない（Phase 6 以降で接続）。
 - IndexedDB adapter の自動テストは Fake による API 形状の確認に留まる
   （実ブラウザでの永続化・バージョン管理・障害時の挙動は未検証）。
 - 複数タブの同時編集、Save の export / import、スロット選択、復旧 UI は未実装。
-- XP カーブ・減衰・Skill 効果はすべて `PROVISIONAL`。人間のプレイテストは未実施。
-- 魚種 10 種・釣り場 1 つはいずれも検証用サンプル（現実データではない）。
-- UI の自動テストは無い（意図的に Domain を優先）。
+- XP カーブ・減衰・Skill 効果・GearTuning はすべて `PROVISIONAL`。人間のプレイテストは未実施。
+- 魚種 10 種・釣り場 8 件・Gear 23 件・ブランド 10 件はいずれも検証用サンプル（現実データではない）。
+- UI のテストはスモーク（初期状態の描画）のみ。クリック操作の自動テストは無い
+  （意図的に Domain を優先）。
 - 実行時 Content 検証のため Zod をブラウザに含む（gzip +約 30 kB、Phase 1 からの継続課題）。
 - IndexedDB 実装は依然ブラウザでの自動テストが無い（Phase 0B からの持ち越し）。
 
 ## 次の推奨タスク
 
-**Phase 4 — First Playable Tokyo-area Loop**（詳細は `.ai/current-task.md`）
+**Phase 7 — Full Transport / Access Progression**（`docs/ROADMAP.md`）
 
-**Phase 5 — Life / Work / Economy**（詳細は `.ai/current-task.md`）
+Phase 6 までで「装備 → 釣果 / ファイト」は繋がった。次は交通と到達範囲を広げる。
 
-**Phase 6 — Tackle Depth**（詳細は `.ai/current-task.md`）
+1. 移動手段（bicycle / motorcycle / boat）を Content と所有者状態で増やす。
+2. Access を「transport tag の有無」から、時間・費用・積載を伴う判定へ広げる。
+3. Spot を増やし、移動手段の差で「行ける場所」が変わることを見せる。
+4. 遠征費・宿泊・フェリーの構造を Economy と接続する。
 
-1. `src/domain/gear/` に Rod / Reel / Line / Leader / Hook / Lure / Bait を実装する。
-2. 互換性（ルアー重量域・ライン強度・ドラッグ）を Domain で判定する。
-3. ルアー / ベイト / 釣法を Encounter へ接続し、Spot と時間帯で有効な構成が変わるようにする。
-4. Shop に装備を追加する（Content のみで並ぶ構造は Phase 5 で用意済み）。
-5. 装備と所持を Save へ追加する（必要なら v5）。
+Phase 6 から持ち越した調整（プレイテスト前提）:
+
+- GearTuning / 互換性スコア / affinity の暫定値を実プレイで調整する。
+- 未接続の modifier（casting / detection / landing）を演出へ接続する。
 
 ## ブロッカー
 
-- なし（Phase 3 の作業自体は完了）。
+- なし（Phase 6 の作業自体は完了）。
 - 補足: 実行環境によっては Git メタデータ（`.git`）への書き込みが制限され、
   `git add` / `git commit` が失敗することがある。
   その場合はユーザー側でコミットを実行し、本文書を更新する。

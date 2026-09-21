@@ -3,6 +3,8 @@
   "name": "太軸フック 1番",
   "price": 650,
   "category": "hook",
+  "brandId": "gamakaze",
+  "series": "POWER HOOK",
   "size": 1,
   "strengthKg": 10,
   "hookType": "offset",

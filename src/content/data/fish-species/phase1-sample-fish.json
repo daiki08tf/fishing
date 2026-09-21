@@ -14,6 +14,15 @@
   "baits": ["phase1-sample-bait"],
   "lureCategories": ["phase1-sample-jig"],
   "fishingMethods": ["phase1-sample-light-game"],
+  "methodAffinity": { "lure": 1.05, "light_lure": 1.1, "bait": 1, "bottom": 0.9 },
+  "offeringAffinity": {
+    "minnow": 1.1,
+    "spoon": 1.05,
+    "soft_plastic": 1.1,
+    "worm": 1.05,
+    "mid": 1.15,
+    "small": 0.95
+  },
   "lengthModel": {
     "kind": "lognormal",
     "medianCm": 26,

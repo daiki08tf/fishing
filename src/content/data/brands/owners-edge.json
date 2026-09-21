@@ -1,0 +1,8 @@
+{
+  "id": "owners-edge",
+  "name": "Owner's Edge",
+  "description": "小型で鋭いフックを得意とする架空のブランド。検証用。",
+  "specialties": ["small_hook", "finesse"],
+  "countryStyle": "japan_domestic",
+  "tagline": "刺さる、一本。"
+}

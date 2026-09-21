@@ -50,4 +50,7 @@ export const loadContentFromDirectory = (
     species: readKindDirectory(root, 'fish-species'),
     spots: readKindDirectory(root, 'fishing-spots'),
     shopItems: readKindDirectory(root, 'shop-items'),
+    gear: readKindDirectory(root, 'gear'),
+    methods: readKindDirectory(root, 'methods'),
+    brands: readKindDirectory(root, 'brands'),
   })

@@ -5,7 +5,10 @@ import { resolveCatch } from '../domain/catch'
 import { emptyCodexState, type CodexState } from '../domain/codex'
 import type { FishIndividual } from '../domain/fish/FishIndividual'
 import type { FishSpecies } from '../domain/fish/FishSpecies'
+import type { GearId } from '../domain/ids'
+import type { GearItem } from '../domain/gear/Gear'
 import { emptyKnowledgeState, type KnowledgeState } from '../domain/knowledge/KnowledgeState'
+import type { FishingMethod } from '../domain/method/FishingMethod'
 import {
   canAfford,
   createInitialFinanceState,
@@ -27,6 +30,20 @@ import {
 import type { CurrentSave } from '../domain/save/SaveGame'
 import { purchaseShopItem, type ShopItem } from '../domain/shop'
 import type { ShopItemId } from '../domain/ids'
+import {
+  addGear,
+  checkSlotChange,
+  createStarterInventory,
+  createStarterLoadout,
+  evaluateCompatibility,
+  ownsGear,
+  resolveGearForLoadout,
+  withSlot,
+  type Inventory,
+  type Loadout,
+  type LoadoutFailure,
+  type LoadoutSlot,
+} from '../domain/tackle'
 import { formatWorldTime, sleepUntilMorning, type WorldTime } from '../domain/world/WorldTime'
 import type { SpotTravelOption } from '../domain/world/FishingSpot'
 import type { FishingSpot } from '../domain/world/FishingSpot'
@@ -41,6 +58,7 @@ import {
   type WorldState,
 } from '../domain/world/worldSession'
 import { fastestTravelOption } from '../domain/access/accessEngine'
+import { asGearId } from '../domain/ids'
 
 /**
  * Save に載る状態（Player + World）をまとめて持つストア。
@@ -101,7 +119,37 @@ export type PersistedPlayerSlice = {
   readonly knowledge: KnowledgeState
   readonly finance: FinanceState
   readonly purchases: readonly ShopItemId[]
+  /** 所持している Gear（Phase 6）。 */
+  readonly inventory: Inventory
+  /** 現在の装備（Phase 6）。 */
+  readonly loadout: Loadout
 }
+
+/**
+ * 装備を検証するために必要なカタログ。
+ *
+ * Store は Content を読み込まない（UI が渡す）。これにより
+ * 「Store が Content / ファイルシステムを知る」ことを避けつつ、
+ * 判定そのものは Domain（Loadout / compatibility）に任せられる。
+ */
+export type TackleCatalog = {
+  readonly gear: readonly GearItem[]
+  readonly methods: readonly FishingMethod[]
+}
+
+/** 装備・購入系アクションの結果。 */
+export type GearActionFailureReason =
+  LoadoutFailure | 'incompatible' | 'insufficient_cash' | 'already_owned'
+
+export type GearActionResult =
+  | { readonly ok: true; readonly message: null }
+  | { readonly ok: false; readonly reason: GearActionFailureReason; readonly message: string }
+
+const fail = (reason: GearActionFailureReason, message: string): GearActionResult => ({
+  ok: false,
+  reason,
+  message,
+})
 
 /** 釣行前の判定（Access と費用）。 */
 export type TripReadiness = {
@@ -144,6 +192,16 @@ export type PlayerStoreState = PersistedPlayerSlice & {
   purchaseItem(item: ShopItem): { readonly ok: boolean; readonly message: string | null }
   /** 翌朝まで休む（時間を進める）。 */
   sleep(): { readonly ok: boolean; readonly message: string | null }
+  /** 装備を差し替える（Domain の Loadout / Compatibility で検証する）。 */
+  equipGear(
+    input: TackleCatalog & { readonly slot: LoadoutSlot; readonly gearId: GearId | null },
+  ): GearActionResult
+  /** 釣法を変える。offering と両立しない場合は拒否する。 */
+  setMethod(input: TackleCatalog & { readonly methodId: string }): GearActionResult
+  /** Gear を買う。所持に入るだけで、自動装備はしない。 */
+  purchaseGear(input: { readonly item: GearItem }): GearActionResult
+  /** その Gear を持っているか（表示用）。 */
+  ownsGearId(gearId: GearId): boolean
 }
 
 /** 釣行系アクションの結果。Access と Schedule の失敗を区別して返す。 */
@@ -169,6 +227,8 @@ const createInitialState = (): PersistedPlayerSlice & {
   knowledge: emptyKnowledgeState(),
   finance: createInitialFinanceState(),
   purchases: [],
+  inventory: createStarterInventory(asGearId),
+  loadout: createStarterLoadout(asGearId),
   lastCatch: null,
   skillAllocationError: null,
 })
@@ -199,6 +259,8 @@ export const createPlayerStore = () =>
         knowledge: save.knowledge,
         finance: save.finance,
         purchases: save.purchases,
+        inventory: save.inventory,
+        loadout: save.loadout,
         lastCatch: null,
         skillAllocationError: null,
       })
@@ -460,7 +522,7 @@ export const createPlayerStore = () =>
         return { ok: false, message: '読み込み中' }
       }
 
-      const { finance, purchases, world } = get()
+      const { finance, purchases, world, inventory } = get()
       const result = purchaseShopItem({
         finance,
         ownedItemIds: purchases,
@@ -478,9 +540,123 @@ export const createPlayerStore = () =>
       const nextWorld =
         result.grantedTransport === null ? world : grantTransport(world, result.grantedTransport)
 
-      set({ finance: result.finance, purchases: result.ownedItemIds, world: nextWorld })
+      // 束ね売り（商品が Gear を配る）の場合だけ所持へ入れる。
+      const nextInventory =
+        result.grantedGearId === null ? inventory : addGear(inventory, result.grantedGearId)
+
+      set({
+        finance: result.finance,
+        purchases: result.ownedItemIds,
+        world: nextWorld,
+        inventory: nextInventory,
+      })
       return { ok: true, message: null }
     },
+
+    equipGear: (input) => {
+      if (get().hydrationStatus !== 'ready') {
+        return fail('unknown_gear', '読み込み中')
+      }
+
+      const { loadout, inventory } = get()
+
+      if (input.gearId !== null) {
+        const checked = checkSlotChange({
+          slot: input.slot,
+          gearId: input.gearId,
+          gear: input.gear,
+          ownedGearIds: inventory.ownedGearIds,
+        })
+
+        if (!checked.ok) {
+          return fail(checked.reason, checked.message)
+        }
+      }
+
+      const candidate = withSlot(loadout, input.slot, input.gearId)
+      const method = input.methods.find((entry) => entry.id === candidate.methodId)
+
+      if (method === undefined) {
+        return fail('unknown_method', 'その釣法は存在しない')
+      }
+
+      // 致命的な組み合わせだけは装備させない（警告・やや不利は許容する）。
+      const report = evaluateCompatibility({
+        loadout: candidate,
+        gear: input.gear,
+        method,
+      })
+
+      if (report.fatal) {
+        const fatalIssue = report.issues.find((issue) => issue.level === 'fatal')
+        return fail('incompatible', fatalIssue?.message ?? 'この組み合わせは使えない')
+      }
+
+      set({ loadout: candidate })
+      return { ok: true, message: null }
+    },
+
+    setMethod: (input) => {
+      if (get().hydrationStatus !== 'ready') {
+        return fail('unknown_method', '読み込み中')
+      }
+
+      const method = input.methods.find((entry) => entry.id === input.methodId)
+
+      if (method === undefined) {
+        return fail('unknown_method', 'その釣法は存在しない')
+      }
+
+      const { loadout, inventory } = get()
+      const candidate: Loadout = { ...loadout, methodId: method.id }
+      const resolved = resolveGearForLoadout(candidate, input.gear)
+
+      if (resolved === null) {
+        return fail('unknown_gear', '装備が揃っていない')
+      }
+
+      if (!inventory.ownedGearIds.includes(resolved.offering.id)) {
+        return fail('not_owned', '持っていない offering は使えない')
+      }
+
+      const report = evaluateCompatibility({ loadout: candidate, gear: input.gear, method })
+
+      if (report.fatal) {
+        const fatalIssue = report.issues.find((issue) => issue.level === 'fatal')
+        return fail('incompatible', fatalIssue?.message ?? 'この釣法では使えない')
+      }
+
+      set({ loadout: candidate })
+      return { ok: true, message: null }
+    },
+
+    purchaseGear: (input) => {
+      if (get().hydrationStatus !== 'ready') {
+        return fail('insufficient_cash', '読み込み中')
+      }
+
+      const { finance, inventory, world } = get()
+
+      if (ownsGear(inventory, input.item.id)) {
+        return fail('already_owned', 'すでに持っている')
+      }
+
+      const paid = spendCash(finance, {
+        kind: 'purchase',
+        amount: input.item.price,
+        label: `${input.item.name} の購入`,
+        at: formatWorldTime(world.time),
+      })
+
+      if (!paid.ok) {
+        return fail('insufficient_cash', paid.message)
+      }
+
+      set({ finance: paid.finance, inventory: addGear(inventory, input.item.id) })
+      return { ok: true, message: null }
+    },
+
+    ownsGearId: (gearId) => ownsGear(get().inventory, gearId),
 
     /**
      * 翌朝まで休む。昼間でも休める（仕事の予定による制限は無い）。

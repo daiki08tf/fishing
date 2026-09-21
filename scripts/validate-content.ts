@@ -1,6 +1,14 @@
 import { resolve } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { loadContentDirectory } from '../src/content/load/contentLoader'
+import { validateContentReferences } from '../src/content/catalog/references'
+import type { ContentKind } from '../src/content/schema'
+import type { BrandDefinition } from '../src/domain/gear/Brand'
+import type { GearItem } from '../src/domain/gear/Gear'
+import type { FishSpecies } from '../src/domain/fish/FishSpecies'
+import type { FishingMethod } from '../src/domain/method/FishingMethod'
+import type { ShopItem } from '../src/domain/shop/ShopItem'
+import type { FishingSpot } from '../src/domain/world/FishingSpot'
 
 /**
  * Content 検証 CLI。
@@ -63,6 +71,32 @@ export const runValidateContent = (argv: readonly string[], cwd: string): Valida
 
   if (result.diagnostics.length > 0) {
     lines.push(`FAILED with ${String(result.diagnostics.length)} invalid record(s)`)
+    return { exitCode: 1, lines }
+  }
+
+  /*
+   * 個々の形が正しくても、id の参照先が無い Content は実行時に壊れる。
+   * Catalog の入口と同じ検査をここでも走らせる（Gear / Method / Brand / Shop / Spot）。
+   */
+  const of = <T>(kind: ContentKind): readonly T[] =>
+    result.locations
+      .filter((location) => location.kind === kind)
+      .map((location) => location.value as T)
+
+  const referenceIssues = validateContentReferences({
+    species: of<FishSpecies>('fish-species'),
+    spots: of<FishingSpot>('fishing-spots'),
+    shopItems: of<ShopItem>('shop-items'),
+    gear: of<GearItem>('gear'),
+    methods: of<FishingMethod>('methods'),
+    brands: of<BrandDefinition>('brands'),
+  })
+
+  if (referenceIssues.length > 0) {
+    for (const issue of referenceIssues) {
+      lines.push(`ERROR ${issue.path} — ${issue.message}`)
+    }
+    lines.push(`FAILED with ${String(referenceIssues.length)} broken reference(s)`)
     return { exitCode: 1, lines }
   }
 

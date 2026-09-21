@@ -1,5 +1,5 @@
 import type { TransportType } from '../access/Transport'
-import type { ShopItemId } from '../ids'
+import type { GearId, ShopItemId } from '../ids'
 
 /**
  * Shop の商品。Phase 5 の目的は「Money → Asset → World Access」の証明である。
@@ -29,6 +29,8 @@ export type ShopItem = {
   readonly category: ShopCategory
   /** 購入すると使えるようになる移動手段。 */
   readonly grantsTransport?: TransportType
+  /** 購入すると所持 Inventory へ入る Gear（束ね売り）。 */
+  readonly grantsGearId?: GearId
 }
 
 export const ownsItem = (ownedItemIds: readonly ShopItemId[], itemId: ShopItemId): boolean =>

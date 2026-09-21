@@ -1,4 +1,5 @@
 import { revealedFields } from '../../domain/knowledge/spotKnowledge'
+import { resolveTackle } from '../../domain/tackle'
 import { formatWorldTime } from '../../domain/world'
 import { spotKnowledgeScore } from '../../domain/knowledge/spotKnowledge'
 import { useAppStore } from '../../state/appStore'
@@ -35,6 +36,7 @@ export const SpotScreen = () => {
   const setActiveScreen = useAppStore((state) => state.setActiveScreen)
   const world = usePlayerStore((state) => state.world)
   const knowledge = usePlayerStore((state) => state.knowledge)
+  const loadout = usePlayerStore((state) => state.loadout)
   const returnHome = usePlayerStore((state) => state.returnHome)
 
   if (!content.ok) {
@@ -71,6 +73,16 @@ export const SpotScreen = () => {
         .filter((species) => species !== undefined)
     : []
 
+  // 今のタックルが何に向いているか（未知の魚種は開示しない）。
+  const tackle = resolveTackle({
+    loadout,
+    gear: content.value.gear,
+    methods: content.value.methods,
+  })
+
+  const ratingWords = (value: number): string =>
+    value >= 0.7 ? '高' : value >= 0.45 ? '普通' : '低'
+
   return (
     <div className="fishing">
       <header className="fishing__header">
@@ -95,6 +107,17 @@ export const SpotScreen = () => {
           </div>
         </dl>
       </section>
+
+      {tackle === null ? null : (
+        <section className="panel">
+          <h3 className="panel__subheading">今のタックル</h3>
+          <p className="panel__body">
+            {tackle.method.name} / 大型魚への余裕: {ratingWords(tackle.ratings.power)} / 遠投:{' '}
+            {ratingWords(tackle.ratings.distance)} / 繊細さ: {ratingWords(tackle.ratings.finesse)}
+          </p>
+          <p className="fishing__legend">思ったように釣れないときは、タックルを見直してみる。</p>
+        </section>
+      )}
 
       <section className="panel">
         <h3 className="panel__subheading">分かっていること</h3>
@@ -125,6 +148,15 @@ export const SpotScreen = () => {
           }}
         >
           釣りを始める
+        </button>
+        <button
+          className="button"
+          type="button"
+          onClick={() => {
+            setActiveScreen('tackle')
+          }}
+        >
+          タックルを見直す
         </button>
         <button
           className="button"

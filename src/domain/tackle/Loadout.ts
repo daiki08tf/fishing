@@ -1,5 +1,6 @@
 import type { GearId } from '../ids'
 import type { GearCategory, GearItem } from '../gear/Gear'
+import type { Inventory } from './Inventory'
 
 /**
  * プレイヤーが現在使うタックル。
@@ -68,6 +69,11 @@ export const starterInventoryIds = (asId: (value: string) => GearId): readonly G
   asId(STARTER_GEAR_IDS.lureId),
   asId(STARTER_GEAR_IDS.baitId),
 ]
+
+/** 新規プレイヤーの所持タックル（Starter gear 一式）。 */
+export const createStarterInventory = (asId: (value: string) => GearId): Inventory => ({
+  ownedGearIds: starterInventoryIds(asId),
+})
 
 export const createStarterLoadout = (asId: (value: string) => GearId): Loadout => ({
   rodId: asId(STARTER_GEAR_IDS.rodId),

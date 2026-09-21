@@ -3,6 +3,8 @@
   "name": "PEライン 0.6号",
   "price": 3200,
   "category": "line",
+  "brandId": "yamashiro",
+  "series": "PE X8",
   "lineType": "pe",
   "strengthKg": 5,
   "diameterMm": 0.128,

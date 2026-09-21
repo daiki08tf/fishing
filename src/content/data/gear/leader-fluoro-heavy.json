@@ -3,6 +3,8 @@
   "name": "フロロリーダー 6号",
   "price": 2600,
   "category": "leader",
+  "brandId": "yamashiro",
+  "series": "FLUORO LEADER",
   "material": "fluorocarbon",
   "strengthKg": 9,
   "diameterMm": 0.405,

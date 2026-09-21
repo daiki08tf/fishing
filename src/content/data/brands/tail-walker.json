@@ -1,0 +1,8 @@
+{
+  "id": "tail-walker",
+  "name": "Tail Walker",
+  "description": "ショアジギング向けの強靭なロッドを作る架空のブランド。検証用。",
+  "specialties": ["shore_rod", "power_rod"],
+  "countryStyle": "international",
+  "tagline": "磯から、青物へ。"
+}

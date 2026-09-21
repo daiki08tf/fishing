@@ -1,4 +1,4 @@
-import type { GearId } from '../ids'
+import type { BrandId, GearId } from '../ids'
 import type { Range } from '../primitives'
 
 /**
@@ -35,6 +35,40 @@ export type RodAction = (typeof ROD_ACTIONS)[number]
 export const REEL_TYPES = ['spinning', 'baitcasting', 'conventional', 'fly'] as const
 export type ReelType = (typeof REEL_TYPES)[number]
 
+/**
+ * リールの標準番手（sizeClass）。
+ *
+ * 番手は「製品を大量展開するための整理軸」であり、**性能そのものではない**。
+ * 実性能は gearRatio / retrieveCmPerTurn / maxDragKg / weightG / lineCapacity /
+ * smoothness / control から解決する（Engine は番手で if 分岐しない）。
+ * 1000 〜 30000 を Content だけで追加できる。
+ */
+export const REEL_SIZE_CLASSES = [
+  1000, 2000, 2500, 3000, 4000, 5000, 6000, 8000, 10000, 14000, 18000, 20000, 30000,
+] as const
+export type ReelSizeClass = (typeof REEL_SIZE_CLASSES)[number]
+
+/** ロッドの用途カテゴリ（Series の整理軸。Engine は知らない）。 */
+export const ROD_SERIES_CATEGORIES = [
+  'ajing',
+  'mebaring',
+  'trout',
+  'bass',
+  'seabass',
+  'eging',
+  'rockfish',
+  'surf',
+  'light_shore_jigging',
+  'shore_jigging',
+  'offshore_jigging',
+  'casting',
+  'big_game',
+  'bait_fishing',
+  'float_fishing',
+  'bottom_fishing',
+] as const
+export type RodSeriesCategory = (typeof ROD_SERIES_CATEGORIES)[number]
+
 export const LINE_TYPES = ['nylon', 'fluorocarbon', 'pe'] as const
 export type LineType = (typeof LINE_TYPES)[number]
 
@@ -62,6 +96,12 @@ export type RodDefinition = {
   readonly category: 'rod'
   readonly name: string
   readonly price: number
+  /** 架空ブランドへの参照（任意）。ブランドは性能を持たない。 */
+  readonly brandId?: BrandId
+  /** Product Series の名前（表示用。任意）。 */
+  readonly series?: string
+  /** Series の用途カテゴリ（表示用。任意）。 */
+  readonly seriesCategory?: RodSeriesCategory
   readonly lengthM: number
   readonly power: RodPower
   readonly action: RodAction
@@ -92,7 +132,13 @@ export type ReelDefinition = {
   readonly category: 'reel'
   readonly name: string
   readonly price: number
+  readonly brandId?: BrandId
+  readonly series?: string
   readonly reelType: ReelType
+  /** 標準番手（表示・整理用）。実性能は下のスペックから解決する。 */
+  readonly sizeClass?: ReelSizeClass
+  /** 'S' / 'HG' / 'XG' / 'PG' などの variant（表示用。任意）。 */
+  readonly variant?: string
   readonly size: number
   readonly gearRatio: number
   readonly maxDragKg: number
@@ -110,6 +156,8 @@ export type LineDefinition = {
   readonly category: 'line'
   readonly name: string
   readonly price: number
+  readonly brandId?: BrandId
+  readonly series?: string
   readonly lineType: LineType
   readonly strengthKg: number
   readonly diameterMm: number
@@ -128,6 +176,8 @@ export type LeaderDefinition = {
   readonly category: 'leader'
   readonly name: string
   readonly price: number
+  readonly brandId?: BrandId
+  readonly series?: string
   readonly material: string
   readonly strengthKg: number
   readonly diameterMm: number
@@ -141,6 +191,8 @@ export type HookDefinition = {
   readonly category: 'hook'
   readonly name: string
   readonly price: number
+  readonly brandId?: BrandId
+  readonly series?: string
   readonly size: number
   readonly strengthKg: number
   readonly hookType: HookType
@@ -155,6 +207,8 @@ export type LureDefinition = {
   readonly category: 'lure'
   readonly name: string
   readonly price: number
+  readonly brandId?: BrandId
+  readonly series?: string
   readonly lureType: LureType
   readonly weightG: number
   readonly lengthMm: number
@@ -173,6 +227,8 @@ export type BaitDefinition = {
   readonly category: 'bait'
   readonly name: string
   readonly price: number
+  readonly brandId?: BrandId
+  readonly series?: string
   readonly baitType: BaitType
   readonly presentation: string
   readonly targetProfile: readonly string[]
@@ -200,6 +256,18 @@ export const isOffering = (gear: GearItem): gear is OfferingDefinition =>
 
 export const gearById = (items: readonly GearItem[], id: GearId): GearItem | undefined =>
   items.find((item) => item.id === id)
+
+/** 表示用のブランド名を安全に取り出す（ブランドが無ければ空文字）。 */
+export const brandLabelOf = (
+  gear: GearItem,
+  brands: readonly { readonly id: BrandId; readonly name: string }[],
+): string => {
+  if (gear.brandId === undefined) {
+    return ''
+  }
+
+  return brands.find((brand) => brand.id === gear.brandId)?.name ?? ''
+}
 
 /**
  * 相性タグ。offering の targetProfile と魚種の offeringAffinity を突き合わせる。

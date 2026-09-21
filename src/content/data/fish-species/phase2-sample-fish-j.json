@@ -11,6 +11,13 @@
     "minCm": 12,
     "maxCm": 39
   },
+  "methodAffinity": { "lure": 1.05, "light_lure": 1, "bait": 1, "bottom": 1 },
+  "offeringAffinity": {
+    "minnow": 1.1,
+    "vibration": 1.05,
+    "cut": 1.05,
+    "mid": 1.1
+  },
   "weightModel": { "lengthWeightA": 0.0098, "lengthWeightB": 3.05 },
   "conditionModel": { "variability": 0.5 },
   "traitConfiguration": { "scarredChance": 0.15 },

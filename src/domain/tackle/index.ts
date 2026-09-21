@@ -1,5 +1,6 @@
 export {
   checkSlotChange,
+  createStarterInventory,
   createStarterLoadout,
   loadoutGearIds,
   LOADOUT_SLOTS,
@@ -22,6 +23,9 @@ export type { CompatibilityIssue, CompatibilityLevel, CompatibilityReport } from
 
 export { composeFishingModifiers, resolveTackle } from './resolveTackle'
 export type { EncounterProfile, ResolvedFishingSetup, TackleRatings } from './resolveTackle'
+
+export { addGear, emptyInventory, ownedGearInCategory, ownedGearOf, ownsGear } from './Inventory'
+export type { Inventory } from './Inventory'
 
 export { DEFAULT_GEAR_TUNING } from '../gear/GearTuning'
 export type { GearTuning, MethodTuning } from '../gear/GearTuning'

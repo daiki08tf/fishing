@@ -1,0 +1,8 @@
+{
+  "id": "shimara",
+  "name": "Shimara",
+  "description": "巻き物と繊細なロッドを得意とする架空の国内ブランド。検証用。",
+  "specialties": ["spinning_reel", "finesse_rod"],
+  "countryStyle": "japan_domestic",
+  "tagline": "軽さは、正義。"
+}

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { createPersistenceCoordinator } from '../../src/app/persistence/persistenceCoordinator'
 import { emptyKnowledgeState } from '../../src/domain/knowledge/KnowledgeState'
 import { addSpotKnowledge } from '../../src/domain/knowledge/spotKnowledge'
-import type { CurrentSave, SaveGameV4 } from '../../src/domain/save/SaveGame'
+import type { CurrentSave } from '../../src/domain/save/SaveGame'
 import { advanceMinutes } from '../../src/domain/world/WorldTime'
 import {
   createInitialWorld,
@@ -14,7 +14,7 @@ import type { WorldState } from '../../src/domain/world/worldSession'
 import { InMemorySaveRepository } from '../../src/infrastructure/persistence/inMemorySaveRepository'
 import { migrateSave } from '../../src/infrastructure/persistence/migrateSave'
 import { createPlayerStore, type PlayerStore } from '../../src/state/playerStore'
-import { createValidSaveV1, createValidSaveV2, createValidSaveV4 } from '../fixtures/save'
+import { createValidSaveV1, createValidSaveV2, createValidSaveV5 } from '../fixtures/save'
 import { createTestSpot } from '../fixtures/spots'
 
 /**
@@ -56,12 +56,15 @@ const worldAfterFishing = (): WorldState => {
   return fished.context.world
 }
 
-const saveWithWorld = (world: WorldState, save: SaveGameV4 = createValidSaveV4()): SaveGameV4 => ({
+const saveWithWorld = (
+  world: WorldState,
+  save: CurrentSave = createValidSaveV5(),
+): CurrentSave => ({
   ...save,
   world,
 })
 
-const reload = async (save: SaveGameV4): Promise<CurrentSave> => {
+const reload = async (save: CurrentSave): Promise<CurrentSave> => {
   const repository = new InMemorySaveRepository()
   await repository.save(save)
 
@@ -98,7 +101,7 @@ describe('world persistence', () => {
 
   it('restores the spot knowledge after a reload', async () => {
     const knowledge = addSpotKnowledge(emptyKnowledgeState(), 'test-spot', 23)
-    const restored = await reload({ ...createValidSaveV4(), knowledge })
+    const restored = await reload({ ...createValidSaveV5(), knowledge })
 
     expect(restored.knowledge.spots['test-spot']).toBe(23)
   })
@@ -133,7 +136,7 @@ describe('world persistence', () => {
     expect(result.ok).toBe(true)
 
     if (result.ok) {
-      expect(result.save.schemaVersion).toBe(4)
+      expect(result.save.schemaVersion).toBe(5)
       expect(result.save.world.phase).toBe('HOME')
       expect(result.save.codex.species).toEqual({})
     }
@@ -141,7 +144,7 @@ describe('world persistence', () => {
 
   it('rejects a malformed world instead of loading it', () => {
     const broken = {
-      ...createValidSaveV4(),
+      ...createValidSaveV5(),
       world: {
         ...createInitialWorld(),
         time: { year: 2026, month: 5, day: 2, hour: 99, minute: 0 },
@@ -158,7 +161,7 @@ describe('world persistence', () => {
 
   it('rejects an unknown world phase', () => {
     const broken = {
-      ...createValidSaveV4(),
+      ...createValidSaveV5(),
       world: { ...createInitialWorld(), phase: 'DIVING' },
     }
 
@@ -206,7 +209,7 @@ describe('world persistence', () => {
 
     await coordinator.start()
 
-    const loaded = (await repository.loadRaw()) as SaveGameV4
+    const loaded = (await repository.loadRaw()) as CurrentSave
 
     expect(loaded.world.time.minute).toBe(40)
     coordinator.stop()
@@ -238,7 +241,7 @@ describe('world persistence', () => {
     store.getState().recordAttempt({ spot, outcome: 'failed', xpGained: 0 })
     await coordinator.flush()
 
-    const saved = (await repository.loadRaw()) as SaveGameV4
+    const saved = (await repository.loadRaw()) as CurrentSave
 
     expect(saved.world.phase).toBe('AT_SPOT')
     expect(saved.world.trip?.attempts).toBe(1)

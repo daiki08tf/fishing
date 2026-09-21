@@ -1,0 +1,8 @@
+{
+  "id": "yamashiro",
+  "name": "Yamashiro",
+  "description": "ラインとリーダーを専門に扱う架空のブランド。検証用。",
+  "specialties": ["line", "leader"],
+  "countryStyle": "japan_domestic",
+  "tagline": "見えないところで、勝つ。"
+}

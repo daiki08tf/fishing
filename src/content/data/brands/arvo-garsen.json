@@ -1,0 +1,8 @@
+{
+  "id": "arvo-garsen",
+  "name": "Arvo Garsen",
+  "description": "ドラッグ性能を売りにする架空のブランド。検証用。",
+  "specialties": ["power_reel", "drag"],
+  "countryStyle": "scandinavian",
+  "tagline": "止められない魚はいない。"
+}

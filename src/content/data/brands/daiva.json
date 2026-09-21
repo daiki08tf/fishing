@@ -1,0 +1,8 @@
+{
+  "id": "daiva",
+  "name": "Daiva",
+  "description": "幅広い価格帯を埋める架空の総合ブランド。検証用。",
+  "specialties": ["all_round_rod", "reel"],
+  "countryStyle": "japan_domestic",
+  "tagline": "迷ったら、これ。"
+}

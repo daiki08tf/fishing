@@ -5,16 +5,18 @@ import {
   asFishIndividualId,
   asFishSpeciesId,
   asFishingSpotId,
+  asGearId,
   asJobId,
   asShopItemId,
 } from '../../domain/ids'
 import { PERK_IDS } from '../../domain/progression/perks'
 import { ANGLER_SKILL_MAX, ANGLER_SKILL_MIN } from '../../domain/progression/AnglerSkill'
 import {
-  CURRENT_SAVE_SCHEMA_VERSION,
   SAVE_SCHEMA_VERSION_V1,
   SAVE_SCHEMA_VERSION_V2,
   SAVE_SCHEMA_VERSION_V3,
+  SAVE_SCHEMA_VERSION_V4,
+  SAVE_SCHEMA_VERSION_V5,
 } from '../../domain/save/SaveGame'
 import { WORLD_PHASES } from '../../domain/world/worldSession'
 import { transportTypeSchema } from '../../content/schema/transport'
@@ -240,7 +242,7 @@ export const saveGameV3Schema = z.strictObject({
 })
 
 export const saveGameV4Schema = z.strictObject({
-  schemaVersion: z.literal(CURRENT_SAVE_SCHEMA_VERSION),
+  schemaVersion: z.literal(SAVE_SCHEMA_VERSION_V4),
   createdAt: isoDateTimeSchema,
   updatedAt: isoDateTimeSchema,
   progression: anglerProgressionSchema,
@@ -251,5 +253,38 @@ export const saveGameV4Schema = z.strictObject({
   purchases: z.array(z.string().min(1).transform(asShopItemId)),
 })
 
+const gearIdSchema = z.string().min(1).transform(asGearId)
+
+/** 所持している Gear。Phase 6 では数量を持たない（耐久・消費を扱わない）。 */
+const inventorySchema = z.strictObject({
+  ownedGearIds: z.array(gearIdSchema),
+})
+
+/** 現在の装備。Domain の Loadout と同じ形。 */
+const loadoutSchema = z.strictObject({
+  rodId: gearIdSchema,
+  reelId: gearIdSchema,
+  lineId: gearIdSchema,
+  /** リーダーは無しでもよい。 */
+  leaderId: gearIdSchema.nullable(),
+  hookId: gearIdSchema,
+  offeringId: gearIdSchema,
+  methodId: z.string().min(1),
+})
+
+export const saveGameV5Schema = z.strictObject({
+  schemaVersion: z.literal(SAVE_SCHEMA_VERSION_V5),
+  createdAt: isoDateTimeSchema,
+  updatedAt: isoDateTimeSchema,
+  progression: anglerProgressionSchema,
+  codex: codexSchema.default(() => ({ species: {} })),
+  world: worldSchema,
+  knowledge: knowledgeSchema,
+  finance: financeSchema,
+  purchases: z.array(z.string().min(1).transform(asShopItemId)),
+  inventory: inventorySchema,
+  loadout: loadoutSchema,
+})
+
 /** 現行 version の Save スキーマ。Migration 後の検証に使う。 */
-export const currentSaveSchema = saveGameV4Schema
+export const currentSaveSchema = saveGameV5Schema

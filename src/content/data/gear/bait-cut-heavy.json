@@ -3,6 +3,8 @@
   "name": "切り身（大）",
   "price": 600,
   "category": "bait",
+  "brandId": "evergreen-field",
+  "series": "CUT BAIT",
   "baitType": "cut",
   "presentation": "bottom",
   "targetProfile": ["large", "big"]

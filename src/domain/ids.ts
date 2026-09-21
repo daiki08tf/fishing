@@ -21,6 +21,7 @@ export type JobId = Brand<string, 'JobId'>
 export type PermitId = Brand<string, 'PermitId'>
 export type RelationshipTargetId = Brand<string, 'RelationshipTargetId'>
 export type GearId = Brand<string, 'GearId'>
+export type BrandId = Brand<string, 'BrandId'>
 export type ShopItemId = Brand<string, 'ShopItemId'>
 
 export const asFishSpeciesId = (value: string): FishSpeciesId => value as FishSpeciesId
@@ -35,4 +36,5 @@ export const asPermitId = (value: string): PermitId => value as PermitId
 export const asRelationshipTargetId = (value: string): RelationshipTargetId =>
   value as RelationshipTargetId
 export const asGearId = (value: string): GearId => value as GearId
+export const asBrandId = (value: string): BrandId => value as BrandId
 export const asShopItemId = (value: string): ShopItemId => value as ShopItemId

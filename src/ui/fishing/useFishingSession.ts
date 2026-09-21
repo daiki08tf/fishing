@@ -8,6 +8,7 @@ import {
 } from '../../domain/fishing'
 import type { FishingEvent } from '../../domain/fishing'
 import { resolveFishingModifiers } from '../../domain/progression'
+import { composeFishingModifiers, resolveTackle } from '../../domain/tackle'
 import { usePlayerStore } from '../../state/playerStore'
 import { useContentOrError } from '../world/useContentOrError'
 
@@ -51,6 +52,7 @@ export const useFishingSession = (): FishingSession => {
   const content = useContentOrError()
   const world = usePlayerStore((state) => state.world)
   const progression = usePlayerStore((state) => state.progression)
+  const loadout = usePlayerStore((state) => state.loadout)
   const recordCatch = usePlayerStore((state) => state.recordCatch)
   const recordAttempt = usePlayerStore((state) => state.recordAttempt)
 
@@ -75,8 +77,8 @@ export const useFishingSession = (): FishingSession => {
     })
   }, [content, spot])
 
-  // 技量は Progression 側で解決してから Engine へ渡す。
-  const playerModifiers = useMemo(
+  // 技量は Progression 側で解決する。
+  const skillModifiers = useMemo(
     () =>
       resolveFishingModifiers({
         skills: progression.skills,
@@ -84,6 +86,43 @@ export const useFishingSession = (): FishingSession => {
       }),
     [progression.skills, progression.unlockedPerks],
   )
+
+  /*
+   * 装備は Tackle 側で解決する。
+   * Engine へは「合成済みの倍率」と「Encounter の重み付け」だけを渡し、
+   * Gear の名前もカテゴリも見せない。
+   */
+  const tackle = useMemo(() => {
+    if (!content.ok) {
+      return null
+    }
+
+    return resolveTackle({
+      loadout,
+      gear: content.value.gear,
+      methods: content.value.methods,
+    })
+  }, [content, loadout])
+
+  const playerModifiers = useMemo(
+    () =>
+      tackle === null
+        ? skillModifiers
+        : composeFishingModifiers(skillModifiers, tackle.playerModifiers),
+    [skillModifiers, tackle],
+  )
+
+  const encounterProfile = useMemo(() => {
+    if (tackle === null) {
+      return undefined
+    }
+
+    return {
+      methodId: tackle.encounterProfile.methodId,
+      offeringTags: tackle.encounterProfile.offeringTags,
+      biteAffinity: tackle.encounterProfile.biteAffinity,
+    }
+  }, [tackle])
 
   const encountersKey = spot === undefined ? 'none' : String(spot.id)
 
@@ -100,11 +139,12 @@ export const useFishingSession = (): FishingSession => {
       seed: session.seed,
       spotId: spot.id,
       playerModifiers,
+      ...(encounterProfile === undefined ? {} : { encounterProfile }),
     })
 
     engineRef.current = engine
     setSnapshot(engine.snapshot())
-  }, [content, session, playerModifiers, encounters, encountersKey, spot])
+  }, [content, session, playerModifiers, encounterProfile, encounters, encountersKey, spot])
 
   const isRunning = snapshot !== null && !isTerminalPhase(snapshot.phase)
 

@@ -257,12 +257,16 @@ export const evaluateCompatibility = (options: {
     : null
 
   if (meanLength !== null) {
-    if (meanLength >= 40 && hook.size < 3) {
+    /*
+     * フックの番手は「数字が大きいほど小さい針」である（PROVISIONAL な閾値）。
+     * 大型向けの魚に小さい針では伸ばされ、小型の魚に大きい針では吸い込まない。
+     */
+    if (meanLength >= 40 && hook.size >= 5) {
       issues.push({
         level: 'warning',
         message: `大型向けの魚に対してフックが小さい（伸ばされやすい）`,
       })
-    } else if (meanLength <= 20 && hook.size > 8) {
+    } else if (meanLength <= 20 && hook.size <= 3) {
       issues.push({
         level: 'warning',
         message: `小型の魚に対してフックが大きすぎる（吸い込まない）`,

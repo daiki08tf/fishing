@@ -3,6 +3,8 @@
   "name": "メタルジグ 45g",
   "price": 2200,
   "category": "lure",
+  "brandId": "major-crest",
+  "series": "JIG 80",
   "lureType": "jig",
   "weightG": 45,
   "lengthMm": 95,
