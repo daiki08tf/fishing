@@ -4,7 +4,7 @@
 
 **Phase 11 — Casting Distance & Fishing Zones**
 
-状態: **実装完了 / CI 検証中**
+状態: **完了**
 
 遠投を単純な強さではなく、Spot 内の水域を選ぶ仕組みとして実装した。
 
