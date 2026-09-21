@@ -1,0 +1,15 @@
+TAB NAME: landing_gear_future.csv>
+index,ItemID,Category,Name,Brand,Status,PriceJPY
+landing-001,landing_net,Compact Net,Gamakaze,FUTURE_PHASE,2950
+landing-002,landing_net,Seabass Net,Gamakaze,FUTURE_PHASE,3400
+landing-003,landing_net,Long Shaft Net,Gamakaze,FUTURE_PHASE,3850
+landing-004,landing_net,Rockfish Net,Gamakaze,FUTURE_PHASE,4300
+landing-005,landing_net,Offshore Net,Gamakaze,FUTURE_PHASE,4750
+landing-006,fish_grip,Light Grip,Gamakaze,FUTURE_PHASE,5200
+landing-007,fish_grip,Salt Grip,Gamakaze,FUTURE_PHASE,5650
+landing-008,fish_grip,Heavy Grip,Gamakaze,FUTURE_PHASE,6100
+landing-009,gaff,Compact Gaff,Gamakaze,FUTURE_PHASE,6550
+landing-010,gaff,Offshore Gaff,Gamakaze,FUTURE_PHASE,7000
+landing-011,measure,Measure Tape,Major Crest,FUTURE_PHASE,7450
+landing-012,measure,Fish Board,Major Crest,FUTURE_PHASE,7900
+landing-013,measure,Big Game Measure,Major Crest,FUTURE_PHASE,8350
