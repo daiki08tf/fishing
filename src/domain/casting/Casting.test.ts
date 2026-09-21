@@ -6,6 +6,7 @@ import type {
   RodDefinition,
 } from '../gear/Gear'
 import { SeededRandomSource } from '../rng/SeededRandomSource'
+import { asGearId } from '../ids'
 import type { FishingZone } from '../world/FishingSpot'
 import {
   castTargetStatus,
@@ -16,7 +17,7 @@ import {
 import { createTestSpecies } from '../../../tests/fixtures/species'
 
 const rod: RodDefinition = {
-  id: 'cast-test-rod',
+  id: asGearId('cast-test-rod'),
   category: 'rod',
   name: 'Cast Test Rod',
   price: 1,
@@ -35,7 +36,7 @@ const rod: RodDefinition = {
 }
 
 const reel: ReelDefinition = {
-  id: 'cast-test-reel',
+  id: asGearId('cast-test-reel'),
   category: 'reel',
   name: 'Cast Test Reel',
   price: 1,
@@ -54,7 +55,7 @@ const reel: ReelDefinition = {
 }
 
 const line: LineDefinition = {
-  id: 'cast-test-line',
+  id: asGearId('cast-test-line'),
   category: 'line',
   name: 'Cast Test Line',
   price: 1,
@@ -68,7 +69,7 @@ const line: LineDefinition = {
 }
 
 const lure: LureDefinition = {
-  id: 'cast-test-lure',
+  id: asGearId('cast-test-lure'),
   category: 'lure',
   name: 'Cast Test Lure',
   price: 1,
