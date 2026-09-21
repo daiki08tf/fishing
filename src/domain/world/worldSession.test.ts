@@ -117,7 +117,7 @@ describe('world session', () => {
     const carOnly = createTestSpot({
       id: 'car-only-spot' as never,
       access: [{ kind: 'transport', tag: 'car' }],
-      travelOptions: [{ transport: 'car', minutes: 95 }],
+      travelOptions: [{ transport: 'car', minutes: 95, cost: 900 }],
     })
 
     const result = leaveForSpot({ context: home(), spot: carOnly })
@@ -135,7 +135,7 @@ describe('world session', () => {
         { kind: 'transport', tag: 'bus' },
         { kind: 'permit', permitId: asPermitId('fee-fishing-ticket') },
       ],
-      travelOptions: [{ transport: 'bus', minutes: 70 }],
+      travelOptions: [{ transport: 'bus', minutes: 70, cost: 520 }],
     })
 
     const result = leaveForSpot({ context: home(), spot: permitted })
@@ -293,7 +293,7 @@ describe('world session', () => {
     })
     const context: WorldContext = { world: late, knowledge: emptyKnowledgeState() }
     const spot = createTestSpot({
-      travelOptions: [{ transport: 'walk', minutes: 30 }],
+      travelOptions: [{ transport: 'walk', minutes: 30, cost: 0 }],
     })
     const atSpot = travelTo(context, spot)
     const afterAttempt = recordFishingAttempt({

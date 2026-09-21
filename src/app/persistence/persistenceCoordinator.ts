@@ -1,7 +1,7 @@
 import type { SaveRepository } from '../../domain/save/SaveRepository'
 import { migrateSave } from '../../infrastructure/persistence/migrateSave'
 import { createInitialSave } from '../../infrastructure/persistence/saveFactory'
-import type { SaveGameV3 } from '../../domain/save/SaveGame'
+import type { SaveGameV4 } from '../../domain/save/SaveGame'
 import type { HydrationStatus, PlayerStoreState } from '../../state/playerStore'
 
 /**
@@ -65,7 +65,7 @@ export const createPersistenceCoordinator = (
   const debounceMs = options.debounceMs ?? 0
 
   /** 読み込んだ Save。自分が持たないブロック（career / finance / knowledge）を保つために使う。 */
-  let baseSave: SaveGameV3 | null = null
+  let baseSave: SaveGameV4 | null = null
   let unsubscribe: (() => void) | null = null
   let timer: ReturnType<typeof setTimeout> | null = null
   let activeSave: Promise<void> | null = null
@@ -82,14 +82,16 @@ export const createPersistenceCoordinator = (
 
     const state = store.getState()
     const base = baseSave ?? createInitialSave({ now: now() })
-    const save: SaveGameV3 = {
-      // career / finance は、まだ所有者がいないので読み込んだ値を保つ。
+    const save: SaveGameV4 = {
+      // career は、まだ所有者がいないので読み込んだ値を保つ。
       ...base,
       updatedAt: now(),
       progression: state.progression,
       codex: state.codex,
       world: state.world,
       knowledge: state.knowledge,
+      finance: state.finance,
+      purchases: state.purchases,
     }
 
     try {
@@ -155,7 +157,9 @@ export const createPersistenceCoordinator = (
         state.progression === previous.progression &&
         state.codex === previous.codex &&
         state.world === previous.world &&
-        state.knowledge === previous.knowledge
+        state.knowledge === previous.knowledge &&
+        state.finance === previous.finance &&
+        state.purchases === previous.purchases
       ) {
         return
       }

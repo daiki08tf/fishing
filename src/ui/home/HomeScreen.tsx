@@ -1,5 +1,7 @@
+import { useState } from 'react'
 import { recordedSpeciesCount } from '../../domain/codex'
-import { formatWorldTime, isWeekend } from '../../domain/world'
+import { formatYen } from '../../domain/economy'
+import { DAY_OF_WEEK_LABELS, dayOfWeekOf, formatWorldTime, isWeekend } from '../../domain/world'
 import { useAppStore } from '../../state/appStore'
 import { usePlayerStore } from '../../state/playerStore'
 import { ContentErrorPanel } from '../world/ContentErrorPanel'
@@ -8,10 +10,12 @@ import { useContentOrError } from '../world/useContentOrError'
 /**
  * 自宅。釣行の起点。
  *
- * ここでは「今いつか」「どこへ行けるか」「次に何をするか」だけを見せる。
+ * 会社員という設定は世界観として残しているが、仕事は攻略対象ではない。
+ * ここに出るのは「毎月の自由資金」だけで、勤務時間や有給は扱わない。
  */
 
 export const HomeScreen = () => {
+  const [notice, setNotice] = useState<string | null>(null)
   const content = useContentOrError()
   const setActiveScreen = useAppStore((state) => state.setActiveScreen)
   const world = usePlayerStore((state) => state.world)
@@ -19,6 +23,8 @@ export const HomeScreen = () => {
   const codex = usePlayerStore((state) => state.codex)
   const knowledge = usePlayerStore((state) => state.knowledge)
   const evaluateSpot = usePlayerStore((state) => state.evaluateSpot)
+  const finance = usePlayerStore((state) => state.finance)
+  const sleep = usePlayerStore((state) => state.sleep)
 
   if (!content.ok) {
     return <ContentErrorPanel message={content.message} />
@@ -26,6 +32,7 @@ export const HomeScreen = () => {
 
   const accessible = content.value.spots.filter((spot) => evaluateSpot(spot).accessible)
   const trip = world.trip
+  const monthlyFree = finance.salaryIncome - finance.simplifiedLivingCost
 
   return (
     <div className="fishing">
@@ -33,9 +40,18 @@ export const HomeScreen = () => {
         <p className="app-shell__eyebrow">Tokyo Area Home</p>
         <h2 className="panel__heading">{formatWorldTime(world.time)}</h2>
         <p className="panel__body">
-          {isWeekend(world.time) ? '休日' : '平日'} / Angler Lv {progression.anglerLevel}
+          {DAY_OF_WEEK_LABELS[dayOfWeekOf(world.time)]}曜日
+          {isWeekend(world.time) ? '（休日）' : ''} / Angler Lv {progression.anglerLevel}
+        </p>
+        <p className="fishing__legend">
+          今月の自由資金 {formatYen(monthlyFree)}（給与 {formatYen(finance.salaryIncome)} − 生活費{' '}
+          {formatYen(finance.simplifiedLivingCost)}）
         </p>
         <dl className="record">
+          <div>
+            <dt>所持金</dt>
+            <dd>{formatYen(finance.cash)}</dd>
+          </div>
           <div>
             <dt>行ける釣り場</dt>
             <dd>
@@ -69,11 +85,32 @@ export const HomeScreen = () => {
           className="button"
           type="button"
           onClick={() => {
+            setActiveScreen('shop')
+          }}
+        >
+          店に行く
+        </button>
+        <button
+          className="button"
+          type="button"
+          onClick={() => {
             setActiveScreen('progression')
           }}
         >
           成長を見る
         </button>
+        <button
+          className="button"
+          type="button"
+          onClick={() => {
+            const result = sleep()
+            setNotice(result.message)
+          }}
+        >
+          翌朝まで休む
+        </button>
+
+        {notice === null ? null : <p className="notice">{notice}</p>}
       </section>
 
       {trip === null ? null : (

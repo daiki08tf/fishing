@@ -5,7 +5,7 @@
   "environment": "bay_shore",
   "dataStatus": "provisional",
   "access": [{ "kind": "transport", "tag": "train" }],
-  "travelOptions": [{ "transport": "train", "minutes": 45 }],
+  "travelOptions": [{ "transport": "train", "minutes": 45, "cost": 420 }],
   "habitatTags": ["phase1-sample-pier", "phase1-sample-shallow"],
   "depth": { "depthRangeM": { "min": 2, "max": 12 } },
   "fishTable": [

@@ -7,6 +7,14 @@ import type { FishIndividual } from '../domain/fish/FishIndividual'
 import type { FishSpecies } from '../domain/fish/FishSpecies'
 import { emptyKnowledgeState, type KnowledgeState } from '../domain/knowledge/KnowledgeState'
 import {
+  canAfford,
+  createInitialFinanceState,
+  roundTripCostFor,
+  settleFinance,
+  spendCash,
+  type FinanceState,
+} from '../domain/economy'
+import {
   allocateSkillPoints,
   createInitialProgression,
   resetSkillAllocation,
@@ -17,17 +25,22 @@ import {
   type SkillAllocationFailure,
 } from '../domain/progression'
 import type { CurrentSave } from '../domain/save/SaveGame'
+import { purchaseShopItem, type ShopItem } from '../domain/shop'
+import type { ShopItemId } from '../domain/ids'
+import { formatWorldTime, sleepUntilMorning, type WorldTime } from '../domain/world/WorldTime'
+import type { SpotTravelOption } from '../domain/world/FishingSpot'
 import type { FishingSpot } from '../domain/world/FishingSpot'
 import {
   arriveAtSpot,
   arriveHome,
   createInitialWorld,
+  grantTransport,
   leaveForSpot,
   leaveSpot,
   recordFishingAttempt,
-  type WorldActionResult,
   type WorldState,
 } from '../domain/world/worldSession'
+import { fastestTravelOption } from '../domain/access/accessEngine'
 
 /**
  * Save に載る状態（Player + World）をまとめて持つストア。
@@ -86,6 +99,16 @@ export type PersistedPlayerSlice = {
   readonly codex: CodexState
   readonly world: WorldState
   readonly knowledge: KnowledgeState
+  readonly finance: FinanceState
+  readonly purchases: readonly ShopItemId[]
+}
+
+/** 釣行前の判定（Access と費用）。 */
+export type TripReadiness = {
+  readonly accessOk: boolean
+  readonly roundTripCost: number
+  readonly affordable: boolean
+  readonly travelMinutes: number
 }
 
 export type PlayerStoreState = PersistedPlayerSlice & {
@@ -109,13 +132,28 @@ export type PlayerStoreState = PersistedPlayerSlice & {
 
   /** Spot のアクセス判定（状態は変えない）。 */
   evaluateSpot(spot: FishingSpot): AccessEvaluation
+  /** 釣行前の判定（行けるか / 費用が足りるか）。 */
+  evaluateTrip(spot: FishingSpot, travelOption: SpotTravelOption): TripReadiness
   /** 自宅を出て Spot へ移動する（時間が進む）。 */
-  travelToSpot(spot: FishingSpot, transport?: TransportType): WorldActionResult
+  travelToSpot(spot: FishingSpot, transport?: TransportType): TripActionResult
   /** 釣り 1 回分の結果を世界へ反映する（時間と Knowledge が進む）。 */
-  recordAttempt(input: RecordAttemptInput): WorldActionResult
+  recordAttempt(input: RecordAttemptInput): TripActionResult
   /** Spot を出て自宅へ戻る（帰路の時間が進む）。 */
-  returnHome(spot: FishingSpot): WorldActionResult
+  returnHome(spot: FishingSpot): TripActionResult
+  /** 商品を買う。買えると移動手段が増えることがある。 */
+  purchaseItem(item: ShopItem): { readonly ok: boolean; readonly message: string | null }
+  /** 翌朝まで休む（時間を進める）。 */
+  sleep(): { readonly ok: boolean; readonly message: string | null }
 }
+
+/** 釣行系アクションの結果。Access と Schedule の失敗を区別して返す。 */
+export type TripActionResult =
+  | { readonly ok: true; readonly message: null }
+  | {
+      readonly ok: false
+      readonly reason: 'access' | 'cost' | 'state'
+      readonly message: string
+    }
 
 const createInitialState = (): PersistedPlayerSlice & {
   readonly hydrationStatus: HydrationStatus
@@ -129,9 +167,18 @@ const createInitialState = (): PersistedPlayerSlice & {
   progression: createInitialProgression(),
   world: createInitialWorld(),
   knowledge: emptyKnowledgeState(),
+  finance: createInitialFinanceState(),
+  purchases: [],
   lastCatch: null,
   skillAllocationError: null,
 })
+
+/**
+ * 時間が進んだあとの後始末。
+ * 月を跨いでいれば給与と生活費を精算し、有給を付与する。
+ */
+const settleAfterAdvance = (finance: FinanceState, from: WorldTime, to: WorldTime): FinanceState =>
+  settleFinance({ finance, from, to }).finance
 
 export const createPlayerStore = () =>
   create<PlayerStoreState>()((set, get) => ({
@@ -150,6 +197,8 @@ export const createPlayerStore = () =>
         codex: save.codex,
         world: save.world,
         knowledge: save.knowledge,
+        finance: save.finance,
+        purchases: save.purchases,
         lastCatch: null,
         skillAllocationError: null,
       })
@@ -257,12 +306,64 @@ export const createPlayerStore = () =>
       })
     },
 
+    evaluateTrip: (spot, travelOption) => {
+      const state = get()
+      const access = evaluateAccess({
+        spot,
+        availableTransports: state.world.availableTransports,
+        knowledge: state.knowledge,
+      })
+      const cost = roundTripCostFor(travelOption)
+
+      return {
+        accessOk: access.accessible,
+        roundTripCost: cost,
+        affordable: canAfford(state.finance, cost),
+        travelMinutes: travelOption.minutes,
+      }
+    },
+
     travelToSpot: (spot, transport) => {
       if (get().hydrationStatus !== 'ready') {
-        return { ok: false, reason: 'not_at_home', message: '読み込み中' }
+        return { ok: false, reason: 'state', message: '読み込み中' }
       }
 
-      const { world, knowledge } = get()
+      const { world, knowledge, finance } = get()
+      const access = evaluateAccess({
+        spot,
+        availableTransports: world.availableTransports,
+        knowledge,
+      })
+
+      if (!access.accessible) {
+        return {
+          ok: false,
+          reason: 'access',
+          message: access.blockedReasons.map((reason) => reason.label).join(' / '),
+        }
+      }
+
+      const option =
+        transport === undefined
+          ? fastestTravelOption(access.travelOptions)
+          : (access.travelOptions.find((candidate) => candidate.transport === transport) ?? null)
+
+      if (option === null) {
+        return { ok: false, reason: 'access', message: 'その移動手段では行けない' }
+      }
+
+      const cost = roundTripCostFor(option)
+      const paid = spendCash(finance, {
+        kind: 'travel',
+        amount: cost,
+        label: `${spot.name} への交通費`,
+        at: formatWorldTime(world.time),
+      })
+
+      if (!paid.ok) {
+        return { ok: false, reason: 'cost', message: paid.message }
+      }
+
       const left = leaveForSpot({
         context: { world, knowledge },
         spot,
@@ -270,26 +371,38 @@ export const createPlayerStore = () =>
       })
 
       if (!left.ok) {
-        return left
+        return { ok: false, reason: 'state', message: left.message }
       }
 
       // 移動は即時解決する（演出が要るようになったら間に挟む）。
       const arrived = arriveAtSpot({ context: left.context, spot })
 
       if (!arrived.ok) {
-        return arrived
+        return { ok: false, reason: 'state', message: arrived.message }
       }
 
-      set({ world: arrived.context.world, knowledge: arrived.context.knowledge })
-      return arrived
+      const settledFinance = settleAfterAdvance(
+        paid.finance,
+        world.time,
+        arrived.context.world.time,
+      )
+
+      set({
+        world: arrived.context.world,
+        knowledge: arrived.context.knowledge,
+        finance: settledFinance,
+      })
+
+      return { ok: true, message: null }
     },
 
     recordAttempt: (input) => {
       if (get().hydrationStatus !== 'ready') {
-        return { ok: false, reason: 'not_at_spot', message: '読み込み中' }
+        return { ok: false, reason: 'state', message: '読み込み中' }
       }
 
-      const { world, knowledge } = get()
+      const { world, knowledge, finance } = get()
+
       const result = recordFishingAttempt({
         context: { world, knowledge },
         spot: input.spot,
@@ -299,33 +412,92 @@ export const createPlayerStore = () =>
       })
 
       if (!result.ok) {
-        return result
+        return { ok: false, reason: 'state', message: result.message }
       }
 
-      set({ world: result.context.world, knowledge: result.context.knowledge })
-      return result
+      const settledFinance = settleAfterAdvance(finance, world.time, result.context.world.time)
+
+      set({
+        world: result.context.world,
+        knowledge: result.context.knowledge,
+        finance: settledFinance,
+      })
+
+      return { ok: true, message: null }
     },
 
     returnHome: (spot) => {
       if (get().hydrationStatus !== 'ready') {
-        return { ok: false, reason: 'not_at_spot', message: '読み込み中' }
+        return { ok: false, reason: 'state', message: '読み込み中' }
       }
 
-      const { world, knowledge } = get()
+      const { world, knowledge, finance } = get()
       const left = leaveSpot({ context: { world, knowledge }, spot })
 
       if (!left.ok) {
-        return left
+        return { ok: false, reason: 'state', message: left.message }
       }
 
       const home = arriveHome({ context: left.context })
 
       if (!home.ok) {
-        return home
+        return { ok: false, reason: 'state', message: home.message }
       }
 
-      set({ world: home.context.world, knowledge: home.context.knowledge })
-      return home
+      const settledFinance = settleAfterAdvance(finance, world.time, home.context.world.time)
+
+      set({
+        world: home.context.world,
+        knowledge: home.context.knowledge,
+        finance: settledFinance,
+      })
+
+      return { ok: true, message: null }
+    },
+
+    purchaseItem: (item) => {
+      if (get().hydrationStatus !== 'ready') {
+        return { ok: false, message: '読み込み中' }
+      }
+
+      const { finance, purchases, world } = get()
+      const result = purchaseShopItem({
+        finance,
+        ownedItemIds: purchases,
+        item,
+        at: world.time,
+        atLabel: formatWorldTime(world.time),
+      })
+
+      if (!result.ok) {
+        return { ok: false, message: result.message }
+      }
+
+      // 購入で使えるようになった移動手段を World に反映する
+      // （AccessEngine のルールは書き換えない。状態が増えるだけ）。
+      const nextWorld =
+        result.grantedTransport === null ? world : grantTransport(world, result.grantedTransport)
+
+      set({ finance: result.finance, purchases: result.ownedItemIds, world: nextWorld })
+      return { ok: true, message: null }
+    },
+
+    /**
+     * 翌朝まで休む。昼間でも休める（仕事の予定による制限は無い）。
+     * 時間を進めること自体を目的にしないため、操作はこれ 1 つに絞る。
+     */
+    sleep: () => {
+      if (get().hydrationStatus !== 'ready') {
+        return { ok: false, message: '読み込み中' }
+      }
+
+      const { world, finance } = get()
+      const next = sleepUntilMorning(world.time)
+      const settled = settleAfterAdvance(finance, world.time, next)
+
+      set({ world: { ...world, time: next }, finance: settled })
+
+      return { ok: true, message: `翌朝まで休んだ（${formatWorldTime(next)}）` }
     },
   }))
 

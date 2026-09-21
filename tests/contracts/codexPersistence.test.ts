@@ -11,11 +11,11 @@ import { generateFishIndividual } from '../../src/domain/fish/generateFishIndivi
 import { asFishIndividualId } from '../../src/domain/ids'
 import { createInitialProgression, type AnglerProgression } from '../../src/domain/progression'
 import { SeededRandomSource } from '../../src/domain/rng/SeededRandomSource'
-import type { CurrentSave, SaveGameV3 } from '../../src/domain/save/SaveGame'
+import type { CurrentSave, SaveGameV4 } from '../../src/domain/save/SaveGame'
 import { InMemorySaveRepository } from '../../src/infrastructure/persistence/inMemorySaveRepository'
 import { migrateSave } from '../../src/infrastructure/persistence/migrateSave'
 import { createSave } from '../../src/infrastructure/persistence/saveFactory'
-import { createValidSaveV1, createValidSaveV3 } from '../fixtures/save'
+import { createValidSaveV1, createValidSaveV4 } from '../fixtures/save'
 import { createTestSpecies } from '../fixtures/species'
 
 /**
@@ -30,27 +30,26 @@ import { createTestSpecies } from '../fixtures/species'
  */
 
 const species = createTestSpecies()
-const template = createValidSaveV3()
+const template = createValidSaveV4()
 
 const progressionAt = (level: number): AnglerProgression => ({
   ...createInitialProgression(),
   anglerLevel: level,
 })
 
-const saveWith = (codex: CodexState, progression: AnglerProgression): SaveGameV3 =>
+const saveWith = (codex: CodexState, progression: AnglerProgression): SaveGameV4 =>
   createSave({
     progression,
     codex,
     world: template.world,
     knowledge: template.knowledge,
-    career: template.career,
     finance: template.finance,
     createdAt: '2026-01-01T00:00:00.000Z',
     now: '2026-03-01T00:00:00.000Z',
   })
 
 /** 永続化と再起動を模す（JSON を経由して読み直す）。 */
-const saveAndReload = async (save: SaveGameV3): Promise<CurrentSave> => {
+const saveAndReload = async (save: SaveGameV4): Promise<CurrentSave> => {
   const repository = new InMemorySaveRepository()
   await repository.save(save)
 

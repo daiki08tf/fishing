@@ -22,7 +22,45 @@ export type EncounterCandidate = {
 export type EncounterOutcome =
   { readonly kind: 'bite'; readonly candidate: EncounterCandidate } | { readonly kind: 'no_bite' }
 
+/**
+ * 釣法と offering（ルアー/餌）から作る重み付けの入力。
+ *
+ * Phase 6 で導入。天候・潮・季節・時間帯はまだ接続しない。
+ * 「特定のルアーでないと釣れない」ためではなく、相性の良し悪しに使う。
+ */
+export type EncounterProfile = {
+  readonly methodId: string
+  readonly offeringTags: readonly string[]
+  /** 構成全体のヒットの出やすさ（倍率）。 */
+  readonly biteAffinity: number
+}
+
 const clamp01 = (value: number): number => Math.min(1, Math.max(0, value))
+
+/** 魚種ごとの相性（釣法 × offering タグ）。1 が標準。 */
+export const speciesAffinity = (
+  species: FishSpecies,
+  profile: EncounterProfile | undefined,
+): number => {
+  if (profile === undefined) {
+    return 1
+  }
+
+  const method = species.methodAffinity?.[profile.methodId] ?? 1
+  let offering = 1
+
+  for (const tag of profile.offeringTags) {
+    offering *= species.offeringAffinity?.[tag] ?? 1
+  }
+
+  return method * offering
+}
+
+/** Encounter の重み。basePresence × 相性。 */
+export const encounterWeight = (
+  candidate: EncounterCandidate,
+  profile: EncounterProfile | undefined,
+): number => Math.max(0, candidate.presence * speciesAffinity(candidate.species, profile))
 
 /**
  * ヒット確率。
@@ -31,6 +69,7 @@ const clamp01 = (value: number): number => Math.min(1, Math.max(0, value))
 export const biteChance = (
   candidates: readonly EncounterCandidate[],
   tuning: FishingTuning,
+  profile?: EncounterProfile,
 ): number => {
   let maxPresence = 0
 
@@ -38,7 +77,10 @@ export const biteChance = (
     maxPresence = Math.max(maxPresence, candidate.presence)
   }
 
-  return clamp01(maxPresence * tuning.biteChancePerPresence)
+  // 相性が良い構成ほどヒットが出やすい（ただし 0.7〜1.4 倍に収める）。
+  const affinity = profile === undefined ? 1 : Math.min(1.4, Math.max(0.7, profile.biteAffinity))
+
+  return clamp01(maxPresence * tuning.biteChancePerPresence * affinity)
 }
 
 /**
@@ -52,6 +94,7 @@ export const rollEncounter = (options: {
   readonly candidates: readonly EncounterCandidate[]
   readonly random: RandomSource
   readonly tuning: FishingTuning
+  readonly profile?: EncounterProfile
 }): EncounterOutcome => {
   const { candidates, random, tuning } = options
   const available = candidates.filter((candidate) => candidate.presence > 0)
@@ -60,15 +103,19 @@ export const rollEncounter = (options: {
     return { kind: 'no_bite' }
   }
 
-  if (random.next() >= biteChance(available, tuning)) {
+  if (random.next() >= biteChance(available, tuning, options.profile)) {
     return { kind: 'no_bite' }
   }
 
-  const totalPresence = available.reduce((total, candidate) => total + candidate.presence, 0)
-  let threshold = random.next() * totalPresence
+  // 釣法と offering の相性で魚種の重みを変える。
+  const totalWeight = available.reduce(
+    (total, candidate) => total + encounterWeight(candidate, options.profile),
+    0,
+  )
+  let threshold = random.next() * totalWeight
 
   for (const candidate of available) {
-    threshold -= candidate.presence
+    threshold -= encounterWeight(candidate, options.profile)
 
     if (threshold < 0) {
       return { kind: 'bite', candidate }

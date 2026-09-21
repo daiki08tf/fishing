@@ -42,7 +42,10 @@ export type SpotKnowledgeConfig = {
  */
 export type SpotTravelOption = {
   readonly transport: TransportType
+  /** 片道の所要時間（ゲーム内の分）。 */
   readonly minutes: number
+  /** 片道の運賃（円）。徒歩は 0。 */
+  readonly cost: number
 }
 
 /**

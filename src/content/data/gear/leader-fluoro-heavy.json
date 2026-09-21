@@ -1,0 +1,12 @@
+{
+  "id": "leader-fluoro-heavy",
+  "name": "フロロリーダー 6号",
+  "price": 2600,
+  "category": "leader",
+  "material": "fluorocarbon",
+  "strengthKg": 9,
+  "diameterMm": 0.405,
+  "abrasionResistance": 0.9,
+  "visibility": 0.75,
+  "lengthM": 1.5
+}

@@ -77,5 +77,7 @@ describe('loadContentDirectory', () => {
 
     expect(kinds.filter((kind) => kind === 'fish-species')).toHaveLength(10)
     expect(kinds.filter((kind) => kind === 'fishing-spots')).toHaveLength(8)
+    expect(kinds.filter((kind) => kind === 'gear')).toHaveLength(23)
+    expect(kinds.filter((kind) => kind === 'methods')).toHaveLength(4)
   })
 })

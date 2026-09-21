@@ -22,6 +22,8 @@ export const spotKnowledgeConfigSchema = z.strictObject({
 export const spotTravelOptionSchema = z.strictObject({
   transport: transportTypeSchema,
   minutes: z.number().positive(),
+  /** 片道の運賃（円）。 */
+  cost: z.number().int().nonnegative(),
 })
 
 export const spotDataStatusSchema = z.enum(SPOT_DATA_STATUSES)

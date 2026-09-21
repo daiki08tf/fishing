@@ -1,7 +1,8 @@
 import type { EncounterCandidate } from '../../domain/encounter/encounterEngine'
 import type { FishSpecies } from '../../domain/fish/FishSpecies'
 import type { FishingSpot } from '../../domain/world/FishingSpot'
-import { fishingSpotSchema, fishSpeciesSchema } from '../schema'
+import type { ShopItem } from '../../domain/shop/ShopItem'
+import { fishingSpotSchema, fishSpeciesSchema, shopItemSchema } from '../schema'
 
 /**
  * 検証済みの Content を Domain が使える形に組み立てる。
@@ -14,6 +15,7 @@ export type BuiltInContent = {
   readonly species: readonly FishSpecies[]
   readonly speciesById: Readonly<Record<string, FishSpecies>>
   readonly spots: readonly FishingSpot[]
+  readonly shopItems: readonly ShopItem[]
   /** Phase 2 では Spot は 1 つだけ。Phase 4 で地域と複数 Spot を扱う。 */
   readonly primarySpot: FishingSpot
   /** primarySpot の fishTable から作った Encounter 候補。 */
@@ -68,6 +70,19 @@ const parseSpot = (source: string, value: unknown): FishingSpot => {
   return parsed.data
 }
 
+const parseShopItem = (source: string, value: unknown): ShopItem => {
+  const parsed = shopItemSchema.safeParse(value)
+
+  if (!parsed.success) {
+    throw new ContentValidationError(
+      'shop-items',
+      formatIssues('shop-items', source, parsed.error.issues),
+    )
+  }
+
+  return parsed.data
+}
+
 /** Spot の fishTable を Encounter 候補へ変換する。未知の speciesId は Content の誤り。 */
 const buildEncounters = (
   spot: FishingSpot,
@@ -98,9 +113,11 @@ export type ContentSource = {
 export const assembleBuiltInContent = (input: {
   readonly species: readonly ContentSource[]
   readonly spots: readonly ContentSource[]
+  readonly shopItems?: readonly ContentSource[]
 }): BuiltInContent => {
   const species = input.species.map((entry) => parseSpecies(entry.source, entry.value))
   const spots = input.spots.map((entry) => parseSpot(entry.source, entry.value))
+  const shopItems = (input.shopItems ?? []).map((entry) => parseShopItem(entry.source, entry.value))
   const primarySpot = spots[0]
 
   if (primarySpot === undefined) {
@@ -117,6 +134,7 @@ export const assembleBuiltInContent = (input: {
     species,
     speciesById,
     spots,
+    shopItems,
     primarySpot,
     encounters: buildEncounters(primarySpot, speciesById),
   }

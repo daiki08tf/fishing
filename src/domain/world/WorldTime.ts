@@ -85,6 +85,28 @@ export const dayOfWeekOf = (time: WorldTime): DayOfWeek => {
   return DAY_OF_WEEK[index] ?? 'thu'
 }
 
+/** YYYY-MM-DD。 */
+export const dateKeyOf = (time: WorldTime): string =>
+  `${String(time.year)}-${String(time.month).padStart(2, '0')}-${String(time.day).padStart(2, '0')}`
+
+/** YYYY-MM。月次の区切りに使う。 */
+export const monthKeyOf = (time: WorldTime): string =>
+  `${String(time.year)}-${String(time.month).padStart(2, '0')}`
+
+export const nextMonthKey = (key: string): string => {
+  const [yearText, monthText] = key.split('-')
+  const year = Number.parseInt(yearText ?? '0', 10)
+  const month = Number.parseInt(monthText ?? '1', 10)
+
+  return month >= 12
+    ? `${String(year + 1)}-01`
+    : `${String(year)}-${String(month + 1).padStart(2, '0')}`
+}
+
+/** 'YYYY-MM' の比較（負なら a が過去）。 */
+export const compareMonthKey = (left: string, right: string): number =>
+  left === right ? 0 : left < right ? -1 : 1
+
 export const isWeekend = (time: WorldTime): boolean => {
   const day = dayOfWeekOf(time)
   return day === 'sat' || day === 'sun'
@@ -145,4 +167,26 @@ export const formatDuration = (minutes: number): string => {
   }
 
   return rest === 0 ? `${String(hours)}時間` : `${String(hours)}時間${String(rest)}分`
+}
+
+/**
+ * PROVISIONAL — 起床時刻。
+ * 翌朝まで休むときの目覚まし。
+ */
+export const DEFAULT_WAKE_HOUR = 6
+
+/**
+ * 翌朝まで休む。
+ *
+ *   22:30 → 翌日 06:00
+ *   10:00 → 翌日 06:00（昼間でも休める）
+ *
+ * 仕事の予定による制限は無い。時間を進めるための釣りゲームとしての操作である。
+ */
+export const sleepUntilMorning = (
+  time: WorldTime,
+  wakeHour: number = DEFAULT_WAKE_HOUR,
+): WorldTime => {
+  const dayStart = toMinutes({ ...time, hour: 0, minute: 0 })
+  return fromMinutes(dayStart + MINUTES_PER_DAY + wakeHour * MINUTES_PER_HOUR)
 }

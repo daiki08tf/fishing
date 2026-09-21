@@ -1,13 +1,12 @@
-import type { CareerState } from '../../domain/career/CareerState'
 import { emptyCodexState, type CodexState } from '../../domain/codex'
-import type { FinanceState } from '../../domain/economy/FinanceState'
-import { asJobId } from '../../domain/ids'
+import { createInitialFinanceState, type FinanceState } from '../../domain/economy/FinanceState'
+import type { ShopItemId } from '../../domain/ids'
 import { emptyKnowledgeState } from '../../domain/knowledge/KnowledgeState'
 import type { KnowledgeState } from '../../domain/knowledge/KnowledgeState'
 import type { IsoDateTime } from '../../domain/primitives'
 import type { AnglerProgression } from '../../domain/progression/AnglerProgression'
 import { createInitialProgression } from '../../domain/progression/AnglerProgression'
-import { CURRENT_SAVE_SCHEMA_VERSION, type SaveGameV3 } from '../../domain/save/SaveGame'
+import { CURRENT_SAVE_SCHEMA_VERSION, type SaveGameV4 } from '../../domain/save/SaveGame'
 import { createInitialWorld, type WorldState } from '../../domain/world/worldSession'
 
 /**
@@ -23,15 +22,15 @@ export type SaveSourceState = {
   readonly codex: CodexState
   readonly world: WorldState
   readonly knowledge: KnowledgeState
-  readonly career: CareerState
   readonly finance: FinanceState
+  readonly purchases?: readonly ShopItemId[]
   /** 現在時刻。呼び出し側が渡す（Domain は時計を持たない）。 */
   readonly now: IsoDateTime
   /** 初回保存時のみ指定する。省略すると now を使う。 */
   readonly createdAt?: IsoDateTime
 }
 
-export const createSave = (source: SaveSourceState): SaveGameV3 => ({
+export const createSave = (source: SaveSourceState): SaveGameV4 => ({
   schemaVersion: CURRENT_SAVE_SCHEMA_VERSION,
   createdAt: source.createdAt ?? source.now,
   updatedAt: source.now,
@@ -39,8 +38,8 @@ export const createSave = (source: SaveSourceState): SaveGameV3 => ({
   codex: source.codex,
   world: source.world,
   knowledge: source.knowledge,
-  career: source.career,
   finance: source.finance,
+  purchases: source.purchases ?? [],
 })
 
 /**
@@ -52,7 +51,7 @@ export const createSave = (source: SaveSourceState): SaveGameV3 => ({
  *
  * knowledge は空から始める（Phase 4 で釣行・観察により増える）。
  */
-export const createInitialSave = (options: { readonly now: IsoDateTime }): SaveGameV3 => ({
+export const createInitialSave = (options: { readonly now: IsoDateTime }): SaveGameV4 => ({
   schemaVersion: CURRENT_SAVE_SCHEMA_VERSION,
   createdAt: options.now,
   updatedAt: options.now,
@@ -60,13 +59,6 @@ export const createInitialSave = (options: { readonly now: IsoDateTime }): SaveG
   codex: emptyCodexState(),
   world: createInitialWorld(),
   knowledge: emptyKnowledgeState(),
-  career: {
-    jobId: asJobId('phase3-placeholder-job'),
-    careerLevel: 1,
-    salaryBand: 1,
-    workStyle: { remoteDays: 0, flexTime: false, overtimeLoad: 0, commuteMinutes: 0 },
-    paidLeave: 0,
-    careerXp: 0,
-  },
-  finance: { cash: 0, salaryIncome: 0, simplifiedLivingCost: 0 },
+  finance: createInitialFinanceState(),
+  purchases: [],
 })

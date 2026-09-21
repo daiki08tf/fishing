@@ -1,12 +1,20 @@
 import { z } from 'zod'
+import { TRANSACTION_KINDS } from '../../domain/economy/FinanceState'
 import { FISH_TRAITS } from '../../domain/fish/FishTrait'
-import { asFishIndividualId, asFishSpeciesId, asFishingSpotId, asJobId } from '../../domain/ids'
+import {
+  asFishIndividualId,
+  asFishSpeciesId,
+  asFishingSpotId,
+  asJobId,
+  asShopItemId,
+} from '../../domain/ids'
 import { PERK_IDS } from '../../domain/progression/perks'
 import { ANGLER_SKILL_MAX, ANGLER_SKILL_MIN } from '../../domain/progression/AnglerSkill'
 import {
   CURRENT_SAVE_SCHEMA_VERSION,
   SAVE_SCHEMA_VERSION_V1,
   SAVE_SCHEMA_VERSION_V2,
+  SAVE_SCHEMA_VERSION_V3,
 } from '../../domain/save/SaveGame'
 import { WORLD_PHASES } from '../../domain/world/worldSession'
 import { transportTypeSchema } from '../../content/schema/transport'
@@ -67,10 +75,31 @@ const careerSchema = z.strictObject({
  * 設計は「軽微な赤字でゲームオーバーにしない」ため（GAME_DESIGN.md §12.3）、
  * cash の下限は設けない。
  */
+/** v3 までの資金ブロック。 */
+const financeSchemaV3 = z.strictObject({
+  cash: z.number().finite(),
+  salaryIncome: z.number().nonnegative(),
+  simplifiedLivingCost: z.number().nonnegative(),
+})
+
+/** 現行の資金ブロック。 */
 const financeSchema = z.strictObject({
   cash: z.number().finite(),
   salaryIncome: z.number().nonnegative(),
   simplifiedLivingCost: z.number().nonnegative(),
+  lastSettledMonth: z
+    .string()
+    .regex(/^\d{4}-\d{2}$/)
+    .nullable(),
+  transactions: z.array(
+    z.strictObject({
+      id: z.string().min(1),
+      kind: z.enum(TRANSACTION_KINDS),
+      amount: z.number().finite(),
+      label: z.string().min(1),
+      at: z.string().min(1),
+    }),
+  ),
 })
 
 export const saveGameV1Schema = z.strictObject({
@@ -80,7 +109,7 @@ export const saveGameV1Schema = z.strictObject({
   progression: progressionSchema,
   knowledge: knowledgeSchema,
   career: careerSchema,
-  finance: financeSchema,
+  finance: financeSchemaV3,
 })
 
 const skillValueSchema = z.number().int().min(ANGLER_SKILL_MIN).max(ANGLER_SKILL_MAX)
@@ -161,7 +190,7 @@ export const saveGameV2Schema = z.strictObject({
   codex: codexSchema.default(() => ({ species: {} })),
   knowledge: knowledgeSchema,
   career: careerSchema,
-  finance: financeSchema,
+  finance: financeSchemaV3,
 })
 
 /** ゲーム内時間（WorldTime）。 */
@@ -199,7 +228,7 @@ const worldSchema = z.strictObject({
 })
 
 export const saveGameV3Schema = z.strictObject({
-  schemaVersion: z.literal(CURRENT_SAVE_SCHEMA_VERSION),
+  schemaVersion: z.literal(SAVE_SCHEMA_VERSION_V3),
   createdAt: isoDateTimeSchema,
   updatedAt: isoDateTimeSchema,
   progression: anglerProgressionSchema,
@@ -207,8 +236,20 @@ export const saveGameV3Schema = z.strictObject({
   world: worldSchema,
   knowledge: knowledgeSchema,
   career: careerSchema,
+  finance: financeSchemaV3,
+})
+
+export const saveGameV4Schema = z.strictObject({
+  schemaVersion: z.literal(CURRENT_SAVE_SCHEMA_VERSION),
+  createdAt: isoDateTimeSchema,
+  updatedAt: isoDateTimeSchema,
+  progression: anglerProgressionSchema,
+  codex: codexSchema.default(() => ({ species: {} })),
+  world: worldSchema,
+  knowledge: knowledgeSchema,
   finance: financeSchema,
+  purchases: z.array(z.string().min(1).transform(asShopItemId)),
 })
 
 /** 現行 version の Save スキーマ。Migration 後の検証に使う。 */
-export const currentSaveSchema = saveGameV3Schema
+export const currentSaveSchema = saveGameV4Schema

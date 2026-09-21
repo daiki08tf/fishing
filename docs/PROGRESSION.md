@@ -317,83 +317,26 @@ Lv5でも挑戦できる。
 単純な「攻撃力の数字が増えた」にはしない。
 
 
-## 15. Career Progression
+## 15. 仕事とお金
 
-CareerはAngler Levelとは別の軽量な成長軸として扱う。
+### 仕事の扱い
 
-目的は仕事ゲームを作ることではなく、釣りによる人間的成長が生活へ返ってくる感覚を作ること。
+主人公は普通の会社員だが、**仕事はゲームシステムにしない**。
 
-### Career State
+仕事が提供するのは背景設定だけである。
 
-候補:
+- 毎月の安定した収入（給与）
+- 生活費を差し引いた自由資金
 
-- Career Level / Grade
-- Job Type
-- Salary Band
-- Work Style
-- Paid Leave
-- Commute Load
-- Job Satisfaction
-- Career Reputation
+そのため、次は採用しない。
 
-すべてを数値としてUI表示する必要はない。
+- Career Level / Grade / Skill
+- Cross-Skill（釣りSkillを仕事へ転用する仕組み）
+- Career Events（performance review / raise / promotion / transfer / job offer 等）
+- 転職、勤務時間による釣行制限、通勤、有給
 
-### Cross-Skill Effects
-
-Angler側の能力やKnowledgeの一部を、仕事イベント解決時のModifierとして利用可能。
-
-例:
-
-- Detection → quality / mistake detection
-- Rigging → planning / preparation
-- Fighting → persistence
-- Knowledge → research
-- Relationships → communication / opportunities
-
-Cross-Skill効果は小〜中程度とし、仕事を攻略するために釣りSkillを振ることが最適解にならないようにする。
-
-### Career Events
-
-イベント例:
-
-- performance review
-- raise
-- promotion
-- bonus
-- transfer
-- job offer
-- remote work offer
-- flex-time offer
-- paid leave negotiation
-
-イベントは一定期間ごとに自動抽選し、必要な時だけ選択を求める。
-
-### 転職
-
-転職先は単純な上位互換にしない。
-
-例:
-
-高収入企業:
-- Income +
-- Free Time -
-
-リモート中心:
-- Income ±
-- Commute -
-- Weekday Fishing +
-
-安定企業:
-- Income 中
-- Paid Leave +
-- Overtime -
-
-釣り関連企業:
-- Income 可変
-- Fishing Reputation synergy +
-- Industry relationships +
-
-プレイヤーが「どんな釣り生活をしたいか」で選ぶ。
+釣りの成長が生活へ返るのは、**記録とKnowledgeが増え、自由資金で車や遠征を買える**
+という形で表現する。プレイヤーの釣行を仕事の予定で止めない。
 
 ### Money Philosophy
 

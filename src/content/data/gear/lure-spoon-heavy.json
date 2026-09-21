@@ -1,0 +1,14 @@
+{
+  "id": "lure-spoon-heavy",
+  "name": "スプーン 22g",
+  "price": 1400,
+  "category": "lure",
+  "lureType": "spoon",
+  "weightG": 22,
+  "lengthMm": 70,
+  "depthRangeM": { "min": 2, "max": 9 },
+  "retrieveStyle": "slow_retrieve",
+  "action": "flutter",
+  "visualProfile": "flash",
+  "targetProfile": ["mid", "large"]
+}

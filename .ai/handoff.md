@@ -31,6 +31,7 @@ Product Decision の SSOT は `docs/DECISIONS.md`。
   （本変更。`git log --oneline` で確認する）
 - Phase 3.1: Save / Load の配線（起動時 hydration と autosave）
 - Phase 4: World / Time / Access / Spot Knowledge（自宅から釣りへ行って帰るループ）
+- Phase 5: Economy / Calendar / Shop / Transport（給料・生活費・有給・中古車）
 
 コミットの位置は `git log --oneline` で確認する。
 本文書にはマシン固有の絶対パスや作業ディレクトリの UUID を記録しない。
@@ -46,6 +47,62 @@ Product Decision の SSOT は `docs/DECISIONS.md`。
 | 3 | Angler Progression（XP・Lv1〜100・7 Skill・Perk・Save v2） | 成長ループ |
 | 3.1 | Save / Load の配線（起動時 hydration・autosave・壊れた Save の扱い） | 再起動で成長と記録が残る |
 | 4 | World（ゲーム内時間・移動・Spot・Access・Knowledge）と Map / Spot 画面 | 自宅から釣りへ行って帰る |
+| 5 | Economy / Schedule / Shop（給料・生活費・有給・中古車購入） | 働きながら釣りに行く生活ループ |
+
+## Phase 5 で実装したもの
+
+| 領域 | 内容 |
+|---|---|
+| 時間進行 | 移動・釣り・帰宅・**翌朝まで休む**（`sleepUntilMorning`）。仕事による制限は無い |
+| 暦 | `WorldTime` の日付・曜日・時分・日跨ぎ。曜日は将来（混雑・大会・季節・釣り場ルール）のために保持 |
+| 資金 | `src/domain/economy/`。円単位の cash、給与、簡易生活費、直近履歴 |
+| 月次精算 | `settleFinance`。月を跨いだときに給与 − 生活費を 1 回だけ処理（複数月も可） |
+| 交通費 | Spot の `travelOptions.cost`（片道）。往復分を出発時に引く。徒歩は無料 |
+| Shop | `src/domain/shop/`。商品は Content（`shop-items`）。購入は残高チェックのみ |
+| 車 | 中古コンパクトカー ¥450,000。購入で `world.availableTransports` に car が増える |
+| UI | HOME（日時・予定・現金・有給・休む）、SHOP、MAP（交通費と時間の可否）、SPOT（帰る目安） |
+| Save | schema v4（finance 詳細・schedule・purchases）と v3 → v4 migration |
+| 検証 | `npm run simulate:day`（1 日 → 翌朝 → 月跨ぎ → 車購入 → 新 Spot 解禁） |
+
+## 設計変更（重要・Phase 5 / Fishing-first）
+
+**会社員という設定は世界観として維持するが、仕事はゲームシステムにしない。**
+
+仕事は「毎月、生活費を差し引いた自由資金が入る背景設定」としてのみ扱う。
+プレイヤーの釣行を勤務時間で制限しない。ゲームの主役は完全に釣りである。
+
+採用しないもの:
+
+- 勤務時間（平日 09:00〜18:00）と通勤による拘束
+- 有給（Paid Leave）
+- 仕事の予定による釣行の拒否
+- Career XP / Performance / 昇進 / 転職 / Job Offer / Work Skill / Cross-Skill
+- 仕事ミニゲーム、上司・同僚
+
+維持するもの:
+
+- WorldTime（日付・曜日・時分・日跨ぎ）と移動・釣り・帰宅の時間消費
+- 月次精算（給与 − 生活費 = 自由資金）
+- 交通費、Shop、中古車、車による Spot 解禁
+- Economy / World の永続化
+
+理由:
+
+- 仕事をゲーム化すると、プレイヤーの最適化が釣りから仕事へ流れる。
+  主役は常に釣りである（GAME_DESIGN.md §12 の方針をさらに徹底した）。
+- 曜日は今後、混雑・大会・イベント・季節・釣り場ルールのために使う。
+  カレンダーは「釣りの条件」を載せるための器として保持する。
+
+実装・文書上の扱い:
+
+- `src/domain/schedule/`（WorkSchedule / ScheduleState / timeAvailability）は撤去した。
+- `src/domain/career/` の型（CareerState / JobDefinition）は使わない。
+  Save にも含めない（v4 は progression / codex / world / knowledge / finance / purchases のみ）。
+- `tests/architecture/economy-boundaries.test.ts` が「仕事の仕組みを作っていない」
+  ことを機械的に確認する。
+- `docs/` はこの方針に更新済みである。GAME_DESIGN.md §12（仕事とお金）/
+  PROGRESSION.md §15（仕事とお金）/ DATA_MODEL.md §17（仕事・採用しない）/
+  ROADMAP.md Phase 5 が「仕事はゲームシステムにしない」と明記している。
 
 ## Phase 4 で実装したもの
 
@@ -176,6 +233,25 @@ Product Decision の SSOT は `docs/DECISIONS.md`。
 26. **Save v3 は v2 から World を足すだけ** — progression / codex / knowledge は
     そのまま引き継ぐ。v1 → v2 → v3 の順に適用する。
     テスト用の `SaveGameV2` 型と schema は移行検証のために残している。
+27. **仕事はゲームシステムにしない** — 会社員設定は月次の定期収入としてだけ現れる。
+    勤務時間・有給・キャリアは持たない。曜日は釣りの条件（混雑・大会・季節）を
+    載せるために保持している。
+28. **Access は「物理的に行けるか」だけ** — 時間の都合は判定に入れない。
+    費用が足りるかは Economy 側で別に見る。
+29. **時間は自動では進まないので「翌朝まで休む」がある** — `sleepUntilMorning` が
+    翌日 06:00 まで進める。昼間でも休める（仕事の予定による制限は無い）。
+30. **お金は選択を作るために使う** — 支出は残高チェックで拒否するが、
+    給与と生活費は必ず適用する（軽微な赤字は許容、Game Over は無い）。
+    徒歩の釣り場は常に無料で残しているので、資金 0 でも釣りは続けられる。
+31. **月次精算は `lastSettledMonth` で 1 回だけ** — 何か月進んでも通過した月を
+    すべて処理し、二重支給しない。
+32. **車の購入は World の状態を増やすだけ** — Economy から AccessEngine の条件を
+    書き換えない。`availableTransports` が増えるので、同じ Spot の判定結果が変わる。
+33. **Save v4 は v3 から finance を拡張し、purchases を足す** —
+    progression / codex / world / knowledge はそのまま引き継ぐ。
+    v4 は `progression / codex / world / knowledge / finance / purchases` だけを持ち、
+    `schedule`（勤務時間・有給）と `career`（仕事の状態）は**保存しない**。
+    会社員設定は finance の定期収入だけに現れる。
 
 ## アーキテクチャ境界（Phase 0B から継続）
 
@@ -233,7 +309,7 @@ npm run simulate:progression -- --catches 2000
 
 - `npm run check`: PASS
 - `npm run build`: PASS
-- `npm run test:run`: 39 files / 333 tests PASS
+- `npm run test:run`: 45 files / 377 tests PASS
 - `npm run validate:content`: PASS（11 件）
 - `npm run simulate:progression -- --catches 2000`:
   反復（同一魚種）で Lv21 / 多様な釣りで Lv26、初捕獲 200 XP 対 反復 100 匹目 22 XP。
@@ -251,7 +327,15 @@ npm run simulate:progression -- --catches 2000
   3/3 匹、+500 XP、Lv4、知識 39%。6 チェックすべて PASS（移動・釣行・帰宅の時間、決定論）
 - 開発サーバー実測（Phase 4）: root / main.tsx / HOME・MAP・SPOT・FISHING 画面 /
   world domain / accessEngine / Spot JSON がすべて 200
-- バンドル: JS 398.04 kB（gzip 119.47 kB）、CSS 5.36 kB（gzip 1.55 kB）
+- `npm run simulate:day`（決定論的）:
+  05/04 06:00 HOME → 徒歩で近場（釣り 2 回）→ 翌朝まで休む →
+  05/05 電車で東京湾岸（交通費 ¥840）→ 約 3 か月で現金 ¥119,160 → ¥479,160 →
+  中古車 ¥450,000 を購入 → **車が必要だった釣り場が行けるようになる**。
+  9 チェックすべて PASS（平日でも釣行可・翌朝 06:00・自由資金・車の解禁）
+- `npm run simulate:trip`: 6 チェックすべて PASS
+- バンドル: JS 407.20 kB（gzip 122.21 kB）、CSS 5.36 kB（gzip 1.55 kB）
+- 開発サーバー実測（Phase 5）: root / HOME / SHOP / MAP / SPOT /
+  economy・schedule domain / shop item JSON がすべて 200
 
 ### Phase 4 で変わった既存の検証値
 
@@ -277,6 +361,13 @@ npm run simulate:progression -- --catches 2000
   HOME → MAP → SPOT → FISHING → SPOT → HOME のクリック操作は未確認。
 - 釣行の途中終了からの完全復元は Phase 4 の対象外（安全な checkpoint として
   「現在時刻・位置・Knowledge・釣行記録」までを保存する）。
+- Phase 5 の残り:
+  - 車の維持費（`simpleVehicleMonthlyCost`）は構造だけ用意し、まだ請求していない。
+  - 車種スペック・ローン・保険・駐車場・車検・故障・ガソリン残量は扱わない。
+  - 遠征費・宿泊・フェリーは未実装。
+  - 天候・潮・時間帯による釣果変化はまだ無い。
+  - **UI のクリック操作は未確認**（画面配信までしか見ていない）。
+  - 曜日は保持しているが、まだ釣果や混雑に使っていない（Phase 6 以降で接続）。
 - IndexedDB adapter の自動テストは Fake による API 形状の確認に留まる
   （実ブラウザでの永続化・バージョン管理・障害時の挙動は未検証）。
 - 複数タブの同時編集、Save の export / import、スロット選択、復旧 UI は未実装。
@@ -292,11 +383,13 @@ npm run simulate:progression -- --catches 2000
 
 **Phase 5 — Life / Work / Economy**（詳細は `.ai/current-task.md`）
 
-1. 週単位の仕事解決と給与・自由時間を作る（仕事は釣りを支えるサブシステムに留める）。
-2. Career（昇給・昇進・転職・リモート・フレックス）と Cross-Skill を作る。
-3. 資金（現金・給与・簡易生活費）と Shop / 装備購入を入れる。
-4. 車の所有を Access へ接続し、「買うと世界が広がる」を検証する。
-5. Save の career / finance を PROVISIONAL から実データへ置き換える。
+**Phase 6 — Tackle Depth**（詳細は `.ai/current-task.md`）
+
+1. `src/domain/gear/` に Rod / Reel / Line / Leader / Hook / Lure / Bait を実装する。
+2. 互換性（ルアー重量域・ライン強度・ドラッグ）を Domain で判定する。
+3. ルアー / ベイト / 釣法を Encounter へ接続し、Spot と時間帯で有効な構成が変わるようにする。
+4. Shop に装備を追加する（Content のみで並ぶ構造は Phase 5 で用意済み）。
+5. 装備と所持を Save へ追加する（必要なら v5）。
 
 ## ブロッカー
 

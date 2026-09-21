@@ -1,0 +1,14 @@
+{
+  "id": "lure-vibration-mid",
+  "name": "バイブレーション 14g",
+  "price": 1800,
+  "category": "lure",
+  "lureType": "vibration",
+  "weightG": 14,
+  "lengthMm": 68,
+  "depthRangeM": { "min": 1, "max": 5 },
+  "retrieveStyle": "lift_and_fall",
+  "action": "vibration",
+  "visualProfile": "flash",
+  "targetProfile": ["mid"]
+}

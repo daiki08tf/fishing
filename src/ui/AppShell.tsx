@@ -5,6 +5,7 @@ import { HomeScreen } from './home/HomeScreen'
 import { MapScreen } from './map/MapScreen'
 import { ProgressionScreen } from './progression/ProgressionScreen'
 import { SpotScreen } from './spot/SpotScreen'
+import { ShopScreen } from './shop/ShopScreen'
 import './styles/world.css'
 
 /**
@@ -82,6 +83,7 @@ export const AppShell = () => {
             }}
           />
         ) : null}
+        {activeScreen === 'shop' ? <ShopScreen /> : null}
       </main>
     </div>
   )

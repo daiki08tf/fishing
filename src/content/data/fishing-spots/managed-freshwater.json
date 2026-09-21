@@ -8,7 +8,7 @@
     { "kind": "transport", "tag": "bus" },
     { "kind": "permit", "permitId": "fee-fishing-ticket" }
   ],
-  "travelOptions": [{ "transport": "bus", "minutes": 70 }],
+  "travelOptions": [{ "transport": "bus", "minutes": 70, "cost": 520 }],
   "habitatTags": ["phase1-sample-stream"],
   "depth": { "depthRangeM": { "min": 1, "max": 4 } },
   "fishTable": [

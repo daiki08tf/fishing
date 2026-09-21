@@ -1,0 +1,13 @@
+{
+  "id": "line-nylon-heavy",
+  "name": "ナイロン 6号",
+  "price": 1800,
+  "category": "line",
+  "lineType": "nylon",
+  "strengthKg": 10,
+  "diameterMm": 0.405,
+  "stretch": 0.7,
+  "abrasionResistance": 0.5,
+  "visibility": 0.3,
+  "sensitivity": 0.3
+}

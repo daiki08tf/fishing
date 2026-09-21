@@ -90,6 +90,18 @@ export const createInitialWorld = (tuning: WorldTuning = DEFAULT_WORLD_TUNING): 
   availableTransports: tuning.initialTransports as readonly TransportType[],
 })
 
+/**
+ * 移動手段を使えるようにする（車の購入など）。
+ *
+ * 購入そのものは Economy の仕事。ここは World の状態だけを変える。
+ * AccessEngine はこの `availableTransports` を読むだけなので、
+ * Economy から Access のルールを触ることはない。
+ */
+export const grantTransport = (world: WorldState, transport: TransportType): WorldState =>
+  world.availableTransports.includes(transport)
+    ? world
+    : { ...world, availableTransports: [...world.availableTransports, transport] }
+
 const rememberSpot = (
   discovered: readonly FishingSpotId[],
   spotId: FishingSpotId,

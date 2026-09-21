@@ -1,0 +1,14 @@
+{
+  "id": "lure-minnow-light",
+  "name": "軽量ミノー 4g",
+  "price": 1600,
+  "category": "lure",
+  "lureType": "minnow",
+  "weightG": 4,
+  "lengthMm": 55,
+  "depthRangeM": { "min": 0.2, "max": 1.2 },
+  "retrieveStyle": "twitch",
+  "action": "dart",
+  "visualProfile": "clear",
+  "targetProfile": ["small"]
+}

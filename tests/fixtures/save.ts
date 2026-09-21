@@ -6,8 +6,10 @@ import type { SaveGameV1 } from '../../src/domain/save/SaveGame'
 import {
   SAVE_SCHEMA_VERSION_V2,
   SAVE_SCHEMA_VERSION_V3,
+  SAVE_SCHEMA_VERSION_V4,
   type SaveGameV2,
   type SaveGameV3,
+  type SaveGameV4,
 } from '../../src/domain/save/SaveGame'
 import { createInitialWorld } from '../../src/domain/world/worldSession'
 
@@ -121,3 +123,21 @@ export const createValidSaveV3 = (): SaveGameV3 => ({
   schemaVersion: SAVE_SCHEMA_VERSION_V3,
   world: createInitialWorld(),
 })
+
+/** Phase 5 の現行 Save（schema v4）。資金の詳細と購入済み商品が加わった。 */
+export const createValidSaveV4 = (): SaveGameV4 => {
+  const v3 = createValidSaveV3()
+
+  return {
+    schemaVersion: SAVE_SCHEMA_VERSION_V4,
+    createdAt: v3.createdAt,
+    updatedAt: v3.updatedAt,
+    progression: v3.progression,
+    codex: v3.codex,
+    world: v3.world,
+    knowledge: v3.knowledge,
+    // Career ブロックはゲームシステムではないので保存しない。
+    finance: { ...v3.finance, lastSettledMonth: null, transactions: [] },
+    purchases: [],
+  }
+}

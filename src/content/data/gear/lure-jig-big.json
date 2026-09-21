@@ -1,0 +1,14 @@
+{
+  "id": "lure-jig-big",
+  "name": "メタルジグ 45g",
+  "price": 2200,
+  "category": "lure",
+  "lureType": "jig",
+  "weightG": 45,
+  "lengthMm": 95,
+  "depthRangeM": { "min": 8, "max": 40 },
+  "retrieveStyle": "one_pitch",
+  "action": "slide",
+  "visualProfile": "flash",
+  "targetProfile": ["large", "big"]
+}

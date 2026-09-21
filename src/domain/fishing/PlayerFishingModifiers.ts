@@ -19,6 +19,10 @@ export const FISHING_MODIFIER_KEYS = [
   'landingStabilityMultiplier',
   'detectionClarityMultiplier',
   'riggingEfficiencyMultiplier',
+  /** ライン・ロッドが耐えられるテンションの倍率。 */
+  'maxTensionMultiplier',
+  /** フックの保持力（糸が緩んでも外れにくい）。 */
+  'slackToleranceMultiplier',
 ] as const
 
 export type FishingModifierKey = (typeof FISHING_MODIFIER_KEYS)[number]
@@ -40,4 +44,6 @@ export const NEUTRAL_FISHING_MODIFIERS: PlayerFishingModifiers = {
   landingStabilityMultiplier: 1,
   detectionClarityMultiplier: 1,
   riggingEfficiencyMultiplier: 1,
+  maxTensionMultiplier: 1,
+  slackToleranceMultiplier: 1,
 }

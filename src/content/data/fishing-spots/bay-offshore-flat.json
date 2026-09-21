@@ -8,7 +8,7 @@
     { "kind": "transport", "tag": "train" },
     { "kind": "knowledge", "minimum": 20, "scope": "region" }
   ],
-  "travelOptions": [{ "transport": "train", "minutes": 50 }],
+  "travelOptions": [{ "transport": "train", "minutes": 50, "cost": 420 }],
   "habitatTags": ["phase1-sample-deep", "phase1-sample-surf"],
   "depth": { "depthRangeM": { "min": 5, "max": 25 } },
   "fishTable": [

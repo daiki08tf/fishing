@@ -21,13 +21,13 @@ describe('access engine', () => {
 
     expect(evaluation.accessible).toBe(true)
     expect(evaluation.blockedReasons).toEqual([])
-    expect(evaluation.travelOptions).toEqual([{ transport: 'walk', minutes: 20 }])
+    expect(evaluation.travelOptions).toEqual([{ transport: 'walk', minutes: 20, cost: 0 }])
   })
 
   it('rejects a spot that needs a transport the player does not have', () => {
     const spot = createTestSpot({
       access: [{ kind: 'transport', tag: 'car' }],
-      travelOptions: [{ transport: 'car', minutes: 95 }],
+      travelOptions: [{ transport: 'car', minutes: 95, cost: 900 }],
     })
 
     const evaluation = evaluateAccess({ ...base, spot })
@@ -44,7 +44,7 @@ describe('access engine', () => {
         { kind: 'transport', tag: 'bus' },
         { kind: 'permit', permitId: asPermitId('fee-fishing-ticket') },
       ],
-      travelOptions: [{ transport: 'bus', minutes: 70 }],
+      travelOptions: [{ transport: 'bus', minutes: 70, cost: 520 }],
     })
 
     const evaluation = evaluateAccess({ ...base, spot })
@@ -92,14 +92,14 @@ describe('access engine', () => {
     const spot = createTestSpot({
       access: [{ kind: 'transport', tag: 'train' }],
       travelOptions: [
-        { transport: 'train', minutes: 38 },
-        { transport: 'car', minutes: 25 },
+        { transport: 'train', minutes: 38, cost: 420 },
+        { transport: 'car', minutes: 25, cost: 900 },
       ],
     })
 
     const evaluation = evaluateAccess({ ...base, spot })
 
-    expect(evaluation.travelOptions).toEqual([{ transport: 'train', minutes: 38 }])
+    expect(evaluation.travelOptions).toEqual([{ transport: 'train', minutes: 38, cost: 420 }])
     expect(fastestTravelOption(evaluation.travelOptions)?.minutes).toBe(38)
   })
 

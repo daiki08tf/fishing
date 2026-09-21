@@ -49,4 +49,5 @@ export const loadContentFromDirectory = (
   assembleBuiltInContent({
     species: readKindDirectory(root, 'fish-species'),
     spots: readKindDirectory(root, 'fishing-spots'),
+    shopItems: readKindDirectory(root, 'shop-items'),
   })

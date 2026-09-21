@@ -1,4 +1,5 @@
 import { fastestTravelOption } from '../../domain/access/accessEngine'
+import { describeTravelCost } from '../../domain/economy'
 import { formatDuration } from '../../domain/world'
 import { spotKnowledgeScore } from '../../domain/knowledge/spotKnowledge'
 import { useAppStore } from '../../state/appStore'
@@ -28,6 +29,7 @@ export const MapScreen = () => {
   const world = usePlayerStore((state) => state.world)
   const knowledge = usePlayerStore((state) => state.knowledge)
   const evaluateSpot = usePlayerStore((state) => state.evaluateSpot)
+  const evaluateTrip = usePlayerStore((state) => state.evaluateTrip)
   const travelToSpot = usePlayerStore((state) => state.travelToSpot)
 
   if (!content.ok) {
@@ -79,6 +81,14 @@ export const MapScreen = () => {
             const fastest = fastestTravelOption(access.travelOptions)
             const score = spotKnowledgeScore(knowledge, String(spot.id))
             const discovered = world.discoveredSpotIds.includes(spot.id)
+            const readiness = fastest === null ? null : evaluateTrip(spot, fastest)
+            const blockedReason =
+              readiness === null
+                ? null
+                : readiness.affordable
+                  ? null
+                  : `交通費が足りない（${readiness.roundTripCost}円）`
+            const canGo = access.accessible && (readiness?.affordable ?? false)
 
             return (
               <li className="spot-card" key={String(spot.id)}>
@@ -99,9 +109,10 @@ export const MapScreen = () => {
                 </p>
                 <p className="spot-card__meta">
                   この釣り場の知識 {Math.round(score)}% / 魚種 {spot.fishTable.length} 種
+                  {fastest === null ? '' : ` / ${describeTravelCost(fastest)}`}
                 </p>
 
-                {access.accessible ? (
+                {canGo ? (
                   <button
                     className="control"
                     type="button"
@@ -117,9 +128,11 @@ export const MapScreen = () => {
                   </button>
                 ) : (
                   <ul className="blocked">
-                    {access.blockedReasons.map((reason) => (
-                      <li key={`${reason.kind}-${reason.label}`}>{reason.label}</li>
-                    ))}
+                    {access.accessible
+                      ? [<li key="cost">{blockedReason ?? '今は行けない'}</li>]
+                      : access.blockedReasons.map((reason) => (
+                          <li key={`${reason.kind}-${reason.label}`}>{reason.label}</li>
+                        ))}
                   </ul>
                 )}
               </li>

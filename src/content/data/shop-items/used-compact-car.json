@@ -1,0 +1,8 @@
+{
+  "id": "used-compact-car",
+  "name": "中古コンパクトカー",
+  "description": "駅から遠い釣り場へ行けるようになる。Phase 5 では維持費を考えない。",
+  "price": 450000,
+  "category": "vehicle",
+  "grantsTransport": "car"
+}

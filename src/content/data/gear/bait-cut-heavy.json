@@ -1,0 +1,9 @@
+{
+  "id": "bait-cut-heavy",
+  "name": "切り身（大）",
+  "price": 600,
+  "category": "bait",
+  "baitType": "cut",
+  "presentation": "bottom",
+  "targetProfile": ["large", "big"]
+}

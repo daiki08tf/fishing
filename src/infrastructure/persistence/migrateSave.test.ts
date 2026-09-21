@@ -3,19 +3,19 @@ import { totalXpForLevel } from '../../../src/domain/progression/AnglerLevel'
 import {
   createValidSaveV1,
   createValidSaveV2,
-  createValidSaveV3,
+  createValidSaveV4,
 } from '../../../tests/fixtures/save'
 import { migrateSave } from './migrateSave'
 
 describe('migrateSave', () => {
   it('loads a valid current save', () => {
-    const result = migrateSave(createValidSaveV3())
+    const result = migrateSave(createValidSaveV4())
 
     expect(result.ok).toBe(true)
 
     if (result.ok) {
-      expect(result.migratedFrom).toBe(3)
-      expect(result.save.schemaVersion).toBe(3)
+      expect(result.migratedFrom).toBe(4)
+      expect(result.save.schemaVersion).toBe(4)
       expect(result.save.progression.anglerLevel).toBe(3)
       expect(result.save.progression.unlockedPerks).toEqual([])
       expect(result.save.progression.repetition.species['test-species']).toBe(3)
@@ -33,7 +33,7 @@ describe('migrateSave', () => {
     }
 
     expect(result.migratedFrom).toBe(1)
-    expect(result.save.schemaVersion).toBe(3)
+    expect(result.save.schemaVersion).toBe(4)
 
     // 既存の成長は保持する。
     expect(result.save.progression.anglerLevel).toBe(v1.progression.anglerLevel)
@@ -55,8 +55,12 @@ describe('migrateSave', () => {
 
     // 他のブロックはそのまま引き継ぐ。
     expect(result.save.knowledge).toEqual(v1.knowledge)
-    expect(result.save.career).toEqual(v1.career)
-    expect(result.save.finance).toEqual(v1.finance)
+    // v1 の資金ブロックは、月次精算の状態と履歴が足されて引き継がれる。
+    expect(result.save.finance.cash).toBe(v1.finance.cash)
+    expect(result.save.finance.salaryIncome).toBe(v1.finance.salaryIncome)
+    expect(result.save.finance.simplifiedLivingCost).toBe(v1.finance.simplifiedLivingCost)
+    expect(result.save.finance.lastSettledMonth).toBeNull()
+    expect(result.save.finance.transactions).toEqual([])
     expect(result.save.createdAt).toBe(v1.createdAt)
     expect(result.save.updatedAt).toBe(v1.updatedAt)
   })
@@ -72,7 +76,7 @@ describe('migrateSave', () => {
     }
 
     expect(result.migratedFrom).toBe(2)
-    expect(result.save.schemaVersion).toBe(3)
+    expect(result.save.schemaVersion).toBe(4)
 
     // 成長と記録は失わない。
     expect(result.save.progression).toEqual(v2.progression)

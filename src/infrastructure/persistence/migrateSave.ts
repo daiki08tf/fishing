@@ -6,12 +6,19 @@ import {
   CURRENT_SAVE_SCHEMA_VERSION,
   SAVE_SCHEMA_VERSION_V1,
   SAVE_SCHEMA_VERSION_V2,
+  SAVE_SCHEMA_VERSION_V3,
   type CurrentSave,
   type SaveGameV1,
   type SaveGameV2,
   type SaveGameV3,
+  type SaveGameV4,
 } from '../../domain/save/SaveGame'
-import { currentSaveSchema, saveGameV1Schema, saveGameV2Schema } from './saveSchema'
+import {
+  currentSaveSchema,
+  saveGameV1Schema,
+  saveGameV2Schema,
+  saveGameV3Schema,
+} from './saveSchema'
 
 /**
  * Save の migration 入口。ARCHITECTURE.md §9 に対応する。
@@ -106,7 +113,7 @@ export const migrateV1ToV2 = (v1: SaveGameV1): SaveGameV2 => ({
  * 既存 Save には World が無いので、ゲーム開始時の自宅・時刻から始める。
  */
 export const migrateV2ToV3 = (v2: SaveGameV2): SaveGameV3 => ({
-  schemaVersion: CURRENT_SAVE_SCHEMA_VERSION,
+  schemaVersion: SAVE_SCHEMA_VERSION_V3,
   createdAt: v2.createdAt,
   updatedAt: v2.updatedAt,
   progression: v2.progression,
@@ -115,6 +122,30 @@ export const migrateV2ToV3 = (v2: SaveGameV2): SaveGameV3 => ({
   knowledge: v2.knowledge,
   career: v2.career,
   finance: v2.finance,
+})
+
+/**
+ * v3 → v4。
+ *
+ * 資金ブロックに月次精算の状態と履歴を足し、購入済み商品を追加する。
+ * progression / codex / world / knowledge はそのまま引き継ぐ。
+ */
+export const migrateV3ToV4 = (v3: SaveGameV3): SaveGameV4 => ({
+  schemaVersion: CURRENT_SAVE_SCHEMA_VERSION,
+  createdAt: v3.createdAt,
+  updatedAt: v3.updatedAt,
+  progression: v3.progression,
+  codex: v3.codex,
+  world: v3.world,
+  knowledge: v3.knowledge,
+  finance: {
+    cash: v3.finance.cash,
+    salaryIncome: v3.finance.salaryIncome,
+    simplifiedLivingCost: v3.finance.simplifiedLivingCost,
+    lastSettledMonth: null,
+    transactions: [],
+  },
+  purchases: [],
 })
 
 export const migrateSave = (raw: unknown): SaveMigrationResult => {
@@ -156,7 +187,9 @@ export const migrateSave = (raw: unknown): SaveMigrationResult => {
       )
     }
 
-    const migrated = currentSaveSchema.safeParse(migrateV2ToV3(migrateV1ToV2(parsed.data)))
+    const migrated = currentSaveSchema.safeParse(
+      migrateV3ToV4(migrateV2ToV3(migrateV1ToV2(parsed.data))),
+    )
 
     if (!migrated.success) {
       return failure(
@@ -180,7 +213,7 @@ export const migrateSave = (raw: unknown): SaveMigrationResult => {
       )
     }
 
-    const migrated = currentSaveSchema.safeParse(migrateV2ToV3(parsed.data))
+    const migrated = currentSaveSchema.safeParse(migrateV3ToV4(migrateV2ToV3(parsed.data)))
 
     if (!migrated.success) {
       return failure(
@@ -191,6 +224,30 @@ export const migrateSave = (raw: unknown): SaveMigrationResult => {
     }
 
     return { ok: true, save: migrated.data, migratedFrom: SAVE_SCHEMA_VERSION_V2 }
+  }
+
+  if (schemaVersion === SAVE_SCHEMA_VERSION_V3) {
+    const parsed = saveGameV3Schema.safeParse(record)
+
+    if (!parsed.success) {
+      return failure(
+        'invalid_save',
+        'save data failed v3 schema validation',
+        toIssues(parsed.error),
+      )
+    }
+
+    const migrated = currentSaveSchema.safeParse(migrateV3ToV4(parsed.data))
+
+    if (!migrated.success) {
+      return failure(
+        'invalid_save',
+        'migrated save failed current schema validation',
+        toIssues(migrated.error),
+      )
+    }
+
+    return { ok: true, save: migrated.data, migratedFrom: SAVE_SCHEMA_VERSION_V3 }
   }
 
   const parsed = currentSaveSchema.safeParse(record)

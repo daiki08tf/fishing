@@ -159,7 +159,7 @@ describe('world loop', () => {
       name: 'その場で作った釣り場',
       regionId: asRegionId('invented-region'),
       access: [{ kind: 'transport', tag: 'train' }],
-      travelOptions: [{ transport: 'train', minutes: 12 }],
+      travelOptions: [{ transport: 'train', minutes: 12, cost: 420 }],
       fishTable: [{ speciesId: inventedSpecies.id, basePresence: 1 }],
     })
 

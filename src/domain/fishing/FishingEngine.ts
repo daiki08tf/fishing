@@ -269,7 +269,7 @@ export class FishingEngine {
     return {
       phase: this.phase,
       tension: this.tension,
-      maxTension: this.tuning.maxTension,
+      maxTension: this.effectiveMaxTension(),
       optimalTension: {
         min: this.tuning.optimalTensionMin,
         max: this.tuning.optimalTensionMax,
@@ -289,6 +289,21 @@ export class FishingEngine {
     return Math.max(
       1,
       Math.round(this.tuning.hookWindowTicks * this.playerModifiers.hookWindowMultiplier),
+    )
+  }
+
+  /** 耐えられるテンションの上限（ライン・ロッド・針で変わる）。 */
+  effectiveMaxTension(): number {
+    return Math.max(0.1, this.tuning.maxTension * this.playerModifiers.maxTensionMultiplier)
+  }
+
+  /** 糸が緩んでからフックが外れるまでの tick 数（針の保持力で変わる）。 */
+  effectiveSlackTicksBeforeEscape(): number {
+    return Math.max(
+      1,
+      Math.round(
+        this.tuning.slackTicksBeforeEscape * this.playerModifiers.slackToleranceMultiplier,
+      ),
     )
   }
 
@@ -489,7 +504,10 @@ export class FishingEngine {
 
     // 走っている魚は竿を引き込む。GIVE しても糸が緩みきらないのはこのため。
     if (decision.behavior === 'run') {
-      this.tension = Math.min(this.tuning.maxTension, this.tension + this.tuning.runPullTensionGain)
+      this.tension = Math.min(
+        this.effectiveMaxTension(),
+        this.tension + this.tuning.runPullTensionGain,
+      )
     }
 
     this.resolveFightOutcome({ advanceSlack: true })
@@ -515,7 +533,7 @@ export class FishingEngine {
     // 強い魚ほど糸を引く。
     const powerMultiplier = 0.75 + 0.5 * state.fish.power
     this.tension = Math.min(
-      this.tuning.maxTension,
+      this.effectiveMaxTension(),
       this.tension +
         this.tuning.reelTensionGain *
           tensionMultiplier *
@@ -591,7 +609,7 @@ export class FishingEngine {
       return
     }
 
-    if (this.tension >= this.tuning.maxTension) {
+    if (this.tension >= this.effectiveMaxTension()) {
       this.events.push('LINE_BREAK')
       this.enterPhase('LINE_BREAK')
       return
@@ -609,7 +627,7 @@ export class FishingEngine {
         this.fishState = { ...state, slackTicks }
       }
 
-      if (slackTicks >= this.tuning.slackTicksBeforeEscape) {
+      if (slackTicks >= this.effectiveSlackTicksBeforeEscape()) {
         this.events.push('HOOK_ESCAPE')
         this.enterPhase('HOOK_ESCAPE')
         return

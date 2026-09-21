@@ -1,0 +1,18 @@
+{
+  "id": "starter-rod",
+  "name": "スターターロッド",
+  "price": 0,
+  "category": "rod",
+  "lengthM": 2.1,
+  "power": "ML",
+  "action": "fast",
+  "minLureWeightG": 3,
+  "maxLureWeightG": 15,
+  "recommendedLineMinKg": 2,
+  "recommendedLineMaxKg": 6,
+  "weightG": 120,
+  "sensitivity": 0.5,
+  "control": 0.5,
+  "fightingPower": 0.45,
+  "castingProfile": 0.5
+}

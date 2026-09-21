@@ -388,54 +388,16 @@ type SourceRef = {
 UIコンポーネントから直接ランダム生成しない。
 
 
-## 17. Career
+## 17. 仕事（採用しない）
 
-仕事は軽量なサブシステムとしてデータ化する。
+仕事はゲームシステムにしない。
 
-```ts
-type CareerState = {
-  jobId: string
-  careerLevel: number
+- CareerState / JobDefinition / Career XP / Cross-Skill は採用しない
+- 会社員という設定は、月次の定期収入としてのみ表現する（§18 の FinanceState）
+- 勤務時間・通勤・有給・仕事イベントはデータとして持たない
+- プレイヤーの釣行を仕事の予定で制限しない
 
-  salaryBand: number
-
-  workStyle: {
-    remoteDays: number
-    flexTime: boolean
-    overtimeLoad: number
-    commuteMinutes: number
-  }
-
-  paidLeave: number
-  careerXp: number
-}
-```
-
-職種側:
-
-```ts
-type JobDefinition = {
-  id: string
-  name: string
-
-  salaryRange: Range
-
-  timeCost: number
-  overtimeProfile: number
-  commuteProfile?: number
-
-  remoteWork?: boolean
-  flexTime?: boolean
-
-  paidLeaveProfile: number
-
-  eventTable: string[]
-}
-```
-
-仕事の結果計算ではAngler Skillsの一部をCrossSkill Modifierとして参照できる。
-
-ただしCareerとAngler Levelは独立した状態として保存する。
+時間帯・曜日・季節・天候・潮は、釣りの条件として World / Environment 側で扱う。
 
 ## 18. Economy Philosophy
 

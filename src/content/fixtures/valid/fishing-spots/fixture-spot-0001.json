@@ -5,8 +5,8 @@
   "environment": "fixture-environment",
   "dataStatus": "provisional",
   "travelOptions": [
-    { "transport": "train", "minutes": 30 },
-    { "transport": "walk", "minutes": 40 }
+    { "transport": "train", "minutes": 30, "cost": 420 },
+    { "transport": "walk", "minutes": 40, "cost": 0 }
   ],
   "access": [
     { "kind": "transport", "tag": "train" },

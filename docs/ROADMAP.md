@@ -169,22 +169,18 @@ minimal access / transport:
 
 ## Phase 5 — Life / Work / Economy
 
-- weekday
-- weekend
-- paid leave abstraction
+時間の進行と生活の背景を作る。
+
+- weekday / weekend（曜日は保持し、釣りの条件として使う）
 - travel time
 - fishing time
 - return home
+- sleep / rest until next morning
 - trip planning
-- salary
+- monthly settlement（salaryIncome − simplifiedLivingCost）
 - money
 - shop
-- gear purchase
-- lightweight work resolution
-- career events
-- raise / promotion
-- job offers
-- work style modifiers
+- purchases
 
 early vehicle ownership proof-of-concept:
 
@@ -194,20 +190,13 @@ early vehicle ownership proof-of-concept:
 - 購入費・維持費・自由時間とのトレードオフが発生する
 - 完全なTransport ProgressionはPhase 7で扱う
 
-仕事そのものをミニゲーム化しない。
+仕事はゲームシステムにしない。
 
-仕事は週単位・イベント単位で軽く処理する。
-釣りSkillの一部が仕事イベントへ緩やかに影響する。
+会社員という設定は世界観として残すが、提供するのは
+「毎月の安定した収入」と「生活費を差し引いた自由資金」だけである。
 
-転職先は年収だけでなく、
-
-- free time
-- commute
-- remote work
-- paid leave
-- overtime
-
-などに差を持たせ、釣りスタイルとの相性で選べるようにする。
+そのため、勤務時間による釣行制限・通勤・有給・Career XP・昇進・転職・
+仕事イベント・仕事ミニゲームは作らない。
 
 家賃・税金・食費等の細かな家計管理は行わず、「自由時間と資金に限りがある」ことだけをゲーム性にする。
 

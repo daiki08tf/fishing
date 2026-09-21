@@ -1,0 +1,18 @@
+{
+  "id": "rod-power",
+  "name": "パワーロッド 7'6\" MH",
+  "price": 42000,
+  "category": "rod",
+  "lengthM": 2.29,
+  "power": "MH",
+  "action": "moderate",
+  "minLureWeightG": 12,
+  "maxLureWeightG": 60,
+  "recommendedLineMinKg": 6,
+  "recommendedLineMaxKg": 16,
+  "weightG": 210,
+  "sensitivity": 0.4,
+  "control": 0.55,
+  "fightingPower": 0.85,
+  "castingProfile": 0.7
+}

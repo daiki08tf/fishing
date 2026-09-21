@@ -1,3 +1,6 @@
+import { gearItemSchema } from './gear'
+import { methodSchema } from './method'
+import { shopItemSchema } from './shopItem'
 import type { z } from 'zod'
 import { fishingSpotSchema } from './fishingSpot'
 import { fishSpeciesSchema } from './fishSpecies'
@@ -15,6 +18,9 @@ export const CONTENT_SCHEMAS = {
   'fishing-spots': fishingSpotSchema,
   transports: transportSchema,
   regulations: regulationSchema,
+  'shop-items': shopItemSchema,
+  gear: gearItemSchema,
+  methods: methodSchema,
 } as const
 
 export type ContentKind = keyof typeof CONTENT_SCHEMAS
@@ -63,6 +69,18 @@ export const parseContentRecord = (kind: ContentKind, value: unknown): ContentPa
       const result = regulationSchema.safeParse(value)
       return result.success ? { ok: true } : { ok: false, issues: toIssues(result.error) }
     }
+    case 'shop-items': {
+      const result = shopItemSchema.safeParse(value)
+      return result.success ? { ok: true } : { ok: false, issues: toIssues(result.error) }
+    }
+    case 'gear': {
+      const result = gearItemSchema.safeParse(value)
+      return result.success ? { ok: true } : { ok: false, issues: toIssues(result.error) }
+    }
+    case 'methods': {
+      const result = methodSchema.safeParse(value)
+      return result.success ? { ok: true } : { ok: false, issues: toIssues(result.error) }
+    }
   }
 }
 
@@ -72,6 +90,9 @@ export { conditionModelSchema } from './conditionModel'
 export { fishOccurrenceSchema } from './fishOccurrence'
 export { lengthDistributionSchema } from './lengthModel'
 export { spotDataStatusSchema, spotTravelOptionSchema } from './fishingSpot'
+export { gearItemSchema } from './gear'
+export { methodSchema } from './method'
+export { shopItemSchema } from './shopItem'
 export { sourceRefSchema, sourceRefsSchema } from './sourceRef'
 export { traitConfigurationSchema } from './traitConfiguration'
 export { weightModelSchema } from './weightModel'

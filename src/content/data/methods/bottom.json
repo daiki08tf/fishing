@@ -1,0 +1,7 @@
+{
+  "id": "bottom",
+  "name": "底釣り",
+  "description": "底を狙って置き竿気味に待つ。",
+  "requiresOffering": "bait",
+  "offeringTags": ["worm", "cut", "paste"]
+}

@@ -6,8 +6,8 @@
   "dataStatus": "provisional",
   "access": [{ "kind": "transport", "tag": "train" }],
   "travelOptions": [
-    { "transport": "train", "minutes": 38 },
-    { "transport": "bus", "minutes": 50 }
+    { "transport": "train", "minutes": 38, "cost": 420 },
+    { "transport": "bus", "minutes": 50, "cost": 520 }
   ],
   "habitatTags": ["phase1-sample-river", "phase1-sample-shallow"],
   "depth": { "depthRangeM": { "min": 1, "max": 5 } },

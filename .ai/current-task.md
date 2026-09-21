@@ -2,48 +2,57 @@
 
 ## Phase
 
-**Phase 4 — First Playable Tokyo-area Loop**
+**Phase 5 — Economy / Calendar / Shop / Transport**
 
 状態: **完了**（詳細は `.ai/handoff.md`）
 
-HOME → Map → Spot → 釣り（複数回）→ 帰宅 → HOME が 1 本のループとして成立した。
-ゲーム内時間が移動・釣り・帰宅で進み、釣れなくても Knowledge が増える。
-釣り場は 8 件（東京近郊を模した検証用データ）。
+毎月、生活費を差し引いた自由資金が入り、その資金で釣行・買い物をし、
+中古車を買うと行けなかった釣り場が開く。時間は移動・釣り・帰宅・翌朝まで休むで進む。
+**仕事の予定による釣行制限は無い**（平日でも自由に釣りに行ける）。
+
+## 設計変更（重要・Fishing-first）
+
+**会社員という設定は世界観として維持するが、仕事はゲームシステムにしない。**
+
+- 仕事は「毎月、生活費を差し引いた自由資金が入る背景設定」としてのみ扱う
+- 勤務時間・通勤・有給・Trip の勤務判定・仕事ミニゲームは持たない
+- Career / 昇進 / 転職 / Job Offer / Work Skill / Cross-Skill は実装しない
+- カレンダー（日付・曜日）は、時間帯・季節・天候・潮・魚の活性を
+  今後接続するための**釣りシステムの器**として保持する
+- 会社員要素は月次の定期収入だけに限定する
 
 ## Next Phase（まだ開始していない）
 
-**Phase 5 — Life / Work / Economy（+ early vehicle ownership proof-of-concept）**
+**Phase 6 — Tackle Depth**
 
 ### Objective
 
-「平日は働き、休日に釣りに行く」生活を成立させる。ROADMAP Phase 5 の Done 条件を満たす。
+タックルを「数値の強さ」ではなく「釣り方の選択」として成立させる。
+ROADMAP Phase 6 の Done 条件を満たす。
 
-- 週単位の仕事解決（評価・給与・自由時間）
-- 有給・残業・勤務形態の抽象化
-- Career の成長とイベント（昇給・昇進・転職・リモート・フレックス）
-- 釣り Skill が仕事へ緩く効く Cross-Skill
-- 資金（現金・給与・簡易生活費）と Shop / 装備購入
-- 車の所有が世界を広げる最小検証
+- Rod / Reel / Line / Leader / Hook / Lure / Bait
+- 互換性、キャスト距離、ライン強度、ドラッグ、ルアー重量域、釣法適合
+- 同じ釣法でも最適装備が 1 セットに固定されないこと
 
 ### Allowed scope
 
-- `src/domain/career/` と `src/domain/economy/` の実装（型は DATA_MODEL §17 / §18 に既にある）
-- Calendar（平日・休日）を使った釣行の制限と自由時間
-- Save への career / finance の実接続（現在は PROVISIONAL な中立値）
-- 移動手段の購入（車）と Access への反映
+- `src/domain/gear/` の実装（型は DATA_MODEL §13 に既にある）
+- Tackle が Encounter（ルアー/ベイト/釣法）とファイト（ライン強度・ドラッグ）へ効く接続
+- Shop に装備を追加（Content のみで並ぶ構造は Phase 5 で用意済み）
+- Save への装備と所持の追加（必要なら v5）
 
 ### Explicit non-goals
 
-- 細かな家計管理（家賃・税・食費）
-- 仕事の操作ミニゲーム
-- ボート・全国 Map・本格 Gear（Phase 6 以降）
-- 実在魚データの大量投入
+- 実在ブランドの投入（DECISIONS §1 のとおり初期は架空）
+- ボート・全国 Map（Phase 7 以降）
+- 天候・潮
+- 大会・Reputation
 
 ### Completion criteria
 
-- 「休日しか釣りに行けない」「資金で車を買うと行ける場所が増える」が成立する
-- 仕事が釣りの自由度に返ってくる（給料・休み・通勤）
-- 資金不足で長時間釣行不能にならない
+- 釣法ごとに有効な装備構成が複数ある
+- 装備が Domain 経由で釣果とファイトに効く（UI で計算しない）
+- 装備追加が Content だけで完結する
 - `npm run check` が PASS する
 
 ## 現在の制約（全 Phase 共通）
@@ -51,7 +60,7 @@ HOME → Map → Spot → 釣り（複数回）→ 帰宅 → HOME が 1 本の�
 - 変更してよい範囲は、その Phase の指示で明示されたものに限る。
 - 設計文書を実装都合で書き換えない。設計変更は `docs/DECISIONS.md` に記録する。
 - Level を location hard lock に使わない（`docs/DECISIONS.md` §5 / §6）。
-- FishingEngine に XP / Level / Skill Point / Codex / World を持たせない。
+- FishingEngine に XP / Level / Codex / World / Economy / Schedule を持たせない。
+- Career / 昇進 / 転職 / 仕事ミニゲームを作らない。
 - 実在の場所・魚について、根拠のない断定を Content に書かない（`dataStatus` で明示）。
 - `src/domain` は外部パッケージを import しない。乱数は `RandomSource` 経由のみ。
-- 乱数の消費順は固定する。変えると seed 再現性が壊れる。

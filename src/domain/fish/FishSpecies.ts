@@ -48,6 +48,14 @@ export type FishSpecies = {
   readonly lureCategories?: readonly string[]
   readonly fishingMethods?: readonly string[]
 
+  /**
+   * 釣法との相性（methodId → 倍率）。Phase 6 で導入。
+   * PROVISIONAL — 現在の魚種はすべて検証用データであり、生物学的な事実ではない。
+   */
+  readonly methodAffinity?: Readonly<Record<string, number>>
+  /** offering のタグとの相性（lureType / targetProfile → 倍率）。 */
+  readonly offeringAffinity?: Readonly<Record<string, number>>
+
   readonly lengthModel: LengthDistribution
   /** 体長-体重関係。Phase 2 で必須にした（体重は体長から導出する）。 */
   readonly weightModel: WeightModel

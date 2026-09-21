@@ -44,6 +44,10 @@ export const fishSpeciesSchema = z.strictObject({
   lureCategories: z.array(nonEmptyString).optional(),
   fishingMethods: z.array(nonEmptyString).optional(),
 
+  /** PROVISIONAL — 釣法・offering との相性（1 が標準）。 */
+  methodAffinity: z.record(z.string(), z.number().nonnegative()).optional(),
+  offeringAffinity: z.record(z.string(), z.number().nonnegative()).optional(),
+
   lengthModel: lengthDistributionSchema,
   // Phase 2 で必須にした。体重は体長から導出する（独立した乱数にしない）。
   weightModel: weightModelSchema,

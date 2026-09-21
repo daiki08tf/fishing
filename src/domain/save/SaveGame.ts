@@ -6,6 +6,7 @@ import type { IsoDateTime } from '../primitives'
 import type { PlayerProgression } from '../progression/PlayerProgression'
 import type { AnglerProgression } from '../progression/AnglerProgression'
 import type { WorldState } from '../world/worldSession'
+import type { ShopItemId } from '../ids'
 
 /**
  * Save schema。ARCHITECTURE.md §9 に対応する。
@@ -16,13 +17,15 @@ import type { WorldState } from '../world/worldSession'
  * v2: Angler Progression（Phase 3）。Level / XP / Skill Point / Skill / Perk /
  *     反復状態に加え、Codex（捕獲記録）を保存する。
  * v3: World（Phase 4）。ゲーム内時間・現在位置・発見済み Spot・移動手段・釣行記録を保存する。
+ * v4: Economy（Phase 5）。資金の詳細（月次精算・履歴）と購入済み商品を保存する。
  */
 
 export const SAVE_SCHEMA_VERSION_V1 = 1 as const
 export const SAVE_SCHEMA_VERSION_V2 = 2 as const
 export const SAVE_SCHEMA_VERSION_V3 = 3 as const
+export const SAVE_SCHEMA_VERSION_V4 = 4 as const
 
-export const CURRENT_SAVE_SCHEMA_VERSION = SAVE_SCHEMA_VERSION_V3
+export const CURRENT_SAVE_SCHEMA_VERSION = SAVE_SCHEMA_VERSION_V4
 
 export type SaveSchemaVersion = typeof CURRENT_SAVE_SCHEMA_VERSION
 
@@ -33,7 +36,8 @@ export type SaveGameV1 = {
   readonly progression: PlayerProgression
   readonly knowledge: KnowledgeState
   readonly career: CareerState
-  readonly finance: FinanceState
+  /** v3 時点の資金ブロック（月次精算の状態と履歴は v4 で追加）。 */
+  readonly finance: FinanceStateV3
 }
 
 /**
@@ -53,7 +57,7 @@ export type SaveGameV2 = {
   readonly codex: CodexState
   readonly knowledge: KnowledgeState
   readonly career: CareerState
-  readonly finance: FinanceState
+  readonly finance: FinanceStateV3
 }
 
 /**
@@ -71,7 +75,38 @@ export type SaveGameV3 = {
   readonly world: WorldState
   readonly knowledge: KnowledgeState
   readonly career: CareerState
-  readonly finance: FinanceState
+  readonly finance: FinanceStateV3
 }
 
-export type CurrentSave = SaveGameV3
+/**
+ * v3 時点の資金ブロック。
+ * Phase 5 で月次精算と履歴が増えたため、移行のために残す。
+ */
+export type FinanceStateV3 = {
+  readonly cash: number
+  readonly salaryIncome: number
+  readonly simplifiedLivingCost: number
+}
+
+/**
+ * 現行の Save（Phase 5）。
+ *
+ * finance は月次精算の状態と履歴を含み、purchases は購入済み商品を持つ。
+ * world / progression / codex / knowledge は v3 と同じ。
+ *
+ * Career / 仕事の予定（勤務時間・有給）はゲームシステムではないため保存しない。
+ * 会社員設定は月次の定期収入（finance）としてのみ表現する。
+ */
+export type SaveGameV4 = {
+  readonly schemaVersion: typeof SAVE_SCHEMA_VERSION_V4
+  readonly createdAt: IsoDateTime
+  readonly updatedAt: IsoDateTime
+  readonly progression: AnglerProgression
+  readonly codex: CodexState
+  readonly world: WorldState
+  readonly knowledge: KnowledgeState
+  readonly finance: FinanceState
+  readonly purchases: readonly ShopItemId[]
+}
+
+export type CurrentSave = SaveGameV4

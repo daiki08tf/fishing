@@ -9,7 +9,7 @@ export const createTestSpot = (overrides: Partial<FishingSpot> = {}): FishingSpo
   environment: 'canal',
   dataStatus: 'provisional',
   access: [{ kind: 'transport', tag: 'walk' }],
-  travelOptions: [{ transport: 'walk', minutes: 20 }],
+  travelOptions: [{ transport: 'walk', minutes: 20, cost: 0 }],
   habitatTags: ['test-habitat'],
   fishTable: [{ speciesId: asFishSpeciesId('test-species'), basePresence: 1 }],
   knowledgeConfig: {

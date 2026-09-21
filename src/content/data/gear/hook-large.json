@@ -1,0 +1,11 @@
+{
+  "id": "hook-large",
+  "name": "太軸フック 1番",
+  "price": 650,
+  "category": "hook",
+  "size": 1,
+  "strengthKg": 10,
+  "hookType": "offset",
+  "penetration": 0.5,
+  "holdingPower": 0.85
+}

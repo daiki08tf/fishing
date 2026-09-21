@@ -4,12 +4,14 @@ import {
   compareWorldTime,
   daysInMonth,
   dayOfWeekOf,
+  DEFAULT_WAKE_HOUR,
   formatClock,
   formatDuration,
   formatWorldTime,
   isSameDay,
   isWeekend,
   minutesOfDay,
+  sleepUntilMorning,
   toMinutes,
   type WorldTime,
 } from './WorldTime'
@@ -77,5 +79,38 @@ describe('world time', () => {
     expect(advanceMinutes(at(2026, 5, 2, 6, 0), 1234)).toEqual(
       advanceMinutes(at(2026, 5, 2, 6, 0), 1234),
     )
+  })
+
+  it('sleeps until the next morning', () => {
+    // 22:30 → 翌日 06:00
+    expect(sleepUntilMorning({ year: 2026, month: 5, day: 4, hour: 22, minute: 30 })).toEqual({
+      year: 2026,
+      month: 5,
+      day: 5,
+      hour: DEFAULT_WAKE_HOUR,
+      minute: 0,
+    })
+
+    // 昼間でも翌朝まで休める（仕事の予定による制限は無い）。
+    expect(sleepUntilMorning({ year: 2026, month: 5, day: 4, hour: 10, minute: 0 })).toEqual({
+      year: 2026,
+      month: 5,
+      day: 5,
+      hour: 6,
+      minute: 0,
+    })
+
+    // 早朝でも翌日になる。
+    expect(sleepUntilMorning({ year: 2026, month: 5, day: 4, hour: 5, minute: 0 }).day).toBe(5)
+  })
+
+  it('rolls the month over when sleeping', () => {
+    expect(sleepUntilMorning({ year: 2026, month: 5, day: 31, hour: 23, minute: 0 })).toEqual({
+      year: 2026,
+      month: 6,
+      day: 1,
+      hour: 6,
+      minute: 0,
+    })
   })
 })
