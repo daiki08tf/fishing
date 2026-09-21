@@ -277,8 +277,8 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
         <section className="panel">
           <h3 className="panel__subheading">狙う場所</h3>
           <p className="panel__body">
-            快適距離 {castCapability.comfortableDistanceM}m / 最大距離{' '}
-            {castCapability.maxDistanceM}m / 精度 {Math.round(castCapability.precision * 100)}%
+            快適距離 {castCapability.comfortableDistanceM}m / 最大距離 {castCapability.maxDistanceM}
+            m / 精度 {Math.round(castCapability.precision * 100)}%
           </p>
           <p className="fishing__legend">
             遠くへ投げるほど有利ではない。狙う水域によって出会いやすい魚が変わる。
@@ -317,9 +317,7 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
             </p>
           )}
 
-          {canCast ? null : (
-            <p className="notice">今のタックルでは選択中の水域まで届かない。</p>
-          )}
+          {canCast ? null : <p className="notice">今のタックルでは選択中の水域まで届かない。</p>}
         </section>
       )}
 
