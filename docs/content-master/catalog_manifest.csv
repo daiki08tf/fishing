@@ -1,0 +1,16 @@
+File,Rows,Status
+brands.csv,12,PROTOTYPE_PARODY
+brand_series.csv,54,FICTIONAL_CONTENT
+fish_master.csv,218,DRAFT_UNVERIFIED
+reels.csv,383,FICTIONAL_CONTENT
+rods.csv,705,FICTIONAL_CONTENT
+lines.csv,89,FICTIONAL_CONTENT
+leaders.csv,56,FICTIONAL_CONTENT
+hooks.csv,91,FICTIONAL_CONTENT
+lures.csv,518,FICTIONAL_CONTENT
+baits.csv,12,FICTIONAL_CONTENT
+methods.csv,20,DESIGN_DRAFT
+terminal_tackle_future.csv,76,FUTURE_PHASE
+landing_gear_future.csv,13,FUTURE_PHASE
+field_gear_future.csv,28,FUTURE_PHASE
+design_rules.csv,9,DESIGN_RULES

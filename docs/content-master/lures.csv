@@ -1,0 +1,519 @@
+GearID,Brand,Name,LureType,WeightG,LengthMm,DepthRange,RetrieveStyle,VisualProfile,Casting,ActionScore,FinesseAffinity,PowerAffinity,Tags,PriceJPY,Status
+lure-0001,Megaburst,Minnow 85 Natural,minnow,5,85,shallow-mid,steady/twitch,natural,64,66,78,47,small-bait|finesse,1500,FICTIONAL_CONTENT
+lure-0002,Megaburst,Minnow 85 Flash,minnow,5,85,shallow-mid,steady/twitch,flash,64,66,78,47,small-bait|finesse,1500,FICTIONAL_CONTENT
+lure-0003,Megaburst,Minnow 92 Natural,minnow,7,92,shallow-mid,steady/twitch,natural,66,68,75,48,small-bait|finesse,1600,FICTIONAL_CONTENT
+lure-0004,Megaburst,Minnow 92 Flash,minnow,7,92,shallow-mid,steady/twitch,flash,66,68,75,48,small-bait|finesse,1600,FICTIONAL_CONTENT
+lure-0005,Megaburst,Minnow 99 Natural,minnow,10,99,shallow-mid,steady/twitch,natural,69,70,71,51,allround,1700,FICTIONAL_CONTENT
+lure-0006,Megaburst,Minnow 99 Flash,minnow,10,99,shallow-mid,steady/twitch,flash,69,70,71,51,allround,1700,FICTIONAL_CONTENT
+lure-0007,Megaburst,Minnow 106 Natural,minnow,14,106,shallow-mid,steady/twitch,natural,73,72,66,55,allround,1900,FICTIONAL_CONTENT
+lure-0008,Megaburst,Minnow 106 Flash,minnow,14,106,shallow-mid,steady/twitch,flash,73,72,66,55,allround,1900,FICTIONAL_CONTENT
+lure-0009,Megaburst,Minnow 113 Natural,minnow,18,113,shallow-mid,steady/twitch,natural,78,74,61,58,allround,2100,FICTIONAL_CONTENT
+lure-0010,Megaburst,Minnow 113 Flash,minnow,18,113,shallow-mid,steady/twitch,flash,78,74,61,58,allround,2100,FICTIONAL_CONTENT
+lure-0011,Megaburst,Minnow 120 Natural,minnow,24,120,shallow-mid,steady/twitch,natural,84,76,53,64,allround,2400,FICTIONAL_CONTENT
+lure-0012,Megaburst,Minnow 120 Flash,minnow,24,120,shallow-mid,steady/twitch,flash,84,76,53,64,allround,2400,FICTIONAL_CONTENT
+lure-0013,Megaburst,Vibration 65 Natural,vibration,7,65,mid-deep,steady/lift-fall,natural,66,66,75,48,small-bait|finesse,1600,FICTIONAL_CONTENT
+lure-0014,Megaburst,Vibration 65 Flash,vibration,7,65,mid-deep,steady/lift-fall,flash,66,66,75,48,small-bait|finesse,1600,FICTIONAL_CONTENT
+lure-0015,Megaburst,Vibration 72 Natural,vibration,10,72,mid-deep,steady/lift-fall,natural,69,68,71,51,allround,1700,FICTIONAL_CONTENT
+lure-0016,Megaburst,Vibration 72 Flash,vibration,10,72,mid-deep,steady/lift-fall,flash,69,68,71,51,allround,1700,FICTIONAL_CONTENT
+lure-0017,Megaburst,Vibration 79 Natural,vibration,14,79,mid-deep,steady/lift-fall,natural,73,70,66,55,allround,1900,FICTIONAL_CONTENT
+lure-0018,Megaburst,Vibration 79 Flash,vibration,14,79,mid-deep,steady/lift-fall,flash,73,70,66,55,allround,1900,FICTIONAL_CONTENT
+lure-0019,Megaburst,Vibration 86 Natural,vibration,18,86,mid-deep,steady/lift-fall,natural,78,72,61,58,allround,2100,FICTIONAL_CONTENT
+lure-0020,Megaburst,Vibration 86 Flash,vibration,18,86,mid-deep,steady/lift-fall,flash,78,72,61,58,allround,2100,FICTIONAL_CONTENT
+lure-0021,Megaburst,Vibration 93 Natural,vibration,24,93,mid-deep,steady/lift-fall,natural,84,74,53,64,allround,2400,FICTIONAL_CONTENT
+lure-0022,Megaburst,Vibration 93 Flash,vibration,24,93,mid-deep,steady/lift-fall,flash,84,74,53,64,allround,2400,FICTIONAL_CONTENT
+lure-0023,Megaburst,Vibration 100 Natural,vibration,28,100,mid-deep,steady/lift-fall,natural,89,76,48,67,power|distance,2600,FICTIONAL_CONTENT
+lure-0024,Megaburst,Vibration 100 Flash,vibration,28,100,mid-deep,steady/lift-fall,flash,89,76,48,67,power|distance,2600,FICTIONAL_CONTENT
+lure-0025,Megaburst,Topwater 95 Natural,topwater,6,95,surface,walk/pop,natural,65,66,76,47,small-bait|finesse,1500,FICTIONAL_CONTENT
+lure-0026,Megaburst,Topwater 95 Flash,topwater,6,95,surface,walk/pop,flash,65,66,76,47,small-bait|finesse,1500,FICTIONAL_CONTENT
+lure-0027,Megaburst,Topwater 102 Natural,topwater,8,102,surface,walk/pop,natural,67,68,74,49,allround,1600,FICTIONAL_CONTENT
+lure-0028,Megaburst,Topwater 102 Flash,topwater,8,102,surface,walk/pop,flash,67,68,74,49,allround,1600,FICTIONAL_CONTENT
+lure-0029,Megaburst,Topwater 109 Natural,topwater,12,109,surface,walk/pop,natural,71,70,68,53,allround,1800,FICTIONAL_CONTENT
+lure-0030,Megaburst,Topwater 109 Flash,topwater,12,109,surface,walk/pop,flash,71,70,68,53,allround,1800,FICTIONAL_CONTENT
+lure-0031,Megaburst,Topwater 116 Natural,topwater,18,116,surface,walk/pop,natural,78,72,61,58,allround,2100,FICTIONAL_CONTENT
+lure-0032,Megaburst,Topwater 116 Flash,topwater,18,116,surface,walk/pop,flash,78,72,61,58,allround,2100,FICTIONAL_CONTENT
+lure-0033,Megaburst,Topwater 123 Natural,topwater,25,123,surface,walk/pop,natural,86,74,52,65,power|distance,2500,FICTIONAL_CONTENT
+lure-0034,Megaburst,Topwater 123 Flash,topwater,25,123,surface,walk/pop,flash,86,74,52,65,power|distance,2500,FICTIONAL_CONTENT
+lure-0035,Megaburst,Shad 60 Natural,shad,4,60,shallow-mid,steady,natural,62,66,79,46,small-bait|finesse,1400,FICTIONAL_CONTENT
+lure-0036,Megaburst,Shad 60 Flash,shad,4,60,shallow-mid,steady,flash,62,66,79,46,small-bait|finesse,1400,FICTIONAL_CONTENT
+lure-0037,Megaburst,Shad 67 Natural,shad,5,67,shallow-mid,steady,natural,64,68,78,47,small-bait|finesse,1500,FICTIONAL_CONTENT
+lure-0038,Megaburst,Shad 67 Flash,shad,5,67,shallow-mid,steady,flash,64,68,78,47,small-bait|finesse,1500,FICTIONAL_CONTENT
+lure-0039,Megaburst,Shad 74 Natural,shad,7,74,shallow-mid,steady,natural,66,70,75,48,small-bait|finesse,1600,FICTIONAL_CONTENT
+lure-0040,Megaburst,Shad 74 Flash,shad,7,74,shallow-mid,steady,flash,66,70,75,48,small-bait|finesse,1600,FICTIONAL_CONTENT
+lure-0041,Megaburst,Shad 81 Natural,shad,10,81,shallow-mid,steady,natural,69,72,71,51,allround,1700,FICTIONAL_CONTENT
+lure-0042,Megaburst,Shad 81 Flash,shad,10,81,shallow-mid,steady,flash,69,72,71,51,allround,1700,FICTIONAL_CONTENT
+lure-0043,Megaburst,Shad 88 Natural,shad,14,88,shallow-mid,steady,natural,73,74,66,55,allround,1900,FICTIONAL_CONTENT
+lure-0044,Megaburst,Shad 88 Flash,shad,14,88,shallow-mid,steady,flash,73,74,66,55,allround,1900,FICTIONAL_CONTENT
+lure-0045,Megaburst,Crankbait 55 Natural,crankbait,5,55,mid,steady,natural,64,66,78,47,small-bait|finesse,1500,FICTIONAL_CONTENT
+lure-0046,Megaburst,Crankbait 55 Flash,crankbait,5,55,mid,steady,flash,64,66,78,47,small-bait|finesse,1500,FICTIONAL_CONTENT
+lure-0047,Megaburst,Crankbait 62 Natural,crankbait,7,62,mid,steady,natural,66,68,75,48,small-bait|finesse,1600,FICTIONAL_CONTENT
+lure-0048,Megaburst,Crankbait 62 Flash,crankbait,7,62,mid,steady,flash,66,68,75,48,small-bait|finesse,1600,FICTIONAL_CONTENT
+lure-0049,Megaburst,Crankbait 69 Natural,crankbait,10,69,mid,steady,natural,69,70,71,51,allround,1700,FICTIONAL_CONTENT
+lure-0050,Megaburst,Crankbait 69 Flash,crankbait,10,69,mid,steady,flash,69,70,71,51,allround,1700,FICTIONAL_CONTENT
+lure-0051,Megaburst,Crankbait 76 Natural,crankbait,14,76,mid,steady,natural,73,72,66,55,allround,1900,FICTIONAL_CONTENT
+lure-0052,Megaburst,Crankbait 76 Flash,crankbait,14,76,mid,steady,flash,73,72,66,55,allround,1900,FICTIONAL_CONTENT
+lure-0053,Megaburst,Crankbait 83 Natural,crankbait,18,83,mid,steady,natural,78,74,61,58,allround,2100,FICTIONAL_CONTENT
+lure-0054,Megaburst,Crankbait 83 Flash,crankbait,18,83,mid,steady,flash,78,74,61,58,allround,2100,FICTIONAL_CONTENT
+lure-0055,Megaburst,Jerkbait 100 Natural,jerkbait,7,100,shallow-mid,jerk/pause,natural,66,66,75,48,small-bait|finesse,1600,FICTIONAL_CONTENT
+lure-0056,Megaburst,Jerkbait 100 Flash,jerkbait,7,100,shallow-mid,jerk/pause,flash,66,66,75,48,small-bait|finesse,1600,FICTIONAL_CONTENT
+lure-0057,Megaburst,Jerkbait 107 Natural,jerkbait,10,107,shallow-mid,jerk/pause,natural,69,68,71,51,allround,1700,FICTIONAL_CONTENT
+lure-0058,Megaburst,Jerkbait 107 Flash,jerkbait,10,107,shallow-mid,jerk/pause,flash,69,68,71,51,allround,1700,FICTIONAL_CONTENT
+lure-0059,Megaburst,Jerkbait 114 Natural,jerkbait,14,114,shallow-mid,jerk/pause,natural,73,70,66,55,allround,1900,FICTIONAL_CONTENT
+lure-0060,Megaburst,Jerkbait 114 Flash,jerkbait,14,114,shallow-mid,jerk/pause,flash,73,70,66,55,allround,1900,FICTIONAL_CONTENT
+lure-0061,Megaburst,Jerkbait 121 Natural,jerkbait,18,121,shallow-mid,jerk/pause,natural,78,72,61,58,allround,2100,FICTIONAL_CONTENT
+lure-0062,Megaburst,Jerkbait 121 Flash,jerkbait,18,121,shallow-mid,jerk/pause,flash,78,72,61,58,allround,2100,FICTIONAL_CONTENT
+lure-0063,Megaburst,Jerkbait 128 Natural,jerkbait,24,128,shallow-mid,jerk/pause,natural,84,74,53,64,allround,2400,FICTIONAL_CONTENT
+lure-0064,Megaburst,Jerkbait 128 Flash,jerkbait,24,128,shallow-mid,jerk/pause,flash,84,74,53,64,allround,2400,FICTIONAL_CONTENT
+lure-0065,Evergreen Field,Minnow 85 Natural,minnow,5,85,shallow-mid,steady/twitch,natural,56,66,78,47,small-bait|finesse,1500,FICTIONAL_CONTENT
+lure-0066,Evergreen Field,Minnow 85 Flash,minnow,5,85,shallow-mid,steady/twitch,flash,56,66,78,47,small-bait|finesse,1500,FICTIONAL_CONTENT
+lure-0067,Evergreen Field,Minnow 92 Natural,minnow,7,92,shallow-mid,steady/twitch,natural,58,68,75,48,small-bait|finesse,1600,FICTIONAL_CONTENT
+lure-0068,Evergreen Field,Minnow 92 Flash,minnow,7,92,shallow-mid,steady/twitch,flash,58,68,75,48,small-bait|finesse,1600,FICTIONAL_CONTENT
+lure-0069,Evergreen Field,Minnow 99 Natural,minnow,10,99,shallow-mid,steady/twitch,natural,61,70,71,51,allround,1700,FICTIONAL_CONTENT
+lure-0070,Evergreen Field,Minnow 99 Flash,minnow,10,99,shallow-mid,steady/twitch,flash,61,70,71,51,allround,1700,FICTIONAL_CONTENT
+lure-0071,Evergreen Field,Minnow 106 Natural,minnow,14,106,shallow-mid,steady/twitch,natural,65,72,66,55,allround,1900,FICTIONAL_CONTENT
+lure-0072,Evergreen Field,Minnow 106 Flash,minnow,14,106,shallow-mid,steady/twitch,flash,65,72,66,55,allround,1900,FICTIONAL_CONTENT
+lure-0073,Evergreen Field,Minnow 113 Natural,minnow,18,113,shallow-mid,steady/twitch,natural,70,74,61,58,allround,2100,FICTIONAL_CONTENT
+lure-0074,Evergreen Field,Minnow 113 Flash,minnow,18,113,shallow-mid,steady/twitch,flash,70,74,61,58,allround,2100,FICTIONAL_CONTENT
+lure-0075,Evergreen Field,Minnow 120 Natural,minnow,24,120,shallow-mid,steady/twitch,natural,76,76,53,64,allround,2400,FICTIONAL_CONTENT
+lure-0076,Evergreen Field,Minnow 120 Flash,minnow,24,120,shallow-mid,steady/twitch,flash,76,76,53,64,allround,2400,FICTIONAL_CONTENT
+lure-0077,Evergreen Field,Crankbait 55 Natural,crankbait,5,55,mid,steady,natural,56,66,78,47,small-bait|finesse,1500,FICTIONAL_CONTENT
+lure-0078,Evergreen Field,Crankbait 55 Flash,crankbait,5,55,mid,steady,flash,56,66,78,47,small-bait|finesse,1500,FICTIONAL_CONTENT
+lure-0079,Evergreen Field,Crankbait 62 Natural,crankbait,7,62,mid,steady,natural,58,68,75,48,small-bait|finesse,1600,FICTIONAL_CONTENT
+lure-0080,Evergreen Field,Crankbait 62 Flash,crankbait,7,62,mid,steady,flash,58,68,75,48,small-bait|finesse,1600,FICTIONAL_CONTENT
+lure-0081,Evergreen Field,Crankbait 69 Natural,crankbait,10,69,mid,steady,natural,61,70,71,51,allround,1700,FICTIONAL_CONTENT
+lure-0082,Evergreen Field,Crankbait 69 Flash,crankbait,10,69,mid,steady,flash,61,70,71,51,allround,1700,FICTIONAL_CONTENT
+lure-0083,Evergreen Field,Crankbait 76 Natural,crankbait,14,76,mid,steady,natural,65,72,66,55,allround,1900,FICTIONAL_CONTENT
+lure-0084,Evergreen Field,Crankbait 76 Flash,crankbait,14,76,mid,steady,flash,65,72,66,55,allround,1900,FICTIONAL_CONTENT
+lure-0085,Evergreen Field,Crankbait 83 Natural,crankbait,18,83,mid,steady,natural,70,74,61,58,allround,2100,FICTIONAL_CONTENT
+lure-0086,Evergreen Field,Crankbait 83 Flash,crankbait,18,83,mid,steady,flash,70,74,61,58,allround,2100,FICTIONAL_CONTENT
+lure-0087,Evergreen Field,Soft Plastic 65 Natural,soft_plastic,2,65,variable,jighead/texas,natural,52,66,81,44,small-bait|finesse,1300,FICTIONAL_CONTENT
+lure-0088,Evergreen Field,Soft Plastic 65 Flash,soft_plastic,2,65,variable,jighead/texas,flash,52,66,81,44,small-bait|finesse,1300,FICTIONAL_CONTENT
+lure-0089,Evergreen Field,Soft Plastic 72 Natural,soft_plastic,3,72,variable,jighead/texas,natural,53,68,80,45,small-bait|finesse,1400,FICTIONAL_CONTENT
+lure-0090,Evergreen Field,Soft Plastic 72 Flash,soft_plastic,3,72,variable,jighead/texas,flash,53,68,80,45,small-bait|finesse,1400,FICTIONAL_CONTENT
+lure-0091,Evergreen Field,Soft Plastic 79 Natural,soft_plastic,5,79,variable,jighead/texas,natural,56,70,78,47,small-bait|finesse,1500,FICTIONAL_CONTENT
+lure-0092,Evergreen Field,Soft Plastic 79 Flash,soft_plastic,5,79,variable,jighead/texas,flash,56,70,78,47,small-bait|finesse,1500,FICTIONAL_CONTENT
+lure-0093,Evergreen Field,Soft Plastic 86 Natural,soft_plastic,7,86,variable,jighead/texas,natural,58,72,75,48,small-bait|finesse,1600,FICTIONAL_CONTENT
+lure-0094,Evergreen Field,Soft Plastic 86 Flash,soft_plastic,7,86,variable,jighead/texas,flash,58,72,75,48,small-bait|finesse,1600,FICTIONAL_CONTENT
+lure-0095,Evergreen Field,Soft Plastic 93 Natural,soft_plastic,10,93,variable,jighead/texas,natural,61,74,71,51,allround,1700,FICTIONAL_CONTENT
+lure-0096,Evergreen Field,Soft Plastic 93 Flash,soft_plastic,10,93,variable,jighead/texas,flash,61,74,71,51,allround,1700,FICTIONAL_CONTENT
+lure-0097,Evergreen Field,Soft Plastic 100 Natural,soft_plastic,14,100,variable,jighead/texas,natural,65,76,66,55,allround,1900,FICTIONAL_CONTENT
+lure-0098,Evergreen Field,Soft Plastic 100 Flash,soft_plastic,14,100,variable,jighead/texas,flash,65,76,66,55,allround,1900,FICTIONAL_CONTENT
+lure-0099,Evergreen Field,Spinner 45 Natural,spinner,2,45,shallow-mid,steady,natural,52,66,81,44,small-bait|finesse,1300,FICTIONAL_CONTENT
+lure-0100,Evergreen Field,Spinner 45 Flash,spinner,2,45,shallow-mid,steady,flash,52,66,81,44,small-bait|finesse,1300,FICTIONAL_CONTENT
+lure-0101,Evergreen Field,Spinner 52 Natural,spinner,3,52,shallow-mid,steady,natural,53,68,80,45,small-bait|finesse,1400,FICTIONAL_CONTENT
+lure-0102,Evergreen Field,Spinner 52 Flash,spinner,3,52,shallow-mid,steady,flash,53,68,80,45,small-bait|finesse,1400,FICTIONAL_CONTENT
+lure-0103,Evergreen Field,Spinner 59 Natural,spinner,5,59,shallow-mid,steady,natural,56,70,78,47,small-bait|finesse,1500,FICTIONAL_CONTENT
+lure-0104,Evergreen Field,Spinner 59 Flash,spinner,5,59,shallow-mid,steady,flash,56,70,78,47,small-bait|finesse,1500,FICTIONAL_CONTENT
+lure-0105,Evergreen Field,Spinner 66 Natural,spinner,7,66,shallow-mid,steady,natural,58,72,75,48,small-bait|finesse,1600,FICTIONAL_CONTENT
+lure-0106,Evergreen Field,Spinner 66 Flash,spinner,7,66,shallow-mid,steady,flash,58,72,75,48,small-bait|finesse,1600,FICTIONAL_CONTENT
+lure-0107,Evergreen Field,Spinner 73 Natural,spinner,10,73,shallow-mid,steady,natural,61,74,71,51,allround,1700,FICTIONAL_CONTENT
+lure-0108,Evergreen Field,Spinner 73 Flash,spinner,10,73,shallow-mid,steady,flash,61,74,71,51,allround,1700,FICTIONAL_CONTENT
+lure-0109,Evergreen Field,Topwater 95 Natural,topwater,6,95,surface,walk/pop,natural,57,66,76,47,small-bait|finesse,1500,FICTIONAL_CONTENT
+lure-0110,Evergreen Field,Topwater 95 Flash,topwater,6,95,surface,walk/pop,flash,57,66,76,47,small-bait|finesse,1500,FICTIONAL_CONTENT
+lure-0111,Evergreen Field,Topwater 102 Natural,topwater,8,102,surface,walk/pop,natural,59,68,74,49,allround,1600,FICTIONAL_CONTENT
+lure-0112,Evergreen Field,Topwater 102 Flash,topwater,8,102,surface,walk/pop,flash,59,68,74,49,allround,1600,FICTIONAL_CONTENT
+lure-0113,Evergreen Field,Topwater 109 Natural,topwater,12,109,surface,walk/pop,natural,63,70,68,53,allround,1800,FICTIONAL_CONTENT
+lure-0114,Evergreen Field,Topwater 109 Flash,topwater,12,109,surface,walk/pop,flash,63,70,68,53,allround,1800,FICTIONAL_CONTENT
+lure-0115,Evergreen Field,Topwater 116 Natural,topwater,18,116,surface,walk/pop,natural,70,72,61,58,allround,2100,FICTIONAL_CONTENT
+lure-0116,Evergreen Field,Topwater 116 Flash,topwater,18,116,surface,walk/pop,flash,70,72,61,58,allround,2100,FICTIONAL_CONTENT
+lure-0117,Evergreen Field,Topwater 123 Natural,topwater,25,123,surface,walk/pop,natural,78,74,52,65,power|distance,2500,FICTIONAL_CONTENT
+lure-0118,Evergreen Field,Topwater 123 Flash,topwater,25,123,surface,walk/pop,flash,78,74,52,65,power|distance,2500,FICTIONAL_CONTENT
+lure-0119,Evergreen Field,Jerkbait 100 Natural,jerkbait,7,100,shallow-mid,jerk/pause,natural,58,66,75,48,small-bait|finesse,1600,FICTIONAL_CONTENT
+lure-0120,Evergreen Field,Jerkbait 100 Flash,jerkbait,7,100,shallow-mid,jerk/pause,flash,58,66,75,48,small-bait|finesse,1600,FICTIONAL_CONTENT
+lure-0121,Evergreen Field,Jerkbait 107 Natural,jerkbait,10,107,shallow-mid,jerk/pause,natural,61,68,71,51,allround,1700,FICTIONAL_CONTENT
+lure-0122,Evergreen Field,Jerkbait 107 Flash,jerkbait,10,107,shallow-mid,jerk/pause,flash,61,68,71,51,allround,1700,FICTIONAL_CONTENT
+lure-0123,Evergreen Field,Jerkbait 114 Natural,jerkbait,14,114,shallow-mid,jerk/pause,natural,65,70,66,55,allround,1900,FICTIONAL_CONTENT
+lure-0124,Evergreen Field,Jerkbait 114 Flash,jerkbait,14,114,shallow-mid,jerk/pause,flash,65,70,66,55,allround,1900,FICTIONAL_CONTENT
+lure-0125,Evergreen Field,Jerkbait 121 Natural,jerkbait,18,121,shallow-mid,jerk/pause,natural,70,72,61,58,allround,2100,FICTIONAL_CONTENT
+lure-0126,Evergreen Field,Jerkbait 121 Flash,jerkbait,18,121,shallow-mid,jerk/pause,flash,70,72,61,58,allround,2100,FICTIONAL_CONTENT
+lure-0127,Evergreen Field,Jerkbait 128 Natural,jerkbait,24,128,shallow-mid,jerk/pause,natural,76,74,53,64,allround,2400,FICTIONAL_CONTENT
+lure-0128,Evergreen Field,Jerkbait 128 Flash,jerkbait,24,128,shallow-mid,jerk/pause,flash,76,74,53,64,allround,2400,FICTIONAL_CONTENT
+lure-0129,Yamashiro,Egi 90 Natural,egi,8,90,mid,jerk/fall,natural,59,62,74,49,allround,1400,FICTIONAL_CONTENT
+lure-0130,Yamashiro,Egi 90 Flash,egi,8,90,mid,jerk/fall,flash,59,62,74,49,allround,1400,FICTIONAL_CONTENT
+lure-0131,Yamashiro,Egi 97 Natural,egi,10,97,mid,jerk/fall,natural,61,64,71,51,allround,1500,FICTIONAL_CONTENT
+lure-0132,Yamashiro,Egi 97 Flash,egi,10,97,mid,jerk/fall,flash,61,64,71,51,allround,1500,FICTIONAL_CONTENT
+lure-0133,Yamashiro,Egi 104 Natural,egi,15,104,mid,jerk/fall,natural,67,66,65,56,allround,1800,FICTIONAL_CONTENT
+lure-0134,Yamashiro,Egi 104 Flash,egi,15,104,mid,jerk/fall,flash,67,66,65,56,allround,1800,FICTIONAL_CONTENT
+lure-0135,Yamashiro,Egi 111 Natural,egi,20,111,mid,jerk/fall,natural,72,68,58,60,allround,2000,FICTIONAL_CONTENT
+lure-0136,Yamashiro,Egi 111 Flash,egi,20,111,mid,jerk/fall,flash,72,68,58,60,allround,2000,FICTIONAL_CONTENT
+lure-0137,Yamashiro,Egi 118 Natural,egi,25,118,mid,jerk/fall,natural,78,70,52,65,power|distance,2300,FICTIONAL_CONTENT
+lure-0138,Yamashiro,Egi 118 Flash,egi,25,118,mid,jerk/fall,flash,78,70,52,65,power|distance,2300,FICTIONAL_CONTENT
+lure-0139,Yamashiro,Minnow 85 Natural,minnow,5,85,shallow-mid,steady/twitch,natural,56,62,78,47,small-bait|finesse,1300,FICTIONAL_CONTENT
+lure-0140,Yamashiro,Minnow 85 Flash,minnow,5,85,shallow-mid,steady/twitch,flash,56,62,78,47,small-bait|finesse,1300,FICTIONAL_CONTENT
+lure-0141,Yamashiro,Minnow 92 Natural,minnow,7,92,shallow-mid,steady/twitch,natural,58,64,75,48,small-bait|finesse,1400,FICTIONAL_CONTENT
+lure-0142,Yamashiro,Minnow 92 Flash,minnow,7,92,shallow-mid,steady/twitch,flash,58,64,75,48,small-bait|finesse,1400,FICTIONAL_CONTENT
+lure-0143,Yamashiro,Minnow 99 Natural,minnow,10,99,shallow-mid,steady/twitch,natural,61,66,71,51,allround,1500,FICTIONAL_CONTENT
+lure-0144,Yamashiro,Minnow 99 Flash,minnow,10,99,shallow-mid,steady/twitch,flash,61,66,71,51,allround,1500,FICTIONAL_CONTENT
+lure-0145,Yamashiro,Minnow 106 Natural,minnow,14,106,shallow-mid,steady/twitch,natural,65,68,66,55,allround,1700,FICTIONAL_CONTENT
+lure-0146,Yamashiro,Minnow 106 Flash,minnow,14,106,shallow-mid,steady/twitch,flash,65,68,66,55,allround,1700,FICTIONAL_CONTENT
+lure-0147,Yamashiro,Minnow 113 Natural,minnow,18,113,shallow-mid,steady/twitch,natural,70,70,61,58,allround,1900,FICTIONAL_CONTENT
+lure-0148,Yamashiro,Minnow 113 Flash,minnow,18,113,shallow-mid,steady/twitch,flash,70,70,61,58,allround,1900,FICTIONAL_CONTENT
+lure-0149,Yamashiro,Minnow 120 Natural,minnow,24,120,shallow-mid,steady/twitch,natural,76,72,53,64,allround,2200,FICTIONAL_CONTENT
+lure-0150,Yamashiro,Minnow 120 Flash,minnow,24,120,shallow-mid,steady/twitch,flash,76,72,53,64,allround,2200,FICTIONAL_CONTENT
+lure-0151,Yamashiro,Soft Plastic 65 Natural,soft_plastic,2,65,variable,jighead/texas,natural,52,62,81,44,small-bait|finesse,1100,FICTIONAL_CONTENT
+lure-0152,Yamashiro,Soft Plastic 65 Flash,soft_plastic,2,65,variable,jighead/texas,flash,52,62,81,44,small-bait|finesse,1100,FICTIONAL_CONTENT
+lure-0153,Yamashiro,Soft Plastic 72 Natural,soft_plastic,3,72,variable,jighead/texas,natural,53,64,80,45,small-bait|finesse,1200,FICTIONAL_CONTENT
+lure-0154,Yamashiro,Soft Plastic 72 Flash,soft_plastic,3,72,variable,jighead/texas,flash,53,64,80,45,small-bait|finesse,1200,FICTIONAL_CONTENT
+lure-0155,Yamashiro,Soft Plastic 79 Natural,soft_plastic,5,79,variable,jighead/texas,natural,56,66,78,47,small-bait|finesse,1300,FICTIONAL_CONTENT
+lure-0156,Yamashiro,Soft Plastic 79 Flash,soft_plastic,5,79,variable,jighead/texas,flash,56,66,78,47,small-bait|finesse,1300,FICTIONAL_CONTENT
+lure-0157,Yamashiro,Soft Plastic 86 Natural,soft_plastic,7,86,variable,jighead/texas,natural,58,68,75,48,small-bait|finesse,1400,FICTIONAL_CONTENT
+lure-0158,Yamashiro,Soft Plastic 86 Flash,soft_plastic,7,86,variable,jighead/texas,flash,58,68,75,48,small-bait|finesse,1400,FICTIONAL_CONTENT
+lure-0159,Yamashiro,Soft Plastic 93 Natural,soft_plastic,10,93,variable,jighead/texas,natural,61,70,71,51,allround,1500,FICTIONAL_CONTENT
+lure-0160,Yamashiro,Soft Plastic 93 Flash,soft_plastic,10,93,variable,jighead/texas,flash,61,70,71,51,allround,1500,FICTIONAL_CONTENT
+lure-0161,Yamashiro,Soft Plastic 100 Natural,soft_plastic,14,100,variable,jighead/texas,natural,65,72,66,55,allround,1700,FICTIONAL_CONTENT
+lure-0162,Yamashiro,Soft Plastic 100 Flash,soft_plastic,14,100,variable,jighead/texas,flash,65,72,66,55,allround,1700,FICTIONAL_CONTENT
+lure-0163,Yamashiro,Metal Vibration 55 Natural,metal_vibration,10,55,mid-deep,steady/lift-fall,natural,61,62,71,51,allround,1500,FICTIONAL_CONTENT
+lure-0164,Yamashiro,Metal Vibration 55 Flash,metal_vibration,10,55,mid-deep,steady/lift-fall,flash,61,62,71,51,allround,1500,FICTIONAL_CONTENT
+lure-0165,Yamashiro,Metal Vibration 62 Natural,metal_vibration,14,62,mid-deep,steady/lift-fall,natural,65,64,66,55,allround,1700,FICTIONAL_CONTENT
+lure-0166,Yamashiro,Metal Vibration 62 Flash,metal_vibration,14,62,mid-deep,steady/lift-fall,flash,65,64,66,55,allround,1700,FICTIONAL_CONTENT
+lure-0167,Yamashiro,Metal Vibration 69 Natural,metal_vibration,20,69,mid-deep,steady/lift-fall,natural,72,66,58,60,allround,2000,FICTIONAL_CONTENT
+lure-0168,Yamashiro,Metal Vibration 69 Flash,metal_vibration,20,69,mid-deep,steady/lift-fall,flash,72,66,58,60,allround,2000,FICTIONAL_CONTENT
+lure-0169,Yamashiro,Metal Vibration 76 Natural,metal_vibration,28,76,mid-deep,steady/lift-fall,natural,81,68,48,67,power|distance,2400,FICTIONAL_CONTENT
+lure-0170,Yamashiro,Metal Vibration 76 Flash,metal_vibration,28,76,mid-deep,steady/lift-fall,flash,81,68,48,67,power|distance,2400,FICTIONAL_CONTENT
+lure-0171,Yamashiro,Metal Vibration 83 Natural,metal_vibration,35,83,mid-deep,steady/lift-fall,natural,89,70,39,74,power|distance,2700,FICTIONAL_CONTENT
+lure-0172,Yamashiro,Metal Vibration 83 Flash,metal_vibration,35,83,mid-deep,steady/lift-fall,flash,89,70,39,74,power|distance,2700,FICTIONAL_CONTENT
+lure-0173,Yamashiro,Small Jig 45 Natural,small_jig,3,45,mid,jerk/fall,natural,53,62,80,45,small-bait|finesse,1200,FICTIONAL_CONTENT
+lure-0174,Yamashiro,Small Jig 45 Flash,small_jig,3,45,mid,jerk/fall,flash,53,62,80,45,small-bait|finesse,1200,FICTIONAL_CONTENT
+lure-0175,Yamashiro,Small Jig 52 Natural,small_jig,5,52,mid,jerk/fall,natural,56,64,78,47,small-bait|finesse,1300,FICTIONAL_CONTENT
+lure-0176,Yamashiro,Small Jig 52 Flash,small_jig,5,52,mid,jerk/fall,flash,56,64,78,47,small-bait|finesse,1300,FICTIONAL_CONTENT
+lure-0177,Yamashiro,Small Jig 59 Natural,small_jig,7,59,mid,jerk/fall,natural,58,66,75,48,small-bait|finesse,1400,FICTIONAL_CONTENT
+lure-0178,Yamashiro,Small Jig 59 Flash,small_jig,7,59,mid,jerk/fall,flash,58,66,75,48,small-bait|finesse,1400,FICTIONAL_CONTENT
+lure-0179,Yamashiro,Small Jig 66 Natural,small_jig,10,66,mid,jerk/fall,natural,61,68,71,51,allround,1500,FICTIONAL_CONTENT
+lure-0180,Yamashiro,Small Jig 66 Flash,small_jig,10,66,mid,jerk/fall,flash,61,68,71,51,allround,1500,FICTIONAL_CONTENT
+lure-0181,Yamashiro,Small Jig 73 Natural,small_jig,15,73,mid,jerk/fall,natural,67,70,65,56,allround,1800,FICTIONAL_CONTENT
+lure-0182,Yamashiro,Small Jig 73 Flash,small_jig,15,73,mid,jerk/fall,flash,67,70,65,56,allround,1800,FICTIONAL_CONTENT
+lure-0183,Yamashiro,Small Jig 80 Natural,small_jig,20,80,mid,jerk/fall,natural,72,72,58,60,allround,2000,FICTIONAL_CONTENT
+lure-0184,Yamashiro,Small Jig 80 Flash,small_jig,20,80,mid,jerk/fall,flash,72,72,58,60,allround,2000,FICTIONAL_CONTENT
+lure-0185,Shimara,Minnow 85 Natural,minnow,5,85,shallow-mid,steady/twitch,natural,56,58,78,47,small-bait|finesse,1000,FICTIONAL_CONTENT
+lure-0186,Shimara,Minnow 85 Flash,minnow,5,85,shallow-mid,steady/twitch,flash,56,58,78,47,small-bait|finesse,1000,FICTIONAL_CONTENT
+lure-0187,Shimara,Minnow 92 Natural,minnow,7,92,shallow-mid,steady/twitch,natural,58,60,75,48,small-bait|finesse,1100,FICTIONAL_CONTENT
+lure-0188,Shimara,Minnow 92 Flash,minnow,7,92,shallow-mid,steady/twitch,flash,58,60,75,48,small-bait|finesse,1100,FICTIONAL_CONTENT
+lure-0189,Shimara,Minnow 99 Natural,minnow,10,99,shallow-mid,steady/twitch,natural,61,62,71,51,allround,1300,FICTIONAL_CONTENT
+lure-0190,Shimara,Minnow 99 Flash,minnow,10,99,shallow-mid,steady/twitch,flash,61,62,71,51,allround,1300,FICTIONAL_CONTENT
+lure-0191,Shimara,Minnow 106 Natural,minnow,14,106,shallow-mid,steady/twitch,natural,65,64,66,55,allround,1500,FICTIONAL_CONTENT
+lure-0192,Shimara,Minnow 106 Flash,minnow,14,106,shallow-mid,steady/twitch,flash,65,64,66,55,allround,1500,FICTIONAL_CONTENT
+lure-0193,Shimara,Minnow 113 Natural,minnow,18,113,shallow-mid,steady/twitch,natural,70,66,61,58,allround,1700,FICTIONAL_CONTENT
+lure-0194,Shimara,Minnow 113 Flash,minnow,18,113,shallow-mid,steady/twitch,flash,70,66,61,58,allround,1700,FICTIONAL_CONTENT
+lure-0195,Shimara,Minnow 120 Natural,minnow,24,120,shallow-mid,steady/twitch,natural,76,68,53,64,allround,2000,FICTIONAL_CONTENT
+lure-0196,Shimara,Minnow 120 Flash,minnow,24,120,shallow-mid,steady/twitch,flash,76,68,53,64,allround,2000,FICTIONAL_CONTENT
+lure-0197,Shimara,Vibration 65 Natural,vibration,7,65,mid-deep,steady/lift-fall,natural,58,58,75,48,small-bait|finesse,1100,FICTIONAL_CONTENT
+lure-0198,Shimara,Vibration 65 Flash,vibration,7,65,mid-deep,steady/lift-fall,flash,58,58,75,48,small-bait|finesse,1100,FICTIONAL_CONTENT
+lure-0199,Shimara,Vibration 72 Natural,vibration,10,72,mid-deep,steady/lift-fall,natural,61,60,71,51,allround,1300,FICTIONAL_CONTENT
+lure-0200,Shimara,Vibration 72 Flash,vibration,10,72,mid-deep,steady/lift-fall,flash,61,60,71,51,allround,1300,FICTIONAL_CONTENT
+lure-0201,Shimara,Vibration 79 Natural,vibration,14,79,mid-deep,steady/lift-fall,natural,65,62,66,55,allround,1500,FICTIONAL_CONTENT
+lure-0202,Shimara,Vibration 79 Flash,vibration,14,79,mid-deep,steady/lift-fall,flash,65,62,66,55,allround,1500,FICTIONAL_CONTENT
+lure-0203,Shimara,Vibration 86 Natural,vibration,18,86,mid-deep,steady/lift-fall,natural,70,64,61,58,allround,1700,FICTIONAL_CONTENT
+lure-0204,Shimara,Vibration 86 Flash,vibration,18,86,mid-deep,steady/lift-fall,flash,70,64,61,58,allround,1700,FICTIONAL_CONTENT
+lure-0205,Shimara,Vibration 93 Natural,vibration,24,93,mid-deep,steady/lift-fall,natural,76,66,53,64,allround,2000,FICTIONAL_CONTENT
+lure-0206,Shimara,Vibration 93 Flash,vibration,24,93,mid-deep,steady/lift-fall,flash,76,66,53,64,allround,2000,FICTIONAL_CONTENT
+lure-0207,Shimara,Vibration 100 Natural,vibration,28,100,mid-deep,steady/lift-fall,natural,81,68,48,67,power|distance,2100,FICTIONAL_CONTENT
+lure-0208,Shimara,Vibration 100 Flash,vibration,28,100,mid-deep,steady/lift-fall,flash,81,68,48,67,power|distance,2100,FICTIONAL_CONTENT
+lure-0209,Shimara,Jig 60 Natural,jig,10,60,mid-deep,jerk/fall,natural,61,58,71,51,allround,1300,FICTIONAL_CONTENT
+lure-0210,Shimara,Jig 60 Flash,jig,10,60,mid-deep,jerk/fall,flash,61,58,71,51,allround,1300,FICTIONAL_CONTENT
+lure-0211,Shimara,Jig 67 Natural,jig,20,67,mid-deep,jerk/fall,natural,72,60,58,60,allround,1800,FICTIONAL_CONTENT
+lure-0212,Shimara,Jig 67 Flash,jig,20,67,mid-deep,jerk/fall,flash,72,60,58,60,allround,1800,FICTIONAL_CONTENT
+lure-0213,Shimara,Jig 74 Natural,jig,30,74,mid-deep,jerk/fall,natural,83,62,45,69,power|distance,2200,FICTIONAL_CONTENT
+lure-0214,Shimara,Jig 74 Flash,jig,30,74,mid-deep,jerk/fall,flash,83,62,45,69,power|distance,2200,FICTIONAL_CONTENT
+lure-0215,Shimara,Jig 81 Natural,jig,40,81,mid-deep,jerk/fall,natural,94,64,32,78,power|distance,2700,FICTIONAL_CONTENT
+lure-0216,Shimara,Jig 81 Flash,jig,40,81,mid-deep,jerk/fall,flash,94,64,32,78,power|distance,2700,FICTIONAL_CONTENT
+lure-0217,Shimara,Jig 88 Natural,jig,60,88,mid-deep,jerk/fall,natural,98,66,20,96,power|distance,3700,FICTIONAL_CONTENT
+lure-0218,Shimara,Jig 88 Flash,jig,60,88,mid-deep,jerk/fall,flash,98,66,20,96,power|distance,3700,FICTIONAL_CONTENT
+lure-0219,Shimara,Jig 95 Natural,jig,80,95,mid-deep,jerk/fall,natural,98,68,20,98,power|distance,4600,FICTIONAL_CONTENT
+lure-0220,Shimara,Jig 95 Flash,jig,80,95,mid-deep,jerk/fall,flash,98,68,20,98,power|distance,4600,FICTIONAL_CONTENT
+lure-0221,Shimara,Soft Plastic 65 Natural,soft_plastic,2,65,variable,jighead/texas,natural,52,58,81,44,small-bait|finesse,900,FICTIONAL_CONTENT
+lure-0222,Shimara,Soft Plastic 65 Flash,soft_plastic,2,65,variable,jighead/texas,flash,52,58,81,44,small-bait|finesse,900,FICTIONAL_CONTENT
+lure-0223,Shimara,Soft Plastic 72 Natural,soft_plastic,3,72,variable,jighead/texas,natural,53,60,80,45,small-bait|finesse,900,FICTIONAL_CONTENT
+lure-0224,Shimara,Soft Plastic 72 Flash,soft_plastic,3,72,variable,jighead/texas,flash,53,60,80,45,small-bait|finesse,900,FICTIONAL_CONTENT
+lure-0225,Shimara,Soft Plastic 79 Natural,soft_plastic,5,79,variable,jighead/texas,natural,56,62,78,47,small-bait|finesse,1000,FICTIONAL_CONTENT
+lure-0226,Shimara,Soft Plastic 79 Flash,soft_plastic,5,79,variable,jighead/texas,flash,56,62,78,47,small-bait|finesse,1000,FICTIONAL_CONTENT
+lure-0227,Shimara,Soft Plastic 86 Natural,soft_plastic,7,86,variable,jighead/texas,natural,58,64,75,48,small-bait|finesse,1100,FICTIONAL_CONTENT
+lure-0228,Shimara,Soft Plastic 86 Flash,soft_plastic,7,86,variable,jighead/texas,flash,58,64,75,48,small-bait|finesse,1100,FICTIONAL_CONTENT
+lure-0229,Shimara,Soft Plastic 93 Natural,soft_plastic,10,93,variable,jighead/texas,natural,61,66,71,51,allround,1300,FICTIONAL_CONTENT
+lure-0230,Shimara,Soft Plastic 93 Flash,soft_plastic,10,93,variable,jighead/texas,flash,61,66,71,51,allround,1300,FICTIONAL_CONTENT
+lure-0231,Shimara,Soft Plastic 100 Natural,soft_plastic,14,100,variable,jighead/texas,natural,65,68,66,55,allround,1500,FICTIONAL_CONTENT
+lure-0232,Shimara,Soft Plastic 100 Flash,soft_plastic,14,100,variable,jighead/texas,flash,65,68,66,55,allround,1500,FICTIONAL_CONTENT
+lure-0233,Shimara,Topwater 95 Natural,topwater,6,95,surface,walk/pop,natural,57,58,76,47,small-bait|finesse,1100,FICTIONAL_CONTENT
+lure-0234,Shimara,Topwater 95 Flash,topwater,6,95,surface,walk/pop,flash,57,58,76,47,small-bait|finesse,1100,FICTIONAL_CONTENT
+lure-0235,Shimara,Topwater 102 Natural,topwater,8,102,surface,walk/pop,natural,59,60,74,49,allround,1200,FICTIONAL_CONTENT
+lure-0236,Shimara,Topwater 102 Flash,topwater,8,102,surface,walk/pop,flash,59,60,74,49,allround,1200,FICTIONAL_CONTENT
+lure-0237,Shimara,Topwater 109 Natural,topwater,12,109,surface,walk/pop,natural,63,62,68,53,allround,1400,FICTIONAL_CONTENT
+lure-0238,Shimara,Topwater 109 Flash,topwater,12,109,surface,walk/pop,flash,63,62,68,53,allround,1400,FICTIONAL_CONTENT
+lure-0239,Shimara,Topwater 116 Natural,topwater,18,116,surface,walk/pop,natural,70,64,61,58,allround,1700,FICTIONAL_CONTENT
+lure-0240,Shimara,Topwater 116 Flash,topwater,18,116,surface,walk/pop,flash,70,64,61,58,allround,1700,FICTIONAL_CONTENT
+lure-0241,Shimara,Topwater 123 Natural,topwater,25,123,surface,walk/pop,natural,78,66,52,65,power|distance,2000,FICTIONAL_CONTENT
+lure-0242,Shimara,Topwater 123 Flash,topwater,25,123,surface,walk/pop,flash,78,66,52,65,power|distance,2000,FICTIONAL_CONTENT
+lure-0243,Daiva,Minnow 85 Natural,minnow,5,85,shallow-mid,steady/twitch,natural,56,58,86,47,small-bait|finesse,1000,FICTIONAL_CONTENT
+lure-0244,Daiva,Minnow 85 Flash,minnow,5,85,shallow-mid,steady/twitch,flash,56,58,86,47,small-bait|finesse,1000,FICTIONAL_CONTENT
+lure-0245,Daiva,Minnow 92 Natural,minnow,7,92,shallow-mid,steady/twitch,natural,58,60,83,48,small-bait|finesse,1100,FICTIONAL_CONTENT
+lure-0246,Daiva,Minnow 92 Flash,minnow,7,92,shallow-mid,steady/twitch,flash,58,60,83,48,small-bait|finesse,1100,FICTIONAL_CONTENT
+lure-0247,Daiva,Minnow 99 Natural,minnow,10,99,shallow-mid,steady/twitch,natural,61,62,79,51,allround,1300,FICTIONAL_CONTENT
+lure-0248,Daiva,Minnow 99 Flash,minnow,10,99,shallow-mid,steady/twitch,flash,61,62,79,51,allround,1300,FICTIONAL_CONTENT
+lure-0249,Daiva,Minnow 106 Natural,minnow,14,106,shallow-mid,steady/twitch,natural,65,64,74,55,allround,1500,FICTIONAL_CONTENT
+lure-0250,Daiva,Minnow 106 Flash,minnow,14,106,shallow-mid,steady/twitch,flash,65,64,74,55,allround,1500,FICTIONAL_CONTENT
+lure-0251,Daiva,Minnow 113 Natural,minnow,18,113,shallow-mid,steady/twitch,natural,70,66,69,58,allround,1700,FICTIONAL_CONTENT
+lure-0252,Daiva,Minnow 113 Flash,minnow,18,113,shallow-mid,steady/twitch,flash,70,66,69,58,allround,1700,FICTIONAL_CONTENT
+lure-0253,Daiva,Minnow 120 Natural,minnow,24,120,shallow-mid,steady/twitch,natural,76,68,61,64,allround,2000,FICTIONAL_CONTENT
+lure-0254,Daiva,Minnow 120 Flash,minnow,24,120,shallow-mid,steady/twitch,flash,76,68,61,64,allround,2000,FICTIONAL_CONTENT
+lure-0255,Daiva,Shad 60 Natural,shad,4,60,shallow-mid,steady,natural,54,58,87,46,small-bait|finesse,1000,FICTIONAL_CONTENT
+lure-0256,Daiva,Shad 60 Flash,shad,4,60,shallow-mid,steady,flash,54,58,87,46,small-bait|finesse,1000,FICTIONAL_CONTENT
+lure-0257,Daiva,Shad 67 Natural,shad,5,67,shallow-mid,steady,natural,56,60,86,47,small-bait|finesse,1000,FICTIONAL_CONTENT
+lure-0258,Daiva,Shad 67 Flash,shad,5,67,shallow-mid,steady,flash,56,60,86,47,small-bait|finesse,1000,FICTIONAL_CONTENT
+lure-0259,Daiva,Shad 74 Natural,shad,7,74,shallow-mid,steady,natural,58,62,83,48,small-bait|finesse,1100,FICTIONAL_CONTENT
+lure-0260,Daiva,Shad 74 Flash,shad,7,74,shallow-mid,steady,flash,58,62,83,48,small-bait|finesse,1100,FICTIONAL_CONTENT
+lure-0261,Daiva,Shad 81 Natural,shad,10,81,shallow-mid,steady,natural,61,64,79,51,allround,1300,FICTIONAL_CONTENT
+lure-0262,Daiva,Shad 81 Flash,shad,10,81,shallow-mid,steady,flash,61,64,79,51,allround,1300,FICTIONAL_CONTENT
+lure-0263,Daiva,Shad 88 Natural,shad,14,88,shallow-mid,steady,natural,65,66,74,55,allround,1500,FICTIONAL_CONTENT
+lure-0264,Daiva,Shad 88 Flash,shad,14,88,shallow-mid,steady,flash,65,66,74,55,allround,1500,FICTIONAL_CONTENT
+lure-0265,Daiva,Vibration 65 Natural,vibration,7,65,mid-deep,steady/lift-fall,natural,58,58,83,48,small-bait|finesse,1100,FICTIONAL_CONTENT
+lure-0266,Daiva,Vibration 65 Flash,vibration,7,65,mid-deep,steady/lift-fall,flash,58,58,83,48,small-bait|finesse,1100,FICTIONAL_CONTENT
+lure-0267,Daiva,Vibration 72 Natural,vibration,10,72,mid-deep,steady/lift-fall,natural,61,60,79,51,allround,1300,FICTIONAL_CONTENT
+lure-0268,Daiva,Vibration 72 Flash,vibration,10,72,mid-deep,steady/lift-fall,flash,61,60,79,51,allround,1300,FICTIONAL_CONTENT
+lure-0269,Daiva,Vibration 79 Natural,vibration,14,79,mid-deep,steady/lift-fall,natural,65,62,74,55,allround,1500,FICTIONAL_CONTENT
+lure-0270,Daiva,Vibration 79 Flash,vibration,14,79,mid-deep,steady/lift-fall,flash,65,62,74,55,allround,1500,FICTIONAL_CONTENT
+lure-0271,Daiva,Vibration 86 Natural,vibration,18,86,mid-deep,steady/lift-fall,natural,70,64,69,58,allround,1700,FICTIONAL_CONTENT
+lure-0272,Daiva,Vibration 86 Flash,vibration,18,86,mid-deep,steady/lift-fall,flash,70,64,69,58,allround,1700,FICTIONAL_CONTENT
+lure-0273,Daiva,Vibration 93 Natural,vibration,24,93,mid-deep,steady/lift-fall,natural,76,66,61,64,allround,2000,FICTIONAL_CONTENT
+lure-0274,Daiva,Vibration 93 Flash,vibration,24,93,mid-deep,steady/lift-fall,flash,76,66,61,64,allround,2000,FICTIONAL_CONTENT
+lure-0275,Daiva,Vibration 100 Natural,vibration,28,100,mid-deep,steady/lift-fall,natural,81,68,56,67,power|distance,2100,FICTIONAL_CONTENT
+lure-0276,Daiva,Vibration 100 Flash,vibration,28,100,mid-deep,steady/lift-fall,flash,81,68,56,67,power|distance,2100,FICTIONAL_CONTENT
+lure-0277,Daiva,Jig 60 Natural,jig,10,60,mid-deep,jerk/fall,natural,61,58,79,51,allround,1300,FICTIONAL_CONTENT
+lure-0278,Daiva,Jig 60 Flash,jig,10,60,mid-deep,jerk/fall,flash,61,58,79,51,allround,1300,FICTIONAL_CONTENT
+lure-0279,Daiva,Jig 67 Natural,jig,20,67,mid-deep,jerk/fall,natural,72,60,66,60,allround,1800,FICTIONAL_CONTENT
+lure-0280,Daiva,Jig 67 Flash,jig,20,67,mid-deep,jerk/fall,flash,72,60,66,60,allround,1800,FICTIONAL_CONTENT
+lure-0281,Daiva,Jig 74 Natural,jig,30,74,mid-deep,jerk/fall,natural,83,62,53,69,power|distance,2200,FICTIONAL_CONTENT
+lure-0282,Daiva,Jig 74 Flash,jig,30,74,mid-deep,jerk/fall,flash,83,62,53,69,power|distance,2200,FICTIONAL_CONTENT
+lure-0283,Daiva,Jig 81 Natural,jig,40,81,mid-deep,jerk/fall,natural,94,64,40,78,power|distance,2700,FICTIONAL_CONTENT
+lure-0284,Daiva,Jig 81 Flash,jig,40,81,mid-deep,jerk/fall,flash,94,64,40,78,power|distance,2700,FICTIONAL_CONTENT
+lure-0285,Daiva,Jig 88 Natural,jig,60,88,mid-deep,jerk/fall,natural,98,66,20,96,power|distance,3700,FICTIONAL_CONTENT
+lure-0286,Daiva,Jig 88 Flash,jig,60,88,mid-deep,jerk/fall,flash,98,66,20,96,power|distance,3700,FICTIONAL_CONTENT
+lure-0287,Daiva,Jig 95 Natural,jig,80,95,mid-deep,jerk/fall,natural,98,68,20,98,power|distance,4600,FICTIONAL_CONTENT
+lure-0288,Daiva,Jig 95 Flash,jig,80,95,mid-deep,jerk/fall,flash,98,68,20,98,power|distance,4600,FICTIONAL_CONTENT
+lure-0289,Daiva,Soft Plastic 65 Natural,soft_plastic,2,65,variable,jighead/texas,natural,52,58,89,44,small-bait|finesse,900,FICTIONAL_CONTENT
+lure-0290,Daiva,Soft Plastic 65 Flash,soft_plastic,2,65,variable,jighead/texas,flash,52,58,89,44,small-bait|finesse,900,FICTIONAL_CONTENT
+lure-0291,Daiva,Soft Plastic 72 Natural,soft_plastic,3,72,variable,jighead/texas,natural,53,60,88,45,small-bait|finesse,900,FICTIONAL_CONTENT
+lure-0292,Daiva,Soft Plastic 72 Flash,soft_plastic,3,72,variable,jighead/texas,flash,53,60,88,45,small-bait|finesse,900,FICTIONAL_CONTENT
+lure-0293,Daiva,Soft Plastic 79 Natural,soft_plastic,5,79,variable,jighead/texas,natural,56,62,86,47,small-bait|finesse,1000,FICTIONAL_CONTENT
+lure-0294,Daiva,Soft Plastic 79 Flash,soft_plastic,5,79,variable,jighead/texas,flash,56,62,86,47,small-bait|finesse,1000,FICTIONAL_CONTENT
+lure-0295,Daiva,Soft Plastic 86 Natural,soft_plastic,7,86,variable,jighead/texas,natural,58,64,83,48,small-bait|finesse,1100,FICTIONAL_CONTENT
+lure-0296,Daiva,Soft Plastic 86 Flash,soft_plastic,7,86,variable,jighead/texas,flash,58,64,83,48,small-bait|finesse,1100,FICTIONAL_CONTENT
+lure-0297,Daiva,Soft Plastic 93 Natural,soft_plastic,10,93,variable,jighead/texas,natural,61,66,79,51,allround,1300,FICTIONAL_CONTENT
+lure-0298,Daiva,Soft Plastic 93 Flash,soft_plastic,10,93,variable,jighead/texas,flash,61,66,79,51,allround,1300,FICTIONAL_CONTENT
+lure-0299,Daiva,Soft Plastic 100 Natural,soft_plastic,14,100,variable,jighead/texas,natural,65,68,74,55,allround,1500,FICTIONAL_CONTENT
+lure-0300,Daiva,Soft Plastic 100 Flash,soft_plastic,14,100,variable,jighead/texas,flash,65,68,74,55,allround,1500,FICTIONAL_CONTENT
+lure-0301,Major Crest,Jig 60 Natural,jig,10,60,mid-deep,jerk/fall,natural,61,58,71,51,allround,1300,FICTIONAL_CONTENT
+lure-0302,Major Crest,Jig 60 Flash,jig,10,60,mid-deep,jerk/fall,flash,61,58,71,51,allround,1300,FICTIONAL_CONTENT
+lure-0303,Major Crest,Jig 67 Natural,jig,20,67,mid-deep,jerk/fall,natural,72,60,58,60,allround,1800,FICTIONAL_CONTENT
+lure-0304,Major Crest,Jig 67 Flash,jig,20,67,mid-deep,jerk/fall,flash,72,60,58,60,allround,1800,FICTIONAL_CONTENT
+lure-0305,Major Crest,Jig 74 Natural,jig,30,74,mid-deep,jerk/fall,natural,83,62,45,69,power|distance,2200,FICTIONAL_CONTENT
+lure-0306,Major Crest,Jig 74 Flash,jig,30,74,mid-deep,jerk/fall,flash,83,62,45,69,power|distance,2200,FICTIONAL_CONTENT
+lure-0307,Major Crest,Jig 81 Natural,jig,40,81,mid-deep,jerk/fall,natural,94,64,32,78,power|distance,2700,FICTIONAL_CONTENT
+lure-0308,Major Crest,Jig 81 Flash,jig,40,81,mid-deep,jerk/fall,flash,94,64,32,78,power|distance,2700,FICTIONAL_CONTENT
+lure-0309,Major Crest,Jig 88 Natural,jig,60,88,mid-deep,jerk/fall,natural,98,66,20,96,power|distance,3700,FICTIONAL_CONTENT
+lure-0310,Major Crest,Jig 88 Flash,jig,60,88,mid-deep,jerk/fall,flash,98,66,20,96,power|distance,3700,FICTIONAL_CONTENT
+lure-0311,Major Crest,Jig 95 Natural,jig,80,95,mid-deep,jerk/fall,natural,98,68,20,98,power|distance,4600,FICTIONAL_CONTENT
+lure-0312,Major Crest,Jig 95 Flash,jig,80,95,mid-deep,jerk/fall,flash,98,68,20,98,power|distance,4600,FICTIONAL_CONTENT
+lure-0313,Major Crest,Soft Plastic 65 Natural,soft_plastic,2,65,variable,jighead/texas,natural,52,58,81,44,small-bait|finesse,900,FICTIONAL_CONTENT
+lure-0314,Major Crest,Soft Plastic 65 Flash,soft_plastic,2,65,variable,jighead/texas,flash,52,58,81,44,small-bait|finesse,900,FICTIONAL_CONTENT
+lure-0315,Major Crest,Soft Plastic 72 Natural,soft_plastic,3,72,variable,jighead/texas,natural,53,60,80,45,small-bait|finesse,900,FICTIONAL_CONTENT
+lure-0316,Major Crest,Soft Plastic 72 Flash,soft_plastic,3,72,variable,jighead/texas,flash,53,60,80,45,small-bait|finesse,900,FICTIONAL_CONTENT
+lure-0317,Major Crest,Soft Plastic 79 Natural,soft_plastic,5,79,variable,jighead/texas,natural,56,62,78,47,small-bait|finesse,1000,FICTIONAL_CONTENT
+lure-0318,Major Crest,Soft Plastic 79 Flash,soft_plastic,5,79,variable,jighead/texas,flash,56,62,78,47,small-bait|finesse,1000,FICTIONAL_CONTENT
+lure-0319,Major Crest,Soft Plastic 86 Natural,soft_plastic,7,86,variable,jighead/texas,natural,58,64,75,48,small-bait|finesse,1100,FICTIONAL_CONTENT
+lure-0320,Major Crest,Soft Plastic 86 Flash,soft_plastic,7,86,variable,jighead/texas,flash,58,64,75,48,small-bait|finesse,1100,FICTIONAL_CONTENT
+lure-0321,Major Crest,Soft Plastic 93 Natural,soft_plastic,10,93,variable,jighead/texas,natural,61,66,71,51,allround,1300,FICTIONAL_CONTENT
+lure-0322,Major Crest,Soft Plastic 93 Flash,soft_plastic,10,93,variable,jighead/texas,flash,61,66,71,51,allround,1300,FICTIONAL_CONTENT
+lure-0323,Major Crest,Soft Plastic 100 Natural,soft_plastic,14,100,variable,jighead/texas,natural,65,68,66,55,allround,1500,FICTIONAL_CONTENT
+lure-0324,Major Crest,Soft Plastic 100 Flash,soft_plastic,14,100,variable,jighead/texas,flash,65,68,66,55,allround,1500,FICTIONAL_CONTENT
+lure-0325,Major Crest,Spinner 45 Natural,spinner,2,45,shallow-mid,steady,natural,52,58,81,44,small-bait|finesse,900,FICTIONAL_CONTENT
+lure-0326,Major Crest,Spinner 45 Flash,spinner,2,45,shallow-mid,steady,flash,52,58,81,44,small-bait|finesse,900,FICTIONAL_CONTENT
+lure-0327,Major Crest,Spinner 52 Natural,spinner,3,52,shallow-mid,steady,natural,53,60,80,45,small-bait|finesse,900,FICTIONAL_CONTENT
+lure-0328,Major Crest,Spinner 52 Flash,spinner,3,52,shallow-mid,steady,flash,53,60,80,45,small-bait|finesse,900,FICTIONAL_CONTENT
+lure-0329,Major Crest,Spinner 59 Natural,spinner,5,59,shallow-mid,steady,natural,56,62,78,47,small-bait|finesse,1000,FICTIONAL_CONTENT
+lure-0330,Major Crest,Spinner 59 Flash,spinner,5,59,shallow-mid,steady,flash,56,62,78,47,small-bait|finesse,1000,FICTIONAL_CONTENT
+lure-0331,Major Crest,Spinner 66 Natural,spinner,7,66,shallow-mid,steady,natural,58,64,75,48,small-bait|finesse,1100,FICTIONAL_CONTENT
+lure-0332,Major Crest,Spinner 66 Flash,spinner,7,66,shallow-mid,steady,flash,58,64,75,48,small-bait|finesse,1100,FICTIONAL_CONTENT
+lure-0333,Major Crest,Spinner 73 Natural,spinner,10,73,shallow-mid,steady,natural,61,66,71,51,allround,1300,FICTIONAL_CONTENT
+lure-0334,Major Crest,Spinner 73 Flash,spinner,10,73,shallow-mid,steady,flash,61,66,71,51,allround,1300,FICTIONAL_CONTENT
+lure-0335,Major Crest,Spoon 40 Natural,spoon,1.5,40,shallow-mid,steady/fall,natural,52,58,82,43,small-bait|finesse,900,FICTIONAL_CONTENT
+lure-0336,Major Crest,Spoon 40 Flash,spoon,1.5,40,shallow-mid,steady/fall,flash,52,58,82,43,small-bait|finesse,900,FICTIONAL_CONTENT
+lure-0337,Major Crest,Spoon 47 Natural,spoon,2,47,shallow-mid,steady/fall,natural,52,60,81,44,small-bait|finesse,900,FICTIONAL_CONTENT
+lure-0338,Major Crest,Spoon 47 Flash,spoon,2,47,shallow-mid,steady/fall,flash,52,60,81,44,small-bait|finesse,900,FICTIONAL_CONTENT
+lure-0339,Major Crest,Spoon 54 Natural,spoon,3,54,shallow-mid,steady/fall,natural,53,62,80,45,small-bait|finesse,900,FICTIONAL_CONTENT
+lure-0340,Major Crest,Spoon 54 Flash,spoon,3,54,shallow-mid,steady/fall,flash,53,62,80,45,small-bait|finesse,900,FICTIONAL_CONTENT
+lure-0341,Major Crest,Spoon 61 Natural,spoon,5,61,shallow-mid,steady/fall,natural,56,64,78,47,small-bait|finesse,1000,FICTIONAL_CONTENT
+lure-0342,Major Crest,Spoon 61 Flash,spoon,5,61,shallow-mid,steady/fall,flash,56,64,78,47,small-bait|finesse,1000,FICTIONAL_CONTENT
+lure-0343,Major Crest,Spoon 68 Natural,spoon,7,68,shallow-mid,steady/fall,natural,58,66,75,48,small-bait|finesse,1100,FICTIONAL_CONTENT
+lure-0344,Major Crest,Spoon 68 Flash,spoon,7,68,shallow-mid,steady/fall,flash,58,66,75,48,small-bait|finesse,1100,FICTIONAL_CONTENT
+lure-0345,Major Crest,Spoon 75 Natural,spoon,10,75,shallow-mid,steady/fall,natural,61,68,71,51,allround,1300,FICTIONAL_CONTENT
+lure-0346,Major Crest,Spoon 75 Flash,spoon,10,75,shallow-mid,steady/fall,flash,61,68,71,51,allround,1300,FICTIONAL_CONTENT
+lure-0347,Major Crest,Metal Vibration 55 Natural,metal_vibration,10,55,mid-deep,steady/lift-fall,natural,61,58,71,51,allround,1300,FICTIONAL_CONTENT
+lure-0348,Major Crest,Metal Vibration 55 Flash,metal_vibration,10,55,mid-deep,steady/lift-fall,flash,61,58,71,51,allround,1300,FICTIONAL_CONTENT
+lure-0349,Major Crest,Metal Vibration 62 Natural,metal_vibration,14,62,mid-deep,steady/lift-fall,natural,65,60,66,55,allround,1500,FICTIONAL_CONTENT
+lure-0350,Major Crest,Metal Vibration 62 Flash,metal_vibration,14,62,mid-deep,steady/lift-fall,flash,65,60,66,55,allround,1500,FICTIONAL_CONTENT
+lure-0351,Major Crest,Metal Vibration 69 Natural,metal_vibration,20,69,mid-deep,steady/lift-fall,natural,72,62,58,60,allround,1800,FICTIONAL_CONTENT
+lure-0352,Major Crest,Metal Vibration 69 Flash,metal_vibration,20,69,mid-deep,steady/lift-fall,flash,72,62,58,60,allround,1800,FICTIONAL_CONTENT
+lure-0353,Major Crest,Metal Vibration 76 Natural,metal_vibration,28,76,mid-deep,steady/lift-fall,natural,81,64,48,67,power|distance,2100,FICTIONAL_CONTENT
+lure-0354,Major Crest,Metal Vibration 76 Flash,metal_vibration,28,76,mid-deep,steady/lift-fall,flash,81,64,48,67,power|distance,2100,FICTIONAL_CONTENT
+lure-0355,Major Crest,Metal Vibration 83 Natural,metal_vibration,35,83,mid-deep,steady/lift-fall,natural,89,66,39,74,power|distance,2500,FICTIONAL_CONTENT
+lure-0356,Major Crest,Metal Vibration 83 Flash,metal_vibration,35,83,mid-deep,steady/lift-fall,flash,89,66,39,74,power|distance,2500,FICTIONAL_CONTENT
+lure-0357,Tail Walker,Jig 60 Natural,jig,10,60,mid-deep,jerk/fall,natural,66,58,71,59,allround,1300,FICTIONAL_CONTENT
+lure-0358,Tail Walker,Jig 60 Flash,jig,10,60,mid-deep,jerk/fall,flash,66,58,71,59,allround,1300,FICTIONAL_CONTENT
+lure-0359,Tail Walker,Jig 67 Natural,jig,20,67,mid-deep,jerk/fall,natural,77,60,58,68,allround,1800,FICTIONAL_CONTENT
+lure-0360,Tail Walker,Jig 67 Flash,jig,20,67,mid-deep,jerk/fall,flash,77,60,58,68,allround,1800,FICTIONAL_CONTENT
+lure-0361,Tail Walker,Jig 74 Natural,jig,30,74,mid-deep,jerk/fall,natural,88,62,45,77,power|distance,2200,FICTIONAL_CONTENT
+lure-0362,Tail Walker,Jig 74 Flash,jig,30,74,mid-deep,jerk/fall,flash,88,62,45,77,power|distance,2200,FICTIONAL_CONTENT
+lure-0363,Tail Walker,Jig 81 Natural,jig,40,81,mid-deep,jerk/fall,natural,98,64,32,86,power|distance,2700,FICTIONAL_CONTENT
+lure-0364,Tail Walker,Jig 81 Flash,jig,40,81,mid-deep,jerk/fall,flash,98,64,32,86,power|distance,2700,FICTIONAL_CONTENT
+lure-0365,Tail Walker,Jig 88 Natural,jig,60,88,mid-deep,jerk/fall,natural,98,66,20,98,power|distance,3700,FICTIONAL_CONTENT
+lure-0366,Tail Walker,Jig 88 Flash,jig,60,88,mid-deep,jerk/fall,flash,98,66,20,98,power|distance,3700,FICTIONAL_CONTENT
+lure-0367,Tail Walker,Jig 95 Natural,jig,80,95,mid-deep,jerk/fall,natural,98,68,20,98,power|distance,4600,FICTIONAL_CONTENT
+lure-0368,Tail Walker,Jig 95 Flash,jig,80,95,mid-deep,jerk/fall,flash,98,68,20,98,power|distance,4600,FICTIONAL_CONTENT
+lure-0369,Tail Walker,Topwater 95 Natural,topwater,6,95,surface,walk/pop,natural,62,58,76,55,small-bait|finesse,1100,FICTIONAL_CONTENT
+lure-0370,Tail Walker,Topwater 95 Flash,topwater,6,95,surface,walk/pop,flash,62,58,76,55,small-bait|finesse,1100,FICTIONAL_CONTENT
+lure-0371,Tail Walker,Topwater 102 Natural,topwater,8,102,surface,walk/pop,natural,64,60,74,57,allround,1200,FICTIONAL_CONTENT
+lure-0372,Tail Walker,Topwater 102 Flash,topwater,8,102,surface,walk/pop,flash,64,60,74,57,allround,1200,FICTIONAL_CONTENT
+lure-0373,Tail Walker,Topwater 109 Natural,topwater,12,109,surface,walk/pop,natural,68,62,68,61,allround,1400,FICTIONAL_CONTENT
+lure-0374,Tail Walker,Topwater 109 Flash,topwater,12,109,surface,walk/pop,flash,68,62,68,61,allround,1400,FICTIONAL_CONTENT
+lure-0375,Tail Walker,Topwater 116 Natural,topwater,18,116,surface,walk/pop,natural,75,64,61,66,allround,1700,FICTIONAL_CONTENT
+lure-0376,Tail Walker,Topwater 116 Flash,topwater,18,116,surface,walk/pop,flash,75,64,61,66,allround,1700,FICTIONAL_CONTENT
+lure-0377,Tail Walker,Topwater 123 Natural,topwater,25,123,surface,walk/pop,natural,83,66,52,73,power|distance,2000,FICTIONAL_CONTENT
+lure-0378,Tail Walker,Topwater 123 Flash,topwater,25,123,surface,walk/pop,flash,83,66,52,73,power|distance,2000,FICTIONAL_CONTENT
+lure-0379,Tail Walker,Minnow 85 Natural,minnow,5,85,shallow-mid,steady/twitch,natural,61,58,78,55,small-bait|finesse,1000,FICTIONAL_CONTENT
+lure-0380,Tail Walker,Minnow 85 Flash,minnow,5,85,shallow-mid,steady/twitch,flash,61,58,78,55,small-bait|finesse,1000,FICTIONAL_CONTENT
+lure-0381,Tail Walker,Minnow 92 Natural,minnow,7,92,shallow-mid,steady/twitch,natural,63,60,75,56,small-bait|finesse,1100,FICTIONAL_CONTENT
+lure-0382,Tail Walker,Minnow 92 Flash,minnow,7,92,shallow-mid,steady/twitch,flash,63,60,75,56,small-bait|finesse,1100,FICTIONAL_CONTENT
+lure-0383,Tail Walker,Minnow 99 Natural,minnow,10,99,shallow-mid,steady/twitch,natural,66,62,71,59,allround,1300,FICTIONAL_CONTENT
+lure-0384,Tail Walker,Minnow 99 Flash,minnow,10,99,shallow-mid,steady/twitch,flash,66,62,71,59,allround,1300,FICTIONAL_CONTENT
+lure-0385,Tail Walker,Minnow 106 Natural,minnow,14,106,shallow-mid,steady/twitch,natural,70,64,66,63,allround,1500,FICTIONAL_CONTENT
+lure-0386,Tail Walker,Minnow 106 Flash,minnow,14,106,shallow-mid,steady/twitch,flash,70,64,66,63,allround,1500,FICTIONAL_CONTENT
+lure-0387,Tail Walker,Minnow 113 Natural,minnow,18,113,shallow-mid,steady/twitch,natural,75,66,61,66,allround,1700,FICTIONAL_CONTENT
+lure-0388,Tail Walker,Minnow 113 Flash,minnow,18,113,shallow-mid,steady/twitch,flash,75,66,61,66,allround,1700,FICTIONAL_CONTENT
+lure-0389,Tail Walker,Minnow 120 Natural,minnow,24,120,shallow-mid,steady/twitch,natural,81,68,53,72,allround,2000,FICTIONAL_CONTENT
+lure-0390,Tail Walker,Minnow 120 Flash,minnow,24,120,shallow-mid,steady/twitch,flash,81,68,53,72,allround,2000,FICTIONAL_CONTENT
+lure-0391,Tail Walker,Vibration 65 Natural,vibration,7,65,mid-deep,steady/lift-fall,natural,63,58,75,56,small-bait|finesse,1100,FICTIONAL_CONTENT
+lure-0392,Tail Walker,Vibration 65 Flash,vibration,7,65,mid-deep,steady/lift-fall,flash,63,58,75,56,small-bait|finesse,1100,FICTIONAL_CONTENT
+lure-0393,Tail Walker,Vibration 72 Natural,vibration,10,72,mid-deep,steady/lift-fall,natural,66,60,71,59,allround,1300,FICTIONAL_CONTENT
+lure-0394,Tail Walker,Vibration 72 Flash,vibration,10,72,mid-deep,steady/lift-fall,flash,66,60,71,59,allround,1300,FICTIONAL_CONTENT
+lure-0395,Tail Walker,Vibration 79 Natural,vibration,14,79,mid-deep,steady/lift-fall,natural,70,62,66,63,allround,1500,FICTIONAL_CONTENT
+lure-0396,Tail Walker,Vibration 79 Flash,vibration,14,79,mid-deep,steady/lift-fall,flash,70,62,66,63,allround,1500,FICTIONAL_CONTENT
+lure-0397,Tail Walker,Vibration 86 Natural,vibration,18,86,mid-deep,steady/lift-fall,natural,75,64,61,66,allround,1700,FICTIONAL_CONTENT
+lure-0398,Tail Walker,Vibration 86 Flash,vibration,18,86,mid-deep,steady/lift-fall,flash,75,64,61,66,allround,1700,FICTIONAL_CONTENT
+lure-0399,Tail Walker,Vibration 93 Natural,vibration,24,93,mid-deep,steady/lift-fall,natural,81,66,53,72,allround,2000,FICTIONAL_CONTENT
+lure-0400,Tail Walker,Vibration 93 Flash,vibration,24,93,mid-deep,steady/lift-fall,flash,81,66,53,72,allround,2000,FICTIONAL_CONTENT
+lure-0401,Tail Walker,Vibration 100 Natural,vibration,28,100,mid-deep,steady/lift-fall,natural,86,68,48,75,power|distance,2100,FICTIONAL_CONTENT
+lure-0402,Tail Walker,Vibration 100 Flash,vibration,28,100,mid-deep,steady/lift-fall,flash,86,68,48,75,power|distance,2100,FICTIONAL_CONTENT
+lure-0403,Tail Walker,Popper 90 Natural,popper,12,90,surface,pop,natural,68,58,68,61,allround,1400,FICTIONAL_CONTENT
+lure-0404,Tail Walker,Popper 90 Flash,popper,12,90,surface,pop,flash,68,58,68,61,allround,1400,FICTIONAL_CONTENT
+lure-0405,Tail Walker,Popper 97 Natural,popper,18,97,surface,pop,natural,75,60,61,66,allround,1700,FICTIONAL_CONTENT
+lure-0406,Tail Walker,Popper 97 Flash,popper,18,97,surface,pop,flash,75,60,61,66,allround,1700,FICTIONAL_CONTENT
+lure-0407,Tail Walker,Popper 104 Natural,popper,30,104,surface,pop,natural,88,62,45,77,power|distance,2200,FICTIONAL_CONTENT
+lure-0408,Tail Walker,Popper 104 Flash,popper,30,104,surface,pop,flash,88,62,45,77,power|distance,2200,FICTIONAL_CONTENT
+lure-0409,Tail Walker,Popper 111 Natural,popper,45,111,surface,pop,natural,98,64,26,91,power|distance,3000,FICTIONAL_CONTENT
+lure-0410,Tail Walker,Popper 111 Flash,popper,45,111,surface,pop,flash,98,64,26,91,power|distance,3000,FICTIONAL_CONTENT
+lure-0411,Tail Walker,Popper 118 Natural,popper,70,118,surface,pop,natural,98,66,20,98,power|distance,4200,FICTIONAL_CONTENT
+lure-0412,Tail Walker,Popper 118 Flash,popper,70,118,surface,pop,flash,98,66,20,98,power|distance,4200,FICTIONAL_CONTENT
+lure-0413,Tail Walker,Stickbait 120 Natural,stickbait,20,120,surface-mid,sweep,natural,77,58,58,68,allround,1800,FICTIONAL_CONTENT
+lure-0414,Tail Walker,Stickbait 120 Flash,stickbait,20,120,surface-mid,sweep,flash,77,58,58,68,allround,1800,FICTIONAL_CONTENT
+lure-0415,Tail Walker,Stickbait 127 Natural,stickbait,30,127,surface-mid,sweep,natural,88,60,45,77,power|distance,2200,FICTIONAL_CONTENT
+lure-0416,Tail Walker,Stickbait 127 Flash,stickbait,30,127,surface-mid,sweep,flash,88,60,45,77,power|distance,2200,FICTIONAL_CONTENT
+lure-0417,Tail Walker,Stickbait 134 Natural,stickbait,45,134,surface-mid,sweep,natural,98,62,26,91,power|distance,3000,FICTIONAL_CONTENT
+lure-0418,Tail Walker,Stickbait 134 Flash,stickbait,45,134,surface-mid,sweep,flash,98,62,26,91,power|distance,3000,FICTIONAL_CONTENT
+lure-0419,Tail Walker,Stickbait 141 Natural,stickbait,60,141,surface-mid,sweep,natural,98,64,20,98,power|distance,3700,FICTIONAL_CONTENT
+lure-0420,Tail Walker,Stickbait 141 Flash,stickbait,60,141,surface-mid,sweep,flash,98,64,20,98,power|distance,3700,FICTIONAL_CONTENT
+lure-0421,Tail Walker,Stickbait 148 Natural,stickbait,90,148,surface-mid,sweep,natural,98,66,20,98,power|distance,5100,FICTIONAL_CONTENT
+lure-0422,Tail Walker,Stickbait 148 Flash,stickbait,90,148,surface-mid,sweep,flash,98,66,20,98,power|distance,5100,FICTIONAL_CONTENT
+lure-0423,River Craft,Minnow 85 Natural,minnow,5,85,shallow-mid,steady/twitch,natural,56,58,86,47,small-bait|finesse,1000,FICTIONAL_CONTENT
+lure-0424,River Craft,Minnow 85 Flash,minnow,5,85,shallow-mid,steady/twitch,flash,56,58,86,47,small-bait|finesse,1000,FICTIONAL_CONTENT
+lure-0425,River Craft,Minnow 92 Natural,minnow,7,92,shallow-mid,steady/twitch,natural,58,60,83,48,small-bait|finesse,1100,FICTIONAL_CONTENT
+lure-0426,River Craft,Minnow 92 Flash,minnow,7,92,shallow-mid,steady/twitch,flash,58,60,83,48,small-bait|finesse,1100,FICTIONAL_CONTENT
+lure-0427,River Craft,Minnow 99 Natural,minnow,10,99,shallow-mid,steady/twitch,natural,61,62,79,51,allround,1300,FICTIONAL_CONTENT
+lure-0428,River Craft,Minnow 99 Flash,minnow,10,99,shallow-mid,steady/twitch,flash,61,62,79,51,allround,1300,FICTIONAL_CONTENT
+lure-0429,River Craft,Minnow 106 Natural,minnow,14,106,shallow-mid,steady/twitch,natural,65,64,74,55,allround,1500,FICTIONAL_CONTENT
+lure-0430,River Craft,Minnow 106 Flash,minnow,14,106,shallow-mid,steady/twitch,flash,65,64,74,55,allround,1500,FICTIONAL_CONTENT
+lure-0431,River Craft,Minnow 113 Natural,minnow,18,113,shallow-mid,steady/twitch,natural,70,66,69,58,allround,1700,FICTIONAL_CONTENT
+lure-0432,River Craft,Minnow 113 Flash,minnow,18,113,shallow-mid,steady/twitch,flash,70,66,69,58,allround,1700,FICTIONAL_CONTENT
+lure-0433,River Craft,Minnow 120 Natural,minnow,24,120,shallow-mid,steady/twitch,natural,76,68,61,64,allround,2000,FICTIONAL_CONTENT
+lure-0434,River Craft,Minnow 120 Flash,minnow,24,120,shallow-mid,steady/twitch,flash,76,68,61,64,allround,2000,FICTIONAL_CONTENT
+lure-0435,River Craft,Spoon 40 Natural,spoon,1.5,40,shallow-mid,steady/fall,natural,52,58,90,43,small-bait|finesse,900,FICTIONAL_CONTENT
+lure-0436,River Craft,Spoon 40 Flash,spoon,1.5,40,shallow-mid,steady/fall,flash,52,58,90,43,small-bait|finesse,900,FICTIONAL_CONTENT
+lure-0437,River Craft,Spoon 47 Natural,spoon,2,47,shallow-mid,steady/fall,natural,52,60,89,44,small-bait|finesse,900,FICTIONAL_CONTENT
+lure-0438,River Craft,Spoon 47 Flash,spoon,2,47,shallow-mid,steady/fall,flash,52,60,89,44,small-bait|finesse,900,FICTIONAL_CONTENT
+lure-0439,River Craft,Spoon 54 Natural,spoon,3,54,shallow-mid,steady/fall,natural,53,62,88,45,small-bait|finesse,900,FICTIONAL_CONTENT
+lure-0440,River Craft,Spoon 54 Flash,spoon,3,54,shallow-mid,steady/fall,flash,53,62,88,45,small-bait|finesse,900,FICTIONAL_CONTENT
+lure-0441,River Craft,Spoon 61 Natural,spoon,5,61,shallow-mid,steady/fall,natural,56,64,86,47,small-bait|finesse,1000,FICTIONAL_CONTENT
+lure-0442,River Craft,Spoon 61 Flash,spoon,5,61,shallow-mid,steady/fall,flash,56,64,86,47,small-bait|finesse,1000,FICTIONAL_CONTENT
+lure-0443,River Craft,Spoon 68 Natural,spoon,7,68,shallow-mid,steady/fall,natural,58,66,83,48,small-bait|finesse,1100,FICTIONAL_CONTENT
+lure-0444,River Craft,Spoon 68 Flash,spoon,7,68,shallow-mid,steady/fall,flash,58,66,83,48,small-bait|finesse,1100,FICTIONAL_CONTENT
+lure-0445,River Craft,Spoon 75 Natural,spoon,10,75,shallow-mid,steady/fall,natural,61,68,79,51,allround,1300,FICTIONAL_CONTENT
+lure-0446,River Craft,Spoon 75 Flash,spoon,10,75,shallow-mid,steady/fall,flash,61,68,79,51,allround,1300,FICTIONAL_CONTENT
+lure-0447,River Craft,Spinner 45 Natural,spinner,2,45,shallow-mid,steady,natural,52,58,89,44,small-bait|finesse,900,FICTIONAL_CONTENT
+lure-0448,River Craft,Spinner 45 Flash,spinner,2,45,shallow-mid,steady,flash,52,58,89,44,small-bait|finesse,900,FICTIONAL_CONTENT
+lure-0449,River Craft,Spinner 52 Natural,spinner,3,52,shallow-mid,steady,natural,53,60,88,45,small-bait|finesse,900,FICTIONAL_CONTENT
+lure-0450,River Craft,Spinner 52 Flash,spinner,3,52,shallow-mid,steady,flash,53,60,88,45,small-bait|finesse,900,FICTIONAL_CONTENT
+lure-0451,River Craft,Spinner 59 Natural,spinner,5,59,shallow-mid,steady,natural,56,62,86,47,small-bait|finesse,1000,FICTIONAL_CONTENT
+lure-0452,River Craft,Spinner 59 Flash,spinner,5,59,shallow-mid,steady,flash,56,62,86,47,small-bait|finesse,1000,FICTIONAL_CONTENT
+lure-0453,River Craft,Spinner 66 Natural,spinner,7,66,shallow-mid,steady,natural,58,64,83,48,small-bait|finesse,1100,FICTIONAL_CONTENT
+lure-0454,River Craft,Spinner 66 Flash,spinner,7,66,shallow-mid,steady,flash,58,64,83,48,small-bait|finesse,1100,FICTIONAL_CONTENT
+lure-0455,River Craft,Spinner 73 Natural,spinner,10,73,shallow-mid,steady,natural,61,66,79,51,allround,1300,FICTIONAL_CONTENT
+lure-0456,River Craft,Spinner 73 Flash,spinner,10,73,shallow-mid,steady,flash,61,66,79,51,allround,1300,FICTIONAL_CONTENT
+lure-0457,River Craft,Small Plug 45 Natural,small_plug,2,45,shallow,steady/twitch,natural,52,58,89,44,small-bait|finesse,900,FICTIONAL_CONTENT
+lure-0458,River Craft,Small Plug 45 Flash,small_plug,2,45,shallow,steady/twitch,flash,52,58,89,44,small-bait|finesse,900,FICTIONAL_CONTENT
+lure-0459,River Craft,Small Plug 52 Natural,small_plug,3,52,shallow,steady/twitch,natural,53,60,88,45,small-bait|finesse,900,FICTIONAL_CONTENT
+lure-0460,River Craft,Small Plug 52 Flash,small_plug,3,52,shallow,steady/twitch,flash,53,60,88,45,small-bait|finesse,900,FICTIONAL_CONTENT
+lure-0461,River Craft,Small Plug 59 Natural,small_plug,4,59,shallow,steady/twitch,natural,54,62,87,46,small-bait|finesse,1000,FICTIONAL_CONTENT
+lure-0462,River Craft,Small Plug 59 Flash,small_plug,4,59,shallow,steady/twitch,flash,54,62,87,46,small-bait|finesse,1000,FICTIONAL_CONTENT
+lure-0463,River Craft,Small Plug 66 Natural,small_plug,5,66,shallow,steady/twitch,natural,56,64,86,47,small-bait|finesse,1000,FICTIONAL_CONTENT
+lure-0464,River Craft,Small Plug 66 Flash,small_plug,5,66,shallow,steady/twitch,flash,56,64,86,47,small-bait|finesse,1000,FICTIONAL_CONTENT
+lure-0465,River Craft,Small Plug 73 Natural,small_plug,7,73,shallow,steady/twitch,natural,58,66,83,48,small-bait|finesse,1100,FICTIONAL_CONTENT
+lure-0466,River Craft,Small Plug 73 Flash,small_plug,7,73,shallow,steady/twitch,flash,58,66,83,48,small-bait|finesse,1100,FICTIONAL_CONTENT
+lure-0467,Blue Horizon,Jig 60 Natural,jig,10,60,mid-deep,jerk/fall,natural,61,58,71,59,allround,1300,FICTIONAL_CONTENT
+lure-0468,Blue Horizon,Jig 60 Flash,jig,10,60,mid-deep,jerk/fall,flash,61,58,71,59,allround,1300,FICTIONAL_CONTENT
+lure-0469,Blue Horizon,Jig 67 Natural,jig,20,67,mid-deep,jerk/fall,natural,72,60,58,68,allround,1800,FICTIONAL_CONTENT
+lure-0470,Blue Horizon,Jig 67 Flash,jig,20,67,mid-deep,jerk/fall,flash,72,60,58,68,allround,1800,FICTIONAL_CONTENT
+lure-0471,Blue Horizon,Jig 74 Natural,jig,30,74,mid-deep,jerk/fall,natural,83,62,45,77,power|distance,2200,FICTIONAL_CONTENT
+lure-0472,Blue Horizon,Jig 74 Flash,jig,30,74,mid-deep,jerk/fall,flash,83,62,45,77,power|distance,2200,FICTIONAL_CONTENT
+lure-0473,Blue Horizon,Jig 81 Natural,jig,40,81,mid-deep,jerk/fall,natural,94,64,32,86,power|distance,2700,FICTIONAL_CONTENT
+lure-0474,Blue Horizon,Jig 81 Flash,jig,40,81,mid-deep,jerk/fall,flash,94,64,32,86,power|distance,2700,FICTIONAL_CONTENT
+lure-0475,Blue Horizon,Jig 88 Natural,jig,60,88,mid-deep,jerk/fall,natural,98,66,20,98,power|distance,3700,FICTIONAL_CONTENT
+lure-0476,Blue Horizon,Jig 88 Flash,jig,60,88,mid-deep,jerk/fall,flash,98,66,20,98,power|distance,3700,FICTIONAL_CONTENT
+lure-0477,Blue Horizon,Jig 95 Natural,jig,80,95,mid-deep,jerk/fall,natural,98,68,20,98,power|distance,4600,FICTIONAL_CONTENT
+lure-0478,Blue Horizon,Jig 95 Flash,jig,80,95,mid-deep,jerk/fall,flash,98,68,20,98,power|distance,4600,FICTIONAL_CONTENT
+lure-0479,Blue Horizon,Popper 90 Natural,popper,12,90,surface,pop,natural,63,58,68,61,allround,1400,FICTIONAL_CONTENT
+lure-0480,Blue Horizon,Popper 90 Flash,popper,12,90,surface,pop,flash,63,58,68,61,allround,1400,FICTIONAL_CONTENT
+lure-0481,Blue Horizon,Popper 97 Natural,popper,18,97,surface,pop,natural,70,60,61,66,allround,1700,FICTIONAL_CONTENT
+lure-0482,Blue Horizon,Popper 97 Flash,popper,18,97,surface,pop,flash,70,60,61,66,allround,1700,FICTIONAL_CONTENT
+lure-0483,Blue Horizon,Popper 104 Natural,popper,30,104,surface,pop,natural,83,62,45,77,power|distance,2200,FICTIONAL_CONTENT
+lure-0484,Blue Horizon,Popper 104 Flash,popper,30,104,surface,pop,flash,83,62,45,77,power|distance,2200,FICTIONAL_CONTENT
+lure-0485,Blue Horizon,Popper 111 Natural,popper,45,111,surface,pop,natural,98,64,26,91,power|distance,3000,FICTIONAL_CONTENT
+lure-0486,Blue Horizon,Popper 111 Flash,popper,45,111,surface,pop,flash,98,64,26,91,power|distance,3000,FICTIONAL_CONTENT
+lure-0487,Blue Horizon,Popper 118 Natural,popper,70,118,surface,pop,natural,98,66,20,98,power|distance,4200,FICTIONAL_CONTENT
+lure-0488,Blue Horizon,Popper 118 Flash,popper,70,118,surface,pop,flash,98,66,20,98,power|distance,4200,FICTIONAL_CONTENT
+lure-0489,Blue Horizon,Stickbait 120 Natural,stickbait,20,120,surface-mid,sweep,natural,72,58,58,68,allround,1800,FICTIONAL_CONTENT
+lure-0490,Blue Horizon,Stickbait 120 Flash,stickbait,20,120,surface-mid,sweep,flash,72,58,58,68,allround,1800,FICTIONAL_CONTENT
+lure-0491,Blue Horizon,Stickbait 127 Natural,stickbait,30,127,surface-mid,sweep,natural,83,60,45,77,power|distance,2200,FICTIONAL_CONTENT
+lure-0492,Blue Horizon,Stickbait 127 Flash,stickbait,30,127,surface-mid,sweep,flash,83,60,45,77,power|distance,2200,FICTIONAL_CONTENT
+lure-0493,Blue Horizon,Stickbait 134 Natural,stickbait,45,134,surface-mid,sweep,natural,98,62,26,91,power|distance,3000,FICTIONAL_CONTENT
+lure-0494,Blue Horizon,Stickbait 134 Flash,stickbait,45,134,surface-mid,sweep,flash,98,62,26,91,power|distance,3000,FICTIONAL_CONTENT
+lure-0495,Blue Horizon,Stickbait 141 Natural,stickbait,60,141,surface-mid,sweep,natural,98,64,20,98,power|distance,3700,FICTIONAL_CONTENT
+lure-0496,Blue Horizon,Stickbait 141 Flash,stickbait,60,141,surface-mid,sweep,flash,98,64,20,98,power|distance,3700,FICTIONAL_CONTENT
+lure-0497,Blue Horizon,Stickbait 148 Natural,stickbait,90,148,surface-mid,sweep,natural,98,66,20,98,power|distance,5100,FICTIONAL_CONTENT
+lure-0498,Blue Horizon,Stickbait 148 Flash,stickbait,90,148,surface-mid,sweep,flash,98,66,20,98,power|distance,5100,FICTIONAL_CONTENT
+lure-0499,Blue Horizon,Pencil 100 Natural,pencil,12,100,surface,walk,natural,63,58,68,61,allround,1400,FICTIONAL_CONTENT
+lure-0500,Blue Horizon,Pencil 100 Flash,pencil,12,100,surface,walk,flash,63,58,68,61,allround,1400,FICTIONAL_CONTENT
+lure-0501,Blue Horizon,Pencil 107 Natural,pencil,18,107,surface,walk,natural,70,60,61,66,allround,1700,FICTIONAL_CONTENT
+lure-0502,Blue Horizon,Pencil 107 Flash,pencil,18,107,surface,walk,flash,70,60,61,66,allround,1700,FICTIONAL_CONTENT
+lure-0503,Blue Horizon,Pencil 114 Natural,pencil,25,114,surface,walk,natural,78,62,52,73,power|distance,2000,FICTIONAL_CONTENT
+lure-0504,Blue Horizon,Pencil 114 Flash,pencil,25,114,surface,walk,flash,78,62,52,73,power|distance,2000,FICTIONAL_CONTENT
+lure-0505,Blue Horizon,Pencil 121 Natural,pencil,35,121,surface,walk,natural,89,64,39,82,power|distance,2500,FICTIONAL_CONTENT
+lure-0506,Blue Horizon,Pencil 121 Flash,pencil,35,121,surface,walk,flash,89,64,39,82,power|distance,2500,FICTIONAL_CONTENT
+lure-0507,Blue Horizon,Pencil 128 Natural,pencil,50,128,surface,walk,natural,98,66,20,95,power|distance,3200,FICTIONAL_CONTENT
+lure-0508,Blue Horizon,Pencil 128 Flash,pencil,50,128,surface,walk,flash,98,66,20,95,power|distance,3200,FICTIONAL_CONTENT
+lure-0509,Blue Horizon,Deep Jig 100 Natural,deep_jig,80,100,deep,vertical jig,natural,98,58,20,98,power|distance,4600,FICTIONAL_CONTENT
+lure-0510,Blue Horizon,Deep Jig 100 Flash,deep_jig,80,100,deep,vertical jig,flash,98,58,20,98,power|distance,4600,FICTIONAL_CONTENT
+lure-0511,Blue Horizon,Deep Jig 107 Natural,deep_jig,120,107,deep,vertical jig,natural,98,60,20,98,power|distance,6600,FICTIONAL_CONTENT
+lure-0512,Blue Horizon,Deep Jig 107 Flash,deep_jig,120,107,deep,vertical jig,flash,98,60,20,98,power|distance,6600,FICTIONAL_CONTENT
+lure-0513,Blue Horizon,Deep Jig 114 Natural,deep_jig,160,114,deep,vertical jig,natural,98,62,20,98,power|distance,8500,FICTIONAL_CONTENT
+lure-0514,Blue Horizon,Deep Jig 114 Flash,deep_jig,160,114,deep,vertical jig,flash,98,62,20,98,power|distance,8500,FICTIONAL_CONTENT
+lure-0515,Blue Horizon,Deep Jig 121 Natural,deep_jig,200,121,deep,vertical jig,natural,98,64,20,98,power|distance,10400,FICTIONAL_CONTENT
+lure-0516,Blue Horizon,Deep Jig 121 Flash,deep_jig,200,121,deep,vertical jig,flash,98,64,20,98,power|distance,10400,FICTIONAL_CONTENT
+lure-0517,Blue Horizon,Deep Jig 128 Natural,deep_jig,300,128,deep,vertical jig,natural,98,66,20,98,power|distance,15200,FICTIONAL_CONTENT
+lure-0518,Blue Horizon,Deep Jig 128 Flash,deep_jig,300,128,deep,vertical jig,flash,98,66,20,98,power|distance,15200,FICTIONAL_CONTENT

@@ -1,0 +1,55 @@
+SeriesID,Brand,Series,Category,Tier,Description,Status
+shimara-nexara,Shimara,NEXARA,reel,entry,入門・丈夫・扱いやすい,FICTIONAL_CONTENT
+shimara-stradia,Shimara,STRADIA,reel,mid,万能・滑らかなドラグ,FICTIONAL_CONTENT
+shimara-vanedge,Shimara,VANEDGE,reel,light,軽量・低慣性,FICTIONAL_CONTENT
+shimara-twinarc,Shimara,TWINARC,reel,upper,剛性・安定性,FICTIONAL_CONTENT
+shimara-stellion,Shimara,STELLION,reel,flagship,軽さと剛性を高水準で両立,FICTIONAL_CONTENT
+shimara-solvia,Shimara,SOLVIA,rod,mid,万能ルアーロッド,FICTIONAL_CONTENT
+shimara-exsensea,Shimara,EXSENSEA,rod,upper,シーバス・ソルト高感度,FICTIONAL_CONTENT
+daiva-revrosia,Daiva,REVROSIA,reel,entry,コスパ・軽快,FICTIONAL_CONTENT
+daiva-freemza,Daiva,FREEMZA,reel,mid,軽量万能,FICTIONAL_CONTENT
+daiva-luvera,Daiva,LUVERA,reel,upper,低慣性・高感度,FICTIONAL_CONTENT
+daiva-certex,Daiva,CERTEX,reel,flagship,軽量と剛性の両立,FICTIONAL_CONTENT
+daiva-lunex,Daiva,LUNEX,rod,mid,軽量・高感度,FICTIONAL_CONTENT
+daiva-morevia,Daiva,MOREVIA,rod,upper,ソルト・操作性,FICTIONAL_CONTENT
+arvo-garsen-orion,Arvo Garsen,ORION,reel,entry,丈夫な入門機,FICTIONAL_CONTENT
+arvo-garsen-revox,Arvo Garsen,REVOX,reel,mid,パワー万能,FICTIONAL_CONTENT
+arvo-garsen-torqon,Arvo Garsen,TORQON,reel,power,高負荷・大物,FICTIONAL_CONTENT
+arvo-garsen-veritas-x,Arvo Garsen,VERITAS-X,rod,mid,剛性ルアー,FICTIONAL_CONTENT
+arvo-garsen-powercrest,Arvo Garsen,POWERCREST,rod,power,大型魚・パワー,FICTIONAL_CONTENT
+gamakaze-seiran,Gamakaze,SEIRAN,reel,entry,実戦入門,FICTIONAL_CONTENT
+gamakaze-gokuto,Gamakaze,GOKUTO,reel,mid,高負荷安定,FICTIONAL_CONTENT
+gamakaze-kishin,Gamakaze,KISHIN,reel,power,磯・大型,FICTIONAL_CONTENT
+gamakaze-rageki,Gamakaze,RAGEKI,rod,upper,掛け調子,FICTIONAL_CONTENT
+gamakaze-seiryu,Gamakaze,SEIRYU,rod,mid,餌・磯万能,FICTIONAL_CONTENT
+gamakaze-onikiba,Gamakaze,ONIKIBA,hook,upper,高貫通フック,FICTIONAL_CONTENT
+major-crest-entryx,Major Crest,ENTRYX,reel,entry,低価格,FICTIONAL_CONTENT
+major-crest-crosslink,Major Crest,CROSSLINK,reel,value,コスパ万能,FICTIONAL_CONTENT
+major-crest-primeway,Major Crest,PRIMEWAY,reel,mid,中級万能,FICTIONAL_CONTENT
+major-crest-firstway,Major Crest,FIRSTWAY,rod,entry,最初の一本,FICTIONAL_CONTENT
+major-crest-crossridge,Major Crest,CROSSRIDGE,rod,value,用途別コスパ,FICTIONAL_CONTENT
+tail-walker-shorebeat,Tail Walker,SHOREBEAT,reel,shore,ショア万能,FICTIONAL_CONTENT
+tail-walker-oceanforge,Tail Walker,OCEANFORGE,reel,offshore,オフショア,FICTIONAL_CONTENT
+tail-walker-deepedge,Tail Walker,DEEPEDGE,reel,heavy,大型魚,FICTIONAL_CONTENT
+tail-walker-shoreline,Tail Walker,SHORELINE,rod,shore,ショア遠投,FICTIONAL_CONTENT
+tail-walker-oceanedge,Tail Walker,OCEANEDGE,rod,offshore,船・青物,FICTIONAL_CONTENT
+evergreen-field-tactica,Evergreen Field,TACTICA,rod,upper,バス・操作系,FICTIONAL_CONTENT
+evergreen-field-inspire-x,Evergreen Field,INSPIRE-X,rod,flagship,高感度,FICTIONAL_CONTENT
+evergreen-field-faithrun,Evergreen Field,FAITHRUN,lure,upper,ミノー・操作性,FICTIONAL_CONTENT
+evergreen-field-combatra,Evergreen Field,COMBATRA,lure,upper,クランク・バス,FICTIONAL_CONTENT
+megaburst-destroy-x,Megaburst,DESTROY-X,rod,upper,バス・ルアー,FICTIONAL_CONTENT
+megaburst-levantis,Megaburst,LEVANTIS,rod,mid,万能ルアー,FICTIONAL_CONTENT
+megaburst-visionarc,Megaburst,VISIONARC,lure,upper,ミノー,FICTIONAL_CONTENT
+megaburst-giantdog,Megaburst,GIANTDOG,lure,upper,トップウォーター,FICTIONAL_CONTENT
+yamashiro-egix,Yamashiro,EGIX,lure,mid,エギ,FICTIONAL_CONTENT
+yamashiro-naoryx,Yamashiro,NAORYX,lure,light,ライトエギ,FICTIONAL_CONTENT
+yamashiro-marinebeat,Yamashiro,MARINEBEAT,lure,mid,海ルアー,FICTIONAL_CONTENT
+owners-edge-cuttingpoint,Owner's Edge,CUTTINGPOINT,hook,mid,高貫通,FICTIONAL_CONTENT
+owners-edge-stronghold,Owner's Edge,STRONGHOLD,hook,power,保持力,FICTIONAL_CONTENT
+owners-edge-snaplock,Owner's Edge,SNAPLOCK,terminal,mid,スナップ・スイベル,FICTIONAL_CONTENT
+river-craft-streamline,River Craft,STREAMLINE,rod,mid,渓流,FICTIONAL_CONTENT
+river-craft-mountainedge,River Craft,MOUNTAINEDGE,rod,upper,ネイティブトラウト,FICTIONAL_CONTENT
+river-craft-flowminnow,River Craft,FLOWMINNOW,lure,mid,渓流ミノー,FICTIONAL_CONTENT
+blue-horizon-abysspower,Blue Horizon,ABYSSPOWER,reel,heavy,大型オフショア,FICTIONAL_CONTENT
+blue-horizon-tunaarc,Blue Horizon,TUNAARC,rod,heavy,マグロ・大型,FICTIONAL_CONTENT
+blue-horizon-pelagic-x,Blue Horizon,PELAGIC-X,lure,heavy,大型トップ/ジグ,FICTIONAL_CONTENT
