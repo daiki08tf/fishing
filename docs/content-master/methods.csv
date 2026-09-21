@@ -1,5 +1,4 @@
-TAB NAME: methods.csv>
-index,MethodID,Name,BaseType,Target,DesignNote,Phase
+MethodID,Name,BaseType,Target,DesignNote,Phase
 method-light-lure,Light Lure,lure,小型魚・ライトゲーム,軽量ルアー/細糸/感度重視,PHASE6
 method-lure,General Lure,lure,汎用ルアー,幅広いルアーに対応,PHASE6
 method-bait,Bait,bait,汎用餌釣り,餌・フック中心,PHASE6
