@@ -1,4 +1,5 @@
 import type { AreaId, FishingSpotId, RegionId, RegulationId } from '../ids'
+import type { Range } from '../primitives'
 import type { AccessCapability, RouteFeature, TransportType } from '../access/Transport'
 import type { SourceRef } from '../source/SourceRef'
 import type { CurrentProfile, DepthProfile } from '../fish/profiles'
@@ -34,6 +35,22 @@ export type SpotKnowledgeReveal = {
 
 export type SpotKnowledgeConfig = {
   readonly reveals: readonly SpotKnowledgeReveal[]
+}
+
+/**
+ * Phase 11 — Fishing Zone。
+ *
+ * Spot 内の「どこへ投げるか」を表す。遠投のためのゲーム内空間であり、
+ * Zone 自体は魚種を hard gate しない。魚の存在量は FishOccurrence.zoneAffinity で変わる。
+ *
+ * castDistanceM が無い Zone は、船の真下など「水平キャスト距離を主軸にしない水域」を表せる。
+ */
+export type FishingZone = {
+  readonly id: string
+  readonly name: string
+  readonly castDistanceM?: Range
+  readonly depthRangeM?: Range
+  readonly habitatTags: readonly string[]
 }
 
 /**
@@ -87,6 +104,12 @@ export type FishingSpot = {
 
   readonly depth?: DepthProfile
   readonly current?: CurrentProfile
+
+  /**
+   * Phase 11: Spot 内の狙う水域。
+   * 旧 Content との互換性のため optional。未設定時は Casting Domain が 1 つの fallback Zone を作る。
+   */
+  readonly fishingZones?: readonly FishingZone[]
 
   readonly fishTable: readonly FishOccurrence[]
 
