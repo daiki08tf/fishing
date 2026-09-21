@@ -1,14 +1,17 @@
 import { totalXpForLevel } from '../../domain/progression/AnglerLevel'
 import { emptyRepetitionState } from '../../domain/progression/repetitionDecay'
 import { emptyCodexState } from '../../domain/codex'
+import { createInitialWorld } from '../../domain/world/worldSession'
 import {
   CURRENT_SAVE_SCHEMA_VERSION,
   SAVE_SCHEMA_VERSION_V1,
+  SAVE_SCHEMA_VERSION_V2,
   type CurrentSave,
   type SaveGameV1,
   type SaveGameV2,
+  type SaveGameV3,
 } from '../../domain/save/SaveGame'
-import { currentSaveSchema, saveGameV1Schema } from './saveSchema'
+import { currentSaveSchema, saveGameV1Schema, saveGameV2Schema } from './saveSchema'
 
 /**
  * Save の migration 入口。ARCHITECTURE.md §9 に対応する。
@@ -74,7 +77,7 @@ const readSchemaVersion = (raw: Record<string, unknown>): number | null => {
  * Perk と反復状態は新設なので空から始める。
  */
 export const migrateV1ToV2 = (v1: SaveGameV1): SaveGameV2 => ({
-  schemaVersion: CURRENT_SAVE_SCHEMA_VERSION,
+  schemaVersion: SAVE_SCHEMA_VERSION_V2,
   createdAt: v1.createdAt,
   updatedAt: v1.updatedAt,
   knowledge: v1.knowledge,
@@ -93,6 +96,25 @@ export const migrateV1ToV2 = (v1: SaveGameV1): SaveGameV2 => ({
     reputation: v1.progression.reputation,
     methodProficiency: v1.progression.methodProficiency,
   },
+})
+
+/**
+ * v2 → v3。
+ *
+ * World（時間・位置・発見済み Spot・移動手段・釣行記録）を追加する。
+ * それ以外のブロックはそのまま引き継ぐ（Progression / Codex を失わない）。
+ * 既存 Save には World が無いので、ゲーム開始時の自宅・時刻から始める。
+ */
+export const migrateV2ToV3 = (v2: SaveGameV2): SaveGameV3 => ({
+  schemaVersion: CURRENT_SAVE_SCHEMA_VERSION,
+  createdAt: v2.createdAt,
+  updatedAt: v2.updatedAt,
+  progression: v2.progression,
+  codex: v2.codex,
+  world: createInitialWorld(),
+  knowledge: v2.knowledge,
+  career: v2.career,
+  finance: v2.finance,
 })
 
 export const migrateSave = (raw: unknown): SaveMigrationResult => {
@@ -134,7 +156,7 @@ export const migrateSave = (raw: unknown): SaveMigrationResult => {
       )
     }
 
-    const migrated = currentSaveSchema.safeParse(migrateV1ToV2(parsed.data))
+    const migrated = currentSaveSchema.safeParse(migrateV2ToV3(migrateV1ToV2(parsed.data)))
 
     if (!migrated.success) {
       return failure(
@@ -145,6 +167,30 @@ export const migrateSave = (raw: unknown): SaveMigrationResult => {
     }
 
     return { ok: true, save: migrated.data, migratedFrom: SAVE_SCHEMA_VERSION_V1 }
+  }
+
+  if (schemaVersion === SAVE_SCHEMA_VERSION_V2) {
+    const parsed = saveGameV2Schema.safeParse(record)
+
+    if (!parsed.success) {
+      return failure(
+        'invalid_save',
+        'save data failed v2 schema validation',
+        toIssues(parsed.error),
+      )
+    }
+
+    const migrated = currentSaveSchema.safeParse(migrateV2ToV3(parsed.data))
+
+    if (!migrated.success) {
+      return failure(
+        'invalid_save',
+        'migrated save failed current schema validation',
+        toIssues(migrated.error),
+      )
+    }
+
+    return { ok: true, save: migrated.data, migratedFrom: SAVE_SCHEMA_VERSION_V2 }
   }
 
   const parsed = currentSaveSchema.safeParse(record)

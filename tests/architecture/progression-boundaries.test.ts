@@ -55,7 +55,7 @@ describe('progression boundaries', () => {
 
   it('does not let the access requirement gain a level gate', () => {
     const violations = findForbiddenPatterns(sources, {
-      matches: (path) => path.startsWith('src/domain/access/'),
+      matches: (path) => path.startsWith('src/domain/access/') && !path.endsWith('.test.ts'),
       pattern: /\b(anglerLevel|requiredLevel|minLevel|levelRequirement)\b/,
       reason: 'level must not gate access',
     })

@@ -1,9 +1,15 @@
 import { z } from 'zod'
 import { FISH_TRAITS } from '../../domain/fish/FishTrait'
-import { asFishIndividualId, asFishSpeciesId, asJobId } from '../../domain/ids'
+import { asFishIndividualId, asFishSpeciesId, asFishingSpotId, asJobId } from '../../domain/ids'
 import { PERK_IDS } from '../../domain/progression/perks'
 import { ANGLER_SKILL_MAX, ANGLER_SKILL_MIN } from '../../domain/progression/AnglerSkill'
-import { CURRENT_SAVE_SCHEMA_VERSION, SAVE_SCHEMA_VERSION_V1 } from '../../domain/save/SaveGame'
+import {
+  CURRENT_SAVE_SCHEMA_VERSION,
+  SAVE_SCHEMA_VERSION_V1,
+  SAVE_SCHEMA_VERSION_V2,
+} from '../../domain/save/SaveGame'
+import { WORLD_PHASES } from '../../domain/world/worldSession'
+import { transportTypeSchema } from '../../content/schema/transport'
 
 /**
  * Save の実行時検証。ARCHITECTURE.md §9 に対応する。
@@ -134,7 +140,7 @@ const codexSchema = z.strictObject({
 })
 
 export const saveGameV2Schema = z.strictObject({
-  schemaVersion: z.literal(CURRENT_SAVE_SCHEMA_VERSION),
+  schemaVersion: z.literal(SAVE_SCHEMA_VERSION_V2),
   createdAt: isoDateTimeSchema,
   updatedAt: isoDateTimeSchema,
   progression: anglerProgressionSchema,
@@ -158,5 +164,51 @@ export const saveGameV2Schema = z.strictObject({
   finance: financeSchema,
 })
 
+/** ゲーム内時間（WorldTime）。 */
+const worldTimeSchema = z.strictObject({
+  year: z.number().int(),
+  month: z.number().int().min(1).max(12),
+  day: z.number().int().min(1).max(31),
+  hour: z.number().int().min(0).max(23),
+  minute: z.number().int().min(0).max(59),
+})
+
+/** 1 回の釣行の記録（TripSummary）。 */
+const tripSchema = z.strictObject({
+  spotId: z.string().min(1).transform(asFishingSpotId),
+  spotName: z.string().min(1),
+  startedAt: worldTimeSchema,
+  arrivedAt: worldTimeSchema,
+  attempts: z.number().int().nonnegative(),
+  catches: z.number().int().nonnegative(),
+  xpGained: z.number().nonnegative(),
+  knowledgeGained: z.number().nonnegative(),
+  largestLengthCm: z.number().positive().nullable(),
+})
+
+/** World の状態。Domain の WorldState と対応する。 */
+const worldSchema = z.strictObject({
+  time: worldTimeSchema,
+  phase: z.enum(WORLD_PHASES),
+  homeLocationId: z.string().min(1),
+  currentSpotId: z.string().min(1).transform(asFishingSpotId).nullable(),
+  arrivalTime: worldTimeSchema.nullable(),
+  trip: tripSchema.nullable(),
+  discoveredSpotIds: z.array(z.string().min(1).transform(asFishingSpotId)),
+  availableTransports: z.array(transportTypeSchema),
+})
+
+export const saveGameV3Schema = z.strictObject({
+  schemaVersion: z.literal(CURRENT_SAVE_SCHEMA_VERSION),
+  createdAt: isoDateTimeSchema,
+  updatedAt: isoDateTimeSchema,
+  progression: anglerProgressionSchema,
+  codex: codexSchema.default(() => ({ species: {} })),
+  world: worldSchema,
+  knowledge: knowledgeSchema,
+  career: careerSchema,
+  finance: financeSchema,
+})
+
 /** 現行 version の Save スキーマ。Migration 後の検証に使う。 */
-export const currentSaveSchema = saveGameV2Schema
+export const currentSaveSchema = saveGameV3Schema

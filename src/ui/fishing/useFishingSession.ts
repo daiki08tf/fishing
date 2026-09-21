@@ -1,27 +1,39 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { loadBuiltInContent } from '../../content/catalog'
+import type { EncounterCandidate } from '../../domain/encounter/encounterEngine'
 import {
   FishingEngine,
   isTerminalPhase,
   type FishingCommand,
   type FishingSnapshot,
 } from '../../domain/fishing'
+import type { FishingEvent } from '../../domain/fishing'
 import { resolveFishingModifiers } from '../../domain/progression'
 import { usePlayerStore } from '../../state/playerStore'
+import { useContentOrError } from '../world/useContentOrError'
 
 /**
  * 釣行 1 回分のセッション。
  *
- * Domain の FishingEngine を保持し、UI 側の都合（tick の刻み、再描画、
- * セッションの作り直し）だけを担当する。
+ * どの魚が釣れるかは「今いる Spot の fishTable」で決まる。
+ * FishingEngine 自身は Spot を知らない（Encounter 候補を渡されるだけ）。
  *
- * 捕獲の処理（記録と成長）は playerStore 経由で Domain の resolveCatch に渡す。
- * ここでは First Catch も自己記録も判定しない。
+ * 1 回の釣り（キャスト〜結果）が終わったら、その結果を World へ返す:
+ *   時間が進み、Knowledge が増える（釣れなくても）。
  */
+
+/** 1 回の釣りが終わったことを示すイベント。 */
+const SESSION_END_EVENTS: readonly FishingEvent[] = [
+  'LANDED',
+  'HOOK_MISSED',
+  'HOOK_ESCAPE',
+  'LINE_BREAK',
+  'NO_BITE',
+]
 
 export type FishingSession = {
   readonly contentError: string | null
   readonly snapshot: FishingSnapshot | null
+  readonly spotName: string | null
   /** このセッションの seed。同じ seed なら同じ経過を再現できる。 */
   readonly seed: string
   readonly send: (command: FishingCommand) => void
@@ -36,20 +48,32 @@ export const useFishingSession = (): FishingSession => {
   const engineRef = useRef<FishingEngine | null>(null)
   const [snapshot, setSnapshot] = useState<FishingSnapshot | null>(null)
 
+  const content = useContentOrError()
+  const world = usePlayerStore((state) => state.world)
   const progression = usePlayerStore((state) => state.progression)
   const recordCatch = usePlayerStore((state) => state.recordCatch)
+  const recordAttempt = usePlayerStore((state) => state.recordAttempt)
 
-  // コンテンツは起動時に 1 度だけ検証する。
-  const content = useMemo(() => {
-    try {
-      return { ok: true as const, value: loadBuiltInContent() }
-    } catch (error) {
-      return {
-        ok: false as const,
-        message: error instanceof Error ? error.message : String(error),
-      }
+  const spot = useMemo(() => {
+    if (!content.ok || world.currentSpotId === null) {
+      return undefined
     }
-  }, [])
+
+    return content.value.spots.find((entry) => entry.id === world.currentSpotId)
+  }, [content, world.currentSpotId])
+
+  // 今いる Spot の魚種だけが Encounter 候補になる。
+  const encounters = useMemo<readonly EncounterCandidate[]>(() => {
+    if (!content.ok || spot === undefined) {
+      return []
+    }
+
+    return spot.fishTable.flatMap((occurrence) => {
+      const species = content.value.speciesById[String(occurrence.speciesId)]
+
+      return species === undefined ? [] : [{ species, presence: occurrence.basePresence }]
+    })
+  }, [content, spot])
 
   // 技量は Progression 側で解決してから Engine へ渡す。
   const playerModifiers = useMemo(
@@ -61,26 +85,29 @@ export const useFishingSession = (): FishingSession => {
     [progression.skills, progression.unlockedPerks],
   )
 
-  // セッション開始（内容・seed・技量が変わったとき）。
+  const encountersKey = spot === undefined ? 'none' : String(spot.id)
+
+  // セッション開始（Spot・seed・技量が変わったとき）。
   useEffect(() => {
-    if (!content.ok) {
+    if (!content.ok || spot === undefined) {
+      engineRef.current = null
+      setSnapshot(null)
       return
     }
 
     const engine = new FishingEngine({
-      encounters: content.value.encounters,
+      encounters,
       seed: session.seed,
-      spotId: content.value.primarySpot.id,
+      spotId: spot.id,
       playerModifiers,
     })
 
     engineRef.current = engine
     setSnapshot(engine.snapshot())
-  }, [content, session, playerModifiers])
+  }, [content, session, playerModifiers, encounters, encountersKey, spot])
 
   const isRunning = snapshot !== null && !isTerminalPhase(snapshot.phase)
 
-  // tick を刻む。終了状態では止める。
   useEffect(() => {
     if (!isRunning) {
       return
@@ -96,29 +123,44 @@ export const useFishingSession = (): FishingSession => {
       const result = engine.tick()
       setSnapshot(result.snapshot)
 
-      // 取り込んだ瞬間だけ記録・成長を反映する（LANDED は 1 回しか出ない）。
-      if (result.events.includes('LANDED') && content.ok) {
-        const individual = result.snapshot.fish?.individual
-        const species =
-          individual === undefined
-            ? undefined
-            : content.value.speciesById[String(individual.speciesId)]
+      const ended = result.events.find((event) => SESSION_END_EVENTS.includes(event))
 
-        if (individual !== undefined && species !== undefined) {
+      if (ended === undefined || spot === undefined) {
+        return
+      }
+
+      const landed = ended === 'LANDED'
+      const individual = result.snapshot.fish?.individual
+
+      // LANDED のときだけ記録と成長を反映する。
+      if (landed && individual !== undefined && content.ok) {
+        const species = content.value.speciesById[String(individual.speciesId)]
+
+        if (species !== undefined) {
           recordCatch({
             individual,
             species,
-            spotId: String(content.value.primarySpot.id),
+            spotId: String(spot.id),
             capturedAt: new Date().toISOString(),
           })
         }
       }
+
+      // 釣れても釣れなくても時間は進み、Knowledge も増える。
+      const xpGained = landed ? (usePlayerStore.getState().lastCatch?.xpGained ?? 0) : 0
+
+      recordAttempt({
+        spot,
+        outcome: landed ? 'landed' : 'failed',
+        xpGained,
+        ...(landed && individual !== undefined ? { caughtLengthCm: individual.lengthCm } : {}),
+      })
     }, engine.tuning.tickMs)
 
     return () => {
       window.clearInterval(interval)
     }
-  }, [isRunning, session, content, recordCatch])
+  }, [isRunning, session, content, recordCatch, recordAttempt, spot, encountersKey])
 
   const send = useCallback((command: FishingCommand) => {
     const engine = engineRef.current
@@ -140,6 +182,7 @@ export const useFishingSession = (): FishingSession => {
   return {
     contentError: content.ok ? null : content.message,
     snapshot,
+    spotName: spot?.name ?? null,
     seed: session.seed,
     send,
     restart,

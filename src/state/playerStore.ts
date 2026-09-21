@@ -1,8 +1,11 @@
 import { create } from 'zustand'
+import { evaluateAccess, type AccessEvaluation } from '../domain/access/accessEngine'
+import type { TransportType } from '../domain/access/Transport'
 import { resolveCatch } from '../domain/catch'
 import { emptyCodexState, type CodexState } from '../domain/codex'
 import type { FishIndividual } from '../domain/fish/FishIndividual'
 import type { FishSpecies } from '../domain/fish/FishSpecies'
+import { emptyKnowledgeState, type KnowledgeState } from '../domain/knowledge/KnowledgeState'
 import {
   allocateSkillPoints,
   createInitialProgression,
@@ -14,20 +17,29 @@ import {
   type SkillAllocationFailure,
 } from '../domain/progression'
 import type { CurrentSave } from '../domain/save/SaveGame'
+import type { FishingSpot } from '../domain/world/FishingSpot'
+import {
+  arriveAtSpot,
+  arriveHome,
+  createInitialWorld,
+  leaveForSpot,
+  leaveSpot,
+  recordFishingAttempt,
+  type WorldActionResult,
+  type WorldState,
+} from '../domain/world/worldSession'
 
 /**
- * プレイヤーの成長と記録（画面をまたいで保持する state）。
+ * Save に載る状態（Player + World）をまとめて持つストア。
  *
- * ルールは一切ここに書かない。判定は Domain の
- * `resolveCatch` / `allocateSkillPoints` / `unlockPerks` が行い、
- * このストアは結果を保持するだけである。
+ * ルールは一切ここに書かない。判定は Domain（resolveCatch / worldSession /
+ * accessEngine / progression）が行い、このストアは結果を保持するだけである。
  *
- * 永続化は直接行わない（IndexedDB を知らない）。
- * 保存と復元は Application 層の persistence coordinator が担当する。
- *
- * 操作は **hydration 完了後（status === 'ready'）のみ** 有効である。
- * 保存済みの状態を読み込む前に操作が走ると、あとから復元した状態で
- * 上書きされてしまうため、ここでも入口を閉じておく。
+ * - 永続化は直接行わない（IndexedDB を知らない）。保存と復元は
+ *   Application 層の persistence coordinator が担当する。
+ * - 操作は hydration 完了後（status === 'ready'）のみ有効。
+ * - Player と World を同じストアに置くのは、同じ 1 つの Save として
+ *   まとめて hydrate / autosave するためである（保存の単位＝ストアの単位）。
  */
 
 export type HydrationStatus = 'idle' | 'hydrating' | 'ready' | 'error'
@@ -61,10 +73,19 @@ export type RecordCatchInput = {
   readonly capturedAt?: string
 }
 
-/** 保存対象の slice。coordinator はこの 2 つの同一性だけを見る。 */
+export type RecordAttemptInput = {
+  readonly spot: FishingSpot
+  readonly outcome: 'landed' | 'failed'
+  readonly xpGained: number
+  readonly caughtLengthCm?: number
+}
+
+/** 保存対象の slice。coordinator はこの 4 つの同一性だけを見る。 */
 export type PersistedPlayerSlice = {
   readonly progression: AnglerProgression
   readonly codex: CodexState
+  readonly world: WorldState
+  readonly knowledge: KnowledgeState
 }
 
 export type PlayerStoreState = PersistedPlayerSlice & {
@@ -85,6 +106,15 @@ export type PlayerStoreState = PersistedPlayerSlice & {
   recordCatch(input: RecordCatchInput): void
   spendSkillPoint(skill: AnglerSkill, amount?: number): void
   resetSkills(): void
+
+  /** Spot のアクセス判定（状態は変えない）。 */
+  evaluateSpot(spot: FishingSpot): AccessEvaluation
+  /** 自宅を出て Spot へ移動する（時間が進む）。 */
+  travelToSpot(spot: FishingSpot, transport?: TransportType): WorldActionResult
+  /** 釣り 1 回分の結果を世界へ反映する（時間と Knowledge が進む）。 */
+  recordAttempt(input: RecordAttemptInput): WorldActionResult
+  /** Spot を出て自宅へ戻る（帰路の時間が進む）。 */
+  returnHome(spot: FishingSpot): WorldActionResult
 }
 
 const createInitialState = (): PersistedPlayerSlice & {
@@ -97,6 +127,8 @@ const createInitialState = (): PersistedPlayerSlice & {
   hydrationFailure: null,
   codex: emptyCodexState(),
   progression: createInitialProgression(),
+  world: createInitialWorld(),
+  knowledge: emptyKnowledgeState(),
   lastCatch: null,
   skillAllocationError: null,
 })
@@ -110,12 +142,14 @@ export const createPlayerStore = () =>
     },
 
     hydrateFromSave: (save) => {
-      // 値を入れ替えるだけ。XP も記録も動かさない。
+      // 値を入れ替えるだけ。XP も記録も時間も動かさない。
       set({
         hydrationStatus: 'ready',
         hydrationFailure: null,
         progression: save.progression,
         codex: save.codex,
+        world: save.world,
+        knowledge: save.knowledge,
         lastCatch: null,
         skillAllocationError: null,
       })
@@ -211,6 +245,87 @@ export const createPlayerStore = () =>
       const unlock = unlockPerks({ ...progression, ...reset, unlockedPerks: [] })
 
       set({ progression: unlock.progression, skillAllocationError: null })
+    },
+
+    evaluateSpot: (spot) => {
+      const { world, knowledge } = get()
+
+      return evaluateAccess({
+        spot,
+        availableTransports: world.availableTransports,
+        knowledge,
+      })
+    },
+
+    travelToSpot: (spot, transport) => {
+      if (get().hydrationStatus !== 'ready') {
+        return { ok: false, reason: 'not_at_home', message: '読み込み中' }
+      }
+
+      const { world, knowledge } = get()
+      const left = leaveForSpot({
+        context: { world, knowledge },
+        spot,
+        ...(transport === undefined ? {} : { transport }),
+      })
+
+      if (!left.ok) {
+        return left
+      }
+
+      // 移動は即時解決する（演出が要るようになったら間に挟む）。
+      const arrived = arriveAtSpot({ context: left.context, spot })
+
+      if (!arrived.ok) {
+        return arrived
+      }
+
+      set({ world: arrived.context.world, knowledge: arrived.context.knowledge })
+      return arrived
+    },
+
+    recordAttempt: (input) => {
+      if (get().hydrationStatus !== 'ready') {
+        return { ok: false, reason: 'not_at_spot', message: '読み込み中' }
+      }
+
+      const { world, knowledge } = get()
+      const result = recordFishingAttempt({
+        context: { world, knowledge },
+        spot: input.spot,
+        outcome: input.outcome,
+        xpGained: input.xpGained,
+        ...(input.caughtLengthCm === undefined ? {} : { caughtLengthCm: input.caughtLengthCm }),
+      })
+
+      if (!result.ok) {
+        return result
+      }
+
+      set({ world: result.context.world, knowledge: result.context.knowledge })
+      return result
+    },
+
+    returnHome: (spot) => {
+      if (get().hydrationStatus !== 'ready') {
+        return { ok: false, reason: 'not_at_spot', message: '読み込み中' }
+      }
+
+      const { world, knowledge } = get()
+      const left = leaveSpot({ context: { world, knowledge }, spot })
+
+      if (!left.ok) {
+        return left
+      }
+
+      const home = arriveHome({ context: left.context })
+
+      if (!home.ok) {
+        return home
+      }
+
+      set({ world: home.context.world, knowledge: home.context.knowledge })
+      return home
     },
   }))
 

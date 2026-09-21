@@ -94,6 +94,11 @@ const spot: FishingSpot = {
   regionId: region.id,
   environment: 'fixture-environment',
   access,
+  travelOptions: [
+    { transport: 'train', minutes: 38 },
+    { transport: 'walk', minutes: 45 },
+  ],
+  dataStatus: 'provisional',
   habitatTags: ['fixture-habitat'],
   depth: { depthRangeM: { min: 1, max: 8 } },
   fishTable: [{ speciesId: species.id, basePresence: 1 }],

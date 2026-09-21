@@ -136,7 +136,7 @@ export type FishingScreenProps = {
 }
 
 export const FishingScreen = ({ onExit }: FishingScreenProps) => {
-  const { contentError, snapshot, seed, send, restart } = useFishingSession()
+  const { contentError, snapshot, spotName, seed, send, restart } = useFishingSession()
   const codex = usePlayerStore((state) => state.codex)
   const lastCatch = usePlayerStore((state) => state.lastCatch)
   const progression = usePlayerStore((state) => state.progression)
@@ -181,7 +181,9 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
         >
           成長 Lv{progression.anglerLevel} / SP {progression.skillPoints}
         </button>
-        <span className="fishing__seed">seed: {seed}</span>
+        <span className="fishing__seed">
+          {spotName ?? '釣り場未選択'} / seed: {seed}
+        </span>
       </header>
 
       <section className="panel">

@@ -1,4 +1,5 @@
 import type { FishingSpotId, RegionId, RegulationId } from '../ids'
+import type { TransportType } from '../access/Transport'
 import type { SourceRef } from '../source/SourceRef'
 import type { CurrentProfile, DepthProfile } from '../fish/profiles'
 import type { AccessRequirement } from '../access/AccessRequirement'
@@ -35,6 +36,27 @@ export type SpotKnowledgeConfig = {
   readonly reveals: readonly SpotKnowledgeReveal[]
 }
 
+/**
+ * 移動手段ごとの所要時間（ゲーム内分）。
+ * Phase 4 では運賃を扱わない。
+ */
+export type SpotTravelOption = {
+  readonly transport: TransportType
+  readonly minutes: number
+}
+
+/**
+ * その Spot のデータがどの程度信頼できるか。
+ *
+ * 実在の釣り場について、魚種・規制・立入可否を根拠なく断定しないための表示。
+ * - `provisional`: 検証用・概略。UI にもその旨を出す
+ * - `verified`: 出典（sourceRefs）に基づく
+ *
+ * Phase 4 のコンテンツはすべて `provisional` である。
+ */
+export const SPOT_DATA_STATUSES = ['provisional', 'verified'] as const
+export type SpotDataStatus = (typeof SPOT_DATA_STATUSES)[number]
+
 export type FishingSpot = {
   readonly id: FishingSpotId
   readonly name: string
@@ -43,6 +65,12 @@ export type FishingSpot = {
   readonly environment: EnvironmentType
 
   readonly access: readonly AccessRequirement[]
+
+  /** 利用できる移動手段と所要時間。 */
+  readonly travelOptions: readonly SpotTravelOption[]
+
+  /** データの信頼度。UI は provisional を「暫定」と表示する。 */
+  readonly dataStatus: SpotDataStatus
 
   readonly habitatTags: readonly string[]
 

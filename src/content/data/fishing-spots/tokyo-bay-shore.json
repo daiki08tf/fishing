@@ -1,0 +1,24 @@
+{
+  "id": "tokyo-bay-shore",
+  "name": "東京湾 岸",
+  "regionId": "tokyo-area",
+  "environment": "bay_shore",
+  "dataStatus": "provisional",
+  "access": [{ "kind": "transport", "tag": "train" }],
+  "travelOptions": [{ "transport": "train", "minutes": 45 }],
+  "habitatTags": ["phase1-sample-pier", "phase1-sample-shallow"],
+  "depth": { "depthRangeM": { "min": 2, "max": 12 } },
+  "fishTable": [
+    { "speciesId": "phase1-sample-fish", "basePresence": 0.6 },
+    { "speciesId": "phase2-sample-fish-c", "basePresence": 0.4 },
+    { "speciesId": "phase2-sample-fish-g", "basePresence": 0.5 },
+    { "speciesId": "phase2-sample-fish-j", "basePresence": 0.5 }
+  ],
+  "knowledgeConfig": {
+    "reveals": [
+      { "field": "main_species", "minKnowledge": 20 },
+      { "field": "time_pattern", "minKnowledge": 40 },
+      { "field": "habitat", "minKnowledge": 60 }
+    ]
+  }
+}

@@ -30,6 +30,7 @@ Product Decision の SSOT は `docs/DECISIONS.md`。
 - Phase 3: Angler Progression + Codex 永続化の整合性修正
   （本変更。`git log --oneline` で確認する）
 - Phase 3.1: Save / Load の配線（起動時 hydration と autosave）
+- Phase 4: World / Time / Access / Spot Knowledge（自宅から釣りへ行って帰るループ）
 
 コミットの位置は `git log --oneline` で確認する。
 本文書にはマシン固有の絶対パスや作業ディレクトリの UUID を記録しない。
@@ -44,6 +45,22 @@ Product Decision の SSOT は `docs/DECISIONS.md`。
 | 2 | 個体生成（サイズ・体重・コンディション・Trait・百分位）と Codex | 釣り 10 種 + 個体差 |
 | 3 | Angler Progression（XP・Lv1〜100・7 Skill・Perk・Save v2） | 成長ループ |
 | 3.1 | Save / Load の配線（起動時 hydration・autosave・壊れた Save の扱い） | 再起動で成長と記録が残る |
+| 4 | World（ゲーム内時間・移動・Spot・Access・Knowledge）と Map / Spot 画面 | 自宅から釣りへ行って帰る |
+
+## Phase 4 で実装したもの
+
+| 領域 | 内容 |
+|---|---|
+| 時間 | `src/domain/world/WorldTime.ts`。日付・曜日・時分、日/月/年跨ぎ、うるう年。`Date` を使わない純粋計算 |
+| 世界 | `worldSession.ts`。HOME → TRAVELLING → AT_SPOT → RETURNING_HOME → HOME の状態機械 |
+| Access | `src/domain/access/accessEngine.ts`。行けるか / 行けない理由 / 使える移動手段を返す |
+| 移動 | Spot ごとの `travelOptions`（walk / train / bus）。運賃は扱わない |
+| Knowledge | `spotKnowledge.ts` / `regionKnowledge.ts`。訪問・釣り・捕獲で増え、100 で頭打ち |
+| 釣りの時間 | 1 回の釣りでゲーム内 20 分（PROVISIONAL）。釣れなくても時間は進む |
+| Spot | 東京近郊を模した 8 件（すべて `dataStatus: provisional`）。`fishTable` で魚種が変わる |
+| UI | HOME / MAP / SPOT 画面を追加。釣り終了後は SPOT に戻る（瞬間移動しない） |
+| 検証 | `npm run simulate:trip`（移動 → 釣り ×N → 帰宅 を seed 固定で再現） |
+| Save | schema v3（world を追加）と v2 → v3 migration |
 
 ## Phase 3.1 で実装したもの
 
@@ -138,6 +155,27 @@ Product Decision の SSOT は `docs/DECISIONS.md`。
 19. **新規プレイヤーの初期 Save は PROVISIONAL** — `createInitialSaveV2` が
     career / finance を中立値で埋める（開始時の職種・資金は Phase 5 で決める）。
     knowledge は空から始める。
+20. **World は Fishing と別 Domain** — `worldSession` は時間・位置・Knowledge だけを扱い、
+    FishingEngine の内部状態を触らない。釣りの結果は「1 回の釣りが終わった」という
+    イベントとして World に渡す（`recordFishingAttempt`）。
+    UI（fishing 画面）が両者をつなぐ。
+21. **Access の入力に Level が存在しない** — `AccessEvaluationInput` には
+    transports / knowledge / （将来の）reputation・permit・season しかない。
+    Level を渡す場所がないので、Level ロックは構造的に起こらない
+    （architecture contract test と accessEngine.test の両方で確認）。
+22. **移動は即時解決だが、状態は 2 段** — TRAVELLING / RETURNING_HOME を実際に持つので、
+    将来 UI に演出を足せる。ストアは 2 段を連続で呼んで即時に見せている。
+23. **Knowledge はボウズでも増える** — 訪問 +15、釣り 1 回 +3、捕獲 +5（PROVISIONAL）。
+    水域の Knowledge も別に増え、`scope: 'region'` のアクセス条件で使う。
+    これにより「通うほど行ける場所が増える」が成立する。
+24. **実在の場所を断定しない** — Spot に `dataStatus`（provisional / verified）を必須にし、
+    Phase 4 のコンテンツはすべて `provisional`。UI にも「暫定データ」と表示する。
+    魚種・規制・立入可否の根拠が無い情報は書かない。
+25. **Spot 追加は Content のみ** — `fishing-spots/*.json` を足せば Map に並び、
+    Access Engine が判定する。Engine の変更は不要（テストで確認）。
+26. **Save v3 は v2 から World を足すだけ** — progression / codex / knowledge は
+    そのまま引き継ぐ。v1 → v2 → v3 の順に適用する。
+    テスト用の `SaveGameV2` 型と schema は移行検証のために残している。
 
 ## アーキテクチャ境界（Phase 0B から継続）
 
@@ -195,7 +233,7 @@ npm run simulate:progression -- --catches 2000
 
 - `npm run check`: PASS
 - `npm run build`: PASS
-- `npm run test:run`: 33 files / 279 tests PASS
+- `npm run test:run`: 39 files / 333 tests PASS
 - `npm run validate:content`: PASS（11 件）
 - `npm run simulate:progression -- --catches 2000`:
   反復（同一魚種）で Lv21 / 多様な釣りで Lv26、初捕獲 200 XP 対 反復 100 匹目 22 XP。
@@ -208,7 +246,21 @@ npm run simulate:progression -- --catches 2000
 - Save / Load の配線: hydration 前の autosave 禁止、壊れた Save を上書きしないこと、
   再読み込み後の減衰維持まで含めて確認
 - 開発サーバー実測: root / 成長画面 / playerStore / progression domain がすべて 200
-- バンドル: JS 363.47 kB（gzip 110.44 kB）、CSS 4.88 kB（gzip 1.48 kB）
+- `npm run simulate:trip`（seed 固定）:
+  `06:00 HOME → 徒歩20分 → 06:20 到着（知識15%）→ 釣り3回（各20分）→ 07:40 HOME`。
+  3/3 匹、+500 XP、Lv4、知識 39%。6 チェックすべて PASS（移動・釣行・帰宅の時間、決定論）
+- 開発サーバー実測（Phase 4）: root / main.tsx / HOME・MAP・SPOT・FISHING 画面 /
+  world domain / accessEngine / Spot JSON がすべて 200
+- バンドル: JS 398.04 kB（gzip 119.47 kB）、CSS 5.36 kB（gzip 1.55 kB）
+
+### Phase 4 で変わった既存の検証値
+
+- `simulate:progression -- catches 2000` は 9 チェックすべて PASS（変化なし）
+- `sample:individuals` は全魚種 invalid=0（変化なし）
+- `validate:content` は 18 件（魚種 10 + 釣り場 8）
+- `simulate:fishing -- --seed demo` の tick 数は 142 → **174 に変化**。
+  これは内容（Spot）が変わって Encounter の乱数消費が変わったためで、
+  Engine の挙動変更ではない
 
 ## 未完了・既知のギャップ
 
@@ -217,6 +269,14 @@ npm run simulate:progression -- --catches 2000
   数値は解決・保存されるが、Phase 3 のファイトでは使っていない。
 - Perk の効果は倍率表の範囲に留まる（本格的な Perk ツリーは未実装）。
 - 新規プレイヤーの career / finance は PROVISIONAL な中立値（Phase 5 で決める）。
+- 釣り場は 8 件ですべて `provisional`（検証データではない）。実データの投入はしていない。
+- 天候・潮・時間帯による釣果変化はまだ無い（`timeActivity` は Content にあるが未使用）。
+- Calendar は「曜日の判定」まで。仕事・給与・有給は Phase 5。
+- 車・ボートなどの所有は無い。Access は transport tag の有無だけを見る。
+- **UI は画面配信までしか確認していない**。ブラウザ自動操作が無いため、
+  HOME → MAP → SPOT → FISHING → SPOT → HOME のクリック操作は未確認。
+- 釣行の途中終了からの完全復元は Phase 4 の対象外（安全な checkpoint として
+  「現在時刻・位置・Knowledge・釣行記録」までを保存する）。
 - IndexedDB adapter の自動テストは Fake による API 形状の確認に留まる
   （実ブラウザでの永続化・バージョン管理・障害時の挙動は未検証）。
 - 複数タブの同時編集、Save の export / import、スロット選択、復旧 UI は未実装。
@@ -230,11 +290,13 @@ npm run simulate:progression -- --catches 2000
 
 **Phase 4 — First Playable Tokyo-area Loop**（詳細は `.ai/current-task.md`）
 
-1. 東京近郊の Spot を 5〜10 件追加する（Content のみ。Engine は触らない）。
-2. `accessEngine` の最小実装（transport / knowledge 条件）と、行けない Spot の表現。
-3. カレンダー（平日 / 休日、時間帯）と移動時間の最小実装。
-4. Spot Knowledge（ボウズでも増える）と、情報の段階的開示。
-5. 「日を選ぶ → 釣り場へ → 釣る → 帰宅」の通しループを作る。
+**Phase 5 — Life / Work / Economy**（詳細は `.ai/current-task.md`）
+
+1. 週単位の仕事解決と給与・自由時間を作る（仕事は釣りを支えるサブシステムに留める）。
+2. Career（昇給・昇進・転職・リモート・フレックス）と Cross-Skill を作る。
+3. 資金（現金・給与・簡易生活費）と Shop / 装備購入を入れる。
+4. 車の所有を Access へ接続し、「買うと世界が広がる」を検証する。
+5. Save の career / finance を PROVISIONAL から実データへ置き換える。
 
 ## ブロッカー
 

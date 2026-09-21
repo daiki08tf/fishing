@@ -11,11 +11,11 @@ import { generateFishIndividual } from '../../src/domain/fish/generateFishIndivi
 import { asFishIndividualId } from '../../src/domain/ids'
 import { createInitialProgression, type AnglerProgression } from '../../src/domain/progression'
 import { SeededRandomSource } from '../../src/domain/rng/SeededRandomSource'
-import type { CurrentSave, SaveGameV2 } from '../../src/domain/save/SaveGame'
+import type { CurrentSave, SaveGameV3 } from '../../src/domain/save/SaveGame'
 import { InMemorySaveRepository } from '../../src/infrastructure/persistence/inMemorySaveRepository'
 import { migrateSave } from '../../src/infrastructure/persistence/migrateSave'
-import { createSaveV2 } from '../../src/infrastructure/persistence/saveFactory'
-import { createValidSaveV1, createValidSaveV2 } from '../fixtures/save'
+import { createSave } from '../../src/infrastructure/persistence/saveFactory'
+import { createValidSaveV1, createValidSaveV3 } from '../fixtures/save'
 import { createTestSpecies } from '../fixtures/species'
 
 /**
@@ -30,17 +30,18 @@ import { createTestSpecies } from '../fixtures/species'
  */
 
 const species = createTestSpecies()
-const template = createValidSaveV2()
+const template = createValidSaveV3()
 
 const progressionAt = (level: number): AnglerProgression => ({
   ...createInitialProgression(),
   anglerLevel: level,
 })
 
-const saveWith = (codex: CodexState, progression: AnglerProgression): SaveGameV2 =>
-  createSaveV2({
+const saveWith = (codex: CodexState, progression: AnglerProgression): SaveGameV3 =>
+  createSave({
     progression,
     codex,
+    world: template.world,
     knowledge: template.knowledge,
     career: template.career,
     finance: template.finance,
@@ -49,7 +50,7 @@ const saveWith = (codex: CodexState, progression: AnglerProgression): SaveGameV2
   })
 
 /** 永続化と再起動を模す（JSON を経由して読み直す）。 */
-const saveAndReload = async (save: SaveGameV2): Promise<CurrentSave> => {
+const saveAndReload = async (save: SaveGameV3): Promise<CurrentSave> => {
   const repository = new InMemorySaveRepository()
   await repository.save(save)
 

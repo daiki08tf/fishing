@@ -25,37 +25,36 @@ describe('multi species fishing', () => {
   it('loads the sample species and builds encounters from the spot', () => {
     expect(content.species.length).toBeGreaterThanOrEqual(10)
     expect(content.encounters.length).toBe(content.primarySpot.fishTable.length)
-    expect(content.primarySpot.fishTable.length).toBeGreaterThanOrEqual(10)
+    // Spot ごとに魚種が違ってよい（Phase 4 で複数 Spot を扱う）。
+    expect(content.primarySpot.fishTable.length).toBeGreaterThan(0)
+    expect(content.spots.length).toBeGreaterThan(1)
   })
 
   it('lands every species in the content', () => {
-    for (const candidate of content.encounters) {
+    for (const species of content.species) {
       const engine = new FishingEngine({
-        encounters: [candidate],
+        encounters: [{ species, presence: 1 }],
         seed: 'multispecies',
-        spotId: content.primarySpot.id,
       })
 
       const outcome = runFightToTerminal(engine)
       const individual = engine.snapshot().fish?.individual
 
-      expect(outcome.phase, `${String(candidate.species.id)} was not landed`).toBe('LANDED')
+      expect(outcome.phase, `${String(species.id)} was not landed`).toBe('LANDED')
       expect(individual).toBeDefined()
-      expect(individual?.speciesId).toBe(candidate.species.id)
+      expect(individual?.speciesId).toBe(species.id)
       expect(individual?.weightKg).toBeGreaterThan(0)
       expect(individual?.percentile).toBeGreaterThanOrEqual(0)
-      expect(individual?.spotId).toBe(content.primarySpot.id)
     }
   })
 
   it('produces different fight lengths for different species', () => {
     const ticks = new Set<number>()
 
-    for (const candidate of content.encounters) {
+    for (const species of content.species) {
       const engine = new FishingEngine({
-        encounters: [candidate],
+        encounters: [{ species, presence: 1 }],
         seed: 'variety',
-        spotId: content.primarySpot.id,
       })
 
       runFightToTerminal(engine)
@@ -97,11 +96,10 @@ describe('multi species fishing', () => {
   it('records every landed fish into the codex', () => {
     let codex = emptyCodexState()
 
-    for (const candidate of content.encounters) {
+    for (const species of content.species) {
       const engine = new FishingEngine({
-        encounters: [candidate],
+        encounters: [{ species, presence: 1 }],
         seed: 'codex',
-        spotId: content.primarySpot.id,
       })
 
       runFightToTerminal(engine)

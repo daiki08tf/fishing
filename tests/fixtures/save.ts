@@ -3,7 +3,13 @@ import { totalXpForLevel } from '../../src/domain/progression/AnglerLevel'
 import { emptyAnglerSkills } from '../../src/domain/progression/AnglerSkill'
 import { emptyRepetitionState } from '../../src/domain/progression/repetitionDecay'
 import type { SaveGameV1 } from '../../src/domain/save/SaveGame'
-import { SAVE_SCHEMA_VERSION_V2, type SaveGameV2 } from '../../src/domain/save/SaveGame'
+import {
+  SAVE_SCHEMA_VERSION_V2,
+  SAVE_SCHEMA_VERSION_V3,
+  type SaveGameV2,
+  type SaveGameV3,
+} from '../../src/domain/save/SaveGame'
+import { createInitialWorld } from '../../src/domain/world/worldSession'
 
 /**
  * 検証用の最小 Save（schema v1）。
@@ -107,4 +113,11 @@ export const createValidSaveV2 = (): SaveGameV2 => ({
     salaryIncome: 0,
     simplifiedLivingCost: 0,
   },
+})
+
+/** Phase 4 の現行 Save（schema v3）。World が加わった。 */
+export const createValidSaveV3 = (): SaveGameV3 => ({
+  ...createValidSaveV2(),
+  schemaVersion: SAVE_SCHEMA_VERSION_V3,
+  world: createInitialWorld(),
 })

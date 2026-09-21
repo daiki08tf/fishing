@@ -1,24 +1,28 @@
 import { describe, expect, it } from 'vitest'
 import { totalXpForLevel } from '../../../src/domain/progression/AnglerLevel'
-import { createValidSaveV1, createValidSaveV2 } from '../../../tests/fixtures/save'
+import {
+  createValidSaveV1,
+  createValidSaveV2,
+  createValidSaveV3,
+} from '../../../tests/fixtures/save'
 import { migrateSave } from './migrateSave'
 
 describe('migrateSave', () => {
   it('loads a valid current save', () => {
-    const result = migrateSave(createValidSaveV2())
+    const result = migrateSave(createValidSaveV3())
 
     expect(result.ok).toBe(true)
 
     if (result.ok) {
-      expect(result.migratedFrom).toBe(2)
-      expect(result.save.schemaVersion).toBe(2)
+      expect(result.migratedFrom).toBe(3)
+      expect(result.save.schemaVersion).toBe(3)
       expect(result.save.progression.anglerLevel).toBe(3)
       expect(result.save.progression.unlockedPerks).toEqual([])
       expect(result.save.progression.repetition.species['test-species']).toBe(3)
     }
   })
 
-  it('migrates a v1 save to v2', () => {
+  it('migrates a v1 save to the current version', () => {
     const v1 = createValidSaveV1()
     const result = migrateSave(v1)
 
@@ -29,7 +33,7 @@ describe('migrateSave', () => {
     }
 
     expect(result.migratedFrom).toBe(1)
-    expect(result.save.schemaVersion).toBe(2)
+    expect(result.save.schemaVersion).toBe(3)
 
     // 既存の成長は保持する。
     expect(result.save.progression.anglerLevel).toBe(v1.progression.anglerLevel)
@@ -55,6 +59,30 @@ describe('migrateSave', () => {
     expect(result.save.finance).toEqual(v1.finance)
     expect(result.save.createdAt).toBe(v1.createdAt)
     expect(result.save.updatedAt).toBe(v1.updatedAt)
+  })
+
+  it('adds the world when migrating a v2 save to v3', () => {
+    const v2 = createValidSaveV2()
+    const result = migrateSave(v2)
+
+    expect(result.ok).toBe(true)
+
+    if (!result.ok) {
+      return
+    }
+
+    expect(result.migratedFrom).toBe(2)
+    expect(result.save.schemaVersion).toBe(3)
+
+    // 成長と記録は失わない。
+    expect(result.save.progression).toEqual(v2.progression)
+    expect(result.save.codex).toEqual(v2.codex)
+    expect(result.save.knowledge).toEqual(v2.knowledge)
+
+    // World は開始状態から始まる。
+    expect(result.save.world.phase).toBe('HOME')
+    expect(result.save.world.currentSpotId).toBeNull()
+    expect(result.save.world.discoveredSpotIds).toEqual([])
   })
 
   it('is deterministic for the same input', () => {

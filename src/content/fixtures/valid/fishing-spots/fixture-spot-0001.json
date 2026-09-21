@@ -3,6 +3,11 @@
   "name": "検証用ダミー釣り場",
   "regionId": "fixture-region-0001",
   "environment": "fixture-environment",
+  "dataStatus": "provisional",
+  "travelOptions": [
+    { "transport": "train", "minutes": 30 },
+    { "transport": "walk", "minutes": 40 }
+  ],
   "access": [
     { "kind": "transport", "tag": "train" },
     { "kind": "transport", "tag": "walk" },

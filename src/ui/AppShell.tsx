@@ -1,28 +1,23 @@
 import { useAppStore } from '../state/appStore'
 import { usePlayerStore } from '../state/playerStore'
 import { FishingScreen } from './fishing/FishingScreen'
+import { HomeScreen } from './home/HomeScreen'
+import { MapScreen } from './map/MapScreen'
 import { ProgressionScreen } from './progression/ProgressionScreen'
+import { SpotScreen } from './spot/SpotScreen'
+import './styles/world.css'
 
 /**
- * Phase 0B のアプリシェル。
+ * 画面の切り替えだけを行う。
  *
- * ゲームプレイ画面は作らない。ここに表示するのは
- * 「アプリが起動し、層の境界と状態管理が機能している」ことの確認だけである。
+ * 位置や時間は World Domain が持つ。ここは
+ * 「今どの画面を見ているか」だけを扱い、瞬間移動はさせない
+ * （釣り場への移動・帰宅は World Domain のアクションを通す）。
  */
 
-const BOUNDARIES = [
-  'ui / app → state → domain',
-  'domain は React・DOM・Zustand・IndexedDB に依存しない',
-  'content は typed schema で検証する',
-  '乱数は注入可能な RandomSource 経由',
-] as const
-
 export const AppShell = () => {
-  const status = useAppStore((state) => state.status)
   const activeScreen = useAppStore((state) => state.activeScreen)
   const setActiveScreen = useAppStore((state) => state.setActiveScreen)
-  const diagnosticsVisible = useAppStore((state) => state.diagnosticsVisible)
-  const toggleDiagnostics = useAppStore((state) => state.toggleDiagnostics)
 
   const hydrationStatus = usePlayerStore((state) => state.hydrationStatus)
   const hydrationFailure = usePlayerStore((state) => state.hydrationFailure)
@@ -63,102 +58,30 @@ export const AppShell = () => {
     )
   }
 
-  if (activeScreen === 'fishing') {
-    return (
-      <div className="app-shell">
-        <main className="app-shell__main">
+  return (
+    <div className="app-shell">
+      <main className="app-shell__main">
+        {activeScreen === 'home' ? <HomeScreen /> : null}
+        {activeScreen === 'map' ? <MapScreen /> : null}
+        {activeScreen === 'spot' ? <SpotScreen /> : null}
+        {activeScreen === 'fishing' ? (
           <FishingScreen
             onExit={() => {
-              setActiveScreen('home')
+              // 釣り場にいるなら釣り場へ、いなければ自宅へ。
+              setActiveScreen(usePlayerStore.getState().world.phase === 'AT_SPOT' ? 'spot' : 'home')
             }}
           />
-        </main>
-      </div>
-    )
-  }
-
-  if (activeScreen === 'progression') {
-    return (
-      <div className="app-shell">
-        <main className="app-shell__main">
+        ) : null}
+        {activeScreen === 'progression' ? (
           <ProgressionScreen
             onExit={() => {
               setActiveScreen('home')
             }}
             onStartFishing={() => {
-              setActiveScreen('fishing')
+              setActiveScreen('map')
             }}
           />
-        </main>
-      </div>
-    )
-  }
-
-  return (
-    <div className="app-shell">
-      <main className="app-shell__main">
-        <header className="app-shell__header">
-          <p className="app-shell__eyebrow">Development Foundation</p>
-          <h1 className="app-shell__title">Fishing</h1>
-          <p className="app-shell__tagline">
-            現代日本を舞台にした、リアル志向の釣りハクスラゲーム。
-          </p>
-        </header>
-
-        <section className="panel" aria-labelledby="phase-heading">
-          <h2 className="panel__heading" id="phase-heading">
-            Phase 0B
-          </h2>
-          <p className="panel__body">
-            技術基盤のみを実装した段階です。釣り・Encount・成長・経済・交通のゲームプレイはまだ実装していません。
-          </p>
-          <dl className="status-list">
-            <div className="status-list__row">
-              <dt>status</dt>
-              <dd>{status}</dd>
-            </div>
-            <div className="status-list__row">
-              <dt>distribution</dt>
-              <dd>Web + PWA (mobile first)</dd>
-            </div>
-            <div className="status-list__row">
-              <dt>save schema</dt>
-              <dd>v1 + migration entry point</dd>
-            </div>
-          </dl>
-
-          <button className="button" type="button" onClick={toggleDiagnostics}>
-            {diagnosticsVisible ? 'Hide' : 'Show'} architecture boundaries
-          </button>
-
-          <button
-            className="button button--primary"
-            type="button"
-            onClick={() => {
-              setActiveScreen('fishing')
-            }}
-          >
-            釣りに行く
-          </button>
-
-          <button
-            className="button"
-            type="button"
-            onClick={() => {
-              setActiveScreen('progression')
-            }}
-          >
-            成長を見る（Angler Lv / Skill / Perk）
-          </button>
-
-          {diagnosticsVisible ? (
-            <ul className="boundary-list">
-              {BOUNDARIES.map((boundary) => (
-                <li key={boundary}>{boundary}</li>
-              ))}
-            </ul>
-          ) : null}
-        </section>
+        ) : null}
       </main>
     </div>
   )

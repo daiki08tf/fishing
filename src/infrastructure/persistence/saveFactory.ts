@@ -7,7 +7,8 @@ import type { KnowledgeState } from '../../domain/knowledge/KnowledgeState'
 import type { IsoDateTime } from '../../domain/primitives'
 import type { AnglerProgression } from '../../domain/progression/AnglerProgression'
 import { createInitialProgression } from '../../domain/progression/AnglerProgression'
-import { CURRENT_SAVE_SCHEMA_VERSION, type SaveGameV2 } from '../../domain/save/SaveGame'
+import { CURRENT_SAVE_SCHEMA_VERSION, type SaveGameV3 } from '../../domain/save/SaveGame'
+import { createInitialWorld, type WorldState } from '../../domain/world/worldSession'
 
 /**
  * プレイヤーの状態から Save を組み立てる。
@@ -20,6 +21,7 @@ import { CURRENT_SAVE_SCHEMA_VERSION, type SaveGameV2 } from '../../domain/save/
 export type SaveSourceState = {
   readonly progression: AnglerProgression
   readonly codex: CodexState
+  readonly world: WorldState
   readonly knowledge: KnowledgeState
   readonly career: CareerState
   readonly finance: FinanceState
@@ -29,12 +31,13 @@ export type SaveSourceState = {
   readonly createdAt?: IsoDateTime
 }
 
-export const createSaveV2 = (source: SaveSourceState): SaveGameV2 => ({
+export const createSave = (source: SaveSourceState): SaveGameV3 => ({
   schemaVersion: CURRENT_SAVE_SCHEMA_VERSION,
   createdAt: source.createdAt ?? source.now,
   updatedAt: source.now,
   progression: source.progression,
   codex: source.codex,
+  world: source.world,
   knowledge: source.knowledge,
   career: source.career,
   finance: source.finance,
@@ -49,12 +52,13 @@ export const createSaveV2 = (source: SaveSourceState): SaveGameV2 => ({
  *
  * knowledge は空から始める（Phase 4 で釣行・観察により増える）。
  */
-export const createInitialSaveV2 = (options: { readonly now: IsoDateTime }): SaveGameV2 => ({
+export const createInitialSave = (options: { readonly now: IsoDateTime }): SaveGameV3 => ({
   schemaVersion: CURRENT_SAVE_SCHEMA_VERSION,
   createdAt: options.now,
   updatedAt: options.now,
   progression: createInitialProgression(),
   codex: emptyCodexState(),
+  world: createInitialWorld(),
   knowledge: emptyKnowledgeState(),
   career: {
     jobId: asJobId('phase3-placeholder-job'),

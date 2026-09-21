@@ -16,6 +16,8 @@ export const accessRequirementSchema = z.discriminatedUnion('kind', [
   z.strictObject({
     kind: z.literal('knowledge'),
     minimum: z.number().min(0).max(100),
+    /** 省略時は「その Spot の知識」、'region' なら「その地域の知識」。 */
+    scope: z.enum(['spot', 'region']).optional(),
   }),
   z.strictObject({
     kind: z.literal('reputation'),

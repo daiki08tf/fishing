@@ -5,6 +5,7 @@ import type { KnowledgeState } from '../knowledge/KnowledgeState'
 import type { IsoDateTime } from '../primitives'
 import type { PlayerProgression } from '../progression/PlayerProgression'
 import type { AnglerProgression } from '../progression/AnglerProgression'
+import type { WorldState } from '../world/worldSession'
 
 /**
  * Save schema。ARCHITECTURE.md §9 に対応する。
@@ -14,12 +15,14 @@ import type { AnglerProgression } from '../progression/AnglerProgression'
  * v1: 技術基盤（Phase 0B）。成長は DATA_MODEL.md §11 の PlayerProgression のみ。
  * v2: Angler Progression（Phase 3）。Level / XP / Skill Point / Skill / Perk /
  *     反復状態に加え、Codex（捕獲記録）を保存する。
+ * v3: World（Phase 4）。ゲーム内時間・現在位置・発見済み Spot・移動手段・釣行記録を保存する。
  */
 
 export const SAVE_SCHEMA_VERSION_V1 = 1 as const
 export const SAVE_SCHEMA_VERSION_V2 = 2 as const
+export const SAVE_SCHEMA_VERSION_V3 = 3 as const
 
-export const CURRENT_SAVE_SCHEMA_VERSION = SAVE_SCHEMA_VERSION_V2
+export const CURRENT_SAVE_SCHEMA_VERSION = SAVE_SCHEMA_VERSION_V3
 
 export type SaveSchemaVersion = typeof CURRENT_SAVE_SCHEMA_VERSION
 
@@ -53,4 +56,22 @@ export type SaveGameV2 = {
   readonly finance: FinanceState
 }
 
-export type CurrentSave = SaveGameV2
+/**
+ * 現行の Save（Phase 4）。
+ *
+ * world は Domain の WorldState をそのまま保存する（Save 層で別の World ルールを作らない）。
+ * Spot ごとの Knowledge は knowledge.spots、地域の Knowledge は knowledge.regions に入る。
+ */
+export type SaveGameV3 = {
+  readonly schemaVersion: typeof SAVE_SCHEMA_VERSION_V3
+  readonly createdAt: IsoDateTime
+  readonly updatedAt: IsoDateTime
+  readonly progression: AnglerProgression
+  readonly codex: CodexState
+  readonly world: WorldState
+  readonly knowledge: KnowledgeState
+  readonly career: CareerState
+  readonly finance: FinanceState
+}
+
+export type CurrentSave = SaveGameV3

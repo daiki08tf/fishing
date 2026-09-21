@@ -23,7 +23,11 @@ export type AccessRequirementKind = (typeof ACCESS_REQUIREMENT_KINDS)[number]
 
 export type AccessRequirement =
   | { readonly kind: 'transport'; readonly tag: string }
-  | { readonly kind: 'knowledge'; readonly minimum: number }
+  /**
+   * Knowledge 条件。
+   * scope を省略すると「その Spot の知識」、'region' なら「その地域の知識」を要求する。
+   */
+  | { readonly kind: 'knowledge'; readonly minimum: number; readonly scope?: 'spot' | 'region' }
   | { readonly kind: 'reputation'; readonly minimum: number }
   | { readonly kind: 'permit'; readonly permitId: PermitId }
   | {

@@ -10,33 +10,26 @@ import { create } from 'zustand'
 
 export type AppStatus = 'booting' | 'ready'
 
-/** 実装済みの画面。Phase 3 で progression を追加した。 */
-export const APP_SCREENS = ['home', 'fishing', 'progression'] as const
+/** 実装済みの画面。Phase 4 で map / spot を追加した。 */
+export const APP_SCREENS = ['home', 'map', 'spot', 'fishing', 'progression'] as const
 export type AppScreen = (typeof APP_SCREENS)[number]
 
 export type AppState = {
   readonly status: AppStatus
   readonly activeScreen: AppScreen
-  /** 開発用の表示切り替え。永続化しない。 */
-  readonly diagnosticsVisible: boolean
 
   setStatus(status: AppStatus): void
   setActiveScreen(screen: AppScreen): void
-  toggleDiagnostics(): void
 }
 
 export const useAppStore = create<AppState>()((set) => ({
   status: 'booting',
   activeScreen: 'home',
-  diagnosticsVisible: false,
 
   setStatus: (status) => {
     set({ status })
   },
   setActiveScreen: (activeScreen) => {
     set({ activeScreen })
-  },
-  toggleDiagnostics: () => {
-    set((state) => ({ diagnosticsVisible: !state.diagnosticsVisible }))
   },
 }))

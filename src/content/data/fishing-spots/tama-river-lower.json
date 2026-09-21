@@ -1,0 +1,27 @@
+{
+  "id": "tama-river-lower",
+  "name": "多摩川 下流",
+  "regionId": "tokyo-area",
+  "environment": "river",
+  "dataStatus": "provisional",
+  "access": [{ "kind": "transport", "tag": "train" }],
+  "travelOptions": [
+    { "transport": "train", "minutes": 38 },
+    { "transport": "bus", "minutes": 50 }
+  ],
+  "habitatTags": ["phase1-sample-river", "phase1-sample-shallow"],
+  "depth": { "depthRangeM": { "min": 1, "max": 5 } },
+  "fishTable": [
+    { "speciesId": "phase1-sample-fish", "basePresence": 0.7 },
+    { "speciesId": "phase2-sample-fish-d", "basePresence": 0.5 },
+    { "speciesId": "phase2-sample-fish-f", "basePresence": 0.6 },
+    { "speciesId": "phase2-sample-fish-h", "basePresence": 0.6 }
+  ],
+  "knowledgeConfig": {
+    "reveals": [
+      { "field": "main_species", "minKnowledge": 20 },
+      { "field": "time_pattern", "minKnowledge": 40 },
+      { "field": "habitat", "minKnowledge": 60 }
+    ]
+  }
+}
