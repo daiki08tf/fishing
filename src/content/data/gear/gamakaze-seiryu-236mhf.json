@@ -1,0 +1,21 @@
+{
+  "id": "gamakaze-seiryu-236mhf",
+  "name": "SEIRYU 236MHF",
+  "price": 30100,
+  "category": "rod",
+  "brandId": "gamakaze",
+  "seriesId": "gamakaze-seiryu",
+  "seriesCategory": "rockfish",
+  "lengthM": 2.36,
+  "power": "MH",
+  "action": "fast",
+  "minLureWeightG": 7,
+  "maxLureWeightG": 40,
+  "recommendedLineMinKg": 8,
+  "recommendedLineMaxKg": 18,
+  "weightG": 167,
+  "sensitivity": 0.67,
+  "control": 0.64,
+  "fightingPower": 0.68,
+  "castingProfile": 0.53
+}

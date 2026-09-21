@@ -1,0 +1,32 @@
+{
+  "id": "tail-walker-oceanforge-5000",
+  "name": "OCEANFORGE 5000",
+  "price": 18500,
+  "category": "reel",
+  "brandId": "tail-walker",
+  "seriesId": "tail-walker-oceanforge",
+  "reelType": "spinning",
+  "sizeClass": 5000,
+  "variant": "STD",
+  "size": 5000,
+  "gearRatio": 5.2,
+  "maxDragKg": 12.6,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 6.3,
+      "capacityM": 280
+    },
+    {
+      "lineStrengthKg": 18.9,
+      "capacityM": 93
+    }
+  ],
+  "retrieveCmPerTurn": 96,
+  "weightG": 299,
+  "smoothness": 0.58,
+  "control": 0.56,
+  "dragStartup": 0.58,
+  "rigidity": 0.64,
+  "windingTorque": 0.66,
+  "response": 0.58
+}

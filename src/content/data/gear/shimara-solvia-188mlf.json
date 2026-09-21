@@ -1,0 +1,21 @@
+{
+  "id": "shimara-solvia-188mlf",
+  "name": "SOLVIA 188MLF",
+  "price": 21000,
+  "category": "rod",
+  "brandId": "shimara",
+  "seriesId": "shimara-solvia",
+  "seriesCategory": "bass",
+  "lengthM": 1.88,
+  "power": "ML",
+  "action": "fast",
+  "minLureWeightG": 2,
+  "maxLureWeightG": 12,
+  "recommendedLineMinKg": 3,
+  "recommendedLineMaxKg": 8,
+  "weightG": 137,
+  "sensitivity": 0.68,
+  "control": 0.7,
+  "fightingPower": 0.6,
+  "castingProfile": 0.42
+}

@@ -1,0 +1,32 @@
+{
+  "id": "shimara-nexara-2500s",
+  "name": "NEXARA 2500S",
+  "price": 8900,
+  "category": "reel",
+  "brandId": "shimara",
+  "seriesId": "shimara-nexara",
+  "reelType": "spinning",
+  "sizeClass": 2500,
+  "variant": "S",
+  "size": 2500,
+  "gearRatio": 5.2,
+  "maxDragKg": 5.2,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 2.6,
+      "capacityM": 238
+    },
+    {
+      "lineStrengthKg": 7.8,
+      "capacityM": 79
+    }
+  ],
+  "retrieveCmPerTurn": 78,
+  "weightG": 203,
+  "smoothness": 0.66,
+  "control": 0.66,
+  "dragStartup": 0.74,
+  "rigidity": 0.61,
+  "windingTorque": 0.6,
+  "response": 0.62
+}

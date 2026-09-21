@@ -1,0 +1,12 @@
+{
+  "id": "starter-leader",
+  "name": "スターターリーダー 3号",
+  "price": 0,
+  "category": "leader",
+  "material": "fluorocarbon",
+  "strengthKg": 4,
+  "diameterMm": 0.26,
+  "abrasionResistance": 0.6,
+  "visibility": 0.6,
+  "lengthM": 1
+}

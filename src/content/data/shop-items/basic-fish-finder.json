@@ -1,0 +1,8 @@
+{
+  "id": "basic-fish-finder",
+  "name": "ベーシック魚探",
+  "description": "ボート / 沖で水を探れる簡易魚探。反応の強さと魚種の手がかりが分かる（所持しているだけで効果）。",
+  "price": 24000,
+  "category": "gear",
+  "grantsGearId": "basic-fish-finder"
+}

@@ -1,0 +1,21 @@
+{
+  "id": "major-crest-firstway-234mlf",
+  "name": "FIRSTWAY 234MLF",
+  "price": 14100,
+  "category": "rod",
+  "brandId": "major-crest",
+  "seriesId": "major-crest-firstway",
+  "seriesCategory": "chinning",
+  "lengthM": 2.34,
+  "power": "ML",
+  "action": "fast",
+  "minLureWeightG": 3,
+  "maxLureWeightG": 18,
+  "recommendedLineMinKg": 4,
+  "recommendedLineMaxKg": 10,
+  "weightG": 162,
+  "sensitivity": 0.63,
+  "control": 0.62,
+  "fightingPower": 0.57,
+  "castingProfile": 0.53
+}

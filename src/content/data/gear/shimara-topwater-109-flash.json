@@ -1,0 +1,18 @@
+{
+  "id": "shimara-topwater-109-flash",
+  "name": "Topwater 109 Flash",
+  "price": 1400,
+  "category": "lure",
+  "brandId": "shimara",
+  "lureType": "topwater",
+  "weightG": 12,
+  "lengthMm": 109,
+  "depthRangeM": {
+    "min": 0,
+    "max": 0.5
+  },
+  "retrieveStyle": "walk/pop",
+  "action": "walk",
+  "visualProfile": "flash",
+  "targetProfile": ["mid"]
+}

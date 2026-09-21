@@ -1,0 +1,21 @@
+{
+  "id": "major-crest-crossridge-380mm",
+  "name": "CROSSRIDGE 380MM",
+  "price": 30200,
+  "category": "rod",
+  "brandId": "major-crest",
+  "seriesId": "major-crest-crossridge",
+  "seriesCategory": "bait_fishing",
+  "lengthM": 3.8,
+  "power": "M",
+  "action": "moderate",
+  "minLureWeightG": 3,
+  "maxLureWeightG": 30,
+  "recommendedLineMinKg": 4,
+  "recommendedLineMaxKg": 12,
+  "weightG": 208,
+  "sensitivity": 0.59,
+  "control": 0.58,
+  "fightingPower": 0.57,
+  "castingProfile": 0.86
+}

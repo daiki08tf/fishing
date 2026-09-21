@@ -1,0 +1,14 @@
+{
+  "id": "blue-horizon-fluoro-leader-12kg",
+  "name": "Fluoro Leader 12kg",
+  "price": 2000,
+  "category": "leader",
+  "brandId": "blue-horizon",
+  "seriesId": "blue-horizon-fluoro-leader",
+  "material": "fluorocarbon",
+  "strengthKg": 12,
+  "diameterMm": 0.346,
+  "abrasionResistance": 0.93,
+  "visibility": 0.34,
+  "lengthM": 1.5
+}

@@ -1,0 +1,67 @@
+{
+  "id": "bay-offshore-flat",
+  "name": "湾奥 埋立地（沖寄り）",
+  "regionId": "tokyo-area",
+  "areaId": "chiba",
+  "environment": "bay_shore",
+  "dataStatus": "provisional",
+  "access": [
+    {
+      "kind": "capability",
+      "capability": "public_transport"
+    },
+    {
+      "kind": "knowledge",
+      "minimum": 20,
+      "scope": "region"
+    }
+  ],
+  "travelOptions": [
+    {
+      "id": "rail-route",
+      "transportTypes": ["train"],
+      "requiredCapabilities": ["public_transport"],
+      "features": [],
+      "baseMinutes": 50,
+      "distanceKm": 32,
+      "baseOneWayCost": 420
+    }
+  ],
+  "habitatTags": ["phase1-sample-deep", "phase1-sample-surf"],
+  "depth": {
+    "depthRangeM": {
+      "min": 5,
+      "max": 25
+    }
+  },
+  "fishTable": [
+    {
+      "speciesId": "phase2-sample-fish-c",
+      "basePresence": 0.6
+    },
+    {
+      "speciesId": "phase2-sample-fish-e",
+      "basePresence": 0.4
+    },
+    {
+      "speciesId": "phase2-sample-fish-i",
+      "basePresence": 0.2
+    }
+  ],
+  "knowledgeConfig": {
+    "reveals": [
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "time_pattern",
+        "minKnowledge": 40
+      },
+      {
+        "field": "habitat",
+        "minKnowledge": 60
+      }
+    ]
+  }
+}

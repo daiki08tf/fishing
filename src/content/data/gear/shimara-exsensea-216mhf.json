@@ -1,0 +1,21 @@
+{
+  "id": "shimara-exsensea-216mhf",
+  "name": "EXSENSEA 216MHF",
+  "price": 28700,
+  "category": "rod",
+  "brandId": "shimara",
+  "seriesId": "shimara-exsensea",
+  "seriesCategory": "rockfish",
+  "lengthM": 2.16,
+  "power": "MH",
+  "action": "fast",
+  "minLureWeightG": 7,
+  "maxLureWeightG": 40,
+  "recommendedLineMinKg": 8,
+  "recommendedLineMaxKg": 18,
+  "weightG": 155,
+  "sensitivity": 0.68,
+  "control": 0.7,
+  "fightingPower": 0.65,
+  "castingProfile": 0.49
+}

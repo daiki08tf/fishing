@@ -1,0 +1,19 @@
+{
+  "id": "river-craft-spoon-54-natural",
+  "name": "Spoon 54 Natural",
+  "price": 900,
+  "category": "lure",
+  "brandId": "river-craft",
+  "seriesId": "river-craft-flowminnow",
+  "lureType": "spoon",
+  "weightG": 3,
+  "lengthMm": 54,
+  "depthRangeM": {
+    "min": 0.5,
+    "max": 3.5
+  },
+  "retrieveStyle": "steady/fall",
+  "action": "flutter",
+  "visualProfile": "natural",
+  "targetProfile": ["small"]
+}

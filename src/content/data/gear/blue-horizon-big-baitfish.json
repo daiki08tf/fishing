@@ -1,0 +1,10 @@
+{
+  "id": "blue-horizon-big-baitfish",
+  "name": "Big Baitfish",
+  "price": 2180,
+  "category": "bait",
+  "brandId": "blue-horizon",
+  "baitType": "fish",
+  "presentation": "live/dead bait",
+  "targetProfile": ["large", "big"]
+}

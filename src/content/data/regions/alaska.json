@@ -1,0 +1,39 @@
+{
+  "id": "alaska",
+  "countryId": "united-states",
+  "name": "アラスカ",
+  "stage": "playable",
+  "dataStatus": "provisional",
+  "base": {
+    "id": "alaska-base",
+    "name": "Alaska Fishing Base",
+    "areaId": "kenai"
+  },
+  "areas": [
+    {
+      "id": "kenai",
+      "name": "Kenai-like River Area"
+    },
+    {
+      "id": "mountain",
+      "name": "Mountain River Area"
+    },
+    {
+      "id": "coastal",
+      "name": "Coastal / Offshore Area"
+    }
+  ],
+  "climate": {
+    "annualMeanWaterC": 7,
+    "seasonalSwingC": 8,
+    "weatherWeights": {
+      "clear": 15,
+      "cloudy": 40,
+      "light_rain": 15,
+      "rain": 18,
+      "windy": 12
+    },
+    "tidePhaseOffset": 0.55,
+    "tideRange": "large"
+  }
+}

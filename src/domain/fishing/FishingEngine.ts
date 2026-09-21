@@ -1,0 +1,668 @@
+import {
+  rollEncounter,
+  type EncounterCandidate,
+  type EncounterProfile,
+} from '../encounter/encounterEngine'
+import type { FishIndividual } from '../fish/FishIndividual'
+import { conditionBand, type ConditionBand } from '../fish/fishCondition'
+import type { TraitModifiers } from '../fish/fishTraits'
+import { generateFishIndividual } from '../fish/generateFishIndividual'
+import type { FishingSpotId } from '../ids'
+import type { Range } from '../primitives'
+import type { RandomSource } from '../rng/RandomSource'
+import { SeededRandomSource } from '../rng/SeededRandomSource'
+import { createFightingFish } from './createFightingFish'
+import { decideBehavior, type FishBehavior } from './FishBehavior'
+import type { FightingFishState } from './FightingFish'
+import { NEUTRAL_FISHING_MODIFIERS, type PlayerFishingModifiers } from './PlayerFishingModifiers'
+import { DEFAULT_FISHING_TUNING, type FishingTuning } from './FishingTuning'
+import {
+  isCommandAllowed,
+  type FishingCommand,
+  type FishingEvent,
+  type FishingPhase,
+} from './FishingPhase'
+
+/**
+ * Fishing Engine（Phase 1）。
+ *
+ * 設計上の要点:
+ * - 状態機械・ファイト計算・魚の行動はすべてこのクラスの中にある。
+ *   UI は「コマンドを送る」「tick を進める」ことしかできない。
+ * - 乱数は注入された RandomSource からのみ引く。同じ seed なら同じ経過を再現する。
+ * - 時間の単位は tick のみ。実時間（ms）は UI が tickMs を使って刻む。
+ */
+
+export type FishingFishSnapshot = {
+  /** 生成された個体そのもの（サイズ・体重・コンディション・Trait・百分位）。 */
+  readonly individual: FishIndividual
+  readonly speciesName: string
+  readonly conditionBand: ConditionBand
+  readonly stamina: number
+  readonly staminaMax: number
+  readonly behavior: FishBehavior
+  readonly power: number
+  readonly speed: number
+  readonly modifiers: TraitModifiers
+}
+
+export type FishingSnapshot = {
+  readonly phase: FishingPhase
+  readonly tension: number
+  readonly maxTension: number
+  /** UI が「良いテンション帯」を示すための範囲。 */
+  readonly optimalTension: Range
+  /** まだ魚が見えていない段階（IDLE / CASTING / WAITING）では null。 */
+  readonly fish: FishingFishSnapshot | null
+  readonly ticksInPhase: number
+  readonly totalTicks: number
+  readonly lastEvents: readonly FishingEvent[]
+  /** プレイヤーの技量による倍率（UI 表示用）。 */
+  readonly playerModifiers: PlayerFishingModifiers
+  /** アワセ猶予の実効 tick 数。 */
+  readonly effectiveHookWindowTicks: number
+  /** Detection が高いときだけ見える、アタリまでの残り tick。 */
+  readonly biteForecastTicks: number | null
+}
+
+export type FishingCommandOutcome =
+  | {
+      readonly accepted: true
+      readonly snapshot: FishingSnapshot
+      readonly events: readonly FishingEvent[]
+    }
+  | {
+      readonly accepted: false
+      readonly reason: 'invalid_command'
+      readonly command: FishingCommand
+      readonly snapshot: FishingSnapshot
+      readonly events: readonly FishingEvent[]
+    }
+
+export type FishingTickResult = {
+  readonly snapshot: FishingSnapshot
+  readonly events: readonly FishingEvent[]
+}
+
+export type FishingEngineOptions = {
+  /** ヒット候補。Phase 2 では複数魚種を渡せる。 */
+  readonly encounters: readonly EncounterCandidate[]
+  readonly seed: number | string
+  /** 捕獲した個体に紐づける Spot。Phase 4 で本格化する。 */
+  readonly spotId?: FishingSpotId
+  /**
+   * プレイヤーの技量による倍率（Progression 側で解決済みの値）。
+   * Engine は Skill や Level を知らない。
+   */
+  readonly playerModifiers?: PlayerFishingModifiers
+  /**
+   * 釣法と offering による Encounter の重み付け（Tackle 側で解決済みの値）。
+   * Engine は装備の名前もカテゴリも知らない。
+   */
+  readonly encounterProfile?: EncounterProfile
+  readonly tuning?: FishingTuning
+  /** テストや特殊な用途向け。省略時は seed から決定論的な RandomSource を作る。 */
+  readonly random?: RandomSource
+}
+
+/**
+ * 魚が見えている状態。バイトの瞬間から魚の情報を開示する。
+ */
+const REVEALING_PHASES: readonly FishingPhase[] = [
+  'BITE',
+  'HOOK_WINDOW',
+  'HOOKED',
+  'FIGHTING',
+  'LANDING',
+  'LANDED',
+  'HOOK_MISSED',
+  'HOOK_ESCAPE',
+  'LINE_BREAK',
+]
+
+const isFishRevealed = (phase: FishingPhase): boolean => REVEALING_PHASES.includes(phase)
+
+type WaitingPlan = {
+  readonly willBite: boolean
+  readonly biteTick: number
+}
+
+export class FishingEngine {
+  readonly tuning: FishingTuning
+  readonly playerModifiers: PlayerFishingModifiers
+
+  private readonly encounters: readonly EncounterCandidate[]
+  private readonly random: RandomSource
+  private readonly seedLabel: string
+  private readonly spotId: FishingSpotId | undefined
+  private readonly encounterProfile: EncounterProfile | undefined
+
+  private phase: FishingPhase = 'IDLE'
+  private ticksInPhase = 0
+  private totalTicks = 0
+  /** 同じセッション内で何匹目か。個体 id の一意性と再現性に使う。 */
+  private encounterCount = 0
+  private tension = 0
+  private fishState: FightingFishState | null = null
+  private plan: WaitingPlan | null = null
+  private events: FishingEvent[] = []
+
+  constructor(options: FishingEngineOptions) {
+    this.encounters = options.encounters
+    this.tuning = options.tuning ?? DEFAULT_FISHING_TUNING
+    this.playerModifiers = options.playerModifiers ?? NEUTRAL_FISHING_MODIFIERS
+    this.seedLabel = String(options.seed)
+    this.random = options.random ?? new SeededRandomSource(options.seed)
+    this.spotId = options.spotId
+    this.encounterProfile = options.encounterProfile
+  }
+
+  // ---------------------------------------------------------------- commands
+
+  cast(): FishingCommandOutcome {
+    return this.dispatch('cast')
+  }
+
+  hook(): FishingCommandOutcome {
+    return this.dispatch('hook')
+  }
+
+  reel(): FishingCommandOutcome {
+    return this.dispatch('reel')
+  }
+
+  give(): FishingCommandOutcome {
+    return this.dispatch('give')
+  }
+
+  reset(): FishingCommandOutcome {
+    return this.dispatch('reset')
+  }
+
+  /**
+   * コマンドを適用する。
+   * 現在の状態で許可されていないコマンドは、状態を変えずに拒否する。
+   */
+  dispatch(command: FishingCommand): FishingCommandOutcome {
+    if (!isCommandAllowed(this.phase, command)) {
+      this.events = []
+      return {
+        accepted: false,
+        reason: 'invalid_command',
+        command,
+        snapshot: this.snapshot(),
+        events: [],
+      }
+    }
+
+    this.events = []
+
+    switch (command) {
+      case 'cast':
+        this.startCast()
+        break
+      case 'hook':
+        this.startFight()
+        break
+      case 'reel':
+        this.applyReel()
+        break
+      case 'give':
+        this.applyGive()
+        break
+      case 'reset':
+        this.resetSession()
+        break
+    }
+
+    return { accepted: true, snapshot: this.snapshot(), events: [...this.events] }
+  }
+
+  // ------------------------------------------------------------------- ticks
+
+  tick(): FishingTickResult {
+    this.events = []
+    this.totalTicks += 1
+    this.ticksInPhase += 1
+
+    switch (this.phase) {
+      case 'CASTING':
+        if (this.ticksInPhase >= this.tuning.castTicks) {
+          this.completeCast()
+        }
+        break
+
+      case 'WAITING':
+        this.advanceWaiting()
+        break
+
+      case 'BITE':
+        if (this.ticksInPhase >= this.tuning.biteTicks) {
+          this.enterPhase('HOOK_WINDOW')
+        }
+        break
+
+      case 'HOOK_WINDOW':
+        if (this.ticksInPhase >= this.effectiveHookWindowTicks()) {
+          this.events.push('HOOK_MISSED')
+          this.enterPhase('HOOK_MISSED')
+        }
+        break
+
+      case 'HOOKED':
+        if (this.ticksInPhase >= this.tuning.hookedTicks) {
+          this.enterPhase('FIGHTING')
+        }
+        break
+
+      case 'FIGHTING':
+        this.advanceFight()
+        break
+
+      case 'LANDING':
+        if (this.ticksInPhase >= this.tuning.landingTicks) {
+          this.events.push('LANDED')
+          this.enterPhase('LANDED')
+        }
+        break
+
+      default:
+        // IDLE と終了状態では時間経過による変化はない。
+        break
+    }
+
+    return { snapshot: this.snapshot(), events: [...this.events] }
+  }
+
+  // ------------------------------------------------------------------ snapshot
+
+  snapshot(): FishingSnapshot {
+    return {
+      phase: this.phase,
+      tension: this.tension,
+      maxTension: this.effectiveMaxTension(),
+      optimalTension: {
+        min: this.tuning.optimalTensionMin,
+        max: this.tuning.optimalTensionMax,
+      },
+      fish: this.fishSnapshot(),
+      ticksInPhase: this.ticksInPhase,
+      totalTicks: this.totalTicks,
+      lastEvents: [...this.events],
+      playerModifiers: this.playerModifiers,
+      effectiveHookWindowTicks: this.effectiveHookWindowTicks(),
+      biteForecastTicks: this.biteForecastTicks(),
+    }
+  }
+
+  /**
+   * アワセ猶予の実効 tick 数。
+   *
+   * Hooking（技量）とフックの掛かり（装備）で広がる。
+   * 0 が「効果なし」の加算値である hookSuccessModifier もここで寄与させ、
+   * 解決済み modifier を Engine 側で死なせない。
+   */
+  effectiveHookWindowTicks(): number {
+    return Math.max(
+      1,
+      Math.round(
+        this.tuning.hookWindowTicks *
+          this.playerModifiers.hookWindowMultiplier *
+          (1 + this.playerModifiers.hookSuccessModifier),
+      ),
+    )
+  }
+
+  /** 耐えられるテンションの上限（ライン・ロッド・針で変わる）。 */
+  effectiveMaxTension(): number {
+    return Math.max(0.1, this.tuning.maxTension * this.playerModifiers.maxTensionMultiplier)
+  }
+
+  /** 糸が緩んでからフックが外れるまでの tick 数（針の保持力で変わる）。 */
+  effectiveSlackTicksBeforeEscape(): number {
+    return Math.max(
+      1,
+      Math.round(
+        this.tuning.slackTicksBeforeEscape * this.playerModifiers.slackToleranceMultiplier,
+      ),
+    )
+  }
+
+  /**
+   * Detection が高いときだけ、アタリまでの残り tick を開示する。
+   * 見えるかどうかは技量で決まり、結果そのものは変わらない。
+   */
+  private biteForecastTicks(): number | null {
+    const plan = this.plan
+
+    if (this.phase !== 'WAITING' || plan === null || !plan.willBite) {
+      return null
+    }
+
+    if (this.playerModifiers.detectionClarityMultiplier < this.tuning.detectionForecastThreshold) {
+      return null
+    }
+
+    return Math.max(0, plan.biteTick - this.ticksInPhase)
+  }
+
+  private fishSnapshot(): FishingFishSnapshot | null {
+    const state = this.fishState
+
+    if (state === null || !isFishRevealed(this.phase)) {
+      return null
+    }
+
+    return {
+      individual: state.fish.individual,
+      speciesName: state.fish.speciesName,
+      conditionBand: conditionBand(state.fish.individual.condition),
+      stamina: state.stamina,
+      staminaMax: state.fish.staminaMax,
+      behavior: state.behavior,
+      power: state.fish.power,
+      speed: state.fish.speed,
+      modifiers: state.fish.modifiers,
+    }
+  }
+
+  // ----------------------------------------------------------- state transitions
+
+  private enterPhase(phase: FishingPhase): void {
+    this.phase = phase
+    this.ticksInPhase = 0
+  }
+
+  private startCast(): void {
+    this.fishState = null
+    this.plan = null
+    this.tension = 0
+    this.enterPhase('CASTING')
+    this.events.push('CAST_STARTED')
+  }
+
+  /**
+   * キャスト完了時に Encounter を 1 回だけ解決する。
+   * ヒットする場合は、待ち tick と個体をここで確定させる（乱数の消費順を固定するため）。
+   */
+  private completeCast(): void {
+    this.events.push('CAST_COMPLETED')
+
+    const outcome = rollEncounter({
+      candidates: this.encounters,
+      random: this.random,
+      tuning: this.tuning,
+      ...(this.encounterProfile === undefined ? {} : { profile: this.encounterProfile }),
+    })
+
+    if (outcome.kind === 'no_bite') {
+      this.plan = { willBite: false, biteTick: this.tuning.maxWaitTicks }
+      this.enterPhase('WAITING')
+      return
+    }
+
+    const species = outcome.candidate.species
+    this.encounterCount += 1
+
+    /*
+     * 乱数の消費順は固定（変更すると seed 再現性が壊れる）:
+     *   1. Encounter の判定と魚種選択（rollEncounter）
+     *   2. 個体生成（体長 → コンディション → Trait）
+     *   3. ファイト特性（power → speed → stamina）
+     *   4. アタリまでの待ち tick
+     */
+    const generated = generateFishIndividual({
+      species,
+      random: this.random,
+      individualSeed: `${species.id}#${this.seedLabel}#${String(this.encounterCount)}`,
+      ...(this.spotId === undefined ? {} : { spotId: this.spotId }),
+    })
+
+    const fish = createFightingFish({
+      species,
+      individual: generated.individual,
+      traitModifiers: generated.traitModifiers,
+      random: this.random,
+      tuning: this.tuning,
+    })
+
+    this.fishState = {
+      fish,
+      stamina: fish.staminaMax,
+      behavior: 'normal',
+      behaviorRunTicksRemaining: 0,
+      slackTicks: 0,
+    }
+    this.plan = {
+      willBite: true,
+      biteTick: this.random.int(this.tuning.minWaitTicks, this.tuning.maxWaitTicks),
+    }
+    this.enterPhase('WAITING')
+  }
+
+  private advanceWaiting(): void {
+    const plan = this.plan
+
+    if (plan === null) {
+      this.enterPhase('IDLE')
+      return
+    }
+
+    if (this.ticksInPhase < plan.biteTick) {
+      return
+    }
+
+    if (plan.willBite) {
+      this.events.push('BITE')
+      this.enterPhase('BITE')
+      return
+    }
+
+    // ボウズ。設計上、何も釣れない釣行も成立する（GAME_DESIGN.md §10）。
+    this.events.push('NO_BITE')
+    this.fishState = null
+    this.enterPhase('IDLE')
+  }
+
+  private startFight(): void {
+    this.events.push('HOOK_SET')
+    this.enterPhase('HOOKED')
+  }
+
+  private resetSession(): void {
+    this.fishState = null
+    this.plan = null
+    this.tension = 0
+    this.totalTicks = 0
+    // 同じ seed で最初からやり直せば、同じ個体が再び現れる。
+    this.encounterCount = 0
+    this.enterPhase('IDLE')
+    this.events.push('SESSION_RESET')
+  }
+
+  // ------------------------------------------------------------------- fight
+
+  /**
+   * tick ごとのファイト進行。
+   * プレイヤーが何もしないと、テンションは自然に抜け、魚は自力で消耗する。
+   */
+  private advanceFight(): void {
+    const state = this.fishState
+
+    if (state === null) {
+      this.enterPhase('IDLE')
+      return
+    }
+
+    this.tension = Math.max(0, this.tension - this.tuning.passiveTensionDecay)
+
+    const decision = decideBehavior({
+      state: {
+        behavior: state.behavior,
+        runTicksRemaining: state.behaviorRunTicksRemaining,
+      },
+      context: {
+        speed: state.fish.speed,
+        staminaRatio: state.fish.staminaMax === 0 ? 0 : state.stamina / state.fish.staminaMax,
+        runChanceMultiplier: state.fish.modifiers.runChanceMultiplier,
+        runDurationMultiplier: state.fish.modifiers.runDurationMultiplier,
+      },
+      random: this.random,
+      tuning: this.tuning,
+    })
+
+    if (decision.changed) {
+      this.events.push(decision.behavior === 'run' ? 'RUN_STARTED' : 'RUN_ENDED')
+    }
+
+    this.fishState = {
+      ...state,
+      behavior: decision.behavior,
+      behaviorRunTicksRemaining: decision.runTicksRemaining,
+    }
+
+    const exertionMultiplier = decision.behavior === 'run' ? this.tuning.runExertionMultiplier : 1
+    this.drainStamina(this.tuning.fishExertionStaminaDrain * exertionMultiplier)
+
+    // 走っている魚は竿を引き込む。GIVE しても糸が緩みきらないのはこのため。
+    if (decision.behavior === 'run') {
+      this.tension = Math.min(
+        this.effectiveMaxTension(),
+        this.tension + this.tuning.runPullTensionGain * state.fish.pullMultiplier,
+      )
+    }
+
+    this.resolveFightOutcome({ advanceSlack: true })
+  }
+
+  private applyReel(): void {
+    const state = this.fishState
+
+    if (state === null) {
+      return
+    }
+
+    const running = state.behavior === 'run'
+    const tensionMultiplier = running ? this.tuning.runTensionGainMultiplier : 1
+    const efficiencyMultiplier = running ? this.tuning.runReelEfficiencyMultiplier : 1
+
+    const efficiency =
+      this.reelEfficiency(this.tension) *
+      efficiencyMultiplier *
+      this.playerModifiers.reelEfficiencyMultiplier
+    this.drainStamina(this.tuning.reelStaminaDrain * efficiency)
+
+    // 強い魚ほど糸を引く。
+    // Phase 9: 大型個体ほど同じ操作でもテンションが上がりやすい。
+    const powerMultiplier = (0.75 + 0.5 * state.fish.power) * state.fish.pullMultiplier
+    this.tension = Math.min(
+      this.effectiveMaxTension(),
+      this.tension +
+        this.tuning.reelTensionGain *
+          tensionMultiplier *
+          powerMultiplier *
+          this.playerModifiers.tensionGainMultiplier,
+    )
+
+    this.resolveFightOutcome({ advanceSlack: false })
+  }
+
+  private applyGive(): void {
+    const state = this.fishState
+    const running = state !== null && state.behavior === 'run'
+    const relief =
+      this.tuning.giveTensionRelief *
+      (running ? this.tuning.runGiveTensionReliefMultiplier : 1) *
+      this.playerModifiers.giveEfficiencyMultiplier
+
+    this.tension = Math.max(0, this.tension - relief)
+    this.restoreStamina(this.tuning.giveStaminaRecovery)
+    this.resolveFightOutcome({ advanceSlack: false })
+  }
+
+  /**
+   * テンション帯による REEL の効率。
+   * 緩みすぎていると糸が張っておらず、魚を寄せられない。
+   */
+  private reelEfficiency(tension: number): number {
+    if (tension >= this.tuning.optimalTensionMin) {
+      return 1
+    }
+
+    const ratio = tension / this.tuning.optimalTensionMin
+    return this.tuning.slackReelEfficiency + (1 - this.tuning.slackReelEfficiency) * ratio
+  }
+
+  private drainStamina(amount: number): void {
+    const state = this.fishState
+
+    if (state === null) {
+      return
+    }
+
+    // Phase 9: 大型個体は粘る（同じ時間では疲れにくい）。
+    const drained = amount / state.fish.enduranceMultiplier
+
+    this.fishState = { ...state, stamina: Math.max(0, state.stamina - drained) }
+  }
+
+  private restoreStamina(amount: number): void {
+    const state = this.fishState
+
+    if (state === null) {
+      return
+    }
+
+    this.fishState = {
+      ...state,
+      stamina: Math.min(state.fish.staminaMax, state.stamina + amount),
+    }
+  }
+
+  /**
+   * ファイトの決着判定。優先順位は「ラインブレイク → フックが外れる → 取り込み」。
+   * 同じ瞬間に複数が成立する場合は、より重い失敗を優先する。
+   *
+   * 糸が緩んでいる時間（slack）は**時間の経過**で判定する。
+   * プレイヤーの操作回数で決めると、連打するほど不利になる
+   * （＝操作速度がゲーム性になってしまう）ため、tick のときだけ進める。
+   */
+  private resolveFightOutcome(options: { readonly advanceSlack: boolean }): void {
+    const state = this.fishState
+
+    if (state === null) {
+      this.enterPhase('IDLE')
+      return
+    }
+
+    if (this.tension >= this.effectiveMaxTension()) {
+      this.events.push('LINE_BREAK')
+      this.enterPhase('LINE_BREAK')
+      return
+    }
+
+    if (this.tension >= this.tuning.slackTensionThreshold) {
+      if (state.slackTicks !== 0) {
+        this.fishState = { ...state, slackTicks: 0 }
+      }
+    } else {
+      const elapsedSlack = options.advanceSlack ? 1 : 0
+      const slackTicks = state.slackTicks + elapsedSlack
+
+      if (slackTicks !== state.slackTicks) {
+        this.fishState = { ...state, slackTicks }
+      }
+
+      if (slackTicks >= this.effectiveSlackTicksBeforeEscape()) {
+        this.events.push('HOOK_ESCAPE')
+        this.enterPhase('HOOK_ESCAPE')
+        return
+      }
+    }
+
+    if (state.stamina <= 0) {
+      this.events.push('FISH_TIRED')
+      this.enterPhase('LANDING')
+    }
+  }
+}

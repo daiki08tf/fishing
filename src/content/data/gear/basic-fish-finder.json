@@ -1,0 +1,13 @@
+{
+  "id": "basic-fish-finder",
+  "name": "ベーシック魚探",
+  "price": 24000,
+  "category": "electronics",
+  "brandId": "deep-scan",
+  "seriesId": "deep-scan-finder",
+  "series": "FINDER",
+  "kind": "fish_finder",
+  "detectionDepthM": 80,
+  "accuracy": 0.6,
+  "weightG": 900
+}

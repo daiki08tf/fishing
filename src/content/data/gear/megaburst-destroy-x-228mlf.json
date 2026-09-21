@@ -1,0 +1,21 @@
+{
+  "id": "megaburst-destroy-x-228mlf",
+  "name": "DESTROY-X 228MLF",
+  "price": 26000,
+  "category": "rod",
+  "brandId": "megaburst",
+  "seriesId": "megaburst-destroy-x",
+  "seriesCategory": "bass",
+  "lengthM": 2.28,
+  "power": "ML",
+  "action": "fast",
+  "minLureWeightG": 2,
+  "maxLureWeightG": 12,
+  "recommendedLineMinKg": 3,
+  "recommendedLineMaxKg": 8,
+  "weightG": 147,
+  "sensitivity": 0.71,
+  "control": 0.71,
+  "fightingPower": 0.58,
+  "castingProfile": 0.51
+}

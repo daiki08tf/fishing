@@ -1,0 +1,21 @@
+{
+  "id": "blue-horizon-tunaarc-340xhm",
+  "name": "TUNAARC 340XHM",
+  "price": 41900,
+  "category": "rod",
+  "brandId": "blue-horizon",
+  "seriesId": "blue-horizon-tunaarc",
+  "seriesCategory": "shore_jigging",
+  "lengthM": 3.4,
+  "power": "XH",
+  "action": "moderate",
+  "minLureWeightG": 50,
+  "maxLureWeightG": 150,
+  "recommendedLineMinKg": 20,
+  "recommendedLineMaxKg": 45,
+  "weightG": 219,
+  "sensitivity": 0.6,
+  "control": 0.58,
+  "fightingPower": 0.78,
+  "castingProfile": 0.83
+}

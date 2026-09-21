@@ -1,0 +1,14 @@
+{
+  "id": "major-crest-nylon-leader-25kg",
+  "name": "Nylon Leader 25kg",
+  "price": 2000,
+  "category": "leader",
+  "brandId": "major-crest",
+  "seriesId": "major-crest-nylon-leader",
+  "material": "nylon",
+  "strengthKg": 25,
+  "diameterMm": 0.53,
+  "abrasionResistance": 0.72,
+  "visibility": 0.6,
+  "lengthM": 1.5
+}

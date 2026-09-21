@@ -1,0 +1,32 @@
+{
+  "id": "major-crest-crosslink-2500s",
+  "name": "CROSSLINK 2500S",
+  "price": 6500,
+  "category": "reel",
+  "brandId": "major-crest",
+  "seriesId": "major-crest-crosslink",
+  "reelType": "spinning",
+  "sizeClass": 2500,
+  "variant": "S",
+  "size": 2500,
+  "gearRatio": 5.2,
+  "maxDragKg": 4.7,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 2.4,
+      "capacityM": 257
+    },
+    {
+      "lineStrengthKg": 7.1,
+      "capacityM": 87
+    }
+  ],
+  "retrieveCmPerTurn": 72,
+  "weightG": 213,
+  "smoothness": 0.55,
+  "control": 0.59,
+  "dragStartup": 0.55,
+  "rigidity": 0.58,
+  "windingTorque": 0.59,
+  "response": 0.58
+}

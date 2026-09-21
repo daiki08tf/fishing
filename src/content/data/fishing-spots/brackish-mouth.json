@@ -1,0 +1,75 @@
+{
+  "id": "brackish-mouth",
+  "name": "河口部",
+  "regionId": "tokyo-area",
+  "areaId": "tokyo",
+  "environment": "estuary",
+  "dataStatus": "provisional",
+  "access": [
+    {
+      "kind": "capability",
+      "capability": "public_transport"
+    }
+  ],
+  "travelOptions": [
+    {
+      "id": "rail-route",
+      "transportTypes": ["train"],
+      "requiredCapabilities": ["public_transport"],
+      "features": [],
+      "baseMinutes": 40,
+      "distanceKm": 24,
+      "baseOneWayCost": 420
+    },
+    {
+      "id": "bus-route",
+      "transportTypes": ["bus"],
+      "requiredCapabilities": ["public_transport"],
+      "features": [],
+      "baseMinutes": 55,
+      "distanceKm": 24,
+      "baseOneWayCost": 520
+    }
+  ],
+  "habitatTags": ["phase1-sample-estuary", "phase1-sample-shallow"],
+  "depth": {
+    "depthRangeM": {
+      "min": 1,
+      "max": 10
+    }
+  },
+  "fishTable": [
+    {
+      "speciesId": "phase2-sample-fish-b",
+      "basePresence": 0.6
+    },
+    {
+      "speciesId": "phase2-sample-fish-c",
+      "basePresence": 0.5
+    },
+    {
+      "speciesId": "phase2-sample-fish-h",
+      "basePresence": 0.7
+    },
+    {
+      "speciesId": "phase2-sample-fish-e",
+      "basePresence": 0.2
+    }
+  ],
+  "knowledgeConfig": {
+    "reveals": [
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "time_pattern",
+        "minKnowledge": 40
+      },
+      {
+        "field": "habitat",
+        "minKnowledge": 60
+      }
+    ]
+  }
+}

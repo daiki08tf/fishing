@@ -1,0 +1,32 @@
+{
+  "id": "daiva-certex-18000pg",
+  "name": "CERTEX 18000PG",
+  "price": 100100,
+  "category": "reel",
+  "brandId": "daiva",
+  "seriesId": "daiva-certex",
+  "reelType": "spinning",
+  "sizeClass": 18000,
+  "variant": "PG",
+  "size": 18000,
+  "gearRatio": 4.6,
+  "maxDragKg": 28.6,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 14.3,
+      "capacityM": 633
+    },
+    {
+      "lineStrengthKg": 42.9,
+      "capacityM": 211
+    }
+  ],
+  "retrieveCmPerTurn": 125,
+  "weightG": 693,
+  "smoothness": 0.72,
+  "control": 0.46,
+  "dragStartup": 0.62,
+  "rigidity": 0.66,
+  "windingTorque": 0.65,
+  "response": 0.67
+}

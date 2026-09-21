@@ -1,0 +1,18 @@
+{
+  "id": "tail-walker-popper-118-natural",
+  "name": "Popper 118 Natural",
+  "price": 4200,
+  "category": "lure",
+  "brandId": "tail-walker",
+  "lureType": "popper",
+  "weightG": 70,
+  "lengthMm": 118,
+  "depthRangeM": {
+    "min": 0,
+    "max": 0.5
+  },
+  "retrieveStyle": "pop",
+  "action": "pop",
+  "visualProfile": "natural",
+  "targetProfile": ["large", "big"]
+}

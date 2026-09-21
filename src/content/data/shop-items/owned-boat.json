@@ -1,0 +1,8 @@
+{
+  "id": "owned-boat",
+  "name": "小型プレジャーボート",
+  "description": "マリーナから沖へ出られる高額な長期目標。操船ゲームは扱わない。",
+  "price": 4800000,
+  "category": "vehicle",
+  "grantsTransportId": "owned-boat"
+}

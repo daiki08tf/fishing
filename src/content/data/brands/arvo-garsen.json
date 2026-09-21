@@ -1,0 +1,8 @@
+{
+  "id": "arvo-garsen",
+  "name": "Arvo Garsen",
+  "description": "アーヴォ・ガーセン。重めだが剛性・巻上トルク・高負荷時の安定性を重視する。（架空ブランド。検証用）",
+  "specialties": ["rigidity", "torque", "power"],
+  "countryStyle": "international",
+  "tagline": "強さに妥協はいらない。"
+}

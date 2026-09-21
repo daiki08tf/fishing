@@ -1,0 +1,32 @@
+{
+  "id": "blue-horizon-pelagic-8000hg",
+  "name": "PELAGIC 8000HG",
+  "price": 50500,
+  "category": "reel",
+  "brandId": "blue-horizon",
+  "seriesId": "blue-horizon-pelagic",
+  "reelType": "spinning",
+  "sizeClass": 8000,
+  "variant": "HG",
+  "size": 8000,
+  "gearRatio": 5.7,
+  "maxDragKg": 20.5,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 10.3,
+      "capacityM": 315
+    },
+    {
+      "lineStrengthKg": 30.8,
+      "capacityM": 105
+    }
+  ],
+  "retrieveCmPerTurn": 123,
+  "weightG": 464,
+  "smoothness": 0.6,
+  "control": 0.47,
+  "dragStartup": 0.6,
+  "rigidity": 0.7,
+  "windingTorque": 0.71,
+  "response": 0.56
+}

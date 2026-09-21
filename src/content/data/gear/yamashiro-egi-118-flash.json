@@ -1,0 +1,19 @@
+{
+  "id": "yamashiro-egi-118-flash",
+  "name": "Egi 118 Flash",
+  "price": 2300,
+  "category": "lure",
+  "brandId": "yamashiro",
+  "seriesId": "yamashiro-egix",
+  "lureType": "egi",
+  "weightG": 25,
+  "lengthMm": 118,
+  "depthRangeM": {
+    "min": 2,
+    "max": 8
+  },
+  "retrieveStyle": "jerk/fall",
+  "action": "sink",
+  "visualProfile": "flash",
+  "targetProfile": ["large"]
+}

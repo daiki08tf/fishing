@@ -1,0 +1,19 @@
+{
+  "id": "blue-horizon-pencil-128-flash",
+  "name": "Pencil 128 Flash",
+  "price": 3200,
+  "category": "lure",
+  "brandId": "blue-horizon",
+  "seriesId": "blue-horizon-pelagic-x",
+  "lureType": "topwater",
+  "weightG": 50,
+  "lengthMm": 128,
+  "depthRangeM": {
+    "min": 0,
+    "max": 0.5
+  },
+  "retrieveStyle": "walk",
+  "action": "walk",
+  "visualProfile": "flash",
+  "targetProfile": ["large", "big"]
+}

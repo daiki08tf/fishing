@@ -1,0 +1,21 @@
+{
+  "id": "gamakaze-rageki-530mm",
+  "name": "RAGEKI 530MM",
+  "price": 39400,
+  "category": "rod",
+  "brandId": "gamakaze",
+  "seriesId": "gamakaze-rageki",
+  "seriesCategory": "float_fishing",
+  "lengthM": 5.3,
+  "power": "M",
+  "action": "moderate",
+  "minLureWeightG": 2,
+  "maxLureWeightG": 20,
+  "recommendedLineMinKg": 3,
+  "recommendedLineMaxKg": 10,
+  "weightG": 245,
+  "sensitivity": 0.63,
+  "control": 0.61,
+  "fightingPower": 0.64,
+  "castingProfile": 1
+}

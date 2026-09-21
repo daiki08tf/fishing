@@ -1,0 +1,19 @@
+{
+  "id": "blue-horizon-stickbait-134-flash",
+  "name": "Stickbait 134 Flash",
+  "price": 3000,
+  "category": "lure",
+  "brandId": "blue-horizon",
+  "seriesId": "blue-horizon-pelagic-x",
+  "lureType": "stickbait",
+  "weightG": 45,
+  "lengthMm": 134,
+  "depthRangeM": {
+    "min": 0,
+    "max": 1.5
+  },
+  "retrieveStyle": "sweep",
+  "action": "walk",
+  "visualProfile": "flash",
+  "targetProfile": ["large", "big"]
+}

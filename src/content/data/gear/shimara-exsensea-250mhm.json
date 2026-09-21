@@ -1,0 +1,21 @@
+{
+  "id": "shimara-exsensea-250mhm",
+  "name": "EXSENSEA 250MHM",
+  "price": 38900,
+  "category": "rod",
+  "brandId": "shimara",
+  "seriesId": "shimara-exsensea",
+  "seriesCategory": "bottom_fishing",
+  "lengthM": 2.5,
+  "power": "MH",
+  "action": "moderate",
+  "minLureWeightG": 15,
+  "maxLureWeightG": 80,
+  "recommendedLineMinKg": 10,
+  "recommendedLineMaxKg": 30,
+  "weightG": 165,
+  "sensitivity": 0.64,
+  "control": 0.7,
+  "fightingPower": 0.65,
+  "castingProfile": 0.56
+}

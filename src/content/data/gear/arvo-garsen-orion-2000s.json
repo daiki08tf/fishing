@@ -1,0 +1,32 @@
+{
+  "id": "arvo-garsen-orion-2000s",
+  "name": "ORION 2000S",
+  "price": 6500,
+  "category": "reel",
+  "brandId": "arvo-garsen",
+  "seriesId": "arvo-garsen-orion",
+  "reelType": "spinning",
+  "sizeClass": 2000,
+  "variant": "S",
+  "size": 2000,
+  "gearRatio": 5.2,
+  "maxDragKg": 4.4,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 2.2,
+      "capacityM": 209
+    },
+    {
+      "lineStrengthKg": 6.6,
+      "capacityM": 70
+    }
+  ],
+  "retrieveCmPerTurn": 63,
+  "weightG": 200,
+  "smoothness": 0.58,
+  "control": 0.59,
+  "dragStartup": 0.58,
+  "rigidity": 0.68,
+  "windingTorque": 0.68,
+  "response": 0.55
+}

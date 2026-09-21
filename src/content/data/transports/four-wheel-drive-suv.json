@@ -1,0 +1,16 @@
+{
+  "id": "four-wheel-drive-suv",
+  "name": "4WD SUV",
+  "transportType": "suv",
+  "ownershipModel": "owned",
+  "purchasePrice": 2200000,
+  "travelCostModel": { "kind": "per_km", "yenPerKm": 25, "minimumOneWayCost": 300 },
+  "travelTimeModifier": 0.48,
+  "maxRangeKm": 700,
+  "cargo": { "gearUnits": 12, "maxWeightKg": 250 },
+  "capabilities": ["road_access", "rough_road"],
+  "requiredRouteFeatures": [],
+  "launchCapability": "none",
+  "boatCapability": "none",
+  "passengerCapacity": 5
+}

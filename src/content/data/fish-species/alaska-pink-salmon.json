@@ -1,0 +1,92 @@
+{
+  "id": "alaska-pink-salmon",
+  "japaneseName": "カラフトマス（暫定）",
+  "waterTypes": ["fresh", "salt"],
+  "distribution": ["alaska"],
+  "habitats": ["alaska-sample-river", "alaska-sample-bay"],
+  "depthRange": {
+    "min": 1,
+    "max": 15
+  },
+  "temperatureRange": {
+    "min": 8,
+    "max": 15
+  },
+  "seasonality": {
+    "months": [7, 8, 9]
+  },
+  "timeActivity": {
+    "periods": ["dawn", "morning", "evening"]
+  },
+  "currentPreference": {
+    "preference": "slow"
+  },
+  "diet": ["alaska-sample-prey"],
+  "baits": ["roe", "shrimp"],
+  "lureCategories": ["spoon", "minnow", "soft_plastic"],
+  "fishingMethods": ["lure", "light_lure", "bait"],
+  "methodAffinity": {
+    "lure": 1.15,
+    "light_lure": 1.05,
+    "bait": 1,
+    "bottom": 0.85
+  },
+  "offeringAffinity": {
+    "spoon": 1.2,
+    "minnow": 1.1,
+    "roe": 1.1,
+    "small": 1.1,
+    "mid": 1.05
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 45,
+    "dispersion": 0.13,
+    "minCm": 25,
+    "maxCm": 70
+  },
+  "weightModel": {
+    "lengthWeightA": 0.0092,
+    "lengthWeightB": 3.05
+  },
+  "conditionModel": {
+    "variability": 0.45
+  },
+  "traitConfiguration": {
+    "trophyPercentileThreshold": 1,
+    "strongRunnerChance": 0.09
+  },
+  "fightProfile": {
+    "strength": 0.5,
+    "stamina": 0.7,
+    "speed": 0.6
+  },
+  "rarity": 1.6,
+  "environmentAffinity": {
+    "preferredSeasons": ["summer"],
+    "preferredTimeOfDay": ["morning", "daytime", "evening"],
+    "weatherAffinity": {
+      "clear": 1.05,
+      "cloudy": 1.05,
+      "light_rain": 1.0,
+      "rain": 0.95,
+      "windy": 0.9
+    },
+    "tideAffinity": {
+      "low": 0.95,
+      "rising": 1.05,
+      "high": 1.15,
+      "falling": 1.05
+    },
+    "flowAffinity": {
+      "none": 1.0,
+      "slow": 1.05,
+      "moderate": 1.05,
+      "strong": 0.9
+    },
+    "preferredTemperatureC": {
+      "min": 9,
+      "max": 14
+    }
+  }
+}

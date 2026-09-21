@@ -1,0 +1,32 @@
+{
+  "id": "daiva-certex-3000",
+  "name": "CERTEX 3000",
+  "price": 21900,
+  "category": "reel",
+  "brandId": "daiva",
+  "seriesId": "daiva-certex",
+  "reelType": "spinning",
+  "sizeClass": 3000,
+  "variant": "STD",
+  "size": 3000,
+  "gearRatio": 5.2,
+  "maxDragKg": 6.9,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 3.5,
+      "capacityM": 257
+    },
+    {
+      "lineStrengthKg": 10.4,
+      "capacityM": 87
+    }
+  ],
+  "retrieveCmPerTurn": 92,
+  "weightG": 203,
+  "smoothness": 0.72,
+  "control": 0.66,
+  "dragStartup": 0.62,
+  "rigidity": 0.66,
+  "windingTorque": 0.58,
+  "response": 0.67
+}

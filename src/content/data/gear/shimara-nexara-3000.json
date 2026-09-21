@@ -1,0 +1,32 @@
+{
+  "id": "shimara-nexara-3000",
+  "name": "NEXARA 3000",
+  "price": 10100,
+  "category": "reel",
+  "brandId": "shimara",
+  "seriesId": "shimara-nexara",
+  "reelType": "spinning",
+  "sizeClass": 3000,
+  "variant": "STD",
+  "size": 3000,
+  "gearRatio": 5.2,
+  "maxDragKg": 7.2,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 3.6,
+      "capacityM": 250
+    },
+    {
+      "lineStrengthKg": 10.8,
+      "capacityM": 83
+    }
+  ],
+  "retrieveCmPerTurn": 85,
+  "weightG": 227,
+  "smoothness": 0.66,
+  "control": 0.65,
+  "dragStartup": 0.74,
+  "rigidity": 0.61,
+  "windingTorque": 0.6,
+  "response": 0.62
+}

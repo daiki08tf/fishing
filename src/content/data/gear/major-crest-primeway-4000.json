@@ -1,0 +1,32 @@
+{
+  "id": "major-crest-primeway-4000",
+  "name": "PRIMEWAY 4000",
+  "price": 10800,
+  "category": "reel",
+  "brandId": "major-crest",
+  "seriesId": "major-crest-primeway",
+  "reelType": "spinning",
+  "sizeClass": 4000,
+  "variant": "STD",
+  "size": 4000,
+  "gearRatio": 5.2,
+  "maxDragKg": 9.4,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 4.7,
+      "capacityM": 285
+    },
+    {
+      "lineStrengthKg": 14.1,
+      "capacityM": 95
+    }
+  ],
+  "retrieveCmPerTurn": 91,
+  "weightG": 270,
+  "smoothness": 0.55,
+  "control": 0.56,
+  "dragStartup": 0.55,
+  "rigidity": 0.58,
+  "windingTorque": 0.59,
+  "response": 0.58
+}

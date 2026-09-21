@@ -1,0 +1,21 @@
+{
+  "id": "major-crest-crossridge-213lm",
+  "name": "CROSSRIDGE 213LM",
+  "price": 11600,
+  "category": "rod",
+  "brandId": "major-crest",
+  "seriesId": "major-crest-crossridge",
+  "seriesCategory": "trout",
+  "lengthM": 2.13,
+  "power": "L",
+  "action": "moderate",
+  "minLureWeightG": 2,
+  "maxLureWeightG": 12,
+  "recommendedLineMinKg": 2,
+  "recommendedLineMaxKg": 6,
+  "weightG": 155,
+  "sensitivity": 0.59,
+  "control": 0.62,
+  "fightingPower": 0.57,
+  "castingProfile": 0.48
+}

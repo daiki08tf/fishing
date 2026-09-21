@@ -1,0 +1,19 @@
+{
+  "id": "yamashiro-metal-vibration-62-flash",
+  "name": "Metal Vibration 62 Flash",
+  "price": 1700,
+  "category": "lure",
+  "brandId": "yamashiro",
+  "seriesId": "yamashiro-marinebeat",
+  "lureType": "metal_vibration",
+  "weightG": 14,
+  "lengthMm": 62,
+  "depthRangeM": {
+    "min": 4,
+    "max": 15
+  },
+  "retrieveStyle": "steady/lift-fall",
+  "action": "vibration",
+  "visualProfile": "flash",
+  "targetProfile": ["mid"]
+}

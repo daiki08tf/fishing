@@ -1,0 +1,54 @@
+{
+  "id": "suburban-road-lake",
+  "name": "郊外 湖（道路沿い）",
+  "regionId": "tokyo-area",
+  "areaId": "kanagawa",
+  "environment": "lake",
+  "dataStatus": "provisional",
+  "access": [
+    {
+      "kind": "capability",
+      "capability": "road_access"
+    }
+  ],
+  "travelOptions": [
+    {
+      "id": "ordinary-road",
+      "transportTypes": ["compact_car", "suv", "motorcycle", "rental_car"],
+      "requiredCapabilities": ["road_access"],
+      "features": ["vehicle_rental"],
+      "baseMinutes": 110,
+      "distanceKm": 40,
+      "baseOneWayCost": 500
+    }
+  ],
+  "habitatTags": ["phase1-sample-shallow", "phase1-sample-deep"],
+  "depth": {
+    "depthRangeM": {
+      "min": 2,
+      "max": 12
+    }
+  },
+  "fishTable": [
+    {
+      "speciesId": "phase2-sample-fish-b",
+      "basePresence": 0.6
+    },
+    {
+      "speciesId": "phase2-sample-fish-f",
+      "basePresence": 0.4
+    }
+  ],
+  "knowledgeConfig": {
+    "reveals": [
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "depth",
+        "minKnowledge": 50
+      }
+    ]
+  }
+}

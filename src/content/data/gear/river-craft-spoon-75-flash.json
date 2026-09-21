@@ -1,0 +1,19 @@
+{
+  "id": "river-craft-spoon-75-flash",
+  "name": "Spoon 75 Flash",
+  "price": 1300,
+  "category": "lure",
+  "brandId": "river-craft",
+  "seriesId": "river-craft-flowminnow",
+  "lureType": "spoon",
+  "weightG": 10,
+  "lengthMm": 75,
+  "depthRangeM": {
+    "min": 0.5,
+    "max": 3.5
+  },
+  "retrieveStyle": "steady/fall",
+  "action": "flutter",
+  "visualProfile": "flash",
+  "targetProfile": ["mid"]
+}

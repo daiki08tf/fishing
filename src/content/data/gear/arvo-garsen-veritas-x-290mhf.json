@@ -1,0 +1,21 @@
+{
+  "id": "arvo-garsen-veritas-x-290mhf",
+  "name": "VERITAS-X 290MHF",
+  "price": 28600,
+  "category": "rod",
+  "brandId": "arvo-garsen",
+  "seriesId": "arvo-garsen-veritas-x",
+  "seriesCategory": "light_shore_jigging",
+  "lengthM": 2.9,
+  "power": "MH",
+  "action": "fast",
+  "minLureWeightG": 15,
+  "maxLureWeightG": 60,
+  "recommendedLineMinKg": 10,
+  "recommendedLineMaxKg": 25,
+  "weightG": 194,
+  "sensitivity": 0.63,
+  "control": 0.57,
+  "fightingPower": 0.7,
+  "castingProfile": 0.7
+}

@@ -1,0 +1,32 @@
+{
+  "id": "daiva-revrosia-2000hg",
+  "name": "REVROSIA 2000HG",
+  "price": 7700,
+  "category": "reel",
+  "brandId": "daiva",
+  "seriesId": "daiva-revrosia",
+  "reelType": "spinning",
+  "sizeClass": 2000,
+  "variant": "HG",
+  "size": 2000,
+  "gearRatio": 6,
+  "maxDragKg": 4,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 2,
+      "capacityM": 265
+    },
+    {
+      "lineStrengthKg": 6,
+      "capacityM": 88
+    }
+  ],
+  "retrieveCmPerTurn": 93,
+  "weightG": 171,
+  "smoothness": 0.62,
+  "control": 0.67,
+  "dragStartup": 0.62,
+  "rigidity": 0.59,
+  "windingTorque": 0.58,
+  "response": 0.67
+}

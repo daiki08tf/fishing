@@ -1,0 +1,32 @@
+{
+  "id": "gamakaze-seiran-2000s",
+  "name": "SEIRAN 2000S",
+  "price": 8400,
+  "category": "reel",
+  "brandId": "gamakaze",
+  "seriesId": "gamakaze-seiran",
+  "reelType": "spinning",
+  "sizeClass": 2000,
+  "variant": "S",
+  "size": 2000,
+  "gearRatio": 5.2,
+  "maxDragKg": 4.3,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 2.1,
+      "capacityM": 218
+    },
+    {
+      "lineStrengthKg": 6.4,
+      "capacityM": 72
+    }
+  ],
+  "retrieveCmPerTurn": 67,
+  "weightG": 187,
+  "smoothness": 0.62,
+  "control": 0.64,
+  "dragStartup": 0.66,
+  "rigidity": 0.66,
+  "windingTorque": 0.64,
+  "response": 0.59
+}

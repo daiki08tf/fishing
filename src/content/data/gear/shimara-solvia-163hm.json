@@ -1,0 +1,21 @@
+{
+  "id": "shimara-solvia-163hm",
+  "name": "SOLVIA 163HM",
+  "price": 34600,
+  "category": "rod",
+  "brandId": "shimara",
+  "seriesId": "shimara-solvia",
+  "seriesCategory": "offshore_jigging",
+  "lengthM": 1.63,
+  "power": "H",
+  "action": "moderate",
+  "minLureWeightG": 80,
+  "maxLureWeightG": 220,
+  "recommendedLineMinKg": 20,
+  "recommendedLineMaxKg": 50,
+  "weightG": 151,
+  "sensitivity": 0.64,
+  "control": 0.7,
+  "fightingPower": 0.7,
+  "castingProfile": 0.37
+}

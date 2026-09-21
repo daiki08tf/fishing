@@ -1,0 +1,32 @@
+{
+  "id": "gamakaze-gokuto-6000pg",
+  "name": "GOKUTO 6000PG",
+  "price": 27700,
+  "category": "reel",
+  "brandId": "gamakaze",
+  "seriesId": "gamakaze-gokuto",
+  "reelType": "spinning",
+  "sizeClass": 6000,
+  "variant": "PG",
+  "size": 6000,
+  "gearRatio": 4.6,
+  "maxDragKg": 15.6,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 7.8,
+      "capacityM": 292
+    },
+    {
+      "lineStrengthKg": 23.4,
+      "capacityM": 97
+    }
+  ],
+  "retrieveCmPerTurn": 91,
+  "weightG": 348,
+  "smoothness": 0.62,
+  "control": 0.56,
+  "dragStartup": 0.66,
+  "rigidity": 0.66,
+  "windingTorque": 0.72,
+  "response": 0.59
+}

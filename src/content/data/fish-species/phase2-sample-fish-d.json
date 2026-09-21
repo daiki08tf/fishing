@@ -1,0 +1,60 @@
+{
+  "id": "phase2-sample-fish-d",
+  "japaneseName": "サンプル魚D（検証用）",
+  "waterTypes": ["fresh", "brackish"],
+  "distribution": ["phase1-sample-region"],
+  "habitats": ["phase1-sample-river"],
+  "lengthModel": {
+    "kind": "normal",
+    "meanCm": 32,
+    "standardDeviationCm": 4,
+    "minCm": 16,
+    "maxCm": 45
+  },
+  "methodAffinity": {
+    "lure": 1,
+    "light_lure": 1.05,
+    "bait": 1.05,
+    "bottom": 1
+  },
+  "offeringAffinity": {
+    "minnow": 1.05,
+    "worm": 1.1,
+    "cut": 1.05,
+    "mid": 1.1
+  },
+  "weightModel": {
+    "lengthWeightA": 0.01,
+    "lengthWeightB": 3.05
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "fightProfile": {
+    "strength": 0.5,
+    "stamina": 0.45,
+    "speed": 0.5
+  },
+  "rarity": 1,
+  "environmentAffinity": {
+    "preferredSeasons": ["spring", "summer", "autumn"],
+    "preferredTimeOfDay": ["dawn", "evening"],
+    "weatherAffinity": {
+      "clear": 1.0,
+      "cloudy": 1.05,
+      "light_rain": 1.1,
+      "rain": 1.15,
+      "windy": 0.85
+    },
+    "flowAffinity": {
+      "none": 0.9,
+      "slow": 1.0,
+      "moderate": 1.15,
+      "strong": 1.0
+    },
+    "preferredTemperatureC": {
+      "min": 14,
+      "max": 22
+    }
+  }
+}

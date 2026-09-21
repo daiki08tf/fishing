@@ -1,0 +1,32 @@
+{
+  "id": "gamakaze-seiran-4000",
+  "name": "SEIRAN 4000",
+  "price": 13200,
+  "category": "reel",
+  "brandId": "gamakaze",
+  "seriesId": "gamakaze-seiran",
+  "reelType": "spinning",
+  "sizeClass": 4000,
+  "variant": "STD",
+  "size": 4000,
+  "gearRatio": 5.2,
+  "maxDragKg": 10.8,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 5.4,
+      "capacityM": 248
+    },
+    {
+      "lineStrengthKg": 16.2,
+      "capacityM": 83
+    }
+  ],
+  "retrieveCmPerTurn": 93,
+  "weightG": 271,
+  "smoothness": 0.62,
+  "control": 0.6,
+  "dragStartup": 0.66,
+  "rigidity": 0.66,
+  "windingTorque": 0.64,
+  "response": 0.59
+}

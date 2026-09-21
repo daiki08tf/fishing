@@ -1,0 +1,19 @@
+{
+  "id": "yamashiro-egi-90-natural",
+  "name": "Egi 90 Natural",
+  "price": 1400,
+  "category": "lure",
+  "brandId": "yamashiro",
+  "seriesId": "yamashiro-naoryx",
+  "lureType": "egi",
+  "weightG": 8,
+  "lengthMm": 90,
+  "depthRangeM": {
+    "min": 2,
+    "max": 8
+  },
+  "retrieveStyle": "jerk/fall",
+  "action": "sink",
+  "visualProfile": "natural",
+  "targetProfile": ["small"]
+}

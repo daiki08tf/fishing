@@ -1,0 +1,32 @@
+{
+  "id": "arvo-garsen-revox-8000pg",
+  "name": "REVOX 8000PG",
+  "price": 31200,
+  "category": "reel",
+  "brandId": "arvo-garsen",
+  "seriesId": "arvo-garsen-revox",
+  "reelType": "spinning",
+  "sizeClass": 8000,
+  "variant": "PG",
+  "size": 8000,
+  "gearRatio": 4.6,
+  "maxDragKg": 20.2,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 10.1,
+      "capacityM": 321
+    },
+    {
+      "lineStrengthKg": 30.3,
+      "capacityM": 107
+    }
+  ],
+  "retrieveCmPerTurn": 88,
+  "weightG": 481,
+  "smoothness": 0.58,
+  "control": 0.45,
+  "dragStartup": 0.58,
+  "rigidity": 0.68,
+  "windingTorque": 0.77,
+  "response": 0.55
+}

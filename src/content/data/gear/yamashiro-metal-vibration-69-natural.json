@@ -1,0 +1,19 @@
+{
+  "id": "yamashiro-metal-vibration-69-natural",
+  "name": "Metal Vibration 69 Natural",
+  "price": 2000,
+  "category": "lure",
+  "brandId": "yamashiro",
+  "seriesId": "yamashiro-marinebeat",
+  "lureType": "metal_vibration",
+  "weightG": 20,
+  "lengthMm": 69,
+  "depthRangeM": {
+    "min": 4,
+    "max": 15
+  },
+  "retrieveStyle": "steady/lift-fall",
+  "action": "vibration",
+  "visualProfile": "natural",
+  "targetProfile": ["mid"]
+}

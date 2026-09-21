@@ -1,0 +1,21 @@
+{
+  "id": "major-crest-crossridge-290mhm",
+  "name": "CROSSRIDGE 290MHM",
+  "price": 31900,
+  "category": "rod",
+  "brandId": "major-crest",
+  "seriesId": "major-crest-crossridge",
+  "seriesCategory": "bottom_fishing",
+  "lengthM": 2.9,
+  "power": "MH",
+  "action": "moderate",
+  "minLureWeightG": 15,
+  "maxLureWeightG": 80,
+  "recommendedLineMinKg": 10,
+  "recommendedLineMaxKg": 30,
+  "weightG": 190,
+  "sensitivity": 0.59,
+  "control": 0.58,
+  "fightingPower": 0.61,
+  "castingProfile": 0.65
+}

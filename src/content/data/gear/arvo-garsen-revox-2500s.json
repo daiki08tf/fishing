@@ -1,0 +1,32 @@
+{
+  "id": "arvo-garsen-revox-2500s",
+  "name": "REVOX 2500S",
+  "price": 10800,
+  "category": "reel",
+  "brandId": "arvo-garsen",
+  "seriesId": "arvo-garsen-revox",
+  "reelType": "spinning",
+  "sizeClass": 2500,
+  "variant": "S",
+  "size": 2500,
+  "gearRatio": 5.2,
+  "maxDragKg": 5.5,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 2.8,
+      "capacityM": 221
+    },
+    {
+      "lineStrengthKg": 8.3,
+      "capacityM": 74
+    }
+  ],
+  "retrieveCmPerTurn": 69,
+  "weightG": 222,
+  "smoothness": 0.58,
+  "control": 0.58,
+  "dragStartup": 0.58,
+  "rigidity": 0.68,
+  "windingTorque": 0.68,
+  "response": 0.55
+}

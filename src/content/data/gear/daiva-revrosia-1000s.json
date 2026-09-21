@@ -1,0 +1,32 @@
+{
+  "id": "daiva-revrosia-1000s",
+  "name": "REVROSIA 1000S",
+  "price": 6600,
+  "category": "reel",
+  "brandId": "daiva",
+  "seriesId": "daiva-revrosia",
+  "reelType": "spinning",
+  "sizeClass": 1000,
+  "variant": "S",
+  "size": 1000,
+  "gearRatio": 5.2,
+  "maxDragKg": 3,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 1.5,
+      "capacityM": 124
+    },
+    {
+      "lineStrengthKg": 4.5,
+      "capacityM": 41
+    }
+  ],
+  "retrieveCmPerTurn": 69,
+  "weightG": 152,
+  "smoothness": 0.62,
+  "control": 0.68,
+  "dragStartup": 0.62,
+  "rigidity": 0.59,
+  "windingTorque": 0.58,
+  "response": 0.67
+}

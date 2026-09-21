@@ -1,0 +1,18 @@
+{
+  "id": "megaburst-jerkbait-128-natural",
+  "name": "Jerkbait 128 Natural",
+  "price": 2400,
+  "category": "lure",
+  "brandId": "megaburst",
+  "lureType": "jerkbait",
+  "weightG": 24,
+  "lengthMm": 128,
+  "depthRangeM": {
+    "min": 0.5,
+    "max": 3.5
+  },
+  "retrieveStyle": "jerk/pause",
+  "action": "jerk",
+  "visualProfile": "natural",
+  "targetProfile": ["large"]
+}

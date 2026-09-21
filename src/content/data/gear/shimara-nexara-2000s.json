@@ -1,0 +1,32 @@
+{
+  "id": "shimara-nexara-2000s",
+  "name": "NEXARA 2000S",
+  "price": 7700,
+  "category": "reel",
+  "brandId": "shimara",
+  "seriesId": "shimara-nexara",
+  "reelType": "spinning",
+  "sizeClass": 2000,
+  "variant": "S",
+  "size": 2000,
+  "gearRatio": 5.2,
+  "maxDragKg": 4.1,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 2,
+      "capacityM": 229
+    },
+    {
+      "lineStrengthKg": 6.1,
+      "capacityM": 75
+    }
+  ],
+  "retrieveCmPerTurn": 71,
+  "weightG": 178,
+  "smoothness": 0.66,
+  "control": 0.68,
+  "dragStartup": 0.74,
+  "rigidity": 0.61,
+  "windingTorque": 0.6,
+  "response": 0.62
+}

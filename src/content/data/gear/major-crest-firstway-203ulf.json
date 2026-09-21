@@ -1,0 +1,21 @@
+{
+  "id": "major-crest-firstway-203ulf",
+  "name": "FIRSTWAY 203ULF",
+  "price": 9000,
+  "category": "rod",
+  "brandId": "major-crest",
+  "seriesId": "major-crest-firstway",
+  "seriesCategory": "ajing",
+  "lengthM": 2.03,
+  "power": "UL",
+  "action": "fast",
+  "minLureWeightG": 0.5,
+  "maxLureWeightG": 5,
+  "recommendedLineMinKg": 1.5,
+  "recommendedLineMaxKg": 4,
+  "weightG": 152,
+  "sensitivity": 0.63,
+  "control": 0.62,
+  "fightingPower": 0.57,
+  "castingProfile": 0.46
+}

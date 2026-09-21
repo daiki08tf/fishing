@@ -1,0 +1,95 @@
+{
+  "id": "alaska-chinook-salmon",
+  "japaneseName": "キングサーモン（暫定）",
+  "waterTypes": ["fresh", "salt"],
+  "distribution": ["alaska"],
+  "habitats": ["alaska-sample-river", "alaska-sample-deep"],
+  "depthRange": {
+    "min": 1,
+    "max": 30
+  },
+  "temperatureRange": {
+    "min": 6,
+    "max": 14
+  },
+  "seasonality": {
+    "months": [6, 7, 8]
+  },
+  "timeActivity": {
+    "periods": ["dawn", "morning", "evening"]
+  },
+  "currentPreference": {
+    "preference": "moderate"
+  },
+  "diet": ["alaska-sample-prey"],
+  "baits": ["roe", "cut", "fish"],
+  "lureCategories": ["spoon", "jig", "minnow"],
+  "fishingMethods": ["lure", "bait", "bottom"],
+  "methodAffinity": {
+    "lure": 1.05,
+    "light_lure": 0.7,
+    "bait": 1.1,
+    "bottom": 1
+  },
+  "offeringAffinity": {
+    "spoon": 1.15,
+    "jig": 1.1,
+    "roe": 1.15,
+    "cut": 1.1,
+    "large": 1.2,
+    "big": 1.15,
+    "mid": 1
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 85,
+    "dispersion": 0.15,
+    "minCm": 40,
+    "maxCm": 145
+  },
+  "weightModel": {
+    "lengthWeightA": 0.0115,
+    "lengthWeightB": 3.05
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "traitConfiguration": {
+    "trophyPercentileThreshold": 1,
+    "strongRunnerChance": 0.14,
+    "aggressiveChance": 0.12
+  },
+  "fightProfile": {
+    "strength": 0.9,
+    "stamina": 0.9,
+    "speed": 0.8
+  },
+  "rarity": 3.5,
+  "environmentAffinity": {
+    "preferredSeasons": ["summer"],
+    "preferredTimeOfDay": ["dawn", "morning", "evening"],
+    "weatherAffinity": {
+      "clear": 1.05,
+      "cloudy": 1.1,
+      "light_rain": 1.05,
+      "rain": 0.95,
+      "windy": 0.9
+    },
+    "tideAffinity": {
+      "low": 0.9,
+      "rising": 1.15,
+      "high": 1.05,
+      "falling": 1.0
+    },
+    "flowAffinity": {
+      "none": 0.95,
+      "slow": 1.0,
+      "moderate": 1.1,
+      "strong": 0.95
+    },
+    "preferredTemperatureC": {
+      "min": 8,
+      "max": 13
+    }
+  }
+}

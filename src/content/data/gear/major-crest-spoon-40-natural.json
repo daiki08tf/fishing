@@ -1,0 +1,18 @@
+{
+  "id": "major-crest-spoon-40-natural",
+  "name": "Spoon 40 Natural",
+  "price": 900,
+  "category": "lure",
+  "brandId": "major-crest",
+  "lureType": "spoon",
+  "weightG": 1.5,
+  "lengthMm": 40,
+  "depthRangeM": {
+    "min": 0.5,
+    "max": 3.5
+  },
+  "retrieveStyle": "steady/fall",
+  "action": "flutter",
+  "visualProfile": "natural",
+  "targetProfile": ["small"]
+}

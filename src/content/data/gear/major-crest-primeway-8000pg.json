@@ -1,0 +1,32 @@
+{
+  "id": "major-crest-primeway-8000pg",
+  "name": "PRIMEWAY 8000PG",
+  "price": 22800,
+  "category": "reel",
+  "brandId": "major-crest",
+  "seriesId": "major-crest-primeway",
+  "reelType": "spinning",
+  "sizeClass": 8000,
+  "variant": "PG",
+  "size": 8000,
+  "gearRatio": 4.6,
+  "maxDragKg": 17.4,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 8.7,
+      "capacityM": 373
+    },
+    {
+      "lineStrengthKg": 26.1,
+      "capacityM": 124
+    }
+  ],
+  "retrieveCmPerTurn": 92,
+  "weightG": 464,
+  "smoothness": 0.55,
+  "control": 0.47,
+  "dragStartup": 0.55,
+  "rigidity": 0.58,
+  "windingTorque": 0.66,
+  "response": 0.58
+}

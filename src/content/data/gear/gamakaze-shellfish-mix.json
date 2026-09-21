@@ -1,0 +1,10 @@
+{
+  "id": "gamakaze-shellfish-mix",
+  "name": "Shellfish Mix",
+  "price": 1900,
+  "category": "bait",
+  "brandId": "gamakaze",
+  "baitType": "shellfish",
+  "presentation": "bottom",
+  "targetProfile": ["mid", "large"]
+}

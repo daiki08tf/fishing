@@ -1,0 +1,10 @@
+{
+  "id": "major-crest-dough-mix",
+  "name": "Dough Mix",
+  "price": 1340,
+  "category": "bait",
+  "brandId": "major-crest",
+  "baitType": "dough",
+  "presentation": "float/bottom",
+  "targetProfile": ["small", "mid"]
+}

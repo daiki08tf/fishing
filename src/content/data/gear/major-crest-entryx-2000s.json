@@ -1,0 +1,32 @@
+{
+  "id": "major-crest-entryx-2000s",
+  "name": "ENTRYX 2000S",
+  "price": 4300,
+  "category": "reel",
+  "brandId": "major-crest",
+  "seriesId": "major-crest-entryx",
+  "reelType": "spinning",
+  "sizeClass": 2000,
+  "variant": "S",
+  "size": 2000,
+  "gearRatio": 5.2,
+  "maxDragKg": 3.8,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 1.9,
+      "capacityM": 241
+    },
+    {
+      "lineStrengthKg": 5.7,
+      "capacityM": 80
+    }
+  ],
+  "retrieveCmPerTurn": 65,
+  "weightG": 193,
+  "smoothness": 0.55,
+  "control": 0.6,
+  "dragStartup": 0.55,
+  "rigidity": 0.58,
+  "windingTorque": 0.59,
+  "response": 0.58
+}

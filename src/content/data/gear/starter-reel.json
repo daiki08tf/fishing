@@ -1,0 +1,18 @@
+{
+  "id": "starter-reel",
+  "name": "スターターリール 2500",
+  "price": 0,
+  "category": "reel",
+  "reelType": "spinning",
+  "size": 2500,
+  "gearRatio": 5.0,
+  "maxDragKg": 4,
+  "lineCapacity": [
+    { "lineStrengthKg": 3, "capacityM": 150 },
+    { "lineStrengthKg": 6, "capacityM": 90 }
+  ],
+  "retrieveCmPerTurn": 75,
+  "weightG": 250,
+  "smoothness": 0.5,
+  "control": 0.5
+}

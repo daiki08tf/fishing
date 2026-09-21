@@ -1,0 +1,21 @@
+{
+  "id": "shimara-exsensea-239mlf",
+  "name": "EXSENSEA 239MLF",
+  "price": 23600,
+  "category": "rod",
+  "brandId": "shimara",
+  "seriesId": "shimara-exsensea",
+  "seriesCategory": "seabass",
+  "lengthM": 2.39,
+  "power": "ML",
+  "action": "fast",
+  "minLureWeightG": 5,
+  "maxLureWeightG": 28,
+  "recommendedLineMinKg": 5,
+  "recommendedLineMaxKg": 12,
+  "weightG": 151,
+  "sensitivity": 0.68,
+  "control": 0.7,
+  "fightingPower": 0.6,
+  "castingProfile": 0.54
+}

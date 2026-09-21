@@ -1,0 +1,21 @@
+{
+  "id": "gamakaze-seiryu-270mhm",
+  "name": "SEIRYU 270MHM",
+  "price": 40300,
+  "category": "rod",
+  "brandId": "gamakaze",
+  "seriesId": "gamakaze-seiryu",
+  "seriesCategory": "bottom_fishing",
+  "lengthM": 2.7,
+  "power": "MH",
+  "action": "moderate",
+  "minLureWeightG": 15,
+  "maxLureWeightG": 80,
+  "recommendedLineMinKg": 10,
+  "recommendedLineMaxKg": 30,
+  "weightG": 177,
+  "sensitivity": 0.63,
+  "control": 0.61,
+  "fightingPower": 0.68,
+  "castingProfile": 0.61
+}

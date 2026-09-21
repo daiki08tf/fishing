@@ -1,0 +1,15 @@
+{
+  "id": "walk",
+  "name": "徒歩",
+  "transportType": "walk",
+  "ownershipModel": "always_available",
+  "travelCostModel": { "kind": "free" },
+  "travelTimeModifier": 1,
+  "maxRangeKm": 12,
+  "cargo": { "gearUnits": 2, "maxWeightKg": 15 },
+  "capabilities": ["reachable_on_foot"],
+  "requiredRouteFeatures": [],
+  "launchCapability": "none",
+  "boatCapability": "none",
+  "passengerCapacity": 1
+}

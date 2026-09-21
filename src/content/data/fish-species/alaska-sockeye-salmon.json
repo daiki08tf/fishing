@@ -1,0 +1,91 @@
+{
+  "id": "alaska-sockeye-salmon",
+  "japaneseName": "ベニザケ（暫定）",
+  "waterTypes": ["fresh", "salt"],
+  "distribution": ["alaska"],
+  "habitats": ["alaska-sample-river", "alaska-sample-lake"],
+  "depthRange": {
+    "min": 2,
+    "max": 40
+  },
+  "temperatureRange": {
+    "min": 5,
+    "max": 13
+  },
+  "seasonality": {
+    "months": [6, 7, 8]
+  },
+  "timeActivity": {
+    "periods": ["dawn", "morning"]
+  },
+  "currentPreference": {
+    "preference": "moderate"
+  },
+  "diet": ["alaska-sample-prey"],
+  "baits": ["roe", "krill", "shrimp"],
+  "lureCategories": ["spoon", "jig"],
+  "fishingMethods": ["lure", "bait", "bottom"],
+  "methodAffinity": {
+    "lure": 1,
+    "light_lure": 0.8,
+    "bait": 1.1,
+    "bottom": 1.05
+  },
+  "offeringAffinity": {
+    "spoon": 1.1,
+    "roe": 1.15,
+    "krill": 1.1,
+    "mid": 1.05
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 55,
+    "dispersion": 0.13,
+    "minCm": 30,
+    "maxCm": 86
+  },
+  "weightModel": {
+    "lengthWeightA": 0.0102,
+    "lengthWeightB": 3.05
+  },
+  "conditionModel": {
+    "variability": 0.45
+  },
+  "traitConfiguration": {
+    "trophyPercentileThreshold": 1,
+    "strongRunnerChance": 0.13
+  },
+  "fightProfile": {
+    "strength": 0.6,
+    "stamina": 0.85,
+    "speed": 0.6
+  },
+  "rarity": 2.5,
+  "environmentAffinity": {
+    "preferredSeasons": ["summer"],
+    "preferredTimeOfDay": ["dawn", "morning"],
+    "weatherAffinity": {
+      "clear": 1.05,
+      "cloudy": 1.05,
+      "light_rain": 1.0,
+      "rain": 0.95,
+      "windy": 0.85
+    },
+    "tideAffinity": {
+      "low": 0.9,
+      "rising": 1.1,
+      "high": 1.05,
+      "falling": 0.95
+    },
+    "flowAffinity": {
+      "none": 0.9,
+      "slow": 1.0,
+      "moderate": 1.15,
+      "strong": 0.9
+    },
+    "preferredTemperatureC": {
+      "min": 8,
+      "max": 13
+    }
+  }
+}

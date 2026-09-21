@@ -1,0 +1,32 @@
+{
+  "id": "shimara-stellion-8000pg",
+  "name": "STELLION 8000PG",
+  "price": 55000,
+  "category": "reel",
+  "brandId": "shimara",
+  "seriesId": "shimara-stellion",
+  "reelType": "spinning",
+  "sizeClass": 8000,
+  "variant": "PG",
+  "size": 8000,
+  "gearRatio": 4.6,
+  "maxDragKg": 19.1,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 9.6,
+      "capacityM": 338
+    },
+    {
+      "lineStrengthKg": 28.7,
+      "capacityM": 113
+    }
+  ],
+  "retrieveCmPerTurn": 99,
+  "weightG": 421,
+  "smoothness": 0.76,
+  "control": 0.55,
+  "dragStartup": 0.74,
+  "rigidity": 0.69,
+  "windingTorque": 0.67,
+  "response": 0.62
+}

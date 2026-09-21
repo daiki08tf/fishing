@@ -1,0 +1,32 @@
+{
+  "id": "arvo-garsen-torqon-30000hg",
+  "name": "TORQON 30000HG",
+  "price": 96900,
+  "category": "reel",
+  "brandId": "arvo-garsen",
+  "seriesId": "arvo-garsen-torqon",
+  "reelType": "spinning",
+  "sizeClass": 30000,
+  "variant": "HG",
+  "size": 30000,
+  "gearRatio": 5.7,
+  "maxDragKg": 40.8,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 20.4,
+      "capacityM": 843
+    },
+    {
+      "lineStrengthKg": 61.2,
+      "capacityM": 281
+    }
+  ],
+  "retrieveCmPerTurn": 147,
+  "weightG": 1078,
+  "smoothness": 0.58,
+  "control": 0.39,
+  "dragStartup": 0.58,
+  "rigidity": 0.76,
+  "windingTorque": 0.68,
+  "response": 0.55
+}

@@ -1,0 +1,8 @@
+{
+  "id": "megaburst",
+  "name": "Megaburst",
+  "description": "メガバースト。ルアーのアクション・外観・キャスト性能で差をつける。（架空ブランド。検証用）",
+  "specialties": ["design", "action", "casting"],
+  "countryStyle": "japan_domestic",
+  "tagline": "水を、デザインする。"
+}

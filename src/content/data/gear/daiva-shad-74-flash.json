@@ -1,0 +1,18 @@
+{
+  "id": "daiva-shad-74-flash",
+  "name": "Shad 74 Flash",
+  "price": 1100,
+  "category": "lure",
+  "brandId": "daiva",
+  "lureType": "shad",
+  "weightG": 7,
+  "lengthMm": 74,
+  "depthRangeM": {
+    "min": 0.5,
+    "max": 3.5
+  },
+  "retrieveStyle": "steady",
+  "action": "wobble",
+  "visualProfile": "flash",
+  "targetProfile": ["small"]
+}

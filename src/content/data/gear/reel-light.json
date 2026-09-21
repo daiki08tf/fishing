@@ -1,0 +1,23 @@
+{
+  "id": "reel-light",
+  "name": "ライトリール 1000S",
+  "price": 16000,
+  "category": "reel",
+  "brandId": "shimara",
+  "seriesId": "legacy-reel-light",
+  "series": "STRADIA",
+  "reelType": "spinning",
+  "sizeClass": 1000,
+  "variant": "S",
+  "size": 1000,
+  "gearRatio": 5.6,
+  "maxDragKg": 2.5,
+  "lineCapacity": [
+    { "lineStrengthKg": 2, "capacityM": 120 },
+    { "lineStrengthKg": 4, "capacityM": 80 }
+  ],
+  "retrieveCmPerTurn": 62,
+  "weightG": 180,
+  "smoothness": 0.75,
+  "control": 0.65
+}

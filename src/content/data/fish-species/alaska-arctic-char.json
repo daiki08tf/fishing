@@ -1,0 +1,86 @@
+{
+  "id": "alaska-arctic-char",
+  "japaneseName": "アークティックチャー（暫定）",
+  "waterTypes": ["fresh"],
+  "distribution": ["alaska"],
+  "habitats": ["alaska-sample-lake", "alaska-sample-river"],
+  "depthRange": {
+    "min": 2,
+    "max": 25
+  },
+  "temperatureRange": {
+    "min": 3,
+    "max": 12
+  },
+  "seasonality": {
+    "months": [6, 7, 8, 9]
+  },
+  "timeActivity": {
+    "periods": ["dawn", "day", "evening"]
+  },
+  "currentPreference": {
+    "preference": "slow"
+  },
+  "diet": ["alaska-sample-prey"],
+  "baits": ["worm", "krill", "roe"],
+  "lureCategories": ["spoon", "jig", "soft_plastic"],
+  "fishingMethods": ["light_lure", "lure", "bait", "bottom"],
+  "methodAffinity": {
+    "lure": 1.05,
+    "light_lure": 1.1,
+    "bait": 1.05,
+    "bottom": 1
+  },
+  "offeringAffinity": {
+    "spoon": 1.15,
+    "jig": 1.1,
+    "krill": 1.1,
+    "small": 1.1,
+    "mid": 1
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 42,
+    "dispersion": 0.17,
+    "minCm": 18,
+    "maxCm": 76
+  },
+  "weightModel": {
+    "lengthWeightA": 0.0098,
+    "lengthWeightB": 3.05
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "traitConfiguration": {
+    "trophyPercentileThreshold": 1,
+    "strongRunnerChance": 0.11
+  },
+  "fightProfile": {
+    "strength": 0.6,
+    "stamina": 0.65,
+    "speed": 0.55
+  },
+  "rarity": 1.5,
+  "environmentAffinity": {
+    "preferredSeasons": ["summer"],
+    "preferredTimeOfDay": ["dawn", "daytime"],
+    "weatherAffinity": {
+      "clear": 1.05,
+      "cloudy": 1.05,
+      "light_rain": 1.0,
+      "rain": 0.95,
+      "windy": 0.9
+    },
+    "flowAffinity": {
+      "none": 1.05,
+      "slow": 1.05,
+      "moderate": 1.05,
+      "strong": 0.9
+    },
+    "preferredTemperatureC": {
+      "min": 5,
+      "max": 11
+    }
+  }
+}

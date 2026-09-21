@@ -1,0 +1,18 @@
+{
+  "id": "tail-walker-stickbait-134-natural",
+  "name": "Stickbait 134 Natural",
+  "price": 3000,
+  "category": "lure",
+  "brandId": "tail-walker",
+  "lureType": "stickbait",
+  "weightG": 45,
+  "lengthMm": 134,
+  "depthRangeM": {
+    "min": 0,
+    "max": 1.5
+  },
+  "retrieveStyle": "sweep",
+  "action": "walk",
+  "visualProfile": "natural",
+  "targetProfile": ["large", "big"]
+}

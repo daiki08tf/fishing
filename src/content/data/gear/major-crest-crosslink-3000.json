@@ -1,0 +1,32 @@
+{
+  "id": "major-crest-crosslink-3000",
+  "name": "CROSSLINK 3000",
+  "price": 7400,
+  "category": "reel",
+  "brandId": "major-crest",
+  "seriesId": "major-crest-crosslink",
+  "reelType": "spinning",
+  "sizeClass": 3000,
+  "variant": "STD",
+  "size": 3000,
+  "gearRatio": 5.2,
+  "maxDragKg": 6.6,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 3.3,
+      "capacityM": 273
+    },
+    {
+      "lineStrengthKg": 9.9,
+      "capacityM": 91
+    }
+  ],
+  "retrieveCmPerTurn": 79,
+  "weightG": 239,
+  "smoothness": 0.55,
+  "control": 0.58,
+  "dragStartup": 0.55,
+  "rigidity": 0.58,
+  "windingTorque": 0.59,
+  "response": 0.58
+}

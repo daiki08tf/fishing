@@ -1,0 +1,7 @@
+{
+  "id": "thailand",
+  "name": "タイ",
+  "domestic": false,
+  "currency": { "code": "THB", "symbol": "฿" },
+  "dataStatus": "provisional"
+}

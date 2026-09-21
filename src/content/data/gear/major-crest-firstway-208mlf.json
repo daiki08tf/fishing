@@ -1,0 +1,21 @@
+{
+  "id": "major-crest-firstway-208mlf",
+  "name": "FIRSTWAY 208MLF",
+  "price": 12400,
+  "category": "rod",
+  "brandId": "major-crest",
+  "seriesId": "major-crest-firstway",
+  "seriesCategory": "bass",
+  "lengthM": 2.08,
+  "power": "ML",
+  "action": "fast",
+  "minLureWeightG": 2,
+  "maxLureWeightG": 12,
+  "recommendedLineMinKg": 3,
+  "recommendedLineMaxKg": 8,
+  "weightG": 154,
+  "sensitivity": 0.63,
+  "control": 0.62,
+  "fightingPower": 0.57,
+  "castingProfile": 0.47
+}

@@ -1,0 +1,22 @@
+{
+  "id": "rod-balanced",
+  "name": "汎用ロッド 7'0\" M",
+  "price": 28000,
+  "category": "rod",
+  "brandId": "daiva",
+  "seriesId": "legacy-rod-balanced",
+  "series": "SALTIST BALANCE",
+  "seriesCategory": "seabass",
+  "lengthM": 2.13,
+  "power": "M",
+  "action": "fast",
+  "minLureWeightG": 5,
+  "maxLureWeightG": 28,
+  "recommendedLineMinKg": 3,
+  "recommendedLineMaxKg": 10,
+  "weightG": 140,
+  "sensitivity": 0.6,
+  "control": 0.6,
+  "fightingPower": 0.6,
+  "castingProfile": 0.65
+}

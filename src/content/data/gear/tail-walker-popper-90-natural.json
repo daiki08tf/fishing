@@ -1,0 +1,18 @@
+{
+  "id": "tail-walker-popper-90-natural",
+  "name": "Popper 90 Natural",
+  "price": 1400,
+  "category": "lure",
+  "brandId": "tail-walker",
+  "lureType": "popper",
+  "weightG": 12,
+  "lengthMm": 90,
+  "depthRangeM": {
+    "min": 0,
+    "max": 0.5
+  },
+  "retrieveStyle": "pop",
+  "action": "pop",
+  "visualProfile": "natural",
+  "targetProfile": ["mid"]
+}

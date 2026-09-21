@@ -1,0 +1,19 @@
+{
+  "id": "evergreen-field-jerkbait-100-flash",
+  "name": "Jerkbait 100 Flash",
+  "price": 1600,
+  "category": "lure",
+  "brandId": "evergreen-field",
+  "seriesId": "evergreen-field-faithrun",
+  "lureType": "jerkbait",
+  "weightG": 7,
+  "lengthMm": 100,
+  "depthRangeM": {
+    "min": 0.5,
+    "max": 3.5
+  },
+  "retrieveStyle": "jerk/pause",
+  "action": "jerk",
+  "visualProfile": "flash",
+  "targetProfile": ["small"]
+}

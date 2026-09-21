@@ -1,0 +1,16 @@
+{
+  "id": "line-pe-light",
+  "name": "PEライン 0.6号",
+  "price": 3200,
+  "category": "line",
+  "brandId": "yamashiro",
+  "seriesId": "legacy-line-pe-light",
+  "series": "PE X8",
+  "lineType": "pe",
+  "strengthKg": 5,
+  "diameterMm": 0.128,
+  "stretch": 0.05,
+  "abrasionResistance": 0.35,
+  "visibility": 0.5,
+  "sensitivity": 0.9
+}

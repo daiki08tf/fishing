@@ -1,0 +1,21 @@
+{
+  "id": "blue-horizon-tunaarc-264xhm",
+  "name": "TUNAARC 264XHM",
+  "price": 45300,
+  "category": "rod",
+  "brandId": "blue-horizon",
+  "seriesId": "blue-horizon-tunaarc",
+  "seriesCategory": "big_game",
+  "lengthM": 2.64,
+  "power": "XH",
+  "action": "moderate",
+  "minLureWeightG": 60,
+  "maxLureWeightG": 200,
+  "recommendedLineMinKg": 25,
+  "recommendedLineMaxKg": 60,
+  "weightG": 195,
+  "sensitivity": 0.6,
+  "control": 0.58,
+  "fightingPower": 0.78,
+  "castingProfile": 0.59
+}

@@ -1,0 +1,19 @@
+{
+  "id": "river-craft-minnow-120-flash",
+  "name": "Minnow 120 Flash",
+  "price": 2000,
+  "category": "lure",
+  "brandId": "river-craft",
+  "seriesId": "river-craft-flowminnow",
+  "lureType": "minnow",
+  "weightG": 24,
+  "lengthMm": 120,
+  "depthRangeM": {
+    "min": 0.5,
+    "max": 3.5
+  },
+  "retrieveStyle": "steady/twitch",
+  "action": "dart",
+  "visualProfile": "flash",
+  "targetProfile": ["large"]
+}

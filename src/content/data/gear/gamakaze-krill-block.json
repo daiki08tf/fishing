@@ -1,0 +1,10 @@
+{
+  "id": "gamakaze-krill-block",
+  "name": "Krill Block",
+  "price": 920,
+  "category": "bait",
+  "brandId": "gamakaze",
+  "baitType": "krill",
+  "presentation": "float/chumming",
+  "targetProfile": ["mid", "large"]
+}

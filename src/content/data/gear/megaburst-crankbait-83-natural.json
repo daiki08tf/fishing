@@ -1,0 +1,18 @@
+{
+  "id": "megaburst-crankbait-83-natural",
+  "name": "Crankbait 83 Natural",
+  "price": 2100,
+  "category": "lure",
+  "brandId": "megaburst",
+  "lureType": "crankbait",
+  "weightG": 18,
+  "lengthMm": 83,
+  "depthRangeM": {
+    "min": 2,
+    "max": 8
+  },
+  "retrieveStyle": "steady",
+  "action": "wobble",
+  "visualProfile": "natural",
+  "targetProfile": ["mid"]
+}

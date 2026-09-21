@@ -1,0 +1,18 @@
+{
+  "id": "tail-walker-topwater-95-flash",
+  "name": "Topwater 95 Flash",
+  "price": 1100,
+  "category": "lure",
+  "brandId": "tail-walker",
+  "lureType": "topwater",
+  "weightG": 6,
+  "lengthMm": 95,
+  "depthRangeM": {
+    "min": 0,
+    "max": 0.5
+  },
+  "retrieveStyle": "walk/pop",
+  "action": "walk",
+  "visualProfile": "flash",
+  "targetProfile": ["small"]
+}

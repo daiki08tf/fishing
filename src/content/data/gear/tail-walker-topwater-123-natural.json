@@ -1,0 +1,18 @@
+{
+  "id": "tail-walker-topwater-123-natural",
+  "name": "Topwater 123 Natural",
+  "price": 2000,
+  "category": "lure",
+  "brandId": "tail-walker",
+  "lureType": "topwater",
+  "weightG": 25,
+  "lengthMm": 123,
+  "depthRangeM": {
+    "min": 0,
+    "max": 0.5
+  },
+  "retrieveStyle": "walk/pop",
+  "action": "walk",
+  "visualProfile": "natural",
+  "targetProfile": ["large"]
+}

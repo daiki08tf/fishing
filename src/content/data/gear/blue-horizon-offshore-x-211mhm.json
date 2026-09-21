@@ -1,0 +1,21 @@
+{
+  "id": "blue-horizon-offshore-x-211mhm",
+  "name": "OFFSHORE-X 211MHM",
+  "price": 42800,
+  "category": "rod",
+  "brandId": "blue-horizon",
+  "seriesId": "blue-horizon-offshore-x",
+  "seriesCategory": "offshore_jigging",
+  "lengthM": 2.11,
+  "power": "MH",
+  "action": "moderate",
+  "minLureWeightG": 40,
+  "maxLureWeightG": 120,
+  "recommendedLineMinKg": 12,
+  "recommendedLineMaxKg": 30,
+  "weightG": 165,
+  "sensitivity": 0.6,
+  "control": 0.62,
+  "fightingPower": 0.72,
+  "castingProfile": 0.47
+}

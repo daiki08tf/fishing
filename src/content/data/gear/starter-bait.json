@@ -1,0 +1,9 @@
+{
+  "id": "starter-bait",
+  "name": "スターター用 青虫",
+  "price": 0,
+  "category": "bait",
+  "baitType": "worm",
+  "presentation": "bottom",
+  "targetProfile": ["small", "mid"]
+}

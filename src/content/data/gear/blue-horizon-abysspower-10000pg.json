@@ -1,0 +1,32 @@
+{
+  "id": "blue-horizon-abysspower-10000pg",
+  "name": "ABYSSPOWER 10000PG",
+  "price": 75600,
+  "category": "reel",
+  "brandId": "blue-horizon",
+  "seriesId": "blue-horizon-abysspower",
+  "reelType": "spinning",
+  "sizeClass": 10000,
+  "variant": "PG",
+  "size": 10000,
+  "gearRatio": 4.6,
+  "maxDragKg": 27.6,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 13.8,
+      "capacityM": 313
+    },
+    {
+      "lineStrengthKg": 41.4,
+      "capacityM": 104
+    }
+  ],
+  "retrieveCmPerTurn": 93,
+  "weightG": 548,
+  "smoothness": 0.6,
+  "control": 0.43,
+  "dragStartup": 0.6,
+  "rigidity": 0.78,
+  "windingTorque": 0.79,
+  "response": 0.56
+}

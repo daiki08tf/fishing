@@ -1,0 +1,38 @@
+{
+  "id": "alaska-mountain-river",
+  "name": "Mountain River",
+  "regionId": "alaska",
+  "areaId": "mountain",
+  "environment": "river",
+  "dataStatus": "provisional",
+  "access": [
+    { "kind": "capability", "capability": "road_access" },
+    { "kind": "permit", "permitId": "alaska-fishing-permit" }
+  ],
+  "travelOptions": [
+    {
+      "id": "mountain-road",
+      "transportTypes": ["rental_car"],
+      "requiredCapabilities": ["road_access"],
+      "features": ["vehicle_rental"],
+      "baseMinutes": 95,
+      "distanceKm": 60,
+      "baseOneWayCost": 0
+    }
+  ],
+  "habitatTags": ["alaska-sample-river", "alaska-sample-cold"],
+  "depth": { "depthRangeM": { "min": 1, "max": 8 } },
+  "fishTable": [
+    { "speciesId": "alaska-rainbow-trout", "basePresence": 0.6 },
+    { "speciesId": "alaska-dolly-varden", "basePresence": 0.5 },
+    { "speciesId": "alaska-arctic-char", "basePresence": 0.4 },
+    { "speciesId": "alaska-sockeye-salmon", "basePresence": 0.3 },
+    { "speciesId": "alaska-lake-trout", "basePresence": 0.2 }
+  ],
+  "knowledgeConfig": {
+    "reveals": [
+      { "field": "main_species", "minKnowledge": 20 },
+      { "field": "habitat", "minKnowledge": 50 }
+    ]
+  }
+}

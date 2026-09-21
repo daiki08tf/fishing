@@ -1,0 +1,31 @@
+{
+  "id": "baja-california",
+  "countryId": "mexico",
+  "name": "バハ・カリフォルニア",
+  "stage": "planned",
+  "dataStatus": "provisional",
+  "base": {
+    "id": "baja-base",
+    "name": "Baja Fishing Base",
+    "areaId": "baja-coast"
+  },
+  "areas": [
+    {
+      "id": "baja-coast",
+      "name": "Coastal / Offshore"
+    }
+  ],
+  "climate": {
+    "annualMeanWaterC": 24,
+    "seasonalSwingC": 6,
+    "weatherWeights": {
+      "clear": 45,
+      "cloudy": 25,
+      "light_rain": 10,
+      "rain": 10,
+      "windy": 10
+    },
+    "tidePhaseOffset": 0.3,
+    "tideRange": "moderate"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "id": "arvo-garsen-torqon-4000",
+  "name": "TORQON 4000",
+  "price": 20300,
+  "category": "reel",
+  "brandId": "arvo-garsen",
+  "seriesId": "arvo-garsen-torqon",
+  "reelType": "spinning",
+  "sizeClass": 4000,
+  "variant": "STD",
+  "size": 4000,
+  "gearRatio": 5.2,
+  "maxDragKg": 11.7,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 5.8,
+      "capacityM": 231
+    },
+    {
+      "lineStrengthKg": 17.5,
+      "capacityM": 77
+    }
+  ],
+  "retrieveCmPerTurn": 87,
+  "weightG": 281,
+  "smoothness": 0.58,
+  "control": 0.55,
+  "dragStartup": 0.58,
+  "rigidity": 0.76,
+  "windingTorque": 0.68,
+  "response": 0.55
+}

@@ -1,0 +1,16 @@
+{
+  "id": "line-fluoro",
+  "name": "フロロカーボン 2号",
+  "price": 2400,
+  "category": "line",
+  "brandId": "yamashiro",
+  "seriesId": "legacy-line-fluoro",
+  "series": "FLUORO LINE",
+  "lineType": "fluorocarbon",
+  "strengthKg": 3,
+  "diameterMm": 0.165,
+  "stretch": 0.35,
+  "abrasionResistance": 0.85,
+  "visibility": 0.8,
+  "sensitivity": 0.6
+}

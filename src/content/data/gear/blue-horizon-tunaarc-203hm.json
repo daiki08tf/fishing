@@ -1,0 +1,21 @@
+{
+  "id": "blue-horizon-tunaarc-203hm",
+  "name": "TUNAARC 203HM",
+  "price": 43600,
+  "category": "rod",
+  "brandId": "blue-horizon",
+  "seriesId": "blue-horizon-tunaarc",
+  "seriesCategory": "offshore_jigging",
+  "lengthM": 2.03,
+  "power": "H",
+  "action": "moderate",
+  "minLureWeightG": 80,
+  "maxLureWeightG": 220,
+  "recommendedLineMinKg": 20,
+  "recommendedLineMaxKg": 50,
+  "weightG": 176,
+  "sensitivity": 0.6,
+  "control": 0.62,
+  "fightingPower": 0.78,
+  "castingProfile": 0.46
+}

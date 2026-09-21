@@ -1,0 +1,28 @@
+{
+  "id": "phase2-sample-fish-b",
+  "japaneseName": "サンプル魚B（検証用）",
+  "waterTypes": ["salt"],
+  "distribution": ["phase1-sample-region"],
+  "habitats": ["phase1-sample-shallow"],
+  "depthRange": { "min": 1, "max": 8 },
+  "lengthModel": {
+    "kind": "normal",
+    "meanCm": 18,
+    "standardDeviationCm": 2.5,
+    "minCm": 8,
+    "maxCm": 26
+  },
+  "methodAffinity": { "lure": 0.95, "light_lure": 1.2, "bait": 0.95, "bottom": 0.85 },
+  "offeringAffinity": {
+    "minnow": 1.15,
+    "spoon": 1.05,
+    "worm": 1.1,
+    "small": 1.2,
+    "topwater": 1.05
+  },
+  "weightModel": { "lengthWeightA": 0.011, "lengthWeightB": 3.1 },
+  "conditionModel": { "variability": 0.55 },
+  "traitConfiguration": { "strongRunnerChance": 0.12 },
+  "fightProfile": { "strength": 0.35, "stamina": 0.35, "speed": 0.65 },
+  "rarity": 1
+}

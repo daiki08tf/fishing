@@ -1,0 +1,32 @@
+{
+  "id": "tail-walker-shorebeat-4000",
+  "name": "SHOREBEAT 4000",
+  "price": 12500,
+  "category": "reel",
+  "brandId": "tail-walker",
+  "seriesId": "tail-walker-shorebeat",
+  "reelType": "spinning",
+  "sizeClass": 4000,
+  "variant": "STD",
+  "size": 4000,
+  "gearRatio": 5.2,
+  "maxDragKg": 10.5,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 5.3,
+      "capacityM": 253
+    },
+    {
+      "lineStrengthKg": 15.8,
+      "capacityM": 85
+    }
+  ],
+  "retrieveCmPerTurn": 91,
+  "weightG": 268,
+  "smoothness": 0.58,
+  "control": 0.57,
+  "dragStartup": 0.58,
+  "rigidity": 0.64,
+  "windingTorque": 0.66,
+  "response": 0.58
+}

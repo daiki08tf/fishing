@@ -1,0 +1,22 @@
+{
+  "id": "rod-finesse",
+  "name": "フィネスロッド 6'2\" L",
+  "price": 18000,
+  "category": "rod",
+  "brandId": "shimara",
+  "seriesId": "legacy-rod-finesse",
+  "series": "STRADIA FINESSE",
+  "seriesCategory": "ajing",
+  "lengthM": 1.88,
+  "power": "L",
+  "action": "extra_fast",
+  "minLureWeightG": 1,
+  "maxLureWeightG": 7,
+  "recommendedLineMinKg": 1.5,
+  "recommendedLineMaxKg": 4,
+  "weightG": 95,
+  "sensitivity": 0.85,
+  "control": 0.65,
+  "fightingPower": 0.3,
+  "castingProfile": 0.35
+}

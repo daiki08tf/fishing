@@ -1,0 +1,19 @@
+{
+  "id": "megaburst-topwater-95-natural",
+  "name": "Topwater 95 Natural",
+  "price": 1500,
+  "category": "lure",
+  "brandId": "megaburst",
+  "seriesId": "megaburst-giantdog",
+  "lureType": "topwater",
+  "weightG": 6,
+  "lengthMm": 95,
+  "depthRangeM": {
+    "min": 0,
+    "max": 0.5
+  },
+  "retrieveStyle": "walk/pop",
+  "action": "walk",
+  "visualProfile": "natural",
+  "targetProfile": ["small"]
+}

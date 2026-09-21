@@ -1,0 +1,16 @@
+{
+  "id": "used-compact-car",
+  "name": "中古コンパクトカー",
+  "transportType": "compact_car",
+  "ownershipModel": "owned",
+  "purchasePrice": 450000,
+  "travelCostModel": { "kind": "free" },
+  "travelTimeModifier": 0.5,
+  "maxRangeKm": 600,
+  "cargo": { "gearUnits": 8, "maxWeightKg": 120 },
+  "capabilities": ["road_access"],
+  "requiredRouteFeatures": [],
+  "launchCapability": "none",
+  "boatCapability": "none",
+  "passengerCapacity": 4
+}

@@ -1,0 +1,8 @@
+{
+  "id": "standard-motorcycle",
+  "name": "中古ミドルクラスバイク",
+  "description": "道路沿いの釣り場へ速く行ける。大型タックルの積載には向かない。",
+  "price": 280000,
+  "category": "vehicle",
+  "grantsTransportId": "standard-motorcycle"
+}

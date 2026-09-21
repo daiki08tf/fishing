@@ -1,0 +1,32 @@
+{
+  "id": "shimara-vanedge-2000s",
+  "name": "VANEDGE 2000S",
+  "price": 12800,
+  "category": "reel",
+  "brandId": "shimara",
+  "seriesId": "shimara-vanedge",
+  "reelType": "spinning",
+  "sizeClass": 2000,
+  "variant": "S",
+  "size": 2000,
+  "gearRatio": 5.2,
+  "maxDragKg": 4.1,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 2,
+      "capacityM": 229
+    },
+    {
+      "lineStrengthKg": 6.1,
+      "capacityM": 75
+    }
+  ],
+  "retrieveCmPerTurn": 71,
+  "weightG": 164,
+  "smoothness": 0.66,
+  "control": 0.71,
+  "dragStartup": 0.74,
+  "rigidity": 0.61,
+  "windingTorque": 0.6,
+  "response": 0.69
+}

@@ -1,0 +1,54 @@
+{
+  "id": "upstream-lake",
+  "name": "上流の湖",
+  "regionId": "tokyo-area",
+  "areaId": "kanagawa",
+  "environment": "lake",
+  "dataStatus": "provisional",
+  "access": [
+    {
+      "kind": "capability",
+      "capability": "road_access"
+    }
+  ],
+  "travelOptions": [
+    {
+      "id": "ordinary-road",
+      "transportTypes": ["compact_car", "suv", "motorcycle"],
+      "requiredCapabilities": ["road_access"],
+      "features": [],
+      "baseMinutes": 190,
+      "distanceKm": 75,
+      "baseOneWayCost": 900
+    }
+  ],
+  "habitatTags": ["phase1-sample-deep"],
+  "depth": {
+    "depthRangeM": {
+      "min": 3,
+      "max": 30
+    }
+  },
+  "fishTable": [
+    {
+      "speciesId": "phase2-sample-fish-e",
+      "basePresence": 0.6
+    },
+    {
+      "speciesId": "phase2-sample-fish-i",
+      "basePresence": 0.3
+    }
+  ],
+  "knowledgeConfig": {
+    "reveals": [
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "time_pattern",
+        "minKnowledge": 40
+      }
+    ]
+  }
+}

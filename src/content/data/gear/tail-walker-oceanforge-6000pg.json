@@ -1,0 +1,32 @@
+{
+  "id": "tail-walker-oceanforge-6000pg",
+  "name": "OCEANFORGE 6000PG",
+  "price": 23900,
+  "category": "reel",
+  "brandId": "tail-walker",
+  "seriesId": "tail-walker-oceanforge",
+  "reelType": "spinning",
+  "sizeClass": 6000,
+  "variant": "PG",
+  "size": 6000,
+  "gearRatio": 4.6,
+  "maxDragKg": 15.1,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 7.5,
+      "capacityM": 304
+    },
+    {
+      "lineStrengthKg": 22.6,
+      "capacityM": 101
+    }
+  ],
+  "retrieveCmPerTurn": 89,
+  "weightG": 355,
+  "smoothness": 0.58,
+  "control": 0.53,
+  "dragStartup": 0.58,
+  "rigidity": 0.64,
+  "windingTorque": 0.74,
+  "response": 0.58
+}

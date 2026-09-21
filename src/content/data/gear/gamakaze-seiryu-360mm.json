@@ -1,0 +1,21 @@
+{
+  "id": "gamakaze-seiryu-360mm",
+  "name": "SEIRYU 360MM",
+  "price": 38600,
+  "category": "rod",
+  "brandId": "gamakaze",
+  "seriesId": "gamakaze-seiryu",
+  "seriesCategory": "bait_fishing",
+  "lengthM": 3.6,
+  "power": "M",
+  "action": "moderate",
+  "minLureWeightG": 3,
+  "maxLureWeightG": 30,
+  "recommendedLineMinKg": 4,
+  "recommendedLineMaxKg": 12,
+  "weightG": 194,
+  "sensitivity": 0.63,
+  "control": 0.61,
+  "fightingPower": 0.64,
+  "castingProfile": 0.81
+}

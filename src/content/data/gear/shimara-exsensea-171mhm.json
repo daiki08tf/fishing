@@ -1,0 +1,21 @@
+{
+  "id": "shimara-exsensea-171mhm",
+  "name": "EXSENSEA 171MHM",
+  "price": 33800,
+  "category": "rod",
+  "brandId": "shimara",
+  "seriesId": "shimara-exsensea",
+  "seriesCategory": "offshore_jigging",
+  "lengthM": 1.71,
+  "power": "MH",
+  "action": "moderate",
+  "minLureWeightG": 40,
+  "maxLureWeightG": 120,
+  "recommendedLineMinKg": 12,
+  "recommendedLineMaxKg": 30,
+  "weightG": 142,
+  "sensitivity": 0.64,
+  "control": 0.7,
+  "fightingPower": 0.65,
+  "castingProfile": 0.38
+}

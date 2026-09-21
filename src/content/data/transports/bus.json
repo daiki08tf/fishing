@@ -1,0 +1,15 @@
+{
+  "id": "bus",
+  "name": "バス",
+  "transportType": "bus",
+  "ownershipModel": "always_available",
+  "travelCostModel": { "kind": "route_fare" },
+  "travelTimeModifier": 1,
+  "maxRangeKm": 200,
+  "cargo": { "gearUnits": 4, "maxWeightKg": 30 },
+  "capabilities": ["public_transport"],
+  "requiredRouteFeatures": [],
+  "launchCapability": "none",
+  "boatCapability": "none",
+  "passengerCapacity": 1
+}

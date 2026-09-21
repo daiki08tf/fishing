@@ -1,0 +1,15 @@
+{
+  "id": "major-crest-basic-nylon-5kg",
+  "name": "BASIC NYLON 5kg",
+  "price": 1500,
+  "category": "line",
+  "brandId": "major-crest",
+  "seriesId": "major-crest-basic-nylon",
+  "lineType": "nylon",
+  "strengthKg": 5,
+  "diameterMm": 0.246,
+  "stretch": 0.82,
+  "abrasionResistance": 0.62,
+  "visibility": 0.55,
+  "sensitivity": 0.7
+}

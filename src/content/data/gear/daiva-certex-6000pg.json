@@ -1,0 +1,32 @@
+{
+  "id": "daiva-certex-6000pg",
+  "name": "CERTEX 6000PG",
+  "price": 40800,
+  "category": "reel",
+  "brandId": "daiva",
+  "seriesId": "daiva-certex",
+  "reelType": "spinning",
+  "sizeClass": 6000,
+  "variant": "PG",
+  "size": 6000,
+  "gearRatio": 4.6,
+  "maxDragKg": 14.3,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 7.2,
+      "capacityM": 316
+    },
+    {
+      "lineStrengthKg": 21.5,
+      "capacityM": 106
+    }
+  ],
+  "retrieveCmPerTurn": 104,
+  "weightG": 306,
+  "smoothness": 0.72,
+  "control": 0.6,
+  "dragStartup": 0.62,
+  "rigidity": 0.66,
+  "windingTorque": 0.65,
+  "response": 0.67
+}

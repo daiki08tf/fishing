@@ -1,0 +1,18 @@
+{
+  "id": "tail-walker-vibration-100-flash",
+  "name": "Vibration 100 Flash",
+  "price": 2100,
+  "category": "lure",
+  "brandId": "tail-walker",
+  "lureType": "vibration",
+  "weightG": 28,
+  "lengthMm": 100,
+  "depthRangeM": {
+    "min": 4,
+    "max": 15
+  },
+  "retrieveStyle": "steady/lift-fall",
+  "action": "vibration",
+  "visualProfile": "flash",
+  "targetProfile": ["large"]
+}

@@ -1,0 +1,21 @@
+{
+  "id": "shimara-exsensea-300mhf",
+  "name": "EXSENSEA 300MHF",
+  "price": 30400,
+  "category": "rod",
+  "brandId": "shimara",
+  "seriesId": "shimara-exsensea",
+  "seriesCategory": "surf",
+  "lengthM": 3,
+  "power": "MH",
+  "action": "fast",
+  "minLureWeightG": 15,
+  "maxLureWeightG": 60,
+  "recommendedLineMinKg": 10,
+  "recommendedLineMaxKg": 25,
+  "weightG": 179,
+  "sensitivity": 0.68,
+  "control": 0.66,
+  "fightingPower": 0.65,
+  "castingProfile": 0.73
+}
