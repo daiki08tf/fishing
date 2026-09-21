@@ -3,9 +3,11 @@ import type { FishSpecies } from '../fish/FishSpecies'
 import type { TraitModifiers } from '../fish/fishTraits'
 import { lengthModelMedian } from '../fish/lengthModel'
 import { estimateStandardWeightKg } from '../fish/weightModel'
+import { resolveFishBattleProfile } from './battle/FishBattleProfile'
 import type { RandomSource } from '../rng/RandomSource'
 import type { FightingFish } from './FightingFish'
 import { DEFAULT_FISHING_TUNING, type FishingTuning } from './FishingTuning'
+import type { BattleTuning } from './BattleTuning'
 
 /**
  * 個体からファイト特性を導出する。
@@ -35,6 +37,8 @@ export type CreateFightingFishOptions = {
   readonly traitModifiers: TraitModifiers
   readonly random: RandomSource
   readonly tuning?: FishingTuning
+  /** Phase 10: Text Battle の調整値。 */
+  readonly battleTuning?: BattleTuning
 }
 
 export const createFightingFish = (options: CreateFightingFishOptions): FightingFish => {
@@ -91,6 +95,16 @@ export const createFightingFish = (options: CreateFightingFishOptions): Fighting
     staminaMax,
     pullMultiplier,
     enduranceMultiplier,
+    battleProfile: resolveFishBattleProfile({
+      strength: species.fightProfile.strength,
+      stamina: species.fightProfile.stamina,
+      speed: species.fightProfile.speed,
+      traitModifiers,
+      weightKg: individual.weightKg,
+      pullMultiplier,
+      enduranceMultiplier,
+      ...(options.battleTuning === undefined ? {} : { tuning: options.battleTuning }),
+    }),
     modifiers: traitModifiers,
   }
 }

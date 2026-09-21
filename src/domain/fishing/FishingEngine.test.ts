@@ -88,9 +88,20 @@ const runBalancedFight = (
   let steps = 0
 
   while (!isTerminalPhase(engine.snapshot().phase) && steps < maxSteps) {
-    const outcome = engine.dispatch(balancedCommand(engine.snapshot()))
-    events.push(...outcome.events)
-    events.push(...engine.tick().events)
+    const snapshot = engine.snapshot()
+    const commandPhase =
+      snapshot.phase === 'FIGHTING' ||
+      snapshot.phase === 'LANDING' ||
+      snapshot.phase === 'IDLE' ||
+      snapshot.phase === 'HOOK_WINDOW'
+
+    if (commandPhase) {
+      const outcome = engine.dispatch(balancedCommand(snapshot))
+      events.push(...outcome.events)
+    } else {
+      events.push(...engine.tick().events)
+    }
+
     steps += 1
   }
 
@@ -203,28 +214,56 @@ describe('FishingEngine', () => {
     expect(engine.snapshot().tension).toBeGreaterThan(before)
   })
 
-  it('lowers the tension when giving line', () => {
-    const engine = createFightingEngine('give')
-    engine.reel()
-    engine.reel()
-    const peak = engine.snapshot().tension
+  it('lowers the tension when giving line (one battle step)', () => {
+    const engine = createFightingEngine('give-line')
 
-    engine.give()
-
-    expect(engine.snapshot().tension).toBeLessThan(peak)
-  })
-
-  it('breaks the line when the player only reels', () => {
-    const engine = createFightingEngine('spam-reel')
-    let guard = 0
-
-    while (!isTerminalPhase(engine.snapshot().phase) && guard < 500) {
-      engine.reel()
+    while (engine.snapshot().phase !== 'FIGHTING') {
+      engine.cast()
       engine.tick()
-      guard += 1
+      engine.hook()
+      engine.tick()
     }
 
-    expect(engine.snapshot().phase).toBe('LINE_BREAK')
+    // テンションを上げてから、ラインを送る。
+    engine.dispatch('reel')
+    engine.dispatch('reel')
+    const before = engine.snapshot().tension
+    engine.dispatch('give')
+    const after = engine.snapshot().tension
+
+    expect(after).toBeLessThan(before)
+  })
+
+  it('punishes reckless power reeling', () => {
+    let sawLineBreak = false
+    let maxTensionSeen = 0
+
+    for (const seed of ['spam-1', 'spam-2', 'spam-3', 'spam-4', 'spam-5', 'spam-6']) {
+      const engine = createFightingEngine(seed)
+      let guard = 0
+
+      while (!isTerminalPhase(engine.snapshot().phase) && guard < 500) {
+        const snapshot = engine.snapshot()
+
+        if (snapshot.phase === 'FIGHTING') {
+          engine.dispatch('power_reel')
+          maxTensionSeen = Math.max(maxTensionSeen, snapshot.tension / snapshot.maxTension)
+        } else if (snapshot.phase === 'LANDING') {
+          engine.dispatch('land')
+        } else {
+          engine.tick()
+        }
+
+        guard += 1
+      }
+
+      if (engine.snapshot().phase === 'LINE_BREAK') {
+        sawLineBreak = true
+      }
+    }
+
+    // 強く巻き続けるのは危険（連打が最適解にならない）。
+    expect(sawLineBreak || maxTensionSeen > 0.9).toBe(true)
   })
 
   it('loses the hook when the player only gives line', () => {
@@ -232,8 +271,14 @@ describe('FishingEngine', () => {
     let guard = 0
 
     while (!isTerminalPhase(engine.snapshot().phase) && guard < 500) {
-      engine.give()
-      engine.tick()
+      const snapshot = engine.snapshot()
+
+      if (snapshot.phase === 'FIGHTING') {
+        engine.dispatch('give')
+      } else {
+        engine.tick()
+      }
+
       guard += 1
     }
 

@@ -1,8 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { loadContentFromDirectory } from '../../src/content/load/nodeContent'
 import { createFightingFish } from '../../src/domain/fishing/createFightingFish'
-import { FishingEngine, isTerminalPhase } from '../../src/domain/fishing'
-import type { FishingEvent } from '../../src/domain/fishing'
+import { FishingEngine } from '../../src/domain/fishing'
 import type { FishIndividual } from '../../src/domain/fish/FishIndividual'
 import { asFishIndividualId, asGearId } from '../../src/domain/ids'
 import { SeededRandomSource } from '../../src/domain/rng/SeededRandomSource'
@@ -10,7 +9,7 @@ import { createInitialProgression, resolveFishingModifiers } from '../../src/dom
 import { composeFishingModifiers, resolveTackle } from '../../src/domain/tackle'
 import type { Loadout } from '../../src/domain/tackle'
 import type { GearItem } from '../../src/domain/gear/Gear'
-import { chooseCommand } from '../../scripts/simulate-fishing'
+import { runFightToTerminal } from '../fixtures/fishingPolicies'
 
 // Phase 9: 大型魚と装備（ライン / リーダー / ドラッグ / フックサイズ）の関係。
 // 期待は「Heavy が大型魚で安定する / ただし万能ではない」。
@@ -222,14 +221,6 @@ describe('big game balance', () => {
   it('lands large fish more reliably with heavy tackle, but not universally', () => {
     const species = content.speciesById['alaska-chinook-salmon']!
     const attempts = 80
-    const events: readonly FishingEvent[] = [
-      'LANDED',
-      'HOOK_MISSED',
-      'HOOK_ESCAPE',
-      'LINE_BREAK',
-      'NO_BITE',
-    ]
-
     const landedCount = (loadout: Loadout): number => {
       const tackle = resolveTackle({
         loadout,
@@ -252,20 +243,7 @@ describe('big game balance', () => {
           playerModifiers: modifiers,
           encounterProfile: tackle.encounterProfile,
         })
-        let guard = 0
-
-        while (guard < 4000) {
-          engine.dispatch(chooseCommand('balanced', engine.snapshot()))
-          const ticked = engine.tick()
-          guard += 1
-
-          if (
-            ticked.events.some((event) => events.includes(event)) ||
-            isTerminalPhase(ticked.snapshot.phase)
-          ) {
-            break
-          }
-        }
+        runFightToTerminal(engine)
 
         if (engine.snapshot().phase === 'LANDED') {
           landed += 1

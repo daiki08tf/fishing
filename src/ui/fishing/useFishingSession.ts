@@ -241,6 +241,8 @@ export const useFishingSession = (): FishingSession => {
       seed: session.seed,
       spotId: spot.id,
       playerModifiers,
+      // Phase 10: Knowledge は予兆（telegraph）の文章精度にだけ効く。
+      knowledgeScore: spotKnowledgeScore(knowledge, String(spot.id)),
       ...(encounterProfile === undefined ? {} : { encounterProfile }),
     })
 
@@ -248,7 +250,15 @@ export const useFishingSession = (): FishingSession => {
     setSnapshot(engine.snapshot())
   }, [content, session, playerModifiers, encounterProfile, encounters, encountersKey, spot])
 
-  const isRunning = snapshot !== null && !isTerminalPhase(snapshot.phase)
+  /*
+   * Phase 10: FIGHTING / LANDING はコマンド駆動（完全ターン制）。
+   * tick は進めない（連打や待ち時間で有利にならない）。
+   */
+  const isRunning =
+    snapshot !== null &&
+    !isTerminalPhase(snapshot.phase) &&
+    snapshot.phase !== 'FIGHTING' &&
+    snapshot.phase !== 'LANDING'
 
   useEffect(() => {
     if (!isRunning) {

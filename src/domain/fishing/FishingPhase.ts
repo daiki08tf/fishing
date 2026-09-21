@@ -31,7 +31,25 @@ export const FISHING_FAILURE_PHASES: readonly FishingPhase[] = [
   'LINE_BREAK',
 ]
 
-export const FISHING_COMMANDS = ['cast', 'hook', 'reel', 'give', 'reset'] as const
+/**
+ * Phase 10 で Text Fishing Battle のコマンドを追加した。
+ * 既存の reel / give は互換のために残している（reel = REEL、give = GIVE_LINE）。
+ */
+export const FISHING_COMMANDS = [
+  'cast',
+  'hook',
+  // Text Battle
+  'reel',
+  'power_reel',
+  'hold',
+  'give',
+  'loosen_drag',
+  'tighten_drag',
+  // Landing
+  'land',
+  'wait',
+  'reset',
+] as const
 export type FishingCommand = (typeof FISHING_COMMANDS)[number]
 
 /**
@@ -43,7 +61,6 @@ export const AUTO_ADVANCING_PHASES: readonly FishingPhase[] = [
   'WAITING',
   'BITE',
   'HOOKED',
-  'LANDING',
 ]
 
 /**
@@ -60,8 +77,10 @@ export const ALLOWED_COMMANDS: Readonly<Record<FishingPhase, readonly FishingCom
   // ヒットした瞬間だけフッキングできる。
   HOOK_WINDOW: ['hook'],
   HOOKED: [],
-  FIGHTING: ['reel', 'give'],
-  LANDING: [],
+  // 1 コマンド = 1 battle step。連打では有利にならない。
+  FIGHTING: ['reel', 'power_reel', 'hold', 'give', 'loosen_drag', 'tighten_drag'],
+  // 取り込む（land）か、待つ（wait）。
+  LANDING: ['land', 'wait'],
   LANDED: ['reset'],
   HOOK_MISSED: ['reset'],
   HOOK_ESCAPE: ['reset'],

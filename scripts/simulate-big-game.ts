@@ -1,12 +1,11 @@
 import { pathToFileURL } from 'node:url'
 import { loadContentFromDirectory } from '../src/content/load/nodeContent'
 import type { GearItem, RodDefinition } from '../src/domain/gear/Gear'
-import { FishingEngine, isTerminalPhase } from '../src/domain/fishing'
-import type { FishingEvent } from '../src/domain/fishing'
+import { FishingEngine } from '../src/domain/fishing'
 import { createInitialProgression, resolveFishingModifiers } from '../src/domain/progression'
 import { composeFishingModifiers, resolveTackle } from '../src/domain/tackle'
 import type { Loadout } from '../src/domain/tackle'
-import { chooseCommand } from './simulate-fishing'
+import { runFishingToTerminal } from './simulate-fishing'
 
 /**
  * 大型魚のファイト比較（Phase 9）。
@@ -62,14 +61,6 @@ type Stats = {
   readonly landedRateOfHooked: number
   readonly landedPerCast: number
 }
-
-const END_EVENTS: readonly FishingEvent[] = [
-  'LANDED',
-  'HOOK_MISSED',
-  'HOOK_ESCAPE',
-  'LINE_BREAK',
-  'NO_BITE',
-]
 
 const percentile = <T>(items: readonly T[], ratio: number, value: (item: T) => number): T => {
   const sorted = [...items].sort((left, right) => value(left) - value(right))
@@ -185,34 +176,20 @@ export const simulateBigGame = (): BigGameResult => {
           // バイト（Encounter）も装備の影響を受ける（ラインの太さ・offering の相性）。
           encounterProfile: tackle.encounterProfile,
         })
-        let guard = 0
-
-        while (guard < 5000) {
-          const snapshot = engine.snapshot()
-          engine.dispatch(chooseCommand('balanced', snapshot))
-          const ticked = engine.tick()
-          guard += 1
-
-          if (
-            ticked.events.some((event) => END_EVENTS.includes(event)) ||
-            isTerminalPhase(ticked.snapshot.phase)
-          ) {
-            break
-          }
-        }
+        runFishingToTerminal(engine, 'balanced')
 
         const snapshot = engine.snapshot()
-        const events = snapshot.lastEvents
         const individual = snapshot.fish?.individual
-        const outcome: Outcome = events.includes('LINE_BREAK')
-          ? 'line_break'
-          : events.includes('LANDED')
-            ? 'landed'
-            : events.includes('HOOK_ESCAPE')
-              ? 'hook_escape'
-              : events.includes('HOOK_MISSED')
-                ? 'hook_missed'
-                : 'no_bite'
+        const outcome: Outcome =
+          snapshot.phase === 'LINE_BREAK'
+            ? 'line_break'
+            : snapshot.phase === 'LANDED'
+              ? 'landed'
+              : snapshot.phase === 'HOOK_ESCAPE'
+                ? 'hook_escape'
+                : snapshot.phase === 'HOOK_MISSED'
+                  ? 'hook_missed'
+                  : 'no_bite'
 
         records.push({
           outcome,

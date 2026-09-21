@@ -59,7 +59,7 @@ describe('multi species fishing', () => {
   })
 
   it('produces different fight lengths for different species', () => {
-    const ticks = new Set<number>()
+    const lengths = new Set<number>()
 
     for (const species of content.species) {
       const engine = new FishingEngine({
@@ -67,12 +67,12 @@ describe('multi species fishing', () => {
         seed: 'variety',
       })
 
-      runFightToTerminal(engine)
-      ticks.add(engine.snapshot().totalTicks)
+      // Phase 10: ファイトの長さは battle step（コマンド数）で見る。
+      lengths.add(runFightToTerminal(engine).steps)
     }
 
-    // サイズもスタミナも違うので、同じ tick 数にはならない。
-    expect(ticks.size).toBeGreaterThan(3)
+    // サイズもスタミナも違うので、同じ長さにはならない。
+    expect(lengths.size).toBeGreaterThan(3)
   })
 
   it('fights a species that was never part of the content', () => {

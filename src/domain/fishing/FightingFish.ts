@@ -1,6 +1,7 @@
 import type { FishIndividual } from '../fish/FishIndividual'
 import type { TraitModifiers } from '../fish/fishTraits'
 import type { FishBehavior } from './FishBehavior'
+import type { FishBattleProfile } from './battle/BattleStep'
 
 /**
  * ファイト対象としての魚。
@@ -27,6 +28,11 @@ export type FightingFish = {
   readonly pullMultiplier: number
   /** Phase 9: 大型個体の粘り（スタミナの減りにくさ）。基準サイズ = 1.0。 */
   readonly enduranceMultiplier: number
+  /**
+   * Phase 10: Text Fishing Battle のための行動プロファイル。
+   * 既存の fightProfile / Trait / 個体サイズから解決済みの数値だけを持つ。
+   */
+  readonly battleProfile: FishBattleProfile
   /**
    * Trait から合成済みの倍率。
    * Engine は Trait 名を一切知らず、この倍率だけを見る。
