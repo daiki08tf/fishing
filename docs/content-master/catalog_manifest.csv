@@ -1,5 +1,4 @@
-TAB NAME: catalog_manifest.csv>
-index,File,Rows,Status
+File,Rows,Status
 brands.csv,12,PROTOTYPE_PARODY
 brand_series.csv,54,FICTIONAL_CONTENT
 fish_master.csv,218,DRAFT_UNVERIFIED
