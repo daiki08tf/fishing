@@ -142,10 +142,7 @@ export const biteChance = (
    *
    * Catchability の soft/hard gate 原則は変えない。
    */
-  const bitePressure = Math.max(
-    0,
-    maxEffectivePresence * tuning.biteChancePerPresence * affinity,
-  )
+  const bitePressure = Math.max(0, maxEffectivePresence * tuning.biteChancePerPresence * affinity)
 
   return clamp01(1 - Math.exp(-bitePressure))
 }
