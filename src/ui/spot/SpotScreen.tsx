@@ -3,6 +3,7 @@ import { revealedFields } from '../../domain/knowledge/spotKnowledge'
 import { resolveEnvironment, resolveFishingConditions } from '../../domain/environment'
 import { NEUTRAL_FISHING_MODIFIERS } from '../../domain/fishing/PlayerFishingModifiers'
 import { bestFishFinderOf, resolveTackle } from '../../domain/tackle'
+import { fishingZonesForSpot } from '../../domain/casting'
 import { resolveBiteCompatibility } from '../../domain/tackle/biteCompatibility'
 import { formatWorldTime } from '../../domain/world'
 import { spotKnowledgeScore } from '../../domain/knowledge/spotKnowledge'
@@ -141,6 +142,7 @@ export const SpotScreen = () => {
 
   const ratingWords = (value: number): string =>
     value >= 0.7 ? '高' : value >= 0.45 ? '普通' : '低'
+  const fishingZones = fishingZonesForSpot(spot)
 
   return (
     <div className="fishing">
@@ -177,6 +179,23 @@ export const SpotScreen = () => {
           <p className="fishing__legend">思ったように釣れないときは、タックルを見直してみる。</p>
         </section>
       )}
+
+      <section className="panel">
+        <h3 className="panel__subheading">狙える水域</h3>
+        <ul className="log">
+          {fishingZones.map((zone) => (
+            <li key={zone.id}>
+              {zone.name}
+              {zone.castDistanceM === undefined
+                ? ''
+                : ` — ${String(zone.castDistanceM.min)}〜${String(zone.castDistanceM.max)}m`}
+            </li>
+          ))}
+        </ul>
+        <p className="fishing__legend">
+          釣り画面で狙う水域を選ぶ。遠投は魚種のロックではなく、届く水域を増やす。
+        </p>
+      </section>
 
       {environment === null || conditions === null ? null : (
         <ConditionPanel
