@@ -1,0 +1,20 @@
+{
+  "id": "phase2-sample-fish-e",
+  "japaneseName": "サンプル魚E（検証用）",
+  "waterTypes": ["salt"],
+  "distribution": ["phase1-sample-region"],
+  "habitats": ["phase1-sample-offshore"],
+  "depthRange": { "min": 20, "max": 90 },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 60,
+    "dispersion": 0.13,
+    "minCm": 25,
+    "maxCm": 90
+  },
+  "weightModel": { "lengthWeightA": 0.0075, "lengthWeightB": 3.05 },
+  "conditionModel": { "variability": 0.4 },
+  "traitConfiguration": { "heavyWeightRatioThreshold": 1.05 },
+  "fightProfile": { "strength": 0.7, "stamina": 0.65, "speed": 0.4 },
+  "rarity": 3
+}

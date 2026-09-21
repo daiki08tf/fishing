@@ -8,27 +8,6 @@ import { dayPeriodSchema, monthSchema, rangeSchema } from './primitives'
 
 export const habitatTypeSchema = z.string().min(1)
 
-export const lengthDistributionSchema = z
-  .strictObject({
-    meanCm: z.number().positive(),
-    standardDeviationCm: z.number().nonnegative(),
-    minCm: z.number().positive(),
-    maxCm: z.number().positive(),
-  })
-  .refine((model) => model.minCm <= model.meanCm, {
-    message: 'minCm must be less than or equal to meanCm',
-    path: ['minCm'],
-  })
-  .refine((model) => model.meanCm <= model.maxCm, {
-    message: 'meanCm must be less than or equal to maxCm',
-    path: ['meanCm'],
-  })
-
-export const weightModelSchema = z.strictObject({
-  lengthWeightA: z.number().positive(),
-  lengthWeightB: z.number().positive(),
-})
-
 export const fightProfileSchema = z.strictObject({
   strength: z.number().min(0).max(1),
   stamina: z.number().min(0).max(1),

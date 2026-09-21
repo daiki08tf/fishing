@@ -69,13 +69,13 @@ describe('loadContentDirectory', () => {
     expect(result.diagnostics[0]?.issues[0]?.message).toContain('does not exist')
   })
 
-  it('validates the Phase 1 sample content that ships with the repository', () => {
+  it('validates the sample content that ships with the repository', () => {
     const result = loadContentDirectory(`${repositoryRoot}src/content/data`)
 
     expect(result.diagnostics).toEqual([])
-    expect(result.locations.map((location) => location.kind).sort()).toEqual([
-      'fish-species',
-      'fishing-spots',
-    ])
+    const kinds = result.locations.map((location) => location.kind)
+
+    expect(kinds.filter((kind) => kind === 'fish-species')).toHaveLength(10)
+    expect(kinds.filter((kind) => kind === 'fishing-spots')).toHaveLength(1)
   })
 })

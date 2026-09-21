@@ -25,7 +25,7 @@ export type { FishingTuning } from './FishingTuning'
 export { decideBehavior, FISH_BEHAVIORS, runChance } from './FishBehavior'
 export type { BehaviorContext, BehaviorDecision, BehaviorState, FishBehavior } from './FishBehavior'
 
-export { createFightingFish, estimateWeightKg, sampleLengthCm } from './createFightingFish'
+export { createFightingFish } from './createFightingFish'
 export type { CreateFightingFishOptions } from './createFightingFish'
 export type { FightingFish, FightingFishState } from './FightingFish'
 

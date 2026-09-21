@@ -1,0 +1,18 @@
+{
+  "id": "phase2-sample-fish-h",
+  "japaneseName": "サンプル魚H（検証用）",
+  "waterTypes": ["brackish", "fresh"],
+  "distribution": ["phase1-sample-region"],
+  "habitats": ["phase1-sample-estuary"],
+  "lengthModel": {
+    "kind": "normal",
+    "meanCm": 22,
+    "standardDeviationCm": 3,
+    "minCm": 10,
+    "maxCm": 32
+  },
+  "weightModel": { "lengthWeightA": 0.0105, "lengthWeightB": 3.05 },
+  "conditionModel": { "variability": 0.5 },
+  "fightProfile": { "strength": 0.4, "stamina": 0.4, "speed": 0.45 },
+  "rarity": 1
+}

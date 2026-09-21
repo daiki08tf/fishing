@@ -1,5 +1,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { loadPhase1SampleContent } from '../../content/catalog'
+import { loadBuiltInContent } from '../../content/catalog'
+import {
+  emptyCodexState,
+  recordCatch,
+  toRecordEntry,
+  type CatchRecordOutcome,
+  type CodexState,
+} from '../../domain/codex'
 import {
   FishingEngine,
   isTerminalPhase,
@@ -10,9 +17,9 @@ import {
 /**
  * 釣行 1 回分のセッション。
  *
- * Domain の FishingEngine を保持し、UI 側の都合（tick の刻み、再描画、
- * セッションの作り直し）だけを担当する。
- * 勝敗の判定は一切ここで行わない。
+ * Domain の FishingEngine と Codex を保持し、UI 側の都合
+ * （tick の刻み、再描画、セッションの作り直し）だけを担当する。
+ * 勝敗の判定も、個体生成も、記録のルールもここでは決めない。
  */
 
 export type FishingSession = {
@@ -20,6 +27,9 @@ export type FishingSession = {
   readonly snapshot: FishingSnapshot | null
   /** このセッションの seed。同じ seed なら同じ経過を再現できる。 */
   readonly seed: string
+  readonly codex: CodexState
+  /** 直近の捕獲で記録がどう更新されたか。 */
+  readonly lastCatch: CatchRecordOutcome | null
   readonly send: (command: FishingCommand) => void
   /** 新しい seed でやり直す。seed を渡すと同じ経過を再挑戦できる。 */
   readonly restart: (seed?: string) => void
@@ -32,10 +42,15 @@ export const useFishingSession = (): FishingSession => {
   const engineRef = useRef<FishingEngine | null>(null)
   const [snapshot, setSnapshot] = useState<FishingSnapshot | null>(null)
 
+  // Codex はセッションをまたいで保持する（アプリ実行中のみ。永続化は後 Phase）。
+  const codexRef = useRef<CodexState>(emptyCodexState())
+  const [codex, setCodex] = useState<CodexState>(() => codexRef.current)
+  const [lastCatch, setLastCatch] = useState<CatchRecordOutcome | null>(null)
+
   // コンテンツは起動時に 1 度だけ検証する。
   const content = useMemo(() => {
     try {
-      return { ok: true as const, value: loadPhase1SampleContent() }
+      return { ok: true as const, value: loadBuiltInContent() }
     } catch (error) {
       return {
         ok: false as const,
@@ -51,8 +66,9 @@ export const useFishingSession = (): FishingSession => {
     }
 
     const engine = new FishingEngine({
-      encounters: [{ species: content.value.species, presence: content.value.presence }],
+      encounters: content.value.encounters,
       seed: session.seed,
+      spotId: content.value.primarySpot.id,
     })
 
     engineRef.current = engine
@@ -76,6 +92,21 @@ export const useFishingSession = (): FishingSession => {
     const interval = window.setInterval(() => {
       const result = engine.tick()
       setSnapshot(result.snapshot)
+
+      // 取り込んだ瞬間だけ記録する（LANDED は 1 回しか出ない）。
+      if (result.events.includes('LANDED')) {
+        const individual = result.snapshot.fish?.individual
+
+        if (individual !== undefined) {
+          const outcome = recordCatch(
+            codexRef.current,
+            toRecordEntry(individual, new Date().toISOString()),
+          )
+          codexRef.current = outcome.state
+          setCodex(outcome.state)
+          setLastCatch(outcome)
+        }
+      }
     }, engine.tuning.tickMs)
 
     return () => {
@@ -104,6 +135,8 @@ export const useFishingSession = (): FishingSession => {
     contentError: content.ok ? null : content.message,
     snapshot,
     seed: session.seed,
+    codex,
+    lastCatch,
     send,
     restart,
   }

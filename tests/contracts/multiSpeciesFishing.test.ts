@@ -1,0 +1,127 @@
+import { describe, expect, it } from 'vitest'
+import { loadContentFromDirectory } from '../../src/content/load/nodeContent'
+import {
+  emptyCodexState,
+  recordCatch,
+  recordedSpeciesCount,
+  toRecordEntry,
+} from '../../src/domain/codex'
+import { FishingEngine } from '../../src/domain/fishing'
+import { asFishSpeciesId } from '../../src/domain/ids'
+import { createTestSpecies } from '../fixtures/species'
+import { runFightToTerminal } from '../fixtures/fishingPolicies'
+
+/**
+ * 「Species を追加しても Engine を書き換えなくてよい」ことの証明。
+ *
+ * このテストは Content の魚種をループで回すだけで、
+ * 魚種ごとの分岐を一切持たない。魚種名・サイズ・ファイト特性は
+ * すべて Content から供給される。
+ */
+
+const content = loadContentFromDirectory()
+
+describe('multi species fishing', () => {
+  it('loads the sample species and builds encounters from the spot', () => {
+    expect(content.species.length).toBeGreaterThanOrEqual(10)
+    expect(content.encounters.length).toBe(content.primarySpot.fishTable.length)
+    expect(content.primarySpot.fishTable.length).toBeGreaterThanOrEqual(10)
+  })
+
+  it('lands every species in the content', () => {
+    for (const candidate of content.encounters) {
+      const engine = new FishingEngine({
+        encounters: [candidate],
+        seed: 'multispecies',
+        spotId: content.primarySpot.id,
+      })
+
+      const outcome = runFightToTerminal(engine)
+      const individual = engine.snapshot().fish?.individual
+
+      expect(outcome.phase, `${String(candidate.species.id)} was not landed`).toBe('LANDED')
+      expect(individual).toBeDefined()
+      expect(individual?.speciesId).toBe(candidate.species.id)
+      expect(individual?.weightKg).toBeGreaterThan(0)
+      expect(individual?.percentile).toBeGreaterThanOrEqual(0)
+      expect(individual?.spotId).toBe(content.primarySpot.id)
+    }
+  })
+
+  it('produces different fight lengths for different species', () => {
+    const ticks = new Set<number>()
+
+    for (const candidate of content.encounters) {
+      const engine = new FishingEngine({
+        encounters: [candidate],
+        seed: 'variety',
+        spotId: content.primarySpot.id,
+      })
+
+      runFightToTerminal(engine)
+      ticks.add(engine.snapshot().totalTicks)
+    }
+
+    // サイズもスタミナも違うので、同じ tick 数にはならない。
+    expect(ticks.size).toBeGreaterThan(3)
+  })
+
+  it('fights a species that was never part of the content', () => {
+    // Content に存在しない魚種でも、Species の形を満たしていれば Engine は動く。
+    const invented = createTestSpecies({
+      id: asFishSpeciesId('invented-species'),
+      japaneseName: 'その場で作った魚',
+      lengthModel: {
+        kind: 'lognormal',
+        medianCm: 55,
+        dispersion: 0.16,
+        minCm: 20,
+        maxCm: 95,
+      },
+      weightModel: { lengthWeightA: 0.0065, lengthWeightB: 3.1 },
+      fightProfile: { strength: 0.8, stamina: 0.75, speed: 0.3 },
+    })
+
+    const engine = new FishingEngine({
+      encounters: [{ species: invented, presence: 1 }],
+      seed: 'invented',
+    })
+
+    const outcome = runFightToTerminal(engine)
+
+    expect(outcome.phase).toBe('LANDED')
+    expect(engine.snapshot().fish?.individual.speciesId).toBe('invented-species')
+    expect(engine.snapshot().fish?.speciesName).toBe('その場で作った魚')
+  })
+
+  it('records every landed fish into the codex', () => {
+    let codex = emptyCodexState()
+
+    for (const candidate of content.encounters) {
+      const engine = new FishingEngine({
+        encounters: [candidate],
+        seed: 'codex',
+        spotId: content.primarySpot.id,
+      })
+
+      runFightToTerminal(engine)
+
+      const individual = engine.snapshot().fish?.individual
+      expect(individual).toBeDefined()
+
+      if (individual !== undefined) {
+        codex = recordCatch(codex, toRecordEntry(individual, '2026-01-01T00:00:00.000Z')).state
+      }
+    }
+
+    expect(recordedSpeciesCount(codex)).toBe(content.species.length)
+
+    for (const species of content.species) {
+      const record = codex.species[String(species.id)]
+
+      expect(record).toBeDefined()
+      expect(record?.catchCount).toBe(1)
+      expect(record?.largestLengthCm).toBeGreaterThan(0)
+    }
+  })
+})

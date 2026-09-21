@@ -1,6 +1,6 @@
 {
   "id": "phase1-sample-fish",
-  "japaneseName": "サンプル魚（Phase 1 検証用）",
+  "japaneseName": "サンプル魚A（検証用）",
   "waterTypes": ["salt", "brackish"],
   "distribution": ["phase1-sample-region"],
   "habitats": ["phase1-sample-shallow"],
@@ -15,14 +15,20 @@
   "lureCategories": ["phase1-sample-jig"],
   "fishingMethods": ["phase1-sample-light-game"],
   "lengthModel": {
-    "meanCm": 26,
-    "standardDeviationCm": 3.5,
-    "minCm": 12,
-    "maxCm": 42
+    "kind": "lognormal",
+    "medianCm": 26,
+    "dispersion": 0.12,
+    "minCm": 10,
+    "maxCm": 38
   },
   "weightModel": {
     "lengthWeightA": 0.0095,
     "lengthWeightB": 3.05
+  },
+  "conditionModel": { "variability": 0.5 },
+  "traitConfiguration": {
+    "trophyPercentileThreshold": 1,
+    "strongRunnerChance": 0.06
   },
   "fightProfile": {
     "strength": 0.45,

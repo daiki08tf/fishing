@@ -138,8 +138,11 @@ describe('FishingEngine', () => {
     expect(bite.snapshot.fish).not.toBeNull()
 
     const hookWindow = advanceUntil(engine, (snapshot) => snapshot.phase === 'HOOK_WINDOW')
-    expect(hookWindow.snapshot.fish?.name).toBe('テスト魚')
-    expect(hookWindow.snapshot.fish?.individualSeed).toBe('test-species#bite')
+    expect(hookWindow.snapshot.fish?.speciesName).toBe('テスト魚')
+    // 個体 id は「魚種#セッション seed#何匹目」で決まる。
+    expect(hookWindow.snapshot.fish?.individual.id).toBe('test-species#bite#1')
+    expect(hookWindow.snapshot.fish?.individual.traits).toBeInstanceOf(Array)
+    expect(hookWindow.snapshot.fish?.individual.weightKg).toBeGreaterThan(0)
   })
 
   it('cannot hook before the hook window', () => {
@@ -285,7 +288,7 @@ describe('FishingEngine', () => {
       const engine = createFightingEngine(seed)
       runBalancedFight(engine)
 
-      const length = engine.snapshot().fish?.lengthCm
+      const length = engine.snapshot().fish?.individual.lengthCm
       expect(length).toBeDefined()
 
       if (length !== undefined) {

@@ -19,20 +19,6 @@ export type RegionRef = RegionId
 /** 生息環境タグ。列挙は実コンテンツ投入時に確定する（それまで open string）。 */
 export type HabitatType = string
 
-/** 体長分布。正規分布を最小表現として採用する。 */
-export type LengthDistribution = {
-  readonly meanCm: number
-  readonly standardDeviationCm: number
-  readonly minCm: number
-  readonly maxCm: number
-}
-
-/** 体長-体重関係 W = a * L^b。 */
-export type WeightModel = {
-  readonly lengthWeightA: number
-  readonly lengthWeightB: number
-}
-
 /** ファイト特性。値は 0〜1 の相対スケール。 */
 export type FightProfile = {
   readonly strength: Normalized

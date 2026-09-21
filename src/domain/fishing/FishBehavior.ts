@@ -15,6 +15,9 @@ export type BehaviorContext = {
   readonly speed: number
   /** 残スタミナ比（0〜1）。疲れた魚は走りにくい。 */
   readonly staminaRatio: number
+  /** Trait（Strong Runner / Aggressive 等）による倍率。 */
+  readonly runChanceMultiplier: number
+  readonly runDurationMultiplier: number
 }
 
 export type BehaviorState = {
@@ -37,7 +40,8 @@ export const runChance = (context: BehaviorContext, tuning: FishingTuning): numb
   clamp01(
     tuning.runChancePerTick *
       (0.6 + 0.8 * clamp01(context.speed)) *
-      (0.4 + 0.6 * clamp01(context.staminaRatio)),
+      (0.4 + 0.6 * clamp01(context.staminaRatio)) *
+      context.runChanceMultiplier,
   )
 
 /**
@@ -65,9 +69,15 @@ export const decideBehavior = (options: {
   }
 
   if (random.next() < runChance(context, tuning)) {
+    const shortest = Math.max(1, Math.round(tuning.minRunTicks * context.runDurationMultiplier))
+    const longest = Math.max(
+      shortest,
+      Math.round(tuning.maxRunTicks * context.runDurationMultiplier),
+    )
+
     return {
       behavior: 'run',
-      runTicksRemaining: random.int(tuning.minRunTicks, tuning.maxRunTicks),
+      runTicksRemaining: random.int(shortest, longest),
       changed: true,
     }
   }

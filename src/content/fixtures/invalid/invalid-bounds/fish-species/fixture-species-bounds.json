@@ -5,6 +5,7 @@
   "distribution": ["fixture-region-0001"],
   "habitats": [],
   "lengthModel": {
+    "kind": "normal",
     "meanCm": 30,
     "standardDeviationCm": 3,
     "minCm": 40,

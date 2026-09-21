@@ -1,17 +1,19 @@
 import type { FishSpeciesId } from '../ids'
 import type { Range, WaterType } from '../primitives'
 import type { SourceRef } from '../source/SourceRef'
+import type { ConditionModel } from './fishCondition'
+import type { TraitConfigurationOverride } from './fishTraits'
+import type { LengthDistribution } from './lengthModel'
 import type {
   CurrentProfile,
   FightProfile,
   HabitatType,
-  LengthDistribution,
   RegionRef,
   SeasonalProfile,
   TideProfile,
   TimeProfile,
-  WeightModel,
 } from './profiles'
+import type { WeightModel } from './weightModel'
 
 /** 分類情報。DATA_MODEL.md §2 の taxonomy。 */
 export type Taxonomy = {
@@ -47,7 +49,10 @@ export type FishSpecies = {
   readonly fishingMethods?: readonly string[]
 
   readonly lengthModel: LengthDistribution
-  readonly weightModel?: WeightModel
+  /** 体長-体重関係。Phase 2 で必須にした（体重は体長から導出する）。 */
+  readonly weightModel: WeightModel
+  readonly conditionModel?: ConditionModel
+  readonly traitConfiguration?: TraitConfigurationOverride
   readonly fightProfile: FightProfile
 
   readonly rarity: number

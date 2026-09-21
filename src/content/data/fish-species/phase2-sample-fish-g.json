@@ -1,0 +1,19 @@
+{
+  "id": "phase2-sample-fish-g",
+  "japaneseName": "サンプル魚G（検証用）",
+  "waterTypes": ["salt", "brackish"],
+  "distribution": ["phase1-sample-region"],
+  "habitats": ["phase1-sample-pier"],
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 38,
+    "dispersion": 0.09,
+    "minCm": 18,
+    "maxCm": 50
+  },
+  "weightModel": { "lengthWeightA": 0.009, "lengthWeightB": 3.0 },
+  "conditionModel": { "variability": 0.5 },
+  "traitConfiguration": { "oldChance": 0.1 },
+  "fightProfile": { "strength": 0.55, "stamina": 0.55, "speed": 0.6 },
+  "rarity": 2
+}

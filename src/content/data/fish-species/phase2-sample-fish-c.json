@@ -1,0 +1,20 @@
+{
+  "id": "phase2-sample-fish-c",
+  "japaneseName": "サンプル魚C（検証用）",
+  "waterTypes": ["salt", "brackish"],
+  "distribution": ["phase1-sample-region"],
+  "habitats": ["phase1-sample-deep"],
+  "depthRange": { "min": 8, "max": 40 },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 45,
+    "dispersion": 0.11,
+    "minCm": 20,
+    "maxCm": 63
+  },
+  "weightModel": { "lengthWeightA": 0.0085, "lengthWeightB": 3.0 },
+  "conditionModel": { "variability": 0.45 },
+  "traitConfiguration": { "trophyPercentileThreshold": 0.8 },
+  "fightProfile": { "strength": 0.6, "stamina": 0.6, "speed": 0.45 },
+  "rarity": 2
+}

@@ -39,7 +39,7 @@ describe('validate:content CLI', () => {
 
     expect(report.exitCode).toBe(0)
     expect(report.lines[0]).toContain(DEFAULT_CONTENT_DIR)
-    expect(report.lines.join('\n')).toContain('validated 2 record(s)')
+    expect(report.lines.join('\n')).toContain('validated 11 record(s)')
   })
 
   it('rejects a missing --dir value', () => {

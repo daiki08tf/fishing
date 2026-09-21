@@ -15,10 +15,16 @@
   "tidePreference": { "preference": "rising" },
   "diet": ["fixture-prey"],
   "lengthModel": {
+    "kind": "normal",
     "meanCm": 24,
     "standardDeviationCm": 4,
     "minCm": 10,
     "maxCm": 52
+  },
+  "conditionModel": { "variability": 0.5 },
+  "traitConfiguration": {
+    "trophyPercentileThreshold": 1,
+    "strongRunnerChance": 0.06
   },
   "weightModel": {
     "lengthWeightA": 0.008,

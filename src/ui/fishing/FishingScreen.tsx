@@ -1,3 +1,5 @@
+import type { ConditionBand } from '../../domain/fish/fishCondition'
+import type { FishTrait } from '../../domain/fish/FishTrait'
 import {
   ALLOWED_COMMANDS,
   isTerminalPhase,
@@ -10,10 +12,10 @@ import { useFishingSession } from './useFishingSession'
 import '../styles/fishing.css'
 
 /**
- * 釣り画面（Phase 1 の Vertical Slice）。
+ * 釣り画面（Phase 2 版）。
  *
  * このコンポーネントが行うのは「コマンドを送る」「状態を描く」だけである。
- * ファイトの計算・魚の行動・勝敗は Domain 側にある。
+ * 個体生成・Trait 抽選・記録の更新は Domain 側にある。
  */
 
 const PHASE_LABELS: Readonly<Record<FishingPhase, string>> = {
@@ -51,6 +53,31 @@ const BEHAVIOR_LABELS = {
   run: '走っている',
 } as const
 
+const CONDITION_LABELS: Readonly<Record<ConditionBand, string>> = {
+  thin: '痩せ',
+  standard: '標準',
+  good: '良好',
+  excellent: '非常に良好',
+}
+
+const TRAIT_LABELS: Readonly<Record<FishTrait, string>> = {
+  trophy: 'Trophy',
+  old: 'Old',
+  strong_runner: 'Strong Runner',
+  heavy: 'Heavy',
+  scarred: 'Scarred',
+  aggressive: 'Aggressive',
+}
+
+const TRAIT_HINTS: Readonly<Record<FishTrait, string>> = {
+  trophy: '記録級の大型。スタミナが高い',
+  old: '老成個体。動きは鈍いが引きは強い',
+  strong_runner: 'よく走る',
+  heavy: '同じ体長でも重い',
+  scarred: '傷を持つ個体（数値効果はなし）',
+  aggressive: '行動が荒い',
+}
+
 const EVENT_LABELS: Readonly<Record<FishingEvent, string>> = {
   CAST_STARTED: 'キャストした',
   CAST_COMPLETED: '着水した',
@@ -78,12 +105,35 @@ const ACTION_LABELS: Readonly<Record<FishingCommand, string>> = {
 
 const FIGHT_COMMANDS: readonly FishingCommand[] = ['cast', 'hook', 'reel', 'give']
 
+/** 百分位を釣り人の言葉にする。 */
+const rarityLabel = (percentile: number): string => {
+  const top = 100 - percentile
+
+  if (top <= 0.1) {
+    return '記録級'
+  }
+
+  if (top <= 1) {
+    return `上位 ${top.toFixed(2)}%`
+  }
+
+  if (top <= 10) {
+    return `上位 ${top.toFixed(1)}%`
+  }
+
+  if (top <= 50) {
+    return `上位 ${String(Math.round(top))}%`
+  }
+
+  return 'よくあるサイズ'
+}
+
 export type FishingScreenProps = {
   readonly onExit: () => void
 }
 
 export const FishingScreen = ({ onExit }: FishingScreenProps) => {
-  const { contentError, snapshot, seed, send, restart } = useFishingSession()
+  const { contentError, snapshot, seed, codex, lastCatch, send, restart } = useFishingSession()
 
   if (contentError !== null) {
     return (
@@ -107,6 +157,7 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
   const tensionDanger = tensionRatio >= 0.9
   const finished = isTerminalPhase(snapshot.phase)
   const allowed = ALLOWED_COMMANDS[snapshot.phase]
+  const record = fish === null ? undefined : codex.species[String(fish.individual.speciesId)]
 
   return (
     <div className="fishing">
@@ -132,16 +183,48 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
         ) : (
           <>
             <div className="fish__head">
-              <h3 className="panel__subheading">{fish.name}</h3>
+              <h3 className="panel__subheading">{fish.speciesName}</h3>
               <span className={`badge${fish.behavior === 'run' ? ' badge--alert' : ''}`}>
                 {BEHAVIOR_LABELS[fish.behavior]}
               </span>
             </div>
-            <p className="panel__body fishing__fish-meta">
-              {fish.lengthCm} cm
-              {fish.weightKg === undefined ? '' : ` / ${String(fish.weightKg)} kg`}
-              {` / power ${fish.power.toFixed(2)} / speed ${fish.speed.toFixed(2)}`}
-            </p>
+
+            <dl className="fish__facts">
+              <div>
+                <dt>Length</dt>
+                <dd>{fish.individual.lengthCm} cm</dd>
+              </div>
+              <div>
+                <dt>Weight</dt>
+                <dd>{fish.individual.weightKg.toFixed(3)} kg</dd>
+              </div>
+              <div>
+                <dt>Condition</dt>
+                <dd>
+                  {CONDITION_LABELS[fish.conditionBand]}（{fish.individual.condition.toFixed(2)}）
+                </dd>
+              </div>
+              <div>
+                <dt>Rarity</dt>
+                <dd>
+                  {rarityLabel(fish.individual.percentile ?? 0)}（
+                  {(fish.individual.percentile ?? 0).toFixed(2)}）
+                </dd>
+              </div>
+            </dl>
+
+            {fish.individual.traits.length === 0 ? (
+              <p className="panel__body">Trait なし</p>
+            ) : (
+              <ul className="traits">
+                {fish.individual.traits.map((trait) => (
+                  <li className="trait" key={trait} title={TRAIT_HINTS[trait]}>
+                    {TRAIT_LABELS[trait]}
+                  </li>
+                ))}
+              </ul>
+            )}
+
             <FishingMeter
               label="Fish stamina"
               value={fish.stamina}
@@ -215,6 +298,54 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
             </button>
           </div>
         ) : null}
+      </section>
+
+      <section className="panel">
+        <h3 className="panel__subheading">自己記録</h3>
+
+        {lastCatch === null ? null : (
+          <p className="notice">
+            {lastCatch.isFirstCatchOfSpecies ? '初記録' : null}
+            {lastCatch.isFirstCatchOfSpecies ? ' / ' : null}
+            {lastCatch.isPersonalBest ? '自己記録更新' : '記録更新なし'}
+            {lastCatch.newTraits.length === 0
+              ? null
+              : ` / 新Trait: ${lastCatch.newTraits.map((trait) => TRAIT_LABELS[trait]).join(', ')}`}
+          </p>
+        )}
+
+        {record === undefined ? (
+          <p className="panel__body">この魚種の記録はまだない</p>
+        ) : (
+          <dl className="record">
+            <div>
+              <dt>Catch</dt>
+              <dd>{record.catchCount} 匹</dd>
+            </div>
+            <div>
+              <dt>Largest</dt>
+              <dd>{record.largestLengthCm} cm</dd>
+            </div>
+            <div>
+              <dt>Heaviest</dt>
+              <dd>{record.heaviestWeightKg.toFixed(3)} kg</dd>
+            </div>
+            <div>
+              <dt>Best</dt>
+              <dd>
+                {record.personalBest.lengthCm} cm / {rarityLabel(record.bestPercentile)}
+              </dd>
+            </div>
+            <div>
+              <dt>Traits</dt>
+              <dd>
+                {record.caughtTraits.length === 0
+                  ? '—'
+                  : record.caughtTraits.map((trait) => TRAIT_LABELS[trait]).join(', ')}
+              </dd>
+            </div>
+          </dl>
+        )}
       </section>
 
       <section className="panel">

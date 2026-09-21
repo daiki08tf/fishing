@@ -1,5 +1,5 @@
 import { pathToFileURL } from 'node:url'
-import { loadPhase1SampleContent } from '../src/content/catalog'
+import { loadContentFromDirectory } from '../src/content/load/nodeContent'
 import {
   FishingEngine,
   isTerminalPhase,
@@ -11,10 +11,11 @@ import {
  * Fishing Vertical Slice を手元で流して確認するための小さなシミュレータ。
  *
  * ブラウザを開かなくても、Domain のループが成立していることと
- * seed 再現性を確認できる。バランス調整の入口でもある。
+ * seed 再現性、魚種ごとの手応えを確認できる。
  *
  * 使い方:
  *   npm run simulate:fishing -- --seed demo
+ *   npm run simulate:fishing -- --seed demo --species phase2-sample-fish-e --verbose
  *   npm run simulate:fishing -- --seed demo --policy reel
  */
 
@@ -25,6 +26,7 @@ export type SimulationOptions = {
   readonly policy: SimulationPolicy
   readonly maxSteps: number
   readonly verbose: boolean
+  readonly speciesId?: string
 }
 
 export type SimulationResult = {
@@ -62,14 +64,26 @@ export const chooseCommand = (
 }
 
 export const simulateFishing = (options: SimulationOptions): SimulationResult => {
-  const content = loadPhase1SampleContent()
+  const content = loadContentFromDirectory()
+  const encounters =
+    options.speciesId === undefined
+      ? content.encounters
+      : content.encounters.filter((candidate) => String(candidate.species.id) === options.speciesId)
+
+  if (encounters.length === 0) {
+    throw new Error(`no encounter candidate for species: ${String(options.speciesId)}`)
+  }
+
   const engine = new FishingEngine({
-    encounters: [{ species: content.species, presence: content.presence }],
+    encounters,
     seed: options.seed,
+    spotId: content.primarySpot.id,
   })
 
   const lines: string[] = [
-    `seed=${options.seed} policy=${options.policy} species=${content.species.japaneseName}`,
+    `seed=${options.seed} policy=${options.policy} species=${
+      options.speciesId ?? `${String(content.species.length)} candidates`
+    }`,
   ]
 
   let steps = 0
@@ -117,8 +131,9 @@ export const simulateFishing = (options: SimulationOptions): SimulationResult =>
   lines.push(`phase=${final.phase} ticks=${String(final.totalTicks)} steps=${String(steps)}`)
 
   if (fish !== null) {
+    const individual = fish.individual
     lines.push(
-      `fish=${fish.name} length=${String(fish.lengthCm)}cm stamina=${fish.stamina.toFixed(3)}/${fish.staminaMax.toFixed(3)} behavior=${fish.behavior}`,
+      `fish=${fish.speciesName} length=${String(individual.lengthCm)}cm weight=${individual.weightKg.toFixed(3)}kg condition=${individual.condition.toFixed(2)}(${fish.conditionBand}) percentile=${(individual.percentile ?? 0).toFixed(2)} traits=[${individual.traits.join(',')}] stamina=${fish.stamina.toFixed(3)}/${fish.staminaMax.toFixed(3)} behavior=${fish.behavior}`,
     )
   }
 
@@ -133,6 +148,7 @@ const parseArguments = (argv: readonly string[]): SimulationOptions => {
   let policy: SimulationPolicy = 'balanced'
   let maxSteps = 4000
   let verbose = false
+  let speciesId: string | undefined
 
   for (let index = 0; index < argv.length; index += 1) {
     const argument = argv[index]
@@ -140,6 +156,12 @@ const parseArguments = (argv: readonly string[]): SimulationOptions => {
 
     if (argument === '--seed' && value !== undefined) {
       seed = value
+      index += 1
+      continue
+    }
+
+    if (argument === '--species' && value !== undefined) {
+      speciesId = value
       index += 1
       continue
     }
@@ -165,7 +187,13 @@ const parseArguments = (argv: readonly string[]): SimulationOptions => {
     }
   }
 
-  return { seed, policy, maxSteps, verbose }
+  return {
+    seed,
+    policy,
+    maxSteps,
+    verbose,
+    ...(speciesId === undefined ? {} : { speciesId }),
+  }
 }
 
 const isMainModule = (): boolean => {

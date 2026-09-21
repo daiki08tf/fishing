@@ -160,3 +160,50 @@
   font-size: 0.8125rem;
   color: var(--color-text-muted);
 }
+
+.fish__facts,
+.record {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem 0.75rem;
+  margin: 0.75rem 0 0;
+  font-size: 0.8125rem;
+}
+
+.fish__facts dt,
+.record dt {
+  color: var(--color-text-muted);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.fish__facts dd,
+.record dd {
+  margin: 0.1rem 0 0;
+}
+
+.traits {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.trait {
+  border: 1px solid #e0a53f;
+  border-radius: 999px;
+  padding: 0.12rem 0.55rem;
+  font-size: 0.75rem;
+  color: #f0c274;
+}
+
+.notice {
+  margin: 0.5rem 0 0;
+  border-left: 3px solid var(--color-accent);
+  padding: 0.4rem 0.6rem;
+  background-color: rgb(47 182 168 / 10%);
+  font-size: 0.8125rem;
+}

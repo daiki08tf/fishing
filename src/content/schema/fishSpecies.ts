@@ -4,14 +4,16 @@ import {
   habitatTypeSchema,
   currentProfileSchema,
   fightProfileSchema,
-  lengthDistributionSchema,
   seasonalProfileSchema,
   tideProfileSchema,
   timeProfileSchema,
-  weightModelSchema,
 } from './profiles'
+import { conditionModelSchema } from './conditionModel'
+import { lengthDistributionSchema } from './lengthModel'
 import { nonEmptyString, rangeSchema, waterTypeSchema } from './primitives'
 import { sourceRefsSchema } from './sourceRef'
+import { traitConfigurationSchema } from './traitConfiguration'
+import { weightModelSchema } from './weightModel'
 
 /** FishSpecies。DATA_MODEL.md §2 に対応する。 */
 export const fishSpeciesSchema = z.strictObject({
@@ -43,7 +45,10 @@ export const fishSpeciesSchema = z.strictObject({
   fishingMethods: z.array(nonEmptyString).optional(),
 
   lengthModel: lengthDistributionSchema,
-  weightModel: weightModelSchema.optional(),
+  // Phase 2 で必須にした。体重は体長から導出する（独立した乱数にしない）。
+  weightModel: weightModelSchema,
+  conditionModel: conditionModelSchema.optional(),
+  traitConfiguration: traitConfigurationSchema.optional(),
   fightProfile: fightProfileSchema,
 
   rarity: z.number().nonnegative(),

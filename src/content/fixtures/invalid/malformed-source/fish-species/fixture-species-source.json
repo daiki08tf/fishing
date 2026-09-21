@@ -5,11 +5,13 @@
   "distribution": ["fixture-region-0001"],
   "habitats": [],
   "lengthModel": {
+    "kind": "normal",
     "meanCm": 12,
     "standardDeviationCm": 2,
     "minCm": 5,
     "maxCm": 20
   },
+  "weightModel": { "lengthWeightA": 0.01, "lengthWeightB": 3 },
   "fightProfile": { "strength": 0.2, "stamina": 0.2, "speed": 0.2 },
   "rarity": 1,
   "sourceRefs": [{ "id": "fixture-source-broken" }]

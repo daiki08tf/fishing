@@ -1,0 +1,23 @@
+{
+  "id": "phase2-sample-fish-i",
+  "japaneseName": "サンプル魚I（検証用）",
+  "waterTypes": ["salt"],
+  "distribution": ["phase1-sample-region"],
+  "habitats": ["phase1-sample-offshore"],
+  "depthRange": { "min": 30, "max": 120 },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 70,
+    "dispersion": 0.14,
+    "minCm": 30,
+    "maxCm": 108
+  },
+  "weightModel": { "lengthWeightA": 0.007, "lengthWeightB": 3.0 },
+  "conditionModel": { "variability": 0.35 },
+  "traitConfiguration": {
+    "trophyPercentileThreshold": 0.6,
+    "strongRunnerChance": 0.1
+  },
+  "fightProfile": { "strength": 0.75, "stamina": 0.7, "speed": 0.35 },
+  "rarity": 4
+}

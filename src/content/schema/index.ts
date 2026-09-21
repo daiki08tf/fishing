@@ -68,13 +68,15 @@ export const parseContentRecord = (kind: ContentKind, value: unknown): ContentPa
 
 export { fishingSpotSchema, fishSpeciesSchema, regulationSchema, transportSchema }
 export { accessRequirementSchema } from './accessRequirement'
+export { conditionModelSchema } from './conditionModel'
 export { fishOccurrenceSchema } from './fishOccurrence'
+export { lengthDistributionSchema } from './lengthModel'
 export { sourceRefSchema, sourceRefsSchema } from './sourceRef'
+export { traitConfigurationSchema } from './traitConfiguration'
+export { weightModelSchema } from './weightModel'
 export {
   depthProfileSchema,
   fightProfileSchema,
-  lengthDistributionSchema,
   seasonalProfileSchema,
   timeProfileSchema,
-  weightModelSchema,
 } from './profiles'

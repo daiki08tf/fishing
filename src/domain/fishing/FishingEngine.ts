@@ -1,5 +1,9 @@
 import { rollEncounter, type EncounterCandidate } from '../encounter/encounterEngine'
-import type { FishSpeciesId } from '../ids'
+import type { FishIndividual } from '../fish/FishIndividual'
+import { conditionBand, type ConditionBand } from '../fish/fishCondition'
+import type { TraitModifiers } from '../fish/fishTraits'
+import { generateFishIndividual } from '../fish/generateFishIndividual'
+import type { FishingSpotId } from '../ids'
 import type { Range } from '../primitives'
 import type { RandomSource } from '../rng/RandomSource'
 import { SeededRandomSource } from '../rng/SeededRandomSource'
@@ -25,16 +29,16 @@ import {
  */
 
 export type FishingFishSnapshot = {
-  readonly speciesId: FishSpeciesId
-  readonly name: string
+  /** 生成された個体そのもの（サイズ・体重・コンディション・Trait・百分位）。 */
+  readonly individual: FishIndividual
+  readonly speciesName: string
+  readonly conditionBand: ConditionBand
   readonly stamina: number
   readonly staminaMax: number
   readonly behavior: FishBehavior
   readonly power: number
   readonly speed: number
-  readonly lengthCm: number
-  readonly weightKg?: number
-  readonly individualSeed: string
+  readonly modifiers: TraitModifiers
 }
 
 export type FishingSnapshot = {
@@ -70,9 +74,11 @@ export type FishingTickResult = {
 }
 
 export type FishingEngineOptions = {
-  /** ヒット候補。Phase 1 では 1 魚種を渡す。 */
+  /** ヒット候補。Phase 2 では複数魚種を渡せる。 */
   readonly encounters: readonly EncounterCandidate[]
   readonly seed: number | string
+  /** 捕獲した個体に紐づける Spot。Phase 4 で本格化する。 */
+  readonly spotId?: FishingSpotId
   readonly tuning?: FishingTuning
   /** テストや特殊な用途向け。省略時は seed から決定論的な RandomSource を作る。 */
   readonly random?: RandomSource
@@ -106,10 +112,13 @@ export class FishingEngine {
   private readonly encounters: readonly EncounterCandidate[]
   private readonly random: RandomSource
   private readonly seedLabel: string
+  private readonly spotId: FishingSpotId | undefined
 
   private phase: FishingPhase = 'IDLE'
   private ticksInPhase = 0
   private totalTicks = 0
+  /** 同じセッション内で何匹目か。個体 id の一意性と再現性に使う。 */
+  private encounterCount = 0
   private tension = 0
   private fishState: FightingFishState | null = null
   private plan: WaitingPlan | null = null
@@ -120,6 +129,7 @@ export class FishingEngine {
     this.tuning = options.tuning ?? DEFAULT_FISHING_TUNING
     this.seedLabel = String(options.seed)
     this.random = options.random ?? new SeededRandomSource(options.seed)
+    this.spotId = options.spotId
   }
 
   // ---------------------------------------------------------------- commands
@@ -265,16 +275,15 @@ export class FishingEngine {
     }
 
     return {
-      speciesId: state.fish.speciesId,
-      name: state.fish.name,
+      individual: state.fish.individual,
+      speciesName: state.fish.speciesName,
+      conditionBand: conditionBand(state.fish.individual.condition),
       stamina: state.stamina,
       staminaMax: state.fish.staminaMax,
       behavior: state.behavior,
       power: state.fish.power,
       speed: state.fish.speed,
-      lengthCm: state.fish.lengthCm,
-      ...(state.fish.weightKg === undefined ? {} : { weightKg: state.fish.weightKg }),
-      individualSeed: state.fish.individualSeed,
+      modifiers: state.fish.modifiers,
     }
   }
 
@@ -312,10 +321,28 @@ export class FishingEngine {
       return
     }
 
-    const fish = createFightingFish({
-      species: outcome.candidate.species,
+    const species = outcome.candidate.species
+    this.encounterCount += 1
+
+    /*
+     * 乱数の消費順は固定（変更すると seed 再現性が壊れる）:
+     *   1. Encounter の判定と魚種選択（rollEncounter）
+     *   2. 個体生成（体長 → コンディション → Trait）
+     *   3. ファイト特性（power → speed → stamina）
+     *   4. アタリまでの待ち tick
+     */
+    const generated = generateFishIndividual({
+      species,
       random: this.random,
-      individualSeed: `${outcome.candidate.species.id}#${this.seedLabel}`,
+      individualSeed: `${species.id}#${this.seedLabel}#${String(this.encounterCount)}`,
+      ...(this.spotId === undefined ? {} : { spotId: this.spotId }),
+    })
+
+    const fish = createFightingFish({
+      species,
+      individual: generated.individual,
+      traitModifiers: generated.traitModifiers,
+      random: this.random,
       tuning: this.tuning,
     })
 
@@ -367,6 +394,8 @@ export class FishingEngine {
     this.plan = null
     this.tension = 0
     this.totalTicks = 0
+    // 同じ seed で最初からやり直せば、同じ個体が再び現れる。
+    this.encounterCount = 0
     this.enterPhase('IDLE')
     this.events.push('SESSION_RESET')
   }
@@ -395,6 +424,8 @@ export class FishingEngine {
       context: {
         speed: state.fish.speed,
         staminaRatio: state.fish.staminaMax === 0 ? 0 : state.stamina / state.fish.staminaMax,
+        runChanceMultiplier: state.fish.modifiers.runChanceMultiplier,
+        runDurationMultiplier: state.fish.modifiers.runDurationMultiplier,
       },
       random: this.random,
       tuning: this.tuning,

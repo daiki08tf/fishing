@@ -20,6 +20,7 @@
     "format:check": "prettier --check .",
     "validate:content": "tsx scripts/validate-content.ts",
     "simulate:fishing": "tsx scripts/simulate-fishing.ts",
+    "sample:individuals": "tsx scripts/sample-individuals.ts",
     "check": "npm run typecheck && npm run lint && npm run format:check && npm run validate:content && npm run test:run && npm run build"
   },
   "dependencies": {

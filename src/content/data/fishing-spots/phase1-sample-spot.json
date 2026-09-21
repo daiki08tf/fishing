@@ -1,19 +1,34 @@
 {
   "id": "phase1-sample-spot",
-  "name": "サンプル釣り場（Phase 1 検証用）",
+  "name": "サンプル釣り場（検証用）",
   "regionId": "phase1-sample-region",
   "environment": "phase1-sample-pier",
-  "access": [{ "kind": "transport", "tag": "walk" }],
-  "habitatTags": ["phase1-sample-shallow"],
-  "depth": { "depthRangeM": { "min": 1, "max": 12 } },
+  "access": [
+    { "kind": "transport", "tag": "walk" },
+    { "kind": "transport", "tag": "train" }
+  ],
+  "habitatTags": ["phase1-sample-shallow", "phase1-sample-pier"],
+  "depth": { "depthRangeM": { "min": 1, "max": 40 } },
   "fishTable": [
     {
       "speciesId": "phase1-sample-fish",
       "basePresence": 1,
       "time": { "periods": ["dawn", "morning", "evening"] }
-    }
+    },
+    { "speciesId": "phase2-sample-fish-b", "basePresence": 0.8 },
+    { "speciesId": "phase2-sample-fish-c", "basePresence": 0.5 },
+    { "speciesId": "phase2-sample-fish-d", "basePresence": 0.6 },
+    { "speciesId": "phase2-sample-fish-e", "basePresence": 0.3 },
+    { "speciesId": "phase2-sample-fish-f", "basePresence": 0.7 },
+    { "speciesId": "phase2-sample-fish-g", "basePresence": 0.5 },
+    { "speciesId": "phase2-sample-fish-h", "basePresence": 0.6 },
+    { "speciesId": "phase2-sample-fish-i", "basePresence": 0.15 },
+    { "speciesId": "phase2-sample-fish-j", "basePresence": 0.5 }
   ],
   "knowledgeConfig": {
-    "reveals": [{ "field": "depth", "minKnowledge": 10 }]
+    "reveals": [
+      { "field": "depth", "minKnowledge": 10 },
+      { "field": "season_pattern", "minKnowledge": 50 }
+    ]
   }
 }
