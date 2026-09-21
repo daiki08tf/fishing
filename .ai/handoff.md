@@ -22,6 +22,10 @@
 - Save schema は v7 のまま
 - 初期 Zone Content 6 Spot はすべて PROVISIONAL
 - Phase 12 はこの基盤上で日本 / 世界 / 魚種を拡張する
+- 最終 CI: typecheck / lint / format / validate / test / build 全 PASS
+- Content: 657 records、tests: 71 files / 623 tests
+- production bundle: JS 761.71 kB（gzip 189.59 kB）、CSS 7.13 kB（gzip 1.86 kB）
+  （Vite の 500 kB warning は既知。Phase 11 の blocker ではない）
 
 ## Phase 10.2（Bite Pacing）
 
