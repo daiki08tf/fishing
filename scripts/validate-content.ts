@@ -5,6 +5,7 @@ import { validateContentReferences } from '../src/content/catalog/references'
 import type { ContentKind } from '../src/content/schema'
 import type { BrandDefinition } from '../src/domain/gear/Brand'
 import type { GearItem } from '../src/domain/gear/Gear'
+import type { GearSeries } from '../src/domain/gear/GearSeries'
 import type { FishSpecies } from '../src/domain/fish/FishSpecies'
 import type { FishingMethod } from '../src/domain/method/FishingMethod'
 import type { ShopItem } from '../src/domain/shop/ShopItem'
@@ -90,6 +91,7 @@ export const runValidateContent = (argv: readonly string[], cwd: string): Valida
     gear: of<GearItem>('gear'),
     methods: of<FishingMethod>('methods'),
     brands: of<BrandDefinition>('brands'),
+    gearSeries: of<GearSeries>('gear-series'),
   })
 
   if (referenceIssues.length > 0) {

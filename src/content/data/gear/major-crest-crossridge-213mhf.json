@@ -1,0 +1,21 @@
+{
+  "id": "major-crest-crossridge-213mhf",
+  "name": "CROSSRIDGE 213MHF",
+  "price": 13300,
+  "category": "rod",
+  "brandId": "major-crest",
+  "seriesId": "major-crest-crossridge",
+  "seriesCategory": "bass",
+  "lengthM": 2.13,
+  "power": "MH",
+  "action": "fast",
+  "minLureWeightG": 7,
+  "maxLureWeightG": 28,
+  "recommendedLineMinKg": 6,
+  "recommendedLineMaxKg": 14,
+  "weightG": 166,
+  "sensitivity": 0.63,
+  "control": 0.62,
+  "fightingPower": 0.61,
+  "castingProfile": 0.48
+}

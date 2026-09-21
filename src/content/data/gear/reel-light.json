@@ -4,6 +4,7 @@
   "price": 16000,
   "category": "reel",
   "brandId": "shimara",
+  "seriesId": "legacy-reel-light",
   "series": "STRADIA",
   "reelType": "spinning",
   "sizeClass": 1000,

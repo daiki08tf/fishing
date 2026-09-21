@@ -1,0 +1,21 @@
+{
+  "id": "shimara-solvia-224lf",
+  "name": "SOLVIA 224LF",
+  "price": 26100,
+  "category": "rod",
+  "brandId": "shimara",
+  "seriesId": "shimara-solvia",
+  "seriesCategory": "eging",
+  "lengthM": 2.24,
+  "power": "L",
+  "action": "fast",
+  "minLureWeightG": 3,
+  "maxLureWeightG": 18,
+  "recommendedLineMinKg": 3,
+  "recommendedLineMaxKg": 8,
+  "weightG": 147,
+  "sensitivity": 0.68,
+  "control": 0.7,
+  "fightingPower": 0.6,
+  "castingProfile": 0.5
+}

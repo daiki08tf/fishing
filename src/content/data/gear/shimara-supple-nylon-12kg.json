@@ -1,0 +1,15 @@
+{
+  "id": "shimara-supple-nylon-12kg",
+  "name": "SUPPLE NYLON 12kg",
+  "price": 2300,
+  "category": "line",
+  "brandId": "shimara",
+  "seriesId": "shimara-supple-nylon",
+  "lineType": "nylon",
+  "strengthKg": 12,
+  "diameterMm": 0.364,
+  "stretch": 0.86,
+  "abrasionResistance": 0.68,
+  "visibility": 0.5,
+  "sensitivity": 0.74
+}

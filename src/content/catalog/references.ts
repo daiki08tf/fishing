@@ -1,6 +1,7 @@
 import type { FishSpecies } from '../../domain/fish/FishSpecies'
 import { BAIT_TYPES, LURE_TYPES, type GearItem } from '../../domain/gear/Gear'
 import type { BrandDefinition } from '../../domain/gear/Brand'
+import type { GearSeries } from '../../domain/gear/GearSeries'
 import type { FishingMethod } from '../../domain/method/FishingMethod'
 import type { ShopItem } from '../../domain/shop/ShopItem'
 import type { FishingSpot } from '../../domain/world/FishingSpot'
@@ -34,6 +35,7 @@ export type ContentReferenceInput = {
   readonly gear: readonly GearItem[]
   readonly methods: readonly FishingMethod[]
   readonly brands: readonly BrandDefinition[]
+  readonly gearSeries?: readonly GearSeries[]
 }
 
 /** offering の相性タグとして使える語彙（lureType / baitType / gear の targetProfile）。 */
@@ -65,10 +67,12 @@ export const validateContentReferences = (
   input: ContentReferenceInput,
 ): readonly ContentReferenceIssue[] => {
   const issues: ContentReferenceIssue[] = []
+  const gearSeries = input.gearSeries ?? []
   const speciesIds = new Set(input.species.map((entry) => String(entry.id)))
   const gearById = new Map(input.gear.map((entry) => [String(entry.id), entry]))
   const methodIds = new Set(input.methods.map((entry) => entry.id))
   const brandIds = new Set(input.brands.map((entry) => String(entry.id)))
+  const seriesById = new Map(gearSeries.map((entry) => [entry.id, entry]))
   const offeringTags = knownOfferingTags(input.gear)
   /*
    * Tackle（Gear + Method）が同梱されていない部分的な Content 集合
@@ -76,6 +80,47 @@ export const validateContentReferences = (
    * Spot → 魚種のような Tackle に依存しない参照は常に検査する。
    */
   const hasTackleCatalog = input.gear.length > 0 && input.methods.length > 0
+
+  // 0. id の重複（同じ id が 2 つあると、後から読んだ方が黙って勝つ）。
+  const duplicate = (kind: string, values: readonly string[]): void => {
+    const seen = new Set<string>()
+
+    for (const value of values) {
+      if (seen.has(value)) {
+        issues.push({ path: kind, message: `duplicate id ${value}` })
+      }
+      seen.add(value)
+    }
+  }
+
+  duplicate(
+    'brands',
+    input.brands.map((entry) => String(entry.id)),
+  )
+  duplicate(
+    'gear-series',
+    gearSeries.map((entry) => entry.id),
+  )
+  duplicate(
+    'gear',
+    input.gear.map((entry) => String(entry.id)),
+  )
+  duplicate(
+    'methods',
+    input.methods.map((entry) => entry.id),
+  )
+  duplicate(
+    'fish-species',
+    input.species.map((entry) => String(entry.id)),
+  )
+  duplicate(
+    'fishing-spots',
+    input.spots.map((entry) => String(entry.id)),
+  )
+  duplicate(
+    'shop-items',
+    input.shopItems.map((entry) => String(entry.id)),
+  )
 
   // 1. Spot の fishTable は実在する魚種を指す。
   for (const spot of input.spots) {
@@ -95,6 +140,48 @@ export const validateContentReferences = (
       issues.push({
         path: `gear/${String(item.id)}`,
         message: `unknown brandId ${String(item.brandId)}`,
+      })
+    }
+
+    if (item.seriesId !== undefined) {
+      const series = seriesById.get(item.seriesId)
+
+      if (series === undefined) {
+        issues.push({
+          path: `gear/${String(item.id)}`,
+          message: `unknown seriesId ${item.seriesId}`,
+        })
+      } else {
+        if (item.brandId !== undefined && series.brandId !== item.brandId) {
+          issues.push({
+            path: `gear/${String(item.id)}`,
+            message: `seriesId ${item.seriesId} belongs to brand ${String(series.brandId)}`,
+          })
+        }
+
+        if (series.category !== item.category) {
+          issues.push({
+            path: `gear/${String(item.id)}`,
+            message: `seriesId ${item.seriesId} is for ${series.category}, not ${item.category}`,
+          })
+        }
+
+        if (item.series !== undefined && item.series !== series.name) {
+          issues.push({
+            path: `gear/${String(item.id)}`,
+            message: `series name ${item.series} does not match series ${series.name}`,
+          })
+        }
+      }
+    }
+  }
+
+  // 2b. Series のブランドは実在すること。
+  for (const series of gearSeries) {
+    if (!brandIds.has(String(series.brandId))) {
+      issues.push({
+        path: `gear-series/${series.id}`,
+        message: `unknown brandId ${String(series.brandId)}`,
       })
     }
   }

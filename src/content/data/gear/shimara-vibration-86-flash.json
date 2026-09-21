@@ -1,0 +1,18 @@
+{
+  "id": "shimara-vibration-86-flash",
+  "name": "Vibration 86 Flash",
+  "price": 1700,
+  "category": "lure",
+  "brandId": "shimara",
+  "lureType": "vibration",
+  "weightG": 18,
+  "lengthMm": 86,
+  "depthRangeM": {
+    "min": 4,
+    "max": 15
+  },
+  "retrieveStyle": "steady/lift-fall",
+  "action": "vibration",
+  "visualProfile": "flash",
+  "targetProfile": ["mid"]
+}

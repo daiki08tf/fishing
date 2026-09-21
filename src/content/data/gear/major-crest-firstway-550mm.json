@@ -1,0 +1,21 @@
+{
+  "id": "major-crest-firstway-550mm",
+  "name": "FIRSTWAY 550MM",
+  "price": 31000,
+  "category": "rod",
+  "brandId": "major-crest",
+  "seriesId": "major-crest-firstway",
+  "seriesCategory": "float_fishing",
+  "lengthM": 5.5,
+  "power": "M",
+  "action": "moderate",
+  "minLureWeightG": 2,
+  "maxLureWeightG": 20,
+  "recommendedLineMinKg": 3,
+  "recommendedLineMaxKg": 10,
+  "weightG": 261,
+  "sensitivity": 0.59,
+  "control": 0.58,
+  "fightingPower": 0.57,
+  "castingProfile": 1
+}

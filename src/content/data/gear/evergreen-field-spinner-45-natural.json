@@ -1,0 +1,18 @@
+{
+  "id": "evergreen-field-spinner-45-natural",
+  "name": "Spinner 45 Natural",
+  "price": 1300,
+  "category": "lure",
+  "brandId": "evergreen-field",
+  "lureType": "spinner",
+  "weightG": 2,
+  "lengthMm": 45,
+  "depthRangeM": {
+    "min": 0.5,
+    "max": 3.5
+  },
+  "retrieveStyle": "steady",
+  "action": "flutter",
+  "visualProfile": "natural",
+  "targetProfile": ["small"]
+}

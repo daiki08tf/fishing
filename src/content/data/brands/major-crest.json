@@ -1,8 +1,8 @@
 {
   "id": "major-crest",
   "name": "Major Crest",
-  "description": "大型魚向けのメタルジグを扱う架空のブランド。検証用。",
-  "specialties": ["metal_jig", "big_game"],
-  "countryStyle": "international",
-  "tagline": "遠くへ、深くへ。"
+  "description": "メジャークレスト。価格を抑えつつ実用性能を確保する入門〜中級向け。（架空ブランド。検証用）",
+  "specialties": ["value", "versatility", "starter"],
+  "countryStyle": "japan_domestic",
+  "tagline": "信頼を、もっと身近に。"
 }

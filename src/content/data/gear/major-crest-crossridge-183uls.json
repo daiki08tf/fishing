@@ -1,0 +1,21 @@
+{
+  "id": "major-crest-crossridge-183uls",
+  "name": "CROSSRIDGE 183ULS",
+  "price": 32000,
+  "category": "rod",
+  "brandId": "major-crest",
+  "seriesId": "major-crest-crossridge",
+  "seriesCategory": "trout",
+  "lengthM": 1.83,
+  "power": "UL",
+  "action": "slow",
+  "minLureWeightG": 0.5,
+  "maxLureWeightG": 5,
+  "recommendedLineMinKg": 1,
+  "recommendedLineMaxKg": 4,
+  "weightG": 146,
+  "sensitivity": 0.56,
+  "control": 0.62,
+  "fightingPower": 0.57,
+  "castingProfile": 0.41
+}

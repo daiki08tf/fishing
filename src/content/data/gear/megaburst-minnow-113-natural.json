@@ -1,0 +1,19 @@
+{
+  "id": "megaburst-minnow-113-natural",
+  "name": "Minnow 113 Natural",
+  "price": 2100,
+  "category": "lure",
+  "brandId": "megaburst",
+  "seriesId": "megaburst-visionarc",
+  "lureType": "minnow",
+  "weightG": 18,
+  "lengthMm": 113,
+  "depthRangeM": {
+    "min": 0.5,
+    "max": 3.5
+  },
+  "retrieveStyle": "steady/twitch",
+  "action": "dart",
+  "visualProfile": "natural",
+  "targetProfile": ["mid"]
+}

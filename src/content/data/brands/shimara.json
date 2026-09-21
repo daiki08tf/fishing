@@ -1,8 +1,8 @@
 {
   "id": "shimara",
   "name": "Shimara",
-  "description": "巻き物と繊細なロッドを得意とする架空の国内ブランド。検証用。",
-  "specialties": ["spinning_reel", "finesse_rod"],
+  "description": "シマラ。総合ブランド。ドラッグ初動・巻きの滑らかさ・総合バランスで差をつける。（架空ブランド。検証用）",
+  "specialties": ["balanced", "smooth-drag", "precision"],
   "countryStyle": "japan_domestic",
-  "tagline": "軽さは、正義。"
+  "tagline": "滑らかさは、武器になる。"
 }

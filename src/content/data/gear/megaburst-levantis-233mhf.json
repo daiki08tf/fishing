@@ -1,0 +1,21 @@
+{
+  "id": "megaburst-levantis-233mhf",
+  "name": "LEVANTIS 233MHF",
+  "price": 26900,
+  "category": "rod",
+  "brandId": "megaburst",
+  "seriesId": "megaburst-levantis",
+  "seriesCategory": "bass",
+  "lengthM": 2.33,
+  "power": "MH",
+  "action": "fast",
+  "minLureWeightG": 7,
+  "maxLureWeightG": 28,
+  "recommendedLineMinKg": 6,
+  "recommendedLineMaxKg": 14,
+  "weightG": 158,
+  "sensitivity": 0.71,
+  "control": 0.71,
+  "fightingPower": 0.62,
+  "castingProfile": 0.52
+}

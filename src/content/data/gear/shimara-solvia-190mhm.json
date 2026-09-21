@@ -1,0 +1,21 @@
+{
+  "id": "shimara-solvia-190mhm",
+  "name": "SOLVIA 190MHM",
+  "price": 39700,
+  "category": "rod",
+  "brandId": "shimara",
+  "seriesId": "shimara-solvia",
+  "seriesCategory": "bait_fishing",
+  "lengthM": 1.9,
+  "power": "MH",
+  "action": "moderate",
+  "minLureWeightG": 20,
+  "maxLureWeightG": 80,
+  "recommendedLineMinKg": 10,
+  "recommendedLineMaxKg": 30,
+  "weightG": 147,
+  "sensitivity": 0.64,
+  "control": 0.7,
+  "fightingPower": 0.65,
+  "castingProfile": 0.43
+}

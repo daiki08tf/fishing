@@ -1,0 +1,32 @@
+{
+  "id": "blue-horizon-pelagic-10000pg",
+  "name": "PELAGIC 10000PG",
+  "price": 61800,
+  "category": "reel",
+  "brandId": "blue-horizon",
+  "seriesId": "blue-horizon-pelagic",
+  "reelType": "spinning",
+  "sizeClass": 10000,
+  "variant": "PG",
+  "size": 10000,
+  "gearRatio": 4.6,
+  "maxDragKg": 25.8,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 12.9,
+      "capacityM": 335
+    },
+    {
+      "lineStrengthKg": 38.7,
+      "capacityM": 112
+    }
+  ],
+  "retrieveCmPerTurn": 93,
+  "weightG": 548,
+  "smoothness": 0.6,
+  "control": 0.43,
+  "dragStartup": 0.6,
+  "rigidity": 0.7,
+  "windingTorque": 0.79,
+  "response": 0.56
+}

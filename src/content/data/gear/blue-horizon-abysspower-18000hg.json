@@ -1,0 +1,32 @@
+{
+  "id": "blue-horizon-abysspower-18000hg",
+  "name": "ABYSSPOWER 18000HG",
+  "price": 111200,
+  "category": "reel",
+  "brandId": "blue-horizon",
+  "seriesId": "blue-horizon-abysspower",
+  "reelType": "spinning",
+  "sizeClass": 18000,
+  "variant": "HG",
+  "size": 18000,
+  "gearRatio": 5.7,
+  "maxDragKg": 34.2,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 17.1,
+      "capacityM": 529
+    },
+    {
+      "lineStrengthKg": 51.3,
+      "capacityM": 176
+    }
+  ],
+  "retrieveCmPerTurn": 144,
+  "weightG": 821,
+  "smoothness": 0.6,
+  "control": 0.4,
+  "dragStartup": 0.6,
+  "rigidity": 0.78,
+  "windingTorque": 0.71,
+  "response": 0.56
+}

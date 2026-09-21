@@ -1,0 +1,18 @@
+{
+  "id": "shimara-minnow-85-flash",
+  "name": "Minnow 85 Flash",
+  "price": 1000,
+  "category": "lure",
+  "brandId": "shimara",
+  "lureType": "minnow",
+  "weightG": 5,
+  "lengthMm": 85,
+  "depthRangeM": {
+    "min": 0.5,
+    "max": 3.5
+  },
+  "retrieveStyle": "steady/twitch",
+  "action": "dart",
+  "visualProfile": "flash",
+  "targetProfile": ["small"]
+}

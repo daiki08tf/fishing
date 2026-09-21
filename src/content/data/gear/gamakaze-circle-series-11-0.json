@@ -1,0 +1,14 @@
+{
+  "id": "gamakaze-circle-series-11-0",
+  "name": "Circle Series 11/0",
+  "price": 1010,
+  "category": "hook",
+  "brandId": "gamakaze",
+  "seriesId": "gamakaze-circle-series",
+  "size": -11,
+  "strengthKg": 32.5,
+  "gaugeMm": 1.21,
+  "hookType": "circle",
+  "penetration": 0.62,
+  "holdingPower": 0.97
+}

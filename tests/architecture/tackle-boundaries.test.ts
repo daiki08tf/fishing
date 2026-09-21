@@ -1,4 +1,4 @@
-import { readFileSync, readdirSync } from 'node:fs'
+import { existsSync, readFileSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { findForbiddenImports, findForbiddenPatterns } from './sourceScanner'
@@ -32,6 +32,21 @@ const gearIds = (): readonly string[] => {
 /** offering の種類名。Engine が Lure の種類を知ったら違反。 */
 const OFFERING_TYPE_WORDS =
   /\b(minnow|shad|crankbait|vibration|spinner|spoon|soft_plastic|topwater)\b/
+
+/** Content のブランド名 / Series 名（Engine が知ってはいけない固有名）。 */
+const contentNames = (directory: string, key: string): readonly string[] => {
+  const root = join(projectRoot(), 'src/content/data', directory)
+
+  if (!existsSync(root)) {
+    return []
+  }
+
+  return readdirSync(root)
+    .filter((name) => name.endsWith('.json'))
+    .map((name) => JSON.parse(readFileSync(join(root, name), 'utf8')) as Record<string, unknown>)
+    .map((entry) => entry[key])
+    .filter((value): value is string => typeof value === 'string' && value.length >= 4)
+}
 
 describe('tackle boundaries', () => {
   const sources = readProjectSources()
@@ -79,6 +94,37 @@ describe('tackle boundaries', () => {
       matches: isEncounterDomain,
       pattern: OFFERING_TYPE_WORDS,
       reason: 'encounter must not know lure types',
+    })
+
+    expect(violations).toEqual([])
+  })
+
+  it('keeps the fishing and encounter engines free of brand and series names', () => {
+    const names = [...contentNames('brands', 'name'), ...contentNames('gear-series', 'name')]
+
+    expect(names.length).toBeGreaterThan(50)
+
+    for (const name of names) {
+      const pattern = new RegExp(`\\b${name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i')
+
+      for (const matches of [isFishingDomain, isEncounterDomain]) {
+        const violations = findForbiddenPatterns(sources, {
+          matches,
+          pattern,
+          reason: 'the engine must not know brand or series names',
+        })
+
+        expect(violations, `content name ${name} leaked into the engine`).toEqual([])
+      }
+    }
+  })
+
+  it('keeps the fishing engine free of reel size labels', () => {
+    // 番手は Content の整理軸であり、Engine の分岐条件ではない。
+    const violations = findForbiddenPatterns(sources, {
+      matches: isFishingDomain,
+      pattern: /\b(sizeClass|1000|2000|3000|4000|5000|6000|8000|14000|18000|20000|30000)\b/,
+      reason: 'the engine must not branch on reel size class',
     })
 
     expect(violations).toEqual([])

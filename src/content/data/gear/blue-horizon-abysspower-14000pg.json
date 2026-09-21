@@ -1,0 +1,32 @@
+{
+  "id": "blue-horizon-abysspower-14000pg",
+  "name": "ABYSSPOWER 14000PG",
+  "price": 94400,
+  "category": "reel",
+  "brandId": "blue-horizon",
+  "seriesId": "blue-horizon-abysspower",
+  "reelType": "spinning",
+  "sizeClass": 14000,
+  "variant": "PG",
+  "size": 14000,
+  "gearRatio": 4.6,
+  "maxDragKg": 31.4,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 15.7,
+      "capacityM": 425
+    },
+    {
+      "lineStrengthKg": 47.1,
+      "capacityM": 142
+    }
+  ],
+  "retrieveCmPerTurn": 100,
+  "weightG": 710,
+  "smoothness": 0.6,
+  "control": 0.4,
+  "dragStartup": 0.6,
+  "rigidity": 0.78,
+  "windingTorque": 0.79,
+  "response": 0.56
+}

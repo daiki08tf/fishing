@@ -1,0 +1,18 @@
+{
+  "id": "tail-walker-jig-88-natural",
+  "name": "Jig 88 Natural",
+  "price": 3700,
+  "category": "lure",
+  "brandId": "tail-walker",
+  "lureType": "jig",
+  "weightG": 60,
+  "lengthMm": 88,
+  "depthRangeM": {
+    "min": 4,
+    "max": 15
+  },
+  "retrieveStyle": "jerk/fall",
+  "action": "slide",
+  "visualProfile": "natural",
+  "targetProfile": ["large", "big"]
+}

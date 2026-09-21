@@ -1,0 +1,18 @@
+{
+  "id": "megaburst-shad-67-flash",
+  "name": "Shad 67 Flash",
+  "price": 1500,
+  "category": "lure",
+  "brandId": "megaburst",
+  "lureType": "shad",
+  "weightG": 5,
+  "lengthMm": 67,
+  "depthRangeM": {
+    "min": 0.5,
+    "max": 3.5
+  },
+  "retrieveStyle": "steady",
+  "action": "wobble",
+  "visualProfile": "flash",
+  "targetProfile": ["small"]
+}

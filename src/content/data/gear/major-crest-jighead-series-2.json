@@ -1,0 +1,14 @@
+{
+  "id": "major-crest-jighead-series-2",
+  "name": "Jighead Series #2",
+  "price": 630,
+  "category": "hook",
+  "brandId": "major-crest",
+  "seriesId": "major-crest-jighead-series",
+  "size": 2,
+  "strengthKg": 12.3,
+  "gaugeMm": 0.71,
+  "hookType": "jighead",
+  "penetration": 0.71,
+  "holdingPower": 0.69
+}

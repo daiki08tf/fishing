@@ -1,0 +1,15 @@
+{
+  "id": "major-crest-basic-nylon-8kg",
+  "name": "BASIC NYLON 8kg",
+  "price": 1800,
+  "category": "line",
+  "brandId": "major-crest",
+  "seriesId": "major-crest-basic-nylon",
+  "lineType": "nylon",
+  "strengthKg": 8,
+  "diameterMm": 0.311,
+  "stretch": 0.82,
+  "abrasionResistance": 0.62,
+  "visibility": 0.55,
+  "sensitivity": 0.7
+}

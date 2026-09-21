@@ -1,0 +1,32 @@
+{
+  "id": "shimara-stellion-30000hg",
+  "name": "STELLION 30000HG",
+  "price": 124000,
+  "category": "reel",
+  "brandId": "shimara",
+  "seriesId": "shimara-stellion",
+  "reelType": "spinning",
+  "sizeClass": 30000,
+  "variant": "HG",
+  "size": 30000,
+  "gearRatio": 5.7,
+  "maxDragKg": 36.1,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 18.1,
+      "capacityM": 951
+    },
+    {
+      "lineStrengthKg": 54.2,
+      "capacityM": 317
+    }
+  ],
+  "retrieveCmPerTurn": 167,
+  "weightG": 941,
+  "smoothness": 0.76,
+  "control": 0.46,
+  "dragStartup": 0.74,
+  "rigidity": 0.69,
+  "windingTorque": 0.6,
+  "response": 0.62
+}

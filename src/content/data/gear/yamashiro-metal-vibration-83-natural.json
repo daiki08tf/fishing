@@ -1,0 +1,19 @@
+{
+  "id": "yamashiro-metal-vibration-83-natural",
+  "name": "Metal Vibration 83 Natural",
+  "price": 2700,
+  "category": "lure",
+  "brandId": "yamashiro",
+  "seriesId": "yamashiro-marinebeat",
+  "lureType": "metal_vibration",
+  "weightG": 35,
+  "lengthMm": 83,
+  "depthRangeM": {
+    "min": 4,
+    "max": 15
+  },
+  "retrieveStyle": "steady/lift-fall",
+  "action": "vibration",
+  "visualProfile": "natural",
+  "targetProfile": ["large"]
+}

@@ -1,0 +1,18 @@
+{
+  "id": "major-crest-jig-60-natural",
+  "name": "Jig 60 Natural",
+  "price": 1300,
+  "category": "lure",
+  "brandId": "major-crest",
+  "lureType": "jig",
+  "weightG": 10,
+  "lengthMm": 60,
+  "depthRangeM": {
+    "min": 4,
+    "max": 15
+  },
+  "retrieveStyle": "jerk/fall",
+  "action": "slide",
+  "visualProfile": "natural",
+  "targetProfile": ["mid"]
+}

@@ -1,0 +1,15 @@
+{
+  "id": "gamakaze-rock-fluoro-3kg",
+  "name": "ROCK FLUORO 3kg",
+  "price": 1500,
+  "category": "line",
+  "brandId": "gamakaze",
+  "seriesId": "gamakaze-rock-fluoro",
+  "lineType": "fluorocarbon",
+  "strengthKg": 3,
+  "diameterMm": 0.208,
+  "stretch": 0.55,
+  "abrasionResistance": 0.92,
+  "visibility": 0.4,
+  "sensitivity": 0.58
+}

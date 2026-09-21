@@ -1,0 +1,18 @@
+{
+  "id": "major-crest-spinner-52-natural",
+  "name": "Spinner 52 Natural",
+  "price": 900,
+  "category": "lure",
+  "brandId": "major-crest",
+  "lureType": "spinner",
+  "weightG": 3,
+  "lengthMm": 52,
+  "depthRangeM": {
+    "min": 0.5,
+    "max": 3.5
+  },
+  "retrieveStyle": "steady",
+  "action": "flutter",
+  "visualProfile": "natural",
+  "targetProfile": ["small"]
+}

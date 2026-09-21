@@ -1,0 +1,32 @@
+{
+  "id": "major-crest-entryx-1000s",
+  "name": "ENTRYX 1000S",
+  "price": 3800,
+  "category": "reel",
+  "brandId": "major-crest",
+  "seriesId": "major-crest-entryx",
+  "reelType": "spinning",
+  "sizeClass": 1000,
+  "variant": "S",
+  "size": 1000,
+  "gearRatio": 5.2,
+  "maxDragKg": 2.8,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 1.4,
+      "capacityM": 132
+    },
+    {
+      "lineStrengthKg": 4.2,
+      "capacityM": 44
+    }
+  ],
+  "retrieveCmPerTurn": 60,
+  "weightG": 176,
+  "smoothness": 0.55,
+  "control": 0.61,
+  "dragStartup": 0.55,
+  "rigidity": 0.58,
+  "windingTorque": 0.59,
+  "response": 0.58
+}

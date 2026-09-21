@@ -53,4 +53,5 @@ export const loadContentFromDirectory = (
     gear: readKindDirectory(root, 'gear'),
     methods: readKindDirectory(root, 'methods'),
     brands: readKindDirectory(root, 'brands'),
+    gearSeries: readKindDirectory(root, 'gear-series'),
   })

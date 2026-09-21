@@ -1,0 +1,18 @@
+{
+  "id": "megaburst-vibration-100-natural",
+  "name": "Vibration 100 Natural",
+  "price": 2600,
+  "category": "lure",
+  "brandId": "megaburst",
+  "lureType": "vibration",
+  "weightG": 28,
+  "lengthMm": 100,
+  "depthRangeM": {
+    "min": 4,
+    "max": 15
+  },
+  "retrieveStyle": "steady/lift-fall",
+  "action": "vibration",
+  "visualProfile": "natural",
+  "targetProfile": ["large"]
+}

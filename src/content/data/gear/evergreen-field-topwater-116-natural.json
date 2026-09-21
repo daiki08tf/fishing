@@ -1,0 +1,18 @@
+{
+  "id": "evergreen-field-topwater-116-natural",
+  "name": "Topwater 116 Natural",
+  "price": 2100,
+  "category": "lure",
+  "brandId": "evergreen-field",
+  "lureType": "topwater",
+  "weightG": 18,
+  "lengthMm": 116,
+  "depthRangeM": {
+    "min": 0,
+    "max": 0.5
+  },
+  "retrieveStyle": "walk/pop",
+  "action": "walk",
+  "visualProfile": "natural",
+  "targetProfile": ["mid"]
+}

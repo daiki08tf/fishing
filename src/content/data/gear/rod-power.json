@@ -4,6 +4,7 @@
   "price": 42000,
   "category": "rod",
   "brandId": "tail-walker",
+  "seriesId": "legacy-rod-power",
   "series": "TIDEPOWER",
   "seriesCategory": "shore_jigging",
   "lengthM": 2.29,

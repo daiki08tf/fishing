@@ -1,8 +1,8 @@
 {
   "id": "evergreen-field",
   "name": "Evergreen Field",
-  "description": "スプーンや天然素材の餌を扱う架空のブランド。検証用。",
-  "specialties": ["spoon", "bait"],
+  "description": "エバーグリーンフィールド。操作系ルアーと高感度ロッドに強い高価格帯ブランド。（架空ブランド。検証用）",
+  "specialties": ["precision", "lure", "high-end"],
   "countryStyle": "japan_domestic",
-  "tagline": "自然に、似せる。"
+  "tagline": "一投に、理由を。"
 }

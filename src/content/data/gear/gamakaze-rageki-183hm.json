@@ -1,0 +1,21 @@
+{
+  "id": "gamakaze-rageki-183hm",
+  "name": "RAGEKI 183HM",
+  "price": 36000,
+  "category": "rod",
+  "brandId": "gamakaze",
+  "seriesId": "gamakaze-rageki",
+  "seriesCategory": "offshore_jigging",
+  "lengthM": 1.83,
+  "power": "H",
+  "action": "moderate",
+  "minLureWeightG": 80,
+  "maxLureWeightG": 220,
+  "recommendedLineMinKg": 20,
+  "recommendedLineMaxKg": 50,
+  "weightG": 163,
+  "sensitivity": 0.63,
+  "control": 0.64,
+  "fightingPower": 0.74,
+  "castingProfile": 0.41
+}

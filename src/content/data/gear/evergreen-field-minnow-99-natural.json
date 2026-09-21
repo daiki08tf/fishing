@@ -1,0 +1,19 @@
+{
+  "id": "evergreen-field-minnow-99-natural",
+  "name": "Minnow 99 Natural",
+  "price": 1700,
+  "category": "lure",
+  "brandId": "evergreen-field",
+  "seriesId": "evergreen-field-faithrun",
+  "lureType": "minnow",
+  "weightG": 10,
+  "lengthMm": 99,
+  "depthRangeM": {
+    "min": 0.5,
+    "max": 3.5
+  },
+  "retrieveStyle": "steady/twitch",
+  "action": "dart",
+  "visualProfile": "natural",
+  "targetProfile": ["mid"]
+}

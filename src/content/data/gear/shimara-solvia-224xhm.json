@@ -1,0 +1,21 @@
+{
+  "id": "shimara-solvia-224xhm",
+  "name": "SOLVIA 224XHM",
+  "price": 36300,
+  "category": "rod",
+  "brandId": "shimara",
+  "seriesId": "shimara-solvia",
+  "seriesCategory": "big_game",
+  "lengthM": 2.24,
+  "power": "XH",
+  "action": "moderate",
+  "minLureWeightG": 60,
+  "maxLureWeightG": 200,
+  "recommendedLineMinKg": 25,
+  "recommendedLineMaxKg": 60,
+  "weightG": 169,
+  "sensitivity": 0.64,
+  "control": 0.7,
+  "fightingPower": 0.7,
+  "castingProfile": 0.5
+}

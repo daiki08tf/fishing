@@ -1,0 +1,32 @@
+{
+  "id": "shimara-stellion-10000pg",
+  "name": "STELLION 10000PG",
+  "price": 65900,
+  "category": "reel",
+  "brandId": "shimara",
+  "seriesId": "shimara-stellion",
+  "reelType": "spinning",
+  "sizeClass": 10000,
+  "variant": "PG",
+  "size": 10000,
+  "gearRatio": 4.6,
+  "maxDragKg": 23.3,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 11.7,
+      "capacityM": 370
+    },
+    {
+      "lineStrengthKg": 35,
+      "capacityM": 124
+    }
+  ],
+  "retrieveCmPerTurn": 103,
+  "weightG": 488,
+  "smoothness": 0.76,
+  "control": 0.52,
+  "dragStartup": 0.74,
+  "rigidity": 0.69,
+  "windingTorque": 0.67,
+  "response": 0.62
+}

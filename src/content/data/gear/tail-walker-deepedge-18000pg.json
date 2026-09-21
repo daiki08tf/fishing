@@ -1,0 +1,32 @@
+{
+  "id": "tail-walker-deepedge-18000pg",
+  "name": "DEEPEDGE 18000PG",
+  "price": 69600,
+  "category": "reel",
+  "brandId": "tail-walker",
+  "seriesId": "tail-walker-deepedge",
+  "reelType": "spinning",
+  "sizeClass": 18000,
+  "variant": "PG",
+  "size": 18000,
+  "gearRatio": 4.6,
+  "maxDragKg": 32.4,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 16.2,
+      "capacityM": 559
+    },
+    {
+      "lineStrengthKg": 48.6,
+      "capacityM": 186
+    }
+  ],
+  "retrieveCmPerTurn": 107,
+  "weightG": 806,
+  "smoothness": 0.58,
+  "control": 0.41,
+  "dragStartup": 0.58,
+  "rigidity": 0.72,
+  "windingTorque": 0.74,
+  "response": 0.58
+}

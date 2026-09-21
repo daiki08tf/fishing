@@ -1,0 +1,32 @@
+{
+  "id": "daiva-certex-10000pg",
+  "name": "CERTEX 10000PG",
+  "price": 66800,
+  "category": "reel",
+  "brandId": "daiva",
+  "seriesId": "daiva-certex",
+  "reelType": "spinning",
+  "sizeClass": 10000,
+  "variant": "PG",
+  "size": 10000,
+  "gearRatio": 4.6,
+  "maxDragKg": 22.4,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 11.2,
+      "capacityM": 386
+    },
+    {
+      "lineStrengthKg": 33.6,
+      "capacityM": 129
+    }
+  ],
+  "retrieveCmPerTurn": 111,
+  "weightG": 459,
+  "smoothness": 0.72,
+  "control": 0.53,
+  "dragStartup": 0.62,
+  "rigidity": 0.66,
+  "windingTorque": 0.65,
+  "response": 0.67
+}

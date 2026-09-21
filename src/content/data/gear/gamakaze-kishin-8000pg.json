@@ -1,0 +1,32 @@
+{
+  "id": "gamakaze-kishin-8000pg",
+  "name": "KISHIN 8000PG",
+  "price": 51800,
+  "category": "reel",
+  "brandId": "gamakaze",
+  "seriesId": "gamakaze-kishin",
+  "reelType": "spinning",
+  "sizeClass": 8000,
+  "variant": "PG",
+  "size": 8000,
+  "gearRatio": 4.6,
+  "maxDragKg": 21.4,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 10.7,
+      "capacityM": 303
+    },
+    {
+      "lineStrengthKg": 32.1,
+      "capacityM": 101
+    }
+  ],
+  "retrieveCmPerTurn": 94,
+  "weightG": 451,
+  "smoothness": 0.62,
+  "control": 0.51,
+  "dragStartup": 0.66,
+  "rigidity": 0.74,
+  "windingTorque": 0.72,
+  "response": 0.59
+}

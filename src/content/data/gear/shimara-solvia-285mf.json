@@ -1,0 +1,21 @@
+{
+  "id": "shimara-solvia-285mf",
+  "name": "SOLVIA 285MF",
+  "price": 29500,
+  "category": "rod",
+  "brandId": "shimara",
+  "seriesId": "shimara-solvia",
+  "seriesCategory": "surf",
+  "lengthM": 2.85,
+  "power": "M",
+  "action": "fast",
+  "minLureWeightG": 10,
+  "maxLureWeightG": 45,
+  "recommendedLineMinKg": 8,
+  "recommendedLineMaxKg": 18,
+  "weightG": 165,
+  "sensitivity": 0.68,
+  "control": 0.66,
+  "fightingPower": 0.6,
+  "castingProfile": 0.69
+}

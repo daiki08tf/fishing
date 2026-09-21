@@ -1,0 +1,14 @@
+{
+  "id": "gamakaze-offset-series-2-0",
+  "name": "Offset Series 2/0",
+  "price": 760,
+  "category": "hook",
+  "brandId": "gamakaze",
+  "seriesId": "gamakaze-offset-series",
+  "size": -2,
+  "strengthKg": 17.7,
+  "gaugeMm": 0.88,
+  "hookType": "offset",
+  "penetration": 0.69,
+  "holdingPower": 0.75
+}

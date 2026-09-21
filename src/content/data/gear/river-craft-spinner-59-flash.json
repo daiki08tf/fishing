@@ -1,0 +1,19 @@
+{
+  "id": "river-craft-spinner-59-flash",
+  "name": "Spinner 59 Flash",
+  "price": 1000,
+  "category": "lure",
+  "brandId": "river-craft",
+  "seriesId": "river-craft-flowminnow",
+  "lureType": "spinner",
+  "weightG": 5,
+  "lengthMm": 59,
+  "depthRangeM": {
+    "min": 0.5,
+    "max": 3.5
+  },
+  "retrieveStyle": "steady",
+  "action": "flutter",
+  "visualProfile": "flash",
+  "targetProfile": ["small"]
+}

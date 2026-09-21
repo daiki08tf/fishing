@@ -1,0 +1,21 @@
+{
+  "id": "major-crest-crossridge-251mlf",
+  "name": "CROSSRIDGE 251MLF",
+  "price": 18400,
+  "category": "rod",
+  "brandId": "major-crest",
+  "seriesId": "major-crest-crossridge",
+  "seriesCategory": "eging",
+  "lengthM": 2.51,
+  "power": "ML",
+  "action": "fast",
+  "minLureWeightG": 5,
+  "maxLureWeightG": 25,
+  "recommendedLineMinKg": 4,
+  "recommendedLineMaxKg": 10,
+  "weightG": 167,
+  "sensitivity": 0.63,
+  "control": 0.62,
+  "fightingPower": 0.57,
+  "castingProfile": 0.56
+}

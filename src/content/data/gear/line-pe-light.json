@@ -4,6 +4,7 @@
   "price": 3200,
   "category": "line",
   "brandId": "yamashiro",
+  "seriesId": "legacy-line-pe-light",
   "series": "PE X8",
   "lineType": "pe",
   "strengthKg": 5,

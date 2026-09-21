@@ -26,7 +26,7 @@ export const GEAR_CATEGORY_LABELS: Readonly<Record<GearCategory, string>> = {
 }
 
 /** ロッドのパワー。表示と相性の判断に使う（Engine の if 分岐には使わない）。 */
-export const ROD_POWERS = ['UL', 'L', 'ML', 'M', 'MH', 'H'] as const
+export const ROD_POWERS = ['UL', 'L', 'ML', 'M', 'MH', 'H', 'XH'] as const
 export type RodPower = (typeof ROD_POWERS)[number]
 
 export const ROD_ACTIONS = ['slow', 'moderate', 'fast', 'extra_fast'] as const
@@ -34,6 +34,10 @@ export type RodAction = (typeof ROD_ACTIONS)[number]
 
 export const REEL_TYPES = ['spinning', 'baitcasting', 'conventional', 'fly'] as const
 export type ReelType = (typeof REEL_TYPES)[number]
+
+/** リールの variant（スプール / ギア比の違い）。表示と整理のための属性。 */
+export const REEL_VARIANTS = ['STD', 'S', 'HG', 'XG', 'PG'] as const
+export type ReelVariant = (typeof REEL_VARIANTS)[number]
 
 /**
  * リールの標準番手（sizeClass）。
@@ -66,29 +70,57 @@ export const ROD_SERIES_CATEGORIES = [
   'bait_fishing',
   'float_fishing',
   'bottom_fishing',
+  'chinning',
 ] as const
 export type RodSeriesCategory = (typeof ROD_SERIES_CATEGORIES)[number]
 
 export const LINE_TYPES = ['nylon', 'fluorocarbon', 'pe'] as const
 export type LineType = (typeof LINE_TYPES)[number]
 
-export const HOOK_TYPES = ['single', 'treble', 'circle', 'offset'] as const
+/**
+ * フックの形状。
+ *
+ * `assist` / `jighead` は「フックの一種」として扱う（Phase 6.5 ではカテゴリを増やさない）。
+ * ジグヘッドやアシストフックを独立カテゴリにしないのは、装備スロットを増やさないためである。
+ */
+export const HOOK_TYPES = ['single', 'treble', 'circle', 'offset', 'assist', 'jighead'] as const
 export type HookType = (typeof HOOK_TYPES)[number]
 
 export const LURE_TYPES = [
   'minnow',
   'shad',
   'crankbait',
+  'jerkbait',
   'vibration',
+  'metal_vibration',
   'spinner',
   'spoon',
   'jig',
   'soft_plastic',
   'topwater',
+  'popper',
+  'stickbait',
+  'egi',
 ] as const
 export type LureType = (typeof LURE_TYPES)[number]
 
-export const BAIT_TYPES = ['worm', 'paste', 'live', 'cut', 'artificial'] as const
+export const BAIT_TYPES = [
+  'worm',
+  'sandworm',
+  'shrimp',
+  'krill',
+  'shellfish',
+  'squid',
+  'fish',
+  'roe',
+  'dough',
+  'corn',
+  'insect',
+  'paste',
+  'live',
+  'cut',
+  'artificial',
+] as const
 export type BaitType = (typeof BAIT_TYPES)[number]
 
 export type RodDefinition = {
@@ -98,6 +130,8 @@ export type RodDefinition = {
   readonly price: number
   /** 架空ブランドへの参照（任意）。ブランドは性能を持たない。 */
   readonly brandId?: BrandId
+  /** Product Series への参照（任意）。`gear-series` Content に存在する必要がある。 */
+  readonly seriesId?: string
   /** Product Series の名前（表示用。任意）。 */
   readonly series?: string
   /** Series の用途カテゴリ（表示用。任意）。 */
@@ -133,12 +167,13 @@ export type ReelDefinition = {
   readonly name: string
   readonly price: number
   readonly brandId?: BrandId
+  readonly seriesId?: string
   readonly series?: string
   readonly reelType: ReelType
   /** 標準番手（表示・整理用）。実性能は下のスペックから解決する。 */
   readonly sizeClass?: ReelSizeClass
-  /** 'S' / 'HG' / 'XG' / 'PG' などの variant（表示用。任意）。 */
-  readonly variant?: string
+  /** 'STD' / 'S' / 'HG' / 'XG' / 'PG'（表示用。任意）。 */
+  readonly variant?: ReelVariant
   readonly size: number
   readonly gearRatio: number
   readonly maxDragKg: number
@@ -149,6 +184,17 @@ export type ReelDefinition = {
   readonly smoothness: number
   /** 操作のしやすさ（0〜1）。 */
   readonly control: number
+  /**
+   * ドラッグの初動の滑らかさ（0〜1）。
+   * 高いほど「魚が走り出しても急にテンションが跳ねない」。
+   */
+  readonly dragStartup?: number
+  /** ボディ・ギアの剛性（0〜1）。高いほど高負荷に強い。 */
+  readonly rigidity?: number
+  /** 巻き上げトルク（0〜1）。高いほど重い負荷を巻ける。 */
+  readonly windingTorque?: number
+  /** 巻き出しのレスポンス（0〜1）。高いほど即座に効く。 */
+  readonly response?: number
 }
 
 export type LineDefinition = {
@@ -157,6 +203,7 @@ export type LineDefinition = {
   readonly name: string
   readonly price: number
   readonly brandId?: BrandId
+  readonly seriesId?: string
   readonly series?: string
   readonly lineType: LineType
   readonly strengthKg: number
@@ -177,6 +224,7 @@ export type LeaderDefinition = {
   readonly name: string
   readonly price: number
   readonly brandId?: BrandId
+  readonly seriesId?: string
   readonly series?: string
   readonly material: string
   readonly strengthKg: number
@@ -192,9 +240,21 @@ export type HookDefinition = {
   readonly name: string
   readonly price: number
   readonly brandId?: BrandId
+  readonly seriesId?: string
   readonly series?: string
+  /**
+   * 針の大きさ。
+   *
+   * - 正の数: 号数（`6` = 6番）。数字が大きいほど**小さい**針。
+   * - 負の数: `1/0` 系（`-1` = 1/0、`-11` = 11/0）。数字が大きいほど**大きい**針。
+   *
+   * 現実の針は 2 系統の呼び方をするため、符号で区別する（0 は使わない）。
+   * 大小の比較は `hookSizeRank` を使う。
+   */
   readonly size: number
   readonly strengthKg: number
+  /** 針金の太さ（mm）。任意（PROVISIONAL）。 */
+  readonly gaugeMm?: number
   readonly hookType: HookType
   /** 掛かりやすさ（0〜1）。 */
   readonly penetration: number
@@ -208,6 +268,7 @@ export type LureDefinition = {
   readonly name: string
   readonly price: number
   readonly brandId?: BrandId
+  readonly seriesId?: string
   readonly series?: string
   readonly lureType: LureType
   readonly weightG: number
@@ -228,6 +289,7 @@ export type BaitDefinition = {
   readonly name: string
   readonly price: number
   readonly brandId?: BrandId
+  readonly seriesId?: string
   readonly series?: string
   readonly baitType: BaitType
   readonly presentation: string
@@ -256,6 +318,13 @@ export const isOffering = (gear: GearItem): gear is OfferingDefinition =>
 
 export const gearById = (items: readonly GearItem[], id: GearId): GearItem | undefined =>
   items.find((item) => item.id === id)
+
+/** 針の大小を表すランク（大きいほど大きい針）。`#6` は -6、`1/0` は +1。 */
+export const hookSizeRank = (hook: HookDefinition): number => -hook.size
+
+/** 針の表示（例: `6番` / `2/0号`）。 */
+export const formatHookSize = (size: number): string =>
+  size > 0 ? `${String(size)}番` : `${String(-size)}/0号`
 
 /** 表示用のブランド名を安全に取り出す（ブランドが無ければ空文字）。 */
 export const brandLabelOf = (

@@ -1,0 +1,32 @@
+{
+  "id": "shimara-nexara-1000s",
+  "name": "NEXARA 1000S",
+  "price": 6900,
+  "category": "reel",
+  "brandId": "shimara",
+  "seriesId": "shimara-nexara",
+  "reelType": "spinning",
+  "sizeClass": 1000,
+  "variant": "S",
+  "size": 1000,
+  "gearRatio": 5.2,
+  "maxDragKg": 3.1,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 1.6,
+      "capacityM": 116
+    },
+    {
+      "lineStrengthKg": 4.7,
+      "capacityM": 39
+    }
+  ],
+  "retrieveCmPerTurn": 64,
+  "weightG": 163,
+  "smoothness": 0.66,
+  "control": 0.68,
+  "dragStartup": 0.74,
+  "rigidity": 0.61,
+  "windingTorque": 0.6,
+  "response": 0.62
+}

@@ -1,0 +1,32 @@
+{
+  "id": "arvo-garsen-revox-6000pg",
+  "name": "REVOX 6000PG",
+  "price": 22900,
+  "category": "reel",
+  "brandId": "arvo-garsen",
+  "seriesId": "arvo-garsen-revox",
+  "reelType": "spinning",
+  "sizeClass": 6000,
+  "variant": "PG",
+  "size": 6000,
+  "gearRatio": 4.6,
+  "maxDragKg": 15.7,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 7.8,
+      "capacityM": 292
+    },
+    {
+      "lineStrengthKg": 23.5,
+      "capacityM": 97
+    }
+  ],
+  "retrieveCmPerTurn": 85,
+  "weightG": 371,
+  "smoothness": 0.58,
+  "control": 0.51,
+  "dragStartup": 0.58,
+  "rigidity": 0.68,
+  "windingTorque": 0.77,
+  "response": 0.55
+}

@@ -1,0 +1,21 @@
+{
+  "id": "gamakaze-rageki-210mhm",
+  "name": "RAGEKI 210MHM",
+  "price": 41100,
+  "category": "rod",
+  "brandId": "gamakaze",
+  "seriesId": "gamakaze-rageki",
+  "seriesCategory": "bait_fishing",
+  "lengthM": 2.1,
+  "power": "MH",
+  "action": "moderate",
+  "minLureWeightG": 20,
+  "maxLureWeightG": 80,
+  "recommendedLineMinKg": 10,
+  "recommendedLineMaxKg": 30,
+  "weightG": 159,
+  "sensitivity": 0.63,
+  "control": 0.64,
+  "fightingPower": 0.68,
+  "castingProfile": 0.47
+}

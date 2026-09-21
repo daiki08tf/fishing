@@ -1,0 +1,21 @@
+{
+  "id": "major-crest-crossridge-191mhm",
+  "name": "CROSSRIDGE 191MHM",
+  "price": 25200,
+  "category": "rod",
+  "brandId": "major-crest",
+  "seriesId": "major-crest-crossridge",
+  "seriesCategory": "offshore_jigging",
+  "lengthM": 1.91,
+  "power": "MH",
+  "action": "moderate",
+  "minLureWeightG": 40,
+  "maxLureWeightG": 120,
+  "recommendedLineMinKg": 12,
+  "recommendedLineMaxKg": 30,
+  "weightG": 159,
+  "sensitivity": 0.59,
+  "control": 0.62,
+  "fightingPower": 0.61,
+  "castingProfile": 0.43
+}

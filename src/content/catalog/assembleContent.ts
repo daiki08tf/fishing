@@ -2,6 +2,7 @@ import type { EncounterCandidate } from '../../domain/encounter/encounterEngine'
 import type { FishSpecies } from '../../domain/fish/FishSpecies'
 import type { GearItem } from '../../domain/gear/Gear'
 import type { BrandDefinition } from '../../domain/gear/Brand'
+import type { GearSeries } from '../../domain/gear/GearSeries'
 import type { FishingMethod } from '../../domain/method/FishingMethod'
 import type { FishingSpot } from '../../domain/world/FishingSpot'
 import type { ShopItem } from '../../domain/shop/ShopItem'
@@ -10,6 +11,7 @@ import {
   fishingSpotSchema,
   fishSpeciesSchema,
   gearItemSchema,
+  gearSeriesSchema,
   methodSchema,
   shopItemSchema,
 } from '../schema'
@@ -36,6 +38,9 @@ export type BuiltInContent = {
   /** Phase 6: 架空ブランド（表示・整理のみ。性能を持たない）。 */
   readonly brands: readonly BrandDefinition[]
   readonly brandById: Readonly<Record<string, BrandDefinition>>
+  /** Phase 6.5: Product Series（Brand → Series → Model）。 */
+  readonly gearSeries: readonly GearSeries[]
+  readonly gearSeriesById: Readonly<Record<string, GearSeries>>
   /** Phase 2 では Spot は 1 つだけ。Phase 4 で地域と複数 Spot を扱う。 */
   readonly primarySpot: FishingSpot
   /** primarySpot の fishTable から作った Encounter 候補。 */
@@ -136,6 +141,19 @@ const parseBrand = (source: string, value: unknown): BrandDefinition => {
   return parsed.data
 }
 
+const parseGearSeries = (source: string, value: unknown): GearSeries => {
+  const parsed = gearSeriesSchema.safeParse(value)
+
+  if (!parsed.success) {
+    throw new ContentValidationError(
+      'gear-series',
+      formatIssues('gear-series', source, parsed.error.issues),
+    )
+  }
+
+  return parsed.data
+}
+
 /** Spot の fishTable を Encounter 候補へ変換する。未知の speciesId は Content の誤り。 */
 const buildEncounters = (
   spot: FishingSpot,
@@ -168,6 +186,7 @@ export const assembleBuiltInContent = (input: {
   readonly spots: readonly ContentSource[]
   readonly shopItems?: readonly ContentSource[]
   readonly gear?: readonly ContentSource[]
+  readonly gearSeries?: readonly ContentSource[]
   readonly methods?: readonly ContentSource[]
   readonly brands?: readonly ContentSource[]
 }): BuiltInContent => {
@@ -175,6 +194,9 @@ export const assembleBuiltInContent = (input: {
   const spots = input.spots.map((entry) => parseSpot(entry.source, entry.value))
   const shopItems = (input.shopItems ?? []).map((entry) => parseShopItem(entry.source, entry.value))
   const gear = (input.gear ?? []).map((entry) => parseGear(entry.source, entry.value))
+  const gearSeries = (input.gearSeries ?? []).map((entry) =>
+    parseGearSeries(entry.source, entry.value),
+  )
   const methods = (input.methods ?? []).map((entry) => parseMethod(entry.source, entry.value))
   const brands = (input.brands ?? []).map((entry) => parseBrand(entry.source, entry.value))
   const primarySpot = spots[0]
@@ -187,6 +209,7 @@ export const assembleBuiltInContent = (input: {
   const gearById: Record<string, GearItem> = {}
   const methodById: Record<string, FishingMethod> = {}
   const brandById: Record<string, BrandDefinition> = {}
+  const gearSeriesById: Record<string, GearSeries> = {}
 
   for (const entry of species) {
     speciesById[String(entry.id)] = entry
@@ -204,6 +227,10 @@ export const assembleBuiltInContent = (input: {
     brandById[String(entry.id)] = entry
   }
 
+  for (const entry of gearSeries) {
+    gearSeriesById[entry.id] = entry
+  }
+
   // 参照切れは実行時カタログの入口で止める（Domain へ不正な Content を渡さない）。
   const referenceIssues = validateContentReferences({
     species,
@@ -212,6 +239,7 @@ export const assembleBuiltInContent = (input: {
     gear,
     methods,
     brands,
+    gearSeries,
   })
 
   if (referenceIssues.length > 0) {
@@ -232,6 +260,8 @@ export const assembleBuiltInContent = (input: {
     methodById,
     brands,
     brandById,
+    gearSeries,
+    gearSeriesById,
     primarySpot,
     encounters: buildEncounters(primarySpot, speciesById),
   }

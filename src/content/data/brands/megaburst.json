@@ -1,8 +1,8 @@
 {
   "id": "megaburst",
   "name": "Megaburst",
-  "description": "ミノーとバイブレーションを中心に扱う架空のルアーブランド。検証用。",
-  "specialties": ["minnow", "vibration", "hard_lure"],
-  "countryStyle": "international",
-  "tagline": "動きで、食わせる。"
+  "description": "メガバースト。ルアーのアクション・外観・キャスト性能で差をつける。（架空ブランド。検証用）",
+  "specialties": ["design", "action", "casting"],
+  "countryStyle": "japan_domestic",
+  "tagline": "水を、デザインする。"
 }

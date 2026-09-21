@@ -1,0 +1,21 @@
+{
+  "id": "shimara-exsensea-209lf",
+  "name": "EXSENSEA 209LF",
+  "price": 18500,
+  "category": "rod",
+  "brandId": "shimara",
+  "seriesId": "shimara-exsensea",
+  "seriesCategory": "mebaring",
+  "lengthM": 2.09,
+  "power": "L",
+  "action": "fast",
+  "minLureWeightG": 1,
+  "maxLureWeightG": 8,
+  "recommendedLineMinKg": 2,
+  "recommendedLineMaxKg": 5,
+  "weightG": 143,
+  "sensitivity": 0.68,
+  "control": 0.7,
+  "fightingPower": 0.6,
+  "castingProfile": 0.47
+}

@@ -1,0 +1,32 @@
+{
+  "id": "shimara-nexara-1000hg",
+  "name": "NEXARA 1000HG",
+  "price": 7200,
+  "category": "reel",
+  "brandId": "shimara",
+  "seriesId": "shimara-nexara",
+  "reelType": "spinning",
+  "sizeClass": 1000,
+  "variant": "HG",
+  "size": 1000,
+  "gearRatio": 6,
+  "maxDragKg": 3.1,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 1.6,
+      "capacityM": 132
+    },
+    {
+      "lineStrengthKg": 4.7,
+      "capacityM": 45
+    }
+  ],
+  "retrieveCmPerTurn": 79,
+  "weightG": 167,
+  "smoothness": 0.66,
+  "control": 0.68,
+  "dragStartup": 0.74,
+  "rigidity": 0.61,
+  "windingTorque": 0.6,
+  "response": 0.62
+}

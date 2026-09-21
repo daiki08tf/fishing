@@ -1,0 +1,10 @@
+{
+  "id": "owners-edge-worm-mix",
+  "name": "Worm Mix",
+  "price": 640,
+  "category": "bait",
+  "brandId": "owners-edge",
+  "baitType": "worm",
+  "presentation": "bottom/float",
+  "targetProfile": ["small", "mid"]
+}

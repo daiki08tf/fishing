@@ -111,11 +111,11 @@ export type FightOutcomeCounts = {
  * 操作の方針。
  *
  * - `balanced`: simulate:fishing と同じ。テンションが 8 割を超えたら GIVE する。
- * - `aggressive`: 9 割まで攻める。ドラッグ性能の差が出る（弱い装備は切れる）。
+ * - `aggressive`: 9.3 割まで攻める。ドラッグ性能の差が出る（弱い装備は切れる）。
  */
 export type TacklePolicy = 'balanced' | 'aggressive'
 
-const AGGRESSIVE_TENSION_LIMIT = 0.9
+const AGGRESSIVE_TENSION_LIMIT = 0.93
 
 const chooseTackleCommand = (policy: TacklePolicy, snapshot: FishingSnapshot) => {
   if (policy === 'balanced') {
@@ -458,7 +458,7 @@ export const simulateTackle = (): TackleSimulationResult => {
   }
 
   lines.push('')
-  lines.push('=== ファイト: 大型（phase2-sample-fish-i / 9 割まで攻める） ===')
+  lines.push('=== ファイト: 大型（phase2-sample-fish-i / 9.3 割まで攻める） ===')
 
   for (const build of builds) {
     const result = bigCounts.get(build.id)

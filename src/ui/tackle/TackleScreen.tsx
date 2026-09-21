@@ -1,11 +1,6 @@
 import { useState } from 'react'
-import type { GearId } from '../../domain/ids'
-import {
-  GEAR_CATEGORY_LABELS,
-  brandLabelOf,
-  type GearItem,
-  type OfferingDefinition,
-} from '../../domain/gear/Gear'
+import type { BrandDefinition } from '../../domain/gear/Brand'
+import { GEAR_CATEGORY_LABELS, type GearItem } from '../../domain/gear/Gear'
 import {
   COMPATIBILITY_LABELS,
   LOADOUT_SLOTS,
@@ -20,15 +15,18 @@ import {
 } from '../../domain/tackle'
 import { useAppStore } from '../../state/appStore'
 import { usePlayerStore } from '../../state/playerStore'
+import { gearFamilyOf, gearSpecsOf, gearTitleOf } from '../gear/gearDisplay'
 import { ContentErrorPanel } from '../world/ContentErrorPanel'
 import { useContentOrError } from '../world/useContentOrError'
 
 /**
- * TACKLE 画面（Phase 6）。
+ * TACKLE 画面（Phase 6 / Phase 6.5）。
  *
  * 「何を使って、どう狙うか」を決める場所。
  * ここは**表示と選択だけ**を行い、互換性の判定は Domain（compatibility /
  * resolveTackle）に任せる。UI でルールを再実装しない。
+ *
+ * Phase 6.5 で所持 Gear が増えたため、ブランドで絞り込めるようにした。
  */
 
 const SLOT_LABELS: Readonly<Record<LoadoutSlot, string>> = {
@@ -38,45 +36,6 @@ const SLOT_LABELS: Readonly<Record<LoadoutSlot, string>> = {
   leader: 'リーダー',
   hook: 'フック',
   offering: '仕掛け（ルアー / 餌）',
-}
-
-const labelOf = (gear: GearItem, brands: Parameters<typeof brandLabelOf>[1]): string => {
-  const brand = brandLabelOf(gear, brands)
-  const series = 'series' in gear && typeof gear.series === 'string' ? gear.series : ''
-  const family = [brand, series].filter((part) => part.length > 0).join(' ')
-
-  return family.length === 0 ? gear.name : `${gear.name}（${family}）`
-}
-
-/** offering の主要スペック（選択の判断材料）。 */
-const offeringSpec = (offering: OfferingDefinition): string =>
-  offering.category === 'lure'
-    ? `${String(offering.weightG)}g / ${String(offering.lengthMm)}mm / ${offering.lureType}`
-    : `${offering.baitType} / ${offering.presentation}`
-
-const gearSpec = (gear: GearItem): string => {
-  switch (gear.category) {
-    case 'rod':
-      return `${String(gear.lengthM)}m / ${gear.power} / ${gear.action} / ${String(
-        gear.minLureWeightG,
-      )}–${String(gear.maxLureWeightG)}g`
-    case 'reel':
-      return `${String(gear.size)}番 ${gear.variant ?? ''} / ドラッグ ${String(
-        gear.maxDragKg,
-      )}kg / ${String(gear.gearRatio)}`
-    case 'line':
-      return `${gear.lineType} / ${String(gear.strengthKg)}kg / ${String(gear.diameterMm)}mm`
-    case 'leader':
-      return `${gear.material} / ${String(gear.strengthKg)}kg / 耐摩耗 ${String(
-        gear.abrasionResistance,
-      )}`
-    case 'hook':
-      return `${String(gear.size)}番 / ${gear.hookType} / 掛かり ${String(gear.penetration)}`
-    case 'lure':
-      return offeringSpec(gear)
-    case 'bait':
-      return offeringSpec(gear)
-  }
 }
 
 const scoreLabel = (value: number): string =>
@@ -93,25 +52,38 @@ export const TackleScreen = () => {
   const setMethod = usePlayerStore((state) => state.setMethod)
   const worldPhase = usePlayerStore((state) => state.world.phase)
   const [message, setMessage] = useState<string | null>(null)
+  const [brandId, setBrandId] = useState<string | 'all'>('all')
 
   if (!content.ok) {
     return <ContentErrorPanel message={content.message} />
   }
 
-  const { gear, methods, brands } = content.value
+  const { gear, methods, brands, gearSeries } = content.value
   const catalog = { gear, methods }
   const method = methods.find((entry) => entry.id === loadout.methodId)
   const report = method === undefined ? null : evaluateCompatibility({ loadout, gear, method })
   const setup = resolveTackle({ loadout, gear, methods })
+  const familyOf = (item: GearItem) => gearFamilyOf(item, brands, gearSeries)
 
-  const nameOf = (gearId: GearId | null): string => {
+  const ownedIds = new Set(inventory.ownedGearIds.map((id) => String(id)))
+  const ownedBrandIds = new Set(
+    gear.filter((item) => ownedIds.has(String(item.id))).map((item) => String(item.brandId ?? '')),
+  )
+  const brandOptions: readonly BrandDefinition[] = [...brands]
+    .filter((brand) => ownedBrandIds.has(String(brand.id)))
+    .sort((left, right) => left.name.localeCompare(right.name))
+
+  const nameOf = (gearId: GearItem['id'] | null): string => {
     if (gearId === null) {
       return 'なし'
     }
 
     const item = gear.find((entry) => entry.id === gearId)
-    return item === undefined ? '不明な装備' : labelOf(item, brands)
+    return item === undefined ? '不明な装備' : gearTitleOf(item, brands, gearSeries)
   }
+
+  const matchesBrand = (item: GearItem): boolean =>
+    brandId === 'all' || String(item.brandId ?? '') === brandId
 
   return (
     <div className="fishing">
@@ -225,16 +197,40 @@ export const TackleScreen = () => {
         </ul>
       </section>
 
+      <section className="panel">
+        <label className="field">
+          <span className="field__label">所有している装備をブランドで絞る</span>
+          <select
+            className="field__control"
+            value={brandId}
+            onChange={(event) => {
+              setBrandId(event.target.value)
+            }}
+          >
+            <option value="all">すべて</option>
+            {brandOptions.map((brand) => (
+              <option key={String(brand.id)} value={String(brand.id)}>
+                {brand.name}
+              </option>
+            ))}
+          </select>
+        </label>
+        <p className="fishing__legend">所持している装備だけが選べる。</p>
+      </section>
+
       {LOADOUT_SLOTS.map((slot) => {
         const category = SLOT_CATEGORIES[slot][0]
-        const owned = category === undefined ? [] : ownedGearInCategory(inventory, gear, category)
+        const owned =
+          category === undefined
+            ? []
+            : ownedGearInCategory(inventory, gear, category).filter(matchesBrand)
         const currentId = slotGearId(loadout, slot)
 
         return (
           <section className="panel" key={slot}>
             <h3 className="panel__subheading">{SLOT_LABELS[slot]}</h3>
             <ul className="spots">
-              {slot === 'leader' ? (
+              {slot === 'leader' && brandId === 'all' ? (
                 <li className="spot-card">
                   <div className="spot-card__head">
                     <h4 className="panel__subheading">リーダーなし</h4>
@@ -270,11 +266,12 @@ export const TackleScreen = () => {
                       })
                 const fatal = candidateReport?.fatal ?? false
                 const current = currentId === item.id
+                const family = familyOf(item)
 
                 return (
                   <li className="spot-card" key={String(item.id)}>
                     <div className="spot-card__head">
-                      <h4 className="panel__subheading">{labelOf(item, brands)}</h4>
+                      <h4 className="panel__subheading">{item.name}</h4>
                       <span className={`badge${fatal ? ' badge--alert' : ''}`}>
                         {current
                           ? '装備中'
@@ -285,7 +282,16 @@ export const TackleScreen = () => {
                               : COMPATIBILITY_LABELS[candidateReport.level]}
                       </span>
                     </div>
-                    <p className="spot-card__meta">{gearSpec(item)}</p>
+                    <p className="spot-card__meta">
+                      {family.label.length === 0
+                        ? GEAR_CATEGORY_LABELS[item.category]
+                        : family.label}
+                    </p>
+                    {gearSpecsOf(item).map((line) => (
+                      <p className="spot-card__meta" key={line}>
+                        {line}
+                      </p>
+                    ))}
                     {fatal && candidateReport !== null ? (
                       <p className="blocked">
                         {candidateReport.issues.find((issue) => issue.level === 'fatal')?.message}

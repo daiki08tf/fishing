@@ -1,0 +1,15 @@
+{
+  "id": "tail-walker-power-pe-30kg",
+  "name": "POWER PE 30kg",
+  "price": 5300,
+  "category": "line",
+  "brandId": "tail-walker",
+  "seriesId": "tail-walker-power-pe",
+  "lineType": "pe",
+  "strengthKg": 30,
+  "diameterMm": 0.411,
+  "stretch": 0.26,
+  "abrasionResistance": 0.72,
+  "visibility": 0.86,
+  "sensitivity": 0.88
+}

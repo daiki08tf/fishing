@@ -1,0 +1,32 @@
+{
+  "id": "arvo-garsen-torqon-8000pg",
+  "name": "TORQON 8000PG",
+  "price": 42900,
+  "category": "reel",
+  "brandId": "arvo-garsen",
+  "seriesId": "arvo-garsen-torqon",
+  "reelType": "spinning",
+  "sizeClass": 8000,
+  "variant": "PG",
+  "size": 8000,
+  "gearRatio": 4.6,
+  "maxDragKg": 21.6,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 10.8,
+      "capacityM": 301
+    },
+    {
+      "lineStrengthKg": 32.4,
+      "capacityM": 100
+    }
+  ],
+  "retrieveCmPerTurn": 88,
+  "weightG": 481,
+  "smoothness": 0.58,
+  "control": 0.45,
+  "dragStartup": 0.58,
+  "rigidity": 0.76,
+  "windingTorque": 0.77,
+  "response": 0.55
+}

@@ -1,0 +1,14 @@
+{
+  "id": "blue-horizon-assist-series-2-0",
+  "name": "Assist Series 2/0",
+  "price": 1160,
+  "category": "hook",
+  "brandId": "blue-horizon",
+  "seriesId": "blue-horizon-assist-series",
+  "size": -2,
+  "strengthKg": 21.7,
+  "gaugeMm": 0.95,
+  "hookType": "assist",
+  "penetration": 0.67,
+  "holdingPower": 0.85
+}

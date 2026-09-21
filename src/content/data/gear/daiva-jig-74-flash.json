@@ -1,0 +1,18 @@
+{
+  "id": "daiva-jig-74-flash",
+  "name": "Jig 74 Flash",
+  "price": 2200,
+  "category": "lure",
+  "brandId": "daiva",
+  "lureType": "jig",
+  "weightG": 30,
+  "lengthMm": 74,
+  "depthRangeM": {
+    "min": 4,
+    "max": 15
+  },
+  "retrieveStyle": "jerk/fall",
+  "action": "slide",
+  "visualProfile": "flash",
+  "targetProfile": ["large"]
+}

@@ -1,0 +1,18 @@
+{
+  "id": "megaburst-crankbait-55-natural",
+  "name": "Crankbait 55 Natural",
+  "price": 1500,
+  "category": "lure",
+  "brandId": "megaburst",
+  "lureType": "crankbait",
+  "weightG": 5,
+  "lengthMm": 55,
+  "depthRangeM": {
+    "min": 2,
+    "max": 8
+  },
+  "retrieveStyle": "steady",
+  "action": "wobble",
+  "visualProfile": "natural",
+  "targetProfile": ["small"]
+}

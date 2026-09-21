@@ -2,6 +2,7 @@ import type { FishSpecies } from '../fish/FishSpecies'
 import type { FishingMethod } from '../method/FishingMethod'
 import { methodAcceptsOffering } from '../method/FishingMethod'
 import {
+  hookSizeRank,
   isHook,
   isLeader,
   isLine,
@@ -229,8 +230,14 @@ export const evaluateCompatibility = (options: {
 
   // リールの糸巻き量 × ラインの太さ
   const thickest = reel.lineCapacity.reduce((max, entry) => Math.max(max, entry.lineStrengthKg), 0)
+  /*
+   * 「このリールに対して太い」の判定。
+   * 絶対値（0.3mm など）で見ると大型番手の太糸まで警告になってしまうため、
+   * リールの定格（巻ける最も強いライン）から見た相対で判断する。
+   */
+  const ratedDiameterMm = 0.1 + thickest * 0.03
 
-  if (line.diameterMm > 0.3 || line.strengthKg > thickest) {
+  if (line.strengthKg > thickest * 1.2 || line.diameterMm > ratedDiameterMm * 1.25) {
     issues.push({
       level: 'warning',
       message: `${line.name} はこのリールには太い（巻ける長さが減る）`,
@@ -258,15 +265,17 @@ export const evaluateCompatibility = (options: {
 
   if (meanLength !== null) {
     /*
-     * フックの番手は「数字が大きいほど小さい針」である（PROVISIONAL な閾値）。
+     * フックの大小は hookSizeRank で見る（大きいほど大きい針）。
      * 大型向けの魚に小さい針では伸ばされ、小型の魚に大きい針では吸い込まない。
      */
-    if (meanLength >= 40 && hook.size >= 5) {
+    const rank = hookSizeRank(hook)
+
+    if (meanLength >= 40 && rank <= -4) {
       issues.push({
         level: 'warning',
         message: `大型向けの魚に対してフックが小さい（伸ばされやすい）`,
       })
-    } else if (meanLength <= 20 && hook.size <= 3) {
+    } else if (meanLength <= 20 && rank > -2) {
       issues.push({
         level: 'warning',
         message: `小型の魚に対してフックが大きすぎる（吸い込まない）`,

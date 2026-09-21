@@ -162,10 +162,27 @@ describe('compatibility: line and reel', () => {
   })
 
   it('warns when the line is thicker than the reel expects', () => {
-    const loadout = powerRod({ lineId: asGearId(GEAR_FIXTURE_IDS.lineHeavy) })
+    // ライトリール（定格 4kg まで）に 12kg / 0.435mm のライン。
+    const loadout = loadoutFixture({
+      rodId: asGearId(GEAR_FIXTURE_IDS.rodPower),
+      reelId: asGearId(GEAR_FIXTURE_IDS.reelLight),
+      lineId: asGearId(GEAR_FIXTURE_IDS.lineHeavy),
+    })
     const report = evaluate(loadout)
 
     expect(report.issues.some((issue) => issue.message.includes('太い'))).toBe(true)
+  })
+
+  it('does not warn about a thick line on a reel that is rated for it', () => {
+    // 4000 番（定格 12kg まで）に 12kg のライン。太いとは言えない。
+    const loadout = loadoutFixture({
+      rodId: asGearId(GEAR_FIXTURE_IDS.rodPower),
+      reelId: asGearId(GEAR_FIXTURE_IDS.reelPower),
+      lineId: asGearId(GEAR_FIXTURE_IDS.lineHeavy),
+    })
+    const report = evaluate(loadout)
+
+    expect(report.issues.some((issue) => issue.message.includes('太い'))).toBe(false)
   })
 
   it('reports a missing leader as no issue at all', () => {

@@ -1,0 +1,32 @@
+{
+  "id": "arvo-garsen-torqon-18000pg",
+  "name": "TORQON 18000PG",
+  "price": 77300,
+  "category": "reel",
+  "brandId": "arvo-garsen",
+  "seriesId": "arvo-garsen-torqon",
+  "reelType": "spinning",
+  "sizeClass": 18000,
+  "variant": "PG",
+  "size": 18000,
+  "gearRatio": 4.6,
+  "maxDragKg": 33.6,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 16.8,
+      "capacityM": 539
+    },
+    {
+      "lineStrengthKg": 50.4,
+      "capacityM": 180
+    }
+  ],
+  "retrieveCmPerTurn": 103,
+  "weightG": 844,
+  "smoothness": 0.58,
+  "control": 0.39,
+  "dragStartup": 0.58,
+  "rigidity": 0.76,
+  "windingTorque": 0.77,
+  "response": 0.55
+}

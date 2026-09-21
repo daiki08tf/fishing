@@ -1,0 +1,32 @@
+{
+  "id": "arvo-garsen-orion-3000",
+  "name": "ORION 3000",
+  "price": 8500,
+  "category": "reel",
+  "brandId": "arvo-garsen",
+  "seriesId": "arvo-garsen-orion",
+  "reelType": "spinning",
+  "sizeClass": 3000,
+  "variant": "STD",
+  "size": 3000,
+  "gearRatio": 5.2,
+  "maxDragKg": 7.6,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 3.8,
+      "capacityM": 237
+    },
+    {
+      "lineStrengthKg": 11.4,
+      "capacityM": 79
+    }
+  ],
+  "retrieveCmPerTurn": 75,
+  "weightG": 255,
+  "smoothness": 0.58,
+  "control": 0.57,
+  "dragStartup": 0.58,
+  "rigidity": 0.68,
+  "windingTorque": 0.68,
+  "response": 0.55
+}

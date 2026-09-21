@@ -1,0 +1,21 @@
+{
+  "id": "shimara-solvia-254mf",
+  "name": "SOLVIA 254MF",
+  "price": 24400,
+  "category": "rod",
+  "brandId": "shimara",
+  "seriesId": "shimara-solvia",
+  "seriesCategory": "seabass",
+  "lengthM": 2.54,
+  "power": "M",
+  "action": "fast",
+  "minLureWeightG": 7,
+  "maxLureWeightG": 35,
+  "recommendedLineMinKg": 6,
+  "recommendedLineMaxKg": 14,
+  "weightG": 156,
+  "sensitivity": 0.68,
+  "control": 0.7,
+  "fightingPower": 0.6,
+  "castingProfile": 0.57
+}

@@ -39,6 +39,7 @@ describe('content catalog', () => {
         gear: content.gear,
         methods: content.methods,
         brands: content.brands,
+        gearSeries: content.gearSeries,
       }),
     ).toEqual([])
   })
@@ -152,6 +153,7 @@ describe('broken references are rejected', () => {
     gear: content.gear,
     methods: content.methods,
     brands: content.brands,
+    gearSeries: content.gearSeries,
   }
 
   it('detects an unknown brand', () => {

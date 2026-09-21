@@ -95,29 +95,56 @@ export const resolveTackle = (options: {
       strengthScale
   const leaderBonus = leader === null ? 0 : 0.08 * leader.abrasionResistance
 
+  /*
+   * 自重は「扱いやすさ」に効く（軽いほど有利）。
+   * 重い＝悪ではない（剛性・トルクと引き換え）ので、係数は小さく留める。
+   */
+  const rodWeightRelief = tuning.weightControlStrength * clamp01((220 - rod.weightG) / 220)
+  const reelWeightRelief = tuning.weightControlStrength * clamp01((420 - reel.weightG) / 420)
+  const dragStartup = reel.dragStartup ?? 0.5
+  const rigidity = reel.rigidity ?? 0.5
+  const windingTorque = reel.windingTorque ?? 0.5
+  const response = reel.response ?? 0.5
+
   const playerModifiers: PlayerFishingModifiers = {
     ...NEUTRAL_FISHING_MODIFIERS,
-    // ロッドの主導権とラインの伸びがテンション上昇を抑える。
+    // ロッドの主導権・ラインの伸び・ドラッグ初動・軽さがテンション上昇を抑える。
     tensionGainMultiplier: clamp(
-      (1 - tuning.rodControlStrength * rod.control) * (1 - tuning.lineStretchRelief * line.stretch),
+      (1 - tuning.rodControlStrength * rod.control) *
+        (1 - tuning.lineStretchRelief * line.stretch) *
+        (1 - tuning.reelDragStartupStrength * dragStartup) *
+        (1 - rodWeightRelief - reelWeightRelief),
       0.4,
       1,
     ),
-    // ロッドの寄せる力とラインの強さが「耐えられるテンション」を上げる。
+    // ロッドの寄せる力・ラインの強さ・リールの剛性が「耐えられるテンション」を上げる。
     maxTensionMultiplier: clamp(
-      lineTensionBonus + tuning.rodFightingStrength * rod.fightingPower + leaderBonus,
+      lineTensionBonus +
+        tuning.rodFightingStrength * rod.fightingPower +
+        tuning.reelRigidityStrength * rigidity +
+        leaderBonus,
       0.8,
       1.8,
     ),
-    // リールのドラッグと滑らかさ。
+    // リールのドラッグ・滑らかさ・トルク・レスポンス。
     reelEfficiencyMultiplier: clamp(
       1 +
         tuning.reelDragStrength * (reel.maxDragKg / 10) +
-        tuning.reelSmoothnessStrength * reel.smoothness,
+        tuning.reelSmoothnessStrength * reel.smoothness +
+        tuning.reelTorqueStrength * windingTorque +
+        tuning.reelResponseStrength * response,
       0.7,
       1.8,
     ),
-    giveEfficiencyMultiplier: clamp(1 + tuning.reelSmoothnessStrength * reel.smoothness, 0.8, 1.5),
+    // GIVE はドラッグの出だしと滑らかさで決まる（初動が滑らかだと糸が緩みすぎない）。
+    giveEfficiencyMultiplier: clamp(
+      1 +
+        tuning.reelSmoothnessStrength * reel.smoothness +
+        tuning.reelDragStartupStrength * dragStartup +
+        tuning.reelResponseStrength * response,
+      0.8,
+      1.6,
+    ),
     // 感度（ロッド + ライン）がアタリの見え方に効く。
     detectionClarityMultiplier: clamp(
       1 + tuning.sensitivityStrength * rod.sensitivity + 0.3 * line.sensitivity,

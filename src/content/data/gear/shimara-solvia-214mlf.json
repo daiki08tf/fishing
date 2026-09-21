@@ -1,0 +1,21 @@
+{
+  "id": "shimara-solvia-214mlf",
+  "name": "SOLVIA 214MLF",
+  "price": 22700,
+  "category": "rod",
+  "brandId": "shimara",
+  "seriesId": "shimara-solvia",
+  "seriesCategory": "chinning",
+  "lengthM": 2.14,
+  "power": "ML",
+  "action": "fast",
+  "minLureWeightG": 3,
+  "maxLureWeightG": 18,
+  "recommendedLineMinKg": 4,
+  "recommendedLineMaxKg": 10,
+  "weightG": 144,
+  "sensitivity": 0.68,
+  "control": 0.7,
+  "fightingPower": 0.6,
+  "castingProfile": 0.48
+}

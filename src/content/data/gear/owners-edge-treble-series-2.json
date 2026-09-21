@@ -1,0 +1,14 @@
+{
+  "id": "owners-edge-treble-series-2",
+  "name": "Treble Series #2",
+  "price": 630,
+  "category": "hook",
+  "brandId": "owners-edge",
+  "seriesId": "owners-edge-treble-series",
+  "size": 2,
+  "strengthKg": 12.3,
+  "gaugeMm": 0.71,
+  "hookType": "treble",
+  "penetration": 0.76,
+  "holdingPower": 0.79
+}

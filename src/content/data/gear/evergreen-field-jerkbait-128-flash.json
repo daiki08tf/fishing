@@ -1,0 +1,19 @@
+{
+  "id": "evergreen-field-jerkbait-128-flash",
+  "name": "Jerkbait 128 Flash",
+  "price": 2400,
+  "category": "lure",
+  "brandId": "evergreen-field",
+  "seriesId": "evergreen-field-faithrun",
+  "lureType": "jerkbait",
+  "weightG": 24,
+  "lengthMm": 128,
+  "depthRangeM": {
+    "min": 0.5,
+    "max": 3.5
+  },
+  "retrieveStyle": "jerk/pause",
+  "action": "jerk",
+  "visualProfile": "flash",
+  "targetProfile": ["large"]
+}

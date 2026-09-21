@@ -1,0 +1,21 @@
+{
+  "id": "shimara-exsensea-219hf",
+  "name": "EXSENSEA 219HF",
+  "price": 35500,
+  "category": "rod",
+  "brandId": "shimara",
+  "seriesId": "shimara-exsensea",
+  "seriesCategory": "casting",
+  "lengthM": 2.19,
+  "power": "H",
+  "action": "fast",
+  "minLureWeightG": 30,
+  "maxLureWeightG": 120,
+  "recommendedLineMinKg": 15,
+  "recommendedLineMaxKg": 40,
+  "weightG": 168,
+  "sensitivity": 0.68,
+  "control": 0.7,
+  "fightingPower": 0.7,
+  "castingProfile": 0.49
+}

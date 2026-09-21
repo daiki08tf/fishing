@@ -1,0 +1,21 @@
+{
+  "id": "major-crest-firstway-274mf",
+  "name": "FIRSTWAY 274MF",
+  "price": 15800,
+  "category": "rod",
+  "brandId": "major-crest",
+  "seriesId": "major-crest-firstway",
+  "seriesCategory": "seabass",
+  "lengthM": 2.74,
+  "power": "M",
+  "action": "fast",
+  "minLureWeightG": 7,
+  "maxLureWeightG": 35,
+  "recommendedLineMinKg": 6,
+  "recommendedLineMaxKg": 14,
+  "weightG": 174,
+  "sensitivity": 0.63,
+  "control": 0.58,
+  "fightingPower": 0.57,
+  "castingProfile": 0.62
+}

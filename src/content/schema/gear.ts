@@ -7,6 +7,7 @@ import {
   LURE_TYPES,
   REEL_SIZE_CLASSES,
   REEL_TYPES,
+  REEL_VARIANTS,
   ROD_ACTIONS,
   ROD_POWERS,
   ROD_SERIES_CATEGORIES,
@@ -26,6 +27,8 @@ const price = z.number().int().nonnegative()
 /** ブランド・シリーズは任意。あれば参照が存在することを Catalog 側で確かめる。 */
 const family = {
   brandId: nonEmptyString.transform(asBrandId).optional(),
+  /** Product Series への参照。存在は Catalog の参照検査で確かめる。 */
+  seriesId: nonEmptyString.optional(),
   series: nonEmptyString.optional(),
 }
 
@@ -63,7 +66,7 @@ export const reelSchema = z.strictObject({
   category: z.literal('reel'),
   reelType: z.enum(REEL_TYPES),
   sizeClass: z.union(REEL_SIZE_CLASSES.map((size) => z.literal(size))).optional(),
-  variant: nonEmptyString.optional(),
+  variant: z.enum(REEL_VARIANTS).optional(),
   size: z.number().positive(),
   gearRatio: z.number().positive(),
   maxDragKg: z.number().positive(),
@@ -79,6 +82,10 @@ export const reelSchema = z.strictObject({
   weightG: z.number().positive(),
   smoothness: z.number().min(0).max(1),
   control: z.number().min(0).max(1),
+  dragStartup: z.number().min(0).max(1).optional(),
+  rigidity: z.number().min(0).max(1).optional(),
+  windingTorque: z.number().min(0).max(1).optional(),
+  response: z.number().min(0).max(1).optional(),
 })
 
 export const lineSchema = z.strictObject({
@@ -107,8 +114,16 @@ export const leaderSchema = z.strictObject({
 export const hookSchema = z.strictObject({
   ...base,
   category: z.literal('hook'),
-  size: z.number().positive(),
+  /*
+   * 正 = 号数（数字が大きいほど小さい針）、負 = `N/0`（数字が大きいほど大きい針）。
+   * 0 は「どちらの系統でもない」ので使わない。
+   */
+  size: z
+    .number()
+    .finite()
+    .refine((value) => value !== 0, { message: 'hook size must not be 0' }),
   strengthKg: z.number().positive(),
+  gaugeMm: z.number().positive().optional(),
   hookType: z.enum(HOOK_TYPES),
   penetration: z.number().min(0).max(1),
   holdingPower: z.number().min(0).max(1),

@@ -1,0 +1,19 @@
+{
+  "id": "blue-horizon-stickbait-141-natural",
+  "name": "Stickbait 141 Natural",
+  "price": 3700,
+  "category": "lure",
+  "brandId": "blue-horizon",
+  "seriesId": "blue-horizon-pelagic-x",
+  "lureType": "stickbait",
+  "weightG": 60,
+  "lengthMm": 141,
+  "depthRangeM": {
+    "min": 0,
+    "max": 1.5
+  },
+  "retrieveStyle": "sweep",
+  "action": "walk",
+  "visualProfile": "natural",
+  "targetProfile": ["large", "big"]
+}

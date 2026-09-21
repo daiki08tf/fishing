@@ -1,0 +1,10 @@
+{
+  "id": "gamakaze-shrimp-pack",
+  "name": "Shrimp Pack",
+  "price": 780,
+  "category": "bait",
+  "brandId": "gamakaze",
+  "baitType": "shrimp",
+  "presentation": "float/bottom",
+  "targetProfile": ["mid", "large"]
+}

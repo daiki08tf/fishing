@@ -1,0 +1,32 @@
+{
+  "id": "daiva-certex-1000s",
+  "name": "CERTEX 1000S",
+  "price": 14900,
+  "category": "reel",
+  "brandId": "daiva",
+  "seriesId": "daiva-certex",
+  "reelType": "spinning",
+  "sizeClass": 1000,
+  "variant": "S",
+  "size": 1000,
+  "gearRatio": 5.2,
+  "maxDragKg": 3,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 1.5,
+      "capacityM": 124
+    },
+    {
+      "lineStrengthKg": 4.5,
+      "capacityM": 41
+    }
+  ],
+  "retrieveCmPerTurn": 69,
+  "weightG": 145,
+  "smoothness": 0.72,
+  "control": 0.68,
+  "dragStartup": 0.62,
+  "rigidity": 0.66,
+  "windingTorque": 0.58,
+  "response": 0.67
+}

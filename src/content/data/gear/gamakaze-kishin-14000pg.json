@@ -1,0 +1,32 @@
+{
+  "id": "gamakaze-kishin-14000pg",
+  "name": "KISHIN 14000PG",
+  "price": 77700,
+  "category": "reel",
+  "brandId": "gamakaze",
+  "seriesId": "gamakaze-kishin",
+  "reelType": "spinning",
+  "sizeClass": 14000,
+  "variant": "PG",
+  "size": 14000,
+  "gearRatio": 4.6,
+  "maxDragKg": 29.8,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 14.9,
+      "capacityM": 448
+    },
+    {
+      "lineStrengthKg": 44.7,
+      "capacityM": 149
+    }
+  ],
+  "retrieveCmPerTurn": 104,
+  "weightG": 678,
+  "smoothness": 0.62,
+  "control": 0.43,
+  "dragStartup": 0.66,
+  "rigidity": 0.74,
+  "windingTorque": 0.72,
+  "response": 0.59
+}

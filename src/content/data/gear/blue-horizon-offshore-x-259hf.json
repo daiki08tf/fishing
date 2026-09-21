@@ -1,0 +1,21 @@
+{
+  "id": "blue-horizon-offshore-x-259hf",
+  "name": "OFFSHORE-X 259HF",
+  "price": 44500,
+  "category": "rod",
+  "brandId": "blue-horizon",
+  "seriesId": "blue-horizon-offshore-x",
+  "seriesCategory": "casting",
+  "lengthM": 2.59,
+  "power": "H",
+  "action": "fast",
+  "minLureWeightG": 30,
+  "maxLureWeightG": 120,
+  "recommendedLineMinKg": 15,
+  "recommendedLineMaxKg": 40,
+  "weightG": 193,
+  "sensitivity": 0.64,
+  "control": 0.62,
+  "fightingPower": 0.78,
+  "castingProfile": 0.58
+}

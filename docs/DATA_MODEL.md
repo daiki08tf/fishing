@@ -329,6 +329,14 @@ Content に置くのは**現実由来の属性**（長さ・ルアー重量域�
 - weight
 - lineCapacity
 - retrieveRate
+- dragStartup（ドラッグの出だしの滑らかさ）
+- rigidity（剛性）
+- windingTorque（巻き上げトルク）
+- response（巻き出しのレスポンス）
+
+番手（`sizeClass`）はクラスを表す整理軸であり、性能そのものではない。
+実性能は上のスペックから `resolveTackle` が解決する。
+同じ番手でもブランド・Series ごとに spec が異なる（価格だけの差にしない）。
 
 ### Line
 
@@ -354,6 +362,10 @@ Content に置くのは**現実由来の属性**（長さ・ルアー重量域�
 - hookType
 - penetration
 - holdingPower
+- gauge
+
+`size` は正の数が号数（`6` = 6番。数字が大きいほど小さい針）、
+負の数が `N/0`（`-1` = 1/0。数字が大きいほど大きい針）を表す。
 
 ### Lure
 

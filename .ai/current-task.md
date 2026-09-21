@@ -2,9 +2,45 @@
 
 ## Phase
 
-**Phase 6 — Tackle Depth**
+**Phase 6.5 — Tackle Catalog Expansion**
 
 状態: **完了**（詳細は `.ai/handoff.md`）
+
+Phase 6（Tackle Depth）は完了・コミット済み。Phase 6.5 はその上に
+**Gear Content の量と差別化**を載せる。既存の Gear / Brand / Method / Catalog /
+Shop / Inventory / Loadout / Compatibility / Tackle Resolver /
+FishingEngine integration は作り直していない。
+
+## Phase 6.5 で実装したもの
+
+1. **Content Master からの移植** — GitHub の `content/master-draft`
+   （`docs/content/master-draft/` の CSV）を読み、現在の Content schema に合わせて
+   必要な分だけ移植した。**CSV を Runtime で読む構成にはしていない**。
+   branch は作業 branch へ merge していない。
+2. **Brand Expansion** — 架空ブランド 12 件（既存 10 + River Craft / Blue Horizon）。
+   既存 ID を優先し、重複定義は作らない。ブランドは性能倍率を持たない。
+3. **Product Family** — `gear-series` Content を追加（Brand → Series → Model）。
+   Series は表示・整理の概念で、Engine は知らない。
+4. **Reel Expansion** — 番手 13 種（1000〜30000）と variant 5 種（STD/S/HG/XG/PG）を
+   Content でカバー。`dragStartup` / `rigidity` / `windingTorque` / `response` を
+   Reel の spec として追加し、resolved modifier に反映する。
+5. **Rod Expansion** — 用途カテゴリ 17 種すべてにモデルを用意。
+   長さ・パワー・アクション・ルアー重量域・ライン域で差を作る。
+6. **Line / Leader / Hook / Lure / Bait Expansion** — 種類と強度を段階的に拡充。
+   Hook は `assist` / `jighead` を Hook の subtype として追加（カテゴリは増やさない）。
+   Lure は 14 種類（minnow / shad / crankbait / jerkbait / vibration /
+   metal_vibration / spinner / spoon / jig / soft_plastic / topwater / popper /
+   stickbait / egi）を扱う。
+7. **Shop / Tackle UI** — カテゴリ filter（件数付き）とブランド filter を追加。
+   Brand / Series / Model / 主要スペック / 所持 / 購入可否を表示する。
+   UI は Compatibility のルールを再実装していない（Domain を呼ぶ）。
+8. **Validation 強化** — id 重複（Gear / Brand / Series / Method / Species / Spot / 商品）、
+   未知 Series、Series の brand / category 不一致、番手・variant の enum、
+   フックサイズの符号規約、負値・min>max を検出。
+9. **`npm run simulate:catalog`** — 件数 / カバレッジ / 3000 番のブランド比較 /
+   代表 Build 8 種 / 価格ラダー検査を PASS/FAIL で出す。
+10. **Tests** — カタログ契約（件数・カバレッジ・差別化・Series・検証）と
+    アーキテクチャ（Engine がブランド名 / Series 名 / 番手を知らない）を追加。
 
 Phase 6 は「何を使って、どう狙うか」をゲームの中心へ追加する。
 装備を RPG の数値ではなく**現実の釣具特性**として扱い、
@@ -96,6 +132,22 @@ Phase 6 は前セッションの基盤（commit `19ed43f`）を再利用して�
 - `npm run check` が PASS する
 - 既存 377 tests を壊さない（現在 482 tests / 54 files、すべて PASS）
 
+## Phase 6.5 の主な設計判断
+
+- **CSV は参照資料** — Runtime は JSON の Content だけを読む。
+  Master の `Casting` / `ActionScore` / `FinesseAffinity` / `PowerAffinity` は
+  ゲーム調整値なので Content に入れず、差は現実属性（weight / length / depth / type）で作る。
+- **ブランドに倍率を持たせない** — ブランド差は個別製品の spec の結果として出る。
+  テストも「ブランド ID の分岐」ではなく「spec の結果」を検査する。
+- **Series は参照整合性だけを持つ** — `seriesId` は brand / category が一致する必要がある。
+  Series そのものに性能は持たせない。
+- **番手は Engine の分岐条件にしない** — 番手ごとの性能差は spec から解決する。
+- **フックのサイズは符号で 2 系統を表す** — 正 = `#N`、負 = `N/0`。
+  大小の比較は `hookSizeRank` を使う。
+- **リールの「太いライン」判定を相対化した** — 絶対値（0.3mm）だと大型番手の
+  太糸まで警告になるため、リールの定格（巻ける最も強いライン）から見た相対で判定する。
+- **互換性は致命的だけ拒否**（Phase 6 から継続）。
+
 ## Phase 6 の非目標
 
 - durability / 永久的なロッド破損 / ルアーロスト
@@ -107,6 +159,15 @@ Phase 6 は前セッションの基盤（commit `19ed43f`）を再利用して�
 ## Next Phase（まだ開始していない）
 
 **Phase 7 — Full Transport / Access Progression**（`docs/ROADMAP.md`）
+
+Phase 6.5 から持ち越した調整:
+
+- Series ごとの spec 差は master の値の範囲に留まる（ブランド差の方が大きい）。
+  価格帯ごとの差をさらに出すなら Content 側の追加が必要。
+- Lure の `Casting` / `ActionScore` / affinity 相当のゲーム調整値を
+  `GearTuning` へ入れて、ルアーごとの性能差を強めるのは Phase 7 以降。
+- Content を eager で読んでいるため、bundle が 638 kB（gzip 160 kB）まで増えた。
+  コード分割（Content の遅延読み込み）は Phase 7 の候補。
 
 ## 現在の制約（全 Phase 共通）
 

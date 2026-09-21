@@ -1,18 +1,35 @@
-import { formatYen } from '../../domain/economy'
-import { GEAR_CATEGORY_LABELS, brandLabelOf, type GearItem } from '../../domain/gear/Gear'
-import { SHOP_CATEGORY_LABELS } from '../../domain/shop'
 import { useState } from 'react'
+import { formatYen } from '../../domain/economy'
+import {
+  GEAR_CATEGORIES,
+  GEAR_CATEGORY_LABELS,
+  type GearCategory,
+  type GearItem,
+} from '../../domain/gear/Gear'
+import { SHOP_CATEGORY_LABELS } from '../../domain/shop'
 import { useAppStore } from '../../state/appStore'
 import { usePlayerStore } from '../../state/playerStore'
+import { gearFamilyOf, gearSpecsOf } from '../gear/gearDisplay'
 import { ContentErrorPanel } from '../world/ContentErrorPanel'
 import { useContentOrError } from '../world/useContentOrError'
 
 /**
- * Shop（Phase 5 の最小実装）。
+ * Shop（Phase 5 の最小実装 + Phase 6.5 の Gear カタログ）。
  *
  * 目的は「Money → Asset → World Access」の証明。
- * 買うと移動手段が増え、行けなかった釣り場が開く。
+ * 買うと移動手段が増え、行けなかった釣り場が開く。Gear は所持に入るだけ（自動装備しない）。
+ *
+ * Phase 6.5 で Gear が数百件になったため、カテゴリとブランドで絞り込めるようにした
+ * （「巨大な検索システム」は作らない。絞り込みは 2 つだけ）。
  */
+
+type CategoryFilter = GearCategory | 'all'
+type BrandFilter = string | 'all'
+
+const FILTER_LABELS: Readonly<Record<CategoryFilter, string>> = {
+  all: 'すべて',
+  ...GEAR_CATEGORY_LABELS,
+}
 
 export const ShopScreen = () => {
   const content = useContentOrError()
@@ -23,40 +40,35 @@ export const ShopScreen = () => {
   const purchaseItem = usePlayerStore((state) => state.purchaseItem)
   const purchaseGear = usePlayerStore((state) => state.purchaseGear)
   const [message, setMessage] = useState<string | null>(null)
+  const [category, setCategory] = useState<CategoryFilter>('rod')
+  const [brandId, setBrandId] = useState<BrandFilter>('all')
 
   if (!content.ok) {
     return <ContentErrorPanel message={content.message} />
   }
 
+  const { gear, brands, gearSeries } = content.value
+
+  // Starter gear（price 0）は最初から持っているので店には並べない。
+  const forSale = gear.filter((item) => item.price > 0)
+
+  const countIn = (target: CategoryFilter): number =>
+    target === 'all' ? forSale.length : forSale.filter((item) => item.category === target).length
+
+  const usedBrandIds = new Set(forSale.map((item) => String(item.brandId ?? '')))
+  const brandOptions = [...brands]
+    .filter((brand) => usedBrandIds.has(String(brand.id)))
+    .sort((left, right) => left.name.localeCompare(right.name))
+
+  const visible = forSale.filter(
+    (item) =>
+      (category === 'all' || item.category === category) &&
+      (brandId === 'all' || String(item.brandId ?? '') === brandId),
+  )
+
   const owned = (item: GearItem): boolean => inventory.ownedGearIds.includes(item.id)
-
-  // 店に並ぶ装備。Starter gear（price 0）は最初から持っているので並べない。
-  const forSale = content.value.gear.filter((item) => item.price > 0)
-
-  const specOf = (item: GearItem): string => {
-    switch (item.category) {
-      case 'rod':
-        return `${String(item.lengthM)}m / ${item.power} / ${item.action} / ${String(
-          item.minLureWeightG,
-        )}–${String(item.maxLureWeightG)}g`
-      case 'reel':
-        return `${String(item.sizeClass ?? item.size)}番 ${item.variant ?? ''} / ドラッグ ${String(
-          item.maxDragKg,
-        )}kg`
-      case 'line':
-        return `${item.lineType} / ${String(item.strengthKg)}kg / ${String(item.diameterMm)}mm`
-      case 'leader':
-        return `${item.material} / ${String(item.strengthKg)}kg / 耐摩耗 ${String(
-          item.abrasionResistance,
-        )}`
-      case 'hook':
-        return `${String(item.size)}番 / ${item.hookType} / 保持 ${String(item.holdingPower)}`
-      case 'lure':
-        return `${String(item.weightG)}g / ${item.lureType} / ${item.action}`
-      case 'bait':
-        return `${item.baitType} / ${item.presentation}`
-    }
-  }
+  const selectedBrandName =
+    brandId === 'all' ? '' : (brands.find((brand) => String(brand.id) === brandId)?.name ?? '')
 
   return (
     <div className="fishing">
@@ -76,21 +88,58 @@ export const ShopScreen = () => {
       <section className="panel">
         <p className="fishing__phase-code">SHOP</p>
         <h2 className="panel__heading">店</h2>
-        <p className="panel__body">買った道具は、行ける釣り場を広げる。</p>
+        <p className="panel__body">
+          装備は {forSale.length} 点。買っても自動では装備されない（タックル画面で選ぶ）。
+        </p>
       </section>
 
       {message === null ? null : <p className="notice">{message}</p>}
 
-      <section>
+      <section className="panel">
         <h3 className="panel__subheading">装備</h3>
-        <p className="fishing__legend">買った装備は自動では装備されない。タックル画面で選ぶ。</p>
+        <div className="tabs">
+          {(['all', ...GEAR_CATEGORIES] as readonly CategoryFilter[]).map((value) => (
+            <button
+              key={value}
+              className={`tab${category === value ? ' tab--active' : ''}`}
+              type="button"
+              onClick={() => {
+                setCategory(value)
+              }}
+            >
+              {FILTER_LABELS[value]} {countIn(value)}
+            </button>
+          ))}
+        </div>
+
+        <label className="field">
+          <span className="field__label">ブランド</span>
+          <select
+            className="field__control"
+            value={brandId}
+            onChange={(event) => {
+              setBrandId(event.target.value)
+            }}
+          >
+            <option value="all">すべて</option>
+            {brandOptions.map((brand) => (
+              <option key={String(brand.id)} value={String(brand.id)}>
+                {brand.name}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <p className="fishing__legend">
+          {visible.length} 点を表示中
+          {selectedBrandName === '' ? '' : `（${selectedBrandName}）`}
+        </p>
+
         <ul className="spots">
-          {forSale.map((item) => {
+          {visible.map((item) => {
             const has = owned(item)
             const affordable = finance.cash >= item.price
-            const brand = brandLabelOf(item, content.value.brands)
-            const series = 'series' in item && typeof item.series === 'string' ? item.series : ''
-            const family = [brand, series].filter((part) => part.length > 0).join(' ')
+            const family = gearFamilyOf(item, brands, gearSeries)
 
             return (
               <li className="spot-card" key={String(item.id)}>
@@ -102,11 +151,17 @@ export const ShopScreen = () => {
                 </div>
                 <p className="spot-card__meta">
                   {GEAR_CATEGORY_LABELS[item.category]}
-                  {family.length === 0 ? '' : ` / ${family}`}
+                  {family.label.length === 0 ? '' : ` / ${family.label}`}
                 </p>
-                <p className="spot-card__meta">{specOf(item)}</p>
+                {gearSpecsOf(item).map((line) => (
+                  <p className="spot-card__meta" key={line}>
+                    {line}
+                  </p>
+                ))}
 
-                {has ? null : (
+                {has ? (
+                  <p className="fishing__legend">所持済み（タックル画面で装備できる）</p>
+                ) : (
                   <button
                     className="control"
                     type="button"
@@ -135,15 +190,15 @@ export const ShopScreen = () => {
         <h3 className="panel__subheading">移動手段</h3>
         <ul className="spots">
           {content.value.shopItems.map((item) => {
-            const owned = purchases.includes(item.id)
+            const has = purchases.includes(item.id)
             const affordable = finance.cash >= item.price
 
             return (
               <li className="spot-card" key={String(item.id)}>
                 <div className="spot-card__head">
-                  <h3 className="panel__subheading">{item.name}</h3>
-                  <span className={`badge${owned ? '' : affordable ? ' badge--alert' : ''}`}>
-                    {owned ? '購入済み' : formatYen(item.price)}
+                  <h4 className="panel__subheading">{item.name}</h4>
+                  <span className={`badge${has ? '' : affordable ? ' badge--alert' : ''}`}>
+                    {has ? '購入済み' : formatYen(item.price)}
                   </span>
                 </div>
                 <p className="spot-card__meta">
@@ -152,7 +207,7 @@ export const ShopScreen = () => {
                 </p>
                 <p className="spot-card__meta">{item.description}</p>
 
-                {owned ? null : (
+                {has ? null : (
                   <button
                     className="control"
                     type="button"

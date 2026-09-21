@@ -34,6 +34,19 @@ export type GearTuning = {
   /** リールのドラッグ・滑らかさを効率へ写す強さ。 */
   readonly reelDragStrength: number
   readonly reelSmoothnessStrength: number
+  /** 巻き上げトルクを REEL 効率へ写す強さ。 */
+  readonly reelTorqueStrength: number
+  /** 巻き出しのレスポンスを REEL / GIVE へ写す強さ。 */
+  readonly reelResponseStrength: number
+  /** ドラッグ初動の滑らかさをテンション抑制へ写す強さ。 */
+  readonly reelDragStartupStrength: number
+  /** 剛性を「耐えられるテンション」へ写す強さ。 */
+  readonly reelRigidityStrength: number
+  /**
+   * 自重を見た目の重さ（疲労・操作性）として写す強さ。
+   * 軽いロッド / リールほど扱いやすい。
+   */
+  readonly weightControlStrength: number
   /** フックの掛かり・保持を見え方へ写す強さ。 */
   readonly hookPenetrationStrength: number
   readonly hookHoldingStrength: number
@@ -54,6 +67,11 @@ export const DEFAULT_GEAR_TUNING: GearTuning = {
   visibilityStrength: 0.25,
   reelDragStrength: 0.3,
   reelSmoothnessStrength: 0.25,
+  reelTorqueStrength: 0.2,
+  reelResponseStrength: 0.15,
+  reelDragStartupStrength: 0.1,
+  reelRigidityStrength: 0.12,
+  weightControlStrength: 0.1,
   hookPenetrationStrength: 0.3,
   hookHoldingStrength: 0.35,
   methods: {

@@ -1,0 +1,15 @@
+{
+  "id": "daiva-light-pe-50kg",
+  "name": "LIGHT PE 50kg",
+  "price": 7600,
+  "category": "line",
+  "brandId": "daiva",
+  "seriesId": "daiva-light-pe",
+  "lineType": "pe",
+  "strengthKg": 50,
+  "diameterMm": 0.46,
+  "stretch": 0.22,
+  "abrasionResistance": 0.58,
+  "visibility": 0.84,
+  "sensitivity": 0.96
+}

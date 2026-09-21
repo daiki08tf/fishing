@@ -1,0 +1,32 @@
+{
+  "id": "tail-walker-shorebeat-2500s",
+  "name": "SHOREBEAT 2500S",
+  "price": 9200,
+  "category": "reel",
+  "brandId": "tail-walker",
+  "seriesId": "tail-walker-shorebeat",
+  "reelType": "spinning",
+  "sizeClass": 2500,
+  "variant": "S",
+  "size": 2500,
+  "gearRatio": 5.2,
+  "maxDragKg": 5.3,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 2.6,
+      "capacityM": 238
+    },
+    {
+      "lineStrengthKg": 7.9,
+      "capacityM": 78
+    }
+  ],
+  "retrieveCmPerTurn": 72,
+  "weightG": 211,
+  "smoothness": 0.58,
+  "control": 0.6,
+  "dragStartup": 0.58,
+  "rigidity": 0.64,
+  "windingTorque": 0.66,
+  "response": 0.58
+}

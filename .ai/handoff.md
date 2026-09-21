@@ -1,6 +1,6 @@
 # Handoff
 
-最終更新: Phase 6（Tackle Depth）完了
+最終更新: Phase 6.5（Tackle Catalog Expansion）完了
 
 ## このプロジェクトは何か
 
@@ -35,6 +35,107 @@ Product Decision の SSOT は `docs/DECISIONS.md`。
 - Phase 6: Tackle Depth（Gear 7 カテゴリ・Loadout・互換性・Tackle Resolver・
   架空ブランド・Save v5）。前セッションの基盤 `feat: add economy and tackle foundation`
   を引き継いで完成させた
+- Phase 6.5: Tackle Catalog Expansion（Content Master からの移植・Brand 12 /
+  Series 88 / Gear 463・番手と用途のカバレッジ・差別化テスト・`simulate:catalog`）
+
+## Phase 6.5（Tackle Catalog Expansion）で実装したもの
+
+Phase 6 の実装（Gear / Brand / Method / Catalog / Shop / Inventory / Loadout /
+Compatibility / Tackle Resolver / FishingEngine integration）は作り直していない。
+その上に Content の量と差別化を載せた。
+
+### Content Master からの移植
+
+GitHub の `content/master-draft` ブランチ（`docs/content/master-draft/*.csv`）を
+**参照資料としてのみ**使った。作業 branch へは merge していない。
+CSV を Runtime で読む構成にもしていない（Runtime は JSON の Content だけを読む）。
+
+採用したもの:
+
+| 元 | 採用のしかた |
+|---|---|
+| `brands.csv` | 12 ブランド。既存 10 の ID を維持し、説明・specialties・tagline を Master に合わせ、River Craft / Blue Horizon を追加 |
+| `brand_series.csv` | `gear-series` Content として 53 件（`terminal` カテゴリは将来分なので除外） |
+| `reels.csv` | 番手ごとにブランド・Series を散らして 142 件 |
+| `rods.csv` | 用途カテゴリごとに長さを散らして 84 件 |
+| `lines.csv` / `leaders.csv` | 強度を段階的に 34 / 22 件 |
+| `hooks.csv` | HookType ごとにサイズを散らして 33 件 |
+| `lures.csv` | LureType ごとに重量を散らして 117 件 |
+| `baits.csv` | 全 12 件 |
+
+採用しなかったもの:
+
+- `fish_master.csv`（実在魚。Phase 7 以降に個別出典確認）
+- `terminal_tackle_future.csv` / `landing_gear_future.csv` / `field_gear_future.csv`
+  （将来 Phase。参照のみ）
+- `Casting` / `ActionScore` / `FinesseAffinity` / `PowerAffinity`
+  （ゲーム調整値。現実の製品仕様ではないので Content に入れない。
+  相当する差は weight / length / depth / type などの現実属性で表現する）
+
+移植時の変換:
+
+- リールの 0〜100 の spec（Smoothness / Rigidity / WindingTorque / Response /
+  DragStartup）は 0〜1 に正規化
+- `lineCapacity` は `LineCapacityIndex` と番手から導出
+- フックの `Size`（`#6` / `2/0`）は符号付き数値（`6` / `-2`）へ変換
+- ルアーの `DepthRange` バケット（shallow-mid 等）は `depthRangeM` の数値域へ変換
+- offering の相性タグは重量帯（small / mid / large / big）から導出
+
+### 実装した構造
+
+| 領域 | 内容 |
+|---|---|
+| Brand | 12 件。**性能倍率を持たない**（表示・整理の属性） |
+| Product Family | `gear-series` Content と `gear.seriesId`。brand / category の一致を検証 |
+| Reel | `dragStartup` / `rigidity` / `windingTorque` / `response` を spec に追加し、resolver で modifier に反映 |
+| Rod | `power` に XH、`seriesCategory` に chinning を追加（用途 17 種） |
+| Hook | `assist` / `jighead` を Hook subtype として追加。`gaugeMm` を追加。サイズは符号で 2 系統 |
+| Lure | jerkbait / metal_vibration / egi / popper / stickbait を追加（14 種類） |
+| Bait | bait type を 15 語彙へ拡張（FUTURE_CONSUMABLE。Phase 6.5 では無限使用） |
+| Validation | id 重複・未知 Series・Series の brand/category 不一致・番手/variant の enum・負値・min>max |
+| Shop UI | カテゴリ filter（件数付き）とブランド filter。Brand / Series / Model / spec / 所持 / 不足を表示 |
+| Tackle UI | ブランド filter。Brand / Series / Model / spec / 互換性の理由を表示。判定は Domain を呼ぶ |
+| 検証 | `npm run simulate:catalog`（件数・カバレッジ・3000 番比較・代表 Build・価格ラダー検査） |
+
+### Phase 6.5 の主な設計判断
+
+1. **差はブランド ID の分岐ではなく spec の結果** — ブランドに倍率を持たせない。
+   同番手でも spec が違うため、resolved modifier と互換性に差が出る。
+2. **ゲーム調整値を Content に入れない** — Master の Casting / ActionScore /
+   affinity は `GearTuning` 側の概念なので移植しない（DATA_MODEL §13 の分離）。
+3. **番手は Engine の分岐条件にしない** — テストで
+   `src/domain/fishing` に番手やブランド名・Series 名が現れないことを機械検査する。
+4. **Series は参照整合性だけ** — `series.name` と `gear.series` の一致も検証する。
+   既存 Phase 6 の 16 アイテムには `legacy-<gearId>` の Series を与えて整合させた。
+5. **フックのサイズ規約** — 正 = `#N`、負 = `N/0`。`hookSizeRank` で大小を比較する。
+6. **リールの太糸判定を相対化** — 絶対 0.3mm だと大型番手で誤警告になるため、
+   定格（巻ける最も強いライン）から見た相対に変えた。
+7. **価格ラダー検査** — 比較グループ（番手・用途・ルアー種別）ごとに
+   「最も高い商品が全 modifier で他を完全上位互換にしていないか」を検査する。
+   現在は 8 グループすべてで完全上位は一部（0〜1 件）に留まる。
+
+### Phase 6.5 の検証結果
+
+- `npm run check`: PASS（typecheck / lint / format / validate:content / test / build）
+- `npm run test:run`: **55 files / 515 tests PASS**（Phase 6 完了時は 54 files / 482 tests）
+- `npm run validate:content`: PASS（**586 件** = 魚種 10 + 釣り場 8 + Gear 463 + Series 88 +
+  Brand 12 + Method 4 + 商品 1）
+- `npm run simulate:catalog`: 9 チェックすべて PASS
+  - 件数: Reel 143 / Rod 88 / Line 37 / Leader 25 / Hook 39 / Lure 117 / Bait 14
+  - 番手カバレッジ 13/13、用途カバレッジ 17/17
+  - 3000 番: 11 モデル / 6 ブランド。滑らかさは Daiva、レスポンスは Shimara、
+    剛性は Arvo Garsen が最上位（性格が分かれている）
+  - 代表 Build 8 種（Starter / Ultra Finesse / Light Game / Balanced Seabass /
+    Long Cast Surf / Power Shore Jigging / Offshore Power / Big Game）がすべて組める
+  - 価格ラダー検査: 8 グループすべてで「完全上位」は 0〜1 件
+- `npm run simulate:tackle`: 11 チェックすべて PASS
+  （大型を 9.3 割まで攻める操作で Power 100% / Starter 15% / Finesse 12%）
+- `npm run simulate:day` / `simulate:trip` / `simulate:progression` /
+  `simulate:fishing --seed demo`（174 tick、Phase 4 から不変）/
+  `sample:individuals --samples 10000`（invalid=0）: すべて変化なしで PASS
+- バンドル: JS **638.49 kB（gzip 159.97 kB）**、CSS 6.09 kB（gzip 1.67 kB）。
+  Phase 6 の 447 kB（gzip 133 kB）から増加（Content を eager で読むため）。
+  Vite が 500 kB 超の警告を出す（コード分割は Phase 7 の候補）
 
 コミットの位置は `git log --oneline` で確認する。
 本文書にはマシン固有の絶対パスや作業ディレクトリの UUID を記録しない。
@@ -52,6 +153,7 @@ Product Decision の SSOT は `docs/DECISIONS.md`。
 | 4 | World（ゲーム内時間・移動・Spot・Access・Knowledge）と Map / Spot 画面 | 自宅から釣りへ行って帰る |
 | 5 | Economy / Schedule / Shop（給料・生活費・有給・中古車購入） | 働きながら釣りに行く生活ループ |
 | 6 | Tackle Depth（Gear 7 カテゴリ・Loadout・互換性・Tackle Resolver・架空ブランド） | 装備を組んで狙う |
+| 6.5 | Tackle Catalog Expansion（Brand 12 / Series 88 / Gear 463・番手と用途のカバレッジ） | 装備を選んで悩む |
 
 ## Phase 6（Tackle Depth）で実装したもの
 
@@ -368,6 +470,7 @@ npm run simulate:fishing -- --seed demo
 npm run sample:individuals -- --samples 10000
 npm run simulate:progression -- --catches 2000
 npm run simulate:tackle        # Starter / Finesse / Balanced / Power の比較
+npm run simulate:catalog       # カタログの件数 / カバレッジ / 差別化 / 価格ラダー検査
 ```
 
 ### モバイル実機での確認
@@ -447,6 +550,17 @@ npm run simulate:tackle        # Starter / Finesse / Balanced / Power の比較
   - Bait は Phase 6 では無限使用（数量管理はしない）。
   - 装備による `castingPrecisionMultiplier` / `detectionClarityMultiplier` /
     `landingStabilityMultiplier` の一部は、まだファイトの数値へ直接は効かない。
+- Phase 6.5 の残り:
+  - **Content を eager で読むため bundle が 638 kB（gzip 160 kB）**。
+    Vite の 500 kB 警告が出ている。Content の遅延読み込み / カテゴリ分割は未実装。
+  - Series ごとの spec 差は Master の値の範囲に留まる（ブランド差の方が大きい）。
+  - Lure の `Casting` / `ActionScore` / affinity 相当（Master のゲーム調整値）は
+    未移植。ルアーごとの性能差を強めるなら `GearTuning` 側に入れる必要がある。
+  - Master の全件（Reel 383 / Rod 705 / Lure 518）は投入していない。
+    投入済みは Reel 142 / Rod 84 / Lure 117（いずれも目標レンジ内）。
+  - `terminal_tackle_future` / `landing_gear_future` / `field_gear_future` は未実装。
+  - Bait は FUTURE_CONSUMABLE（Phase 6.5 では無限使用）。
+  - Shop / Tackle のクリック操作は未確認（初期状態の描画スモークのみ）。
 - Phase 5 の残り:
   - 車の維持費（`simpleVehicleMonthlyCost`）は構造だけ用意し、まだ請求していない。
   - 車種スペック・ローン・保険・駐車場・車検・故障・ガソリン残量は扱わない。

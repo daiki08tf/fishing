@@ -1,0 +1,21 @@
+{
+  "id": "shimara-exsensea-193lm",
+  "name": "EXSENSEA 193LM",
+  "price": 20200,
+  "category": "rod",
+  "brandId": "shimara",
+  "seriesId": "shimara-exsensea",
+  "seriesCategory": "trout",
+  "lengthM": 1.93,
+  "power": "L",
+  "action": "moderate",
+  "minLureWeightG": 2,
+  "maxLureWeightG": 12,
+  "recommendedLineMinKg": 2,
+  "recommendedLineMaxKg": 6,
+  "weightG": 138,
+  "sensitivity": 0.64,
+  "control": 0.7,
+  "fightingPower": 0.6,
+  "castingProfile": 0.43
+}

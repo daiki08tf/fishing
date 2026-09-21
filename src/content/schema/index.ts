@@ -1,4 +1,5 @@
 import { gearItemSchema } from './gear'
+import { gearSeriesSchema } from './gearSeries'
 import { brandSchema } from './brand'
 import { methodSchema } from './method'
 import { shopItemSchema } from './shopItem'
@@ -21,6 +22,7 @@ export const CONTENT_SCHEMAS = {
   regulations: regulationSchema,
   'shop-items': shopItemSchema,
   brands: brandSchema,
+  'gear-series': gearSeriesSchema,
   gear: gearItemSchema,
   methods: methodSchema,
 } as const
@@ -96,6 +98,12 @@ export const parseContentRecord = (kind: ContentKind, value: unknown): ContentPa
         ? { ok: true, value: result.data }
         : { ok: false, issues: toIssues(result.error) }
     }
+    case 'gear-series': {
+      const result = gearSeriesSchema.safeParse(value)
+      return result.success
+        ? { ok: true, value: result.data }
+        : { ok: false, issues: toIssues(result.error) }
+    }
     case 'gear': {
       const result = gearItemSchema.safeParse(value)
       return result.success
@@ -113,6 +121,7 @@ export const parseContentRecord = (kind: ContentKind, value: unknown): ContentPa
 
 export { fishingSpotSchema, fishSpeciesSchema, regulationSchema, transportSchema }
 export { brandSchema } from './brand'
+export { gearSeriesSchema } from './gearSeries'
 export { accessRequirementSchema } from './accessRequirement'
 export { conditionModelSchema } from './conditionModel'
 export { fishOccurrenceSchema } from './fishOccurrence'

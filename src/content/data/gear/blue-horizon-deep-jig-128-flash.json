@@ -1,0 +1,19 @@
+{
+  "id": "blue-horizon-deep-jig-128-flash",
+  "name": "Deep Jig 128 Flash",
+  "price": 15200,
+  "category": "lure",
+  "brandId": "blue-horizon",
+  "seriesId": "blue-horizon-pelagic-x",
+  "lureType": "jig",
+  "weightG": 300,
+  "lengthMm": 128,
+  "depthRangeM": {
+    "min": 10,
+    "max": 40
+  },
+  "retrieveStyle": "vertical jig",
+  "action": "slide",
+  "visualProfile": "flash",
+  "targetProfile": ["large", "big"]
+}

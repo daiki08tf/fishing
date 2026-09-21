@@ -1,0 +1,32 @@
+{
+  "id": "gamakaze-kishin-10000pg",
+  "name": "KISHIN 10000PG",
+  "price": 62100,
+  "category": "reel",
+  "brandId": "gamakaze",
+  "seriesId": "gamakaze-kishin",
+  "reelType": "spinning",
+  "sizeClass": 10000,
+  "variant": "PG",
+  "size": 10000,
+  "gearRatio": 4.6,
+  "maxDragKg": 26.2,
+  "lineCapacity": [
+    {
+      "lineStrengthKg": 13.1,
+      "capacityM": 330
+    },
+    {
+      "lineStrengthKg": 39.3,
+      "capacityM": 110
+    }
+  ],
+  "retrieveCmPerTurn": 97,
+  "weightG": 523,
+  "smoothness": 0.62,
+  "control": 0.47,
+  "dragStartup": 0.66,
+  "rigidity": 0.74,
+  "windingTorque": 0.72,
+  "response": 0.59
+}

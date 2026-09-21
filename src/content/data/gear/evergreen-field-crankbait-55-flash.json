@@ -1,0 +1,19 @@
+{
+  "id": "evergreen-field-crankbait-55-flash",
+  "name": "Crankbait 55 Flash",
+  "price": 1500,
+  "category": "lure",
+  "brandId": "evergreen-field",
+  "seriesId": "evergreen-field-combatra",
+  "lureType": "crankbait",
+  "weightG": 5,
+  "lengthMm": 55,
+  "depthRangeM": {
+    "min": 2,
+    "max": 8
+  },
+  "retrieveStyle": "steady",
+  "action": "wobble",
+  "visualProfile": "flash",
+  "targetProfile": ["small"]
+}

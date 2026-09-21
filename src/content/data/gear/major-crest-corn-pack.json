@@ -1,0 +1,10 @@
+{
+  "id": "major-crest-corn-pack",
+  "name": "Corn Pack",
+  "price": 1480,
+  "category": "bait",
+  "brandId": "major-crest",
+  "baitType": "corn",
+  "presentation": "bottom",
+  "targetProfile": ["small", "mid"]
+}

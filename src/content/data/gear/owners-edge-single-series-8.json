@@ -1,0 +1,14 @@
+{
+  "id": "owners-edge-single-series-8",
+  "name": "Single Series #8",
+  "price": 510,
+  "category": "hook",
+  "brandId": "owners-edge",
+  "seriesId": "owners-edge-single-series",
+  "size": 8,
+  "strengthKg": 6.9,
+  "gaugeMm": 0.55,
+  "hookType": "single",
+  "penetration": 0.79,
+  "holdingPower": 0.64
+}

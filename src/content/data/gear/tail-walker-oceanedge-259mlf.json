@@ -1,0 +1,21 @@
+{
+  "id": "tail-walker-oceanedge-259mlf",
+  "name": "OCEANEDGE 259MLF",
+  "price": 22000,
+  "category": "rod",
+  "brandId": "tail-walker",
+  "seriesId": "tail-walker-oceanedge",
+  "seriesCategory": "seabass",
+  "lengthM": 2.59,
+  "power": "ML",
+  "action": "fast",
+  "minLureWeightG": 5,
+  "maxLureWeightG": 28,
+  "recommendedLineMinKg": 5,
+  "recommendedLineMaxKg": 12,
+  "weightG": 167,
+  "sensitivity": 0.66,
+  "control": 0.66,
+  "fightingPower": 0.63,
+  "castingProfile": 0.58
+}

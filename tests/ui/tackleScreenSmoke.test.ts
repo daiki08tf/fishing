@@ -46,5 +46,9 @@ describe('tackle screen', () => {
     expect(html).toContain('Shimara')
     expect(html).toContain('購入する')
     expect(html).toContain('移動手段')
+    // Phase 6.5: カテゴリ / ブランドの絞り込み。
+    expect(html).toContain('すべて')
+    expect(html).toContain('ブランド')
+    expect(html).toContain('点を表示中')
   })
 })

@@ -41,6 +41,11 @@ const brandModules = import.meta.glob<unknown>('../data/brands/*.json', {
   import: 'default',
 })
 
+const gearSeriesModules = import.meta.glob<unknown>('../data/gear-series/*.json', {
+  eager: true,
+  import: 'default',
+})
+
 /** glob の順序に依存しないよう、ファイル名で安定させる。 */
 const toSources = (modules: Record<string, unknown>): readonly ContentSource[] =>
   Object.entries(modules)
@@ -55,4 +60,5 @@ export const loadBuiltInContent = (): BuiltInContent =>
     gear: toSources(gearModules),
     methods: toSources(methodModules),
     brands: toSources(brandModules),
+    gearSeries: toSources(gearSeriesModules),
   })

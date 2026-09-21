@@ -1,0 +1,19 @@
+{
+  "id": "blue-horizon-popper-104-flash",
+  "name": "Popper 104 Flash",
+  "price": 2200,
+  "category": "lure",
+  "brandId": "blue-horizon",
+  "seriesId": "blue-horizon-pelagic-x",
+  "lureType": "popper",
+  "weightG": 30,
+  "lengthMm": 104,
+  "depthRangeM": {
+    "min": 0,
+    "max": 0.5
+  },
+  "retrieveStyle": "pop",
+  "action": "pop",
+  "visualProfile": "flash",
+  "targetProfile": ["large"]
+}

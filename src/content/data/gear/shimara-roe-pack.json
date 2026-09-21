@@ -1,0 +1,10 @@
+{
+  "id": "shimara-roe-pack",
+  "name": "Roe Pack",
+  "price": 1620,
+  "category": "bait",
+  "brandId": "shimara",
+  "baitType": "roe",
+  "presentation": "drift",
+  "targetProfile": ["large", "big"]
+}
