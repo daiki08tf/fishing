@@ -1,0 +1,14 @@
+TAB NAME: baits.csv>
+index,GearID,Brand,Name,BaitType,Presentation,TargetWater,PriceJPY,ConsumptionModel,Notes
+bait-001,Owner's Edge,Worm Mix,worm,bottom|float,freshwater|brackish,640,FUTURE_CONSUMABLE,Phase 6では消耗簡略化可
+bait-002,Gamakaze,Shrimp Pack,shrimp,float|bottom,salt|brackish,780,FUTURE_CONSUMABLE,Phase 6では消耗簡略化可
+bait-003,Gamakaze,Krill Block,krill,float|chumming,salt,920,FUTURE_CONSUMABLE,Phase 6では消耗簡略化可
+bait-004,Yamashiro,Squid Strip,squid,bottom,salt,1060,FUTURE_CONSUMABLE,Phase 6では消耗簡略化可
+bait-005,Tail Walker,Baitfish Pack,fish,live|dead bait,salt,1200,FUTURE_CONSUMABLE,Phase 6では消耗簡略化可
+bait-006,Major Crest,Dough Mix,dough,float|bottom,freshwater,1340,FUTURE_CONSUMABLE,Phase 6では消耗簡略化可
+bait-007,Major Crest,Corn Pack,corn,bottom,freshwater,1480,FUTURE_CONSUMABLE,Phase 6では消耗簡略化可
+bait-008,Shimara,Roe Pack,roe,drift,freshwater,1620,FUTURE_CONSUMABLE,Phase 6では消耗簡略化可
+bait-009,Owner's Edge,Sandworm Pack,sandworm,bottom,salt|brackish,1760,FUTURE_CONSUMABLE,Phase 6では消耗簡略化可
+bait-010,Gamakaze,Shellfish Mix,shellfish,bottom,salt,1900,FUTURE_CONSUMABLE,Phase 6では消耗簡略化可
+bait-011,River Craft,Insect Pack,insect,drift|float,freshwater,2040,FUTURE_CONSUMABLE,Phase 6では消耗簡略化可
+bait-012,Blue Horizon,Big Baitfish,fish,live|dead bait,salt,2180,FUTURE_CONSUMABLE,Phase 6では消耗簡略化可
