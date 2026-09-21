@@ -1,0 +1,22 @@
+TAB NAME: methods.csv>
+index,MethodID,Name,BaseType,Target,DesignNote,Phase
+method-light-lure,Light Lure,lure,小型魚・ライトゲーム,軽量ルアー/細糸/感度重視,PHASE6
+method-lure,General Lure,lure,汎用ルアー,幅広いルアーに対応,PHASE6
+method-bait,Bait,bait,汎用餌釣り,餌・フック中心,PHASE6
+method-bottom,Bottom,bait,底物,オモリ/底層,PHASE6
+method-shore-casting,Shore Casting,lure,サーフ/遠投,飛距離とライン容量,FUTURE
+method-shore-jigging,Shore Jigging,lure,青物,重いジグ/パワー,FUTURE
+method-light-shore-jigging,Light Shore Jigging,lure,小〜中型青物,軽めジグ,FUTURE
+method-float,Float,bait,ウキ釣り,ウキ/ハリス,FUTURE
+method-trout,Trout Lure,lure,トラウト,小型スプーン/ミノー,FUTURE
+method-area-trout,Area Trout,lure,管理釣り場,超軽量ルアー,FUTURE
+method-bass,Bass Lure,lure,バス,プラグ/ワーム,FUTURE
+method-eging,Eging,lure,イカ,エギ専用,FUTURE
+method-rock,Rockfish,lure,根魚,根掛かり/耐摩耗,FUTURE
+method-sabiki,Sabiki,bait,小型回遊魚,サビキ仕掛け,FUTURE
+method-surf,Surf,lure,ヒラメ/マゴチ,遠投,FUTURE
+method-offshore-jig,Offshore Jigging,lure,青物/沖,高負荷ファイト,FUTURE
+method-casting,Offshore Casting,lure,大型回遊魚,大型プラグ,FUTURE
+method-trolling,Trolling,lure,回遊魚,船走行,FUTURE
+method-fly,Fly Fishing,fly,トラウト,フライ専用タックル,FUTURE
+method-biggame,Big Game,mixed,大型魚,大型リール/高ドラグ,FUTURE
