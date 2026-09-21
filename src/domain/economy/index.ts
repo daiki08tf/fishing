@@ -24,4 +24,10 @@ export type { SpendResult, TransactionRequest } from './finance'
 export { settleFinance } from './settlement'
 export type { SettlementResult } from './settlement'
 
-export { canAffordTrip, describeTravelCost, roundTripCostFor } from './travelCost'
+export {
+  canAffordTrip,
+  defaultTravelOption,
+  describeTravelCost,
+  describeTravelCostParts,
+  roundTripCostFor,
+} from './travelCost'

@@ -141,7 +141,8 @@ describe('world session', () => {
     expect(result.ok).toBe(false)
     if (!result.ok) {
       expect(result.reason).toBe('inaccessible')
-      expect(result.message).toContain('道路')
+      // 車を持っていないことが理由であり、capability 不足ではない。
+      expect(result.message).toContain('所有')
     }
   })
 

@@ -284,6 +284,33 @@ type AccessRequirement =
 `island_access` を現在の語彙とする。Spot が capability を要求し、利用可能な
 TransportDefinition がそれを提供する。Angler Level は入力にも条件にも含めない。
 
+### 行けない理由（Phase 7A.1）
+
+`AccessBlockedReason.kind` は条件そのものではなく、**Transport 候補が落ちた段階**も表す。
+
+```ts
+type AccessBlockedReasonKind =
+  | AccessRequirementKind           // knowledge / reputation / permit / relationship / season
+  | "missing_capability"            // 手持ちの移動手段がその capability を持たない
+  | "no_compatible_transport"       // capability はあるが、行ける route が無い
+  | "ownership_required"            // 行ける車両の所有が必要（未購入）
+  | "rental_unavailable"            // レンタルが player state に無い
+  | "facility_required"             // route に必要な設備（営業所 / マリーナ等）が無い
+```
+
+Transport 候補の解決は
+`not_available` → `ownership_required` / `rental_unavailable` →
+`route_type_not_allowed` → `missing_route_capability` → `facility_required` →
+`out_of_range` の順に段階を区別する。**手持ちの移動手段が提供している capability を
+「不足」と表示しない**（例: 中古車を持つプレイヤーに「道路からのアクセス」を要求しない）。
+
+## 10.1 Trip UI の既定選択
+
+行ける Spot では `ResolvedTravelOption` を列挙し、プレイヤーが移動手段を選ぶ。
+既定は Economy の `defaultTravelOption`（往復費が最も安い候補、同額なら速い順）である。
+「4 分速いだけの高額な候補を黙って選び、高い往復費を課す」ことを避ける。
+費用は `costComponents`（運賃 / 走行費 / レンタル料）を内訳として表示する。
+
 ## 11. PlayerProgression
 
 ```ts

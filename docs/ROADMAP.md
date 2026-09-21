@@ -231,6 +231,14 @@ early vehicle ownership proof-of-concept:
 - Save v6 と v5 car migration
 - `simulate:transport`
 
+### Phase 7A.1 — 独立レビューの最小修正（完了）
+
+- motorcycle / rental car を実際に使える一般道 route へ接続（role 差は維持）
+- 入手できる Transport がどの route でも使えない状態を `validate:content` が検出する
+- 行けない理由を Transport 候補の解決段階（capability 不足 / route 不在 / 所有 /
+  レンタル / 設備）で説明する
+- Map で移動手段を選べるようにし、既定は最も安い候補にする（費用内訳も表示）
+
 交通手段によって:
 
 - reachable Spot

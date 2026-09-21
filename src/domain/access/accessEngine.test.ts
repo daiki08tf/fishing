@@ -29,7 +29,7 @@ describe('access engine', () => {
     })
   })
 
-  it('returns a useful unavailable reason for a missing capability', () => {
+  it('reports only the capability the player does not own, never the one they do', () => {
     const spot = createTestSpot({
       access: [
         { kind: 'capability', capability: 'road_access' },
@@ -53,11 +53,132 @@ describe('access engine', () => {
 
     expect(evaluation.accessible).toBe(false)
     expect(evaluation.travelOptions).toEqual([])
-    expect(evaluation.blockedReasons).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ kind: 'capability', capability: 'rough_road' }),
-      ]),
+    // compact car は road_access を持っているので「道路からのアクセス」は不足ではない。
+    expect(evaluation.blockedReasons).toEqual([
+      expect.objectContaining({ kind: 'missing_capability', capability: 'rough_road' }),
+    ])
+    expect(evaluation.blockedReasons.some((reason) => reason.capability === 'road_access')).toBe(
+      false,
     )
+  })
+
+  it('asks for ownership instead of blaming a capability the vehicle provides', () => {
+    const spot = createTestSpot({
+      access: [{ kind: 'capability', capability: 'road_access' }],
+      travelOptions: [
+        {
+          id: 'car-only-route',
+          transportTypes: ['compact_car'],
+          requiredCapabilities: ['road_access'],
+          features: [],
+          baseMinutes: 60,
+          distanceKm: 30,
+          baseOneWayCost: 400,
+        },
+      ],
+    })
+
+    const motorcycleOnly = createTestTransportState({
+      available: ['walk'],
+      owned: ['standard-motorcycle'],
+    })
+    const evaluation = evaluateAccess({ ...base, spot, playerTransports: motorcycleOnly })
+
+    expect(evaluation.accessible).toBe(false)
+    // motorcycle は road_access を持つ。capability 不足ではなく「この route を通れる車両の所有」。
+    expect(evaluation.blockedReasons.map((reason) => reason.kind)).toEqual(['ownership_required'])
+    expect(evaluation.blockedReasons.some((reason) => reason.capability === 'road_access')).toBe(
+      false,
+    )
+  })
+
+  it('reports no compatible transport when no vehicle can use the route', () => {
+    const spot = createTestSpot({
+      access: [{ kind: 'capability', capability: 'road_access' }],
+      travelOptions: [
+        {
+          id: 'too-far-route',
+          transportTypes: ['compact_car', 'suv', 'motorcycle', 'rental_car'],
+          requiredCapabilities: ['road_access'],
+          features: [],
+          baseMinutes: 600,
+          distanceKm: 5_000,
+          baseOneWayCost: 900,
+        },
+      ],
+    })
+    const carOwner = createTestTransportState({ owned: ['used-compact-car'] })
+    const evaluation = evaluateAccess({ ...base, spot, playerTransports: carOwner })
+
+    expect(evaluation.accessible).toBe(false)
+    expect(evaluation.blockedReasons.map((reason) => reason.kind)).toEqual([
+      'no_compatible_transport',
+    ])
+  })
+
+  it('asks for ownership when only an unowned vehicle can use the route', () => {
+    const spot = createTestSpot({
+      access: [{ kind: 'capability', capability: 'road_access' }],
+      travelOptions: [
+        {
+          id: 'car-only-route',
+          transportTypes: ['compact_car'],
+          requiredCapabilities: ['road_access'],
+          features: [],
+          baseMinutes: 60,
+          distanceKm: 30,
+          baseOneWayCost: 400,
+        },
+      ],
+    })
+
+    const evaluation = evaluateAccess({ ...base, spot })
+
+    expect(evaluation.accessible).toBe(false)
+    expect(evaluation.blockedReasons.map((reason) => reason.kind)).toEqual(['ownership_required'])
+    expect(evaluation.blockedReasons[0]?.label).toContain('所有')
+  })
+
+  it('separates a missing rental facility from a missing rental service', () => {
+    const route = {
+      id: 'rental-route',
+      transportTypes: ['rental_car'] as const,
+      requiredCapabilities: ['road_access'] as const,
+      features: [] as const,
+      baseMinutes: 60,
+      distanceKm: 30,
+      baseOneWayCost: 400,
+    }
+    const spot = createTestSpot({
+      access: [{ kind: 'capability', capability: 'road_access' }],
+      travelOptions: [route],
+    })
+
+    // レンタルは利用できるが、route に営業所（vehicle_rental）が無い。
+    expect(evaluateAccess({ ...base, spot }).blockedReasons.map((reason) => reason.kind)).toEqual([
+      'facility_required',
+    ])
+
+    // route に営業所があり、レンタルも利用できるなら行ける。
+    const withFacility = createTestSpot({
+      access: [{ kind: 'capability', capability: 'road_access' }],
+      travelOptions: [{ ...route, features: ['vehicle_rental'] as const }],
+    })
+    expect(evaluateAccess({ ...base, spot: withFacility }).accessible).toBe(true)
+
+    // レンタルが player state に無い場合は rental_unavailable。
+    const noRental = createTestTransportState({
+      available: ['walk', 'train', 'bus'],
+      owned: ['standard-motorcycle'],
+    })
+    const evaluation = evaluateAccess({
+      ...base,
+      spot: withFacility,
+      playerTransports: noRental,
+    })
+
+    expect(evaluation.accessible).toBe(false)
+    expect(evaluation.blockedReasons.map((reason) => reason.kind)).toEqual(['rental_unavailable'])
   })
 
   it('offers multiple valid transport options and sorts them deterministically', () => {

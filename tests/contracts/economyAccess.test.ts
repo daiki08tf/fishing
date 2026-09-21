@@ -60,7 +60,9 @@ describe('economy and access', () => {
     const evaluation = store.getState().evaluateSpot(carSpot, TEST_TRANSPORTS)
 
     expect(evaluation.accessible).toBe(false)
-    expect(evaluation.blockedReasons[0]?.label).toContain('道路')
+    // capability を持っていないのではなく、この釣り場へ行ける車両を所有していない。
+    expect(evaluation.blockedReasons[0]?.kind).toBe('ownership_required')
+    expect(evaluation.blockedReasons[0]?.label).toContain('所有')
   })
 
   it('opens the same spot after buying the car', () => {
@@ -91,7 +93,7 @@ describe('economy and access', () => {
     })
 
     // 条件は同じ。使える移動手段が増えただけ。
-    expect(before.blockedReasons.map((reason) => reason.kind)).toEqual(['capability'])
+    expect(before.blockedReasons.map((reason) => reason.kind)).toEqual(['ownership_required'])
     expect(withCar.blockedReasons).toEqual([])
     expect(carSpot.access).toEqual([{ kind: 'capability', capability: 'road_access' }])
   })

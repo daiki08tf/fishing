@@ -31,6 +31,62 @@
   width: 100%;
 }
 
+/* Phase 7A.1: 移動手段をプレイヤーが選ぶ（既定は最も安い候補）。 */
+.travel-options {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.travel-option {
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+  padding: 0.4rem 0.5rem;
+}
+
+.travel-option--selected {
+  border-color: var(--color-accent);
+  background-color: color-mix(in srgb, var(--color-accent) 12%, transparent);
+}
+
+.travel-option__choice {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.travel-option__name {
+  font-size: 0.8125rem;
+}
+
+.travel-option__meta {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.travel-option__parts,
+.travel-option__note {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.6875rem;
+  color: var(--color-text-muted);
+}
+
+.travel-option__note {
+  color: #f0c274;
+}
+
 .blocked {
   margin: 0.6rem 0 0;
   padding-left: 1.1rem;

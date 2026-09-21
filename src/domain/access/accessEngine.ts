@@ -3,11 +3,12 @@ import { regionKnowledgeScore } from '../knowledge/regionKnowledge'
 import { spotKnowledgeScore } from '../knowledge/spotKnowledge'
 import type { FishingSpot, SpotTravelRoute } from '../world/FishingSpot'
 import type { DayOfWeek } from '../world/WorldTime'
-import type { AccessRequirementKind } from './AccessRequirement'
+import { ACCESS_REQUIREMENT_KINDS, type AccessRequirementKind } from './AccessRequirement'
 import type {
   AccessCapability,
   PlayerTransportState,
   ResolvedTravelOption,
+  RouteFeature,
   TransportDefinition,
   TravelCostComponent,
 } from './Transport'
@@ -20,12 +21,57 @@ import type {
  * 所持金による可否は Economy の責務であり、ここでは判定しない。
  */
 
+/**
+ * Transport 候補が落ちた段階。所有・レンタル・route 種別・設備・距離を区別して
+ * 「どの段階で行けなくなったか」を説明できるようにする。
+ * 並びは手前から奥の順で、後ろほど手前の条件を通り抜けている（route ごとの比較に使う）。
+ */
+export const TRANSPORT_CANDIDATE_REJECTIONS = [
+  'not_available',
+  'ownership_required',
+  'rental_unavailable',
+  'route_type_not_allowed',
+  'missing_route_capability',
+  'facility_required',
+  'out_of_range',
+] as const
+
+export type TransportCandidateRejection = (typeof TRANSPORT_CANDIDATE_REJECTIONS)[number]
+
+/**
+ * 行き先を塞いでいる理由。
+ *
+ * knowledge / reputation / permit / relationship / season は AccessRequirementKind と共通。
+ * capability 条件は Transport 候補の解決結果として説明する。条件そのものを並べるのではなく、
+ * missing_capability（手持ちの移動手段に capability が無い）と no_compatible_transport
+ * （capability はあるが行ける route が無い）を分ける。所有している capability を
+ * 「不足」と表示しないための区別である。
+ */
+export const ACCESS_BLOCKED_REASON_KINDS = [
+  ...ACCESS_REQUIREMENT_KINDS,
+  'missing_capability',
+  'no_compatible_transport',
+  'ownership_required',
+  'rental_unavailable',
+  'facility_required',
+] as const
+
+export type AccessBlockedReasonKind = (typeof ACCESS_BLOCKED_REASON_KINDS)[number]
+
 export type AccessBlockedReason = {
-  readonly kind: AccessRequirementKind
+  readonly kind: AccessBlockedReasonKind
   readonly label: string
   readonly required?: number
   readonly current?: number
+  /** missing_capability のときだけ。満たしていない物理アクセス能力。 */
   readonly capability?: AccessCapability
+  /** facility_required のときだけ。足りない route 設備。 */
+  readonly feature?: RouteFeature
+  /**
+   * Transport 段階の理由で、関係した候補。UI は label だけを使う。
+   * 「どの Transport の話か」をテストとログから追えるように残す。
+   */
+  readonly transportIds?: readonly string[]
 }
 
 export type AccessEvaluation = {
@@ -61,40 +107,78 @@ const CAPABILITY_LABELS: Readonly<Record<AccessCapability, string>> = {
   island_access: '島への渡航能力',
 }
 
+const ROUTE_FEATURE_LABELS: Readonly<Record<RouteFeature, string>> = {
+  vehicle_rental: 'レンタカー営業所',
+  launch_point: 'カヤックを出せる場所',
+  boat_rental: 'ボートレンタル',
+  marina: 'マリーナ',
+}
+
 const includesAll = <T>(available: readonly T[], required: readonly T[]): boolean =>
   required.every((entry) => available.includes(entry))
 
-const transportCanBeUsed = (
+/** 段階の並びを優先度として使う。数値が大きいほど奥の条件まで通っている。 */
+const rejectionRank = (rejection: TransportCandidateRejection): number =>
+  TRANSPORT_CANDIDATE_REJECTIONS.indexOf(rejection)
+
+const isTransportAvailable = (
   definition: TransportDefinition,
   state: PlayerTransportState,
-  route: SpotTravelRoute,
 ): boolean => {
-  if (!route.transportTypes.includes(definition.transportType)) {
+  if (!state.availableTransportIds.includes(definition.id)) {
     return false
   }
 
-  if (!includesAll(route.features, definition.requiredRouteFeatures)) {
-    return false
-  }
+  return definition.ownershipModel !== 'owned' || state.ownedTransportIds.includes(definition.id)
+}
 
-  if (definition.maxRangeKm !== undefined && route.distanceKm > definition.maxRangeKm) {
-    return false
+/** 利用できない理由（使えるなら null）。所有・レンタル・一般利用を区別する。 */
+const availabilityRejection = (
+  definition: TransportDefinition,
+  state: PlayerTransportState,
+): TransportCandidateRejection | null => {
+  if (isTransportAvailable(definition, state)) {
+    return null
   }
 
   switch (definition.ownershipModel) {
-    case 'always_available':
-      return state.availableTransportIds.includes(definition.id)
     case 'owned':
-      return (
-        state.availableTransportIds.includes(definition.id) &&
-        state.ownedTransportIds.includes(definition.id)
-      )
+      return 'ownership_required'
     case 'rental':
-      // Rental availability is explicit in player/trip planning state. The route must
-      // also list the rental type and all required facilities (rental desk / marina).
-      // This keeps "a rental exists somewhere" from making every matching route usable.
-      return state.availableTransportIds.includes(definition.id)
+      return 'rental_unavailable'
+    case 'always_available':
+      return 'not_available'
   }
+}
+
+/**
+ * route 側の条件だけを見た拒否理由。
+ *
+ * Rental availability is explicit in player/trip planning state. The route must also list
+ * the rental type and all required facilities (rental desk / marina). This keeps
+ * "a rental exists somewhere" from making every matching route usable.
+ */
+const routeRejection = (
+  definition: TransportDefinition,
+  route: SpotTravelRoute,
+): TransportCandidateRejection | null => {
+  if (!route.transportTypes.includes(definition.transportType)) {
+    return 'route_type_not_allowed'
+  }
+
+  if (!includesAll(definition.capabilities, route.requiredCapabilities)) {
+    return 'missing_route_capability'
+  }
+
+  if (!includesAll(route.features, definition.requiredRouteFeatures)) {
+    return 'facility_required'
+  }
+
+  if (definition.maxRangeKm !== undefined && route.distanceKm > definition.maxRangeKm) {
+    return 'out_of_range'
+  }
+
+  return null
 }
 
 const runningCostFor = (definition: TransportDefinition, route: SpotTravelRoute): number => {
@@ -171,11 +255,11 @@ const resolveTravelOptions = (input: AccessEvaluationInput): readonly ResolvedTr
 
   for (const route of input.spot.travelOptions) {
     for (const definition of input.transports) {
-      if (!transportCanBeUsed(definition, input.playerTransports, route)) {
+      if (!isTransportAvailable(definition, input.playerTransports)) {
         continue
       }
 
-      if (!includesAll(definition.capabilities, route.requiredCapabilities)) {
+      if (routeRejection(definition, route) !== null) {
         continue
       }
 
@@ -196,28 +280,204 @@ const resolveTravelOptions = (input: AccessEvaluationInput): readonly ResolvedTr
   )
 }
 
+/** 未所有でも「その capability を持っている移動手段」を持っているかを見る。 */
+const isTransportInPlayerScope = (
+  definition: TransportDefinition,
+  state: PlayerTransportState,
+): boolean =>
+  state.availableTransportIds.includes(definition.id) ||
+  state.ownedTransportIds.includes(definition.id)
+
+const routeCanBeUsed = (
+  definition: TransportDefinition,
+  routes: readonly SpotTravelRoute[],
+): boolean => routes.some((route) => routeRejection(definition, route) === null)
+
+/** その候補が route 段階でどこまで進めたか（最も奥まで通った route の拒否理由）。 */
+const candidateRouteRejection = (
+  definition: TransportDefinition,
+  routes: readonly SpotTravelRoute[],
+): TransportCandidateRejection | null => {
+  let best: TransportCandidateRejection | null = null
+
+  for (const route of routes) {
+    const rejection = routeRejection(definition, route)
+
+    if (rejection === null) {
+      return null
+    }
+
+    if (best === null || rejectionRank(rejection) > rejectionRank(best)) {
+      best = rejection
+    }
+  }
+
+  return best
+}
+
+const missingRouteFeatures = (
+  definition: TransportDefinition,
+  routes: readonly SpotTravelRoute[],
+): readonly RouteFeature[] => {
+  const missing = new Set<RouteFeature>()
+
+  for (const route of routes) {
+    for (const feature of definition.requiredRouteFeatures) {
+      if (!route.features.includes(feature)) {
+        missing.add(feature)
+      }
+    }
+  }
+
+  return [...missing]
+}
+
+/**
+ * 行ける移動手段が 1 つも無いときの理由を、Transport 候補の解決段階から組み立てる。
+ *
+ * 持っている capability を「不足」と表示しないための最後の砦である。
+ * 具体的な Transport ID では分岐しない（ownership model と route 条件だけで説明する）。
+ */
+const diagnoseBlockedTransport = (input: AccessEvaluationInput): readonly AccessBlockedReason[] => {
+  const { spot, transports, playerTransports } = input
+  const requiredBySpot = capabilityRequirements(spot)
+
+  // 1. 手持ちの移動手段がその capability をまったく提供しない場合だけ「不足」と言う。
+  const missingCapabilities = requiredBySpot.filter(
+    (capability) =>
+      !transports.some(
+        (definition) =>
+          isTransportInPlayerScope(definition, playerTransports) &&
+          definition.capabilities.includes(capability),
+      ),
+  )
+
+  if (missingCapabilities.length > 0) {
+    return missingCapabilities.map((capability) => ({
+      kind: 'missing_capability' as const,
+      capability,
+      label: `必要: ${CAPABILITY_LABELS[capability]}`,
+    }))
+  }
+
+  // 2. Spot の capability を 1 台で満たせる候補だけで、残りの段階を調べる。
+  const candidates = transports.filter((definition) =>
+    includesAll(definition.capabilities, requiredBySpot),
+  )
+  const usable = (definition: TransportDefinition): boolean =>
+    isTransportAvailable(definition, playerTransports) &&
+    routeCanBeUsed(definition, spot.travelOptions)
+
+  if (candidates.some(usable)) {
+    // travelOptions が空のときにここへは来ない。防御的に理由を増やさない。
+    return []
+  }
+
+  const ownership = candidates.filter(
+    (definition) =>
+      availabilityRejection(definition, playerTransports) === 'ownership_required' &&
+      routeCanBeUsed(definition, spot.travelOptions),
+  )
+
+  if (ownership.length > 0) {
+    return [
+      {
+        kind: 'ownership_required',
+        label: '必要: この釣り場へ行ける移動手段の所有（Shop で購入）',
+        transportIds: ownership.map((definition) => String(definition.id)),
+      },
+    ]
+  }
+
+  const rental = candidates.filter(
+    (definition) =>
+      availabilityRejection(definition, playerTransports) === 'rental_unavailable' &&
+      routeCanBeUsed(definition, spot.travelOptions),
+  )
+
+  if (rental.length > 0) {
+    return [
+      {
+        kind: 'rental_unavailable',
+        label: '必要: レンタルの手配（この釣り場で借りられる移動手段がない）',
+        transportIds: rental.map((definition) => String(definition.id)),
+      },
+    ]
+  }
+
+  /*
+   * 手持ちの候補が route のどこで止まったかを見る。最も奥まで通った候補の段階を
+   * 代表にすることで、「設備が足りない」と「そもそも距離・種別が合わない」を混同しない。
+   */
+  const inScope = candidates.filter(
+    (definition) =>
+      isTransportInPlayerScope(definition, playerTransports) &&
+      availabilityRejection(definition, playerTransports) === null,
+  )
+  const facilityBlocked: TransportDefinition[] = []
+  let deepest: TransportCandidateRejection | null = null
+
+  for (const definition of inScope) {
+    const rejection = candidateRouteRejection(definition, spot.travelOptions)
+
+    if (rejection === null) {
+      continue
+    }
+
+    if (deepest === null || rejectionRank(rejection) > rejectionRank(deepest)) {
+      deepest = rejection
+    }
+
+    if (rejection === 'facility_required') {
+      facilityBlocked.push(definition)
+    }
+  }
+
+  if (deepest === 'facility_required' && facilityBlocked.length > 0) {
+    const missingFeatures = new Set<RouteFeature>()
+
+    for (const definition of facilityBlocked) {
+      for (const feature of missingRouteFeatures(definition, spot.travelOptions)) {
+        missingFeatures.add(feature)
+      }
+    }
+
+    const features = [...missingFeatures]
+
+    return [
+      {
+        kind: 'facility_required',
+        label: `必要: ${features.map((feature) => ROUTE_FEATURE_LABELS[feature]).join('・')}`,
+        feature: features[0] as RouteFeature,
+        transportIds: facilityBlocked.map((definition) => String(definition.id)),
+      },
+    ]
+  }
+
+  return [
+    {
+      kind: 'no_compatible_transport',
+      label: '行き方が分からない（この釣り場へ行ける移動手段がない）',
+    },
+  ]
+}
+
 export const evaluateAccess = (input: AccessEvaluationInput): AccessEvaluation => {
   const { spot } = input
   const knowledgeScore = spotKnowledgeScore(input.knowledge, String(spot.id))
   const regionScore = regionKnowledgeScore(input.knowledge, String(spot.regionId))
   const reputation = input.reputation ?? 0
   const permits = input.permits ?? []
-  const blockedReasons: AccessBlockedReason[] = []
-  const satisfiedKinds: AccessRequirementKind[] = []
   const travelOptions = resolveTravelOptions(input)
+  const blockedReasons: AccessBlockedReason[] =
+    travelOptions.length === 0 ? [...diagnoseBlockedTransport(input)] : []
+  const satisfiedKinds: AccessRequirementKind[] = []
 
   for (const requirement of spot.access) {
     switch (requirement.kind) {
+      // capability 条件は Transport 候補の解決結果としてまとめて説明する。
+      // requirement ごとに並べると、持っている capability まで不足に見える。
       case 'capability': {
-        if (travelOptions.some((option) => option.capabilities.includes(requirement.capability))) {
-          satisfiedKinds.push('capability')
-        } else {
-          blockedReasons.push({
-            kind: 'capability',
-            capability: requirement.capability,
-            label: `必要: ${CAPABILITY_LABELS[requirement.capability]}`,
-          })
-        }
         break
       }
 
@@ -289,14 +549,12 @@ export const evaluateAccess = (input: AccessEvaluationInput): AccessEvaluation =
     }
   }
 
-  if (
-    travelOptions.length === 0 &&
-    blockedReasons.every((reason) => reason.kind !== 'capability')
-  ) {
-    blockedReasons.push({
-      kind: 'capability',
-      label: '行き方が分からない（利用できる移動手段がない）',
-    })
+  /*
+   * capability 条件は「1 つの移動手段がすべて満たす」ので、travelOptions がある時点で
+   * 満たされている。行けない場合は diagnoseBlockedTransport が理由を出している。
+   */
+  if (capabilityRequirements(spot).length > 0 && travelOptions.length > 0) {
+    satisfiedKinds.push('capability')
   }
 
   return {

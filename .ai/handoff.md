@@ -1,9 +1,9 @@
 # Handoff
 
-最終更新: Phase 7A（Transport / Access Domain）完了
+最終更新: Phase 7A.1（Transport / Access Domain の最小修正）完了
 
 > 以下の Phase 6 / 6.5 節は履歴として残している。件数・Save version・次 Phase については、
-> この Phase 7A 節と `.ai/current-task.md` を優先する。
+> この Phase 7A.1 / 7A 節と `.ai/current-task.md` を優先する。
 
 ## このプロジェクトは何か
 
@@ -41,7 +41,31 @@ Product Decision の SSOT は `docs/DECISIONS.md`。
 - Phase 6.5: Tackle Catalog Expansion（Content Master からの移植・Brand 12 /
   Series 88 / Gear 463・番手と用途のカバレッジ・差別化テスト・`simulate:catalog`）
 - Phase 7A: Transport / Access Domain（capability access・Transport 11 件・Save v6・
-  v5 car migration・PROVISIONAL Spot 4 件・`simulate:transport`）
+  v5 car migration・`simulate:transport`）
+- Phase 7A.1: 独立レビューの実害指摘の最小修正（motorcycle / rental car の route
+  coverage・Access 失敗理由の正確さ・移動手段の選択 UI・費用内訳表示・
+  `findUnusableTransports`。Save version は v6 のまま）
+
+## Phase 7A.1（Transport / Access Domain の最小修正）
+
+- **route coverage** — `standard-motorcycle` を upper lake の一般道 route に追加し、
+  `rental-car`（`features: ["vehicle_rental"]`）を新しい PROVISIONAL Spot
+  `suburban-road-lake` の一般道 route で使えるようにした。upper lake に rental を足すと
+  Phase 5 の「車の購入前は行けない」証明が壊れるため、既存 Spot の意味は変えない
+- **role 差** — motorcycle は rough road / water / offshore を持たず、rental car も
+  SUV 相当の能力を持たない。rental car は営業所での受け渡しぶん所有車より遅い（0.62）
+- **Access 失敗理由** — Transport 候補の解決段階を区別し、`missing_capability` /
+  `no_compatible_transport` / `ownership_required` / `rental_unavailable` /
+  `facility_required` を返す。手持ちの移動手段が提供している capability を
+  「不足」と表示しない
+- **選択 UI（Map）** — `ResolvedTravelOption` を列挙し、transport 名・所要時間・往復費・
+  費用内訳（運賃 / 走行費 / レンタル料）を出す。既定は最も安い候補
+  （4 分速いだけの SUV を黙って選ばない）。選択した `transportId` で `travelToSpot` を呼ぶ
+- **Content 検証** — `findUnusableTransports` が「初期利用可能 / 購入可能なのに
+  どの route でも使えない」Transport を検出する。future-only（入手手段が無い）は対象外
+- 最終検証: `npm run check` PASS（62 files / 557 tests）、`validate:content` 607 records、
+  `simulate:transport` 18 checks PASS、bundle JS 660.66 kB（gzip 165.01 kB）/
+  CSS 6.86 kB（gzip 1.81 kB）
 
 ## Phase 7A（Transport / Access Domain）
 
@@ -57,14 +81,16 @@ Product Decision の SSOT は `docs/DECISIONS.md`。
   Save block を保持する
 - Bicycle / Motorcycle / Compact Car / SUV / Rental Car / Kayak / Rental Boat /
   Owned Boat と基礎の Walk / Train / Bus を追加
-- Transport 検証用 Spot は 4 件、すべて `dataStatus: provisional`
-- `simulate:transport` は 8 scenario と 12 checks を PASS / FAIL 表示する
+- Transport 検証用 Spot は 4 件（Phase 7A.1 で 1 件追加し 5 件）、すべて
+  `dataStatus: provisional`
+- `simulate:transport` は 10 scenario と 18 checks を PASS / FAIL 表示する
+  （Phase 7A.1 で motorcycle / rental car を追加）
 - Pre-flight は実ブラウザで Shop filter → purchase → owned → Tackle equip →
   compatibility → reload まで PASS
 - FishingEngine、勤務 simulation、詳細車両 simulation は変更していない
-- 最終検証: `npm run check` PASS（58 files / 529 tests）、全指定 regression PASS、
-  `validate:content` 606 records、bundle JS 655.69 kB（gzip 163.68 kB）/
-  CSS 6.09 kB（gzip 1.67 kB）
+- 最終検証: `npm run check` PASS（Phase 7A 時点は 58 files / 529 tests）、全指定
+  regression PASS、`validate:content` 606 records（Phase 7A 時点）、
+  bundle JS 655.69 kB（gzip 163.68 kB）/ CSS 6.09 kB（gzip 1.67 kB）
 
 ## Phase 6.5（Tackle Catalog Expansion）で実装したもの
 

@@ -185,6 +185,10 @@ Economy（往復費・1釣行レンタル料） / WorldSession（移動時間）
   合成して架空の経路を作らない
 - 所持金不足は Access ではなく Economy が判定する
 - Store は Content catalog を読み込まず、UI / simulation から検証済み定義を受け取る
+- 行けない理由は Transport 候補のどの段階で落ちたか（capability 不足 / route 不在 /
+  所有 / レンタル / 設備）で説明する。持っている capability を「不足」と表示しない
+- Map（Trip UI）は `ResolvedTravelOption` を並べ、既定を Economy の最安候補にする。
+  UI は access / cost の規則を再実装しない
 
 ## 6. Fishing Engine
 

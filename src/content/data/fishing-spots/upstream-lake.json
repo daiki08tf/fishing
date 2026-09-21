@@ -8,7 +8,7 @@
   "travelOptions": [
     {
       "id": "ordinary-road",
-      "transportTypes": ["compact_car", "suv"],
+      "transportTypes": ["compact_car", "suv", "motorcycle"],
       "requiredCapabilities": ["road_access"],
       "features": [],
       "baseMinutes": 190,

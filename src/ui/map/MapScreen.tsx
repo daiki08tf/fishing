@@ -1,5 +1,9 @@
-import { fastestTravelOption } from '../../domain/access/accessEngine'
-import { describeTravelCost } from '../../domain/economy'
+import { useState } from 'react'
+import {
+  defaultTravelOption,
+  describeTravelCost,
+  describeTravelCostParts,
+} from '../../domain/economy'
 import { formatDuration } from '../../domain/world'
 import { spotKnowledgeScore } from '../../domain/knowledge/spotKnowledge'
 import { useAppStore } from '../../state/appStore'
@@ -31,6 +35,11 @@ export const MapScreen = () => {
   const evaluateSpot = usePlayerStore((state) => state.evaluateSpot)
   const evaluateTrip = usePlayerStore((state) => state.evaluateTrip)
   const travelToSpot = usePlayerStore((state) => state.travelToSpot)
+  /**
+   * Spot ごとに選んだ移動手段。
+   * 未選択のときは最も安い候補を既定にする（速いだけの高額な候補を黙って選ばない）。
+   */
+  const [selectedTransportIds, setSelectedTransportIds] = useState<Record<string, string>>({})
 
   if (!content.ok) {
     return <ContentErrorPanel message={content.message} />
@@ -77,29 +86,28 @@ export const MapScreen = () => {
       <section>
         <ul className="spots">
           {content.value.spots.map((spot) => {
+            const spotId = String(spot.id)
             const access = evaluateSpot(spot, content.value.transports)
-            const fastest = fastestTravelOption(access.travelOptions)
-            const score = spotKnowledgeScore(knowledge, String(spot.id))
-            const discovered = world.discoveredSpotIds.includes(spot.id)
+            const options = access.travelOptions
+            const selected =
+              options.find(
+                (option) => String(option.transportId) === selectedTransportIds[spotId],
+              ) ?? defaultTravelOption(options)
             const readiness =
-              fastest === null ? null : evaluateTrip(spot, fastest, content.value.transports)
-            const blockedReason =
-              readiness === null
-                ? null
-                : readiness.affordable
-                  ? null
-                  : `交通費が足りない（${readiness.roundTripCost}円）`
+              selected === null ? null : evaluateTrip(spot, selected, content.value.transports)
+            const score = spotKnowledgeScore(knowledge, spotId)
+            const discovered = world.discoveredSpotIds.includes(spot.id)
             const canGo = access.accessible && (readiness?.affordable ?? false)
 
             return (
-              <li className="spot-card" key={String(spot.id)}>
+              <li className="spot-card" key={spotId}>
                 <div className="spot-card__head">
                   <h3 className="panel__subheading">{spot.name}</h3>
                   <span className={`badge${access.accessible ? '' : ' badge--alert'}`}>
                     {access.accessible
-                      ? fastest === null
+                      ? selected === null
                         ? '到達手段なし'
-                        : `${fastest.transportName} ${formatDuration(fastest.minutes)}`
+                        : `${selected.transportName} ${formatDuration(selected.minutes)}`
                       : 'アクセス不可'}
                   </span>
                 </div>
@@ -110,8 +118,54 @@ export const MapScreen = () => {
                 </p>
                 <p className="spot-card__meta">
                   この釣り場の知識 {Math.round(score)}% / 魚種 {spot.fishTable.length} 種
-                  {fastest === null ? '' : ` / ${describeTravelCost(fastest)}`}
                 </p>
+
+                {options.length === 0 ? null : (
+                  <ul className="travel-options">
+                    {options.map((option) => {
+                      const optionId = String(option.transportId)
+                      const chosen = selected !== null && String(selected.transportId) === optionId
+                      const affordable = evaluateTrip(
+                        spot,
+                        option,
+                        content.value.transports,
+                      ).affordable
+                      const parts = describeTravelCostParts(option)
+
+                      return (
+                        <li
+                          className={`travel-option${chosen ? ' travel-option--selected' : ''}`}
+                          key={optionId}
+                        >
+                          <button
+                            className="travel-option__choice"
+                            type="button"
+                            aria-pressed={chosen}
+                            onClick={() => {
+                              setSelectedTransportIds((current) => ({
+                                ...current,
+                                [spotId]: optionId,
+                              }))
+                            }}
+                          >
+                            <span className="travel-option__name">
+                              {`${chosen ? '●' : '○'} ${option.transportName}`}
+                            </span>
+                            <span className="travel-option__meta">
+                              {`${formatDuration(option.minutes)} / ${describeTravelCost(option)}`}
+                            </span>
+                          </button>
+                          {parts.length === 0 ? null : (
+                            <span className="travel-option__parts">{parts.join(' + ')}</span>
+                          )}
+                          {affordable ? null : (
+                            <span className="travel-option__note">交通費が足りない</span>
+                          )}
+                        </li>
+                      )
+                    })}
+                  </ul>
+                )}
 
                 {canGo ? (
                   <button
@@ -121,7 +175,7 @@ export const MapScreen = () => {
                       const result = travelToSpot(
                         spot,
                         content.value.transports,
-                        fastest?.transportId,
+                        selected?.transportId,
                       )
 
                       if (result.ok) {
@@ -129,12 +183,17 @@ export const MapScreen = () => {
                       }
                     }}
                   >
-                    行く
+                    {selected === null ? '行く' : `${selected.transportName} で行く`}
                   </button>
                 ) : (
                   <ul className="blocked">
                     {access.accessible
-                      ? [<li key="cost">{blockedReason ?? '今は行けない'}</li>]
+                      ? [
+                          <li key="cost">
+                            交通費が足りない
+                            {selected === null ? '' : `（${String(readiness?.roundTripCost)}円）`}
+                          </li>,
+                        ]
                       : access.blockedReasons.map((reason) => (
                           <li key={`${reason.kind}-${reason.label}`}>{reason.label}</li>
                         ))}

@@ -20,7 +20,8 @@
 
 - `fish-species/phase1-sample-fish.json` （サンプル魚A）
 - `fish-species/phase2-sample-fish-b.json` 〜 `phase2-sample-fish-j.json`
-- `fishing-spots/*.json`（東京近郊を模した 12 件。うち 4 件は Transport 検証用）
+- `fishing-spots/*.json`（東京近郊を模した 13 件。うち 5 件は Transport 検証用。
+  `suburban-road-lake` は Phase 7A.1 で rental car の一般道 route 検証用に追加した）
 - `transports/*.json`（徒歩・公共交通・二輪・車・SUV・Kayak・Boat の 11 件）
 - `gear/*.json`（Rod / Reel / Line / Leader / Hook / Lure / Bait）
 - `methods/*.json`（`lure` / `light_lure` / `bait` / `bottom`）

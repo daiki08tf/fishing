@@ -1,5 +1,6 @@
 import { pathToFileURL } from 'node:url'
 import { loadContentFromDirectory } from '../src/content/load/nodeContent'
+import { obtainableTransportIds } from '../src/content/catalog/references'
 import { evaluateAccess } from '../src/domain/access/accessEngine'
 import {
   createTransportState,
@@ -56,12 +57,20 @@ export const simulateTransport = (): TransportSimulationResult => {
       state: stateWith(['walk', 'train', 'bus'], ['city-bicycle']),
     },
     {
+      label: 'motorcycle',
+      state: stateWith(['walk', 'train', 'bus'], ['standard-motorcycle']),
+    },
+    {
       label: 'compact car',
       state: stateWith(['walk', 'train', 'bus'], ['used-compact-car']),
     },
     {
       label: 'SUV',
       state: stateWith(['walk', 'train', 'bus'], ['four-wheel-drive-suv']),
+    },
+    {
+      label: 'rental car',
+      state: stateWith(['walk', 'train', 'bus', 'rental-car']),
     },
     {
       label: 'kayak',
@@ -124,6 +133,8 @@ export const simulateTransport = (): TransportSimulationResult => {
 
   const compact = scenario('compact car')
   const suv = scenario('SUV')
+  const motorcycle = scenario('motorcycle')
+  const rentalCar = scenario('rental car')
   const kayak = scenario('kayak')
   const rentalBoat = scenario('rental boat')
   const ownedBoat = scenario('owned boat')
@@ -131,11 +142,35 @@ export const simulateTransport = (): TransportSimulationResult => {
 
   const upperWithCompact = evaluate(compact, 'upstream-lake')
   const upperOption = optionFor(upperWithCompact.travelOptions, 'used-compact-car')
+  const upperWithMotorcycle = evaluate(motorcycle, 'upstream-lake')
+  const motorcycleOption = optionFor(upperWithMotorcycle.travelOptions, 'standard-motorcycle')
+  const roughWithCompact = evaluate(compact, 'forest-reservoir-arm')
+  const roadLakeWithRental = evaluate(rentalCar, 'suburban-road-lake')
+  const rentalCarOption = optionFor(roadLakeWithRental.travelOptions, 'rental-car')
   const rentalOffshore = evaluate(rentalBoat, 'offshore-bank-provisional')
   const rentalOption = optionFor(rentalOffshore.travelOptions, 'rental-boat')
   const notOwned = evaluate(
     { label: 'unowned compact', state: stateWith(['walk', 'used-compact-car']) },
     'upstream-lake',
+  )
+
+  // 入手手段がある Transport は、どこかの route で実際に使えること（future-only は除く）。
+  const fullyEquipped = stateWith(
+    content.transports.map((definition) => String(definition.id)),
+    content.transports
+      .filter((definition) => definition.ownershipModel === 'owned')
+      .map((definition) => String(definition.id)),
+  )
+  const obtainable = obtainableTransportIds(content.transports, content.shopItems)
+  const usableSomewhere = new Set(
+    content.spots.flatMap((spot) =>
+      evaluateAccess({
+        spot,
+        transports: content.transports,
+        playerTransports: fullyEquipped,
+        knowledge,
+      }).travelOptions.map((option) => String(option.transportId)),
+    ),
   )
 
   // Angler progression is deliberately outside AccessEngine input. Raising it cannot alter
@@ -167,6 +202,47 @@ export const simulateTransport = (): TransportSimulationResult => {
         upperWithCompact.accessible &&
         upperOption?.minutes === 95 &&
         roundTripCostFor(upperOption) === 1_800,
+    },
+    {
+      label: 'motorcycle は一般道で upper lake に行ける（安い road access）',
+      ok:
+        upperWithMotorcycle.accessible &&
+        motorcycleOption?.minutes === 105 &&
+        roundTripCostFor(motorcycleOption) === 3_600,
+    },
+    {
+      label: 'motorcycle は rough-road / offshore を突破できない',
+      ok:
+        !evaluate(motorcycle, 'forest-reservoir-arm').accessible &&
+        !evaluate(motorcycle, 'offshore-bank-provisional').accessible &&
+        !evaluate(motorcycle, 'sheltered-kayak-cove').accessible,
+    },
+    {
+      label: 'rental car は一般道 route で使え、レンタル料を 1 回だけ課す',
+      ok:
+        roadLakeWithRental.accessible &&
+        rentalCarOption?.perTripCost === 9_000 &&
+        roundTripCostFor(rentalCarOption) === 11_440,
+    },
+    {
+      label: 'rental car は rough-road / water / offshore へ行けない（SUV 相当にしない）',
+      ok:
+        !evaluate(rentalCar, 'forest-reservoir-arm').accessible &&
+        !evaluate(rentalCar, 'sheltered-kayak-cove').accessible &&
+        !evaluate(rentalCar, 'offshore-bank-provisional').accessible &&
+        !evaluate(rentalCar, 'suburban-cycle-river').accessible,
+    },
+    {
+      label: '入手できる Transport はすべてどこかの route で使える',
+      ok: [...obtainable].every((id) => usableSomewhere.has(id)),
+    },
+    {
+      label: '所有している road_access を不足として表示しない',
+      ok:
+        roughWithCompact.blockedReasons.length > 0 &&
+        roughWithCompact.blockedReasons.every(
+          (reason) => reason.kind !== 'missing_capability' || reason.capability !== 'road_access',
+        ),
     },
     {
       label: 'compact car は rough-road を突破できない',

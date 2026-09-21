@@ -56,11 +56,12 @@
 
 ## Current Status
 
-Phase 7A — Transport / Access Domain 完了。
+Phase 7A.1 — Transport / Access Domain 完了（独立レビューの最小修正を含む）。
 
 徒歩・公共交通・自転車・二輪・車・SUV・カヤック・レンタル船・所有船を
 data-driven Content として扱い、Spot の物理 access capability、所有・レンタル費、
 移動時間、Save v6 migration を実装している。世界の解放に Angler Level は使わない。
+Map では利用できる移動手段と費用を並べ、既定は最も安い候補を選ぶ。
 
 ```sh
 npm run check
