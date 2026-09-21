@@ -1,0 +1,58 @@
+TAB NAME: leaders.csv>
+index,GearID,Brand,Series,Material,StrengthKg,DiameterMm,AbrasionResistance,Visibility,LengthM,PriceJPY,Status
+leader-0001,Gamakaze,Fluoro Leader,Fluoro,3,0.173,0.93,0.34,1.5,1100,FICTIONAL_CONTENT
+leader-0002,Gamakaze,Fluoro Leader,Fluoro,4,0.2,0.93,0.34,1.5,1200,FICTIONAL_CONTENT
+leader-0003,Gamakaze,Fluoro Leader,Fluoro,5,0.224,0.93,0.34,1.5,1200,FICTIONAL_CONTENT
+leader-0004,Gamakaze,Fluoro Leader,Fluoro,6,0.245,0.93,0.34,1.5,1300,FICTIONAL_CONTENT
+leader-0005,Gamakaze,Fluoro Leader,Fluoro,8,0.283,0.93,0.34,1.5,1500,FICTIONAL_CONTENT
+leader-0006,Gamakaze,Fluoro Leader,Fluoro,10,0.316,0.93,0.34,1.5,1700,FICTIONAL_CONTENT
+leader-0007,Gamakaze,Fluoro Leader,Fluoro,12,0.346,0.93,0.34,1.5,1800,FICTIONAL_CONTENT
+leader-0008,Gamakaze,Fluoro Leader,Fluoro,16,0.4,0.93,0.34,1.5,2200,FICTIONAL_CONTENT
+leader-0009,Gamakaze,Fluoro Leader,Fluoro,20,0.447,0.93,0.34,1.5,2500,FICTIONAL_CONTENT
+leader-0010,Gamakaze,Fluoro Leader,Fluoro,25,0.5,0.93,0.34,1.5,3000,FICTIONAL_CONTENT
+leader-0011,Gamakaze,Fluoro Leader,Fluoro,30,0.548,0.93,0.34,1.5,3400,FICTIONAL_CONTENT
+leader-0012,Gamakaze,Fluoro Leader,Fluoro,40,0.632,0.93,0.34,1.5,4300,FICTIONAL_CONTENT
+leader-0013,Gamakaze,Fluoro Leader,Fluoro,50,0.707,0.93,0.34,1.5,5100,FICTIONAL_CONTENT
+leader-0014,Gamakaze,Fluoro Leader,Fluoro,60,0.775,0.93,0.34,1.5,6000,FICTIONAL_CONTENT
+leader-0015,Gamakaze,Fluoro Leader,Fluoro,80,0.894,0.93,0.34,1.5,7700,FICTIONAL_CONTENT
+leader-0016,Owner's Edge,Fluoro Leader,Fluoro,3,0.173,0.93,0.34,1.5,900,FICTIONAL_CONTENT
+leader-0017,Owner's Edge,Fluoro Leader,Fluoro,4,0.2,0.93,0.34,1.5,1000,FICTIONAL_CONTENT
+leader-0018,Owner's Edge,Fluoro Leader,Fluoro,5,0.224,0.93,0.34,1.5,1100,FICTIONAL_CONTENT
+leader-0019,Owner's Edge,Fluoro Leader,Fluoro,6,0.245,0.93,0.34,1.5,1200,FICTIONAL_CONTENT
+leader-0020,Owner's Edge,Fluoro Leader,Fluoro,8,0.283,0.93,0.34,1.5,1300,FICTIONAL_CONTENT
+leader-0021,Owner's Edge,Fluoro Leader,Fluoro,10,0.316,0.93,0.34,1.5,1400,FICTIONAL_CONTENT
+leader-0022,Owner's Edge,Fluoro Leader,Fluoro,12,0.346,0.93,0.34,1.5,1600,FICTIONAL_CONTENT
+leader-0023,Owner's Edge,Fluoro Leader,Fluoro,16,0.4,0.93,0.34,1.5,1900,FICTIONAL_CONTENT
+leader-0024,Owner's Edge,Fluoro Leader,Fluoro,20,0.447,0.93,0.34,1.5,2200,FICTIONAL_CONTENT
+leader-0025,Owner's Edge,Fluoro Leader,Fluoro,25,0.5,0.93,0.34,1.5,2600,FICTIONAL_CONTENT
+leader-0026,Owner's Edge,Fluoro Leader,Fluoro,30,0.548,0.93,0.34,1.5,3000,FICTIONAL_CONTENT
+leader-0027,Owner's Edge,Fluoro Leader,Fluoro,40,0.632,0.93,0.34,1.5,3700,FICTIONAL_CONTENT
+leader-0028,Owner's Edge,Fluoro Leader,Fluoro,50,0.707,0.93,0.34,1.5,4400,FICTIONAL_CONTENT
+leader-0029,Owner's Edge,Fluoro Leader,Fluoro,60,0.775,0.93,0.34,1.5,5200,FICTIONAL_CONTENT
+leader-0030,Owner's Edge,Fluoro Leader,Fluoro,80,0.894,0.93,0.34,1.5,6700,FICTIONAL_CONTENT
+leader-0031,Major Crest,Nylon Leader,Nylon,3,0.184,0.72,0.6,1.5,700,FICTIONAL_CONTENT
+leader-0032,Major Crest,Nylon Leader,Nylon,4,0.212,0.72,0.6,1.5,800,FICTIONAL_CONTENT
+leader-0033,Major Crest,Nylon Leader,Nylon,5,0.237,0.72,0.6,1.5,800,FICTIONAL_CONTENT
+leader-0034,Major Crest,Nylon Leader,Nylon,6,0.26,0.72,0.6,1.5,900,FICTIONAL_CONTENT
+leader-0035,Major Crest,Nylon Leader,Nylon,8,0.3,0.72,0.6,1.5,1000,FICTIONAL_CONTENT
+leader-0036,Major Crest,Nylon Leader,Nylon,10,0.335,0.72,0.6,1.5,1100,FICTIONAL_CONTENT
+leader-0037,Major Crest,Nylon Leader,Nylon,12,0.367,0.72,0.6,1.5,1200,FICTIONAL_CONTENT
+leader-0038,Major Crest,Nylon Leader,Nylon,16,0.424,0.72,0.6,1.5,1500,FICTIONAL_CONTENT
+leader-0039,Major Crest,Nylon Leader,Nylon,20,0.474,0.72,0.6,1.5,1700,FICTIONAL_CONTENT
+leader-0040,Major Crest,Nylon Leader,Nylon,25,0.53,0.72,0.6,1.5,2000,FICTIONAL_CONTENT
+leader-0041,Major Crest,Nylon Leader,Nylon,30,0.581,0.72,0.6,1.5,2300,FICTIONAL_CONTENT
+leader-0042,Blue Horizon,Fluoro Leader,Fluoro,3,0.173,0.93,0.34,1.5,1200,FICTIONAL_CONTENT
+leader-0043,Blue Horizon,Fluoro Leader,Fluoro,4,0.2,0.93,0.34,1.5,1200,FICTIONAL_CONTENT
+leader-0044,Blue Horizon,Fluoro Leader,Fluoro,5,0.224,0.93,0.34,1.5,1300,FICTIONAL_CONTENT
+leader-0045,Blue Horizon,Fluoro Leader,Fluoro,6,0.245,0.93,0.34,1.5,1400,FICTIONAL_CONTENT
+leader-0046,Blue Horizon,Fluoro Leader,Fluoro,8,0.283,0.93,0.34,1.5,1600,FICTIONAL_CONTENT
+leader-0047,Blue Horizon,Fluoro Leader,Fluoro,10,0.316,0.93,0.34,1.5,1800,FICTIONAL_CONTENT
+leader-0048,Blue Horizon,Fluoro Leader,Fluoro,12,0.346,0.93,0.34,1.5,2000,FICTIONAL_CONTENT
+leader-0049,Blue Horizon,Fluoro Leader,Fluoro,16,0.4,0.93,0.34,1.5,2400,FICTIONAL_CONTENT
+leader-0050,Blue Horizon,Fluoro Leader,Fluoro,20,0.447,0.93,0.34,1.5,2800,FICTIONAL_CONTENT
+leader-0051,Blue Horizon,Fluoro Leader,Fluoro,25,0.5,0.93,0.34,1.5,3200,FICTIONAL_CONTENT
+leader-0052,Blue Horizon,Fluoro Leader,Fluoro,30,0.548,0.93,0.34,1.5,3700,FICTIONAL_CONTENT
+leader-0053,Blue Horizon,Fluoro Leader,Fluoro,40,0.632,0.93,0.34,1.5,4600,FICTIONAL_CONTENT
+leader-0054,Blue Horizon,Fluoro Leader,Fluoro,50,0.707,0.93,0.34,1.5,5600,FICTIONAL_CONTENT
+leader-0055,Blue Horizon,Fluoro Leader,Fluoro,60,0.775,0.93,0.34,1.5,6500,FICTIONAL_CONTENT
+leader-0056,Blue Horizon,Fluoro Leader,Fluoro,80,0.894,0.93,0.34,1.5,8400,FICTIONAL_CONTENT
