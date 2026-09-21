@@ -18,5 +18,12 @@ export type FishOccurrence = {
 
   readonly preferredHabitats?: readonly string[]
 
+  /**
+   * Phase 11: Zone ごとの存在量倍率。
+   * 未指定 Zone は 1.0（従来どおり）。0 は「その Zone には通常いない」を表すが、
+   * 魚種そのものをゲームから hard lock するものではない。
+   */
+  readonly zoneAffinity?: Readonly<Record<string, number>>
+
   readonly sizeModifier?: number
 }
