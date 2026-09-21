@@ -100,10 +100,7 @@ export const useFishingSession = (): FishingSession => {
     return content.value.spots.find((entry) => entry.id === world.currentSpotId)
   }, [content, world.currentSpotId])
 
-  const fishingZones = useMemo(
-    () => (spot === undefined ? [] : fishingZonesForSpot(spot)),
-    [spot],
-  )
+  const fishingZones = useMemo(() => (spot === undefined ? [] : fishingZonesForSpot(spot)), [spot])
   const activeTargetZoneId =
     targetZoneId !== null && fishingZones.some((zone) => zone.id === targetZoneId)
       ? targetZoneId
@@ -310,9 +307,7 @@ export const useFishingSession = (): FishingSession => {
   }, [tackle, conditions])
 
   const encountersKey =
-    spot === undefined
-      ? 'none'
-      : `${String(spot.id)}:${activeTargetZoneId ?? 'no-zone'}`
+    spot === undefined ? 'none' : `${String(spot.id)}:${activeTargetZoneId ?? 'no-zone'}`
 
   /*
    * セッションの入力（Encounter・倍率・Knowledge）。
