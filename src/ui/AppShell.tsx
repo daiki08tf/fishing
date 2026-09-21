@@ -1,4 +1,5 @@
 import { useAppStore } from '../state/appStore'
+import { FishingScreen } from './fishing/FishingScreen'
 
 /**
  * Phase 0B のアプリシェル。
@@ -16,8 +17,24 @@ const BOUNDARIES = [
 
 export const AppShell = () => {
   const status = useAppStore((state) => state.status)
+  const activeScreen = useAppStore((state) => state.activeScreen)
+  const setActiveScreen = useAppStore((state) => state.setActiveScreen)
   const diagnosticsVisible = useAppStore((state) => state.diagnosticsVisible)
   const toggleDiagnostics = useAppStore((state) => state.toggleDiagnostics)
+
+  if (activeScreen === 'fishing') {
+    return (
+      <div className="app-shell">
+        <main className="app-shell__main">
+          <FishingScreen
+            onExit={() => {
+              setActiveScreen('home')
+            }}
+          />
+        </main>
+      </div>
+    )
+  }
 
   return (
     <div className="app-shell">
@@ -54,6 +71,16 @@ export const AppShell = () => {
 
           <button className="button" type="button" onClick={toggleDiagnostics}>
             {diagnosticsVisible ? 'Hide' : 'Show'} architecture boundaries
+          </button>
+
+          <button
+            className="button button--primary"
+            type="button"
+            onClick={() => {
+              setActiveScreen('fishing')
+            }}
+          >
+            釣りに行く
           </button>
 
           {diagnosticsVisible ? (

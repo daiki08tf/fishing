@@ -1,0 +1,19 @@
+{
+  "id": "phase1-sample-spot",
+  "name": "サンプル釣り場（Phase 1 検証用）",
+  "regionId": "phase1-sample-region",
+  "environment": "phase1-sample-pier",
+  "access": [{ "kind": "transport", "tag": "walk" }],
+  "habitatTags": ["phase1-sample-shallow"],
+  "depth": { "depthRangeM": { "min": 1, "max": 12 } },
+  "fishTable": [
+    {
+      "speciesId": "phase1-sample-fish",
+      "basePresence": 1,
+      "time": { "periods": ["dawn", "morning", "evening"] }
+    }
+  ],
+  "knowledgeConfig": {
+    "reveals": [{ "field": "depth", "minKnowledge": 10 }]
+  }
+}

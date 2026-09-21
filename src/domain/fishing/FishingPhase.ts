@@ -1,0 +1,109 @@
+/**
+ * Fishing の状態機械。ARCHITECTURE.md §6 に対応する。
+ *
+ * 状態遷移は UI コンポーネントではなくここで定義する。
+ * UI は「許可されたコマンドを送る」だけで、勝敗を決められない。
+ */
+
+export const FISHING_PHASES = [
+  'IDLE',
+  'CASTING',
+  'WAITING',
+  'BITE',
+  'HOOK_WINDOW',
+  'HOOKED',
+  'FIGHTING',
+  'LANDING',
+  'LANDED',
+  'HOOK_MISSED',
+  'HOOK_ESCAPE',
+  'LINE_BREAK',
+] as const
+
+export type FishingPhase = (typeof FISHING_PHASES)[number]
+
+/** 失敗して終了した状態。 */
+export type FishingFailurePhase = 'HOOK_MISSED' | 'HOOK_ESCAPE' | 'LINE_BREAK'
+
+export const FISHING_FAILURE_PHASES: readonly FishingPhase[] = [
+  'HOOK_MISSED',
+  'HOOK_ESCAPE',
+  'LINE_BREAK',
+]
+
+export const FISHING_COMMANDS = ['cast', 'hook', 'reel', 'give', 'reset'] as const
+export type FishingCommand = (typeof FISHING_COMMANDS)[number]
+
+/**
+ * プレイヤー操作を受け付けない（時間経過で自動遷移する）状態。
+ * 例: CASTING はキャストのモーション中、BITE は魚が餌をくわえた瞬間。
+ */
+export const AUTO_ADVANCING_PHASES: readonly FishingPhase[] = [
+  'CASTING',
+  'WAITING',
+  'BITE',
+  'HOOKED',
+  'LANDING',
+]
+
+/**
+ * 各状態で受け付けるコマンド。
+ *
+ * この表がそのまま「不正な状態遷移の防止」になる。
+ * 表に無いコマンドは状態を変えずに拒否される。
+ */
+export const ALLOWED_COMMANDS: Readonly<Record<FishingPhase, readonly FishingCommand[]>> = {
+  IDLE: ['cast'],
+  CASTING: [],
+  WAITING: [],
+  BITE: [],
+  // ヒットした瞬間だけフッキングできる。
+  HOOK_WINDOW: ['hook'],
+  HOOKED: [],
+  FIGHTING: ['reel', 'give'],
+  LANDING: [],
+  LANDED: ['reset'],
+  HOOK_MISSED: ['reset'],
+  HOOK_ESCAPE: ['reset'],
+  LINE_BREAK: ['reset'],
+}
+
+/** 釣行が終わった状態（成功・失敗の両方）。 */
+export const TERMINAL_PHASES: readonly FishingPhase[] = ['LANDED', ...FISHING_FAILURE_PHASES]
+
+export const isFishingPhase = (value: string): value is FishingPhase =>
+  (FISHING_PHASES as readonly string[]).includes(value)
+
+export const isTerminalPhase = (phase: FishingPhase): boolean => TERMINAL_PHASES.includes(phase)
+
+export const isFailurePhase = (phase: FishingPhase): phase is FishingFailurePhase =>
+  FISHING_FAILURE_PHASES.includes(phase)
+
+export const isAutoAdvancingPhase = (phase: FishingPhase): boolean =>
+  AUTO_ADVANCING_PHASES.includes(phase)
+
+export const isCommandAllowed = (phase: FishingPhase, command: FishingCommand): boolean =>
+  ALLOWED_COMMANDS[phase].includes(command)
+
+/**
+ * Engine が発行するイベント。UI 表示とテストの観測点になる。
+ * 状態そのものではなく「何が起きたか」を表す。
+ */
+export const FISHING_EVENTS = [
+  'CAST_STARTED',
+  'CAST_COMPLETED',
+  'BITE',
+  'NO_BITE',
+  'HOOK_SET',
+  'HOOK_MISSED',
+  'HOOK_ESCAPE',
+  'LINE_BREAK',
+  'RUN_STARTED',
+  'RUN_ENDED',
+  'FISH_TIRED',
+  'LANDING_STARTED',
+  'LANDED',
+  'SESSION_RESET',
+] as const
+
+export type FishingEvent = (typeof FISHING_EVENTS)[number]

@@ -69,10 +69,13 @@ describe('loadContentDirectory', () => {
     expect(result.diagnostics[0]?.issues[0]?.message).toContain('does not exist')
   })
 
-  it('passes on the real content directory, which Phase 0B leaves empty', () => {
+  it('validates the Phase 1 sample content that ships with the repository', () => {
     const result = loadContentDirectory(`${repositoryRoot}src/content/data`)
 
     expect(result.diagnostics).toEqual([])
-    expect(result.locations).toEqual([])
+    expect(result.locations.map((location) => location.kind).sort()).toEqual([
+      'fish-species',
+      'fishing-spots',
+    ])
   })
 })

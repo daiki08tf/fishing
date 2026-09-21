@@ -123,6 +123,13 @@ body {
   background-color: rgb(47 182 168 / 12%);
 }
 
+.button--primary {
+  border-color: var(--color-accent);
+  background-color: rgb(47 182 168 / 14%);
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
 .boundary-list {
   margin: 1rem 0 0;
   padding-left: 1.25rem;

@@ -10,8 +10,8 @@ import { create } from 'zustand'
 
 export type AppStatus = 'booting' | 'ready'
 
-/** 実装済みの画面。Phase 0B では home のみ。 */
-export const APP_SCREENS = ['home'] as const
+/** 実装済みの画面。Phase 1 で fishing を追加した。 */
+export const APP_SCREENS = ['home', 'fishing'] as const
 export type AppScreen = (typeof APP_SCREENS)[number]
 
 export type AppState = {
