@@ -3,7 +3,7 @@
   "japaneseName": "アメマス（暫定）",
   "waterTypes": ["fresh", "brackish"],
   "distribution": ["hokkaido"],
-  "habitats": ["hokkaido-sample-river", "hokkaido-sample-lake"],
+  "habitats": ["river", "lake"],
   "depthRange": {
     "min": 1,
     "max": 18
@@ -21,7 +21,7 @@
   "currentPreference": {
     "preference": "slow"
   },
-  "diet": ["hokkaido-sample-prey"],
+  "diet": ["small_fish"],
   "baits": ["worm", "roe", "insect"],
   "lureCategories": ["spoon", "spinner", "minnow"],
   "fishingMethods": ["light_lure", "lure", "bait"],
@@ -66,10 +66,10 @@
     "preferredSeasons": ["spring", "summer", "autumn"],
     "preferredTimeOfDay": ["dawn", "morning", "evening"],
     "weatherAffinity": {
-      "clear": 1.0,
+      "clear": 1,
       "cloudy": 1.05,
       "light_rain": 1.05,
-      "rain": 1.0,
+      "rain": 1,
       "windy": 0.9
     },
     "flowAffinity": {
@@ -87,6 +87,6 @@
     "preferredOfferingRatio": 0.16,
     "largeOfferingPenaltyStart": 0.28,
     "maxOfferingRatio": 0.4,
-    "mouthSizeFactor": 1.0
+    "mouthSizeFactor": 1
   }
 }

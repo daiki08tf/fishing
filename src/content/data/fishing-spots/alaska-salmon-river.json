@@ -5,7 +5,12 @@
   "areaId": "kenai",
   "environment": "river",
   "dataStatus": "provisional",
-  "access": [{ "kind": "permit", "permitId": "alaska-fishing-permit" }],
+  "access": [
+    {
+      "kind": "permit",
+      "permitId": "alaska-fishing-permit"
+    }
+  ],
   "travelOptions": [
     {
       "id": "riverside-walk",
@@ -26,21 +31,53 @@
       "baseOneWayCost": 0
     }
   ],
-  "habitatTags": ["alaska-sample-river", "alaska-sample-gravel"],
-  "depth": { "depthRangeM": { "min": 1, "max": 6 } },
+  "habitatTags": ["river", "gravel"],
+  "depth": {
+    "depthRangeM": {
+      "min": 1,
+      "max": 6
+    }
+  },
   "fishTable": [
-    { "speciesId": "alaska-chinook-salmon", "basePresence": 0.35 },
-    { "speciesId": "alaska-sockeye-salmon", "basePresence": 0.5 },
-    { "speciesId": "alaska-coho-salmon", "basePresence": 0.45 },
-    { "speciesId": "alaska-pink-salmon", "basePresence": 0.4 },
-    { "speciesId": "alaska-chum-salmon", "basePresence": 0.3 },
-    { "speciesId": "alaska-dolly-varden", "basePresence": 0.25 }
+    {
+      "speciesId": "alaska-chinook-salmon",
+      "basePresence": 0.35
+    },
+    {
+      "speciesId": "alaska-sockeye-salmon",
+      "basePresence": 0.5
+    },
+    {
+      "speciesId": "alaska-coho-salmon",
+      "basePresence": 0.45
+    },
+    {
+      "speciesId": "alaska-pink-salmon",
+      "basePresence": 0.4
+    },
+    {
+      "speciesId": "alaska-chum-salmon",
+      "basePresence": 0.3
+    },
+    {
+      "speciesId": "alaska-dolly-varden",
+      "basePresence": 0.25
+    }
   ],
   "knowledgeConfig": {
     "reveals": [
-      { "field": "main_species", "minKnowledge": 20 },
-      { "field": "time_pattern", "minKnowledge": 40 },
-      { "field": "habitat", "minKnowledge": 60 }
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "time_pattern",
+        "minKnowledge": 40
+      },
+      {
+        "field": "habitat",
+        "minKnowledge": 60
+      }
     ]
   }
 }

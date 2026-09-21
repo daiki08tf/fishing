@@ -228,7 +228,28 @@ export const useFishingSession = (): FishingSession => {
 
   const encountersKey = spot === undefined ? 'none' : String(spot.id)
 
-  // セッション開始（Spot・seed・技量が変わったとき）。
+  /*
+   * セッションの入力（Encounter・倍率・Knowledge）。
+   *
+   * これらは釣行の途中で「釣果を記録した副作用」としても変わる
+   * （世界時間 → Environment → Conditions、成長 → 倍率）。
+   * Engine を毎回作り直すと、取り込んだ瞬間に画面が最初の状態へ戻ってしまうため、
+   * 最新値は ref に置き、**セッションを開始するときだけ**読む。
+   */
+  const sessionInputsRef = useRef({
+    encounters,
+    playerModifiers,
+    encounterProfile,
+    knowledgeScore: spotKnowledgeScore(knowledge, spot === undefined ? '' : String(spot.id)),
+  })
+  sessionInputsRef.current = {
+    encounters,
+    playerModifiers,
+    encounterProfile,
+    knowledgeScore: spotKnowledgeScore(knowledge, spot === undefined ? '' : String(spot.id)),
+  }
+
+  // セッション開始（Spot・seed が変わったとき）。釣行中は作り直さない。
   useEffect(() => {
     if (!content.ok || spot === undefined) {
       engineRef.current = null
@@ -236,19 +257,22 @@ export const useFishingSession = (): FishingSession => {
       return
     }
 
+    const inputs = sessionInputsRef.current
     const engine = new FishingEngine({
-      encounters,
+      encounters: inputs.encounters,
       seed: session.seed,
       spotId: spot.id,
-      playerModifiers,
+      playerModifiers: inputs.playerModifiers,
       // Phase 10: Knowledge は予兆（telegraph）の文章精度にだけ効く。
-      knowledgeScore: spotKnowledgeScore(knowledge, String(spot.id)),
-      ...(encounterProfile === undefined ? {} : { encounterProfile }),
+      knowledgeScore: inputs.knowledgeScore,
+      ...(inputs.encounterProfile === undefined
+        ? {}
+        : { encounterProfile: inputs.encounterProfile }),
     })
 
     engineRef.current = engine
     setSnapshot(engine.snapshot())
-  }, [content, session, playerModifiers, encounterProfile, encounters, encountersKey, spot])
+  }, [content, session, spot, encountersKey])
 
   /*
    * Phase 10: FIGHTING / LANDING はコマンド駆動（完全ターン制）。

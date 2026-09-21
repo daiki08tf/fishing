@@ -1,0 +1,59 @@
+{
+  "id": "kanto-namazu",
+  "japaneseName": "ナマズ",
+  "scientificName": "Silurus asotus",
+  "waterTypes": ["fresh"],
+  "habitats": ["lake", "river", "deep"],
+  "diet": ["small_fish", "crustacean"],
+  "baits": ["worm", "live"],
+  "lureCategories": ["small"],
+  "fishingMethods": ["bait", "light_lure"],
+  "distribution": ["tokyo-area"],
+  "depthRange": {
+    "min": 30,
+    "max": 120
+  },
+  "methodAffinity": {
+    "lure": 0.85,
+    "light_lure": 0.6,
+    "bait": 1.2,
+    "bottom": 1.2
+  },
+  "offeringAffinity": {
+    "jig": 1.25,
+    "cut": 1.3,
+    "live": 1.2,
+    "large": 1.3,
+    "big": 1.4
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 70,
+    "dispersion": 0.14,
+    "minCm": 30,
+    "maxCm": 108
+  },
+  "weightModel": {
+    "lengthWeightA": 0.007,
+    "lengthWeightB": 3
+  },
+  "conditionModel": {
+    "variability": 0.35
+  },
+  "traitConfiguration": {
+    "trophyPercentileThreshold": 0.6,
+    "strongRunnerChance": 0.1
+  },
+  "fightProfile": {
+    "strength": 0.75,
+    "stamina": 0.7,
+    "speed": 0.35
+  },
+  "rarity": 4,
+  "sourceRefs": [
+    {
+      "id": "provisional-values",
+      "title": "PROVISIONAL — ゲーム調整用の暫定値であり、実在の生態データではない"
+    }
+  ]
+}

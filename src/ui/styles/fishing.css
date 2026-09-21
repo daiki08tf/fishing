@@ -55,8 +55,7 @@
   color: #f0c274;
 }
 
-.fishing__legend,
-.fishing__ticks {
+.fishing__legend {
   margin: 0.75rem 0 0;
   font-size: 0.75rem;
   color: var(--color-text-muted);
@@ -211,6 +210,14 @@
 .notice__title {
   margin: 0;
   font-size: 0.875rem;
+}
+
+/* 「直近の釣果」「この魚種の記録」など、何のまとまりかを示す小さな見出し。 */
+.notice__eyebrow {
+  margin: 0 0 0.15rem;
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  color: var(--color-accent);
 }
 
 .notice__tags {

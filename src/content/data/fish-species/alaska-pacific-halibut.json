@@ -3,7 +3,7 @@
   "japaneseName": "オヒョウ（暫定）",
   "waterTypes": ["salt"],
   "distribution": ["alaska"],
-  "habitats": ["alaska-sample-offshore", "alaska-sample-deep"],
+  "habitats": ["offshore", "deep"],
   "depthRange": {
     "min": 20,
     "max": 200
@@ -24,7 +24,7 @@
   "currentPreference": {
     "preference": "moderate"
   },
-  "diet": ["alaska-sample-prey"],
+  "diet": ["small_fish"],
   "baits": ["cut", "fish", "squid"],
   "lureCategories": ["jig", "metal_vibration"],
   "fishingMethods": ["bottom", "bait", "lure"],
@@ -71,20 +71,20 @@
     "preferredTimeOfDay": ["morning", "daytime"],
     "weatherAffinity": {
       "clear": 1.1,
-      "cloudy": 1.0,
+      "cloudy": 1,
       "light_rain": 0.95,
       "rain": 0.9,
       "windy": 0.8
     },
     "tideAffinity": {
-      "low": 1.0,
+      "low": 1,
       "rising": 1.1,
-      "high": 1.0,
+      "high": 1,
       "falling": 1.05
     },
     "flowAffinity": {
       "none": 0.95,
-      "slow": 1.0,
+      "slow": 1,
       "moderate": 1.05,
       "strong": 1.05
     },

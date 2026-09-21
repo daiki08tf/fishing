@@ -22,7 +22,7 @@
       "baseOneWayCost": 0
     }
   ],
-  "habitatTags": ["phase1-sample-shallow", "phase1-sample-pier"],
+  "habitatTags": ["shallow", "pier"],
   "depth": {
     "depthRangeM": {
       "min": 1,
@@ -31,19 +31,19 @@
   },
   "fishTable": [
     {
-      "speciesId": "phase1-sample-fish",
+      "speciesId": "kanto-maaji",
       "basePresence": 1
     },
     {
-      "speciesId": "phase2-sample-fish-b",
+      "speciesId": "kanto-shirogisu",
       "basePresence": 0.6
     },
     {
-      "speciesId": "phase2-sample-fish-f",
+      "speciesId": "kanto-haze",
       "basePresence": 0.5
     },
     {
-      "speciesId": "phase2-sample-fish-h",
+      "speciesId": "kanto-funa",
       "basePresence": 0.7
     }
   ],

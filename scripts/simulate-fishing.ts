@@ -19,7 +19,7 @@ import {
  *
  * 使い方:
  *   npm run simulate:fishing -- --seed demo
- *   npm run simulate:fishing -- --seed demo --species phase2-sample-fish-e --verbose
+ *   npm run simulate:fishing -- --seed demo --species kanto-seabass --verbose
  *   npm run simulate:fishing -- --seed demo --policy reel
  */
 

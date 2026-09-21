@@ -3,7 +3,7 @@
   "japaneseName": "サクラマス（暫定）",
   "waterTypes": ["fresh", "salt"],
   "distribution": ["hokkaido"],
-  "habitats": ["hokkaido-sample-river", "hokkaido-sample-coast"],
+  "habitats": ["river", "coast"],
   "depthRange": {
     "min": 1,
     "max": 20
@@ -21,7 +21,7 @@
   "currentPreference": {
     "preference": "moderate"
   },
-  "diet": ["hokkaido-sample-prey"],
+  "diet": ["small_fish"],
   "baits": ["roe", "worm"],
   "lureCategories": ["spoon", "minnow", "spinner"],
   "fishingMethods": ["light_lure", "lure", "bait"],
@@ -66,21 +66,21 @@
     "preferredSeasons": ["spring", "autumn"],
     "preferredTimeOfDay": ["dawn", "evening"],
     "weatherAffinity": {
-      "clear": 1.0,
+      "clear": 1,
       "cloudy": 1.1,
       "light_rain": 1.05,
-      "rain": 1.0,
+      "rain": 1,
       "windy": 0.9
     },
     "tideAffinity": {
       "low": 0.9,
       "rising": 1.1,
       "high": 1.05,
-      "falling": 1.0
+      "falling": 1
     },
     "flowAffinity": {
       "none": 0.95,
-      "slow": 1.0,
+      "slow": 1,
       "moderate": 1.1,
       "strong": 0.95
     },
@@ -93,6 +93,6 @@
     "preferredOfferingRatio": 0.16,
     "largeOfferingPenaltyStart": 0.28,
     "maxOfferingRatio": 0.42,
-    "mouthSizeFactor": 1.0
+    "mouthSizeFactor": 1
   }
 }

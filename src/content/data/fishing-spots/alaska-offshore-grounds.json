@@ -6,9 +6,18 @@
   "environment": "offshore",
   "dataStatus": "provisional",
   "access": [
-    { "kind": "capability", "capability": "boat_required" },
-    { "kind": "capability", "capability": "offshore" },
-    { "kind": "permit", "permitId": "alaska-fishing-permit" }
+    {
+      "kind": "capability",
+      "capability": "boat_required"
+    },
+    {
+      "kind": "capability",
+      "capability": "offshore"
+    },
+    {
+      "kind": "permit",
+      "permitId": "alaska-fishing-permit"
+    }
   ],
   "travelOptions": [
     {
@@ -21,17 +30,37 @@
       "baseOneWayCost": 0
     }
   ],
-  "habitatTags": ["alaska-sample-offshore", "alaska-sample-deep"],
-  "depth": { "depthRangeM": { "min": 30, "max": 200 } },
+  "habitatTags": ["offshore", "deep"],
+  "depth": {
+    "depthRangeM": {
+      "min": 30,
+      "max": 200
+    }
+  },
   "fishTable": [
-    { "speciesId": "alaska-pacific-halibut", "basePresence": 0.7 },
-    { "speciesId": "alaska-chinook-salmon", "basePresence": 0.4 },
-    { "speciesId": "alaska-coho-salmon", "basePresence": 0.35 }
+    {
+      "speciesId": "alaska-pacific-halibut",
+      "basePresence": 0.7
+    },
+    {
+      "speciesId": "alaska-chinook-salmon",
+      "basePresence": 0.4
+    },
+    {
+      "speciesId": "alaska-coho-salmon",
+      "basePresence": 0.35
+    }
   ],
   "knowledgeConfig": {
     "reveals": [
-      { "field": "main_species", "minKnowledge": 20 },
-      { "field": "depth", "minKnowledge": 50 }
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "depth",
+        "minKnowledge": 50
+      }
     ]
   }
 }

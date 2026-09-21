@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { loadContentFromDirectory } from '../../src/content/load/nodeContent'
+import { loadFixtureContent, SAMPLE_SPECIES } from '../fixtures/content'
 import { DEFAULT_GEAR_TUNING } from '../../src/domain/gear/GearTuning'
 import type { GearItem, RodDefinition } from '../../src/domain/gear/Gear'
 import type { FishSpecies } from '../../src/domain/fish/FishSpecies'
@@ -8,7 +8,7 @@ import { resolveBiteCompatibility } from '../../src/domain/tackle'
 // Phase 9.1: Catchability is soft by default / 物理的不可能だけ hard zero。
 // Rod / Reel / Line は species eligibility を決めない。
 
-const content = loadContentFromDirectory()
+const content = loadFixtureContent()
 
 const species = (id: string): FishSpecies => {
   const found = content.speciesById[id]
@@ -70,7 +70,7 @@ describe('catchability rules', () => {
   })
 
   it('treats an oversized lure as physically impossible for a small fish', () => {
-    const oversized = fit({ speciesId: 'phase1-sample-fish', offering: largestLure })
+    const oversized = fit({ speciesId: SAMPLE_SPECIES.small, offering: largestLure })
 
     expect(oversized.eligible).toBe(false)
     expect(oversized.reason).toBe('offering_too_large')
@@ -78,7 +78,7 @@ describe('catchability rules', () => {
   })
 
   it('treats an oversized hook as physically impossible for a small fish', () => {
-    const oversized = fit({ speciesId: 'phase1-sample-fish', hook: largestHook })
+    const oversized = fit({ speciesId: SAMPLE_SPECIES.small, hook: largestHook })
 
     expect(oversized.eligible).toBe(false)
     expect(oversized.reason).toBe('hook_too_large')
@@ -112,7 +112,7 @@ describe('catchability rules', () => {
 
   it('keeps a bait (no size data) soft instead of guessing', () => {
     const withBait = fit({
-      speciesId: 'phase1-sample-fish',
+      speciesId: SAMPLE_SPECIES.small,
       offering: bait,
       methodId: 'bait',
     })

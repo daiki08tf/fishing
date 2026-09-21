@@ -42,12 +42,29 @@ const readKindDirectory = (root: string, kind: string): readonly ContentSource[]
     })
 }
 
+/**
+ * テスト / simulation 用の Content 読み込みオプション。
+ *
+ * `fixtureRoots` で渡したディレクトリからは **fish-species だけ**を追加で読む。
+ * 検証用の魚種を runtime の Spot から参照させないための分離である
+ * （Spot / Gear / Region などは常に `root` 側だけを見る）。
+ */
+export type LoadContentOptions = {
+  readonly fixtureRoots?: readonly string[]
+}
+
 /** `src/content/data` を読んで Content を組み立てる。Data が不正なら例外。 */
 export const loadContentFromDirectory = (
   root = resolve(process.cwd(), 'src/content/data'),
+  options: LoadContentOptions = {},
 ): BuiltInContent =>
   assembleBuiltInContent({
-    species: readKindDirectory(root, 'fish-species'),
+    species: [
+      ...readKindDirectory(root, 'fish-species'),
+      ...(options.fixtureRoots ?? []).flatMap((fixture) =>
+        readKindDirectory(fixture, 'fish-species'),
+      ),
+    ],
     spots: readKindDirectory(root, 'fishing-spots'),
     shopItems: readKindDirectory(root, 'shop-items'),
     transports: readKindDirectory(root, 'transports'),

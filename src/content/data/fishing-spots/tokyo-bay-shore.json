@@ -22,7 +22,7 @@
       "baseOneWayCost": 420
     }
   ],
-  "habitatTags": ["phase1-sample-pier", "phase1-sample-shallow"],
+  "habitatTags": ["pier", "shallow"],
   "depth": {
     "depthRangeM": {
       "min": 2,
@@ -31,19 +31,19 @@
   },
   "fishTable": [
     {
-      "speciesId": "phase1-sample-fish",
+      "speciesId": "kanto-maaji",
       "basePresence": 0.6
     },
     {
-      "speciesId": "phase2-sample-fish-c",
+      "speciesId": "kanto-seabass",
       "basePresence": 0.4
     },
     {
-      "speciesId": "phase2-sample-fish-g",
+      "speciesId": "kanto-kurodai",
       "basePresence": 0.5
     },
     {
-      "speciesId": "phase2-sample-fish-j",
+      "speciesId": "kanto-saba",
       "basePresence": 0.5
     }
   ],

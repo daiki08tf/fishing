@@ -1,5 +1,5 @@
 import { pathToFileURL } from 'node:url'
-import { loadContentFromDirectory } from '../src/content/load/nodeContent'
+import { loadFixtureContent, SAMPLE_SPECIES } from '../tests/fixtures/content'
 import type { BuiltInContent } from '../src/content/catalog/assembleContent'
 import type { RodDefinition } from '../src/domain/gear/Gear'
 import { FishingEngine, isTerminalPhase } from '../src/domain/fishing'
@@ -50,7 +50,7 @@ export const scenarios = (): readonly Scenario[] => [
   {
     id: 'small',
     label: 'Small fish',
-    speciesId: 'phase2-sample-fish-f',
+    speciesId: SAMPLE_SPECIES.smallFresh,
     presence: 0.8,
     rodPower: 'L',
     gearRatio: 0.3,
@@ -58,7 +58,7 @@ export const scenarios = (): readonly Scenario[] => [
   {
     id: 'medium',
     label: 'Medium fish',
-    speciesId: 'phase2-sample-fish-e',
+    speciesId: SAMPLE_SPECIES.bigSalt,
     presence: 0.7,
     rodPower: 'M',
     gearRatio: 0.5,
@@ -354,7 +354,7 @@ export type TextBattleResult = {
 const pct = (value: number): string => `${(value * 100).toFixed(1)}%`
 
 export const simulateTextBattle = (): TextBattleResult => {
-  const content = loadContentFromDirectory()
+  const content = loadFixtureContent()
   const lines: string[] = ['Text Fishing Battle simulation（decision-driven, not button-spam）']
   const checks: TextBattleCheck[] = []
   const statsByScenario = new Map<string, Map<StrategyId, BattleStats>>()

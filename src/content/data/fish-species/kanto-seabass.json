@@ -1,0 +1,85 @@
+{
+  "id": "kanto-seabass",
+  "japaneseName": "スズキ",
+  "scientificName": "Lateolabrax japonicus",
+  "waterTypes": ["salt", "brackish", "fresh"],
+  "habitats": ["estuary", "river", "pier"],
+  "diet": ["small_fish", "crustacean"],
+  "baits": ["live", "worm"],
+  "lureCategories": ["minnow", "vibration"],
+  "fishingMethods": ["lure", "light_lure"],
+  "distribution": ["tokyo-area"],
+  "depthRange": {
+    "min": 8,
+    "max": 40
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 45,
+    "dispersion": 0.11,
+    "minCm": 20,
+    "maxCm": 63
+  },
+  "methodAffinity": {
+    "lure": 1.15,
+    "light_lure": 0.85,
+    "bait": 1,
+    "bottom": 0.95
+  },
+  "offeringAffinity": {
+    "vibration": 1.15,
+    "jig": 1,
+    "spoon": 1,
+    "cut": 1.05,
+    "large": 1.15
+  },
+  "weightModel": {
+    "lengthWeightA": 0.0085,
+    "lengthWeightB": 3
+  },
+  "conditionModel": {
+    "variability": 0.45
+  },
+  "traitConfiguration": {
+    "trophyPercentileThreshold": 0.8
+  },
+  "fightProfile": {
+    "strength": 0.6,
+    "stamina": 0.6,
+    "speed": 0.45
+  },
+  "rarity": 2,
+  "environmentAffinity": {
+    "preferredSeasons": ["summer", "autumn"],
+    "preferredTimeOfDay": ["night", "dawn"],
+    "weatherAffinity": {
+      "clear": 1,
+      "cloudy": 1.1,
+      "light_rain": 1.05,
+      "rain": 1,
+      "windy": 0.9
+    },
+    "tideAffinity": {
+      "low": 0.9,
+      "rising": 1.15,
+      "high": 1.1,
+      "falling": 1
+    },
+    "preferredTemperatureC": {
+      "min": 18,
+      "max": 26
+    }
+  },
+  "feedingProfile": {
+    "preferredOfferingRatio": 0.16,
+    "largeOfferingPenaltyStart": 0.28,
+    "maxOfferingRatio": 0.4,
+    "mouthSizeFactor": 1
+  },
+  "sourceRefs": [
+    {
+      "id": "provisional-values",
+      "title": "PROVISIONAL — ゲーム調整用の暫定値であり、実在の生態データではない"
+    }
+  ]
+}

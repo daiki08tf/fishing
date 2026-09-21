@@ -17,11 +17,18 @@
 - `gear`（Rod / Reel / Line / Leader / Hook / Lure / Bait）
 - `methods`（釣法）
 
-## 現在の内容（Phase 7A 時点）
+## 現在の内容（Phase 10.1 時点）
 
-**検証用サンプル**だけを持つ。
+ここにあるのは**プレイヤーが実際に釣る Content**である。
+名前は実在の魚・釣り場を思わせるが、**数値はすべて PROVISIONAL**（暫定）であり、
+生物学的な事実でも現実の釣果データでもない。
 
-- `fish-species/*.json`（検証用 22 件。うち 12 件は Phase 8 のアラスカ / 北海道の魚）
+- `fish-species/*.json`（26 件。東京近郊 13 / 北海道 3 / アラスカ 10）
+  - すべて `sourceRefs` に PROVISIONAL であることを明示している
+  - **検証用の合成魚（サンプル魚 A〜J）はここに置かない。**
+    釣りのループを検証するための合成魚種は `tests/fixtures/content/fish-species/` にあり、
+    test / simulation だけが明示的に追加読み込みする
+    （`tests/fixtures/content.ts` の `loadFixtureContent`）
 - `fishing-spots/*.json`（22 件。東京近郊 13 / アラスカ 6 / 北海道 3）
   - 東京近郊: うち 5 件が Transport 検証用。`suburban-road-lake` は Phase 7A.1 で追加
   - アラスカ: Phase 8。Salmon River / Mountain River / Coastal Bay / Offshore Grounds /
@@ -54,16 +61,16 @@
 - リールの `lineCapacity` は Master の `LineCapacityIndex` と番手から導出する
 - フックの `Size`（`#6` / `2/0`）は符号付きの数値へ変換する（`6` / `-2`）
 
-魚種も釣り場も、現実の魚・場所を表すものではない。
-名前もパラメータも暫定であり、釣りのループを成立させるための入力である
-（`id` は `phase1-sample-` / `phase2-sample-` で始まる）。
+釣り場の名前は現実の水域を思わせるものを含むが、**名前もパラメータも暫定**であり、
+釣りのループを成立させるための入力である。
+魚種の `id` は `kanto-`（東京近郊）/ `hokkaido-` / `alaska-` で始まる。
 
 魚種の `methodAffinity` / `offeringAffinity` も
-**検証用の暫定値**であり、生物学的事実ではない。
+**PROVISIONAL の暫定値**であり、生物学的事実ではない。
 目的は「同じ Spot でも釣法・offering で Encounter の重みが変わる」ことの検証である。
 
 Phase 9 で魚種に `environmentAffinity`（季節 / 時間帯 / 天候 / 潮 / 流れ / 水温の嗜好）を
-追加した。これも **検証用の暫定値**であり、生物学的な事実ではない。
+追加した。これも **PROVISIONAL の暫定値**であり、生物学的な事実ではない。
 未設定の魚は neutral（1）として扱う。
 
 ### 実在の場所を扱うときの約束

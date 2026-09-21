@@ -26,19 +26,45 @@
       "baseOneWayCost": 0
     }
   ],
-  "habitatTags": ["alaska-sample-bay", "alaska-sample-surf"],
-  "depth": { "depthRangeM": { "min": 2, "max": 30 } },
+  "habitatTags": ["bay", "surf"],
+  "depth": {
+    "depthRangeM": {
+      "min": 2,
+      "max": 30
+    }
+  },
   "fishTable": [
-    { "speciesId": "alaska-coho-salmon", "basePresence": 0.5 },
-    { "speciesId": "alaska-pink-salmon", "basePresence": 0.45 },
-    { "speciesId": "alaska-chum-salmon", "basePresence": 0.35 },
-    { "speciesId": "alaska-dolly-varden", "basePresence": 0.3 },
-    { "speciesId": "alaska-pacific-halibut", "basePresence": 0.15 }
+    {
+      "speciesId": "alaska-coho-salmon",
+      "basePresence": 0.5
+    },
+    {
+      "speciesId": "alaska-pink-salmon",
+      "basePresence": 0.45
+    },
+    {
+      "speciesId": "alaska-chum-salmon",
+      "basePresence": 0.35
+    },
+    {
+      "speciesId": "alaska-dolly-varden",
+      "basePresence": 0.3
+    },
+    {
+      "speciesId": "alaska-pacific-halibut",
+      "basePresence": 0.15
+    }
   ],
   "knowledgeConfig": {
     "reveals": [
-      { "field": "main_species", "minKnowledge": 20 },
-      { "field": "time_pattern", "minKnowledge": 40 }
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "time_pattern",
+        "minKnowledge": 40
+      }
     ]
   }
 }

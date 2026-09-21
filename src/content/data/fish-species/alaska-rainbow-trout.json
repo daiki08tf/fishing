@@ -3,7 +3,7 @@
   "japaneseName": "レインボートラウト（暫定）",
   "waterTypes": ["fresh"],
   "distribution": ["alaska"],
-  "habitats": ["alaska-sample-river", "alaska-sample-lake"],
+  "habitats": ["river", "lake"],
   "depthRange": {
     "min": 1,
     "max": 12
@@ -21,7 +21,7 @@
   "currentPreference": {
     "preference": "slow"
   },
-  "diet": ["alaska-sample-prey"],
+  "diet": ["small_fish"],
   "baits": ["worm", "roe", "insect"],
   "lureCategories": ["spoon", "minnow", "soft_plastic", "spinner"],
   "fishingMethods": ["light_lure", "lure", "bait"],
@@ -66,7 +66,7 @@
     "preferredSeasons": ["spring", "summer", "autumn"],
     "preferredTimeOfDay": ["dawn", "evening"],
     "weatherAffinity": {
-      "clear": 1.0,
+      "clear": 1,
       "cloudy": 1.1,
       "light_rain": 1.05,
       "rain": 1.05,
@@ -87,6 +87,6 @@
     "preferredOfferingRatio": 0.16,
     "largeOfferingPenaltyStart": 0.28,
     "maxOfferingRatio": 0.4,
-    "mouthSizeFactor": 1.0
+    "mouthSizeFactor": 1
   }
 }

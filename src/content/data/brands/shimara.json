@@ -1,7 +1,7 @@
 {
   "id": "shimara",
   "name": "Shimara",
-  "description": "シマラ。総合ブランド。ドラッグ初動・巻きの滑らかさ・総合バランスで差をつける。（架空ブランド。検証用）",
+  "description": "シマラ。総合ブランド。ドラッグ初動・巻きの滑らかさ・総合バランスで差をつける。（架空ブランド）",
   "specialties": ["balanced", "smooth-drag", "precision"],
   "countryStyle": "japan_domestic",
   "tagline": "滑らかさは、武器になる。"

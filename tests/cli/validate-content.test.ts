@@ -39,7 +39,8 @@ describe('validate:content CLI', () => {
 
     expect(report.exitCode).toBe(0)
     expect(report.lines[0]).toContain(DEFAULT_CONTENT_DIR)
-    expect(report.lines.join('\n')).toContain('validated 653 record(s)')
+    // 件数は Content を増減するたびに変わる（記録そのものは validate:content が見る）。
+    expect(report.lines.join('\n')).toContain('validated 657 record(s)')
   })
 
   it('rejects a missing --dir value', () => {

@@ -1,7 +1,7 @@
 {
   "id": "evergreen-field",
   "name": "Evergreen Field",
-  "description": "エバーグリーンフィールド。操作系ルアーと高感度ロッドに強い高価格帯ブランド。（架空ブランド。検証用）",
+  "description": "エバーグリーンフィールド。操作系ルアーと高感度ロッドに強い高価格帯ブランド。（架空ブランド）",
   "specialties": ["precision", "lure", "high-end"],
   "countryStyle": "japan_domestic",
   "tagline": "一投に、理由を。"

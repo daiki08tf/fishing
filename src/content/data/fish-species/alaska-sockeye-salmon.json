@@ -3,7 +3,7 @@
   "japaneseName": "ベニザケ（暫定）",
   "waterTypes": ["fresh", "salt"],
   "distribution": ["alaska"],
-  "habitats": ["alaska-sample-river", "alaska-sample-lake"],
+  "habitats": ["river", "lake"],
   "depthRange": {
     "min": 2,
     "max": 40
@@ -21,7 +21,7 @@
   "currentPreference": {
     "preference": "moderate"
   },
-  "diet": ["alaska-sample-prey"],
+  "diet": ["small_fish"],
   "baits": ["roe", "krill", "shrimp"],
   "lureCategories": ["spoon", "jig"],
   "fishingMethods": ["lure", "bait", "bottom"],
@@ -67,7 +67,7 @@
     "weatherAffinity": {
       "clear": 1.05,
       "cloudy": 1.05,
-      "light_rain": 1.0,
+      "light_rain": 1,
       "rain": 0.95,
       "windy": 0.85
     },
@@ -79,7 +79,7 @@
     },
     "flowAffinity": {
       "none": 0.9,
-      "slow": 1.0,
+      "slow": 1,
       "moderate": 1.15,
       "strong": 0.9
     },

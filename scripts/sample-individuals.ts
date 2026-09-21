@@ -1,5 +1,5 @@
 import { pathToFileURL } from 'node:url'
-import { loadContentFromDirectory } from '../src/content/load/nodeContent'
+import { loadFixtureContent } from '../tests/fixtures/content'
 import type { FishSpecies } from '../src/domain/fish/FishSpecies'
 import { FISH_TRAITS, type FishTrait } from '../src/domain/fish/FishTrait'
 import { generateFishIndividual } from '../src/domain/fish/generateFishIndividual'
@@ -19,7 +19,7 @@ import { SeededRandomSource } from '../src/domain/rng/SeededRandomSource'
  * 使い方:
  *   npm run sample:individuals
  *   npm run sample:individuals -- --samples 50000
- *   npm run sample:individuals -- --species phase2-sample-fish-e
+ *   npm run sample:individuals -- --species kanto-seabass
  */
 
 export type SpeciesSampleStatistics = {
@@ -210,7 +210,7 @@ export const sampleIndividuals = (options: {
   readonly seed: string
   readonly speciesId?: string
 }): SampleResult => {
-  const content = loadContentFromDirectory()
+  const content = loadFixtureContent()
   const species =
     options.speciesId === undefined
       ? content.species

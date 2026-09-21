@@ -1,5 +1,5 @@
 import { pathToFileURL } from 'node:url'
-import { loadContentFromDirectory } from '../src/content/load/nodeContent'
+import { loadFixtureContent, SAMPLE_SPECIES } from '../tests/fixtures/content'
 import { biteChance, rollEncounter } from '../src/domain/encounter/encounterEngine'
 import type { EncounterCandidate } from '../src/domain/encounter/encounterEngine'
 import { DEFAULT_FISHING_TUNING, FishingEngine } from '../src/domain/fishing'
@@ -48,7 +48,7 @@ export type CatchabilityResult = {
 }
 
 export const simulateCatchability = (): CatchabilityResult => {
-  const content = loadContentFromDirectory()
+  const content = loadFixtureContent()
   const lines: string[] = [
     'Catchability simulation（soft by default / 物理的不可能だけ hard zero）',
   ]
@@ -157,7 +157,7 @@ export const simulateCatchability = (): CatchabilityResult => {
 
   const chinook = speciesById('alaska-chinook-salmon')
   const halibut = speciesById('alaska-pacific-halibut')
-  const smallFish = speciesById('phase1-sample-fish')
+  const smallFish = speciesById(SAMPLE_SPECIES.small)
 
   /** 1 魚種 × 1 仕掛けの Encounter candidate を作る（UI と同じ経路）。 */
   const candidateFor = (input: {

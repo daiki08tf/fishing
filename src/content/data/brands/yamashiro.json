@@ -1,7 +1,7 @@
 {
   "id": "yamashiro",
   "name": "Yamashiro",
-  "description": "ヤマシロ。エギと海ルアー、プレゼンテーションを得意とする。（架空ブランド。検証用）",
+  "description": "ヤマシロ。エギと海ルアー、プレゼンテーションを得意とする。（架空ブランド）",
   "specialties": ["egi", "salt-lure", "presentation"],
   "countryStyle": "japan_domestic",
   "tagline": "潮を読む、形にする。"

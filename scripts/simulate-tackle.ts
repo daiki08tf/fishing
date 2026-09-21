@@ -1,5 +1,5 @@
 import { pathToFileURL } from 'node:url'
-import { loadContentFromDirectory } from '../src/content/load/nodeContent'
+import { loadFixtureContent, SAMPLE_SPECIES } from '../tests/fixtures/content'
 import type { BuiltInContent } from '../src/content/catalog/assembleContent'
 import { DEFAULT_FISHING_TUNING } from '../src/domain/fishing/FishingTuning'
 import {
@@ -360,7 +360,7 @@ export const simulateEncounterSelection = (options: {
 }
 
 export const simulateTackle = (): TackleSimulationResult => {
-  const content = loadContentFromDirectory()
+  const content = loadFixtureContent()
   const builds = tackleBuilds()
   const lines: string[] = []
   const checks: { label: string; ok: boolean }[] = []
@@ -393,8 +393,8 @@ export const simulateTackle = (): TackleSimulationResult => {
 
   // --- 狙う魚による相性（Encounter 側） -------------------------------
 
-  const lightTarget = speciesOf(content, 'phase2-sample-fish-f')
-  const bigTarget = speciesOf(content, 'phase2-sample-fish-i')
+  const lightTarget = speciesOf(content, SAMPLE_SPECIES.smallFresh)
+  const bigTarget = speciesOf(content, SAMPLE_SPECIES.bigOffshore)
   const affinityFor = (id: BuildId, species: FishSpecies): number => {
     const setup = setups.get(id)
     return setup === undefined ? 0 : speciesAffinity(species, asEncounterProfile(setup))
@@ -479,7 +479,7 @@ export const simulateTackle = (): TackleSimulationResult => {
     ).toFixed(0)}`
 
   lines.push('')
-  lines.push('=== ファイト: 小型（phase2-sample-fish-f / 普通の操作） ===')
+  lines.push('=== ファイト: 小型（検証用の小型魚 / 普通の操作） ===')
 
   for (const build of builds) {
     const result = lightCounts.get(build.id)
@@ -492,7 +492,7 @@ export const simulateTackle = (): TackleSimulationResult => {
   }
 
   lines.push('')
-  lines.push('=== ファイト: 大型（phase2-sample-fish-i / 9.3 割まで攻める） ===')
+  lines.push('=== ファイト: 大型（検証用の大型魚 / 9.3 割まで攻める） ===')
 
   for (const build of builds) {
     const result = bigCounts.get(build.id)
@@ -564,7 +564,7 @@ export const simulateTackle = (): TackleSimulationResult => {
 
   // --- 決定論 ----------------------------------------------------------
 
-  const again = loadContentFromDirectory()
+  const again = loadFixtureContent()
   const repeated = builds
     .map((build) => {
       const setup = resolveTackle({

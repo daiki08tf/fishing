@@ -1,6 +1,6 @@
 {
   "id": "offshore-bank-provisional",
-  "name": "湾外 沖の瀬（検証用）",
+  "name": "湾外 沖の瀬",
   "regionId": "tokyo-area",
   "areaId": "chiba",
   "environment": "offshore",
@@ -26,7 +26,7 @@
       "baseOneWayCost": 0
     }
   ],
-  "habitatTags": ["phase1-sample-deep"],
+  "habitatTags": ["deep"],
   "depth": {
     "depthRangeM": {
       "min": 20,
@@ -35,11 +35,11 @@
   },
   "fishTable": [
     {
-      "speciesId": "phase2-sample-fish-e",
+      "speciesId": "kanto-bora",
       "basePresence": 0.5
     },
     {
-      "speciesId": "phase2-sample-fish-i",
+      "speciesId": "kanto-buri",
       "basePresence": 0.5
     }
   ],
