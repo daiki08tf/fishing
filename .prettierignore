@@ -1,0 +1,16 @@
+# Design documents are prose and are not machine-formatted.
+docs/
+.ai/
+README.md
+
+# Managed by npm.
+package-lock.json
+
+# Generated / binary output.
+dist/
+coverage/
+node_modules/
+public/icons/
+
+# Intentionally invalid JSON fixture (asserts that invalid JSON is reported).
+src/content/fixtures/invalid/invalid-json/

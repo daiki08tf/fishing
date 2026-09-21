@@ -1,0 +1,41 @@
+{
+  "id": "fixture-species-0001",
+  "japaneseName": "検証用ダミー種",
+  "scientificName": "Fixtureus dummyus",
+  "taxonomy": {
+    "family": "fixture-family"
+  },
+  "waterTypes": ["salt", "brackish"],
+  "distribution": ["fixture-region-0001"],
+  "habitats": ["fixture-habitat-shallow"],
+  "depthRange": { "min": 1, "max": 20 },
+  "temperatureRange": { "min": 10, "max": 26 },
+  "seasonality": { "months": [4, 5, 6, 7, 8, 9] },
+  "timeActivity": { "periods": ["dawn", "evening"] },
+  "tidePreference": { "preference": "rising" },
+  "diet": ["fixture-prey"],
+  "lengthModel": {
+    "meanCm": 24,
+    "standardDeviationCm": 4,
+    "minCm": 10,
+    "maxCm": 52
+  },
+  "weightModel": {
+    "lengthWeightA": 0.008,
+    "lengthWeightB": 3.02
+  },
+  "fightProfile": {
+    "strength": 0.4,
+    "stamina": 0.35,
+    "speed": 0.55
+  },
+  "rarity": 1,
+  "sourceRefs": [
+    {
+      "id": "fixture-source-0001",
+      "title": "検証用ダミー出典",
+      "url": "https://example.invalid/fixture",
+      "verifiedAt": "2026-01-01"
+    }
+  ]
+}

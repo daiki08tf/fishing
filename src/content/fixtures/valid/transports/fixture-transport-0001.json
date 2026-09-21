@@ -1,0 +1,9 @@
+{
+  "id": "fixture-transport-0001",
+  "name": "検証用ダミー移動手段",
+  "type": "train",
+  "runningCost": 400,
+  "cargoCapacity": 1,
+  "range": 80,
+  "accessTags": ["train", "walk"]
+}

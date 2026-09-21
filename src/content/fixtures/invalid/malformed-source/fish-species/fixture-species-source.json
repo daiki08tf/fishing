@@ -1,0 +1,16 @@
+{
+  "id": "fixture-species-source",
+  "japaneseName": "出典不正のダミー種",
+  "waterTypes": ["fresh"],
+  "distribution": ["fixture-region-0001"],
+  "habitats": [],
+  "lengthModel": {
+    "meanCm": 12,
+    "standardDeviationCm": 2,
+    "minCm": 5,
+    "maxCm": 20
+  },
+  "fightProfile": { "strength": 0.2, "stamina": 0.2, "speed": 0.2 },
+  "rarity": 1,
+  "sourceRefs": [{ "id": "fixture-source-broken" }]
+}

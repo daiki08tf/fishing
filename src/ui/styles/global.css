@@ -1,0 +1,131 @@
+:root {
+  color-scheme: dark;
+
+  --color-background: #08252f;
+  --color-surface: #0e3440;
+  --color-border: #1d5260;
+  --color-text: #e9f2f0;
+  --color-text-muted: #93b3b6;
+  --color-accent: #2fb6a8;
+
+  font-family:
+    system-ui,
+    -apple-system,
+    'Hiragino Kaku Gothic ProN',
+    'Noto Sans JP',
+    sans-serif;
+  line-height: 1.6;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-background);
+  color: var(--color-text);
+}
+
+.app-shell {
+  min-height: 100dvh;
+  padding: calc(env(safe-area-inset-top) + 1.5rem) 1.25rem calc(env(safe-area-inset-bottom) + 2rem);
+}
+
+.app-shell__main {
+  max-width: 40rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.app-shell__eyebrow {
+  margin: 0;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.app-shell__title {
+  margin: 0.25rem 0 0;
+  font-size: 2.25rem;
+  letter-spacing: 0.01em;
+}
+
+.app-shell__tagline {
+  margin: 0.5rem 0 0;
+  color: var(--color-text-muted);
+}
+
+.panel {
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+  background-color: var(--color-surface);
+  padding: 1.25rem;
+}
+
+.panel__heading {
+  margin: 0;
+  font-size: 1.125rem;
+}
+
+.panel__body {
+  margin: 0.5rem 0 0;
+  color: var(--color-text-muted);
+}
+
+.status-list {
+  margin: 1rem 0 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.status-list__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px dashed var(--color-border);
+  padding-bottom: 0.5rem;
+}
+
+.status-list__row dt {
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+}
+
+.status-list__row dd {
+  margin: 0;
+  font-size: 0.875rem;
+  text-align: right;
+}
+
+.button {
+  margin-top: 1.25rem;
+  width: 100%;
+  min-height: 2.75rem;
+  border: 1px solid var(--color-accent);
+  border-radius: 0.5rem;
+  background-color: transparent;
+  color: var(--color-accent);
+  font: inherit;
+  cursor: pointer;
+}
+
+.button:active {
+  background-color: rgb(47 182 168 / 12%);
+}
+
+.boundary-list {
+  margin: 1rem 0 0;
+  padding-left: 1.25rem;
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+}

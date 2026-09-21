@@ -1,0 +1,15 @@
+{
+  "id": "fixture-species-bounds",
+  "japaneseName": "数値範囲違反のダミー種",
+  "waterTypes": ["salt"],
+  "distribution": ["fixture-region-0001"],
+  "habitats": [],
+  "lengthModel": {
+    "meanCm": 30,
+    "standardDeviationCm": 3,
+    "minCm": 40,
+    "maxCm": 20
+  },
+  "fightProfile": { "strength": 1.5, "stamina": 0.2, "speed": 0.2 },
+  "rarity": -1
+}
