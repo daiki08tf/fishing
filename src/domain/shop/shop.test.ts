@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { createInitialFinanceState, DEFAULT_ECONOMY_TUNING } from '../economy/FinanceState'
-import { asShopItemId } from '../ids'
+import { asShopItemId, asTransportId } from '../ids'
 import type { WorldTime } from '../world/WorldTime'
 import type { ShopItem } from './ShopItem'
 import { ownsItem } from './ShopItem'
@@ -14,7 +14,7 @@ const car: ShopItem = {
   description: '車',
   price: 450_000,
   category: 'vehicle',
-  grantsTransport: 'car',
+  grantsTransportId: asTransportId('used-compact-car'),
 }
 
 const buy = (cash: number, owned: readonly ReturnType<typeof asShopItemId>[] = []) =>
@@ -46,7 +46,7 @@ describe('shop', () => {
     }
 
     expect(result.finance.cash).toBe(50_000)
-    expect(result.grantedTransport).toBe('car')
+    expect(result.grantedTransportId).toBe('used-compact-car')
     expect(ownsItem(result.ownedItemIds, car.id)).toBe(true)
     expect(result.finance.transactions[0]?.kind).toBe('purchase')
     expect(result.finance.transactions[0]?.amount).toBe(-450_000)

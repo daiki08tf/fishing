@@ -5,10 +5,20 @@
   "environment": "bay_shore",
   "dataStatus": "provisional",
   "access": [
-    { "kind": "transport", "tag": "train" },
+    { "kind": "capability", "capability": "public_transport" },
     { "kind": "knowledge", "minimum": 20, "scope": "region" }
   ],
-  "travelOptions": [{ "transport": "train", "minutes": 50, "cost": 420 }],
+  "travelOptions": [
+    {
+      "id": "rail-route",
+      "transportTypes": ["train"],
+      "requiredCapabilities": ["public_transport"],
+      "features": [],
+      "baseMinutes": 50,
+      "distanceKm": 32,
+      "baseOneWayCost": 420
+    }
+  ],
   "habitatTags": ["phase1-sample-deep", "phase1-sample-surf"],
   "depth": { "depthRangeM": { "min": 5, "max": 25 } },
   "fishTable": [

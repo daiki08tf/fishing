@@ -1,11 +1,17 @@
 import { create } from 'zustand'
 import { evaluateAccess, type AccessEvaluation } from '../domain/access/accessEngine'
-import type { TransportType } from '../domain/access/Transport'
+import {
+  createInitialTransportState,
+  grantOwnedTransport,
+  type PlayerTransportState,
+  type ResolvedTravelOption,
+  type TransportDefinition,
+} from '../domain/access/Transport'
 import { resolveCatch } from '../domain/catch'
 import { emptyCodexState, type CodexState } from '../domain/codex'
 import type { FishIndividual } from '../domain/fish/FishIndividual'
 import type { FishSpecies } from '../domain/fish/FishSpecies'
-import type { GearId } from '../domain/ids'
+import type { GearId, TransportId } from '../domain/ids'
 import type { GearItem } from '../domain/gear/Gear'
 import { emptyKnowledgeState, type KnowledgeState } from '../domain/knowledge/KnowledgeState'
 import type { FishingMethod } from '../domain/method/FishingMethod'
@@ -45,20 +51,18 @@ import {
   type LoadoutSlot,
 } from '../domain/tackle'
 import { formatWorldTime, sleepUntilMorning, type WorldTime } from '../domain/world/WorldTime'
-import type { SpotTravelOption } from '../domain/world/FishingSpot'
 import type { FishingSpot } from '../domain/world/FishingSpot'
 import {
   arriveAtSpot,
   arriveHome,
   createInitialWorld,
-  grantTransport,
   leaveForSpot,
   leaveSpot,
   recordFishingAttempt,
   type WorldState,
 } from '../domain/world/worldSession'
 import { fastestTravelOption } from '../domain/access/accessEngine'
-import { asGearId } from '../domain/ids'
+import { asGearId, asTransportId } from '../domain/ids'
 
 /**
  * Save に載る状態（Player + World）をまとめて持つストア。
@@ -116,6 +120,8 @@ export type PersistedPlayerSlice = {
   readonly progression: AnglerProgression
   readonly codex: CodexState
   readonly world: WorldState
+  /** Phase 7A: World から独立した利用可能・所有 Transport。 */
+  readonly transport: PlayerTransportState
   readonly knowledge: KnowledgeState
   readonly finance: FinanceState
   readonly purchases: readonly ShopItemId[]
@@ -179,15 +185,23 @@ export type PlayerStoreState = PersistedPlayerSlice & {
   resetSkills(): void
 
   /** Spot のアクセス判定（状態は変えない）。 */
-  evaluateSpot(spot: FishingSpot): AccessEvaluation
+  evaluateSpot(spot: FishingSpot, transports: readonly TransportDefinition[]): AccessEvaluation
   /** 釣行前の判定（行けるか / 費用が足りるか）。 */
-  evaluateTrip(spot: FishingSpot, travelOption: SpotTravelOption): TripReadiness
+  evaluateTrip(
+    spot: FishingSpot,
+    travelOption: ResolvedTravelOption,
+    transports: readonly TransportDefinition[],
+  ): TripReadiness
   /** 自宅を出て Spot へ移動する（時間が進む）。 */
-  travelToSpot(spot: FishingSpot, transport?: TransportType): TripActionResult
+  travelToSpot(
+    spot: FishingSpot,
+    transports: readonly TransportDefinition[],
+    transportId?: TransportId,
+  ): TripActionResult
   /** 釣り 1 回分の結果を世界へ反映する（時間と Knowledge が進む）。 */
   recordAttempt(input: RecordAttemptInput): TripActionResult
   /** Spot を出て自宅へ戻る（帰路の時間が進む）。 */
-  returnHome(spot: FishingSpot): TripActionResult
+  returnHome(spot: FishingSpot, transports: readonly TransportDefinition[]): TripActionResult
   /** 商品を買う。買えると移動手段が増えることがある。 */
   purchaseItem(item: ShopItem): { readonly ok: boolean; readonly message: string | null }
   /** 翌朝まで休む（時間を進める）。 */
@@ -224,6 +238,7 @@ const createInitialState = (): PersistedPlayerSlice & {
   codex: emptyCodexState(),
   progression: createInitialProgression(),
   world: createInitialWorld(),
+  transport: createInitialTransportState(asTransportId),
   knowledge: emptyKnowledgeState(),
   finance: createInitialFinanceState(),
   purchases: [],
@@ -256,6 +271,7 @@ export const createPlayerStore = () =>
         progression: save.progression,
         codex: save.codex,
         world: save.world,
+        transport: save.transport,
         knowledge: save.knowledge,
         finance: save.finance,
         purchases: save.purchases,
@@ -358,21 +374,23 @@ export const createPlayerStore = () =>
       set({ progression: unlock.progression, skillAllocationError: null })
     },
 
-    evaluateSpot: (spot) => {
-      const { world, knowledge } = get()
+    evaluateSpot: (spot, transports) => {
+      const { transport, knowledge } = get()
 
       return evaluateAccess({
         spot,
-        availableTransports: world.availableTransports,
+        transports,
+        playerTransports: transport,
         knowledge,
       })
     },
 
-    evaluateTrip: (spot, travelOption) => {
+    evaluateTrip: (spot, travelOption, transports) => {
       const state = get()
       const access = evaluateAccess({
         spot,
-        availableTransports: state.world.availableTransports,
+        transports,
+        playerTransports: state.transport,
         knowledge: state.knowledge,
       })
       const cost = roundTripCostFor(travelOption)
@@ -385,15 +403,16 @@ export const createPlayerStore = () =>
       }
     },
 
-    travelToSpot: (spot, transport) => {
+    travelToSpot: (spot, transports, transportId) => {
       if (get().hydrationStatus !== 'ready') {
         return { ok: false, reason: 'state', message: '読み込み中' }
       }
 
-      const { world, knowledge, finance } = get()
+      const { world, transport, knowledge, finance } = get()
       const access = evaluateAccess({
         spot,
-        availableTransports: world.availableTransports,
+        transports,
+        playerTransports: transport,
         knowledge,
       })
 
@@ -406,9 +425,10 @@ export const createPlayerStore = () =>
       }
 
       const option =
-        transport === undefined
+        transportId === undefined
           ? fastestTravelOption(access.travelOptions)
-          : (access.travelOptions.find((candidate) => candidate.transport === transport) ?? null)
+          : (access.travelOptions.find((candidate) => candidate.transportId === transportId) ??
+            null)
 
       if (option === null) {
         return { ok: false, reason: 'access', message: 'その移動手段では行けない' }
@@ -429,7 +449,9 @@ export const createPlayerStore = () =>
       const left = leaveForSpot({
         context: { world, knowledge },
         spot,
-        ...(transport === undefined ? {} : { transport }),
+        transports,
+        playerTransports: transport,
+        ...(transportId === undefined ? {} : { transportId }),
       })
 
       if (!left.ok) {
@@ -488,13 +510,18 @@ export const createPlayerStore = () =>
       return { ok: true, message: null }
     },
 
-    returnHome: (spot) => {
+    returnHome: (spot, transports) => {
       if (get().hydrationStatus !== 'ready') {
         return { ok: false, reason: 'state', message: '読み込み中' }
       }
 
-      const { world, knowledge, finance } = get()
-      const left = leaveSpot({ context: { world, knowledge }, spot })
+      const { world, transport, knowledge, finance } = get()
+      const left = leaveSpot({
+        context: { world, knowledge },
+        spot,
+        transports,
+        playerTransports: transport,
+      })
 
       if (!left.ok) {
         return { ok: false, reason: 'state', message: left.message }
@@ -522,7 +549,7 @@ export const createPlayerStore = () =>
         return { ok: false, message: '読み込み中' }
       }
 
-      const { finance, purchases, world, inventory } = get()
+      const { finance, purchases, world, inventory, transport } = get()
       const result = purchaseShopItem({
         finance,
         ownedItemIds: purchases,
@@ -535,10 +562,12 @@ export const createPlayerStore = () =>
         return { ok: false, message: result.message }
       }
 
-      // 購入で使えるようになった移動手段を World に反映する
-      // （AccessEngine のルールは書き換えない。状態が増えるだけ）。
-      const nextWorld =
-        result.grantedTransport === null ? world : grantTransport(world, result.grantedTransport)
+      // 購入で得た Transport ownership を独立 state に反映する。
+      // AccessEngine のルールや World/FishingEngine は書き換えない。
+      const nextTransport =
+        result.grantedTransportId === null
+          ? transport
+          : grantOwnedTransport(transport, result.grantedTransportId)
 
       // 束ね売り（商品が Gear を配る）の場合だけ所持へ入れる。
       const nextInventory =
@@ -547,7 +576,7 @@ export const createPlayerStore = () =>
       set({
         finance: result.finance,
         purchases: result.ownedItemIds,
-        world: nextWorld,
+        transport: nextTransport,
         inventory: nextInventory,
       })
       return { ok: true, message: null }

@@ -6,6 +6,7 @@ import type { GearSeries } from '../../domain/gear/GearSeries'
 import type { FishingMethod } from '../../domain/method/FishingMethod'
 import type { FishingSpot } from '../../domain/world/FishingSpot'
 import type { ShopItem } from '../../domain/shop/ShopItem'
+import type { TransportDefinition } from '../../domain/access/Transport'
 import {
   brandSchema,
   fishingSpotSchema,
@@ -14,6 +15,7 @@ import {
   gearSeriesSchema,
   methodSchema,
   shopItemSchema,
+  transportSchema,
 } from '../schema'
 import { validateContentReferences } from './references'
 
@@ -29,6 +31,8 @@ export type BuiltInContent = {
   readonly speciesById: Readonly<Record<string, FishSpecies>>
   readonly spots: readonly FishingSpot[]
   readonly shopItems: readonly ShopItem[]
+  readonly transports: readonly TransportDefinition[]
+  readonly transportById: Readonly<Record<string, TransportDefinition>>
   /** Phase 6: Rod / Reel / Line / Leader / Hook / Lure / Bait。 */
   readonly gear: readonly GearItem[]
   readonly gearById: Readonly<Record<string, GearItem>>
@@ -102,6 +106,19 @@ const parseShopItem = (source: string, value: unknown): ShopItem => {
     throw new ContentValidationError(
       'shop-items',
       formatIssues('shop-items', source, parsed.error.issues),
+    )
+  }
+
+  return parsed.data
+}
+
+const parseTransport = (source: string, value: unknown): TransportDefinition => {
+  const parsed = transportSchema.safeParse(value)
+
+  if (!parsed.success) {
+    throw new ContentValidationError(
+      'transports',
+      formatIssues('transports', source, parsed.error.issues),
     )
   }
 
@@ -185,6 +202,7 @@ export const assembleBuiltInContent = (input: {
   readonly species: readonly ContentSource[]
   readonly spots: readonly ContentSource[]
   readonly shopItems?: readonly ContentSource[]
+  readonly transports?: readonly ContentSource[]
   readonly gear?: readonly ContentSource[]
   readonly gearSeries?: readonly ContentSource[]
   readonly methods?: readonly ContentSource[]
@@ -193,6 +211,9 @@ export const assembleBuiltInContent = (input: {
   const species = input.species.map((entry) => parseSpecies(entry.source, entry.value))
   const spots = input.spots.map((entry) => parseSpot(entry.source, entry.value))
   const shopItems = (input.shopItems ?? []).map((entry) => parseShopItem(entry.source, entry.value))
+  const transports = (input.transports ?? []).map((entry) =>
+    parseTransport(entry.source, entry.value),
+  )
   const gear = (input.gear ?? []).map((entry) => parseGear(entry.source, entry.value))
   const gearSeries = (input.gearSeries ?? []).map((entry) =>
     parseGearSeries(entry.source, entry.value),
@@ -210,6 +231,7 @@ export const assembleBuiltInContent = (input: {
   const methodById: Record<string, FishingMethod> = {}
   const brandById: Record<string, BrandDefinition> = {}
   const gearSeriesById: Record<string, GearSeries> = {}
+  const transportById: Record<string, TransportDefinition> = {}
 
   for (const entry of species) {
     speciesById[String(entry.id)] = entry
@@ -231,6 +253,10 @@ export const assembleBuiltInContent = (input: {
     gearSeriesById[entry.id] = entry
   }
 
+  for (const entry of transports) {
+    transportById[String(entry.id)] = entry
+  }
+
   // 参照切れは実行時カタログの入口で止める（Domain へ不正な Content を渡さない）。
   const referenceIssues = validateContentReferences({
     species,
@@ -240,6 +266,7 @@ export const assembleBuiltInContent = (input: {
     methods,
     brands,
     gearSeries,
+    transports,
   })
 
   if (referenceIssues.length > 0) {
@@ -254,6 +281,8 @@ export const assembleBuiltInContent = (input: {
     speciesById,
     spots,
     shopItems,
+    transports,
+    transportById,
     gear,
     gearById,
     methods,

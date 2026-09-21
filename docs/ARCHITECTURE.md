@@ -162,6 +162,30 @@ Encounter EngineやFishing Engineを魚ごとに書き換えない。
 
 Spotも同様。
 
+### Transport / Access（Phase 7A）
+
+依存とデータの流れは次の順に固定する。
+
+```text
+Transport Content + Spot Route Content
+  + PlayerTransportState（利用可能 / 所有）
+  + Knowledge / Permit 等
+  ↓
+AccessEngine
+  ↓
+accessible / blockedReasons / ResolvedTravelOption[]
+  ↓
+Economy（往復費・1釣行レンタル料） / WorldSession（移動時間）
+```
+
+- `AccessEngine` は具体的な車種・船名・Content ID を知らない
+- `FishingEngine` は Transport / Spot / Shop / Economy を知らない
+- Spot は Angler Level ではなく capability を要求する
+- 1 つの travel option が必要 capability をすべて満たす。別々の車両の能力を
+  合成して架空の経路を作らない
+- 所持金不足は Access ではなく Economy が判定する
+- Store は Content catalog を読み込まず、UI / simulation から検証済み定義を受け取る
+
 ## 6. Fishing Engine
 
 ファイトは明確な状態を持つ。
@@ -246,10 +270,16 @@ type SaveGame = {
   knowledge: KnowledgeState
   codex: CodexState
   world: WorldState
+  transport: PlayerTransportState
 }
 ```
 
 破壊的変更時はMigrationを用意する。
+
+Phase 7A の現行 schema は v6。v3〜v5 の `world.availableTransports` は migration 入力として
+のみ残し、v6 では `transport.availableTransportIds` / `ownedTransportIds` に分離する。
+旧 `car` と Phase 5 の `used-compact-car` 購入履歴は `used-compact-car` ownership へ移し、
+Progression / Codex / World / Knowledge / Finance / Purchases / Inventory / Loadout を保持する。
 
 ## 10. RNG
 

@@ -14,8 +14,9 @@ import type { WorldState } from '../../src/domain/world/worldSession'
 import { InMemorySaveRepository } from '../../src/infrastructure/persistence/inMemorySaveRepository'
 import { migrateSave } from '../../src/infrastructure/persistence/migrateSave'
 import { createPlayerStore, type PlayerStore } from '../../src/state/playerStore'
-import { createValidSaveV1, createValidSaveV2, createValidSaveV5 } from '../fixtures/save'
+import { createValidSaveV1, createValidSaveV2, createValidSaveV6 } from '../fixtures/save'
 import { createTestSpot } from '../fixtures/spots'
+import { createTestTransportState, TEST_TRANSPORTS } from '../fixtures/transports'
 
 /**
  * World（時間・位置・Knowledge）の永続化。
@@ -29,6 +30,8 @@ const worldAfterFishing = (): WorldState => {
   const left = leaveForSpot({
     context: { world: createInitialWorld(), knowledge: emptyKnowledgeState() },
     spot,
+    transports: TEST_TRANSPORTS,
+    playerTransports: createTestTransportState(),
   })
 
   if (!left.ok) {
@@ -58,7 +61,7 @@ const worldAfterFishing = (): WorldState => {
 
 const saveWithWorld = (
   world: WorldState,
-  save: CurrentSave = createValidSaveV5(),
+  save: CurrentSave = createValidSaveV6(),
 ): CurrentSave => ({
   ...save,
   world,
@@ -101,17 +104,23 @@ describe('world persistence', () => {
 
   it('restores the spot knowledge after a reload', async () => {
     const knowledge = addSpotKnowledge(emptyKnowledgeState(), 'test-spot', 23)
-    const restored = await reload({ ...createValidSaveV5(), knowledge })
+    const restored = await reload({ ...createValidSaveV6(), knowledge })
 
     expect(restored.knowledge.spots['test-spot']).toBe(23)
   })
 
-  it('restores the discovered spots and transports', async () => {
+  it('restores discovered spots and the independent transport state', async () => {
     const world = worldAfterFishing()
     const restored = await reload(saveWithWorld(world))
 
     expect(restored.world.discoveredSpotIds).toEqual(['test-spot'])
-    expect(restored.world.availableTransports).toEqual(['walk', 'train', 'bus'])
+    expect(restored.transport.availableTransportIds).toEqual([
+      'walk',
+      'train',
+      'bus',
+      'rental-car',
+      'rental-boat',
+    ])
   })
 
   it('migrates a v2 save without losing progression or codex', async () => {
@@ -136,7 +145,7 @@ describe('world persistence', () => {
     expect(result.ok).toBe(true)
 
     if (result.ok) {
-      expect(result.save.schemaVersion).toBe(5)
+      expect(result.save.schemaVersion).toBe(6)
       expect(result.save.world.phase).toBe('HOME')
       expect(result.save.codex.species).toEqual({})
     }
@@ -144,7 +153,7 @@ describe('world persistence', () => {
 
   it('rejects a malformed world instead of loading it', () => {
     const broken = {
-      ...createValidSaveV5(),
+      ...createValidSaveV6(),
       world: {
         ...createInitialWorld(),
         time: { year: 2026, month: 5, day: 2, hour: 99, minute: 0 },
@@ -161,7 +170,7 @@ describe('world persistence', () => {
 
   it('rejects an unknown world phase', () => {
     const broken = {
-      ...createValidSaveV5(),
+      ...createValidSaveV6(),
       world: { ...createInitialWorld(), phase: 'DIVING' },
     }
 
@@ -235,7 +244,7 @@ describe('world persistence', () => {
     const coordinator = createPersistenceCoordinator({ repository, store })
     await coordinator.start()
 
-    const traveled = store.getState().travelToSpot(spot)
+    const traveled = store.getState().travelToSpot(spot, TEST_TRANSPORTS)
     expect(traveled.ok).toBe(true)
 
     store.getState().recordAttempt({ spot, outcome: 'failed', xpGained: 0 })

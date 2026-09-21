@@ -14,7 +14,7 @@ import { readProjectSources } from './testProjectFiles'
 describe('level is not a location hard lock', () => {
   it('defines exactly the documented access requirement kinds', () => {
     expect(ACCESS_REQUIREMENT_KINDS).toEqual([
-      'transport',
+      'capability',
       'knowledge',
       'reputation',
       'permit',

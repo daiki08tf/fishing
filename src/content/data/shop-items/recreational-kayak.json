@@ -1,0 +1,8 @@
+{
+  "id": "recreational-kayak",
+  "name": "フィッシングカヤック",
+  "description": "進水可能な場所から近岸へ出られる。長距離の沖釣り用ではない。",
+  "price": 160000,
+  "category": "vehicle",
+  "grantsTransportId": "recreational-kayak"
+}

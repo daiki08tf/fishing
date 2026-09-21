@@ -4,10 +4,26 @@
   "regionId": "tokyo-area",
   "environment": "estuary",
   "dataStatus": "provisional",
-  "access": [{ "kind": "transport", "tag": "bus" }],
+  "access": [{ "kind": "capability", "capability": "public_transport" }],
   "travelOptions": [
-    { "transport": "train", "minutes": 40, "cost": 420 },
-    { "transport": "bus", "minutes": 55, "cost": 520 }
+    {
+      "id": "rail-route",
+      "transportTypes": ["train"],
+      "requiredCapabilities": ["public_transport"],
+      "features": [],
+      "baseMinutes": 40,
+      "distanceKm": 24,
+      "baseOneWayCost": 420
+    },
+    {
+      "id": "bus-route",
+      "transportTypes": ["bus"],
+      "requiredCapabilities": ["public_transport"],
+      "features": [],
+      "baseMinutes": 55,
+      "distanceKm": 24,
+      "baseOneWayCost": 520
+    }
   ],
   "habitatTags": ["phase1-sample-estuary", "phase1-sample-shallow"],
   "depth": { "depthRangeM": { "min": 1, "max": 10 } },

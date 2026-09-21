@@ -1,7 +1,6 @@
-import type { TransportType } from '../access/Transport'
 import type { FinanceState } from '../economy/FinanceState'
 import { formatYen, spendCash } from '../economy/finance'
-import type { GearId, ShopItemId } from '../ids'
+import type { GearId, ShopItemId, TransportId } from '../ids'
 import type { WorldTime } from '../world/WorldTime'
 import { ownsItem, type ShopItem } from './ShopItem'
 
@@ -9,7 +8,7 @@ import { ownsItem, type ShopItem } from './ShopItem'
  * 買い物。残高が足りなければ失敗する（借金はしない）。
  *
  * ここは資金と所有物だけを扱う。
- * 移動手段として使えるようにするのは World 側の仕事であり、
+ * 移動手段として使えるようにするのは PlayerTransportState 側の仕事であり、
  * Economy から AccessEngine の状態を直接書き換えない。
  */
 
@@ -20,7 +19,7 @@ export type PurchaseResult =
       readonly ok: true
       readonly finance: FinanceState
       readonly ownedItemIds: readonly ShopItemId[]
-      readonly grantedTransport: TransportType | null
+      readonly grantedTransportId: TransportId | null
       /** 購入で手に入る Gear（束ね売り）。所持への追加は呼び出し側が行う。 */
       readonly grantedGearId: GearId | null
     }
@@ -56,7 +55,7 @@ export const purchaseShopItem = (options: {
     ok: true,
     finance: paid.finance,
     ownedItemIds: [...options.ownedItemIds, options.item.id],
-    grantedTransport: options.item.grantsTransport ?? null,
+    grantedTransportId: options.item.grantsTransportId ?? null,
     grantedGearId: options.item.grantsGearId ?? null,
   }
 }

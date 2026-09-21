@@ -140,6 +140,7 @@ type FishingSpot = {
   environment: EnvironmentType
 
   access: AccessRequirement[]
+  travelOptions: SpotTravelRoute[]
 
   habitatTags: string[]
 
@@ -202,31 +203,65 @@ EncounterWeight =
 ## 9. Transport
 
 ```ts
-type Transport = {
+type TransportDefinition = {
   id: string
   name: string
 
-  type:
+  transportType:
     | "walk"
     | "train"
     | "bus"
     | "bicycle"
     | "motorcycle"
-    | "car"
+    | "compact_car"
     | "suv"
+    | "rental_car"
     | "kayak"
-    | "trailer_boat"
-    | "boat"
+    | "rental_boat"
+    | "owned_boat"
 
-  purchaseCost?: number
-  runningCost?: number
+  ownershipModel: "always_available" | "owned" | "rental"
+  purchasePrice?: number
+  rentalCost?: number
 
-  cargoCapacity: number
-  range?: number
+  travelCostModel:
+    | { kind: "free" }
+    | { kind: "route_fare" }
+    | { kind: "per_km"; yenPerKm: number; minimumOneWayCost: number }
+  travelTimeModifier: number
+  maxRangeKm?: number
 
-  accessTags: string[]
+  cargo: { gearUnits: number; maxWeightKg: number }
+  capabilities: AccessCapability[]
+  requiredRouteFeatures: RouteFeature[]
+  launchCapability: "none" | "portable" | "ramp" | "marina"
+  boatCapability: "none" | "nearshore" | "offshore"
+  passengerCapacity: number
+}
+
+type PlayerTransportState = {
+  availableTransportIds: string[]
+  ownedTransportIds: string[]
+}
+
+type SpotTravelRoute = {
+  id: string
+  transportTypes: TransportType[]
+  requiredCapabilities: AccessCapability[]
+  features: RouteFeature[]
+  baseMinutes: number
+  distanceKm: number
+  baseOneWayCost: number
 }
 ```
+
+Transport は Access / travel / economy のための抽象であり、燃料残量・故障・車検・
+実道路 routing のシミュレーションは持たない。具体的な車種・船名は Content に置き、
+AccessEngine は ID や名称では分岐しない。
+
+`baseOneWayCost` は従来どおり片道の固定費で、往復時に 2 倍する。
+レンタル料は `rentalCost` として 1 釣行に 1 回だけ加算する。将来の ferry / highway /
+parking / lodging は cost component を増やして扱う。
 
 ## 10. AccessRequirement
 
@@ -236,13 +271,18 @@ SpotアクセスはLevelではなく条件で定義する。
 
 ```ts
 type AccessRequirement =
-  | { kind: "transport"; tag: string }
+  | { kind: "capability"; capability: AccessCapability }
   | { kind: "knowledge"; minimum: number }
   | { kind: "reputation"; minimum: number }
   | { kind: "permit"; permitId: string }
   | { kind: "relationship"; targetId: string; minimum: number }
   | { kind: "season"; months: number[] }
 ```
+
+`AccessCapability` は `reachable_on_foot` / `public_transport` / `bicycle_access` /
+`road_access` / `rough_road` / `kayak_launch` / `boat_required` / `offshore` /
+`island_access` を現在の語彙とする。Spot が capability を要求し、利用可能な
+TransportDefinition がそれを提供する。Angler Level は入力にも条件にも含めない。
 
 ## 11. PlayerProgression
 

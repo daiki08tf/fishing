@@ -1,0 +1,16 @@
+{
+  "id": "recreational-kayak",
+  "name": "フィッシングカヤック",
+  "transportType": "kayak",
+  "ownershipModel": "owned",
+  "purchasePrice": 160000,
+  "travelCostModel": { "kind": "free" },
+  "travelTimeModifier": 0.85,
+  "maxRangeKm": 12,
+  "cargo": { "gearUnits": 2, "maxWeightKg": 25 },
+  "capabilities": ["kayak_launch"],
+  "requiredRouteFeatures": ["launch_point"],
+  "launchCapability": "portable",
+  "boatCapability": "nearshore",
+  "passengerCapacity": 1
+}

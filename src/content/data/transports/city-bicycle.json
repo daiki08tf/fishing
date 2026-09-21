@@ -1,0 +1,16 @@
+{
+  "id": "city-bicycle",
+  "name": "シティサイクル",
+  "transportType": "bicycle",
+  "ownershipModel": "owned",
+  "purchasePrice": 35000,
+  "travelCostModel": { "kind": "free" },
+  "travelTimeModifier": 0.72,
+  "maxRangeKm": 30,
+  "cargo": { "gearUnits": 2, "maxWeightKg": 12 },
+  "capabilities": ["bicycle_access"],
+  "requiredRouteFeatures": [],
+  "launchCapability": "none",
+  "boatCapability": "none",
+  "passengerCapacity": 1
+}

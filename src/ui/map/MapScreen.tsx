@@ -77,11 +77,12 @@ export const MapScreen = () => {
       <section>
         <ul className="spots">
           {content.value.spots.map((spot) => {
-            const access = evaluateSpot(spot)
+            const access = evaluateSpot(spot, content.value.transports)
             const fastest = fastestTravelOption(access.travelOptions)
             const score = spotKnowledgeScore(knowledge, String(spot.id))
             const discovered = world.discoveredSpotIds.includes(spot.id)
-            const readiness = fastest === null ? null : evaluateTrip(spot, fastest)
+            const readiness =
+              fastest === null ? null : evaluateTrip(spot, fastest, content.value.transports)
             const blockedReason =
               readiness === null
                 ? null
@@ -98,7 +99,7 @@ export const MapScreen = () => {
                     {access.accessible
                       ? fastest === null
                         ? '到達手段なし'
-                        : `電車・徒歩など ${formatDuration(fastest.minutes)}`
+                        : `${fastest.transportName} ${formatDuration(fastest.minutes)}`
                       : 'アクセス不可'}
                   </span>
                 </div>
@@ -117,7 +118,11 @@ export const MapScreen = () => {
                     className="control"
                     type="button"
                     onClick={() => {
-                      const result = travelToSpot(spot)
+                      const result = travelToSpot(
+                        spot,
+                        content.value.transports,
+                        fastest?.transportId,
+                      )
 
                       if (result.ok) {
                         setActiveScreen('spot')

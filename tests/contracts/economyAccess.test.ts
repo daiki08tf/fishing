@@ -1,14 +1,15 @@
 import { describe, expect, it } from 'vitest'
 import { evaluateAccess } from '../../src/domain/access/accessEngine'
+import { grantOwnedTransport } from '../../src/domain/access/Transport'
 import { emptyKnowledgeState } from '../../src/domain/knowledge/KnowledgeState'
 import { createInitialFinanceState } from '../../src/domain/economy/FinanceState'
 import { createInitialProgression } from '../../src/domain/progression'
-import { asShopItemId } from '../../src/domain/ids'
+import { asShopItemId, asTransportId } from '../../src/domain/ids'
 import { createInitialSave } from '../../src/infrastructure/persistence/saveFactory'
 import { createPlayerStore } from '../../src/state/playerStore'
 import { createTestSpot } from '../fixtures/spots'
 import { emptyCodexState } from '../../src/domain/codex'
-import { createInitialWorld, grantTransport } from '../../src/domain/world/worldSession'
+import { createTestTransportState, TEST_TRANSPORTS } from '../fixtures/transports'
 
 /**
  * Money → Asset → World Access の証明。
@@ -19,8 +20,18 @@ import { createInitialWorld, grantTransport } from '../../src/domain/world/world
 const carSpot = createTestSpot({
   id: 'car-only-spot' as never,
   name: '車が要る釣り場',
-  access: [{ kind: 'transport', tag: 'car' }],
-  travelOptions: [{ transport: 'car', minutes: 95, cost: 900 }],
+  access: [{ kind: 'capability', capability: 'road_access' }],
+  travelOptions: [
+    {
+      id: 'existing-car-route',
+      transportTypes: ['compact_car'],
+      requiredCapabilities: ['road_access'],
+      features: [],
+      baseMinutes: 190,
+      distanceKm: 75,
+      baseOneWayCost: 900,
+    },
+  ],
 })
 
 const base = createInitialSave({ now: '2026-05-01T00:00:00.000Z' })
@@ -40,16 +51,16 @@ const carItem = {
   description: '車',
   price: 450_000,
   category: 'vehicle' as const,
-  grantsTransport: 'car' as const,
+  grantsTransportId: asTransportId('used-compact-car'),
 }
 
 describe('economy and access', () => {
   it('blocks a car-only spot before the purchase', () => {
     const store = storeWithCash(900_000)
-    const evaluation = store.getState().evaluateSpot(carSpot)
+    const evaluation = store.getState().evaluateSpot(carSpot, TEST_TRANSPORTS)
 
     expect(evaluation.accessible).toBe(false)
-    expect(evaluation.blockedReasons[0]?.label).toContain('車')
+    expect(evaluation.blockedReasons[0]?.label).toContain('道路')
   })
 
   it('opens the same spot after buying the car', () => {
@@ -58,26 +69,31 @@ describe('economy and access', () => {
 
     expect(purchase.ok).toBe(true)
     expect(store.getState().finance.cash).toBe(450_000)
-    expect(store.getState().world.availableTransports).toContain('car')
-    expect(store.getState().evaluateSpot(carSpot).accessible).toBe(true)
+    expect(store.getState().transport.ownedTransportIds).toContain('used-compact-car')
+    expect(store.getState().evaluateSpot(carSpot, TEST_TRANSPORTS).accessible).toBe(true)
   })
 
   it('does not change the access rules themselves', () => {
     const before = evaluateAccess({
       spot: carSpot,
-      availableTransports: createInitialWorld().availableTransports,
+      transports: TEST_TRANSPORTS,
+      playerTransports: createTestTransportState(),
       knowledge: emptyKnowledgeState(),
     })
     const withCar = evaluateAccess({
       spot: carSpot,
-      availableTransports: grantTransport(createInitialWorld(), 'car').availableTransports,
+      transports: TEST_TRANSPORTS,
+      playerTransports: grantOwnedTransport(
+        createTestTransportState(),
+        asTransportId('used-compact-car'),
+      ),
       knowledge: emptyKnowledgeState(),
     })
 
     // 条件は同じ。使える移動手段が増えただけ。
-    expect(before.blockedReasons.map((reason) => reason.kind)).toEqual(['transport', 'transport'])
+    expect(before.blockedReasons.map((reason) => reason.kind)).toEqual(['capability'])
     expect(withCar.blockedReasons).toEqual([])
-    expect(carSpot.access).toEqual([{ kind: 'transport', tag: 'car' }])
+    expect(carSpot.access).toEqual([{ kind: 'capability', capability: 'road_access' }])
   })
 
   it('keeps the rest of the player state untouched by the purchase', () => {

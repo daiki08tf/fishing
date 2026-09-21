@@ -1,0 +1,8 @@
+{
+  "id": "four-wheel-drive-suv",
+  "name": "4WD SUV",
+  "description": "荒れた進入路と多い荷物に対応する。船や沖へのアクセス能力は持たない。",
+  "price": 2200000,
+  "category": "vehicle",
+  "grantsTransportId": "four-wheel-drive-suv"
+}

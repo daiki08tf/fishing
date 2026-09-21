@@ -1,0 +1,34 @@
+{
+  "id": "forest-reservoir-arm",
+  "name": "林道奥の貯水池ワンド",
+  "regionId": "tokyo-area",
+  "environment": "lake",
+  "dataStatus": "provisional",
+  "access": [
+    { "kind": "capability", "capability": "road_access" },
+    { "kind": "capability", "capability": "rough_road" }
+  ],
+  "travelOptions": [
+    {
+      "id": "rough-forest-road",
+      "transportTypes": ["compact_car", "suv"],
+      "requiredCapabilities": ["road_access", "rough_road"],
+      "features": [],
+      "baseMinutes": 240,
+      "distanceKm": 90,
+      "baseOneWayCost": 600
+    }
+  ],
+  "habitatTags": ["phase1-sample-deep"],
+  "depth": { "depthRangeM": { "min": 2, "max": 25 } },
+  "fishTable": [
+    { "speciesId": "phase2-sample-fish-e", "basePresence": 0.6 },
+    { "speciesId": "phase2-sample-fish-i", "basePresence": 0.3 }
+  ],
+  "knowledgeConfig": {
+    "reveals": [
+      { "field": "main_species", "minKnowledge": 20 },
+      { "field": "habitat", "minKnowledge": 60 }
+    ]
+  }
+}

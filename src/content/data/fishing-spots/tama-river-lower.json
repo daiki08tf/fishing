@@ -4,10 +4,26 @@
   "regionId": "tokyo-area",
   "environment": "river",
   "dataStatus": "provisional",
-  "access": [{ "kind": "transport", "tag": "train" }],
+  "access": [{ "kind": "capability", "capability": "public_transport" }],
   "travelOptions": [
-    { "transport": "train", "minutes": 38, "cost": 420 },
-    { "transport": "bus", "minutes": 50, "cost": 520 }
+    {
+      "id": "rail-route",
+      "transportTypes": ["train"],
+      "requiredCapabilities": ["public_transport"],
+      "features": [],
+      "baseMinutes": 38,
+      "distanceKm": 22,
+      "baseOneWayCost": 420
+    },
+    {
+      "id": "bus-route",
+      "transportTypes": ["bus"],
+      "requiredCapabilities": ["public_transport"],
+      "features": [],
+      "baseMinutes": 50,
+      "distanceKm": 22,
+      "baseOneWayCost": 520
+    }
   ],
   "habitatTags": ["phase1-sample-river", "phase1-sample-shallow"],
   "depth": { "depthRangeM": { "min": 1, "max": 5 } },

@@ -1,7 +1,8 @@
 import { totalXpForLevel } from '../../domain/progression/AnglerLevel'
 import { emptyRepetitionState } from '../../domain/progression/repetitionDecay'
 import { emptyCodexState } from '../../domain/codex'
-import { asGearId } from '../../domain/ids'
+import { createInitialTransportState, grantOwnedTransport } from '../../domain/access/Transport'
+import { asGearId, asTransportId, type TransportId } from '../../domain/ids'
 import { createStarterLoadout, starterInventoryIds } from '../../domain/tackle/Loadout'
 import { createInitialWorld } from '../../domain/world/worldSession'
 import {
@@ -10,12 +11,16 @@ import {
   SAVE_SCHEMA_VERSION_V2,
   SAVE_SCHEMA_VERSION_V3,
   SAVE_SCHEMA_VERSION_V4,
+  SAVE_SCHEMA_VERSION_V5,
   type CurrentSave,
+  type LegacyTransportType,
+  type LegacyWorldState,
   type SaveGameV1,
   type SaveGameV2,
   type SaveGameV3,
   type SaveGameV4,
   type SaveGameV5,
+  type SaveGameV6,
 } from '../../domain/save/SaveGame'
 import {
   currentSaveSchema,
@@ -23,6 +28,7 @@ import {
   saveGameV2Schema,
   saveGameV3Schema,
   saveGameV4Schema,
+  saveGameV5Schema,
 } from './saveSchema'
 
 /**
@@ -117,13 +123,28 @@ export const migrateV1ToV2 = (v1: SaveGameV1): SaveGameV2 => ({
  * それ以外のブロックはそのまま引き継ぐ（Progression / Codex を失わない）。
  * 既存 Save には World が無いので、ゲーム開始時の自宅・時刻から始める。
  */
+const createLegacyInitialWorld = (): LegacyWorldState => {
+  const world = createInitialWorld()
+
+  return {
+    time: world.time,
+    phase: world.phase,
+    homeLocationId: world.homeLocationId,
+    currentSpotId: world.currentSpotId,
+    arrivalTime: world.arrivalTime,
+    trip: null,
+    discoveredSpotIds: world.discoveredSpotIds,
+    availableTransports: ['walk', 'train', 'bus'],
+  }
+}
+
 export const migrateV2ToV3 = (v2: SaveGameV2): SaveGameV3 => ({
   schemaVersion: SAVE_SCHEMA_VERSION_V3,
   createdAt: v2.createdAt,
   updatedAt: v2.updatedAt,
   progression: v2.progression,
   codex: v2.codex,
-  world: createInitialWorld(),
+  world: createLegacyInitialWorld(),
   knowledge: v2.knowledge,
   career: v2.career,
   finance: v2.finance,
@@ -164,7 +185,7 @@ export const migrateV3ToV4 = (v3: SaveGameV3): SaveGameV4 => ({
  * progression / codex / world / knowledge / finance / purchases はそのまま引き継ぐ。
  */
 export const migrateV4ToV5 = (v4: SaveGameV4): SaveGameV5 => ({
-  schemaVersion: CURRENT_SAVE_SCHEMA_VERSION,
+  schemaVersion: SAVE_SCHEMA_VERSION_V5,
   createdAt: v4.createdAt,
   updatedAt: v4.updatedAt,
   progression: v4.progression,
@@ -177,7 +198,67 @@ export const migrateV4ToV5 = (v4: SaveGameV4): SaveGameV5 => ({
   loadout: createStarterLoadout(asGearId),
 })
 
-const toCurrent = (save: SaveGameV4): SaveGameV5 => migrateV4ToV5(save)
+const LEGACY_TRANSPORT_IDS: Readonly<Record<LegacyTransportType, TransportId>> = {
+  walk: asTransportId('walk'),
+  train: asTransportId('train'),
+  bus: asTransportId('bus'),
+  bicycle: asTransportId('city-bicycle'),
+  motorcycle: asTransportId('standard-motorcycle'),
+  car: asTransportId('used-compact-car'),
+  suv: asTransportId('four-wheel-drive-suv'),
+  kayak: asTransportId('recreational-kayak'),
+  trailer_boat: asTransportId('owned-boat'),
+  boat: asTransportId('owned-boat'),
+}
+
+const LEGACY_ALWAYS_AVAILABLE = new Set<LegacyTransportType>(['walk', 'train', 'bus'])
+
+/**
+ * v5 → v6。
+ *
+ * World に混在していた旧 enum を data-driven Transport ID へ写し、所有状態を独立させる。
+ * Phase 5 の Used Compact Car 購入は purchases からも復元し、古い Save の車アクセスを失わない。
+ */
+export const migrateV5ToV6 = (v5: SaveGameV5): SaveGameV6 => {
+  const { availableTransports, ...legacyWorld } = v5.world
+  let transport = createInitialTransportState(asTransportId)
+
+  for (const legacy of availableTransports) {
+    const id = LEGACY_TRANSPORT_IDS[legacy]
+    transport = LEGACY_ALWAYS_AVAILABLE.has(legacy)
+      ? {
+          ...transport,
+          availableTransportIds: transport.availableTransportIds.includes(id)
+            ? transport.availableTransportIds
+            : [...transport.availableTransportIds, id],
+        }
+      : grantOwnedTransport(transport, id)
+  }
+
+  if (v5.purchases.some((id) => String(id) === 'used-compact-car')) {
+    transport = grantOwnedTransport(transport, asTransportId('used-compact-car'))
+  }
+
+  return {
+    schemaVersion: CURRENT_SAVE_SCHEMA_VERSION,
+    createdAt: v5.createdAt,
+    updatedAt: v5.updatedAt,
+    progression: v5.progression,
+    codex: v5.codex,
+    world: {
+      ...legacyWorld,
+      trip: legacyWorld.trip === null ? null : { ...legacyWorld.trip, transportId: null },
+    },
+    transport,
+    knowledge: v5.knowledge,
+    finance: v5.finance,
+    purchases: v5.purchases,
+    inventory: v5.inventory,
+    loadout: v5.loadout,
+  }
+}
+
+const toCurrent = (save: SaveGameV4): SaveGameV6 => migrateV5ToV6(migrateV4ToV5(save))
 
 export const migrateSave = (raw: unknown): SaveMigrationResult => {
   if (typeof raw !== 'object' || raw === null || Array.isArray(raw)) {
@@ -294,7 +375,7 @@ export const migrateSave = (raw: unknown): SaveMigrationResult => {
       )
     }
 
-    const migrated = currentSaveSchema.safeParse(migrateV4ToV5(parsed.data))
+    const migrated = currentSaveSchema.safeParse(toCurrent(parsed.data))
 
     if (!migrated.success) {
       return failure(
@@ -305,6 +386,30 @@ export const migrateSave = (raw: unknown): SaveMigrationResult => {
     }
 
     return { ok: true, save: migrated.data, migratedFrom: SAVE_SCHEMA_VERSION_V4 }
+  }
+
+  if (schemaVersion === SAVE_SCHEMA_VERSION_V5) {
+    const parsed = saveGameV5Schema.safeParse(record)
+
+    if (!parsed.success) {
+      return failure(
+        'invalid_save',
+        'save data failed v5 schema validation',
+        toIssues(parsed.error),
+      )
+    }
+
+    const migrated = currentSaveSchema.safeParse(migrateV5ToV6(parsed.data))
+
+    if (!migrated.success) {
+      return failure(
+        'invalid_save',
+        'migrated save failed current schema validation',
+        toIssues(migrated.error),
+      )
+    }
+
+    return { ok: true, save: migrated.data, migratedFrom: SAVE_SCHEMA_VERSION_V5 }
   }
 
   const parsed = currentSaveSchema.safeParse(record)

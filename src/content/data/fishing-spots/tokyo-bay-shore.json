@@ -4,8 +4,18 @@
   "regionId": "tokyo-area",
   "environment": "bay_shore",
   "dataStatus": "provisional",
-  "access": [{ "kind": "transport", "tag": "train" }],
-  "travelOptions": [{ "transport": "train", "minutes": 45, "cost": 420 }],
+  "access": [{ "kind": "capability", "capability": "public_transport" }],
+  "travelOptions": [
+    {
+      "id": "rail-route",
+      "transportTypes": ["train"],
+      "requiredCapabilities": ["public_transport"],
+      "features": [],
+      "baseMinutes": 45,
+      "distanceKm": 28,
+      "baseOneWayCost": 420
+    }
+  ],
   "habitatTags": ["phase1-sample-pier", "phase1-sample-shallow"],
   "depth": { "depthRangeM": { "min": 2, "max": 12 } },
   "fishTable": [

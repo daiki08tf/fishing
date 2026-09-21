@@ -1,5 +1,5 @@
 import type { FishingSpotId, RegionId, RegulationId } from '../ids'
-import type { TransportType } from '../access/Transport'
+import type { AccessCapability, RouteFeature, TransportType } from '../access/Transport'
 import type { SourceRef } from '../source/SourceRef'
 import type { CurrentProfile, DepthProfile } from '../fish/profiles'
 import type { AccessRequirement } from '../access/AccessRequirement'
@@ -40,12 +40,18 @@ export type SpotKnowledgeConfig = {
  * 移動手段ごとの所要時間（ゲーム内分）。
  * Phase 4 では運賃を扱わない。
  */
-export type SpotTravelOption = {
-  readonly transport: TransportType
-  /** 片道の所要時間（ゲーム内の分）。 */
-  readonly minutes: number
-  /** 片道の運賃（円）。徒歩は 0。 */
-  readonly cost: number
+export type SpotTravelRoute = {
+  readonly id: string
+  /** この route を利用できる Transport の分類。具体的な商品 ID では分岐しない。 */
+  readonly transportTypes: readonly TransportType[]
+  readonly requiredCapabilities: readonly AccessCapability[]
+  /** rental / launch / marina 等の利用可否。 */
+  readonly features: readonly RouteFeature[]
+  /** 基準所要時間。Transport の time modifier で解決する。 */
+  readonly baseMinutes: number
+  readonly distanceKm: number
+  /** 片道の固定費。従来の `cost` と同じく往復時は 2 回分になる。 */
+  readonly baseOneWayCost: number
 }
 
 /**
@@ -70,7 +76,7 @@ export type FishingSpot = {
   readonly access: readonly AccessRequirement[]
 
   /** 利用できる移動手段と所要時間。 */
-  readonly travelOptions: readonly SpotTravelOption[]
+  readonly travelOptions: readonly SpotTravelRoute[]
 
   /** データの信頼度。UI は provisional を「暫定」と表示する。 */
   readonly dataStatus: SpotDataStatus

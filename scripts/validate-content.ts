@@ -10,6 +10,7 @@ import type { FishSpecies } from '../src/domain/fish/FishSpecies'
 import type { FishingMethod } from '../src/domain/method/FishingMethod'
 import type { ShopItem } from '../src/domain/shop/ShopItem'
 import type { FishingSpot } from '../src/domain/world/FishingSpot'
+import type { TransportDefinition } from '../src/domain/access/Transport'
 
 /**
  * Content 検証 CLI。
@@ -92,6 +93,7 @@ export const runValidateContent = (argv: readonly string[], cwd: string): Valida
     methods: of<FishingMethod>('methods'),
     brands: of<BrandDefinition>('brands'),
     gearSeries: of<GearSeries>('gear-series'),
+    transports: of<TransportDefinition>('transports'),
   })
 
   if (referenceIssues.length > 0) {

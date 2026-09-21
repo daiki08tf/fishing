@@ -4,7 +4,7 @@ import type { fishSpeciesSchema } from '../../src/content/schema/fishSpecies'
 import type { regulationSchema } from '../../src/content/schema/regulation'
 import type { sourceRefSchema } from '../../src/content/schema/sourceRef'
 import type { transportSchema } from '../../src/content/schema/transport'
-import type { Transport } from '../../src/domain/access/Transport'
+import type { TransportDefinition } from '../../src/domain/access/Transport'
 import type { FishSpecies } from '../../src/domain/fish/FishSpecies'
 import type { Regulation } from '../../src/domain/regulation/Regulation'
 import type { SourceRef } from '../../src/domain/source/SourceRef'
@@ -32,7 +32,7 @@ export type FishingSpotSchemaMatchesDomain = AssertAssignable<
 
 export type TransportSchemaMatchesDomain = AssertAssignable<
   z.infer<typeof transportSchema>,
-  Transport
+  TransportDefinition
 >
 
 export type RegulationSchemaMatchesDomain = AssertAssignable<

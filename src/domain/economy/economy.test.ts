@@ -4,6 +4,8 @@ import { createInitialFinanceState, DEFAULT_ECONOMY_TUNING } from './FinanceStat
 import { canAfford, formatYen, spendCash } from './finance'
 import { settleFinance } from './settlement'
 import { canAffordTrip, describeTravelCost, roundTripCostFor } from './travelCost'
+import type { ResolvedTravelOption } from '../access/Transport'
+import { asTransportId } from '../ids'
 
 const at = (month: number, day: number): WorldTime => ({
   year: 2026,
@@ -11,6 +13,20 @@ const at = (month: number, day: number): WorldTime => ({
   day,
   hour: 6,
   minute: 0,
+})
+
+const travelOption = (id: string, oneWayCost: number, perTripCost = 0): ResolvedTravelOption => ({
+  routeId: `${id}-route`,
+  transportId: asTransportId(id),
+  transportType: id === 'walk' ? 'walk' : 'train',
+  transportName: id,
+  minutes: id === 'walk' ? 20 : 45,
+  distanceKm: 10,
+  oneWayCost,
+  perTripCost,
+  costComponents: [],
+  cargo: { gearUnits: 1, maxWeightKg: 10 },
+  capabilities: id === 'walk' ? ['reachable_on_foot'] : ['public_transport'],
 })
 
 describe('finance', () => {
@@ -123,18 +139,22 @@ describe('monthly settlement', () => {
 
 describe('travel cost', () => {
   it('charges the round trip', () => {
-    const option = { transport: 'train' as const, minutes: 45, cost: 420 }
+    const option = travelOption('train', 420)
 
     expect(roundTripCostFor(option)).toBe(840)
     expect(describeTravelCost(option)).toContain('¥840')
   })
 
   it('keeps walking free', () => {
-    const walk = { transport: 'walk' as const, minutes: 20, cost: 0 }
+    const walk = travelOption('walk', 0)
     const finance = createInitialFinanceState()
 
     expect(roundTripCostFor(walk)).toBe(0)
     expect(canAffordTrip(finance, walk)).toBe(true)
     expect(describeTravelCost(walk)).toBe('交通費なし')
+  })
+
+  it('charges rental once per expedition in addition to round-trip route cost', () => {
+    expect(roundTripCostFor(travelOption('train', 2_000, 28_000))).toBe(32_000)
   })
 })

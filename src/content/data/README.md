@@ -14,13 +14,14 @@
 - `gear`（Rod / Reel / Line / Leader / Hook / Lure / Bait）
 - `methods`（釣法）
 
-## 現在の内容（Phase 6.5 時点）
+## 現在の内容（Phase 7A 時点）
 
 **検証用サンプル**だけを持つ。
 
 - `fish-species/phase1-sample-fish.json` （サンプル魚A）
 - `fish-species/phase2-sample-fish-b.json` 〜 `phase2-sample-fish-j.json`
-- `fishing-spots/*.json`（東京近郊を模した 8 件。魚種は Spot ごとに異なる）
+- `fishing-spots/*.json`（東京近郊を模した 12 件。うち 4 件は Transport 検証用）
+- `transports/*.json`（徒歩・公共交通・二輪・車・SUV・Kayak・Boat の 11 件）
 - `gear/*.json`（Rod / Reel / Line / Leader / Hook / Lure / Bait）
 - `methods/*.json`（`lure` / `light_lure` / `bait` / `bottom`）
 - `brands/*.json`（架空ブランド 12 件。**性能倍率を持たない**）
@@ -73,12 +74,21 @@
 ## 釣り場を追加する手順
 
 1. `fishing-spots/` に JSON を 1 つ追加する。
-   - `access`: 行くための条件（`transport` / `knowledge` / `permit` など）
-   - `travelOptions`: 移動手段と所要時間（ゲーム内の分）
+   - `access`: 行くための条件（`capability` / `knowledge` / `permit` など）
+   - `travelOptions`: route が許す Transport type、設備、距離、基準時間、片道固定費
    - `dataStatus`: `provisional` か `verified`
 2. `npm run validate:content` が通ることを確認する。
 
 これだけで Map に並び、Access Engine が行けるかどうかを判定する。
+
+## Transport を追加する手順
+
+1. `transports/` に `TransportDefinition` JSON を追加する。
+2. 購入品なら同じ ID を `shop-items/` の `grantsTransportId` から参照し、価格を一致させる。
+3. Spot route の `transportTypes` と `requiredCapabilities` / `features` を設定する。
+4. `npm run validate:content` と `npm run simulate:transport` を実行する。
+
+具体的な車種・船名を AccessEngine に追加しない。Spot も商品 ID ではなく capability を要求する。
 
 ## 装備（Gear）を追加する手順
 

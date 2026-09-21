@@ -4,6 +4,7 @@ import { emptyKnowledgeState } from '../knowledge/KnowledgeState'
 import { regionKnowledgeScore } from '../knowledge/regionKnowledge'
 import { spotKnowledgeScore } from '../knowledge/spotKnowledge'
 import { createTestSpot } from '../../../tests/fixtures/spots'
+import { createTestTransportState, TEST_TRANSPORTS } from '../../../tests/fixtures/transports'
 import { DEFAULT_WORLD_TUNING } from './WorldTuning'
 import { formatWorldTime, isSameDay } from './WorldTime'
 import {
@@ -21,9 +22,14 @@ const home = (): WorldContext => ({
   knowledge: emptyKnowledgeState(),
 })
 
+const transportContext = {
+  transports: TEST_TRANSPORTS,
+  playerTransports: createTestTransportState(),
+}
+
 /** 自宅 → 移動 → 到着 まで進める（UI は即時解決する）。 */
 const travelTo = (context: WorldContext, spot = createTestSpot()): WorldContext => {
-  const left = leaveForSpot({ context, spot })
+  const left = leaveForSpot({ context, spot, ...transportContext })
 
   if (!left.ok) {
     throw new Error(left.message)
@@ -45,12 +51,12 @@ describe('world session', () => {
     expect(world.phase).toBe('HOME')
     expect(world.time).toEqual(DEFAULT_WORLD_TUNING.startTime)
     expect(world.currentSpotId).toBeNull()
-    expect(world.availableTransports).toEqual(['walk', 'train', 'bus'])
+    expect(world).not.toHaveProperty('availableTransports')
   })
 
   it('consumes time when travelling', () => {
     const context = home()
-    const left = leaveForSpot({ context, spot: createTestSpot() })
+    const left = leaveForSpot({ context, spot: createTestSpot(), ...transportContext })
 
     expect(left.ok).toBe(true)
 
@@ -84,7 +90,7 @@ describe('world session', () => {
 
   it('does not add first visit knowledge on the second visit', () => {
     const first = travelTo(home())
-    const back = leaveSpot({ context: first, spot: createTestSpot() })
+    const back = leaveSpot({ context: first, spot: createTestSpot(), ...transportContext })
 
     if (!back.ok) {
       throw new Error(back.message)
@@ -105,7 +111,7 @@ describe('world session', () => {
 
   it('refuses to travel from somewhere other than home', () => {
     const context = travelTo(home())
-    const result = leaveForSpot({ context, spot: createTestSpot() })
+    const result = leaveForSpot({ context, spot: createTestSpot(), ...transportContext })
 
     expect(result.ok).toBe(false)
     if (!result.ok) {
@@ -116,29 +122,49 @@ describe('world session', () => {
   it('refuses to travel to an inaccessible spot', () => {
     const carOnly = createTestSpot({
       id: 'car-only-spot' as never,
-      access: [{ kind: 'transport', tag: 'car' }],
-      travelOptions: [{ transport: 'car', minutes: 95, cost: 900 }],
+      access: [{ kind: 'capability', capability: 'road_access' }],
+      travelOptions: [
+        {
+          id: 'car-route',
+          transportTypes: ['compact_car'],
+          requiredCapabilities: ['road_access'],
+          features: [],
+          baseMinutes: 190,
+          distanceKm: 75,
+          baseOneWayCost: 900,
+        },
+      ],
     })
 
-    const result = leaveForSpot({ context: home(), spot: carOnly })
+    const result = leaveForSpot({ context: home(), spot: carOnly, ...transportContext })
 
     expect(result.ok).toBe(false)
     if (!result.ok) {
       expect(result.reason).toBe('inaccessible')
-      expect(result.message).toContain('車')
+      expect(result.message).toContain('道路')
     }
   })
 
   it('refuses a permitted spot while the permit system is unimplemented', () => {
     const permitted = createTestSpot({
       access: [
-        { kind: 'transport', tag: 'bus' },
+        { kind: 'capability', capability: 'public_transport' },
         { kind: 'permit', permitId: asPermitId('fee-fishing-ticket') },
       ],
-      travelOptions: [{ transport: 'bus', minutes: 70, cost: 520 }],
+      travelOptions: [
+        {
+          id: 'bus-route',
+          transportTypes: ['bus'],
+          requiredCapabilities: ['public_transport'],
+          features: [],
+          baseMinutes: 70,
+          distanceKm: 35,
+          baseOneWayCost: 520,
+        },
+      ],
     })
 
-    const result = leaveForSpot({ context: home(), spot: permitted })
+    const result = leaveForSpot({ context: home(), spot: permitted, ...transportContext })
 
     expect(result.ok).toBe(false)
     if (!result.ok) {
@@ -250,7 +276,7 @@ describe('world session', () => {
 
   it('consumes time when returning home', () => {
     const atSpot = travelTo(home())
-    const left = leaveSpot({ context: atSpot, spot: createTestSpot() })
+    const left = leaveSpot({ context: atSpot, spot: createTestSpot(), ...transportContext })
 
     expect(left.ok).toBe(true)
 
@@ -274,7 +300,7 @@ describe('world session', () => {
   })
 
   it('refuses to return from somewhere other than a spot', () => {
-    const result = leaveSpot({ context: home(), spot: createTestSpot() })
+    const result = leaveSpot({ context: home(), spot: createTestSpot(), ...transportContext })
 
     expect(result.ok).toBe(false)
   })
@@ -283,7 +309,7 @@ describe('world session', () => {
     const atSpot = travelTo(home())
     const other = createTestSpot({ id: 'other-spot' as never, name: '別の釣り場' })
 
-    expect(leaveSpot({ context: atSpot, spot: other }).ok).toBe(false)
+    expect(leaveSpot({ context: atSpot, spot: other, ...transportContext }).ok).toBe(false)
   })
 
   it('crosses into the next day when fishing late', () => {
@@ -293,7 +319,17 @@ describe('world session', () => {
     })
     const context: WorldContext = { world: late, knowledge: emptyKnowledgeState() }
     const spot = createTestSpot({
-      travelOptions: [{ transport: 'walk', minutes: 30, cost: 0 }],
+      travelOptions: [
+        {
+          id: 'long-walk',
+          transportTypes: ['walk'],
+          requiredCapabilities: ['reachable_on_foot'],
+          features: [],
+          baseMinutes: 30,
+          distanceKm: 2,
+          baseOneWayCost: 0,
+        },
+      ],
     })
     const atSpot = travelTo(context, spot)
     const afterAttempt = recordFishingAttempt({

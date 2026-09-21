@@ -1,0 +1,16 @@
+{
+  "id": "rental-boat",
+  "name": "レンタルボート",
+  "transportType": "rental_boat",
+  "ownershipModel": "rental",
+  "rentalCost": 28000,
+  "travelCostModel": { "kind": "per_km", "yenPerKm": 40, "minimumOneWayCost": 2000 },
+  "travelTimeModifier": 0.5,
+  "maxRangeKm": 80,
+  "cargo": { "gearUnits": 10, "maxWeightKg": 200 },
+  "capabilities": ["boat_required", "offshore", "island_access"],
+  "requiredRouteFeatures": ["boat_rental", "marina"],
+  "launchCapability": "marina",
+  "boatCapability": "offshore",
+  "passengerCapacity": 4
+}

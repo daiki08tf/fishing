@@ -30,7 +30,9 @@ export const HomeScreen = () => {
     return <ContentErrorPanel message={content.message} />
   }
 
-  const accessible = content.value.spots.filter((spot) => evaluateSpot(spot).accessible)
+  const accessible = content.value.spots.filter(
+    (spot) => evaluateSpot(spot, content.value.transports).accessible,
+  )
   const trip = world.trip
   const monthlyFree = finance.salaryIncome - finance.simplifiedLivingCost
 

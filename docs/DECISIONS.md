@@ -89,6 +89,14 @@ Skillが緩やかに改善してよい対象:
 - アクセス判定はTransportを入力に持つ（accessEngine）
 - 「Levelが上がったので解禁」ではなく、
   「移動手段・装備・Knowledge・Skillが広がったので行ける」形にする
+- Spot は具体的な車種 ID ではなく物理的な access capability を要求する
+- Transport の具体的な商品名・車種名・船名は Content に置き、AccessEngine の分岐へ書かない
+- Transport ownership は WorldState と分離し、Save の独立ブロックとして保持する
+- SUV は道路系の強み、Kayak は限定的な水上アクセス、Boat は offshore と役割を分ける。
+  高価な 1 台ですべてを突破できる設計にしない
+- 交通費・レンタル料は既存 Economy の円を使い、独立通貨を作らない
+- Transport はアクセス・時間・費用・抽象的な積載までとし、燃料残量・故障・車検・
+  保険・駐車違反・渋滞・実道路 routing はシミュレーションしない
 
 ## 6. Phase 0 で定義する機械判定可能な制約
 

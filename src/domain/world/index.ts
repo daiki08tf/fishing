@@ -27,7 +27,6 @@ export {
   arriveAtSpot,
   arriveHome,
   createInitialWorld,
-  grantTransport,
   leaveForSpot,
   leaveSpot,
   recordFishingAttempt,
@@ -52,7 +51,7 @@ export type {
   SpotDataStatus,
   SpotKnowledgeConfig,
   SpotKnowledgeReveal,
-  SpotTravelOption,
+  SpotTravelRoute,
 } from './FishingSpot'
 export type { FishOccurrence } from './FishOccurrence'
 export { REGION_TYPES } from './Region'

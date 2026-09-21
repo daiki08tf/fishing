@@ -5,7 +5,7 @@ import { currentProfileSchema, depthProfileSchema } from './profiles'
 import { fishOccurrenceSchema } from './fishOccurrence'
 import { nonEmptyString } from './primitives'
 import { sourceRefsSchema } from './sourceRef'
-import { transportTypeSchema } from './transport'
+import { accessCapabilitySchema, routeFeatureSchema, transportTypeSchema } from './transport'
 import { SPOT_DATA_STATUSES } from '../../domain/world/FishingSpot'
 
 /** SpotKnowledgeConfig。GAME_DESIGN.md §10 の最小表現（PROVISIONAL）。 */
@@ -20,10 +20,14 @@ export const spotKnowledgeConfigSchema = z.strictObject({
 
 /** FishingSpot。DATA_MODEL.md §6 に対応する。 */
 export const spotTravelOptionSchema = z.strictObject({
-  transport: transportTypeSchema,
-  minutes: z.number().positive(),
-  /** 片道の運賃（円）。 */
-  cost: z.number().int().nonnegative(),
+  id: nonEmptyString,
+  transportTypes: z.array(transportTypeSchema).min(1),
+  requiredCapabilities: z.array(accessCapabilitySchema),
+  features: z.array(routeFeatureSchema),
+  baseMinutes: z.number().positive(),
+  distanceKm: z.number().nonnegative(),
+  /** 片道の固定費（円）。 */
+  baseOneWayCost: z.number().int().nonnegative(),
 })
 
 export const spotDataStatusSchema = z.enum(SPOT_DATA_STATUSES)

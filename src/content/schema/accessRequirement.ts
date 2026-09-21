@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { ACCESS_CAPABILITIES } from '../../domain/access/Transport'
 import { asPermitId, asRelationshipTargetId } from '../../domain/ids'
 import { monthSchema, nonEmptyString } from './primitives'
 
@@ -10,8 +11,8 @@ import { monthSchema, nonEmptyString } from './primitives'
  */
 export const accessRequirementSchema = z.discriminatedUnion('kind', [
   z.strictObject({
-    kind: z.literal('transport'),
-    tag: nonEmptyString,
+    kind: z.literal('capability'),
+    capability: z.enum(ACCESS_CAPABILITIES),
   }),
   z.strictObject({
     kind: z.literal('knowledge'),

@@ -89,6 +89,7 @@ export const createPersistenceCoordinator = (
       progression: state.progression,
       codex: state.codex,
       world: state.world,
+      transport: state.transport,
       knowledge: state.knowledge,
       finance: state.finance,
       purchases: state.purchases,
@@ -159,6 +160,7 @@ export const createPersistenceCoordinator = (
         state.progression === previous.progression &&
         state.codex === previous.codex &&
         state.world === previous.world &&
+        state.transport === previous.transport &&
         state.knowledge === previous.knowledge &&
         state.finance === previous.finance &&
         state.purchases === previous.purchases &&

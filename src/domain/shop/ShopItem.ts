@@ -1,5 +1,4 @@
-import type { TransportType } from '../access/Transport'
-import type { GearId, ShopItemId } from '../ids'
+import type { GearId, ShopItemId, TransportId } from '../ids'
 
 /**
  * Shop の商品。Phase 5 の目的は「Money → Asset → World Access」の証明である。
@@ -7,7 +6,7 @@ import type { GearId, ShopItemId } from '../ids'
  * 商品は Content で定義する。品揃えを増やすために Engine の if 文を増やさない
  * （Content を足せば Shop に並ぶ）。
  *
- * Phase 5 で扱うのは中古コンパクトカーだけ。車種スペック・ローン・保険・
+ * Phase 7A では複数の Transport を同じ商品契約で扱う。車種スペック・ローン・保険・
  * 駐車場・車検・故障・ガソリン残量は扱わない。
  */
 
@@ -28,7 +27,7 @@ export type ShopItem = {
   readonly price: number
   readonly category: ShopCategory
   /** 購入すると使えるようになる移動手段。 */
-  readonly grantsTransport?: TransportType
+  readonly grantsTransportId?: TransportId
   /** 購入すると所持 Inventory へ入る Gear（束ね売り）。 */
   readonly grantsGearId?: GearId
 }

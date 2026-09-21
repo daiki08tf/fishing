@@ -3,6 +3,7 @@ import { formatWorldTime, type WorldTime } from '../../src/domain/world/WorldTim
 import { createInitialSave } from '../../src/infrastructure/persistence/saveFactory'
 import { createPlayerStore } from '../../src/state/playerStore'
 import { createTestSpot } from '../fixtures/spots'
+import { TEST_TRANSPORTS } from '../fixtures/transports'
 
 /**
  * Fishing-first の確認。
@@ -31,19 +32,28 @@ const storeAt = (time: WorldTime) => {
 }
 
 const walkSpot = createTestSpot({
-  access: [{ kind: 'transport', tag: 'walk' }],
-  travelOptions: [{ transport: 'walk', minutes: 20, cost: 0 }],
+  access: [{ kind: 'capability', capability: 'reachable_on_foot' }],
 })
 
 const trainSpot = createTestSpot({
-  access: [{ kind: 'transport', tag: 'train' }],
-  travelOptions: [{ transport: 'train', minutes: 45, cost: 420 }],
+  access: [{ kind: 'capability', capability: 'public_transport' }],
+  travelOptions: [
+    {
+      id: 'train-route',
+      transportTypes: ['train'],
+      requiredCapabilities: ['public_transport'],
+      features: [],
+      baseMinutes: 45,
+      distanceKm: 20,
+      baseOneWayCost: 420,
+    },
+  ],
 })
 
 describe('fishing first', () => {
   it('allows a trip on a weekday', () => {
     const store = storeAt(at(Monday, 10))
-    const result = store.getState().travelToSpot(walkSpot)
+    const result = store.getState().travelToSpot(walkSpot, TEST_TRANSPORTS)
 
     expect(result.ok).toBe(true)
     expect(store.getState().world.phase).toBe('AT_SPOT')
@@ -51,14 +61,14 @@ describe('fishing first', () => {
 
   it('allows a trip on a weekend', () => {
     const store = storeAt(at(Saturday, 10))
-    const result = store.getState().travelToSpot(walkSpot)
+    const result = store.getState().travelToSpot(walkSpot, TEST_TRANSPORTS)
 
     expect(result.ok).toBe(true)
   })
 
   it('allows a trip at night', () => {
     const store = storeAt(at(Monday, 23))
-    const result = store.getState().travelToSpot(trainSpot)
+    const result = store.getState().travelToSpot(trainSpot, TEST_TRANSPORTS)
 
     expect(result.ok).toBe(true)
   })
@@ -67,7 +77,7 @@ describe('fishing first', () => {
     const store = storeAt(at(Monday, 6))
     const started = store.getState().world.time
 
-    store.getState().travelToSpot(walkSpot)
+    store.getState().travelToSpot(walkSpot, TEST_TRANSPORTS)
     const arrived = store.getState().world.time
     expect(arrived.minute).toBe(20)
 
@@ -75,7 +85,7 @@ describe('fishing first', () => {
     const fished = store.getState().world.time
     expect(fished.minute).toBe(40)
 
-    store.getState().returnHome(walkSpot)
+    store.getState().returnHome(walkSpot, TEST_TRANSPORTS)
     const home = store.getState().world.time
     expect(home.hour).toBe(7)
     expect(home.minute).toBe(0)
@@ -103,7 +113,7 @@ describe('fishing first', () => {
     const paid = storeAt(at(Monday, 6))
     const before = paid.getState().finance.cash
 
-    paid.getState().travelToSpot(trainSpot)
+    paid.getState().travelToSpot(trainSpot, TEST_TRANSPORTS)
 
     expect(before - paid.getState().finance.cash).toBe(840)
 
@@ -116,7 +126,7 @@ describe('fishing first', () => {
     })
 
     // 所持金 0 でも徒歩の釣り場には行けて、釣りもできる。
-    expect(free.getState().travelToSpot(walkSpot).ok).toBe(true)
+    expect(free.getState().travelToSpot(walkSpot, TEST_TRANSPORTS).ok).toBe(true)
     expect(
       free.getState().recordAttempt({ spot: walkSpot, outcome: 'failed', xpGained: 0 }).ok,
     ).toBe(true)

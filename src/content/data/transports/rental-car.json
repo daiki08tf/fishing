@@ -1,0 +1,16 @@
+{
+  "id": "rental-car",
+  "name": "レンタカー",
+  "transportType": "rental_car",
+  "ownershipModel": "rental",
+  "rentalCost": 9000,
+  "travelCostModel": { "kind": "per_km", "yenPerKm": 18, "minimumOneWayCost": 200 },
+  "travelTimeModifier": 0.5,
+  "maxRangeKm": 600,
+  "cargo": { "gearUnits": 8, "maxWeightKg": 120 },
+  "capabilities": ["road_access"],
+  "requiredRouteFeatures": ["vehicle_rental"],
+  "launchCapability": "none",
+  "boatCapability": "none",
+  "passengerCapacity": 4
+}

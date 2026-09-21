@@ -15,7 +15,7 @@ import type { CurrentSave } from '../../src/domain/save/SaveGame'
 import { InMemorySaveRepository } from '../../src/infrastructure/persistence/inMemorySaveRepository'
 import { migrateSave } from '../../src/infrastructure/persistence/migrateSave'
 import { createSave } from '../../src/infrastructure/persistence/saveFactory'
-import { createValidSaveV1, createValidSaveV5 } from '../fixtures/save'
+import { createValidSaveV1, createValidSaveV6 } from '../fixtures/save'
 import { createTestSpecies } from '../fixtures/species'
 
 /**
@@ -30,7 +30,7 @@ import { createTestSpecies } from '../fixtures/species'
  */
 
 const species = createTestSpecies()
-const template = createValidSaveV5()
+const template = createValidSaveV6()
 
 const progressionAt = (level: number): AnglerProgression => ({
   ...createInitialProgression(),
@@ -42,6 +42,7 @@ const saveWith = (codex: CodexState, progression: AnglerProgression): CurrentSav
     progression,
     codex,
     world: template.world,
+    transport: template.transport,
     knowledge: template.knowledge,
     finance: template.finance,
     inventory: template.inventory,

@@ -8,6 +8,7 @@ import {
   asGearId,
   asJobId,
   asShopItemId,
+  asTransportId,
 } from '../../domain/ids'
 import { PERK_IDS } from '../../domain/progression/perks'
 import { ANGLER_SKILL_MAX, ANGLER_SKILL_MIN } from '../../domain/progression/AnglerSkill'
@@ -17,9 +18,9 @@ import {
   SAVE_SCHEMA_VERSION_V3,
   SAVE_SCHEMA_VERSION_V4,
   SAVE_SCHEMA_VERSION_V5,
+  SAVE_SCHEMA_VERSION_V6,
 } from '../../domain/save/SaveGame'
 import { WORLD_PHASES } from '../../domain/world/worldSession'
-import { transportTypeSchema } from '../../content/schema/transport'
 
 /**
  * Save の実行時検証。ARCHITECTURE.md §9 に対応する。
@@ -204,8 +205,8 @@ const worldTimeSchema = z.strictObject({
   minute: z.number().int().min(0).max(59),
 })
 
-/** 1 回の釣行の記録（TripSummary）。 */
-const tripSchema = z.strictObject({
+/** v3〜v5 の 1 回の釣行記録。 */
+const legacyTripSchema = z.strictObject({
   spotId: z.string().min(1).transform(asFishingSpotId),
   spotName: z.string().min(1),
   startedAt: worldTimeSchema,
@@ -217,16 +218,29 @@ const tripSchema = z.strictObject({
   largestLengthCm: z.number().positive().nullable(),
 })
 
-/** World の状態。Domain の WorldState と対応する。 */
-const worldSchema = z.strictObject({
+const legacyTransportTypeSchema = z.enum([
+  'walk',
+  'train',
+  'bus',
+  'bicycle',
+  'motorcycle',
+  'car',
+  'suv',
+  'kayak',
+  'trailer_boat',
+  'boat',
+])
+
+/** v3〜v5 の World。Transport state は v6 migration で分離する。 */
+const legacyWorldSchema = z.strictObject({
   time: worldTimeSchema,
   phase: z.enum(WORLD_PHASES),
   homeLocationId: z.string().min(1),
   currentSpotId: z.string().min(1).transform(asFishingSpotId).nullable(),
   arrivalTime: worldTimeSchema.nullable(),
-  trip: tripSchema.nullable(),
+  trip: legacyTripSchema.nullable(),
   discoveredSpotIds: z.array(z.string().min(1).transform(asFishingSpotId)),
-  availableTransports: z.array(transportTypeSchema),
+  availableTransports: z.array(legacyTransportTypeSchema),
 })
 
 export const saveGameV3Schema = z.strictObject({
@@ -235,7 +249,7 @@ export const saveGameV3Schema = z.strictObject({
   updatedAt: isoDateTimeSchema,
   progression: anglerProgressionSchema,
   codex: codexSchema.default(() => ({ species: {} })),
-  world: worldSchema,
+  world: legacyWorldSchema,
   knowledge: knowledgeSchema,
   career: careerSchema,
   finance: financeSchemaV3,
@@ -247,7 +261,7 @@ export const saveGameV4Schema = z.strictObject({
   updatedAt: isoDateTimeSchema,
   progression: anglerProgressionSchema,
   codex: codexSchema.default(() => ({ species: {} })),
-  world: worldSchema,
+  world: legacyWorldSchema,
   knowledge: knowledgeSchema,
   finance: financeSchema,
   purchases: z.array(z.string().min(1).transform(asShopItemId)),
@@ -278,7 +292,43 @@ export const saveGameV5Schema = z.strictObject({
   updatedAt: isoDateTimeSchema,
   progression: anglerProgressionSchema,
   codex: codexSchema.default(() => ({ species: {} })),
+  world: legacyWorldSchema,
+  knowledge: knowledgeSchema,
+  finance: financeSchema,
+  purchases: z.array(z.string().min(1).transform(asShopItemId)),
+  inventory: inventorySchema,
+  loadout: loadoutSchema,
+})
+
+/** Phase 7A の Trip。往路に使った Transport ID を復路でも利用する。 */
+const tripSchema = legacyTripSchema.extend({
+  transportId: z.string().min(1).transform(asTransportId).nullable(),
+})
+
+/** 現行 World。Transport ownership は独立した transport block に置く。 */
+const worldSchema = z.strictObject({
+  time: worldTimeSchema,
+  phase: z.enum(WORLD_PHASES),
+  homeLocationId: z.string().min(1),
+  currentSpotId: z.string().min(1).transform(asFishingSpotId).nullable(),
+  arrivalTime: worldTimeSchema.nullable(),
+  trip: tripSchema.nullable(),
+  discoveredSpotIds: z.array(z.string().min(1).transform(asFishingSpotId)),
+})
+
+const transportStateSchema = z.strictObject({
+  availableTransportIds: z.array(z.string().min(1).transform(asTransportId)),
+  ownedTransportIds: z.array(z.string().min(1).transform(asTransportId)),
+})
+
+export const saveGameV6Schema = z.strictObject({
+  schemaVersion: z.literal(SAVE_SCHEMA_VERSION_V6),
+  createdAt: isoDateTimeSchema,
+  updatedAt: isoDateTimeSchema,
+  progression: anglerProgressionSchema,
+  codex: codexSchema.default(() => ({ species: {} })),
   world: worldSchema,
+  transport: transportStateSchema,
   knowledge: knowledgeSchema,
   finance: financeSchema,
   purchases: z.array(z.string().min(1).transform(asShopItemId)),
@@ -287,4 +337,4 @@ export const saveGameV5Schema = z.strictObject({
 })
 
 /** 現行 version の Save スキーマ。Migration 後の検証に使う。 */
-export const currentSaveSchema = saveGameV5Schema
+export const currentSaveSchema = saveGameV6Schema

@@ -1,6 +1,6 @@
 import { evaluateAccess, fastestTravelOption } from '../access/accessEngine'
-import type { TransportType } from '../access/Transport'
-import type { FishingSpotId } from '../ids'
+import type { PlayerTransportState, TransportDefinition } from '../access/Transport'
+import type { FishingSpotId, TransportId } from '../ids'
 import type { KnowledgeState } from '../knowledge/KnowledgeState'
 import { addRegionKnowledge } from '../knowledge/regionKnowledge'
 import { addSpotKnowledge } from '../knowledge/spotKnowledge'
@@ -35,6 +35,8 @@ export type TripSummary = {
   readonly xpGained: number
   readonly knowledgeGained: number
   readonly largestLengthCm: number | null
+  /** v5 以前の進行中 Trip を移行した場合だけ null。 */
+  readonly transportId: TransportId | null
 }
 
 export type WorldState = {
@@ -46,7 +48,6 @@ export type WorldState = {
   readonly arrivalTime: WorldTime | null
   readonly trip: TripSummary | null
   readonly discoveredSpotIds: readonly FishingSpotId[]
-  readonly availableTransports: readonly TransportType[]
 }
 
 export type WorldContext = {
@@ -87,20 +88,7 @@ export const createInitialWorld = (tuning: WorldTuning = DEFAULT_WORLD_TUNING): 
   arrivalTime: null,
   trip: null,
   discoveredSpotIds: [],
-  availableTransports: tuning.initialTransports as readonly TransportType[],
 })
-
-/**
- * 移動手段を使えるようにする（車の購入など）。
- *
- * 購入そのものは Economy の仕事。ここは World の状態だけを変える。
- * AccessEngine はこの `availableTransports` を読むだけなので、
- * Economy から Access のルールを触ることはない。
- */
-export const grantTransport = (world: WorldState, transport: TransportType): WorldState =>
-  world.availableTransports.includes(transport)
-    ? world
-    : { ...world, availableTransports: [...world.availableTransports, transport] }
 
 const rememberSpot = (
   discovered: readonly FishingSpotId[],
@@ -114,7 +102,9 @@ const rememberSpot = (
 export const leaveForSpot = (input: {
   readonly context: WorldContext
   readonly spot: FishingSpot
-  readonly transport?: TransportType
+  readonly transports: readonly TransportDefinition[]
+  readonly playerTransports: PlayerTransportState
+  readonly transportId?: TransportId
   readonly tuning?: WorldTuning
 }): WorldActionResult => {
   const { world, knowledge } = input.context
@@ -125,7 +115,8 @@ export const leaveForSpot = (input: {
 
   const access = evaluateAccess({
     spot: input.spot,
-    availableTransports: world.availableTransports,
+    transports: input.transports,
+    playerTransports: input.playerTransports,
     knowledge,
   })
 
@@ -138,9 +129,10 @@ export const leaveForSpot = (input: {
   }
 
   const option =
-    input.transport === undefined
+    input.transportId === undefined
       ? fastestTravelOption(access.travelOptions)
-      : (access.travelOptions.find((candidate) => candidate.transport === input.transport) ?? null)
+      : (access.travelOptions.find((candidate) => candidate.transportId === input.transportId) ??
+        null)
 
   if (option === null) {
     return { ok: false, reason: 'no_travel_option', message: 'その移動手段では行けない' }
@@ -169,6 +161,7 @@ export const leaveForSpot = (input: {
           xpGained: 0,
           knowledgeGained: 0,
           largestLengthCm: null,
+          transportId: option.transportId,
         },
       },
     },
@@ -286,6 +279,8 @@ export const recordFishingAttempt = (input: {
 export const leaveSpot = (input: {
   readonly context: WorldContext
   readonly spot: FishingSpot
+  readonly transports: readonly TransportDefinition[]
+  readonly playerTransports: PlayerTransportState
   readonly tuning?: WorldTuning
 }): WorldActionResult => {
   const { world, knowledge } = input.context
@@ -300,10 +295,16 @@ export const leaveSpot = (input: {
 
   const access = evaluateAccess({
     spot: input.spot,
-    availableTransports: world.availableTransports,
+    transports: input.transports,
+    playerTransports: input.playerTransports,
     knowledge,
   })
-  const option = fastestTravelOption(access.travelOptions)
+  const outboundTransportId = world.trip?.transportId ?? null
+  const option =
+    outboundTransportId === null
+      ? fastestTravelOption(access.travelOptions)
+      : (access.travelOptions.find((candidate) => candidate.transportId === outboundTransportId) ??
+        fastestTravelOption(access.travelOptions))
 
   if (option === null) {
     return { ok: false, reason: 'no_travel_option', message: '帰る手段がない' }

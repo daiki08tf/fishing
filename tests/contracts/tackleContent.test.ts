@@ -40,6 +40,7 @@ describe('content catalog', () => {
         methods: content.methods,
         brands: content.brands,
         gearSeries: content.gearSeries,
+        transports: content.transports,
       }),
     ).toEqual([])
   })

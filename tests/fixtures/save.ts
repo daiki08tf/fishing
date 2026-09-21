@@ -1,4 +1,5 @@
-import { asFishIndividualId, asFishSpeciesId, asJobId } from '../../src/domain/ids'
+import { asFishIndividualId, asFishSpeciesId, asJobId, asTransportId } from '../../src/domain/ids'
+import { createInitialTransportState } from '../../src/domain/access/Transport'
 import { asGearId } from '../../src/domain/ids'
 import { totalXpForLevel } from '../../src/domain/progression/AnglerLevel'
 import { emptyAnglerSkills } from '../../src/domain/progression/AnglerSkill'
@@ -9,10 +10,13 @@ import {
   SAVE_SCHEMA_VERSION_V3,
   SAVE_SCHEMA_VERSION_V4,
   SAVE_SCHEMA_VERSION_V5,
+  SAVE_SCHEMA_VERSION_V6,
+  type LegacyWorldState,
   type SaveGameV2,
   type SaveGameV3,
   type SaveGameV4,
   type SaveGameV5,
+  type SaveGameV6,
 } from '../../src/domain/save/SaveGame'
 import { createStarterInventory, createStarterLoadout } from '../../src/domain/tackle/Loadout'
 import { createInitialWorld } from '../../src/domain/world/worldSession'
@@ -122,10 +126,25 @@ export const createValidSaveV2 = (): SaveGameV2 => ({
 })
 
 /** Phase 4 の現行 Save（schema v3）。World が加わった。 */
+const createLegacyWorld = (): LegacyWorldState => {
+  const world = createInitialWorld()
+
+  return {
+    time: world.time,
+    phase: world.phase,
+    homeLocationId: world.homeLocationId,
+    currentSpotId: world.currentSpotId,
+    arrivalTime: world.arrivalTime,
+    trip: null,
+    discoveredSpotIds: world.discoveredSpotIds,
+    availableTransports: ['walk', 'train', 'bus'],
+  }
+}
+
 export const createValidSaveV3 = (): SaveGameV3 => ({
   ...createValidSaveV2(),
   schemaVersion: SAVE_SCHEMA_VERSION_V3,
-  world: createInitialWorld(),
+  world: createLegacyWorld(),
 })
 
 /** Phase 5 の現行 Save（schema v4）。資金の詳細と購入済み商品が加わった。 */
@@ -162,5 +181,25 @@ export const createValidSaveV5 = (): SaveGameV5 => {
     purchases: v4.purchases,
     inventory: createStarterInventory(asGearId),
     loadout: createStarterLoadout(asGearId),
+  }
+}
+
+/** Phase 7A の現行 Save（schema v6）。Transport ownership が独立した。 */
+export const createValidSaveV6 = (): SaveGameV6 => {
+  const v5 = createValidSaveV5()
+
+  return {
+    schemaVersion: SAVE_SCHEMA_VERSION_V6,
+    createdAt: v5.createdAt,
+    updatedAt: v5.updatedAt,
+    progression: v5.progression,
+    codex: v5.codex,
+    world: createInitialWorld(),
+    transport: createInitialTransportState(asTransportId),
+    knowledge: v5.knowledge,
+    finance: v5.finance,
+    purchases: v5.purchases,
+    inventory: v5.inventory,
+    loadout: v5.loadout,
   }
 }

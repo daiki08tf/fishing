@@ -11,7 +11,7 @@ import {
   asTransportId,
 } from '../../src/domain/ids'
 import type { AccessRequirement } from '../../src/domain/access/AccessRequirement'
-import type { Transport } from '../../src/domain/access/Transport'
+import type { TransportDefinition } from '../../src/domain/access/Transport'
 import type { CareerState } from '../../src/domain/career/CareerState'
 import type { JobDefinition } from '../../src/domain/career/JobDefinition'
 import type { FinanceState } from '../../src/domain/economy/FinanceState'
@@ -83,7 +83,7 @@ const individual: FishIndividual = {
 }
 
 const access: readonly AccessRequirement[] = [
-  { kind: 'transport', tag: 'train' },
+  { kind: 'capability', capability: 'public_transport' },
   { kind: 'knowledge', minimum: 20 },
   { kind: 'reputation', minimum: 5 },
 ]
@@ -95,8 +95,24 @@ const spot: FishingSpot = {
   environment: 'fixture-environment',
   access,
   travelOptions: [
-    { transport: 'train', minutes: 38, cost: 420 },
-    { transport: 'walk', minutes: 45, cost: 0 },
+    {
+      id: 'fixture-train-route',
+      transportTypes: ['train'],
+      requiredCapabilities: ['public_transport'],
+      features: [],
+      baseMinutes: 38,
+      distanceKm: 20,
+      baseOneWayCost: 420,
+    },
+    {
+      id: 'fixture-walk-route',
+      transportTypes: ['walk'],
+      requiredCapabilities: ['reachable_on_foot'],
+      features: [],
+      baseMinutes: 45,
+      distanceKm: 4,
+      baseOneWayCost: 0,
+    },
   ],
   dataStatus: 'provisional',
   habitatTags: ['fixture-habitat'],
@@ -107,15 +123,21 @@ const spot: FishingSpot = {
   sourceRefs: [source],
 }
 
-const transport: Transport = {
+const transport: TransportDefinition = {
   id: asTransportId('fixture-transport'),
   name: '検証用ダミー移動手段',
-  type: 'car',
-  purchaseCost: 1_200_000,
-  runningCost: 8_000,
-  cargoCapacity: 4,
-  range: 400,
-  accessTags: ['car', 'parking'],
+  transportType: 'compact_car',
+  ownershipModel: 'owned',
+  purchasePrice: 1_200_000,
+  travelCostModel: { kind: 'per_km', yenPerKm: 18, minimumOneWayCost: 100 },
+  travelTimeModifier: 0.6,
+  maxRangeKm: 400,
+  cargo: { gearUnits: 4, maxWeightKg: 120 },
+  capabilities: ['road_access'],
+  requiredRouteFeatures: [],
+  launchCapability: 'none',
+  boatCapability: 'none',
+  passengerCapacity: 4,
 }
 
 const progression: PlayerProgression = {
@@ -221,11 +243,11 @@ describe('core domain contracts', () => {
     expect(individual.speciesId).toBe(species.id)
     expect(spot.fishTable[0]?.speciesId).toBe(species.id)
     expect(access.map((requirement) => requirement.kind)).toEqual([
-      'transport',
+      'capability',
       'knowledge',
       'reputation',
     ])
-    expect(transport.type).toBe('car')
+    expect(transport.transportType).toBe('compact_car')
     expect(progression.anglerLevel).toBe(1)
     expect(knowledge.fish[species.id]).toBe(10)
     expect(regulation.months).toEqual([1, 2])

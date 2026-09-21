@@ -76,7 +76,8 @@ describe('loadContentDirectory', () => {
     const kinds = result.locations.map((location) => location.kind)
 
     expect(kinds.filter((kind) => kind === 'fish-species')).toHaveLength(10)
-    expect(kinds.filter((kind) => kind === 'fishing-spots')).toHaveLength(8)
+    expect(kinds.filter((kind) => kind === 'fishing-spots')).toHaveLength(12)
+    expect(kinds.filter((kind) => kind === 'transports')).toHaveLength(11)
     expect(kinds.filter((kind) => kind === 'gear')).toHaveLength(463)
     expect(kinds.filter((kind) => kind === 'methods')).toHaveLength(4)
     expect(kinds.filter((kind) => kind === 'brands')).toHaveLength(12)

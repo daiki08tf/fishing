@@ -220,10 +220,16 @@ early vehicle ownership proof-of-concept:
 
 ## Phase 7 — Full Transport / Access Progression
 
-- train
-- bicycle
-- motorcycle
-- car
+### Phase 7A — Transport / Access Domain（完了）
+
+- walk / train / bus
+- bicycle / motorcycle / compact car / SUV / rental car
+- kayak / rental boat / owned boat
+- data-driven TransportDefinition と ownership model
+- capability ベースの Spot access
+- route ごとの時間・距離・片道固定費・レンタル費
+- Save v6 と v5 car migration
+- `simulate:transport`
 
 交通手段によって:
 
@@ -245,6 +251,20 @@ Phase 4 / 5 で入れた最小のアクセス概念を、このPhaseで完成さ
 
 「Levelが上がったので解禁」ではなく、
 移動手段・装備・Knowledge・Skillの成長によって行ける場所が増える形にする。
+
+Phase 7A では操船・燃料・故障・車検・保険・駐車・交通・実道路 routing は扱わない。
+SUV は rough-road に強いが water access を持たず、Kayak は nearshore に限定し、
+Boat だけが offshore capability を提供する。
+
+### Phase 7B — Expedition Planning（次候補）
+
+- ferry / highway / parking の cost component
+- lodging を含む複数日遠征の最小 Domain
+- rental availability / marina / launch point の選択 UI
+- cargo / gear capacity を釣行準備へ接続
+- Transport の購入・利用状況を見せる Garage / Trip planning UI
+
+ホテル詳細 UI、交通渋滞、燃料タンク、車両耐久、実道路 routing は引き続き対象外。
 
 ## Phase 8+ — 既存計画の継続
 
@@ -268,13 +288,11 @@ Levelとは完全に独立。
 
 ## Phase 9 — Boat
 
-- rental boat
-- kayak
-- owned boat
-- launch point
-- offshore Spot
-- running cost
+- boat driving gameplay
 - fish finder
+
+Kayak / rental boat / owned boat、launch point、offshore access、最小 running / rental cost は
+Phase 7A の Access 基盤へ前倒しした。Phase 9 は操船体験とボート固有装備を扱う。
 
 岸と沖で生態系が変わることを体験させる。
 

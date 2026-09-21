@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { createPersistenceCoordinator } from '../../src/app/persistence/persistenceCoordinator'
 import { createInitialFinanceState } from '../../src/domain/economy/FinanceState'
-import { asShopItemId } from '../../src/domain/ids'
+import { asShopItemId, asTransportId } from '../../src/domain/ids'
+import { grantOwnedTransport } from '../../src/domain/access/Transport'
 import type { CurrentSave } from '../../src/domain/save/SaveGame'
 import { InMemorySaveRepository } from '../../src/infrastructure/persistence/inMemorySaveRepository'
 import { migrateSave } from '../../src/infrastructure/persistence/migrateSave'
@@ -11,9 +12,10 @@ import {
   createValidSaveV1,
   createValidSaveV2,
   createValidSaveV3,
-  createValidSaveV5,
+  createValidSaveV6,
 } from '../fixtures/save'
 import { createTestSpot } from '../fixtures/spots'
+import { TEST_TRANSPORTS } from '../fixtures/transports'
 
 /**
  * Economy / Schedule の永続化。
@@ -52,26 +54,26 @@ describe('economy persistence', () => {
         },
       ],
     }
-    const restored = await reload({ ...createValidSaveV5(), finance })
+    const restored = await reload({ ...createValidSaveV6(), finance })
 
     expect(restored.finance).toEqual(finance)
   })
 
   it('round trips the purchases', async () => {
     const purchases = [asShopItemId('used-compact-car')]
-    const restored = await reload({ ...createValidSaveV5(), purchases })
+    const restored = await reload({ ...createValidSaveV6(), purchases })
 
     expect(restored.purchases).toEqual(purchases)
   })
 
   it('round trips the owned transport', async () => {
-    const save = createValidSaveV5()
+    const save = createValidSaveV6()
     const restored = await reload({
       ...save,
-      world: { ...save.world, availableTransports: ['walk', 'train', 'bus', 'car'] },
+      transport: grantOwnedTransport(save.transport, asTransportId('used-compact-car')),
     })
 
-    expect(restored.world.availableTransports).toContain('car')
+    expect(restored.transport.ownedTransportIds).toContain('used-compact-car')
   })
 
   it('migrates a v3 save without losing progression, codex, knowledge or world', () => {
@@ -87,7 +89,9 @@ describe('economy persistence', () => {
     expect(result.save.progression).toEqual(v3.progression)
     expect(result.save.codex).toEqual(v3.codex)
     expect(result.save.knowledge).toEqual(v3.knowledge)
-    expect(result.save.world).toEqual(v3.world)
+    expect(result.save.world.time).toEqual(v3.world.time)
+    expect(result.save.world.phase).toBe(v3.world.phase)
+    expect(result.save.world.discoveredSpotIds).toEqual(v3.world.discoveredSpotIds)
     expect(result.save.finance.cash).toBe(v3.finance.cash)
     expect(result.save.finance.lastSettledMonth).toBeNull()
     expect(result.save.purchases).toEqual([])
@@ -100,7 +104,7 @@ describe('economy persistence', () => {
       expect(result.ok).toBe(true)
 
       if (result.ok) {
-        expect(result.save.schemaVersion).toBe(5)
+        expect(result.save.schemaVersion).toBe(6)
         expect(result.save.world.phase).toBe('HOME')
       }
     }
@@ -108,7 +112,7 @@ describe('economy persistence', () => {
 
   it('rejects a malformed finance block', () => {
     const broken = {
-      ...createValidSaveV5(),
+      ...createValidSaveV6(),
       finance: { ...createInitialFinanceState(), lastSettledMonth: 'May' },
     }
 
@@ -116,7 +120,7 @@ describe('economy persistence', () => {
   })
 
   it('does not persist a work schedule at all', () => {
-    const save = createValidSaveV5() as unknown as Record<string, unknown>
+    const save = createValidSaveV6() as unknown as Record<string, unknown>
 
     // 仕事の予定（勤務時間・有給）はゲームシステムではないので保存しない。
     expect(save['schedule']).toBeUndefined()
@@ -125,7 +129,7 @@ describe('economy persistence', () => {
 
   it('does not autosave before hydration completes', async () => {
     const repository = new InMemorySaveRepository()
-    await repository.save(createValidSaveV5())
+    await repository.save(createValidSaveV6())
 
     const store = createPlayerStore()
     const coordinator = createPersistenceCoordinator({ repository, store })
@@ -138,7 +142,7 @@ describe('economy persistence', () => {
 
     const loaded = (await repository.loadRaw()) as CurrentSave
 
-    expect(loaded.finance.cash).toBe(createValidSaveV5().finance.cash)
+    expect(loaded.finance.cash).toBe(createValidSaveV6().finance.cash)
     coordinator.stop()
   })
 
@@ -152,10 +156,20 @@ describe('economy persistence', () => {
 
     // 交通費がかかる釣り場で確認する（徒歩は無料のため）。
     const paidSpot = createTestSpot({
-      access: [{ kind: 'transport', tag: 'train' }],
-      travelOptions: [{ transport: 'train', minutes: 20, cost: 420 }],
+      access: [{ kind: 'capability', capability: 'public_transport' }],
+      travelOptions: [
+        {
+          id: 'paid-train-route',
+          transportTypes: ['train'],
+          requiredCapabilities: ['public_transport'],
+          features: [],
+          baseMinutes: 20,
+          distanceKm: 15,
+          baseOneWayCost: 420,
+        },
+      ],
     })
-    const traveled = store.getState().travelToSpot(paidSpot)
+    const traveled = store.getState().travelToSpot(paidSpot, TEST_TRANSPORTS)
     expect(traveled.ok).toBe(true)
 
     await coordinator.flush()

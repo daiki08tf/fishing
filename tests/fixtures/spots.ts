@@ -8,8 +8,18 @@ export const createTestSpot = (overrides: Partial<FishingSpot> = {}): FishingSpo
   regionId: asRegionId('test-region'),
   environment: 'canal',
   dataStatus: 'provisional',
-  access: [{ kind: 'transport', tag: 'walk' }],
-  travelOptions: [{ transport: 'walk', minutes: 20, cost: 0 }],
+  access: [{ kind: 'capability', capability: 'reachable_on_foot' }],
+  travelOptions: [
+    {
+      id: 'test-walk-route',
+      transportTypes: ['walk'],
+      requiredCapabilities: ['reachable_on_foot'],
+      features: [],
+      baseMinutes: 20,
+      distanceKm: 2,
+      baseOneWayCost: 0,
+    },
+  ],
   habitatTags: ['test-habitat'],
   fishTable: [{ speciesId: asFishSpeciesId('test-species'), basePresence: 1 }],
   knowledgeConfig: {

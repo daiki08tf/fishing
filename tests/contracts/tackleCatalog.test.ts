@@ -31,6 +31,7 @@ const references = () =>
     methods: content.methods,
     brands: content.brands,
     gearSeries: content.gearSeries,
+    transports: content.transports,
   })
 
 const ofCategory = (category: string) => content.gear.filter((item) => item.category === category)

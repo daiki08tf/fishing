@@ -1,5 +1,6 @@
 import type { FishingSpotId, PermitId, RelationshipTargetId } from '../ids'
 import type { Month } from '../primitives'
+import type { AccessCapability } from './Transport'
 
 /**
  * Spot へのアクセス条件。DATA_MODEL.md §10 に対応する。
@@ -11,7 +12,7 @@ import type { Month } from '../primitives'
  * この制約は tests/architecture と tests/domain で機械的に検査する。
  */
 export const ACCESS_REQUIREMENT_KINDS = [
-  'transport',
+  'capability',
   'knowledge',
   'reputation',
   'permit',
@@ -22,7 +23,7 @@ export const ACCESS_REQUIREMENT_KINDS = [
 export type AccessRequirementKind = (typeof ACCESS_REQUIREMENT_KINDS)[number]
 
 export type AccessRequirement =
-  | { readonly kind: 'transport'; readonly tag: string }
+  | { readonly kind: 'capability'; readonly capability: AccessCapability }
   /**
    * Knowledge 条件。
    * scope を省略すると「その Spot の知識」、'region' なら「その地域の知識」を要求する。

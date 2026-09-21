@@ -162,7 +162,7 @@ export const SpotScreen = () => {
           className="button"
           type="button"
           onClick={() => {
-            const result = returnHome(spot)
+            const result = returnHome(spot, content.value.transports)
 
             if (result.ok) {
               setActiveScreen('home')

@@ -4,8 +4,18 @@
   "regionId": "tokyo-area",
   "environment": "lake",
   "dataStatus": "provisional",
-  "access": [{ "kind": "transport", "tag": "car" }],
-  "travelOptions": [{ "transport": "car", "minutes": 95, "cost": 900 }],
+  "access": [{ "kind": "capability", "capability": "road_access" }],
+  "travelOptions": [
+    {
+      "id": "ordinary-road",
+      "transportTypes": ["compact_car", "suv"],
+      "requiredCapabilities": ["road_access"],
+      "features": [],
+      "baseMinutes": 190,
+      "distanceKm": 75,
+      "baseOneWayCost": 900
+    }
+  ],
   "habitatTags": ["phase1-sample-deep"],
   "depth": { "depthRangeM": { "min": 3, "max": 30 } },
   "fishTable": [

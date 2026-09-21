@@ -71,13 +71,13 @@ export const simulateDay = (): DaySimulationResult => {
   log('HOME（平日でも釣りに行ける）')
 
   // 1 日目: 徒歩で近場へ（無料）
-  const walkTrip = store.getState().travelToSpot(canal)
+  const walkTrip = store.getState().travelToSpot(canal, content.transports)
   log(`移動（${canal.name} / 徒歩）: ${walkTrip.ok ? '到着' : (walkTrip.message ?? '')}`)
 
   if (walkTrip.ok) {
     store.getState().recordAttempt({ spot: canal, outcome: 'failed', xpGained: 0 })
     store.getState().recordAttempt({ spot: canal, outcome: 'failed', xpGained: 0 })
-    store.getState().returnHome(canal)
+    store.getState().returnHome(canal, content.transports)
     log('釣り 2 回 → 帰宅')
   }
 
@@ -87,12 +87,12 @@ export const simulateDay = (): DaySimulationResult => {
 
   // 2 日目: 電車で東京湾岸へ（交通費がかかる）
   const cashBefore = store.getState().finance.cash
-  const trainTrip = store.getState().travelToSpot(bay)
+  const trainTrip = store.getState().travelToSpot(bay, content.transports)
   log(`移動（${bay.name} / 電車）: ${trainTrip.ok ? '到着' : (trainTrip.message ?? '')}`)
 
   if (trainTrip.ok) {
     store.getState().recordAttempt({ spot: bay, outcome: 'failed', xpGained: 0 })
-    store.getState().returnHome(bay)
+    store.getState().returnHome(bay, content.transports)
     log('釣り 1 回 → 帰宅')
   }
 
@@ -112,9 +112,9 @@ export const simulateDay = (): DaySimulationResult => {
   log(`約 3 か月経過: 現金 ${formatYen(cashBeforeMonths)} → ${formatYen(cashAfterMonths)}`)
 
   // 車を買う
-  const beforePurchase = store.getState().evaluateSpot(lake)
+  const beforePurchase = store.getState().evaluateSpot(lake, content.transports)
   const purchase = store.getState().purchaseItem(car)
-  const afterPurchase = store.getState().evaluateSpot(lake)
+  const afterPurchase = store.getState().evaluateSpot(lake, content.transports)
   log(
     `${car.name} 購入: ${purchase.ok ? '成功' : (purchase.message ?? '')} / ${lake.name}: ${
       beforePurchase.accessible ? '行ける' : '行けない'
@@ -122,12 +122,12 @@ export const simulateDay = (): DaySimulationResult => {
   )
 
   // 買った車で新しい釣り場へ
-  const carTrip = store.getState().travelToSpot(lake)
+  const carTrip = store.getState().travelToSpot(lake, content.transports)
   log(`移動（${lake.name} / 車）: ${carTrip.ok ? '到着' : (carTrip.message ?? '')}`)
 
   if (carTrip.ok) {
     store.getState().recordAttempt({ spot: lake, outcome: 'failed', xpGained: 0 })
-    store.getState().returnHome(lake)
+    store.getState().returnHome(lake, content.transports)
     log('釣り 1 回 → 帰宅')
   }
 
@@ -149,9 +149,9 @@ export const simulateDay = (): DaySimulationResult => {
     second.getState().hydrateFromSave({ ...base, world: { ...base.world, time: at(5, 4, 6) } })
 
     for (let index = 0; index < 3; index += 1) {
-      second.getState().travelToSpot(canal)
+      second.getState().travelToSpot(canal, content.transports)
       second.getState().recordAttempt({ spot: canal, outcome: 'failed', xpGained: 0 })
-      second.getState().returnHome(canal)
+      second.getState().returnHome(canal, content.transports)
       second.getState().sleep()
     }
 

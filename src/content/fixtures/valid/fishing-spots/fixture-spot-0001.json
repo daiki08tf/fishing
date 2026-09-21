@@ -5,12 +5,18 @@
   "environment": "fixture-environment",
   "dataStatus": "provisional",
   "travelOptions": [
-    { "transport": "train", "minutes": 30, "cost": 420 },
-    { "transport": "walk", "minutes": 40, "cost": 0 }
+    {
+      "id": "fixture-train-route",
+      "transportTypes": ["train"],
+      "requiredCapabilities": ["public_transport"],
+      "features": [],
+      "baseMinutes": 30,
+      "distanceKm": 20,
+      "baseOneWayCost": 420
+    }
   ],
   "access": [
-    { "kind": "transport", "tag": "train" },
-    { "kind": "transport", "tag": "walk" },
+    { "kind": "capability", "capability": "public_transport" },
     { "kind": "season", "months": [4, 5, 6, 7, 8, 9, 10] },
     { "kind": "knowledge", "minimum": 10 }
   ],

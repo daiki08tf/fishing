@@ -1,9 +1,15 @@
 {
   "id": "fixture-transport-0001",
   "name": "検証用ダミー移動手段",
-  "type": "train",
-  "runningCost": 400,
-  "cargoCapacity": 1,
-  "range": 80,
-  "accessTags": ["train", "walk"]
+  "transportType": "train",
+  "ownershipModel": "always_available",
+  "travelCostModel": { "kind": "route_fare" },
+  "travelTimeModifier": 1,
+  "maxRangeKm": 80,
+  "cargo": { "gearUnits": 1, "maxWeightKg": 10 },
+  "capabilities": ["public_transport"],
+  "requiredRouteFeatures": [],
+  "launchCapability": "none",
+  "boatCapability": "none",
+  "passengerCapacity": 1
 }

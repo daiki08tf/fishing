@@ -26,6 +26,11 @@ const shopItemModules = import.meta.glob<unknown>('../data/shop-items/*.json', {
   import: 'default',
 })
 
+const transportModules = import.meta.glob<unknown>('../data/transports/*.json', {
+  eager: true,
+  import: 'default',
+})
+
 const gearModules = import.meta.glob<unknown>('../data/gear/*.json', {
   eager: true,
   import: 'default',
@@ -57,6 +62,7 @@ export const loadBuiltInContent = (): BuiltInContent =>
     species: toSources(speciesModules),
     spots: toSources(spotModules),
     shopItems: toSources(shopItemModules),
+    transports: toSources(transportModules),
     gear: toSources(gearModules),
     methods: toSources(methodModules),
     brands: toSources(brandModules),

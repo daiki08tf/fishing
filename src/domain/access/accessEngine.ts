@@ -1,48 +1,46 @@
 import type { KnowledgeState } from '../knowledge/KnowledgeState'
 import { regionKnowledgeScore } from '../knowledge/regionKnowledge'
 import { spotKnowledgeScore } from '../knowledge/spotKnowledge'
-import type { FishingSpot, SpotTravelOption } from '../world/FishingSpot'
+import type { FishingSpot, SpotTravelRoute } from '../world/FishingSpot'
 import type { DayOfWeek } from '../world/WorldTime'
-import type { TransportType } from './Transport'
 import type { AccessRequirementKind } from './AccessRequirement'
+import type {
+  AccessCapability,
+  PlayerTransportState,
+  ResolvedTravelOption,
+  TransportDefinition,
+  TravelCostComponent,
+} from './Transport'
 
 /**
- * Spot へ行けるかどうかを判定する。ARCHITECTURE.md §3 の accessEngine。
+ * Spot へ物理的に行けるかを解決する。
  *
- * 重要（DECISIONS.md §5 / §6、PROGRESSION.md §12）:
- * Angler Level は入力にすら存在しない。「Levelが上がったので解禁」ではなく、
- * 「移動手段・Knowledge・許可・関係性が広がったので行ける」形にする。
- *
- * 入力: プレイヤーが使える移動手段 / Knowledge / （将来）Reputation・許可・季節
- * 出力: 行けるか / 行けない理由 / 使える移動手段と所要時間
+ * AccessEngine は Content の具体的な車種・船名を知らない。TransportDefinition が持つ
+ * capability / ownership model / route requirement だけを比較する。費用を解決して返すが、
+ * 所持金による可否は Economy の責務であり、ここでは判定しない。
  */
 
 export type AccessBlockedReason = {
   readonly kind: AccessRequirementKind
-  /** UI にそのまま出せる短い説明。 */
   readonly label: string
-  /** 必要値（knowledge / reputation）。 */
   readonly required?: number
-  /** 現在値（knowledge / reputation）。 */
   readonly current?: number
+  readonly capability?: AccessCapability
 }
 
 export type AccessEvaluation = {
   readonly spotId: string
   readonly accessible: boolean
-  /** 使える移動手段（所要時間つき）。空なら移動手段が足りない。 */
-  readonly travelOptions: readonly SpotTravelOption[]
+  readonly travelOptions: readonly ResolvedTravelOption[]
   readonly blockedReasons: readonly AccessBlockedReason[]
-  /** 全条件のうち満たしているもの。UI の「あと少し」表示に使う。 */
   readonly satisfiedKinds: readonly AccessRequirementKind[]
 }
 
 export type AccessEvaluationInput = {
   readonly spot: FishingSpot
-  /** プレイヤーが使える移動手段。 */
-  readonly availableTransports: readonly TransportType[]
+  readonly transports: readonly TransportDefinition[]
+  readonly playerTransports: PlayerTransportState
   readonly knowledge: KnowledgeState
-  /** 将来用。Phase 4 では 0 固定。 */
   readonly reputation?: number
   readonly permits?: readonly string[]
   readonly dayOfWeek?: DayOfWeek
@@ -51,35 +49,152 @@ export type AccessEvaluationInput = {
   readonly permitsEnabled?: boolean
 }
 
-const transportLabel = (tag: string): string => {
-  switch (tag) {
-    case 'walk':
-      return '徒歩'
-    case 'train':
-      return '電車'
-    case 'bus':
-      return 'バス'
-    case 'bicycle':
-      return '自転車'
-    case 'motorcycle':
-      return 'バイク'
-    case 'car':
-      return '車'
-    case 'suv':
-      return 'SUV'
-    case 'kayak':
-      return 'カヤック'
-    case 'trailer_boat':
-    case 'boat':
-      return '船'
-    default:
-      return tag
+const CAPABILITY_LABELS: Readonly<Record<AccessCapability, string>> = {
+  reachable_on_foot: '徒歩で到達できる経路',
+  public_transport: '公共交通でのアクセス',
+  bicycle_access: '自転車でのアクセス',
+  road_access: '道路からのアクセス',
+  rough_road: '未舗装・荒路への対応',
+  kayak_launch: 'カヤックを出せるアクセス',
+  boat_required: '船でのアクセス',
+  offshore: '沖への航行能力',
+  island_access: '島への渡航能力',
+}
+
+const includesAll = <T>(available: readonly T[], required: readonly T[]): boolean =>
+  required.every((entry) => available.includes(entry))
+
+const transportCanBeUsed = (
+  definition: TransportDefinition,
+  state: PlayerTransportState,
+  route: SpotTravelRoute,
+): boolean => {
+  if (!route.transportTypes.includes(definition.transportType)) {
+    return false
+  }
+
+  if (!includesAll(route.features, definition.requiredRouteFeatures)) {
+    return false
+  }
+
+  if (definition.maxRangeKm !== undefined && route.distanceKm > definition.maxRangeKm) {
+    return false
+  }
+
+  switch (definition.ownershipModel) {
+    case 'always_available':
+      return state.availableTransportIds.includes(definition.id)
+    case 'owned':
+      return (
+        state.availableTransportIds.includes(definition.id) &&
+        state.ownedTransportIds.includes(definition.id)
+      )
+    case 'rental':
+      // Rental availability is explicit in player/trip planning state. The route must
+      // also list the rental type and all required facilities (rental desk / marina).
+      // This keeps "a rental exists somewhere" from making every matching route usable.
+      return state.availableTransportIds.includes(definition.id)
   }
 }
 
-/** その移動手段でその Spot へ行けるか（accessTags と移動手段の一致）。 */
-const transportMatches = (tag: string, available: readonly TransportType[]): boolean =>
-  available.some((transport) => transport === tag)
+const runningCostFor = (definition: TransportDefinition, route: SpotTravelRoute): number => {
+  switch (definition.travelCostModel.kind) {
+    case 'free':
+    case 'route_fare':
+      return 0
+    case 'per_km':
+      return Math.max(
+        definition.travelCostModel.minimumOneWayCost,
+        Math.round(route.distanceKm * definition.travelCostModel.yenPerKm),
+      )
+  }
+}
+
+const resolveOption = (
+  definition: TransportDefinition,
+  route: SpotTravelRoute,
+): ResolvedTravelOption => {
+  const components: TravelCostComponent[] = []
+
+  if (route.baseOneWayCost > 0) {
+    components.push({
+      kind: definition.travelCostModel.kind === 'route_fare' ? 'fare' : 'other',
+      label: definition.travelCostModel.kind === 'route_fare' ? '運賃' : '経路費用',
+      amount: route.baseOneWayCost,
+      charge: 'one_way',
+    })
+  }
+
+  const runningCost = runningCostFor(definition, route)
+  if (runningCost > 0) {
+    components.push({
+      kind: 'running_cost',
+      label: '走行費',
+      amount: runningCost,
+      charge: 'one_way',
+    })
+  }
+
+  const rentalCost = definition.ownershipModel === 'rental' ? (definition.rentalCost ?? 0) : 0
+  if (rentalCost > 0) {
+    components.push({
+      kind: 'rental',
+      label: 'レンタル料',
+      amount: rentalCost,
+      charge: 'per_trip',
+    })
+  }
+
+  return {
+    routeId: route.id,
+    transportId: definition.id,
+    transportType: definition.transportType,
+    transportName: definition.name,
+    minutes: Math.max(1, Math.round(route.baseMinutes * definition.travelTimeModifier)),
+    distanceKm: route.distanceKm,
+    oneWayCost: route.baseOneWayCost + runningCost,
+    perTripCost: rentalCost,
+    costComponents: components,
+    cargo: definition.cargo,
+    capabilities: definition.capabilities,
+  }
+}
+
+const capabilityRequirements = (spot: FishingSpot): readonly AccessCapability[] =>
+  spot.access.flatMap((requirement) =>
+    requirement.kind === 'capability' ? [requirement.capability] : [],
+  )
+
+const resolveTravelOptions = (input: AccessEvaluationInput): readonly ResolvedTravelOption[] => {
+  const requiredBySpot = capabilityRequirements(input.spot)
+  const resolved: ResolvedTravelOption[] = []
+
+  for (const route of input.spot.travelOptions) {
+    for (const definition of input.transports) {
+      if (!transportCanBeUsed(definition, input.playerTransports, route)) {
+        continue
+      }
+
+      if (!includesAll(definition.capabilities, route.requiredCapabilities)) {
+        continue
+      }
+
+      // A single travel option must satisfy the physical requirements. Capabilities from
+      // unrelated vehicles are never combined into an impossible journey.
+      if (!includesAll(definition.capabilities, requiredBySpot)) {
+        continue
+      }
+
+      resolved.push(resolveOption(definition, route))
+    }
+  }
+
+  return resolved.sort(
+    (left, right) =>
+      left.minutes - right.minutes ||
+      String(left.transportId).localeCompare(String(right.transportId)),
+  )
+}
 
 export const evaluateAccess = (input: AccessEvaluationInput): AccessEvaluation => {
   const { spot } = input
@@ -89,16 +204,18 @@ export const evaluateAccess = (input: AccessEvaluationInput): AccessEvaluation =
   const permits = input.permits ?? []
   const blockedReasons: AccessBlockedReason[] = []
   const satisfiedKinds: AccessRequirementKind[] = []
+  const travelOptions = resolveTravelOptions(input)
 
   for (const requirement of spot.access) {
     switch (requirement.kind) {
-      case 'transport': {
-        if (transportMatches(requirement.tag, input.availableTransports)) {
-          satisfiedKinds.push('transport')
+      case 'capability': {
+        if (travelOptions.some((option) => option.capabilities.includes(requirement.capability))) {
+          satisfiedKinds.push('capability')
         } else {
           blockedReasons.push({
-            kind: 'transport',
-            label: `必要: ${transportLabel(requirement.tag)}`,
+            kind: 'capability',
+            capability: requirement.capability,
+            label: `必要: ${CAPABILITY_LABELS[requirement.capability]}`,
           })
         }
         break
@@ -125,7 +242,6 @@ export const evaluateAccess = (input: AccessEvaluationInput): AccessEvaluation =
 
       case 'reputation': {
         if (!input.reputationEnabled || reputation >= requirement.minimum) {
-          // Phase 4 では Reputation 未実装のため、条件を課さない。
           satisfiedKinds.push('reputation')
         } else {
           blockedReasons.push({
@@ -139,17 +255,13 @@ export const evaluateAccess = (input: AccessEvaluationInput): AccessEvaluation =
       }
 
       case 'permit': {
-        if (!input.permitsEnabled || permits.includes(String(requirement.permitId))) {
-          if (input.permitsEnabled) {
-            satisfiedKinds.push('permit')
-          } else {
-            blockedReasons.push({
-              kind: 'permit',
-              label: '必要: 遊漁券（未実装）',
-            })
-          }
+        if (input.permitsEnabled && permits.includes(String(requirement.permitId))) {
+          satisfiedKinds.push('permit')
         } else {
-          blockedReasons.push({ kind: 'permit', label: '必要: 遊漁券' })
+          blockedReasons.push({
+            kind: 'permit',
+            label: input.permitsEnabled ? '必要: 遊漁券' : '必要: 遊漁券（未実装）',
+          })
         }
         break
       }
@@ -177,34 +289,25 @@ export const evaluateAccess = (input: AccessEvaluationInput): AccessEvaluation =
     }
   }
 
-  const travelOptions = spot.travelOptions.filter((option) =>
-    input.availableTransports.includes(option.transport),
-  )
-
-  if (travelOptions.length === 0) {
-    blockedReasons.push({ kind: 'transport', label: '行き方が分からない（移動手段がない）' })
+  if (
+    travelOptions.length === 0 &&
+    blockedReasons.every((reason) => reason.kind !== 'capability')
+  ) {
+    blockedReasons.push({
+      kind: 'capability',
+      label: '行き方が分からない（利用できる移動手段がない）',
+    })
   }
 
   return {
     spotId: String(spot.id),
-    accessible: blockedReasons.length === 0,
+    accessible: blockedReasons.length === 0 && travelOptions.length > 0,
     travelOptions,
     blockedReasons,
     satisfiedKinds,
   }
 }
 
-/** 使える移動手段のうち、最も早く着けるもの。 */
 export const fastestTravelOption = (
-  options: readonly SpotTravelOption[],
-): SpotTravelOption | null => {
-  let fastest: SpotTravelOption | null = null
-
-  for (const option of options) {
-    if (fastest === null || option.minutes < fastest.minutes) {
-      fastest = option
-    }
-  }
-
-  return fastest
-}
+  options: readonly ResolvedTravelOption[],
+): ResolvedTravelOption | null => options[0] ?? null

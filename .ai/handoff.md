@@ -1,6 +1,9 @@
 # Handoff
 
-最終更新: Phase 6.5（Tackle Catalog Expansion）完了
+最終更新: Phase 7A（Transport / Access Domain）完了
+
+> 以下の Phase 6 / 6.5 節は履歴として残している。件数・Save version・次 Phase については、
+> この Phase 7A 節と `.ai/current-task.md` を優先する。
 
 ## このプロジェクトは何か
 
@@ -20,7 +23,7 @@ Product Decision の SSOT は `docs/DECISIONS.md`。
 ## ブランチと状態
 
 - Repository: Fishing Game
-- Branch: `deepseek/9cd8b72b2f3f`
+- Branch: `codex/phase-7a-transport`（base: `deepseek/9cd8b72b2f3f`）
 - Workspace: current Git worktree
   （実際の作業ディレクトリは `git rev-parse --show-toplevel` で解決する）
 - Phase 0A: `docs: establish product decisions and roadmap`
@@ -37,6 +40,31 @@ Product Decision の SSOT は `docs/DECISIONS.md`。
   を引き継いで完成させた
 - Phase 6.5: Tackle Catalog Expansion（Content Master からの移植・Brand 12 /
   Series 88 / Gear 463・番手と用途のカバレッジ・差別化テスト・`simulate:catalog`）
+- Phase 7A: Transport / Access Domain（capability access・Transport 11 件・Save v6・
+  v5 car migration・PROVISIONAL Spot 4 件・`simulate:transport`）
+
+## Phase 7A（Transport / Access Domain）
+
+- `TransportDefinition` は Content 駆動。ownership、購入 / rental cost、time modifier、
+  range、cargo、terrain / access capability、launch / boat capability を持つ
+- `PlayerTransportState` は World から独立し、利用可能 ID と所有 ID を保存する
+- Spot は具体的な車種ではなく access capability を要求する
+- AccessEngine は具体 ID / 名称で分岐せず、利用可能 Transport + Spot requirements +
+  route から accessible / blocked reasons / resolved options を返す
+- 既存 Used Compact Car は `used-compact-car` に移行。upper lake の 95 分・片道 ¥900・
+  往復 ¥1,800 を維持
+- Save v6 は v5 の `world.availableTransports` と購入履歴を ownership へ移し、他の
+  Save block を保持する
+- Bicycle / Motorcycle / Compact Car / SUV / Rental Car / Kayak / Rental Boat /
+  Owned Boat と基礎の Walk / Train / Bus を追加
+- Transport 検証用 Spot は 4 件、すべて `dataStatus: provisional`
+- `simulate:transport` は 8 scenario と 12 checks を PASS / FAIL 表示する
+- Pre-flight は実ブラウザで Shop filter → purchase → owned → Tackle equip →
+  compatibility → reload まで PASS
+- FishingEngine、勤務 simulation、詳細車両 simulation は変更していない
+- 最終検証: `npm run check` PASS（58 files / 529 tests）、全指定 regression PASS、
+  `validate:content` 606 records、bundle JS 655.69 kB（gzip 163.68 kB）/
+  CSS 6.09 kB（gzip 1.67 kB）
 
 ## Phase 6.5（Tackle Catalog Expansion）で実装したもの
 
@@ -231,9 +259,9 @@ CSV を Runtime で読む構成にもしていない（Runtime は JSON の Cont
 | 暦 | `WorldTime` の日付・曜日・時分・日跨ぎ。曜日は将来（混雑・大会・季節・釣り場ルール）のために保持 |
 | 資金 | `src/domain/economy/`。円単位の cash、給与、簡易生活費、直近履歴 |
 | 月次精算 | `settleFinance`。月を跨いだときに給与 − 生活費を 1 回だけ処理（複数月も可） |
-| 交通費 | Spot の `travelOptions.cost`（片道）。往復分を出発時に引く。徒歩は無料 |
+| 交通費 | 当時の Spot `travelOptions.cost`（片道）。Phase 7A では route の `baseOneWayCost` へ移行 |
 | Shop | `src/domain/shop/`。商品は Content（`shop-items`）。購入は残高チェックのみ |
-| 車 | 中古コンパクトカー ¥450,000。購入で `world.availableTransports` に car が増える |
+| 車 | 中古コンパクトカー ¥450,000。当時は `world.availableTransports` の `car`（Phase 7A で ownership state へ移行） |
 | UI | HOME（日時・予定・現金・有給・休む）、SHOP、MAP（交通費と時間の可否）、SPOT（帰る目安） |
 | Save | schema v4（finance 詳細・schedule・purchases）と v3 → v4 migration |
 | 検証 | `npm run simulate:day`（1 日 → 翌朝 → 月跨ぎ → 車購入 → 新 Spot 解禁） |
@@ -419,8 +447,8 @@ CSV を Runtime で読む構成にもしていない（Runtime は JSON の Cont
     徒歩の釣り場は常に無料で残しているので、資金 0 でも釣りは続けられる。
 31. **月次精算は `lastSettledMonth` で 1 回だけ** — 何か月進んでも通過した月を
     すべて処理し、二重支給しない。
-32. **車の購入は World の状態を増やすだけ** — Economy から AccessEngine の条件を
-    書き換えない。`availableTransports` が増えるので、同じ Spot の判定結果が変わる。
+32. **車の購入は ownership 状態を増やすだけ** — Economy から AccessEngine の条件を
+    書き換えない。Phase 7A では `PlayerTransportState` が増え、同じ Spot の判定結果が変わる。
 33. **Save v4 は v3 から finance を拡張し、purchases を足す** —
     progression / codex / world / knowledge はそのまま引き継ぐ。
     v4 は `progression / codex / world / knowledge / finance / purchases` だけを持ち、
@@ -524,15 +552,15 @@ npm run simulate:catalog       # カタログの件数 / カバレッジ / 差�
 
 ## 未完了・既知のギャップ
 
-- Reputation / Boat / 全国 Map / 天候・潮は未実装（Phase 7 以降）。
+- Reputation / 全国 Map / 天候・潮は未実装。Boat は Access / cost 基盤のみ実装し、操船は未実装。
 - Casting / Landing / Rigging の効果は引き続き「将来用の interface」。
   数値は解決・保存されるが、ファイトでは使っていない。
   Casting はタックルの `castingPrecisionMultiplier` へ合成されるが、UI の演出はまだ無い。
 - Perk の効果は倍率表の範囲に留まる（本格的な Perk ツリーは未実装）。
-- 釣り場は 8 件ですべて `provisional`（検証データではない）。実データの投入はしていない。
+- 釣り場は 12 件ですべて `provisional`（検証データではない）。実データの投入はしていない。
 - 天候・潮・時間帯による釣果変化はまだ無い（`timeActivity` は Content にあるが未使用）。
 - Calendar は「日付・曜日の判定」まで。曜日は混雑・大会・イベントへまだ接続していない。
-- ボートなどの所有は無い。Access は transport tag の有無だけを見る。
+- Boat ownership と capability access は Phase 7A で実装。操船・魚探は無い。
 - **UI は画面配信までしか確認していない**。ブラウザ自動操作が無いため、
   HOME → MAP → SPOT → FISHING → SPOT → HOME → TACKLE → SHOP の
   クリック操作は未確認（新規ゲーム初期状態の描画だけスモークテストで確認）。
@@ -560,7 +588,7 @@ npm run simulate:catalog       # カタログの件数 / カバレッジ / 差�
     投入済みは Reel 142 / Rod 84 / Lure 117（いずれも目標レンジ内）。
   - `terminal_tackle_future` / `landing_gear_future` / `field_gear_future` は未実装。
   - Bait は FUTURE_CONSUMABLE（Phase 6.5 では無限使用）。
-  - Shop / Tackle のクリック操作は未確認（初期状態の描画スモークのみ）。
+  - Shop / Tackle の購入・装備・reload は Phase 7A pre-flight で確認済み。
 - Phase 5 の残り:
   - 車の維持費（`simpleVehicleMonthlyCost`）は構造だけ用意し、まだ請求していない。
   - 車種スペック・ローン・保険・駐車場・車検・故障・ガソリン残量は扱わない。
@@ -570,7 +598,7 @@ npm run simulate:catalog       # カタログの件数 / カバレッジ / 差�
   （実ブラウザでの永続化・バージョン管理・障害時の挙動は未検証）。
 - 複数タブの同時編集、Save の export / import、スロット選択、復旧 UI は未実装。
 - XP カーブ・減衰・Skill 効果・GearTuning はすべて `PROVISIONAL`。人間のプレイテストは未実施。
-- 魚種 10 種・釣り場 8 件・Gear 23 件・ブランド 10 件はいずれも検証用サンプル（現実データではない）。
+- 魚種 10 種・釣り場 12 件・Gear 463 件・ブランド 12 件はいずれも検証用サンプル（現実データではない）。
 - UI のテストはスモーク（初期状態の描画）のみ。クリック操作の自動テストは無い
   （意図的に Domain を優先）。
 - 実行時 Content 検証のため Zod をブラウザに含む（gzip +約 30 kB、Phase 1 からの継続課題）。
@@ -578,14 +606,12 @@ npm run simulate:catalog       # カタログの件数 / カバレッジ / 差�
 
 ## 次の推奨タスク
 
-**Phase 7 — Full Transport / Access Progression**（`docs/ROADMAP.md`）
+**Phase 7B — Expedition Planning**（`docs/ROADMAP.md`）
 
-Phase 6 までで「装備 → 釣果 / ファイト」は繋がった。次は交通と到達範囲を広げる。
-
-1. 移動手段（bicycle / motorcycle / boat）を Content と所有者状態で増やす。
-2. Access を「transport tag の有無」から、時間・費用・積載を伴う判定へ広げる。
-3. Spot を増やし、移動手段の差で「行ける場所」が変わることを見せる。
-4. 遠征費・宿泊・フェリーの構造を Economy と接続する。
+1. ferry / highway / parking / lodging の cost component を追加する。
+2. 複数日遠征の最小 Domain と、rental / marina / launch point の選択 UI を作る。
+3. cargo / gear capacity を釣行準備へ接続する。
+4. Garage / Trip planning UI で購入・利用状況を見せる。
 
 Phase 6 から持ち越した調整（プレイテスト前提）:
 
@@ -594,7 +620,7 @@ Phase 6 から持ち越した調整（プレイテスト前提）:
 
 ## ブロッカー
 
-- なし（Phase 6 の作業自体は完了）。
+- なし（Phase 7A の作業自体は完了）。
 - 補足: 実行環境によっては Git メタデータ（`.git`）への書き込みが制限され、
   `git add` / `git commit` が失敗することがある。
   その場合はユーザー側でコミットを実行し、本文書を更新する。

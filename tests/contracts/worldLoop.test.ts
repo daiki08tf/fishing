@@ -18,6 +18,7 @@ import { asFishSpeciesId, asFishingSpotId, asRegionId } from '../../src/domain/i
 import { createTestSpot } from '../fixtures/spots'
 import { createTestSpecies } from '../fixtures/species'
 import { runFightToTerminal } from '../fixtures/fishingPolicies'
+import { createTestTransportState, TEST_TRANSPORTS } from '../fixtures/transports'
 
 /**
  * Spot を選ぶ → 釣る → 帰る までを 1 本通す。
@@ -28,6 +29,10 @@ import { runFightToTerminal } from '../fixtures/fishingPolicies'
  */
 
 const species = createTestSpecies()
+const transportContext = {
+  transports: TEST_TRANSPORTS,
+  playerTransports: createTestTransportState(),
+}
 
 const spotWithSpecies = (overrides: Partial<FishingSpot> = {}): FishingSpot =>
   createTestSpot({
@@ -60,7 +65,7 @@ describe('world loop', () => {
     let progression = createInitialProgression()
 
     const startedAt = world.time
-    const left = leaveForSpot({ context: { world, knowledge }, spot })
+    const left = leaveForSpot({ context: { world, knowledge }, spot, ...transportContext })
 
     expect(left.ok).toBe(true)
     if (!left.ok) {
@@ -119,7 +124,7 @@ describe('world loop', () => {
       knowledge = recorded.context.knowledge
     }
 
-    const leftSpot = leaveSpot({ context: { world, knowledge }, spot })
+    const leftSpot = leaveSpot({ context: { world, knowledge }, spot, ...transportContext })
     expect(leftSpot.ok).toBe(true)
     if (!leftSpot.ok) {
       return
@@ -158,14 +163,25 @@ describe('world loop', () => {
       id: asFishingSpotId('invented-spot'),
       name: 'その場で作った釣り場',
       regionId: asRegionId('invented-region'),
-      access: [{ kind: 'transport', tag: 'train' }],
-      travelOptions: [{ transport: 'train', minutes: 12, cost: 420 }],
+      access: [{ kind: 'capability', capability: 'public_transport' }],
+      travelOptions: [
+        {
+          id: 'invented-train-route',
+          transportTypes: ['train'],
+          requiredCapabilities: ['public_transport'],
+          features: [],
+          baseMinutes: 12,
+          distanceKm: 8,
+          baseOneWayCost: 420,
+        },
+      ],
       fishTable: [{ speciesId: inventedSpecies.id, basePresence: 1 }],
     })
 
     const left = leaveForSpot({
       context: { world: createInitialWorld(), knowledge: emptyKnowledgeState() },
       spot: inventedSpot,
+      ...transportContext,
     })
 
     expect(left.ok).toBe(true)

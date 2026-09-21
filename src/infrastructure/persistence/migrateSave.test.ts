@@ -5,25 +5,27 @@ import {
   createValidSaveV2,
   createValidSaveV4,
   createValidSaveV5,
+  createValidSaveV6,
 } from '../../../tests/fixtures/save'
+import { asShopItemId } from '../../domain/ids'
 import { migrateSave } from './migrateSave'
 
 describe('migrateSave', () => {
   it('loads a valid current save', () => {
-    const result = migrateSave(createValidSaveV5())
+    const result = migrateSave(createValidSaveV6())
 
     expect(result.ok).toBe(true)
 
     if (result.ok) {
-      expect(result.migratedFrom).toBe(5)
-      expect(result.save.schemaVersion).toBe(5)
+      expect(result.migratedFrom).toBe(6)
+      expect(result.save.schemaVersion).toBe(6)
       expect(result.save.progression.anglerLevel).toBe(3)
       expect(result.save.progression.unlockedPerks).toEqual([])
       expect(result.save.progression.repetition.species['test-species']).toBe(3)
     }
   })
 
-  it('grants the starter tackle when migrating a v4 save to v5', () => {
+  it('grants the starter tackle when migrating a v4 save through the current version', () => {
     const v4 = createValidSaveV4()
     const result = migrateSave(v4)
 
@@ -34,12 +36,14 @@ describe('migrateSave', () => {
     }
 
     expect(result.migratedFrom).toBe(4)
-    expect(result.save.schemaVersion).toBe(5)
+    expect(result.save.schemaVersion).toBe(6)
 
     // 成長・記録・世界・知識・資金・購入は失わない。
     expect(result.save.progression).toEqual(v4.progression)
     expect(result.save.codex).toEqual(v4.codex)
-    expect(result.save.world).toEqual(v4.world)
+    expect(result.save.world.time).toEqual(v4.world.time)
+    expect(result.save.world.phase).toBe(v4.world.phase)
+    expect(result.save.world.discoveredSpotIds).toEqual(v4.world.discoveredSpotIds)
     expect(result.save.knowledge).toEqual(v4.knowledge)
     expect(result.save.finance).toEqual(v4.finance)
     expect(result.save.purchases).toEqual(v4.purchases)
@@ -49,6 +53,33 @@ describe('migrateSave', () => {
     expect(result.save.loadout.methodId).toBe('lure')
     expect(result.save.inventory.ownedGearIds).toContain(result.save.loadout.rodId)
     expect(result.save.inventory.ownedGearIds).toContain(result.save.loadout.offeringId)
+  })
+
+  it('migrates v5 car access and every existing save block into v6', () => {
+    const v5 = createValidSaveV5()
+    const withCar = {
+      ...v5,
+      world: { ...v5.world, availableTransports: [...v5.world.availableTransports, 'car'] },
+      purchases: [asShopItemId('used-compact-car')],
+    } as const
+    const result = migrateSave(withCar)
+
+    expect(result.ok).toBe(true)
+    if (!result.ok) {
+      return
+    }
+
+    expect(result.migratedFrom).toBe(5)
+    expect(result.save.schemaVersion).toBe(6)
+    expect(result.save.transport.ownedTransportIds).toContain('used-compact-car')
+    expect(result.save.transport.availableTransportIds).toContain('used-compact-car')
+    expect(result.save.progression).toEqual(v5.progression)
+    expect(result.save.codex).toEqual(v5.codex)
+    expect(result.save.knowledge).toEqual(v5.knowledge)
+    expect(result.save.finance).toEqual(v5.finance)
+    expect(result.save.purchases).toEqual(withCar.purchases)
+    expect(result.save.inventory).toEqual(v5.inventory)
+    expect(result.save.loadout).toEqual(v5.loadout)
   })
 
   it('migrates a v1 save to the current version', () => {
@@ -62,7 +93,7 @@ describe('migrateSave', () => {
     }
 
     expect(result.migratedFrom).toBe(1)
-    expect(result.save.schemaVersion).toBe(5)
+    expect(result.save.schemaVersion).toBe(6)
 
     // 既存の成長は保持する。
     expect(result.save.progression.anglerLevel).toBe(v1.progression.anglerLevel)
@@ -105,7 +136,7 @@ describe('migrateSave', () => {
     }
 
     expect(result.migratedFrom).toBe(2)
-    expect(result.save.schemaVersion).toBe(5)
+    expect(result.save.schemaVersion).toBe(6)
 
     // 成長と記録は失わない。
     expect(result.save.progression).toEqual(v2.progression)

@@ -5,6 +5,7 @@ import type { GearSeries } from '../../domain/gear/GearSeries'
 import type { FishingMethod } from '../../domain/method/FishingMethod'
 import type { ShopItem } from '../../domain/shop/ShopItem'
 import type { FishingSpot } from '../../domain/world/FishingSpot'
+import type { TransportDefinition } from '../../domain/access/Transport'
 import {
   SLOT_CATEGORIES,
   STARTER_GEAR_IDS,
@@ -36,6 +37,7 @@ export type ContentReferenceInput = {
   readonly methods: readonly FishingMethod[]
   readonly brands: readonly BrandDefinition[]
   readonly gearSeries?: readonly GearSeries[]
+  readonly transports?: readonly TransportDefinition[]
 }
 
 /** offering の相性タグとして使える語彙（lureType / baitType / gear の targetProfile）。 */
@@ -68,12 +70,15 @@ export const validateContentReferences = (
 ): readonly ContentReferenceIssue[] => {
   const issues: ContentReferenceIssue[] = []
   const gearSeries = input.gearSeries ?? []
+  const transports = input.transports ?? []
   const speciesIds = new Set(input.species.map((entry) => String(entry.id)))
   const gearById = new Map(input.gear.map((entry) => [String(entry.id), entry]))
   const methodIds = new Set(input.methods.map((entry) => entry.id))
   const brandIds = new Set(input.brands.map((entry) => String(entry.id)))
   const seriesById = new Map(gearSeries.map((entry) => [entry.id, entry]))
   const offeringTags = knownOfferingTags(input.gear)
+  const transportById = new Map(transports.map((entry) => [String(entry.id), entry]))
+  const transportTypes = new Set(transports.map((entry) => entry.transportType))
   /*
    * Tackle（Gear + Method）が同梱されていない部分的な Content 集合
    * （検証用 fixture など）では、Tackle を前提にした参照検査はできない。
@@ -121,6 +126,10 @@ export const validateContentReferences = (
     'shop-items',
     input.shopItems.map((entry) => String(entry.id)),
   )
+  duplicate(
+    'transports',
+    transports.map((entry) => String(entry.id)),
+  )
 
   // 1. Spot の fishTable は実在する魚種を指す。
   for (const spot of input.spots) {
@@ -130,6 +139,19 @@ export const validateContentReferences = (
           path: `fishing-spots/${String(spot.id)}`,
           message: `unknown speciesId ${String(occurrence.speciesId)}`,
         })
+      }
+    }
+
+    if (transports.length > 0) {
+      for (const route of spot.travelOptions) {
+        for (const transportType of route.transportTypes) {
+          if (!transportTypes.has(transportType)) {
+            issues.push({
+              path: `fishing-spots/${String(spot.id)}/travelOptions/${route.id}`,
+              message: `unknown transportType ${transportType}`,
+            })
+          }
+        }
       }
     }
   }
@@ -193,6 +215,29 @@ export const validateContentReferences = (
         path: `shop-items/${String(item.id)}`,
         message: `unknown gearId ${String(item.grantsGearId)}`,
       })
+    }
+
+    if (item.grantsTransportId !== undefined) {
+      const transport = transportById.get(String(item.grantsTransportId))
+
+      if (transport === undefined) {
+        issues.push({
+          path: `shop-items/${String(item.id)}`,
+          message: `unknown transportId ${String(item.grantsTransportId)}`,
+        })
+      } else if (transport.ownershipModel !== 'owned') {
+        issues.push({
+          path: `shop-items/${String(item.id)}`,
+          message: `transport ${String(item.grantsTransportId)} is not purchasable`,
+        })
+      } else if (transport.purchasePrice !== item.price) {
+        issues.push({
+          path: `shop-items/${String(item.id)}`,
+          message: `price ${String(item.price)} does not match transport purchasePrice ${String(
+            transport.purchasePrice,
+          )}`,
+        })
+      }
     }
   }
 

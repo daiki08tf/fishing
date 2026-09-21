@@ -56,6 +56,13 @@
 
 ## Current Status
 
-Design / Pre-production.
+Phase 7A — Transport / Access Domain 完了。
 
-実装前にゲームループとデータ構造を固定している段階。
+徒歩・公共交通・自転車・二輪・車・SUV・カヤック・レンタル船・所有船を
+data-driven Content として扱い、Spot の物理 access capability、所有・レンタル費、
+移動時間、Save v6 migration を実装している。世界の解放に Angler Level は使わない。
+
+```sh
+npm run check
+npm run simulate:transport
+```

@@ -203,7 +203,9 @@ export const ShopScreen = () => {
                 </div>
                 <p className="spot-card__meta">
                   {SHOP_CATEGORY_LABELS[item.category]}
-                  {item.grantsTransport === undefined ? '' : ` / 移動手段: ${item.grantsTransport}`}
+                  {item.grantsTransportId === undefined
+                    ? ''
+                    : ` / 移動手段: ${content.value.transportById[String(item.grantsTransportId)]?.name ?? String(item.grantsTransportId)}`}
                 </p>
                 <p className="spot-card__meta">{item.description}</p>
 

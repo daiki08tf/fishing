@@ -23,6 +23,8 @@ import {
   recordFishingAttempt,
 } from '../src/domain/world/worldSession'
 import { chooseCommand } from './simulate-fishing'
+import { createInitialTransportState } from '../src/domain/access/Transport'
+import { asTransportId } from '../src/domain/ids'
 
 /**
  * 「土曜の朝に家を出て、釣りをして、帰ってくる」を 1 本通す。
@@ -122,6 +124,7 @@ const runTrip = (options: TripSimulationOptions): TripRun => {
   let knowledge = emptyKnowledgeState()
   let codex = emptyCodexState()
   let progression = createInitialProgression()
+  const playerTransports = createInitialTransportState(asTransportId)
 
   const lines: string[] = []
   const log = (message: string): void => {
@@ -133,7 +136,12 @@ const runTrip = (options: TripSimulationOptions): TripRun => {
 
   log(`出発（${spot.name} へ）`)
 
-  const left = leaveForSpot({ context: { world, knowledge }, spot })
+  const left = leaveForSpot({
+    context: { world, knowledge },
+    spot,
+    transports: content.transports,
+    playerTransports,
+  })
 
   if (!left.ok) {
     throw new Error(`could not leave home: ${left.message}`)
@@ -226,7 +234,12 @@ const runTrip = (options: TripSimulationOptions): TripRun => {
   const departureMinutes = minutesOf(world.time)
   log(`帰路へ（${spot.name} を出発）`)
 
-  const leftSpot = leaveSpot({ context: { world, knowledge }, spot })
+  const leftSpot = leaveSpot({
+    context: { world, knowledge },
+    spot,
+    transports: content.transports,
+    playerTransports,
+  })
 
   if (!leftSpot.ok) {
     throw new Error(`could not leave spot: ${leftSpot.message}`)

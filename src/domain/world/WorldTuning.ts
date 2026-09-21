@@ -23,9 +23,6 @@ export type WorldTuning = {
   readonly fishingAttemptRegionKnowledge: number
   readonly catchKnowledge: number
   readonly knowledgeMax: number
-
-  /** 初期状態で使える移動手段。 */
-  readonly initialTransports: readonly string[]
 }
 
 export const DEFAULT_WORLD_TUNING: WorldTuning = {
@@ -42,6 +39,4 @@ export const DEFAULT_WORLD_TUNING: WorldTuning = {
   fishingAttemptRegionKnowledge: 1,
   catchKnowledge: 5,
   knowledgeMax: 100,
-
-  initialTransports: ['walk', 'train', 'bus'],
 }
