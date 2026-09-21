@@ -1,5 +1,4 @@
-TAB NAME: leaders.csv>
-index,GearID,Brand,Series,Material,StrengthKg,DiameterMm,AbrasionResistance,Visibility,LengthM,PriceJPY,Status
+GearID,Brand,Series,Material,StrengthKg,DiameterMm,AbrasionResistance,Visibility,LengthM,PriceJPY,Status
 leader-0001,Gamakaze,Fluoro Leader,Fluoro,3,0.173,0.93,0.34,1.5,1100,FICTIONAL_CONTENT
 leader-0002,Gamakaze,Fluoro Leader,Fluoro,4,0.2,0.93,0.34,1.5,1200,FICTIONAL_CONTENT
 leader-0003,Gamakaze,Fluoro Leader,Fluoro,5,0.224,0.93,0.34,1.5,1200,FICTIONAL_CONTENT
