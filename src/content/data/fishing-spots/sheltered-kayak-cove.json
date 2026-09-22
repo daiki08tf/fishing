@@ -14,15 +14,24 @@
   "travelOptions": [
     {
       "id": "sheltered-launch",
-      "transportTypes": ["kayak"],
-      "requiredCapabilities": ["kayak_launch"],
-      "features": ["launch_point"],
+      "transportTypes": [
+        "kayak"
+      ],
+      "requiredCapabilities": [
+        "kayak_launch"
+      ],
+      "features": [
+        "launch_point"
+      ],
       "baseMinutes": 60,
       "distanceKm": 6,
       "baseOneWayCost": 0
     }
   ],
-  "habitatTags": ["shallow", "surf"],
+  "habitatTags": [
+    "shallow",
+    "surf"
+  ],
   "depth": {
     "depthRangeM": {
       "min": 2,
@@ -31,11 +40,11 @@
   },
   "fishTable": [
     {
-      "speciesId": "kanto-seabass",
+      "speciesId": "seabass",
       "basePresence": 0.6
     },
     {
-      "speciesId": "kanto-kurodai",
+      "speciesId": "kurodai",
       "basePresence": 0.5
     }
   ],
