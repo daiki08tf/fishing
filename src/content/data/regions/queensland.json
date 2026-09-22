@@ -2,17 +2,25 @@
   "id": "queensland",
   "countryId": "australia",
   "name": "クイーンズランド",
-  "stage": "planned",
+  "stage": "playable",
   "dataStatus": "provisional",
   "base": {
     "id": "queensland-base",
     "name": "Queensland Fishing Base",
-    "areaId": "reef"
+    "areaId": "qld-estuary"
   },
   "areas": [
     {
+      "id": "qld-estuary",
+      "name": "Tropical Estuary"
+    },
+    {
       "id": "reef",
       "name": "Reef / Coastal"
+    },
+    {
+      "id": "qld-offshore",
+      "name": "Offshore Bluewater"
     }
   ],
   "climate": {
