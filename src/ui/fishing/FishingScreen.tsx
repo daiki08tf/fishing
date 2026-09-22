@@ -13,9 +13,11 @@ import { useEffect, useState } from 'react'
 import { suggestBattleCommand } from '../../domain/fishing/battle'
 import { castTargetStatus, type CastTargetStatus } from '../../domain/casting'
 import { FishingMeter } from './FishingMeter'
+import { WaterScene } from './WaterScene'
 import { useFishingSession } from './useFishingSession'
 import { usePlayerStore } from '../../state/playerStore'
 import { useAppStore } from '../../state/appStore'
+import { ResultBanner } from '../components/ResultBanner'
 import '../styles/fishing.css'
 
 /**
@@ -269,6 +271,12 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
         <span className="fishing__seed">{spotName ?? '釣り場未選択'}</span>
       </header>
 
+      <WaterScene
+        phase={snapshot.phase}
+        behaviour={snapshot.battle?.behaviour ?? null}
+        hasFish={fish !== null}
+      />
+
       <section className="panel">
         <h2 className="panel__heading">{PHASE_LABELS[snapshot.phase]}</h2>
         {environment === null || conditions === null ? null : (
@@ -328,6 +336,21 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
           {canCast ? null : <p className="notice">今のタックルでは選択中の水域まで届かない。</p>}
         </section>
       )}
+
+      {snapshot.phase === 'LANDED' && fish !== null ? (
+        <ResultBanner
+          speciesId={String(fish.individual.speciesId)}
+          speciesName={fish.speciesName}
+          lengthCm={fish.individual.lengthCm}
+          weightKg={fish.individual.weightKg}
+          conditionLabel={CONDITION_LABELS[fish.conditionBand]}
+          rarityLabel={rarityLabel(fish.individual.percentile ?? 0)}
+          traits={fish.individual.traits}
+          traitLabels={TRAIT_LABELS}
+          firstCatch={lastCatch?.firstCatch ?? false}
+          personalBest={lastCatch?.personalBest ?? false}
+        />
+      ) : null}
 
       <section className="panel">
         {fish === null ? (

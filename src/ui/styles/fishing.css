@@ -263,3 +263,125 @@
   font-weight: 700;
   color: var(--color-accent);
 }
+
+/* WaterScene（Phase 14）: 釣り画面の水面ビジュアル。演出のみ、判定には関与しない。 */
+.water-scene {
+  position: relative;
+  overflow: hidden;
+  height: 6.5rem;
+  border: var(--border-width-thick) solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-panel);
+  background: linear-gradient(
+    180deg,
+    var(--palette-sky) 0%,
+    var(--palette-sky) 60%,
+    var(--palette-ocean) 60%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.water-scene__surface {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 46%;
+}
+
+.water-scene__surface path {
+  fill: var(--palette-teal);
+  opacity: 0.6;
+}
+
+.water-scene__fish {
+  position: relative;
+  z-index: 1;
+  width: 40px;
+  height: 40px;
+  transition: transform var(--motion-normal) var(--motion-ease);
+}
+
+.water-scene__ripple {
+  position: relative;
+  z-index: 1;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  border: 2px solid color-mix(in srgb, var(--palette-cream) 70%, transparent);
+}
+
+.water-scene__label {
+  position: absolute;
+  left: 0.6rem;
+  bottom: 0.4rem;
+  z-index: 2;
+  margin: 0;
+  font-size: 0.6875rem;
+  color: var(--palette-navy-deep);
+  text-shadow: 0 1px 0 rgb(255 255 255 / 45%);
+}
+
+.water-scene--wait .water-scene__ripple {
+  animation: ripple 2.2s ease-out infinite;
+}
+
+.water-scene--bite {
+  animation: flash-accent var(--motion-special) var(--motion-ease);
+}
+
+.water-scene--bite .water-scene__fish,
+.water-scene--hooked .water-scene__fish {
+  animation: bob 0.5s ease-in-out infinite;
+}
+
+.water-scene--run .water-scene__fish,
+.water-scene--second_run .water-scene__fish {
+  transform: translateX(14px) scaleX(-1);
+}
+
+.water-scene--surge .water-scene__fish {
+  animation: shake-x 0.3s ease-in-out infinite;
+}
+
+.water-scene--head_shake .water-scene__fish {
+  animation: shake-x 0.22s ease-in-out infinite;
+}
+
+.water-scene--dive .water-scene__fish {
+  transform: translateY(14px) scale(0.9);
+}
+
+.water-scene--come_toward .water-scene__fish {
+  transform: scale(1.25);
+}
+
+.water-scene--rest .water-scene__fish {
+  opacity: 0.7;
+}
+
+.water-scene--landing .water-scene__fish {
+  transform: translateY(-6px) scale(1.05);
+}
+
+.water-scene--landed {
+  background: linear-gradient(
+    180deg,
+    var(--palette-sky) 0%,
+    var(--palette-sky) 60%,
+    var(--color-success) 60%
+  );
+  animation: pop-in var(--motion-special) var(--motion-ease);
+}
+
+.water-scene--landed .water-scene__fish {
+  transform: translateY(-10px) scale(1.15);
+}
+
+.water-scene--failed .water-scene__fish {
+  transform: translateY(-18px) scale(0.7);
+  opacity: 0.35;
+}
