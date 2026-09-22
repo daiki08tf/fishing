@@ -14,15 +14,24 @@
   "travelOptions": [
     {
       "id": "hokkaido-lake-road",
-      "transportTypes": ["rental_car"],
-      "requiredCapabilities": ["road_access"],
-      "features": ["vehicle_rental"],
+      "transportTypes": [
+        "rental_car"
+      ],
+      "requiredCapabilities": [
+        "road_access"
+      ],
+      "features": [
+        "vehicle_rental"
+      ],
       "baseMinutes": 60,
       "distanceKm": 40,
       "baseOneWayCost": 0
     }
   ],
-  "habitatTags": ["lake", "deep"],
+  "habitatTags": [
+    "lake",
+    "deep"
+  ],
   "depth": {
     "depthRangeM": {
       "min": 3,
@@ -31,11 +40,11 @@
   },
   "fishTable": [
     {
-      "speciesId": "hokkaido-ame-masu",
+      "speciesId": "amemasu",
       "basePresence": 0.45
     },
     {
-      "speciesId": "hokkaido-ito",
+      "speciesId": "ito",
       "basePresence": 0.5
     }
   ],
