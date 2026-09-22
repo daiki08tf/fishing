@@ -1,9 +1,18 @@
 {
-  "id": "alaska-chinook-salmon",
+  "id": "chinook-salmon",
   "japaneseName": "キングサーモン（暫定）",
-  "waterTypes": ["fresh", "salt"],
-  "distribution": ["alaska"],
-  "habitats": ["river", "deep"],
+  "waterTypes": [
+    "fresh",
+    "salt"
+  ],
+  "distribution": [
+    "alaska",
+    "british-columbia"
+  ],
+  "habitats": [
+    "river",
+    "deep"
+  ],
   "depthRange": {
     "min": 1,
     "max": 30
@@ -13,18 +22,40 @@
     "max": 14
   },
   "seasonality": {
-    "months": [6, 7, 8]
+    "months": [
+      6,
+      7,
+      8
+    ]
   },
   "timeActivity": {
-    "periods": ["dawn", "morning", "evening"]
+    "periods": [
+      "dawn",
+      "morning",
+      "evening"
+    ]
   },
   "currentPreference": {
     "preference": "moderate"
   },
-  "diet": ["small_fish"],
-  "baits": ["roe", "cut", "fish"],
-  "lureCategories": ["spoon", "jig", "minnow"],
-  "fishingMethods": ["lure", "bait", "bottom"],
+  "diet": [
+    "small_fish"
+  ],
+  "baits": [
+    "roe",
+    "cut",
+    "fish"
+  ],
+  "lureCategories": [
+    "spoon",
+    "jig",
+    "minnow"
+  ],
+  "fishingMethods": [
+    "lure",
+    "bait",
+    "bottom"
+  ],
   "methodAffinity": {
     "lure": 1.05,
     "light_lure": 0.7,
@@ -66,8 +97,14 @@
   },
   "rarity": 3.5,
   "environmentAffinity": {
-    "preferredSeasons": ["summer"],
-    "preferredTimeOfDay": ["dawn", "morning", "evening"],
+    "preferredSeasons": [
+      "summer"
+    ],
+    "preferredTimeOfDay": [
+      "dawn",
+      "morning",
+      "evening"
+    ],
     "weatherAffinity": {
       "clear": 1.05,
       "cloudy": 1.1,
