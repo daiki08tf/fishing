@@ -132,7 +132,7 @@ describe('expedition flow', () => {
     expect(travelled.ok).toBe(true)
     expect(store.getState().world.phase).toBe('AT_SPOT')
 
-    const species = content.speciesById['alaska-chinook-salmon']
+    const species = content.speciesById['chinook-salmon']
     expect(species).toBeDefined()
 
     const { individual } = generateFishIndividual({
@@ -148,7 +148,7 @@ describe('expedition flow', () => {
       capturedAt: '2026-05-03T00:00:00.000Z',
     })
 
-    const recorded = store.getState().codex.species['alaska-chinook-salmon']
+    const recorded = store.getState().codex.species['chinook-salmon']
 
     expect(recorded).toBeDefined()
     expect(recorded?.catchCount).toBe(1)
