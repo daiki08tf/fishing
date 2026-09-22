@@ -231,3 +231,20 @@ Domain / Save v9 / gameplay rule は不変。
   Progression）を dynamic import 化して初期 chunk から外した
 - boot raw 925.44 → 604.95 kB / boot gzip 216.48 → 170.67 kB（-21.2%）/
   initial chunk 512.00 kB、tests 91 files / 787
+
+
+## Phase 15.2（Startup Network Final Hardening）
+
+Phase 15.1 の「tackle が AppShell mount 直後に background fetch される」問題を修正。
+
+- AppShell から `ensureTackle()` の preload を削除（`src/ui/content/bootContent.ts` が
+  起動で読む唯一の入口 = `bootPackKeys` のみ）。tackle は Tackle / Shop / Spot / Fishing の
+  gate で必要な時に読む。HOME は neutral fallback で成立（Domain rule 不変）
+- requestIdleCallback preload は行わない（起動直後の追加 fetch を 0 にする）
+- 起動 network の保証を behavioral test に変更（instrumented importer で
+  boot / MAP / Spot / Tackle / Shop / 目的地選択ごとの呼び出し回数を検証）。
+  source 文字列検索は主要な保証にしない
+- `analyze:content-scale` は boot pack 一覧と「tackle / 他地域を含まない」ことを検査
+- boot raw 604.93 kB / boot gzip 170.62 kB（Phase 14 比 -21.2%）/
+  initial chunk 511.99 kB / tackle chunk 201.31 kB（boot 非含有）
+- tests 91 files / 791

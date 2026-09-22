@@ -2,6 +2,7 @@ import { readFileSync, readdirSync, statSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { gzipSync } from 'node:zlib'
 import { pathToFileURL } from 'node:url'
+import { bootPackKeys } from '../src/content/runtime/contentRuntime'
 
 /**
  * Content Scale の bundle レポート（Phase 15）。
@@ -191,6 +192,7 @@ export const analyzeContentScale = (distDir = 'dist'): BundleReport => {
   lines.push(`Total JS:          ${kb(total)}`)
   lines.push('')
   lines.push('--- boot critical path (catalog + world + current region + its species) ---')
+  lines.push(`Boot packs (AppShell bootstrap): ${bootPackKeys('tokyo-area').join(', ')}`)
   lines.push(`Boot chunks (${String(bootEntries.length)}):`)
   for (const entry of bootEntries.sort((left, right) => right.bytes - left.bytes)) {
     lines.push(`  ${entry.name.padEnd(26)} ${kb(entry.bytes)} (gzip ${kb(entry.gzipBytes)})`)

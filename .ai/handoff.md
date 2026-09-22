@@ -1,10 +1,21 @@
 # Handoff
 
-最終更新: Phase 15.1（True Lazy Loading / Content Scale Hardening）完了
+最終更新: Phase 15.2（Startup Network Final Hardening）完了
 （branch `phase-15-content-scale-foundation`、PR #17）
 
 > 現在状態は Phase 15 → 14 → 13 → 12 → 11 → 10.2 → 10.1 → 10 の順で優先する。
 > 詳細は `.ai/current-task.md` と `docs/DECISIONS.md` も参照。
+
+## Phase 15.2（Startup Network Final Hardening）
+
+- AppShell の tackle background preload を削除（起動で読むのは `bootContentFor` =
+  world + 今いる地域 + その地域の Species shard だけ）
+- tackle は Tackle / Shop / Spot / Fishing の gate で必要時に 1 度だけ読む。
+  HOME は neutral fallback（Domain rule 不変）
+- 起動 network は behavioral test（instrumented importer の呼び出し回数）で保証
+- boot raw 604.93 kB / boot gzip 170.62 kB（Phase 14 比 -21.2%）/
+  initial 511.99 kB / tackle 201.31 kB（gzip 32.05、boot 非含有）
+- tests 91 files / 791
 
 ## Phase 15.1（True Lazy Loading）
 

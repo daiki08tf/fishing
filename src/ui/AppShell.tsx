@@ -1,5 +1,6 @@
 import { lazy, Suspense, useEffect } from 'react'
 import { bootPackKeys, contentRuntime } from '../content/runtime/contentRuntime'
+import { bootContentFor } from './content/bootContent'
 import { useAppStore } from '../state/appStore'
 import { usePlayerStore } from '../state/playerStore'
 import { FishingScreen } from './fishing/FishingScreen'
@@ -77,9 +78,11 @@ export const AppShell = () => {
   const contentReady = requiredPackKeys.every((key) => runtime.packStatus[key] === 'ready')
 
   useEffect(() => {
-    void contentRuntime.ensureBootPacks({ regionId: currentRegionId }).catch(() => undefined)
-    // Tackle は非ブロッキングで先に温める（HOME の条件表示が詳細になるだけ）。
-    void contentRuntime.ensureTackle().catch(() => undefined)
+    /*
+     * 起動で読むのは bootPackKeys だけ（world + 今いる地域 + Species shard）。
+     * tackle / 他地域は「実際に必要になった画面」で読む（Phase 15.2）。
+     */
+    void bootContentFor(currentRegionId).catch(() => undefined)
   }, [currentRegionId])
 
   // 保存データの確認が終わるまで、ゲームの画面は出さない。

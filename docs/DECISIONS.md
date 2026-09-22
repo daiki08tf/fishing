@@ -593,3 +593,34 @@ Domain / Save v9 / gameplay rule は変更していない。
 
 boot の内訳: index 512.00 / region-tokyo-area 39.01 / species-tokyo-area 31.26 /
 world 12.47 / 共有 Species chunk 8.21。Tokyo の起動で読む Species は 38 種（全 82 種ではない）。
+
+### Phase 15.2 — Startup Network Final Hardening
+
+Phase 15.1 のレビューで「tackle は required ではないが AppShell mount 直後に background fetch
+されるため、実効 startup network には含まれてしまう」問題を直した。
+
+決定:
+
+- **AppShell から tackle の preload を削除する。** 起動で読むのは
+  `bootContentFor(regionId)`（= `bootPackKeys`: world + 今いる地域 + その地域の Species shard）
+  だけ。tackle は Tackle / Shop / Spot / Fishing の gate（`usePack(GLOBAL_PACK_KEYS.tackle)`）
+  で、実際に必要になった時点で読む。HOME は tackle 未ロードでも
+  `NEUTRAL_FISHING_MODIFIERS` 等の fallback で成立する（Domain rule は変えない）
+- **requestIdleCallback による preload は行わない。** 「最も単純で安全なのは削除」
+  という方針に従い、起動直後の追加 fetch を 0 にする。将来的に preload する場合も
+  「初回 HOME が ready になった後 + browser idle」に限定する
+- **起動 network の保証は behavioral test にする。** `bootContentFor` が呼ぶ runtime を
+  instrumented importer に差し替え、実際に呼ばれた pack importer を数える:
+  - boot 直後: world / region:tokyo-area / species:tokyo-area の 3 つだけ
+  - tackle / hokkaido / alaska の importer = 0 calls
+  - HOME → MAP の遷移では新しい fetch なし
+  - Spot / Tackle / Shop / Fishing で tackle を **1 度だけ**読み、以降は cache
+  - 目的地を選ぶまで他地域 importer = 0 calls
+  source 文字列の検索は主要な保証にしない（Expedition の mount 一括 preload の
+  再発防止だけ、secondary guard として残す）
+- **analyze:content-scale は実際に即時要求される chunk を数える**（initial + boot packs +
+  それらが静的に読む shared chunk）。boot pack 一覧も出力し、tackle / 他地域が
+  含まれないことを検査する
+
+実測: boot raw 604.93 kB / boot gzip 170.62 kB（Phase 14 比 -21.2%、Phase 15.1 と同じ水準を
+immediate network set でも維持）。tackle chunk は 201.31 kB（gzip 32.05）で **boot に含まれない**。
