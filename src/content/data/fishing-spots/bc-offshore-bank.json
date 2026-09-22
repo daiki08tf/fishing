@@ -1,0 +1,146 @@
+{
+  "id": "bc-offshore-bank",
+  "name": "BC Offshore Bank（暫定）",
+  "regionId": "british-columbia",
+  "areaId": "bc-coast",
+  "environment": "offshore",
+  "access": [
+    {
+      "kind": "capability",
+      "capability": "boat_required"
+    },
+    {
+      "kind": "capability",
+      "capability": "offshore"
+    },
+    {
+      "kind": "permit",
+      "permitId": "bc-fishing-license"
+    }
+  ],
+  "travelOptions": [
+    {
+      "id": "bc-offshore-boat",
+      "transportTypes": [
+        "rental_boat"
+      ],
+      "requiredCapabilities": [
+        "boat_required",
+        "offshore"
+      ],
+      "features": [
+        "boat_rental",
+        "marina"
+      ],
+      "baseMinutes": 90,
+      "distanceKm": 45,
+      "baseOneWayCost": 0
+    }
+  ],
+  "habitatTags": [
+    "open",
+    "deep"
+  ],
+  "depth": {
+    "depthRangeM": {
+      "min": 20,
+      "max": 180
+    }
+  },
+  "fishingZones": [
+    {
+      "id": "surface",
+      "name": "Surface",
+      "depthRangeM": {
+        "min": 0,
+        "max": 15
+      },
+      "habitatTags": [
+        "surface",
+        "open"
+      ]
+    },
+    {
+      "id": "mid",
+      "name": "Mid Water",
+      "depthRangeM": {
+        "min": 15,
+        "max": 50
+      },
+      "habitatTags": [
+        "mid-water",
+        "open"
+      ]
+    },
+    {
+      "id": "bottom",
+      "name": "Bottom / Reef",
+      "depthRangeM": {
+        "min": 50,
+        "max": 150
+      },
+      "habitatTags": [
+        "bottom",
+        "reef",
+        "deep"
+      ]
+    }
+  ],
+  "fishTable": [
+    {
+      "speciesId": "pacific-halibut",
+      "basePresence": 0.26,
+      "zoneAffinity": {
+        "surface": 0.05,
+        "mid": 0.5,
+        "bottom": 1.7
+      }
+    },
+    {
+      "speciesId": "pacific-cod",
+      "basePresence": 0.35,
+      "zoneAffinity": {
+        "surface": 0.1,
+        "mid": 0.7,
+        "bottom": 1.6
+      }
+    },
+    {
+      "speciesId": "sablefish",
+      "basePresence": 0.18,
+      "zoneAffinity": {
+        "surface": 0.05,
+        "mid": 0.4,
+        "bottom": 1.8
+      }
+    },
+    {
+      "speciesId": "chinook-salmon",
+      "basePresence": 0.2,
+      "zoneAffinity": {
+        "surface": 1.2,
+        "mid": 1.3,
+        "bottom": 0.2
+      }
+    }
+  ],
+  "dataStatus": "provisional",
+  "knowledgeConfig": {
+    "reveals": [
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "habitat",
+        "minKnowledge": 50
+      }
+    ]
+  },
+  "sourceRefs": [
+    {
+      "id": "phase12-provisional",
+      "title": "PROVISIONAL — gameplay-oriented spot layout; real access and regulations require verification"
+    }
+  ]
+}
