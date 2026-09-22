@@ -13,5 +13,6 @@
   "launchCapability": "marina",
   "boatCapability": "offshore",
   "passengerCapacity": 6,
+  "serviceRegionIds": ["norway-fjords"],
   "operatorContactId": "captain-erik"
 }

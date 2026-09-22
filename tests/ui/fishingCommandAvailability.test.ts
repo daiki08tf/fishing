@@ -3,6 +3,7 @@ import { ALLOWED_COMMANDS, FISHING_COMMANDS, type FishingCommand } from '../../s
 import {
   ACTION_LABELS,
   FIGHT_COMMANDS,
+  isCommandDisabled,
   LANDING_COMMANDS,
   PRE_FIGHT_COMMANDS,
 } from '../../src/ui/fishing/FishingScreen'
@@ -43,6 +44,26 @@ describe('fishing command wiring', () => {
     ])
 
     expect(new Set(PRE_FIGHT_COMMANDS)).toEqual(expected)
+  })
+
+  /*
+   * Phase 17 Final Fix — CAST が押せる条件は `canCast`（resolveCanCast）だけが決める。
+   * どちらのボタン群も同じ判定を使うので、ここで判定そのものを固定する。
+   */
+  it('disables CAST whenever canCast is false, even in IDLE', () => {
+    expect(isCommandDisabled('cast', ALLOWED_COMMANDS.IDLE, false)).toBe(true)
+    expect(isCommandDisabled('cast', ALLOWED_COMMANDS.IDLE, true)).toBe(false)
+  })
+
+  it('never lets canCast block a non-cast command', () => {
+    expect(isCommandDisabled('hook', ALLOWED_COMMANDS.HOOK_WINDOW, false)).toBe(false)
+    expect(isCommandDisabled('reel', ALLOWED_COMMANDS.FIGHTING, false)).toBe(false)
+    expect(isCommandDisabled('land', ALLOWED_COMMANDS.LANDING, false)).toBe(false)
+  })
+
+  it('still respects the phase: an unallowed command stays disabled with canCast true', () => {
+    expect(isCommandDisabled('cast', ALLOWED_COMMANDS.FIGHTING, true)).toBe(true)
+    expect(isCommandDisabled('hook', ALLOWED_COMMANDS.IDLE, true)).toBe(true)
   })
 
   it('cast is only ever allowed from IDLE, hook only from HOOK_WINDOW', () => {

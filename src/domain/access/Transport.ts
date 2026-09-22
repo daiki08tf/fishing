@@ -1,4 +1,4 @@
-import type { ContactId, TransportId } from '../ids'
+import type { ContactId, RegionId, TransportId } from '../ids'
 
 /**
  * Transport は「車名を AccessEngine の分岐へ増やす」ための enum ではなく、
@@ -97,6 +97,19 @@ export type TransportDefinition = {
    * （Domain はこのフィールドの有無だけを見る）。
    */
   readonly operatorContactId?: ContactId
+  /**
+   * この Transport が「サービスとして営業している範囲」（任意）。
+   *
+   * Charter のように operator が現地で営業している Transport は、その海域でしか
+   * 乗れない。`transportType` は分類（charter_boat）でしかなく、route は分類でしか
+   * 一致しないため、範囲を持たない Charter は他地域の Charter route まで満たしてしまう。
+   *
+   * 省略時は「どこでも使える」（自家用車・レンタル・所有船など、従来の Transport の挙動）。
+   * 指定した場合、AccessEngine はその Spot の Region が含まれるときだけ候補にする。
+   * Region ごとに Transport 種別を増やさず、1 人の船長が複数海域で営業する場合も
+   * 複数の Captain が同じ海域で営業する場合も、この 1 つのフィールドで表せる。
+   */
+  readonly serviceRegionIds?: readonly RegionId[]
 }
 
 /** Save に載る、プレイヤー側の利用可能・所有状態。rental は釣行ごとに解決する。 */

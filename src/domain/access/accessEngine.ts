@@ -54,6 +54,7 @@ export const ACCESS_BLOCKED_REASON_KINDS = [
   'ownership_required',
   'rental_unavailable',
   'facility_required',
+  'out_of_service_area',
 ] as const
 
 export type AccessBlockedReasonKind = (typeof ACCESS_BLOCKED_REASON_KINDS)[number]
@@ -156,6 +157,17 @@ const isCharterAvailableViaContact = (
 ): boolean =>
   definition.operatorContactId !== undefined &&
   knownContactIds.has(String(definition.operatorContactId))
+
+/**
+ * その Transport がこの Spot で「営業している」か。
+ *
+ * `serviceRegionIds` を持たない Transport（自家用車・レンタル・所有船）は常に true。
+ * 持つ Transport（Charter サービスなど）は、その Spot の Region を含むときだけ候補になる。
+ * Region-ID で分岐するのではなく、Content が宣言した範囲と Spot の Region を比べるだけである。
+ */
+const transportServesSpot = (definition: TransportDefinition, spot: FishingSpot): boolean =>
+  definition.serviceRegionIds === undefined ||
+  definition.serviceRegionIds.some((regionId) => String(regionId) === String(spot.regionId))
 
 const isTransportAvailable = (
   definition: TransportDefinition,
@@ -300,6 +312,10 @@ const resolveTravelOptions = (input: AccessEvaluationInput): readonly ResolvedTr
         continue
       }
 
+      if (!transportServesSpot(definition, input.spot)) {
+        continue
+      }
+
       if (routeRejection(definition, route) !== null) {
         continue
       }
@@ -386,11 +402,34 @@ const diagnoseBlockedTransport = (input: AccessEvaluationInput): readonly Access
   const knownContactIds = knownContactIdSetOf(input)
   const requiredBySpot = capabilityRequirements(spot)
 
-  // 1. 手持ちの移動手段がその capability をまったく提供しない場合だけ「不足」と言う。
+  /*
+   * 1. この Spot で営業していないサービスを持っているだけ、という状態を先に説明する。
+   * （別の海域の Charter を持っていることは「capability 不足」でも「route 非対応」でもない）
+   */
+  const outOfServiceArea = transports.filter(
+    (definition) =>
+      !transportServesSpot(definition, spot) &&
+      isTransportInPlayerScope(definition, playerTransports, knownContactIds) &&
+      includesAll(definition.capabilities, requiredBySpot) &&
+      routeCanBeUsed(definition, spot.travelOptions),
+  )
+
+  if (outOfServiceArea.length > 0) {
+    return [
+      {
+        kind: 'out_of_service_area',
+        label: '必要: この地域で営業しているサービス（手配できるのは別の地域の船・事業者）',
+        transportIds: outOfServiceArea.map((definition) => String(definition.id)),
+      },
+    ]
+  }
+
+  // 2. 手持ちの移動手段がその capability をまったく提供しない場合だけ「不足」と言う。
   const missingCapabilities = requiredBySpot.filter(
     (capability) =>
       !transports.some(
         (definition) =>
+          transportServesSpot(definition, spot) &&
           isTransportInPlayerScope(definition, playerTransports, knownContactIds) &&
           definition.capabilities.includes(capability),
       ),
@@ -404,9 +443,10 @@ const diagnoseBlockedTransport = (input: AccessEvaluationInput): readonly Access
     }))
   }
 
-  // 2. Spot の capability を 1 台で満たせる候補だけで、残りの段階を調べる。
-  const candidates = transports.filter((definition) =>
-    includesAll(definition.capabilities, requiredBySpot),
+  // 3. Spot の capability を 1 台で満たせる候補だけで、残りの段階を調べる。
+  const candidates = transports.filter(
+    (definition) =>
+      transportServesSpot(definition, spot) && includesAll(definition.capabilities, requiredBySpot),
   )
   const usable = (definition: TransportDefinition): boolean =>
     isTransportAvailable(definition, playerTransports, knownContactIds) &&

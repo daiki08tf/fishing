@@ -137,6 +137,19 @@ export const FIGHT_COMMANDS: readonly FishingCommand[] = [
 export const LANDING_COMMANDS: readonly FishingCommand[] = ['land', 'wait']
 export const PRE_FIGHT_COMMANDS: readonly FishingCommand[] = ['cast', 'hook']
 
+/**
+ * コマンドボタンの disabled。
+ *
+ * Phase が許可していないコマンドに加えて、CAST は `canCast`
+ * （`resolveCanCast` が唯一の authority）を見る。`send` が拒否する状態を
+ * 押せるボタンとして残さないためであり、MarineReadiness の判定をここで再実装しない。
+ */
+export const isCommandDisabled = (
+  command: FishingCommand,
+  allowed: readonly FishingCommand[],
+  canCast: boolean,
+): boolean => !allowed.includes(command) || (command === 'cast' && !canCast)
+
 const DEPTH_STATUS_LABELS: Readonly<Record<DepthTargetStatus, string>> = {
   comfortable: '余裕',
   reachable: '届く',
@@ -676,7 +689,7 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
               className={`control${command === 'land' ? ' control--accent' : ''}`}
               key={command}
               type="button"
-              disabled={!allowed.includes(command) || (command === 'cast' && !canCast)}
+              disabled={isCommandDisabled(command, allowed, canCast)}
               onClick={() => {
                 send(command)
               }}
@@ -710,7 +723,7 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
             className={`control${command === 'hook' ? ' control--accent' : ''}`}
             key={command}
             type="button"
-            disabled={!allowed.includes(command)}
+            disabled={isCommandDisabled(command, allowed, canCast)}
             onClick={() => {
               send(command)
             }}

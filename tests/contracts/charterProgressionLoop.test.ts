@@ -267,6 +267,61 @@ describe('Charter progression loop (real Save shape, no fullTransportState)', ()
   })
 })
 
+/**
+ * Phase 17 Final Fix — a Charter is a local service, not a nationwide one.
+ *
+ * Every charter shares `transportType: "charter_boat"`, so knowing one Captain
+ * used to satisfy every charter route in the game. Availability is now scoped by
+ * the Transport's declared `serviceRegionIds` (data, not Domain branches), so a
+ * Captain only carries the player inside the regions their service actually covers.
+ */
+describe('Charter service regions (cross-region leakage)', () => {
+  const tokyoOffshore = spotById('sagami-bay-offshore')
+  const izuOffshore = spotById('izu-offshore-grounds')
+
+  const optionIds = (spot: ReturnType<typeof spotById>, knownContactIds: readonly string[]) =>
+    evaluateAccess({
+      spot,
+      transports: content.transports,
+      playerTransports: createInitialTransportState(asTransportId),
+      knowledge: emptyKnowledgeState(),
+      permitsEnabled: true,
+      knownContactIds,
+    }).travelOptions.map((option) => String(option.transportId))
+
+  it('keeps a known Tokyo Captain out of every other region', () => {
+    const tokyo = optionIds(tokyoOffshore, ['captain-taro'])
+    const izu = optionIds(izuOffshore, ['captain-taro'])
+
+    expect(tokyo).toContain('charter-boat')
+    expect(izu).not.toContain('charter-boat')
+    expect(izu).not.toContain('charter-boat-izu')
+  })
+
+  it('exposes the Izu charter only to the Izu Captain, in Izu', () => {
+    const izu = optionIds(izuOffshore, ['captain-ryo'])
+    const tokyo = optionIds(tokyoOffshore, ['captain-ryo'])
+
+    expect(izu).toContain('charter-boat-izu')
+    expect(izu).not.toContain('charter-boat')
+    expect(tokyo).not.toContain('charter-boat-izu')
+    expect(tokyo).not.toContain('charter-boat')
+  })
+
+  it('leaves unoperated transports (rental / owned) region-agnostic', () => {
+    expect(optionIds(izuOffshore, [])).toContain('rental-boat')
+    expect(optionIds(tokyoOffshore, [])).toContain('rental-boat')
+  })
+
+  it('declares a service region for every operated Transport', () => {
+    for (const transport of content.transports) {
+      if (transport.operatorContactId !== undefined) {
+        expect(transport.serviceRegionIds?.length ?? 0).toBeGreaterThan(0)
+      }
+    }
+  })
+})
+
 describe('initiallyKnown Captain (no Buyer to introduce through)', () => {
   const captain = content.contacts.find((entry) => String(entry.id) === 'captain-daisuke')
   const charterBoat = transportById('charter-boat-hokkaido')

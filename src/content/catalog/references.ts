@@ -600,6 +600,36 @@ export const validateContentReferences = (
         message: `unknown operatorContactId ${String(transport.operatorContactId)}`,
       })
     }
+
+    /*
+     * Phase 17 Final Fix: 営業範囲は実在する Region を指し、その Region に
+     * この Transport を受け付ける route が少なくとも 1 つあること。
+     * 範囲が Content 上どの Spot にも届かないサービスは、乗れないサービスである。
+     */
+    for (const regionId of transport.serviceRegionIds ?? []) {
+      if (regions.length > 0 && !regionById.has(String(regionId))) {
+        issues.push({
+          path: `transports/${String(transport.id)}`,
+          message: `unknown serviceRegionId ${String(regionId)}`,
+        })
+        continue
+      }
+
+      const served = input.spots.some(
+        (spot) =>
+          String(spot.regionId) === String(regionId) &&
+          spot.travelOptions.some((route) =>
+            route.transportTypes.includes(transport.transportType),
+          ),
+      )
+
+      if (input.spots.length > 0 && !served) {
+        issues.push({
+          path: `transports/${String(transport.id)}`,
+          message: `serviceRegionId ${String(regionId)} has no spot route accepting ${transport.transportType}`,
+        })
+      }
+    }
   }
 
   for (const profile of speciesTradeProfiles) {

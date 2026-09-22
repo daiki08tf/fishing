@@ -7,7 +7,7 @@ import {
   TRANSPORT_OWNERSHIP_MODELS,
   TRANSPORT_TYPES,
 } from '../../domain/access/Transport'
-import { asContactId, asTransportId } from '../../domain/ids'
+import { asContactId, asRegionId, asTransportId } from '../../domain/ids'
 import { nonEmptyString } from './primitives'
 
 export const transportTypeSchema = z.enum(TRANSPORT_TYPES)
@@ -44,6 +44,7 @@ export const transportSchema = z
     launchCapability: z.enum(LAUNCH_CAPABILITIES),
     boatCapability: z.enum(BOAT_CAPABILITIES),
     passengerCapacity: z.number().int().nonnegative(),
+    serviceRegionIds: z.array(nonEmptyString.transform(asRegionId)).min(1).optional(),
     operatorContactId: nonEmptyString.transform(asContactId).optional(),
   })
   .superRefine((definition, context) => {
@@ -60,6 +61,18 @@ export const transportSchema = z
         code: 'custom',
         path: ['rentalCost'],
         message: 'rental transport requires rentalCost',
+      })
+    }
+
+    /*
+     * operator が現地で営業するサービス（Charter など）は、どの地域のサービスなのかを
+     * 必ず宣言する。transportType だけでは route が全国の同種 route に一致してしまう。
+     */
+    if (definition.operatorContactId !== undefined && definition.serviceRegionIds === undefined) {
+      context.addIssue({
+        code: 'custom',
+        path: ['serviceRegionIds'],
+        message: 'operated service transport requires serviceRegionIds',
       })
     }
   })
