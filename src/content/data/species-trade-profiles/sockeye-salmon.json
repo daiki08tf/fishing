@@ -1,0 +1,9 @@
+{
+  "speciesId": "sockeye-salmon",
+  "tradeStatus": "tradable",
+  "tradeTags": ["premium", "oily"],
+  "baseYenPerKg": 1470,
+  "minimumUnitValueYen": 220,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

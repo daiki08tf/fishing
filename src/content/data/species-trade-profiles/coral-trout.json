@@ -1,0 +1,9 @@
+{
+  "speciesId": "coral-trout",
+  "tradeStatus": "tradable",
+  "tradeTags": ["white_fish", "everyday", "local_favorite"],
+  "baseYenPerKg": 1120,
+  "minimumUnitValueYen": 170,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

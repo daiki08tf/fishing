@@ -1,0 +1,9 @@
+{
+  "speciesId": "haze",
+  "tradeStatus": "tradable",
+  "tradeTags": ["local_favorite", "small_table_fish", "everyday"],
+  "baseYenPerKg": 440,
+  "minimumUnitValueYen": 80,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

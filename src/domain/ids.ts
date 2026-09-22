@@ -26,6 +26,9 @@ export type RelationshipTargetId = Brand<string, 'RelationshipTargetId'>
 export type GearId = Brand<string, 'GearId'>
 export type BrandId = Brand<string, 'BrandId'>
 export type ShopItemId = Brand<string, 'ShopItemId'>
+/** Phase 13: 買取先 / 情報提供者。Buyer は Contact の一種として同じ ID 空間を使う。 */
+export type ContactId = Brand<string, 'ContactId'>
+export type ContactRewardId = Brand<string, 'ContactRewardId'>
 
 export const asFishSpeciesId = (value: string): FishSpeciesId => value as FishSpeciesId
 export const asFishIndividualId = (value: string): FishIndividualId => value as FishIndividualId
@@ -44,3 +47,5 @@ export const asRelationshipTargetId = (value: string): RelationshipTargetId =>
 export const asGearId = (value: string): GearId => value as GearId
 export const asBrandId = (value: string): BrandId => value as BrandId
 export const asShopItemId = (value: string): ShopItemId => value as ShopItemId
+export const asContactId = (value: string): ContactId => value as ContactId
+export const asContactRewardId = (value: string): ContactRewardId => value as ContactRewardId

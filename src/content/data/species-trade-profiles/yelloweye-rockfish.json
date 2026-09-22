@@ -1,0 +1,9 @@
+{
+  "speciesId": "yelloweye-rockfish",
+  "tradeStatus": "tradable",
+  "tradeTags": ["premium", "large_fish", "local_favorite", "delicate"],
+  "baseYenPerKg": 1190,
+  "minimumUnitValueYen": 180,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

@@ -11,6 +11,9 @@ import { transportSchema } from './transport'
 import { countrySchema } from './country'
 import { regionSchema } from './region'
 import { expeditionSchema } from './expedition'
+import { buyerSchema } from './buyer'
+import { speciesTradeProfileSchema } from './speciesTradeProfile'
+import { contactRewardSchema } from './contactReward'
 
 /**
  * Content の種別とスキーマの対応。
@@ -31,6 +34,9 @@ export const CONTENT_SCHEMAS = {
   countries: countrySchema,
   regions: regionSchema,
   expeditions: expeditionSchema,
+  buyers: buyerSchema,
+  'species-trade-profiles': speciesTradeProfileSchema,
+  'contact-rewards': contactRewardSchema,
 } as const
 
 export type ContentKind = keyof typeof CONTENT_SCHEMAS
@@ -140,6 +146,24 @@ export const parseContentRecord = (kind: ContentKind, value: unknown): ContentPa
         ? { ok: true, value: result.data }
         : { ok: false, issues: toIssues(result.error) }
     }
+    case 'buyers': {
+      const result = buyerSchema.safeParse(value)
+      return result.success
+        ? { ok: true, value: result.data }
+        : { ok: false, issues: toIssues(result.error) }
+    }
+    case 'species-trade-profiles': {
+      const result = speciesTradeProfileSchema.safeParse(value)
+      return result.success
+        ? { ok: true, value: result.data }
+        : { ok: false, issues: toIssues(result.error) }
+    }
+    case 'contact-rewards': {
+      const result = contactRewardSchema.safeParse(value)
+      return result.success
+        ? { ok: true, value: result.data }
+        : { ok: false, issues: toIssues(result.error) }
+    }
   }
 }
 
@@ -150,7 +174,7 @@ export { accessRequirementSchema } from './accessRequirement'
 export { conditionModelSchema } from './conditionModel'
 export { fishOccurrenceSchema } from './fishOccurrence'
 export { lengthDistributionSchema } from './lengthModel'
-export { spotDataStatusSchema, spotTravelOptionSchema } from './fishingSpot'
+export { spotDataStatusSchema, spotTravelOptionSchema, spotVisibilitySchema } from './fishingSpot'
 export { gearItemSchema } from './gear'
 export { methodSchema } from './method'
 export { shopItemSchema } from './shopItem'
@@ -166,3 +190,6 @@ export {
 export { countrySchema } from './country'
 export { regionSchema } from './region'
 export { expeditionSchema } from './expedition'
+export { buyerSchema } from './buyer'
+export { speciesTradeProfileSchema } from './speciesTradeProfile'
+export { contactRewardSchema } from './contactReward'

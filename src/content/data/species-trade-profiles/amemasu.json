@@ -1,0 +1,9 @@
+{
+  "speciesId": "amemasu",
+  "tradeStatus": "tradable",
+  "tradeTags": ["game_fish", "local_favorite", "white_fish"],
+  "baseYenPerKg": 710,
+  "minimumUnitValueYen": 110,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

@@ -1,0 +1,9 @@
+{
+  "speciesId": "chinook-salmon",
+  "tradeStatus": "tradable",
+  "tradeTags": ["premium", "large_fish", "oily"],
+  "baseYenPerKg": 2160,
+  "minimumUnitValueYen": 320,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

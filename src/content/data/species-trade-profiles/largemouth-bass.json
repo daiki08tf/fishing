@@ -1,0 +1,9 @@
+{
+  "speciesId": "largemouth-bass",
+  "tradeStatus": "tradable",
+  "tradeTags": ["game_fish", "large_fish"],
+  "baseYenPerKg": 780,
+  "minimumUnitValueYen": 120,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

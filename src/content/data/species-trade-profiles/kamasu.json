@@ -1,0 +1,9 @@
+{
+  "speciesId": "kamasu",
+  "tradeStatus": "tradable",
+  "tradeTags": ["everyday", "white_fish", "small_table_fish", "delicate"],
+  "baseYenPerKg": 640,
+  "minimumUnitValueYen": 100,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

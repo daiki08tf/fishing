@@ -88,6 +88,49 @@ Spot の中を複数の Fishing Zone に分け、**どの水域を狙うか**を
 Reel の capacity / control、釣法、Casting Skill、風から解決する。
 具体的な Gear ID・魚種 ID・地域名で Domain Engine を分岐しない。
 
+### 3.3 Fish Trade / Contacts / Hidden Spot（Phase 13）
+
+魚を釣ることを、Money・Relationship・Information・World Discovery へ接続する。
+
+```
+Catch
+  ↓
+Keep / Release
+  ↓
+Fish Box
+  ↓
+売却先を選ぶ
+  ↓
+Cash + Trust
+  ↓
+Rumor / Intel / Contact
+  ↓
+Hidden Spot Discovery
+  ↓
+既存 Access 判定
+  ↓
+新しい釣り
+```
+
+- LANDED した魚は、その時点で Codex・経験値の記録が確定する（Phase 2〜）。
+  そのあと「持ち帰る（Keep）」か「リリース」かを選べる。Release しても釣った記録は失わない
+- 持ち帰った魚は Fish Box に入る。売却先（居酒屋 / 卸 / 市場、架空の名称）へ売ると
+  現金と、その買取先への Trust が増える
+- 同じ魚でも、買取先によって評価が違う。居酒屋は少量でも鮮度・状態を重視し、
+  卸はまとめて持ち込むほど有利で、市場は大型・高コンディションの魚を高く評価する。
+  具体的な魚種と買取先の相性テーブルではなく、個体の condition / サイズ /
+  鮮度への感度で差を表現する
+- Trust が一定値を超えると、噂（Rumor）や釣り場の情報（Hidden Spot Discovery）、
+  ときには別の人脈の紹介を得られる
+- 「秘密の釣り場」はゲーム内の架空・一般化された Spot であり、実在する秘密の
+  座標や立入禁止場所の情報ではない
+- Hidden Spot は「知っているか（Discovery）」と「実際に行けるか（Access）」が別。
+  場所を教わっても、移動手段・許可・Knowledge が無ければ行けない
+- シーバスを狙っていてボラやアジが掛かるように、「外道」も Trade を通じて
+  価値を持つ。目的魚だけが効率よく出る方向へ Encounter を単純化しない
+- 表示される単価・Trust の伸び・釣り場情報は、すべて Phase 13 の
+  **gameplay PROVISIONAL**（現実の市場価格・漁業法・遊漁規制の主張ではない）
+
 ## 4. 世界設計
 
 ### 4.1 日本全体を巨大なゲームワールドとして扱う

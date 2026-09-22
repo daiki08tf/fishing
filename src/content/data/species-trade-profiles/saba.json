@@ -1,0 +1,9 @@
+{
+  "speciesId": "saba",
+  "tradeStatus": "tradable",
+  "tradeTags": ["everyday", "oily", "bulk"],
+  "baseYenPerKg": 1120,
+  "minimumUnitValueYen": 170,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

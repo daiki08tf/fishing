@@ -1,0 +1,45 @@
+{
+  "id": "hokkaido-hidden-tributary",
+  "name": "地元しか知らない支流（要情報）",
+  "regionId": "hokkaido",
+  "areaId": "hokkaido-north",
+  "environment": "river",
+  "dataStatus": "provisional",
+  "visibility": "hidden",
+  "access": [{ "kind": "capability", "capability": "rough_road" }],
+  "travelOptions": [
+    {
+      "id": "gravel-road",
+      "transportTypes": ["suv", "rental_car"],
+      "requiredCapabilities": ["rough_road"],
+      "features": ["vehicle_rental"],
+      "baseMinutes": 110,
+      "distanceKm": 70,
+      "baseOneWayCost": 0
+    }
+  ],
+  "habitatTags": ["stream", "rock"],
+  "depth": { "depthRangeM": { "min": 0.3, "max": 3 } },
+  "fishTable": [
+    { "speciesId": "amemasu", "basePresence": 0.45 },
+    { "speciesId": "iwana", "basePresence": 0.3 }
+  ],
+  "knowledgeConfig": {
+    "reveals": [{ "field": "main_species", "minKnowledge": 20 }]
+  },
+  "fishingZones": [
+    {
+      "id": "flow",
+      "name": "流芯",
+      "castDistanceM": { "min": 0, "max": 20 },
+      "depthRangeM": { "min": 0.5, "max": 3 },
+      "habitatTags": ["river", "current"]
+    }
+  ],
+  "sourceRefs": [
+    {
+      "id": "phase13-hidden-fictional",
+      "title": "PROVISIONAL / fictional — Hidden Spot はゲーム用の架空地点であり、実在の座標や立入可否を示すものではない"
+    }
+  ]
+}

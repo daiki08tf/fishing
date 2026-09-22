@@ -1,0 +1,8 @@
+{
+  "id": "market-spot-hokkaido-tributary",
+  "contactId": "market-broker",
+  "minTrust": 60,
+  "kind": "discover_spot",
+  "message": "北海道の支流の正確な場所を教えてもらえた。",
+  "targetId": "hokkaido-hidden-tributary"
+}

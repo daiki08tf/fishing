@@ -1,0 +1,9 @@
+{
+  "speciesId": "golden-trevally",
+  "tradeStatus": "tradable",
+  "tradeTags": ["premium", "game_fish", "white_fish"],
+  "baseYenPerKg": 1060,
+  "minimumUnitValueYen": 160,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

@@ -70,7 +70,13 @@ export const WORLD_EVENTS = [
 export type WorldEvent = (typeof WORLD_EVENTS)[number]
 
 export type WorldFailureReason =
-  'not_at_home' | 'not_at_spot' | 'inaccessible' | 'not_in_region' | 'no_travel_option'
+  | 'not_at_home'
+  | 'not_at_spot'
+  | 'inaccessible'
+  | 'not_in_region'
+  | 'no_travel_option'
+  /** Phase 13.1: Hidden Spot の存在をまだ知らない。 */
+  | 'undiscovered'
 
 export type WorldActionResult =
   | {
@@ -95,14 +101,40 @@ export const createInitialWorld = (tuning: WorldTuning = DEFAULT_WORLD_TUNING): 
   discoveredSpotIds: [],
 })
 
-const rememberSpot = (
+export const rememberSpot = (
   discovered: readonly FishingSpotId[],
   spotId: FishingSpotId,
 ): readonly FishingSpotId[] => (discovered.includes(spotId) ? discovered : [...discovered, spotId])
 
 /**
+ * Phase 13: Contact から場所を教えてもらった Hidden Spot を Map に出す。
+ *
+ * `discoveredSpotIds` を Discovery の authority としてそのまま使う。
+ * 実際に訪れたわけではないので、初訪問 Knowledge ボーナス（`arriveAtSpot`）は与えない。
+ * Access（実際に行けるか）はここでは判定しない。既存の AccessEngine が別途判定する。
+ */
+export const discoverSpotFromContact = (world: WorldState, spotId: FishingSpotId): WorldState => ({
+  ...world,
+  discoveredSpotIds: rememberSpot(world.discoveredSpotIds, spotId),
+})
+
+/**
+ * Phase 13.1: その Spot を Map に出してよいか（= 存在を知っているか）。
+ *
+ * `visibility` が未設定の Spot は `public` として扱う（従来の挙動を変えない）。
+ * Discovery の authority は `world.discoveredSpotIds` だけである。
+ */
+export const isSpotKnown = (world: WorldState, spot: FishingSpot): boolean =>
+  spot.visibility !== 'hidden' || world.discoveredSpotIds.includes(spot.id)
+
+/**
  * 自宅を出て Spot へ向かう。所要時間をゲーム内時間へ加算する。
  * アクセス条件を満たさない場合は失敗する（Level は条件に存在しない）。
+ *
+ * Phase 13.1: **未発見の Hidden Spot へは、Access 条件を満たしていても行けない。**
+ * Discovery（知っているか）と Access（行けるか）は独立であり、
+ * UI 非表示だけを防壁にしない（Domain / action boundary で必ず拒否する）。
+ * AccessEngine 自体は Transport / Permit / Knowledge の専門のままにする。
  */
 export const leaveForSpot = (input: {
   readonly context: WorldContext
@@ -118,6 +150,14 @@ export const leaveForSpot = (input: {
 
   if (world.phase !== 'HOME') {
     return { ok: false, reason: 'not_at_home', message: '自宅にいないため出発できない' }
+  }
+
+  if (!isSpotKnown(world, input.spot)) {
+    return {
+      ok: false,
+      reason: 'undiscovered',
+      message: 'その釣り場の場所をまだ知らない（人脈から情報を得る）',
+    }
   }
 
   // Phase 8: 遠征していない地域の Spot へは行けない（同じ地域にいるときだけ）。

@@ -1,0 +1,9 @@
+{
+  "speciesId": "oshorokoma",
+  "tradeStatus": "tradable",
+  "tradeTags": ["local_favorite", "delicate", "game_fish", "small_table_fish"],
+  "baseYenPerKg": 780,
+  "minimumUnitValueYen": 120,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

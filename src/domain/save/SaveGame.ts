@@ -9,6 +9,7 @@ import type { Inventory } from '../tackle/Inventory'
 import type { Loadout } from '../tackle/Loadout'
 import type { PlayerTransportState } from '../access/Transport'
 import type { ExpeditionState } from '../expedition/Expedition'
+import type { TradeState } from '../trade/TradeState'
 import type { FishingSpotId, ShopItemId } from '../ids'
 import type { WorldTime } from '../world/WorldTime'
 import type { WorldPhase, WorldState } from '../world/worldSession'
@@ -29,6 +30,8 @@ import type { WorldPhase, WorldState } from '../world/worldSession'
  *     遠征（current / 訪問済み地域 / 許可）を独立ブロックで保存する。
  * v8: Phase 12。魚種 ID を地域依存から世界共通の canonical ID へ移行する。
  *     保存構造自体は v7 と同じで、Codex / Knowledge / repetition のキーだけを正規化する。
+ * v9: Phase 13。Fish Box（持ち帰った魚）と Trade / Contact（Trust・claim 済み報酬・
+ *     既知の噂）を独立ブロック（trade）として追加する。既存ブロックは変更しない。
  */
 
 export const SAVE_SCHEMA_VERSION_V1 = 1 as const
@@ -39,8 +42,9 @@ export const SAVE_SCHEMA_VERSION_V5 = 5 as const
 export const SAVE_SCHEMA_VERSION_V6 = 6 as const
 export const SAVE_SCHEMA_VERSION_V7 = 7 as const
 export const SAVE_SCHEMA_VERSION_V8 = 8 as const
+export const SAVE_SCHEMA_VERSION_V9 = 9 as const
 
-export const CURRENT_SAVE_SCHEMA_VERSION = SAVE_SCHEMA_VERSION_V8
+export const CURRENT_SAVE_SCHEMA_VERSION = SAVE_SCHEMA_VERSION_V9
 
 export type SaveSchemaVersion = typeof CURRENT_SAVE_SCHEMA_VERSION
 
@@ -237,4 +241,16 @@ export type SaveGameV8 = Omit<SaveGameV7, 'schemaVersion'> & {
   readonly schemaVersion: typeof SAVE_SCHEMA_VERSION_V8
 }
 
-export type CurrentSave = SaveGameV8
+/**
+ * 現行の Save（Phase 13）。
+ *
+ * trade は Fish Box（持ち帰った魚）と Trade / Contact（Trust・claim 済み報酬・
+ * 既知の噂）をまとめた独立ブロック。Hidden Spot の discovered 判定は
+ * 既存の `world.discoveredSpotIds` をそのまま使うため、ここには持たない。
+ */
+export type SaveGameV9 = Omit<SaveGameV8, 'schemaVersion'> & {
+  readonly schemaVersion: typeof SAVE_SCHEMA_VERSION_V9
+  readonly trade: TradeState
+}
+
+export type CurrentSave = SaveGameV9

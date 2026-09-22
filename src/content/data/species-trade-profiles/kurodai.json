@@ -1,0 +1,9 @@
+{
+  "speciesId": "kurodai",
+  "tradeStatus": "tradable",
+  "tradeTags": ["premium", "game_fish", "delicate", "local_favorite"],
+  "baseYenPerKg": 1120,
+  "minimumUnitValueYen": 170,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

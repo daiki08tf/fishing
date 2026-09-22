@@ -1,0 +1,8 @@
+{
+  "id": "market-spot-bc-estuary",
+  "contactId": "market-broker",
+  "minTrust": 80,
+  "kind": "discover_spot",
+  "message": "長い付き合いの仲買人が、BCの漁師しか知らない入江を紹介してくれた。",
+  "targetId": "bc-hidden-secluded-estuary"
+}

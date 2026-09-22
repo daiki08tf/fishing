@@ -1,0 +1,9 @@
+{
+  "speciesId": "rainbow-trout",
+  "tradeStatus": "tradable",
+  "tradeTags": ["game_fish", "delicate", "white_fish"],
+  "baseYenPerKg": 640,
+  "minimumUnitValueYen": 100,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

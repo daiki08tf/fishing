@@ -1,0 +1,9 @@
+{
+  "speciesId": "shirogisu",
+  "tradeStatus": "tradable",
+  "tradeTags": ["premium", "small_table_fish", "delicate", "everyday"],
+  "baseYenPerKg": 440,
+  "minimumUnitValueYen": 80,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

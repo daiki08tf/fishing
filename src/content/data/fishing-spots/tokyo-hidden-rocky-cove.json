@@ -1,0 +1,53 @@
+{
+  "id": "tokyo-hidden-rocky-cove",
+  "name": "人の少ない磯の入江（要情報）",
+  "regionId": "tokyo-area",
+  "areaId": "kanagawa",
+  "environment": "bay_shore",
+  "dataStatus": "provisional",
+  "visibility": "hidden",
+  "access": [{ "kind": "capability", "capability": "road_access" }],
+  "travelOptions": [
+    {
+      "id": "coast-road",
+      "transportTypes": ["compact_car", "rental_car", "motorcycle"],
+      "requiredCapabilities": ["road_access"],
+      "features": [],
+      "baseMinutes": 70,
+      "distanceKm": 48,
+      "baseOneWayCost": 0
+    }
+  ],
+  "habitatTags": ["reef", "rocky"],
+  "depth": { "depthRangeM": { "min": 1, "max": 8 } },
+  "fishTable": [
+    { "speciesId": "kurodai", "basePresence": 0.45 },
+    { "speciesId": "maaji", "basePresence": 0.4 },
+    { "speciesId": "saba", "basePresence": 0.35 }
+  ],
+  "knowledgeConfig": {
+    "reveals": [{ "field": "main_species", "minKnowledge": 20 }]
+  },
+  "fishingZones": [
+    {
+      "id": "rocks",
+      "name": "岩場際",
+      "castDistanceM": { "min": 0, "max": 20 },
+      "depthRangeM": { "min": 1, "max": 4 },
+      "habitatTags": ["reef", "structure"]
+    },
+    {
+      "id": "cove",
+      "name": "入江の沖",
+      "castDistanceM": { "min": 20, "max": 45 },
+      "depthRangeM": { "min": 3, "max": 8 },
+      "habitatTags": ["open"]
+    }
+  ],
+  "sourceRefs": [
+    {
+      "id": "phase13-hidden-fictional",
+      "title": "PROVISIONAL / fictional — Hidden Spot はゲーム用の架空地点であり、実在の座標や立入可否を示すものではない"
+    }
+  ]
+}

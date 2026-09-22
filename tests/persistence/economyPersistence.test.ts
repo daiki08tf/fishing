@@ -12,7 +12,7 @@ import {
   createValidSaveV1,
   createValidSaveV2,
   createValidSaveV3,
-  createValidSaveV8,
+  createValidSaveV9,
 } from '../fixtures/save'
 import { createTestSpot } from '../fixtures/spots'
 import { TEST_TRANSPORTS } from '../fixtures/transports'
@@ -54,20 +54,20 @@ describe('economy persistence', () => {
         },
       ],
     }
-    const restored = await reload({ ...createValidSaveV8(), finance })
+    const restored = await reload({ ...createValidSaveV9(), finance })
 
     expect(restored.finance).toEqual(finance)
   })
 
   it('round trips the purchases', async () => {
     const purchases = [asShopItemId('used-compact-car')]
-    const restored = await reload({ ...createValidSaveV8(), purchases })
+    const restored = await reload({ ...createValidSaveV9(), purchases })
 
     expect(restored.purchases).toEqual(purchases)
   })
 
   it('round trips the owned transport', async () => {
-    const save = createValidSaveV8()
+    const save = createValidSaveV9()
     const restored = await reload({
       ...save,
       transport: grantOwnedTransport(save.transport, asTransportId('used-compact-car')),
@@ -104,7 +104,7 @@ describe('economy persistence', () => {
       expect(result.ok).toBe(true)
 
       if (result.ok) {
-        expect(result.save.schemaVersion).toBe(8)
+        expect(result.save.schemaVersion).toBe(9)
         expect(result.save.world.phase).toBe('HOME')
       }
     }
@@ -112,7 +112,7 @@ describe('economy persistence', () => {
 
   it('rejects a malformed finance block', () => {
     const broken = {
-      ...createValidSaveV8(),
+      ...createValidSaveV9(),
       finance: { ...createInitialFinanceState(), lastSettledMonth: 'May' },
     }
 
@@ -120,7 +120,7 @@ describe('economy persistence', () => {
   })
 
   it('does not persist a work schedule at all', () => {
-    const save = createValidSaveV8() as unknown as Record<string, unknown>
+    const save = createValidSaveV9() as unknown as Record<string, unknown>
 
     // 仕事の予定（勤務時間・有給）はゲームシステムではないので保存しない。
     expect(save['schedule']).toBeUndefined()
@@ -129,7 +129,7 @@ describe('economy persistence', () => {
 
   it('does not autosave before hydration completes', async () => {
     const repository = new InMemorySaveRepository()
-    await repository.save(createValidSaveV8())
+    await repository.save(createValidSaveV9())
 
     const store = createPlayerStore()
     const coordinator = createPersistenceCoordinator({ repository, store })
@@ -142,7 +142,7 @@ describe('economy persistence', () => {
 
     const loaded = (await repository.loadRaw()) as CurrentSave
 
-    expect(loaded.finance.cash).toBe(createValidSaveV8().finance.cash)
+    expect(loaded.finance.cash).toBe(createValidSaveV9().finance.cash)
     coordinator.stop()
   })
 

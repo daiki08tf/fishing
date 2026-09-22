@@ -1,0 +1,45 @@
+{
+  "id": "alaska-hidden-river-branch",
+  "name": "ガイドしか案内しない支流（要情報）",
+  "regionId": "alaska",
+  "areaId": "kenai",
+  "environment": "river",
+  "dataStatus": "provisional",
+  "visibility": "hidden",
+  "access": [{ "kind": "capability", "capability": "rough_road" }],
+  "travelOptions": [
+    {
+      "id": "back-road",
+      "transportTypes": ["rental_car", "suv"],
+      "requiredCapabilities": ["rough_road"],
+      "features": ["vehicle_rental"],
+      "baseMinutes": 100,
+      "distanceKm": 65,
+      "baseOneWayCost": 0
+    }
+  ],
+  "habitatTags": ["river", "gravel"],
+  "depth": { "depthRangeM": { "min": 0.5, "max": 3.5 } },
+  "fishTable": [
+    { "speciesId": "sockeye-salmon", "basePresence": 0.4 },
+    { "speciesId": "dolly-varden", "basePresence": 0.35 }
+  ],
+  "knowledgeConfig": {
+    "reveals": [{ "field": "main_species", "minKnowledge": 20 }]
+  },
+  "fishingZones": [
+    {
+      "id": "branch",
+      "name": "分流",
+      "castDistanceM": { "min": 0, "max": 22 },
+      "depthRangeM": { "min": 0.5, "max": 3 },
+      "habitatTags": ["river", "current"]
+    }
+  ],
+  "sourceRefs": [
+    {
+      "id": "phase13-hidden-fictional",
+      "title": "PROVISIONAL / fictional — Hidden Spot はゲーム用の架空地点であり、実在の座標や立入可否を示すものではない"
+    }
+  ]
+}

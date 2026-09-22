@@ -10,6 +10,18 @@ import {
 import { resolveCatch } from '../domain/catch'
 import { emptyCodexState, type CodexState } from '../domain/codex'
 import {
+  addKeptCatch,
+  claimEligibleRewards,
+  createInitialTradeState,
+  sellCatches,
+  toKeptCatch,
+  type BuyerDefinition,
+  type ContactReward,
+  type SaleLine,
+  type SpeciesTradeProfile,
+  type TradeState,
+} from '../domain/trade'
+import {
   searchWater as resolveSearchWater,
   type EnvironmentSnapshot,
   type SearchSign,
@@ -24,7 +36,7 @@ import {
 } from '../domain/expedition'
 import type { FishIndividual } from '../domain/fish/FishIndividual'
 import type { FishSpecies } from '../domain/fish/FishSpecies'
-import type { GearId, TransportId } from '../domain/ids'
+import type { FishIndividualId, FishingSpotId, GearId, TransportId } from '../domain/ids'
 import type { GearItem } from '../domain/gear/Gear'
 import { emptyKnowledgeState, type KnowledgeState } from '../domain/knowledge/KnowledgeState'
 import type { FishingMethod } from '../domain/method/FishingMethod'
@@ -76,6 +88,8 @@ import {
   arriveAtSpot,
   arriveHome,
   createInitialWorld,
+  discoverSpotFromContact,
+  isSpotKnown,
   leaveForSpot,
   leaveSpot,
   moveToRegion,
@@ -144,6 +158,26 @@ export type RecordCatchInput = {
   readonly capturedAt?: string
 }
 
+export type SellToBuyerInput = {
+  readonly buyer: BuyerDefinition
+  readonly catchIds: readonly FishIndividualId[]
+  readonly tradeProfileBySpeciesId: Readonly<Record<string, SpeciesTradeProfile>>
+  /** その買取先の報酬定義。閾値到達分だけ claim する。 */
+  readonly rewards: readonly ContactReward[]
+}
+
+export type SellToBuyerResult =
+  | {
+      readonly ok: true
+      readonly totalValueYen: number
+      /** 実際に state へ入った Trust の増分（Trust 100 では 0）。 */
+      readonly actualTrustGain: number
+      readonly lines: readonly SaleLine[]
+      readonly excludedCatchIds: readonly FishIndividualId[]
+      readonly newlyClaimedRewards: readonly ContactReward[]
+    }
+  | { readonly ok: false; readonly reason: 'no_catches_selected' | 'buyer_region_mismatch' }
+
 export type RecordAttemptInput = {
   readonly spot: FishingSpot
   readonly outcome: 'landed' | 'failed'
@@ -167,6 +201,8 @@ export type PersistedPlayerSlice = {
   readonly inventory: Inventory
   /** 現在の装備（Phase 6）。 */
   readonly loadout: Loadout
+  /** Phase 13: Fish Box / Trade / Contact。 */
+  readonly trade: TradeState
 }
 
 /**
@@ -220,6 +256,13 @@ export type PlayerStoreState = PersistedPlayerSlice & {
   resetPlayerState(): void
 
   recordCatch(input: RecordCatchInput): void
+  /**
+   * Phase 13: LANDED した個体を Fish Box へ持ち帰る。
+   * Codex / XP（recordCatch）とは独立している。Release を選んだ場合はこれを呼ばない。
+   */
+  keepCatch(individual: FishIndividual, spot: FishingSpot): void
+  /** Fish Box の中身を 1 つの買取先へ売る。Trust の上昇と報酬の claim も反映する。 */
+  sellToBuyer(input: SellToBuyerInput): SellToBuyerResult
   spendSkillPoint(skill: AnglerSkill, amount?: number): void
   resetSkills(): void
 
@@ -301,6 +344,7 @@ const createInitialState = (): PersistedPlayerSlice & {
   purchases: [],
   inventory: createStarterInventory(asGearId),
   loadout: createStarterLoadout(asGearId),
+  trade: createInitialTradeState(),
   lastCatch: null,
   skillAllocationError: null,
   lastSearch: null,
@@ -336,6 +380,7 @@ export const createPlayerStore = () =>
         purchases: save.purchases,
         inventory: save.inventory,
         loadout: save.loadout,
+        trade: save.trade,
         lastCatch: null,
         skillAllocationError: null,
         lastSearch: null,
@@ -387,6 +432,70 @@ export const createPlayerStore = () =>
           factors: resolution.xp.factors,
         },
       })
+    },
+
+    keepCatch: (individual, spot) => {
+      if (get().hydrationStatus !== 'ready') {
+        return
+      }
+
+      const { trade, world } = get()
+      const entry = toKeptCatch({
+        individual,
+        caughtAt: world.time,
+        sourceSpotId: spot.id,
+        sourceRegionId: spot.regionId,
+      })
+
+      set({ trade: { ...trade, fishBox: addKeptCatch(trade.fishBox, entry) } })
+    },
+
+    sellToBuyer: (input) => {
+      if (get().hydrationStatus !== 'ready') {
+        return { ok: false, reason: 'no_catches_selected' }
+      }
+
+      const { trade, finance, world } = get()
+      const result = sellCatches({
+        fishBox: trade.fishBox,
+        finance,
+        trade,
+        buyer: input.buyer,
+        // Phase 13.1: Domain 側でも現在地域を強制する（UI の出し分けだけに頼らない）。
+        currentRegionId: world.currentRegionId,
+        catchIds: input.catchIds,
+        tradeProfileBySpeciesId: input.tradeProfileBySpeciesId,
+        now: world.time,
+      })
+
+      if (!result.ok) {
+        return result
+      }
+
+      // 売却で Trust が上がった分、閾値を越えた報酬を確定する。
+      const claim = claimEligibleRewards(result.trade, input.buyer.id, input.rewards)
+      let nextWorld = world
+
+      for (const reward of claim.newlyClaimed) {
+        if (reward.kind === 'discover_spot' && reward.targetId !== undefined) {
+          nextWorld = discoverSpotFromContact(nextWorld, reward.targetId as FishingSpotId)
+        }
+      }
+
+      set({
+        finance: result.finance,
+        trade: claim.trade,
+        world: nextWorld,
+      })
+
+      return {
+        ok: true,
+        totalValueYen: result.totalValueYen,
+        actualTrustGain: result.actualTrustGain,
+        lines: result.lines,
+        excludedCatchIds: result.excludedCatchIds,
+        newlyClaimedRewards: claim.newlyClaimed,
+      }
     },
 
     spendSkillPoint: (skill, amount = 1) => {
@@ -481,6 +590,18 @@ export const createPlayerStore = () =>
           ok: false,
           reason: 'access',
           message: '今いる地域と違う釣り場へは行けない（遠征で移動する）',
+        }
+      }
+
+      /*
+       * Phase 13.1: 未発見の Hidden Spot は「知らない」ので出発できない。
+       * 交通費を引く前にここで止める（Domain の leaveForSpot と同じ規則）。
+       */
+      if (!isSpotKnown(world, spot)) {
+        return {
+          ok: false,
+          reason: 'access',
+          message: 'その釣り場の場所をまだ知らない（人脈から情報を得る）',
         }
       }
 

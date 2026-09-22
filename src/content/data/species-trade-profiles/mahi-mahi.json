@@ -1,0 +1,9 @@
+{
+  "speciesId": "mahi-mahi",
+  "tradeStatus": "tradable",
+  "tradeTags": ["everyday", "large_fish", "white_fish", "game_fish"],
+  "baseYenPerKg": 1120,
+  "minimumUnitValueYen": 170,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

@@ -1,0 +1,9 @@
+{
+  "speciesId": "oikawa",
+  "tradeStatus": "tradable",
+  "tradeTags": ["small_table_fish", "game_fish", "delicate"],
+  "baseYenPerKg": 300,
+  "minimumUnitValueYen": 80,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

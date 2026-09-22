@@ -1,0 +1,9 @@
+{
+  "speciesId": "red-emperor",
+  "tradeStatus": "tradable",
+  "tradeTags": ["premium", "large_fish", "delicate"],
+  "baseYenPerKg": 1120,
+  "minimumUnitValueYen": 170,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

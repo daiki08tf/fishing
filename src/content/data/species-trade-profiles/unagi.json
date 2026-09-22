@@ -1,0 +1,9 @@
+{
+  "speciesId": "unagi",
+  "tradeStatus": "tradable",
+  "tradeTags": ["premium", "local_favorite", "oily", "delicate"],
+  "baseYenPerKg": 920,
+  "minimumUnitValueYen": 140,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

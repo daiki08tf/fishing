@@ -1,0 +1,9 @@
+{
+  "speciesId": "quillback-rockfish",
+  "tradeStatus": "tradable",
+  "tradeTags": ["everyday", "white_fish", "local_favorite"],
+  "baseYenPerKg": 1060,
+  "minimumUnitValueYen": 160,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

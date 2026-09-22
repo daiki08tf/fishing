@@ -39,21 +39,30 @@ export const HomeScreen = () => {
   const expedition = usePlayerStore((state) => state.expedition)
   const loadout = usePlayerStore((state) => state.loadout)
   const inventory = usePlayerStore((state) => state.inventory)
+  const trade = usePlayerStore((state) => state.trade)
 
   if (!content.ok) {
     return <ContentErrorPanel message={content.message} />
   }
 
   const current = expedition.current
-  const localSpots = content.value.spots.filter(
+  /*
+   * Phase 13.1: Map と同じ visibility / discovery 規則で数える。
+   * 未発見の Hidden Spot を分母に含めると、存在しない釣り場の数が漏れる。
+   */
+  const visibleSpots = content.value.spots.filter(
+    (spot) => spot.visibility !== 'hidden' || world.discoveredSpotIds.includes(spot.id),
+  )
+  const localSpots = visibleSpots.filter(
     (spot) => String(spot.regionId) === String(world.currentRegionId),
   )
   const accessible = localSpots.filter(
     (spot) => evaluateSpot(spot, content.value.transports).accessible,
   )
+  const discoveredSpots = visibleSpots.filter((spot) => world.discoveredSpotIds.includes(spot.id))
   const currentRegion = content.value.regionById[String(world.currentRegionId)]
   const summarySpot = pickSummaryEnvironment(
-    content.value.spots.filter((spot) => String(spot.regionId) === String(world.currentRegionId)),
+    visibleSpots.filter((spot) => String(spot.regionId) === String(world.currentRegionId)),
   )
   const environment =
     summarySpot === undefined || currentRegion === undefined
@@ -139,7 +148,7 @@ export const HomeScreen = () => {
           </div>
           <div>
             <dt>発見した釣り場</dt>
-            <dd>{world.discoveredSpotIds.length} 箇所</dd>
+            <dd>{discoveredSpots.length} 箇所</dd>
           </div>
           <div>
             <dt>地域の知識</dt>
@@ -191,6 +200,24 @@ export const HomeScreen = () => {
           }}
         >
           成長を見る
+        </button>
+        <button
+          className="button"
+          type="button"
+          onClick={() => {
+            setActiveScreen('fishbox')
+          }}
+        >
+          Fish Box（{trade.fishBox.length}）
+        </button>
+        <button
+          className="button"
+          type="button"
+          onClick={() => {
+            setActiveScreen('contacts')
+          }}
+        >
+          人脈（CONTACTS）
         </button>
         <button
           className="button"

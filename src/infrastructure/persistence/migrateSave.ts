@@ -3,6 +3,7 @@ import { emptyRepetitionState } from '../../domain/progression/repetitionDecay'
 import { emptyCodexState } from '../../domain/codex'
 import { createInitialTransportState, grantOwnedTransport } from '../../domain/access/Transport'
 import { createInitialExpeditionState } from '../../domain/expedition'
+import { createInitialTradeState } from '../../domain/trade'
 import {
   asFishSpeciesId,
   asGearId,
@@ -24,6 +25,7 @@ import {
   SAVE_SCHEMA_VERSION_V6,
   SAVE_SCHEMA_VERSION_V7,
   SAVE_SCHEMA_VERSION_V8,
+  SAVE_SCHEMA_VERSION_V9,
   type CurrentSave,
   type LegacyTransportType,
   type LegacyWorldState,
@@ -35,6 +37,7 @@ import {
   type SaveGameV6,
   type SaveGameV7,
   type SaveGameV8,
+  type SaveGameV9,
 } from '../../domain/save/SaveGame'
 import {
   currentSaveSchema,
@@ -45,6 +48,7 @@ import {
   saveGameV5Schema,
   saveGameV6Schema,
   saveGameV7Schema,
+  saveGameV8Schema,
 } from './saveSchema'
 
 /**
@@ -422,8 +426,21 @@ export const migrateV7ToV8 = (v7: SaveGameV7): SaveGameV8 => {
   }
 }
 
-const toCurrent = (save: SaveGameV4): SaveGameV8 =>
-  migrateV7ToV8(migrateV6ToV7(migrateV5ToV6(migrateV4ToV5(save))))
+/**
+ * v8 → v9（Phase 13）。
+ *
+ * Fish Box / Trade / Contact を空の初期状態で追加する。
+ * 既存の Codex / World / discoveredSpotIds / Progression / Knowledge / Finance /
+ * Inventory / Loadout / Transport / Expedition は一切変更しない。
+ */
+export const migrateV8ToV9 = (v8: SaveGameV8): SaveGameV9 => ({
+  ...v8,
+  schemaVersion: SAVE_SCHEMA_VERSION_V9,
+  trade: createInitialTradeState(),
+})
+
+const toCurrent = (save: SaveGameV4): SaveGameV9 =>
+  migrateV8ToV9(migrateV7ToV8(migrateV6ToV7(migrateV5ToV6(migrateV4ToV5(save)))))
 
 export const migrateSave = (raw: unknown): SaveMigrationResult => {
   if (typeof raw !== 'object' || raw === null || Array.isArray(raw)) {
@@ -565,7 +582,7 @@ export const migrateSave = (raw: unknown): SaveMigrationResult => {
     }
 
     const migrated = currentSaveSchema.safeParse(
-      migrateV7ToV8(migrateV6ToV7(migrateV5ToV6(parsed.data))),
+      migrateV8ToV9(migrateV7ToV8(migrateV6ToV7(migrateV5ToV6(parsed.data)))),
     )
 
     if (!migrated.success) {
@@ -590,7 +607,9 @@ export const migrateSave = (raw: unknown): SaveMigrationResult => {
       )
     }
 
-    const migrated = currentSaveSchema.safeParse(migrateV7ToV8(migrateV6ToV7(parsed.data)))
+    const migrated = currentSaveSchema.safeParse(
+      migrateV8ToV9(migrateV7ToV8(migrateV6ToV7(parsed.data))),
+    )
 
     if (!migrated.success) {
       return failure(
@@ -614,7 +633,7 @@ export const migrateSave = (raw: unknown): SaveMigrationResult => {
       )
     }
 
-    const migrated = currentSaveSchema.safeParse(migrateV7ToV8(parsed.data))
+    const migrated = currentSaveSchema.safeParse(migrateV8ToV9(migrateV7ToV8(parsed.data)))
 
     if (!migrated.success) {
       return failure(
@@ -625,6 +644,30 @@ export const migrateSave = (raw: unknown): SaveMigrationResult => {
     }
 
     return { ok: true, save: migrated.data, migratedFrom: SAVE_SCHEMA_VERSION_V7 }
+  }
+
+  if (schemaVersion === SAVE_SCHEMA_VERSION_V8) {
+    const parsed = saveGameV8Schema.safeParse(record)
+
+    if (!parsed.success) {
+      return failure(
+        'invalid_save',
+        'save data failed v8 schema validation',
+        toIssues(parsed.error),
+      )
+    }
+
+    const migrated = currentSaveSchema.safeParse(migrateV8ToV9(parsed.data))
+
+    if (!migrated.success) {
+      return failure(
+        'invalid_save',
+        'migrated save failed current schema validation',
+        toIssues(migrated.error),
+      )
+    }
+
+    return { ok: true, save: migrated.data, migratedFrom: SAVE_SCHEMA_VERSION_V8 }
   }
 
   const parsed = currentSaveSchema.safeParse(record)

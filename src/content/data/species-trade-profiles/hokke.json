@@ -1,0 +1,9 @@
+{
+  "speciesId": "hokke",
+  "tradeStatus": "tradable",
+  "tradeTags": ["everyday", "bulk", "local_favorite", "white_fish"],
+  "baseYenPerKg": 640,
+  "minimumUnitValueYen": 100,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

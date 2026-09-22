@@ -1,0 +1,9 @@
+{
+  "speciesId": "hiramasa",
+  "tradeStatus": "tradable",
+  "tradeTags": ["premium", "large_fish", "game_fish", "delicate"],
+  "baseYenPerKg": 1260,
+  "minimumUnitValueYen": 190,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

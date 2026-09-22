@@ -1,0 +1,9 @@
+{
+  "speciesId": "queenfish",
+  "tradeStatus": "tradable",
+  "tradeTags": ["game_fish", "large_fish", "white_fish"],
+  "baseYenPerKg": 990,
+  "minimumUnitValueYen": 150,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

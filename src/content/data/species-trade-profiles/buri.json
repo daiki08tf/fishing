@@ -1,0 +1,9 @@
+{
+  "speciesId": "buri",
+  "tradeStatus": "tradable",
+  "tradeTags": ["premium", "large_fish", "oily"],
+  "baseYenPerKg": 2500,
+  "minimumUnitValueYen": 380,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

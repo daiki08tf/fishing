@@ -1,0 +1,9 @@
+{
+  "speciesId": "tachiuo",
+  "tradeStatus": "tradable",
+  "tradeTags": ["everyday", "large_fish", "delicate", "local_favorite"],
+  "baseYenPerKg": 990,
+  "minimumUnitValueYen": 150,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

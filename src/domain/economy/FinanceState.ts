@@ -8,7 +8,14 @@
  * `simplifiedLivingCost` にまとめる（GAME_DESIGN.md §12.3）。
  */
 
-export const TRANSACTION_KINDS = ['salary', 'living_cost', 'travel', 'purchase', 'other'] as const
+export const TRANSACTION_KINDS = [
+  'salary',
+  'living_cost',
+  'travel',
+  'purchase',
+  'trade',
+  'other',
+] as const
 export type TransactionKind = (typeof TRANSACTION_KINDS)[number]
 
 /** 直近の履歴。詳細な家計簿ではなく「さっき何に使ったか」が分かる程度。 */

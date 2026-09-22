@@ -1,0 +1,9 @@
+{
+  "speciesId": "pink-salmon",
+  "tradeStatus": "tradable",
+  "tradeTags": ["everyday", "bulk", "oily"],
+  "baseYenPerKg": 850,
+  "minimumUnitValueYen": 130,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

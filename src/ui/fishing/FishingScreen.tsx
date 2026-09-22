@@ -168,6 +168,7 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
   const {
     contentError,
     snapshot,
+    spot,
     spotName,
     environment,
     conditions,
@@ -184,8 +185,15 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
   const codex = usePlayerStore((state) => state.codex)
   const lastCatch = usePlayerStore((state) => state.lastCatch)
   const progression = usePlayerStore((state) => state.progression)
+  const keepCatch = usePlayerStore((state) => state.keepCatch)
   const setActiveScreen = useAppStore((state) => state.setActiveScreen)
   const [auto, setAuto] = useState(false)
+  /*
+   * Keep / Release（Phase 13）。Codex / XP は LANDED の時点で既に確定しているので
+   * （useFishingSession の resolveSessionEnd）、ここでは Fish Box に入れるかどうかだけを扱う。
+   * 個体 ID ごとに選択済みかを覚えておく（同じ個体に二重操作させない）。
+   */
+  const [disposedCatchIds, setDisposedCatchIds] = useState<readonly string[]>([])
 
   /*
    * AUTO（おまかせ）: trivial な相手を早く進めるための補助。
@@ -501,6 +509,40 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
             </button>
           ))}
         </div>
+
+        {snapshot.phase === 'LANDED' && fish !== null && spot !== undefined
+          ? (() => {
+              const catchId = String(fish.individual.id)
+              const disposed = disposedCatchIds.includes(catchId)
+
+              return (
+                <div className="controls controls--result">
+                  <button
+                    className="control control--accent"
+                    type="button"
+                    disabled={disposed}
+                    onClick={() => {
+                      keepCatch(fish.individual, spot)
+                      setDisposedCatchIds((current) => [...current, catchId])
+                    }}
+                  >
+                    持ち帰る（Fish Box へ）
+                  </button>
+                  <button
+                    className="control"
+                    type="button"
+                    disabled={disposed}
+                    onClick={() => {
+                      setDisposedCatchIds((current) => [...current, catchId])
+                    }}
+                  >
+                    リリース
+                  </button>
+                  {disposed ? <p className="fishing__legend">決定済み</p> : null}
+                </div>
+              )
+            })()
+          : null}
 
         {finished ? (
           <div className="controls controls--result">

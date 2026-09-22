@@ -1,0 +1,9 @@
+{
+  "speciesId": "sablefish",
+  "tradeStatus": "tradable",
+  "tradeTags": ["premium", "large_fish", "oily"],
+  "baseYenPerKg": 1120,
+  "minimumUnitValueYen": 170,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

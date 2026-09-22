@@ -1,0 +1,9 @@
+{
+  "speciesId": "bluefin-trevally",
+  "tradeStatus": "tradable",
+  "tradeTags": ["premium", "game_fish", "white_fish"],
+  "baseYenPerKg": 1190,
+  "minimumUnitValueYen": 180,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

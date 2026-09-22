@@ -1,0 +1,9 @@
+{
+  "speciesId": "yamame",
+  "tradeStatus": "tradable",
+  "tradeTags": ["premium", "delicate", "local_favorite", "small_table_fish"],
+  "baseYenPerKg": 710,
+  "minimumUnitValueYen": 110,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

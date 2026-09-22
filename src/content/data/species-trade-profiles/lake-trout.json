@@ -1,0 +1,9 @@
+{
+  "speciesId": "lake-trout",
+  "tradeStatus": "tradable",
+  "tradeTags": ["game_fish", "large_fish", "white_fish"],
+  "baseYenPerKg": 1260,
+  "minimumUnitValueYen": 190,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

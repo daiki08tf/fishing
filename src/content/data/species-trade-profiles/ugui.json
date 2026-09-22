@@ -1,0 +1,9 @@
+{
+  "speciesId": "ugui",
+  "tradeStatus": "tradable",
+  "tradeTags": ["everyday", "local_favorite", "bulk"],
+  "baseYenPerKg": 440,
+  "minimumUnitValueYen": 80,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

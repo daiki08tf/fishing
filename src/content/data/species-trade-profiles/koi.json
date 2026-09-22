@@ -1,0 +1,9 @@
+{
+  "speciesId": "koi",
+  "tradeStatus": "tradable",
+  "tradeTags": ["large_fish", "game_fish", "local_favorite"],
+  "baseYenPerKg": 2500,
+  "minimumUnitValueYen": 380,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

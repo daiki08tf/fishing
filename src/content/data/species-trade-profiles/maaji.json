@@ -1,0 +1,9 @@
+{
+  "speciesId": "maaji",
+  "tradeStatus": "tradable",
+  "tradeTags": ["everyday", "small_table_fish", "oily", "bulk"],
+  "baseYenPerKg": 440,
+  "minimumUnitValueYen": 80,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

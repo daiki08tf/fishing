@@ -14,13 +14,14 @@ import type { KnowledgeState } from '../../domain/knowledge/KnowledgeState'
 import type { IsoDateTime } from '../../domain/primitives'
 import type { AnglerProgression } from '../../domain/progression/AnglerProgression'
 import { createInitialProgression } from '../../domain/progression/AnglerProgression'
-import { CURRENT_SAVE_SCHEMA_VERSION, type SaveGameV8 } from '../../domain/save/SaveGame'
+import { CURRENT_SAVE_SCHEMA_VERSION, type SaveGameV9 } from '../../domain/save/SaveGame'
 import {
   createStarterInventory,
   createStarterLoadout,
   type Loadout,
 } from '../../domain/tackle/Loadout'
 import type { Inventory } from '../../domain/tackle/Inventory'
+import { createInitialTradeState, type TradeState } from '../../domain/trade'
 import { createInitialWorld, type WorldState } from '../../domain/world/worldSession'
 import { DEFAULT_WORLD_TUNING } from '../../domain/world/WorldTuning'
 
@@ -43,13 +44,14 @@ export type SaveSourceState = {
   readonly purchases?: readonly ShopItemId[]
   readonly inventory: Inventory
   readonly loadout: Loadout
+  readonly trade?: TradeState
   /** 現在時刻。呼び出し側が渡す（Domain は時計を持たない）。 */
   readonly now: IsoDateTime
   /** 初回保存時のみ指定する。省略すると now を使う。 */
   readonly createdAt?: IsoDateTime
 }
 
-export const createSave = (source: SaveSourceState): SaveGameV8 => ({
+export const createSave = (source: SaveSourceState): SaveGameV9 => ({
   schemaVersion: CURRENT_SAVE_SCHEMA_VERSION,
   createdAt: source.createdAt ?? source.now,
   updatedAt: source.now,
@@ -63,6 +65,7 @@ export const createSave = (source: SaveSourceState): SaveGameV8 => ({
   purchases: source.purchases ?? [],
   inventory: source.inventory,
   loadout: source.loadout,
+  trade: source.trade ?? createInitialTradeState(),
 })
 
 /**
@@ -74,7 +77,7 @@ export const createSave = (source: SaveSourceState): SaveGameV8 => ({
  *
  * knowledge は空から始める（Phase 4 で釣行・観察により増える）。
  */
-export const createInitialSave = (options: { readonly now: IsoDateTime }): SaveGameV8 => ({
+export const createInitialSave = (options: { readonly now: IsoDateTime }): SaveGameV9 => ({
   schemaVersion: CURRENT_SAVE_SCHEMA_VERSION,
   createdAt: options.now,
   updatedAt: options.now,
@@ -88,4 +91,5 @@ export const createInitialSave = (options: { readonly now: IsoDateTime }): SaveG
   purchases: [],
   inventory: createStarterInventory(asGearId),
   loadout: createStarterLoadout(asGearId),
+  trade: createInitialTradeState(),
 })

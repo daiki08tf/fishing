@@ -1,0 +1,9 @@
+{
+  "speciesId": "spanish-mackerel",
+  "tradeStatus": "tradable",
+  "tradeTags": ["everyday", "oily", "large_fish", "game_fish"],
+  "baseYenPerKg": 1400,
+  "minimumUnitValueYen": 210,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

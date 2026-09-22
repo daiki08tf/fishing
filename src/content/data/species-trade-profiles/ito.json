@@ -1,0 +1,9 @@
+{
+  "speciesId": "ito",
+  "tradeStatus": "tradable",
+  "tradeTags": ["premium", "large_fish"],
+  "baseYenPerKg": 1810,
+  "minimumUnitValueYen": 270,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

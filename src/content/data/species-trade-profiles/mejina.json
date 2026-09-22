@@ -1,0 +1,9 @@
+{
+  "speciesId": "mejina",
+  "tradeStatus": "tradable",
+  "tradeTags": ["everyday", "local_favorite", "white_fish"],
+  "baseYenPerKg": 780,
+  "minimumUnitValueYen": 120,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

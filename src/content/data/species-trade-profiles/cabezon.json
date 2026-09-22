@@ -1,0 +1,9 @@
+{
+  "speciesId": "cabezon",
+  "tradeStatus": "tradable",
+  "tradeTags": ["local_favorite", "white_fish", "everyday"],
+  "baseYenPerKg": 1060,
+  "minimumUnitValueYen": 160,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

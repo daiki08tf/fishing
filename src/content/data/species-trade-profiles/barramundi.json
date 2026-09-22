@@ -1,0 +1,9 @@
+{
+  "speciesId": "barramundi",
+  "tradeStatus": "tradable",
+  "tradeTags": ["premium", "large_fish", "white_fish", "game_fish"],
+  "baseYenPerKg": 1120,
+  "minimumUnitValueYen": 170,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

@@ -1,0 +1,9 @@
+{
+  "speciesId": "chum-salmon",
+  "tradeStatus": "tradable",
+  "tradeTags": ["everyday", "bulk", "oily"],
+  "baseYenPerKg": 1120,
+  "minimumUnitValueYen": 170,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

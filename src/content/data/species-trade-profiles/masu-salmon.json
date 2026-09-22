@@ -1,0 +1,9 @@
+{
+  "speciesId": "masu-salmon",
+  "tradeStatus": "tradable",
+  "tradeTags": ["premium", "oily", "delicate", "local_favorite"],
+  "baseYenPerKg": 1120,
+  "minimumUnitValueYen": 170,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

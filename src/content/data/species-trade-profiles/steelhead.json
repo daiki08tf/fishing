@@ -1,0 +1,9 @@
+{
+  "speciesId": "steelhead",
+  "tradeStatus": "tradable",
+  "tradeTags": ["premium", "game_fish", "large_fish", "oily"],
+  "baseYenPerKg": 1260,
+  "minimumUnitValueYen": 190,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

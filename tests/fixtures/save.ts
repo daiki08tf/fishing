@@ -20,6 +20,7 @@ import {
   SAVE_SCHEMA_VERSION_V6,
   SAVE_SCHEMA_VERSION_V7,
   SAVE_SCHEMA_VERSION_V8,
+  SAVE_SCHEMA_VERSION_V9,
   type LegacyWorldState,
   type SaveGameV2,
   type SaveGameV3,
@@ -28,8 +29,10 @@ import {
   type SaveGameV6,
   type SaveGameV7,
   type SaveGameV8,
+  type SaveGameV9,
 } from '../../src/domain/save/SaveGame'
 import { createStarterInventory, createStarterLoadout } from '../../src/domain/tackle/Loadout'
+import { createInitialTradeState } from '../../src/domain/trade'
 import { createInitialWorld } from '../../src/domain/world/worldSession'
 import { DEFAULT_WORLD_TUNING } from '../../src/domain/world/WorldTuning'
 
@@ -239,12 +242,23 @@ export const createValidSaveV7 = (): SaveGameV7 => {
   }
 }
 
-/** Phase 12 の現行 Save（schema v8）。構造は v7 と同じで species ID を canonical 化する。 */
+/** Phase 12 の Save（schema v8）。構造は v7 と同じで species ID を canonical 化する。 */
 export const createValidSaveV8 = (): SaveGameV8 => {
   const v7 = createValidSaveV7()
 
   return {
     ...v7,
     schemaVersion: SAVE_SCHEMA_VERSION_V8,
+  }
+}
+
+/** Phase 13 の現行 Save（schema v9）。Fish Box / Trade / Contact ブロックが加わった。 */
+export const createValidSaveV9 = (): SaveGameV9 => {
+  const v8 = createValidSaveV8()
+
+  return {
+    ...v8,
+    schemaVersion: SAVE_SCHEMA_VERSION_V9,
+    trade: createInitialTradeState(),
   }
 }

@@ -1,9 +1,88 @@
 # Handoff
 
-最終更新: Phase 12（Regional World Expansion / Alpha Content）完了
+最終更新: Phase 13.1（Phase 13 のレビュー修正）完了（PR #15、未マージ）
 
-> 現在状態は Phase 12 → 11 → 10.2 → 10.1 → 10 の順で優先する。
+> 現在状態は Phase 13 → 12 → 11 → 10.2 → 10.1 → 10 の順で優先する。
 > 詳細は `.ai/current-task.md` と `docs/DECISIONS.md` も参照。
+
+## Phase 13（Fish Trade, Contacts & Hidden Spots）
+
+- branch: `phase-13-fish-trade-contacts-hidden-spots`（base: main、Phase 12 は main に merge 済み）
+- PR #15: "Phase 13: fish trade, contacts and hidden spots"（作成済み、MERGEはしていない）
+- **Phase 13.1**: 独立レビューの指摘を同じ branch / 同じ PR 上で修正した。
+  詳細は `docs/DECISIONS.md` の "Phase 13.1" と `.ai/current-task.md` を参照
+- Core Loop: Catch → Keep/Release → Fish Box → 売却先を選ぶ → Cash + Trust →
+  Rumor/Intel/Contact → Hidden Spot Discovery → 既存 Access 判定 → 新しい釣り
+- `src/domain/trade/`（新規）: FishBox / Freshness / Buyer / SpeciesTradeProfile /
+  ContactReward / TradeState / rewardClaim / tradeValue / sellCatches
+- Content 追加: `buyers`（3）/ `species-trade-profiles`（82、全 Species 分）/
+  `contact-rewards`（12）。`fishing-spots` に Hidden Spot 8 件（`visibility: hidden`）を追加
+- FishingSpot に optional `visibility`（`public` | `hidden`）を追加。省略時 `public`
+  なので既存 45 Spot の挙動は変わらない
+- Hidden Spot の discovered 判定は新state を増やさず、既存 `world.discoveredSpotIds`
+  を再利用（`discoverSpotFromContact` を worldSession.ts に追加）
+- Buyer は Contact の一種として `ContactId` を共有。Trust 0〜100、取引単位で
+  上限つき。ContactReward（intel / discover_spot / introduce_contact）は
+  `minTrust` 到達で 1 度だけ claim（`claimedRewardIds` で判定）
+- 価格計算は deterministic（RNG不使用）。Buyer の差は、(1) 個々の魚の
+  condition/percentile/freshness への感度、(2) volume bonus、
+  (3) **SpeciesTradeProfile.tradeTags × Buyer の preferredTags / neutralTags**、
+  (4) 産地一致（`buyer.regionId === catch.sourceRegionId`）で表現する。
+  魚種 ID を直接分岐する対応表は作らない（Phase 13.1）
+- Save schema **v9**（`trade: TradeState`）。v1〜v8 いずれの旧 Save からも
+  migration chain が v9 まで届くよう更新した
+- Finance の `TRANSACTION_KINDS` に `trade` を追加。売却は既存 `earnCash` を使う
+  （Finance state を二重化しない）
+- UI: FISHING に Keep/Release ボタン、新規 FISH BOX / TRADE / CONTACTS 画面、
+  MAP は Hidden Spot 未発見時は表示しない
+- `simulate:trade-network`（新規）を `npm run check` に追加。
+  Domain / Content の checks と、釣行ベースの trip simulation を実行する
+- 全 Species の trade profile 完全性チェックは `validateContentReferences` ではなく、
+  `validate:content` CLI（runtime ディレクトリだけを見る）と `simulate:trade-network`
+  に置いた（fixture 検証用魚種と実 Content の species-trade-profiles が必ず
+  食い違うため。Phase 10.1 の fixture 分離方針を踏襲）
+- Phase 13 の新規 Buyer 単価・Trust チューニング・Hidden Spot の地形/アクセス値は
+  すべて **PROVISIONAL**。Hidden Spot は fictional / generalized（実在の秘密の
+  釣り場の座標を収集していない）
+- 最終 CI: typecheck / lint / format / validate / regional audit /
+  trade network / test / build 全 PASS
+- `validate:content`: 843 records
+- tests: 77 files / 687 tests（Phase 12比 +6 files / +63 tests）
+- bundle: JS 899.99 kB（gzip 209.18 kB）/ CSS 7.13 kB（gzip 1.86 kB）
+- 画面の通し確認（jsdom + React DOM の実イベント。Chrome headless は sandbox の
+  制約で起動できない）: HOME → MAP（未発見 Hidden Spot 非表示）→ 釣り場 → FISHING
+  （CAST / HOOK / 巻く を実際にクリック）→ LANDED → Keep → HOME（Fish Box 1）→
+  Fish Box → TRADE（買取先表示・プレビュー = 実額・売却）→ 追加釣行で Trust 15 以上 →
+  CONTACTS → MAP（発見済み Hidden Spot が「発見済み」として出る）まで PASS
+- 既知のギャップ: Fish Box 容量上限なし（意図的） /
+  現在地域に Buyer がいないと売れない（= 遠征先では TRADE が空状態になる） /
+  非 Buyer Contact（introduce_contact）は unlock 挙動が未実装で、Content は
+  `validate:content` が禁止する / 実プレイテストによるバランス調整は未実施
+- 次候補: Phase 14 Visual Redesign、または遠征先 Buyer の Content 追加
+
+### Phase 13.1（レビュー修正）
+
+- persistence coordinator の保存 payload に `trade` を追加し、変更検知にも
+  `state.trade` を追加。維持されないと「Fish Box が消える / 売った魚が復活する」
+  事故になる。実際の coordinator / repository を通る統合テストを追加
+- `sellCatches` は `trade.fishBox` も同時に更新する（戻り値と trade が食い違うと
+  Store 経由で二重売却できてしまう。レビューで実際に検出した）
+- Buyer 地域の強制: `buyer.regionId !== world.currentRegionId` は
+  `buyer_region_mismatch`。Domain / Store の両方で拒否。TRADE は現在地域の
+  Buyer だけを表示し、いない場合は空状態
+- `leaveForSpot` に Discovery guard を追加（`undiscovered`）。AccessEngine は
+  physical access の専門のまま。Store は交通費を引く前に止める
+- `quoteSale` を Domain に追加し、Trade プレビューと実売却を一本化。
+  `sum(lines.valueYen) === totalValueYen`、volume bonus は tradable 確定後に計算、
+  並び順に依存しない
+- `actualTrustGain = nextTrust - currentTrust` を返す（Trust 100 で +0）
+- MAP の表示を「訪問済み」→「発見済み」に修正。HOME の Spot 件数は Map と同じ
+  visibility / discovery 規則で集計し、未発見 Hidden Spot を漏らさない
+- `introduce_contact` は `validate:content` が Content 追加を拒否する
+  （claim だけされて何も起きない silent no-op を防ぐ）
+- trip simulation（120 trips × 6 attempts, seed 固定）: attempts/trip 6.00 /
+  landed 2.60 / kept 2.60 / gross ¥6,613 / travel cost ¥3,924 / net mean ¥2,688 /
+  median ¥533 / p90 ¥21,398 / max ¥81,403 / 月換算（中央値×8）¥4,264
 
 ## Phase 12（Regional World Expansion / Alpha Content）
 

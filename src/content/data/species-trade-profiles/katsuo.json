@@ -1,0 +1,9 @@
+{
+  "speciesId": "katsuo",
+  "tradeStatus": "tradable",
+  "tradeTags": ["everyday", "oily", "bulk"],
+  "baseYenPerKg": 1060,
+  "minimumUnitValueYen": 160,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

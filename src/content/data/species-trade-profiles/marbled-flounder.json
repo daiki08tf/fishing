@@ -1,0 +1,9 @@
+{
+  "speciesId": "marbled-flounder",
+  "tradeStatus": "tradable",
+  "tradeTags": ["premium", "white_fish", "delicate", "local_favorite"],
+  "baseYenPerKg": 640,
+  "minimumUnitValueYen": 100,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

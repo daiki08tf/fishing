@@ -1,0 +1,9 @@
+{
+  "speciesId": "ainame",
+  "tradeStatus": "tradable",
+  "tradeTags": ["white_fish", "local_favorite", "everyday"],
+  "baseYenPerKg": 710,
+  "minimumUnitValueYen": 110,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

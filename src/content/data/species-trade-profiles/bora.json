@@ -1,0 +1,9 @@
+{
+  "speciesId": "bora",
+  "tradeStatus": "tradable",
+  "tradeTags": ["everyday", "bulk", "local_favorite"],
+  "baseYenPerKg": 1810,
+  "minimumUnitValueYen": 270,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

@@ -1,0 +1,9 @@
+{
+  "speciesId": "hirame",
+  "tradeStatus": "tradable",
+  "tradeTags": ["premium", "large_fish", "white_fish", "delicate"],
+  "baseYenPerKg": 850,
+  "minimumUnitValueYen": 130,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

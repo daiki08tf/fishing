@@ -6,7 +6,7 @@ import { fishOccurrenceSchema } from './fishOccurrence'
 import { nonEmptyString, rangeSchema } from './primitives'
 import { sourceRefsSchema } from './sourceRef'
 import { accessCapabilitySchema, routeFeatureSchema, transportTypeSchema } from './transport'
-import { SPOT_DATA_STATUSES } from '../../domain/world/FishingSpot'
+import { SPOT_DATA_STATUSES, SPOT_VISIBILITIES } from '../../domain/world/FishingSpot'
 
 /** SpotKnowledgeConfig。GAME_DESIGN.md §10 の最小表現（PROVISIONAL）。 */
 export const spotKnowledgeConfigSchema = z.strictObject({
@@ -31,6 +31,7 @@ export const spotTravelOptionSchema = z.strictObject({
 })
 
 export const spotDataStatusSchema = z.enum(SPOT_DATA_STATUSES)
+export const spotVisibilitySchema = z.enum(SPOT_VISIBILITIES)
 
 export const fishingZoneSchema = z.strictObject({
   id: nonEmptyString,
@@ -55,6 +56,9 @@ export const fishingSpotSchema = z.strictObject({
 
   /** データの信頼度。実在の釣り可否を根拠なく断定しないための表示。 */
   dataStatus: spotDataStatusSchema,
+
+  /** Phase 13: 省略時は 'public'。 */
+  visibility: spotVisibilitySchema.optional(),
 
   habitatTags: z.array(nonEmptyString),
 

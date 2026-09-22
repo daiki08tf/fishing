@@ -1,0 +1,9 @@
+{
+  "speciesId": "kajika",
+  "tradeStatus": "tradable",
+  "tradeTags": ["local_favorite", "small_table_fish", "delicate"],
+  "baseYenPerKg": 580,
+  "minimumUnitValueYen": 90,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

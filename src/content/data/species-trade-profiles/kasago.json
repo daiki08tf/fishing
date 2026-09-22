@@ -1,0 +1,9 @@
+{
+  "speciesId": "kasago",
+  "tradeStatus": "tradable",
+  "tradeTags": ["everyday", "local_favorite", "white_fish"],
+  "baseYenPerKg": 580,
+  "minimumUnitValueYen": 90,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

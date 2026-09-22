@@ -1,0 +1,9 @@
+{
+  "speciesId": "arctic-char",
+  "tradeStatus": "tradable",
+  "tradeTags": ["white_fish", "local_favorite", "delicate"],
+  "baseYenPerKg": 780,
+  "minimumUnitValueYen": 120,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}
