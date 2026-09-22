@@ -17,6 +17,14 @@
     {
       "id": "hokkaido-east",
       "name": "道東"
+    },
+    {
+      "id": "hokkaido-north",
+      "name": "道北"
+    },
+    {
+      "id": "hokkaido-west",
+      "name": "道南・道西"
     }
   ],
   "climate": {
