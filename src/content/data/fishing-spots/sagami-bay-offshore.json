@@ -1,0 +1,141 @@
+{
+  "id": "sagami-bay-offshore",
+  "name": "相模湾 沖（暫定）",
+  "regionId": "tokyo-area",
+  "areaId": "kanagawa",
+  "environment": "offshore",
+  "access": [
+    {
+      "kind": "capability",
+      "capability": "boat_required"
+    },
+    {
+      "kind": "capability",
+      "capability": "offshore"
+    }
+  ],
+  "travelOptions": [
+    {
+      "id": "sagami-boat",
+      "transportTypes": [
+        "rental_boat"
+      ],
+      "requiredCapabilities": [
+        "boat_required",
+        "offshore"
+      ],
+      "features": [
+        "boat_rental",
+        "marina"
+      ],
+      "baseMinutes": 65,
+      "distanceKm": 28,
+      "baseOneWayCost": 0
+    }
+  ],
+  "habitatTags": [
+    "open",
+    "deep"
+  ],
+  "depth": {
+    "depthRangeM": {
+      "min": 15,
+      "max": 120
+    }
+  },
+  "fishingZones": [
+    {
+      "id": "surface",
+      "name": "表層",
+      "depthRangeM": {
+        "min": 0,
+        "max": 15
+      },
+      "habitatTags": [
+        "surface",
+        "open"
+      ]
+    },
+    {
+      "id": "mid",
+      "name": "中層",
+      "depthRangeM": {
+        "min": 15,
+        "max": 50
+      },
+      "habitatTags": [
+        "open",
+        "mid-water"
+      ]
+    },
+    {
+      "id": "bottom",
+      "name": "底",
+      "depthRangeM": {
+        "min": 50,
+        "max": 120
+      },
+      "habitatTags": [
+        "deep",
+        "bottom"
+      ]
+    }
+  ],
+  "fishTable": [
+    {
+      "speciesId": "katsuo",
+      "basePresence": 0.28,
+      "zoneAffinity": {
+        "surface": 1.5,
+        "mid": 1,
+        "bottom": 0.1
+      }
+    },
+    {
+      "speciesId": "mahi-mahi",
+      "basePresence": 0.22,
+      "zoneAffinity": {
+        "surface": 1.6,
+        "mid": 0.8,
+        "bottom": 0.1
+      }
+    },
+    {
+      "speciesId": "madai",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "surface": 0.2,
+        "mid": 1,
+        "bottom": 1.4
+      }
+    },
+    {
+      "speciesId": "kanpachi",
+      "basePresence": 0.18,
+      "zoneAffinity": {
+        "surface": 0.5,
+        "mid": 1.4,
+        "bottom": 1
+      }
+    }
+  ],
+  "dataStatus": "provisional",
+  "knowledgeConfig": {
+    "reveals": [
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "habitat",
+        "minKnowledge": 50
+      }
+    ]
+  },
+  "sourceRefs": [
+    {
+      "id": "phase12-provisional",
+      "title": "PROVISIONAL — gameplay-oriented spot layout; real access and regulations require verification"
+    }
+  ]
+}
