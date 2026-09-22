@@ -1,0 +1,48 @@
+{
+  "id": "barramundi",
+  "japaneseName": "バラマンディ（暫定）",
+  "scientificName": "Lates calcarifer",
+  "waterTypes": [
+    "fresh",
+    "brackish",
+    "salt"
+  ],
+  "distribution": [
+    "queensland"
+  ],
+  "habitats": [
+    "estuary",
+    "mangrove",
+    "river"
+  ],
+  "depthRange": {
+    "min": 0,
+    "max": 75
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 75,
+    "dispersion": 0.18,
+    "minCm": 30,
+    "maxCm": 150
+  },
+  "weightModel": {
+    "lengthWeightA": 0.009,
+    "lengthWeightB": 3.08
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "fightProfile": {
+    "strength": 0.82,
+    "stamina": 0.82,
+    "speed": 0.78
+  },
+  "rarity": 2,
+  "sourceRefs": [
+    {
+      "id": "phase12-provisional",
+      "title": "PROVISIONAL — Phase 12 gameplay tuning; biological values require later verification"
+    }
+  ]
+}
