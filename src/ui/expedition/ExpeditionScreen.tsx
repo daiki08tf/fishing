@@ -1,11 +1,14 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { formatYen } from '../../domain/economy'
 import { planExpedition, remainingExpeditionDays } from '../../domain/expedition'
 import { formatDuration } from '../../domain/world'
 import { DEFAULT_WORLD_TUNING } from '../../domain/world/WorldTuning'
 import { useAppStore } from '../../state/appStore'
 import { usePlayerStore } from '../../state/playerStore'
+import { contentRuntime } from '../../content/runtime/contentRuntime'
 import { ContentErrorPanel } from '../world/ContentErrorPanel'
+import { ContentLoadingPanel } from '../content/ContentLoadingPanel'
+import { useRegionPack } from '../content/contentRuntimeHooks'
 import { useContentOrError } from '../world/useContentOrError'
 
 /**
@@ -26,6 +29,30 @@ export const ExpeditionScreen = () => {
   const [notice, setNotice] = useState<string | null>(null)
   const [nightsByExpedition, setNightsByExpedition] = useState<Record<string, number>>({})
   const [lodgingByExpedition, setLodgingByExpedition] = useState<Record<string, string>>({})
+  const regionPack = useRegionPack(String(world.currentRegionId))
+
+  /*
+   * Phase 15: 遠征先の Content Pack を先に読み込んでおく。
+   * 出発してから待たされないようにするだけで、ゲームルール（費用・日数・許可）は変えない。
+   * 失敗しても出発時に再度 ensureRegion される（Expedition 自体はブロックしない）。
+   */
+  useEffect(() => {
+    for (const pack of contentRuntime.index.packs) {
+      if (pack.kind === 'region') {
+        void contentRuntime.ensurePack(pack.key).catch(() => undefined)
+      }
+    }
+  }, [])
+
+  if (regionPack.status !== 'ready') {
+    return (
+      <ContentLoadingPanel
+        message="地域情報を読み込み中…"
+        error={regionPack.error}
+        onRetry={regionPack.retry}
+      />
+    )
+  }
 
   if (!content.ok) {
     return <ContentErrorPanel message={content.message} />

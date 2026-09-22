@@ -167,3 +167,49 @@ Phase 14 の iPhone 実機相当レビューで見つかった UI の問題を�
   375x812 / 390x844 / 430x932 の実測レイアウトとスクリーンショットは未取得。
   CSS の固定幅（300px 以上）0 件・`min-width` は 0 のみ・`overflow-x` 指定なしを
   静的に確認した
+
+
+## Phase 15（Content Scale Foundation / 1000+ Species Architecture）
+
+目的はゲームルールの追加ではなく、1000+ Species / 多数 Region / 多数 Spot に耐える
+Content Architecture の整備。既存 Content（82 Species / 53 Spot / 5 playable Region）は
+そのまま。Save v9 / Domain / FishingEngine / Trade / Trust / Hidden Spot は変更なし。
+
+### 作ったもの
+
+- `scripts/build-content-index.ts`（新規）: `src/content/data` から
+  - `src/content/generated/content-index.json`（軽量カタログ: species / region summary + pack manifest）
+  - `src/content/generated/content-ownership.json`（kind/file → pack。node / 検証専用）
+  - `src/content/generated/packs/*.ts`（pack module。JSON を静的 import）
+  を生成する。`npm run content:index` で再生成。
+- `src/content/catalog/summary.ts` / `speciesSearch.ts` / `mergeContent.ts` / `scaleCheck.ts`:
+  軽量サマリ型、検索・絞り込み・ページング（純粋関数）、Content の束と合成、
+  Content Scale 検証。
+- `src/content/runtime/contentRuntime.ts` + `packModules.ts`（新規）:
+  pack の遅延ロード（cache / 同時要求の共有 / retry / idle-loading-ready-error）、
+  `ensureRegion` / `ensureSpeciesDetail` / `ensureTackle` / `ensureWorld`。
+  `hydrateFully` は node / SSR / テスト用。
+- `src/ui/content/ContentLoadingPanel.tsx` + `contentRuntimeHooks.ts`:
+  「地域情報を読み込み中…」+ retry。AppShell が初期 pack を gate し、
+  Home / Map / Spot / Trade / Fish Box / Contacts / Expedition が
+  今いる（または表示中の）地域 pack を必要時に読む。
+- Codex: SpeciesSummary ベースに書き換え（full FishSpecies を読まない）、
+  日本語 / 英語 / scientificName / id 検索、捕獲・地域・水域フィルタ、
+  60 件ずつの段階表示（`さらに表示`）。
+- `scripts/simulate-content-scale.ts`（新規, `npm run check` に追加）:
+  production のカタログ / pack / 所有権の検査 + 1000 / 1500 件の synthetic summary で
+  検索・フィルタ・ページング・id 一意性を検証（時間は参考値、判定に使わない）。
+- `scripts/analyze-content-scale.ts`（新規, `npm run check` に追加）:
+  dist から初期 chunk と pack chunk のサイズを集計（初期 chunk ≤ 700 kB を検査）。
+
+### 結果（Phase 14 → Phase 15）
+
+| | Phase 14 | Phase 15 |
+| --- | --- | --- |
+| initial JS | 925.44 kB（gzip 216.48） | **536.35 kB（gzip 157.43）** |
+| total JS | 925.44 kB | 906.10 kB |
+| chunks | 1（全 Content 入り） | initial + 8 packs |
+| tests | 86 files / 748 | **90 files / 778** |
+
+pack 別: tackle 196.59 / species-detail 86.96 / region-tokyo-area 39.01 /
+world 12.47 / hokkaido 11.15 / alaska 8.80 / british-columbia 8.52 / queensland 6.23 kB。

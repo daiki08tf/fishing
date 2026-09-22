@@ -7,6 +7,8 @@ import { usePlayerStore } from '../../state/playerStore'
 import { EmptyState } from '../components/EmptyState'
 import { StatMeter } from '../components/StatMeter'
 import { ContentErrorPanel } from '../world/ContentErrorPanel'
+import { ContentLoadingPanel } from '../content/ContentLoadingPanel'
+import { useRegionPack } from '../content/contentRuntimeHooks'
 import { useContentOrError } from '../world/useContentOrError'
 import { buyerPreferenceChips, buyerRoleLabel, describeBuyerRole } from './buyerPresentation'
 import './trade.css'
@@ -34,10 +36,21 @@ export const TradeScreen = () => {
   const setActiveScreen = useAppStore((state) => state.setActiveScreen)
   const trade = usePlayerStore((state) => state.trade)
   const world = usePlayerStore((state) => state.world)
+  const regionPack = useRegionPack(String(world.currentRegionId))
   const sellToBuyer = usePlayerStore((state) => state.sellToBuyer)
   const [selectedBuyerId, setSelectedBuyerId] = useState<string | null>(null)
   const [selectedCatchIds, setSelectedCatchIds] = useState<readonly string[]>([])
   const [notice, setNotice] = useState<string | null>(null)
+
+  if (regionPack.status !== 'ready') {
+    return (
+      <ContentLoadingPanel
+        message="地域情報を読み込み中…"
+        error={regionPack.error}
+        onRetry={regionPack.retry}
+      />
+    )
+  }
 
   if (!content.ok) {
     return <ContentErrorPanel message={content.message} />

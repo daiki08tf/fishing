@@ -11,6 +11,8 @@ import { useAppStore } from '../../state/appStore'
 import { usePlayerStore } from '../../state/playerStore'
 import { BiomeScene } from '../components/BiomeScene'
 import { ContentErrorPanel } from '../world/ContentErrorPanel'
+import { ContentLoadingPanel } from '../content/ContentLoadingPanel'
+import { useRegionPack } from '../content/contentRuntimeHooks'
 import { useContentOrError } from '../world/useContentOrError'
 import { ConditionPanel } from '../world/ConditionPanel'
 
@@ -42,6 +44,7 @@ export const SpotScreen = () => {
   const content = useContentOrError()
   const setActiveScreen = useAppStore((state) => state.setActiveScreen)
   const world = usePlayerStore((state) => state.world)
+  const regionPack = useRegionPack(String(world.currentRegionId))
   const knowledge = usePlayerStore((state) => state.knowledge)
   const loadout = usePlayerStore((state) => state.loadout)
   const inventory = usePlayerStore((state) => state.inventory)
@@ -49,6 +52,16 @@ export const SpotScreen = () => {
   const searchWater = usePlayerStore((state) => state.searchWater)
   const returnHome = usePlayerStore((state) => state.returnHome)
   const [notice, setNotice] = useState<string | null>(null)
+
+  if (regionPack.status !== 'ready') {
+    return (
+      <ContentLoadingPanel
+        message="地域情報を読み込み中…"
+        error={regionPack.error}
+        onRetry={regionPack.retry}
+      />
+    )
+  }
 
   if (!content.ok) {
     return <ContentErrorPanel message={content.message} />

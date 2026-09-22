@@ -1,10 +1,41 @@
 # Handoff
 
-最終更新: Phase 14.1（iPhone UI Polish / Result Flow / Map Presentation）完了
-（branch `phase-14-retro-ui-redesign`、PR #16・未マージ）
+最終更新: Phase 15（Content Scale Foundation / 1000+ Species Architecture）完了
+（branch `phase-15-content-scale-foundation`）
 
-> 現在状態は Phase 14 → 13 → 12 → 11 → 10.2 → 10.1 → 10 の順で優先する。
+> 現在状態は Phase 15 → 14 → 13 → 12 → 11 → 10.2 → 10.1 → 10 の順で優先する。
 > 詳細は `.ai/current-task.md` と `docs/DECISIONS.md` も参照。
+
+## Phase 15（Content Scale Foundation）
+
+1000+ Species / 多数 Region に耐える Content Architecture。ゲームルールの追加は無い
+（Domain / FishingEngine / Trade / Trust / Hidden Spot / Save v9 は不変）。
+
+- **軽量カタログ**: `src/content/generated/content-index.json`（species / region summary
+  + pack manifest）。Codex の一覧・検索・フィルタは summary だけで完結する
+- **Content Pack**: 5 region pack（tokyo-area / hokkaido / alaska / british-columbia /
+  queensland）+ 3 global pack（species-detail / tackle / world）。
+  実体は生成物 `src/content/generated/packs/*.ts`（JSON を静的 import。
+  pack 1 つ = dynamic import 1 つ = chunk 1 つ）
+- **runtime**（`src/content/runtime/contentRuntime.ts`）: idle / loading / ready / error、
+  同時要求の Promise 共有、session cache、失敗 pack だけ retry。Save には保存しない。
+  Domain は Promise / dynamic import を知らない
+- **UI**: AppShell が初期 pack（catalog + 今いる地域 + species-detail + tackle + world）を
+  gate し、「地域情報を読み込み中…」+ retry を出す。Map は表示地域、Expedition は
+  遠征先 pack を必要時に読み込む（遠征画面を開くと候補を事前読み込み）
+- **Codex**: SpeciesSummary + 名前検索（日本語 / 英語 / scientificName / id）+
+  捕獲 / 地域 / 水域フィルタ + 60 件ずつの段階表示
+- **validation**: `validate:content` に Content Scale 検査を追加
+  （pack manifest ↔ pack module、所有権の重複 / orphan なし、
+  全 Species の summary、全 playable Region の pack、地域 prefix 付き Species ID の禁止、
+  生成物の freshness）
+- **scripts**: `npm run content:index` / `simulate:content-scale` / `analyze:content-scale`
+  （後ろ 2 つは `npm run check` に追加）
+- **bundle**: initial JS 925.44 kB → **536.35 kB**（gzip 216.48 → 157.43）。
+  total JS は 906.10 kB（重複なし）。Content 本体は初期 chunk に入らない
+- **PWA**: update strategy は不変。offline 時に JS chunk 要求へ index.html を返さない
+  ようフォールバックを navigation に限定
+- tests: 90 files / 778（+4 files / +30 tests）
 
 ## Phase 14.1（iPhone UI Polish）
 

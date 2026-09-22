@@ -508,3 +508,49 @@ Phase 14 の iPhone 実機相当レビューで見つかった UI の問題を�
   家計の内訳（給与・生活費）のような補足は `<details>` にたたむ
 - Phase 14.1 で追加した依存は無い（jsdom / Playwright などの実行時依存は足していない）。
   新しい画像アセットも追加していない（装飾は CSS と既存 SVG のみ）
+
+## Phase 15 — Content Scale Foundation（1000+ Species）
+
+Phase 15 は「ゲームルールの追加」ではなく、1000+ Species / 多数 Region / 多数 Spot に
+耐える **Content Architecture** の整備である。既存の Content 量（82 Species / 53 Spot /
+10 Region / playable 5）は変えず、その表現方法と読み込み経路だけを変えた。
+
+決定:
+
+- **Species ID は今後も global。** 地域ごとに別 ID を作らない
+  （`tokyo-maaji` のような prefix 付き ID を禁止し、`validate:content` が検出する）。
+  地域差は Occurrence / Presence / Environment / Size tuning 側で表現する
+- **軽量カタログ（lightweight index）を起動時に読む。** `content-index.json` には
+  Species summary（id / 名前 / scientificName / englishName（あれば）/ waterTypes /
+  category / 分布 Region / habitats / rarityBand）と Region summary（id / 名前 /
+  country / stage / packKey）だけを置く。生物学の詳細・Spot 地形・Trade tuning は入れない。
+  Codex の一覧・検索・絞り込みはこの索引だけで完結する
+- **Content Pack は「1 pack = 1 dynamic import」にする。** 5 つの region pack
+  （tokyo-area / hokkaido / alaska / british-columbia / queensland）と 3 つの global pack
+  （species-detail / tackle / world）に分ける。pack の実体は
+  `scripts/build-content-index.ts` が生成する `src/content/generated/packs/*.ts` で、
+  JSON を **静的 import** する（dynamic import を並べると 1 ファイル = 1 chunk になり、
+  1000 Species 規模でリクエスト数が破綻するため）
+- **起動時に読むのは「軽量カタログ + 今いる地域 + species-detail + tackle + world」**。
+  他の地域は Expedition 画面で事前読み込みし、Region を選んだ時点で pack を読む。
+  「全 Region の Spot / occurrence / tuning を初期 chunk へ入れる」状態にしない
+- **Content loading は Application / UI 境界（`src/content/runtime`）で行う。**
+  Domain へ Promise / dynamic import / fetch を持ち込まない。Domain は
+  「読み込み済み Content」を受け取るだけである。loaded pack は application の
+  cache に置き、Save には保存しない（architecture の詳細を Save へ持ち込まない）
+- **pack loader は idle / loading / ready / error を持ち、同時要求は Promise を共有し、
+  失敗した pack だけ retry できる。** UI は「地域情報を読み込み中…」と retry を出し、
+  開発者向けの文言（pack 名 / chunk 名）は画面に出さない
+- **Node / CI は全 Content を集約して読む。** `validate:content` /
+  `simulate:regional-content` / `simulate:trade-network` / `simulate:content-scale` /
+  テストは従来どおり全 Content を使える（browser の遅延ロードとは役割を分離）。
+  Content 定義は二重管理しない（生成物は 1 つの generator から出す）
+- **validation を強化する。** pack manifest と生成 pack module の一致、
+  pack 所有権の重複・欠落（orphan content）なし、全 runtime Species の summary 存在、
+  全 playable Region の pack 存在、canonical Species ID の地域 prefix 禁止、
+  生成物の freshness（index を再生成して一致）を `validate:content` で検査する
+- **PWA の update strategy は変えない。** ただし offline 時に JS chunk 要求へ
+  index.html を返さない（navigation 要求だけに限定する）。hash 付き chunk を
+  古いキャッシュから返すこともない
+- **Save は v9 のまま。** pack / chunk / module path を Save に保存しない
+  （Save は SpeciesId / RegionId / SpotId / BuyerId 等の安定 ID のみ）

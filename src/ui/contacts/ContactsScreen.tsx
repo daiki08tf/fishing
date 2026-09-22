@@ -4,6 +4,8 @@ import { usePlayerStore } from '../../state/playerStore'
 import { PixelIcon } from '../components/PixelIcon'
 import { StatMeter } from '../components/StatMeter'
 import { ContentErrorPanel } from '../world/ContentErrorPanel'
+import { ContentLoadingPanel } from '../content/ContentLoadingPanel'
+import { useRegionPack } from '../content/contentRuntimeHooks'
 import { useContentOrError } from '../world/useContentOrError'
 import { buyerPreferenceChips, buyerRoleLabel, describeBuyerRole } from '../trade/buyerPresentation'
 import './contacts.css'
@@ -27,6 +29,18 @@ export const ContactsScreen = () => {
   const content = useContentOrError()
   const setActiveScreen = useAppStore((state) => state.setActiveScreen)
   const trade = usePlayerStore((state) => state.trade)
+  const world = usePlayerStore((state) => state.world)
+  const regionPack = useRegionPack(String(world.currentRegionId))
+
+  if (regionPack.status !== 'ready') {
+    return (
+      <ContentLoadingPanel
+        message="地域情報を読み込み中…"
+        error={regionPack.error}
+        onRetry={regionPack.retry}
+      />
+    )
+  }
 
   if (!content.ok) {
     return <ContentErrorPanel message={content.message} />

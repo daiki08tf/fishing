@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+import { contentRuntime, GLOBAL_PACK_KEYS, regionPackKey } from '../content/runtime/contentRuntime'
 import { useAppStore } from '../state/appStore'
 import { usePlayerStore } from '../state/playerStore'
 import { FishingScreen } from './fishing/FishingScreen'
@@ -14,6 +16,8 @@ import { ContactsScreen } from './contacts/ContactsScreen'
 import { CodexScreen } from './codex/CodexScreen'
 import { MenuScreen } from './menu/MenuScreen'
 import { BottomNav } from './nav/BottomNav'
+import { ContentLoadingPanel } from './content/ContentLoadingPanel'
+import { useContentRuntimeState } from './content/contentRuntimeHooks'
 import { installScreenScrollReset } from './nav/scrollReset'
 import './styles/world.css'
 import './components/components.css'
@@ -40,6 +44,26 @@ export const AppShell = () => {
   const hydrationStatus = usePlayerStore((state) => state.hydrationStatus)
   const hydrationFailure = usePlayerStore((state) => state.hydrationFailure)
   const startWithoutSave = usePlayerStore((state) => state.completeHydrationWithoutSave)
+  const currentRegionId = String(usePlayerStore((state) => state.world.currentRegionId))
+
+  /*
+   * Phase 15: 起動時に必要な Content Pack は
+   * 「軽量カタログ + 今いる地域 + Species 詳細 + Tackle」だけ。
+   * 他の地域は必要になったときに読み込む（Expedition の事前読み込み等）。
+   */
+  const runtime = useContentRuntimeState()
+  const requiredPackKeys = [
+    GLOBAL_PACK_KEYS.world,
+    GLOBAL_PACK_KEYS.speciesDetail,
+    GLOBAL_PACK_KEYS.tackle,
+    regionPackKey(currentRegionId),
+  ]
+  const failedPackKey = requiredPackKeys.find((key) => runtime.packStatus[key] === 'error') ?? null
+  const contentReady = requiredPackKeys.every((key) => runtime.packStatus[key] === 'ready')
+
+  useEffect(() => {
+    void contentRuntime.ensureInitialPacks({ regionId: currentRegionId }).catch(() => undefined)
+  }, [currentRegionId])
 
   // 保存データの確認が終わるまで、ゲームの画面は出さない。
   if (hydrationStatus === 'error') {
@@ -71,6 +95,26 @@ export const AppShell = () => {
             <h2 className="panel__heading">読み込み中</h2>
             <p className="panel__body">保存データを確認しています。</p>
           </section>
+        </main>
+      </div>
+    )
+  }
+
+  if (!contentReady) {
+    return (
+      <div className="app-shell">
+        <main className="app-shell__main">
+          <ContentLoadingPanel
+            message="地域情報を読み込み中…"
+            error={failedPackKey === null ? null : runtime.packError[failedPackKey]}
+            onRetry={
+              failedPackKey === null
+                ? undefined
+                : () => {
+                    void contentRuntime.retryPack(failedPackKey).catch(() => undefined)
+                  }
+            }
+          />
         </main>
       </div>
     )

@@ -1,0 +1,1642 @@
+{
+  "generatedFrom": "src/content/data",
+  "counts": {
+    "species": 82,
+    "spots": 53,
+    "regions": 10,
+    "countries": 9,
+    "buyers": 3,
+    "contact-rewards": 12,
+    "expeditions": 4,
+    "species-trade-profiles": 82,
+    "packs": 8
+  },
+  "species": [
+    {
+      "id": "ainame",
+      "japaneseName": "アイナメ（暫定）",
+      "scientificName": "Hexagrammos otakii",
+      "waterTypes": [
+        "salt"
+      ],
+      "category": "saltwater",
+      "regionIds": [
+        "tokyo-area",
+        "hokkaido"
+      ],
+      "habitats": [
+        "rock",
+        "bottom"
+      ],
+      "rarityBand": "common"
+    },
+    {
+      "id": "amemasu",
+      "japaneseName": "アメマス（暫定）",
+      "waterTypes": [
+        "fresh",
+        "brackish"
+      ],
+      "category": "mixed",
+      "regionIds": [
+        "hokkaido"
+      ],
+      "habitats": [
+        "river",
+        "lake"
+      ],
+      "rarityBand": "common"
+    },
+    {
+      "id": "arctic-char",
+      "japaneseName": "アークティックチャー（暫定）",
+      "waterTypes": [
+        "fresh"
+      ],
+      "category": "freshwater",
+      "regionIds": [
+        "alaska"
+      ],
+      "habitats": [
+        "lake",
+        "river"
+      ],
+      "rarityBand": "common"
+    },
+    {
+      "id": "ayu",
+      "japaneseName": "アユ（暫定）",
+      "scientificName": "Plecoglossus altivelis",
+      "waterTypes": [
+        "fresh",
+        "brackish"
+      ],
+      "category": "mixed",
+      "regionIds": [
+        "tokyo-area",
+        "hokkaido"
+      ],
+      "habitats": [
+        "river",
+        "current"
+      ],
+      "rarityBand": "common"
+    },
+    {
+      "id": "barramundi",
+      "japaneseName": "バラマンディ（暫定）",
+      "scientificName": "Lates calcarifer",
+      "waterTypes": [
+        "fresh",
+        "brackish",
+        "salt"
+      ],
+      "category": "mixed",
+      "regionIds": [
+        "queensland"
+      ],
+      "habitats": [
+        "estuary",
+        "mangrove",
+        "river"
+      ],
+      "rarityBand": "uncommon"
+    },
+    {
+      "id": "bluefin-trevally",
+      "japaneseName": "カスミアジ（暫定）",
+      "scientificName": "Caranx melampygus",
+      "waterTypes": [
+        "salt"
+      ],
+      "category": "saltwater",
+      "regionIds": [
+        "queensland"
+      ],
+      "habitats": [
+        "reef",
+        "open"
+      ],
+      "rarityBand": "uncommon"
+    },
+    {
+      "id": "bluegill",
+      "japaneseName": "ブルーギル（暫定）",
+      "scientificName": "Lepomis macrochirus",
+      "waterTypes": [
+        "fresh"
+      ],
+      "category": "freshwater",
+      "regionIds": [
+        "tokyo-area"
+      ],
+      "habitats": [
+        "lake",
+        "shallow"
+      ],
+      "rarityBand": "common"
+    },
+    {
+      "id": "bora",
+      "japaneseName": "ボラ（暫定）",
+      "scientificName": "Mugil cephalus",
+      "waterTypes": [
+        "salt",
+        "brackish",
+        "fresh"
+      ],
+      "category": "mixed",
+      "regionIds": [
+        "tokyo-area"
+      ],
+      "habitats": [
+        "estuary",
+        "bay",
+        "lake"
+      ],
+      "rarityBand": "rare"
+    },
+    {
+      "id": "bull-trout",
+      "japaneseName": "ブルトラウト（暫定）",
+      "scientificName": "Salvelinus confluentus",
+      "waterTypes": [
+        "fresh"
+      ],
+      "category": "freshwater",
+      "regionIds": [
+        "british-columbia"
+      ],
+      "habitats": [
+        "river",
+        "lake"
+      ],
+      "rarityBand": "uncommon"
+    },
+    {
+      "id": "buri",
+      "japaneseName": "ブリ（暫定）",
+      "scientificName": "Seriola quinqueradiata",
+      "waterTypes": [
+        "salt"
+      ],
+      "category": "saltwater",
+      "regionIds": [
+        "tokyo-area",
+        "hokkaido"
+      ],
+      "habitats": [
+        "offshore",
+        "deep",
+        "bay"
+      ],
+      "rarityBand": "rare"
+    },
+    {
+      "id": "cabezon",
+      "japaneseName": "カベゾン（暫定）",
+      "scientificName": "Scorpaenichthys marmoratus",
+      "waterTypes": [
+        "salt"
+      ],
+      "category": "saltwater",
+      "regionIds": [
+        "british-columbia"
+      ],
+      "habitats": [
+        "reef",
+        "bottom"
+      ],
+      "rarityBand": "uncommon"
+    },
+    {
+      "id": "chinook-salmon",
+      "japaneseName": "キングサーモン（暫定）",
+      "waterTypes": [
+        "fresh",
+        "salt"
+      ],
+      "category": "mixed",
+      "regionIds": [
+        "alaska",
+        "british-columbia"
+      ],
+      "habitats": [
+        "river",
+        "deep"
+      ],
+      "rarityBand": "rare"
+    },
+    {
+      "id": "chum-salmon",
+      "japaneseName": "シロザケ（暫定）",
+      "waterTypes": [
+        "fresh",
+        "salt"
+      ],
+      "category": "mixed",
+      "regionIds": [
+        "alaska",
+        "british-columbia"
+      ],
+      "habitats": [
+        "river",
+        "gravel"
+      ],
+      "rarityBand": "uncommon"
+    },
+    {
+      "id": "coastal-cutthroat-trout",
+      "japaneseName": "カットスロートトラウト（暫定）",
+      "scientificName": "Oncorhynchus clarkii clarkii",
+      "waterTypes": [
+        "fresh",
+        "brackish"
+      ],
+      "category": "mixed",
+      "regionIds": [
+        "british-columbia"
+      ],
+      "habitats": [
+        "river",
+        "estuary"
+      ],
+      "rarityBand": "uncommon"
+    },
+    {
+      "id": "cobia",
+      "japaneseName": "コビア（暫定）",
+      "scientificName": "Rachycentron canadum",
+      "waterTypes": [
+        "salt"
+      ],
+      "category": "saltwater",
+      "regionIds": [
+        "queensland"
+      ],
+      "habitats": [
+        "open",
+        "reef"
+      ],
+      "rarityBand": "uncommon"
+    },
+    {
+      "id": "coho-salmon",
+      "japaneseName": "ギンザケ（暫定）",
+      "waterTypes": [
+        "fresh",
+        "salt"
+      ],
+      "category": "mixed",
+      "regionIds": [
+        "alaska",
+        "british-columbia"
+      ],
+      "habitats": [
+        "river",
+        "bay"
+      ],
+      "rarityBand": "uncommon"
+    },
+    {
+      "id": "coral-trout",
+      "japaneseName": "コーラルトラウト（暫定）",
+      "scientificName": "Plectropomus leopardus",
+      "waterTypes": [
+        "salt"
+      ],
+      "category": "saltwater",
+      "regionIds": [
+        "queensland"
+      ],
+      "habitats": [
+        "reef"
+      ],
+      "rarityBand": "uncommon"
+    },
+    {
+      "id": "dolly-varden",
+      "japaneseName": "ドリーバーデン（暫定）",
+      "waterTypes": [
+        "fresh",
+        "brackish"
+      ],
+      "category": "mixed",
+      "regionIds": [
+        "alaska",
+        "british-columbia"
+      ],
+      "habitats": [
+        "river",
+        "gravel"
+      ],
+      "rarityBand": "common"
+    },
+    {
+      "id": "funa",
+      "japaneseName": "ギンブナ（暫定）",
+      "scientificName": "Carassius sp.",
+      "waterTypes": [
+        "fresh",
+        "brackish"
+      ],
+      "category": "mixed",
+      "regionIds": [
+        "tokyo-area"
+      ],
+      "habitats": [
+        "river",
+        "canal",
+        "pond"
+      ],
+      "rarityBand": "common"
+    },
+    {
+      "id": "giant-herring",
+      "japaneseName": "オオニシン類（暫定）",
+      "scientificName": "Elops hawaiensis",
+      "waterTypes": [
+        "brackish",
+        "salt"
+      ],
+      "category": "mixed",
+      "regionIds": [
+        "queensland"
+      ],
+      "habitats": [
+        "estuary",
+        "coast"
+      ],
+      "rarityBand": "uncommon"
+    },
+    {
+      "id": "giant-queenfish",
+      "japaneseName": "オオクイーンフィッシュ（暫定）",
+      "scientificName": "Scomberoides commersonnianus",
+      "waterTypes": [
+        "salt"
+      ],
+      "category": "saltwater",
+      "regionIds": [
+        "queensland"
+      ],
+      "habitats": [
+        "coast",
+        "open"
+      ],
+      "rarityBand": "uncommon"
+    },
+    {
+      "id": "giant-trevally",
+      "japaneseName": "ジャイアントトレバリー（暫定）",
+      "scientificName": "Caranx ignobilis",
+      "waterTypes": [
+        "salt"
+      ],
+      "category": "saltwater",
+      "regionIds": [
+        "queensland"
+      ],
+      "habitats": [
+        "reef",
+        "open"
+      ],
+      "rarityBand": "uncommon"
+    },
+    {
+      "id": "golden-trevally",
+      "japaneseName": "ゴールデントレバリー（暫定）",
+      "scientificName": "Gnathanodon speciosus",
+      "waterTypes": [
+        "salt"
+      ],
+      "category": "saltwater",
+      "regionIds": [
+        "queensland"
+      ],
+      "habitats": [
+        "reef",
+        "open"
+      ],
+      "rarityBand": "uncommon"
+    },
+    {
+      "id": "haze",
+      "japaneseName": "マハゼ（暫定）",
+      "scientificName": "Acanthogobius flavimanus",
+      "waterTypes": [
+        "brackish",
+        "fresh",
+        "salt"
+      ],
+      "category": "mixed",
+      "regionIds": [
+        "tokyo-area"
+      ],
+      "habitats": [
+        "estuary",
+        "mud_bottom",
+        "canal"
+      ],
+      "rarityBand": "common"
+    },
+    {
+      "id": "hiramasa",
+      "japaneseName": "ヒラマサ（暫定）",
+      "scientificName": "Seriola lalandi",
+      "waterTypes": [
+        "salt"
+      ],
+      "category": "saltwater",
+      "regionIds": [
+        "tokyo-area",
+        "queensland"
+      ],
+      "habitats": [
+        "open",
+        "reef"
+      ],
+      "rarityBand": "uncommon"
+    },
+    {
+      "id": "hirame",
+      "japaneseName": "ヒラメ（暫定）",
+      "scientificName": "Paralichthys olivaceus",
+      "waterTypes": [
+        "salt"
+      ],
+      "category": "saltwater",
+      "regionIds": [
+        "tokyo-area",
+        "hokkaido"
+      ],
+      "habitats": [
+        "sand",
+        "bottom"
+      ],
+      "rarityBand": "uncommon"
+    },
+    {
+      "id": "hokke",
+      "japaneseName": "ホッケ（暫定）",
+      "scientificName": "Pleurogrammus azonus",
+      "waterTypes": [
+        "salt"
+      ],
+      "category": "saltwater",
+      "regionIds": [
+        "hokkaido"
+      ],
+      "habitats": [
+        "rock",
+        "coast"
+      ],
+      "rarityBand": "common"
+    },
+    {
+      "id": "isaki",
+      "japaneseName": "イサキ（暫定）",
+      "scientificName": "Parapristipoma trilineatum",
+      "waterTypes": [
+        "salt"
+      ],
+      "category": "saltwater",
+      "regionIds": [
+        "tokyo-area"
+      ],
+      "habitats": [
+        "reef",
+        "open"
+      ],
+      "rarityBand": "common"
+    },
+    {
+      "id": "ito",
+      "japaneseName": "イトウ（暫定）",
+      "scientificName": "Parahucho perryi",
+      "waterTypes": [
+        "fresh"
+      ],
+      "category": "freshwater",
+      "regionIds": [
+        "hokkaido"
+      ],
+      "habitats": [
+        "lake",
+        "river",
+        "deep"
+      ],
+      "rarityBand": "rare"
+    },
+    {
+      "id": "iwana",
+      "japaneseName": "イワナ（暫定）",
+      "scientificName": "Salvelinus leucomaenis",
+      "waterTypes": [
+        "fresh"
+      ],
+      "category": "freshwater",
+      "regionIds": [
+        "tokyo-area",
+        "hokkaido"
+      ],
+      "habitats": [
+        "stream",
+        "river"
+      ],
+      "rarityBand": "common"
+    },
+    {
+      "id": "kajika",
+      "japaneseName": "カジカ（暫定）",
+      "scientificName": "Cottus pollux",
+      "waterTypes": [
+        "fresh"
+      ],
+      "category": "freshwater",
+      "regionIds": [
+        "tokyo-area",
+        "hokkaido"
+      ],
+      "habitats": [
+        "stream",
+        "bottom"
+      ],
+      "rarityBand": "common"
+    },
+    {
+      "id": "kamasu",
+      "japaneseName": "カマス（暫定）",
+      "scientificName": "Sphyraena pinguis",
+      "waterTypes": [
+        "salt"
+      ],
+      "category": "saltwater",
+      "regionIds": [
+        "tokyo-area"
+      ],
+      "habitats": [
+        "bay",
+        "open"
+      ],
+      "rarityBand": "common"
+    },
+    {
+      "id": "kanpachi",
+      "japaneseName": "カンパチ（暫定）",
+      "scientificName": "Seriola dumerili",
+      "waterTypes": [
+        "salt"
+      ],
+      "category": "saltwater",
+      "regionIds": [
+        "tokyo-area",
+        "queensland"
+      ],
+      "habitats": [
+        "open",
+        "reef"
+      ],
+      "rarityBand": "uncommon"
+    },
+    {
+      "id": "kasago",
+      "japaneseName": "カサゴ（暫定）",
+      "scientificName": "Sebastiscus marmoratus",
+      "waterTypes": [
+        "salt"
+      ],
+      "category": "saltwater",
+      "regionIds": [
+        "tokyo-area"
+      ],
+      "habitats": [
+        "rock",
+        "structure"
+      ],
+      "rarityBand": "common"
+    },
+    {
+      "id": "katsuo",
+      "japaneseName": "カツオ（暫定）",
+      "scientificName": "Katsuwonus pelamis",
+      "waterTypes": [
+        "salt"
+      ],
+      "category": "saltwater",
+      "regionIds": [
+        "tokyo-area",
+        "queensland"
+      ],
+      "habitats": [
+        "open"
+      ],
+      "rarityBand": "uncommon"
+    },
+    {
+      "id": "kawahagi",
+      "japaneseName": "カワハギ（暫定）",
+      "scientificName": "Stephanolepis cirrhifer",
+      "waterTypes": [
+        "salt"
+      ],
+      "category": "saltwater",
+      "regionIds": [
+        "tokyo-area"
+      ],
+      "habitats": [
+        "reef",
+        "pier"
+      ],
+      "rarityBand": "common"
+    },
+    {
+      "id": "koi",
+      "japaneseName": "コイ（暫定）",
+      "scientificName": "Cyprinus carpio",
+      "waterTypes": [
+        "fresh"
+      ],
+      "category": "freshwater",
+      "regionIds": [
+        "tokyo-area"
+      ],
+      "habitats": [
+        "lake",
+        "pond",
+        "river"
+      ],
+      "rarityBand": "rare"
+    },
+    {
+      "id": "kokanee",
+      "japaneseName": "コカニー（暫定）",
+      "scientificName": "Oncorhynchus nerka",
+      "waterTypes": [
+        "fresh"
+      ],
+      "category": "freshwater",
+      "regionIds": [
+        "british-columbia"
+      ],
+      "habitats": [
+        "lake",
+        "open"
+      ],
+      "rarityBand": "uncommon"
+    },
+    {
+      "id": "konoshiro",
+      "japaneseName": "コノシロ（暫定）",
+      "scientificName": "Konosirus punctatus",
+      "waterTypes": [
+        "salt",
+        "brackish"
+      ],
+      "category": "mixed",
+      "regionIds": [
+        "tokyo-area"
+      ],
+      "habitats": [
+        "bay",
+        "estuary"
+      ],
+      "rarityBand": "common"
+    },
+    {
+      "id": "kurodai",
+      "japaneseName": "クロダイ（暫定）",
+      "scientificName": "Acanthopagrus schlegelii",
+      "waterTypes": [
+        "salt",
+        "brackish"
+      ],
+      "category": "mixed",
+      "regionIds": [
+        "tokyo-area"
+      ],
+      "habitats": [
+        "pier",
+        "structure",
+        "estuary"
+      ],
+      "rarityBand": "uncommon"
+    },
+    {
+      "id": "lake-trout",
+      "japaneseName": "レイクトラウト（暫定）",
+      "waterTypes": [
+        "fresh"
+      ],
+      "category": "freshwater",
+      "regionIds": [
+        "alaska"
+      ],
+      "habitats": [
+        "lake",
+        "deep"
+      ],
+      "rarityBand": "uncommon"
+    },
+    {
+      "id": "largemouth-bass",
+      "japaneseName": "ブラックバス（暫定）",
+      "scientificName": "Micropterus salmoides",
+      "waterTypes": [
+        "fresh"
+      ],
+      "category": "freshwater",
+      "regionIds": [
+        "tokyo-area"
+      ],
+      "habitats": [
+        "lake",
+        "cover"
+      ],
+      "rarityBand": "common"
+    },
+    {
+      "id": "lingcod",
+      "japaneseName": "リングコッド（暫定）",
+      "scientificName": "Ophiodon elongatus",
+      "waterTypes": [
+        "salt"
+      ],
+      "category": "saltwater",
+      "regionIds": [
+        "british-columbia"
+      ],
+      "habitats": [
+        "reef",
+        "bottom"
+      ],
+      "rarityBand": "uncommon"
+    },
+    {
+      "id": "longtail-tuna",
+      "japaneseName": "ロングテールツナ（暫定）",
+      "scientificName": "Thunnus tonggol",
+      "waterTypes": [
+        "salt"
+      ],
+      "category": "saltwater",
+      "regionIds": [
+        "queensland"
+      ],
+      "habitats": [
+        "open"
+      ],
+      "rarityBand": "uncommon"
+    },
+    {
+      "id": "maaji",
+      "japaneseName": "マアジ（暫定）",
+      "scientificName": "Trachurus japonicus",
+      "waterTypes": [
+        "salt",
+        "brackish"
+      ],
+      "category": "mixed",
+      "regionIds": [
+        "tokyo-area"
+      ],
+      "habitats": [
+        "shallow",
+        "pier",
+        "estuary"
+      ],
+      "rarityBand": "common"
+    },
+    {
+      "id": "madai",
+      "japaneseName": "マダイ（暫定）",
+      "scientificName": "Pagrus major",
+      "waterTypes": [
+        "salt"
+      ],
+      "category": "saltwater",
+      "regionIds": [
+        "tokyo-area"
+      ],
+      "habitats": [
+        "reef",
+        "deep"
+      ],
+      "rarityBand": "uncommon"
+    },
+    {
+      "id": "magochi",
+      "japaneseName": "マゴチ（暫定）",
+      "waterTypes": [
+        "salt",
+        "brackish"
+      ],
+      "category": "mixed",
+      "regionIds": [
+        "tokyo-area"
+      ],
+      "habitats": [
+        "sand",
+        "estuary"
+      ],
+      "rarityBand": "common"
+    },
+    {
+      "id": "mahi-mahi",
+      "japaneseName": "シイラ（暫定）",
+      "scientificName": "Coryphaena hippurus",
+      "waterTypes": [
+        "salt"
+      ],
+      "category": "saltwater",
+      "regionIds": [
+        "tokyo-area",
+        "queensland"
+      ],
+      "habitats": [
+        "surface",
+        "open"
+      ],
+      "rarityBand": "uncommon"
+    },
+    {
+      "id": "mangrove-jack",
+      "japaneseName": "マングローブジャック（暫定）",
+      "scientificName": "Lutjanus argentimaculatus",
+      "waterTypes": [
+        "brackish",
+        "salt"
+      ],
+      "category": "mixed",
+      "regionIds": [
+        "queensland"
+      ],
+      "habitats": [
+        "mangrove",
+        "estuary",
+        "structure"
+      ],
+      "rarityBand": "uncommon"
+    },
+    {
+      "id": "marbled-flounder",
+      "japaneseName": "マコガレイ（暫定）",
+      "scientificName": "Pseudopleuronectes yokohamae",
+      "waterTypes": [
+        "salt",
+        "brackish"
+      ],
+      "category": "mixed",
+      "regionIds": [
+        "tokyo-area",
+        "hokkaido"
+      ],
+      "habitats": [
+        "sand",
+        "bottom"
+      ],
+      "rarityBand": "common"
+    },
+    {
+      "id": "masu-salmon",
+      "japaneseName": "サクラマス（暫定）",
+      "waterTypes": [
+        "fresh",
+        "salt"
+      ],
+      "category": "mixed",
+      "regionIds": [
+        "hokkaido"
+      ],
+      "habitats": [
+        "river",
+        "coast"
+      ],
+      "rarityBand": "uncommon"
+    },
+    {
+      "id": "mebaru",
+      "japaneseName": "メバル（暫定）",
+      "scientificName": "Sebastes inermis",
+      "waterTypes": [
+        "salt"
+      ],
+      "category": "saltwater",
+      "regionIds": [
+        "tokyo-area"
+      ],
+      "habitats": [
+        "rock",
+        "pier"
+      ],
+      "rarityBand": "common"
+    },
+    {
+      "id": "mejina",
+      "japaneseName": "メジナ（暫定）",
+      "scientificName": "Girella punctata",
+      "waterTypes": [
+        "salt"
+      ],
+      "category": "saltwater",
+      "regionIds": [
+        "tokyo-area"
+      ],
+      "habitats": [
+        "rock",
+        "reef"
+      ],
+      "rarityBand": "common"
+    },
+    {
+      "id": "namazu",
+      "japaneseName": "ナマズ（暫定）",
+      "scientificName": "Silurus asotus",
+      "waterTypes": [
+        "fresh"
+      ],
+      "category": "freshwater",
+      "regionIds": [
+        "tokyo-area"
+      ],
+      "habitats": [
+        "lake",
+        "river",
+        "deep"
+      ],
+      "rarityBand": "rare"
+    },
+    {
+      "id": "northern-pikeminnow",
+      "japaneseName": "ノーザンパイクミノー（暫定）",
+      "scientificName": "Ptychocheilus oregonensis",
+      "waterTypes": [
+        "fresh"
+      ],
+      "category": "freshwater",
+      "regionIds": [
+        "british-columbia"
+      ],
+      "habitats": [
+        "river",
+        "lake"
+      ],
+      "rarityBand": "common"
+    },
+    {
+      "id": "oikawa",
+      "japaneseName": "オイカワ（暫定）",
+      "scientificName": "Opsariichthys platypus",
+      "waterTypes": [
+        "fresh"
+      ],
+      "category": "freshwater",
+      "regionIds": [
+        "tokyo-area"
+      ],
+      "habitats": [
+        "river",
+        "shallow"
+      ],
+      "rarityBand": "common"
+    },
+    {
+      "id": "oshorokoma",
+      "japaneseName": "オショロコマ（暫定）",
+      "scientificName": "Salvelinus curilus",
+      "waterTypes": [
+        "fresh"
+      ],
+      "category": "freshwater",
+      "regionIds": [
+        "hokkaido"
+      ],
+      "habitats": [
+        "stream",
+        "river"
+      ],
+      "rarityBand": "common"
+    },
+    {
+      "id": "pacific-cod",
+      "japaneseName": "マダラ（太平洋系・暫定）",
+      "scientificName": "Gadus macrocephalus",
+      "waterTypes": [
+        "salt"
+      ],
+      "category": "saltwater",
+      "regionIds": [
+        "british-columbia",
+        "alaska",
+        "hokkaido"
+      ],
+      "habitats": [
+        "deep",
+        "bottom"
+      ],
+      "rarityBand": "uncommon"
+    },
+    {
+      "id": "pacific-halibut",
+      "japaneseName": "オヒョウ（暫定）",
+      "waterTypes": [
+        "salt"
+      ],
+      "category": "saltwater",
+      "regionIds": [
+        "alaska",
+        "british-columbia"
+      ],
+      "habitats": [
+        "offshore",
+        "deep"
+      ],
+      "rarityBand": "rare"
+    },
+    {
+      "id": "permit",
+      "japaneseName": "パーミット（暫定）",
+      "scientificName": "Trachinotus falcatus",
+      "waterTypes": [
+        "salt"
+      ],
+      "category": "saltwater",
+      "regionIds": [
+        "queensland"
+      ],
+      "habitats": [
+        "flat",
+        "reef"
+      ],
+      "rarityBand": "uncommon"
+    },
+    {
+      "id": "pink-salmon",
+      "japaneseName": "カラフトマス（暫定）",
+      "waterTypes": [
+        "fresh",
+        "salt"
+      ],
+      "category": "mixed",
+      "regionIds": [
+        "alaska",
+        "british-columbia"
+      ],
+      "habitats": [
+        "river",
+        "bay"
+      ],
+      "rarityBand": "uncommon"
+    },
+    {
+      "id": "queenfish",
+      "japaneseName": "クイーンフィッシュ（暫定）",
+      "scientificName": "Scomberoides commersonnianus",
+      "waterTypes": [
+        "salt"
+      ],
+      "category": "saltwater",
+      "regionIds": [
+        "queensland"
+      ],
+      "habitats": [
+        "coast",
+        "open"
+      ],
+      "rarityBand": "uncommon"
+    },
+    {
+      "id": "quillback-rockfish",
+      "japaneseName": "クイルバックロックフィッシュ（暫定）",
+      "scientificName": "Sebastes maliger",
+      "waterTypes": [
+        "salt"
+      ],
+      "category": "saltwater",
+      "regionIds": [
+        "british-columbia"
+      ],
+      "habitats": [
+        "reef",
+        "deep"
+      ],
+      "rarityBand": "uncommon"
+    },
+    {
+      "id": "rainbow-trout",
+      "japaneseName": "レインボートラウト（暫定）",
+      "waterTypes": [
+        "fresh"
+      ],
+      "category": "freshwater",
+      "regionIds": [
+        "alaska",
+        "british-columbia",
+        "tokyo-area",
+        "hokkaido"
+      ],
+      "habitats": [
+        "river",
+        "lake"
+      ],
+      "rarityBand": "common"
+    },
+    {
+      "id": "red-emperor",
+      "japaneseName": "レッドエンペラー（暫定）",
+      "scientificName": "Lutjanus sebae",
+      "waterTypes": [
+        "salt"
+      ],
+      "category": "saltwater",
+      "regionIds": [
+        "queensland"
+      ],
+      "habitats": [
+        "reef",
+        "deep"
+      ],
+      "rarityBand": "uncommon"
+    },
+    {
+      "id": "saba",
+      "japaneseName": "マサバ（暫定）",
+      "scientificName": "Scomber japonicus",
+      "waterTypes": [
+        "salt",
+        "brackish"
+      ],
+      "category": "mixed",
+      "regionIds": [
+        "tokyo-area"
+      ],
+      "habitats": [
+        "bay",
+        "surf",
+        "offshore"
+      ],
+      "rarityBand": "uncommon"
+    },
+    {
+      "id": "sablefish",
+      "japaneseName": "ギンダラ（暫定）",
+      "scientificName": "Anoplopoma fimbria",
+      "waterTypes": [
+        "salt"
+      ],
+      "category": "saltwater",
+      "regionIds": [
+        "british-columbia",
+        "alaska"
+      ],
+      "habitats": [
+        "deep",
+        "bottom"
+      ],
+      "rarityBand": "uncommon"
+    },
+    {
+      "id": "sayori",
+      "japaneseName": "サヨリ（暫定）",
+      "scientificName": "Hyporhamphus sajori",
+      "waterTypes": [
+        "salt",
+        "brackish"
+      ],
+      "category": "mixed",
+      "regionIds": [
+        "tokyo-area"
+      ],
+      "habitats": [
+        "surface",
+        "bay"
+      ],
+      "rarityBand": "common"
+    },
+    {
+      "id": "seabass",
+      "japaneseName": "スズキ（暫定）",
+      "scientificName": "Lateolabrax japonicus",
+      "waterTypes": [
+        "salt",
+        "brackish",
+        "fresh"
+      ],
+      "category": "mixed",
+      "regionIds": [
+        "tokyo-area",
+        "hokkaido"
+      ],
+      "habitats": [
+        "estuary",
+        "river",
+        "pier"
+      ],
+      "rarityBand": "uncommon"
+    },
+    {
+      "id": "shirogisu",
+      "japaneseName": "シロギス（暫定）",
+      "scientificName": "Sillago japonica",
+      "waterTypes": [
+        "salt",
+        "brackish"
+      ],
+      "category": "mixed",
+      "regionIds": [
+        "tokyo-area"
+      ],
+      "habitats": [
+        "shallow",
+        "surf",
+        "sandy_bottom"
+      ],
+      "rarityBand": "common"
+    },
+    {
+      "id": "smallmouth-bass",
+      "japaneseName": "スモールマウスバス（暫定）",
+      "scientificName": "Micropterus dolomieu",
+      "waterTypes": [
+        "fresh"
+      ],
+      "category": "freshwater",
+      "regionIds": [
+        "british-columbia"
+      ],
+      "habitats": [
+        "river",
+        "lake"
+      ],
+      "rarityBand": "uncommon"
+    },
+    {
+      "id": "sockeye-salmon",
+      "japaneseName": "ベニザケ（暫定）",
+      "waterTypes": [
+        "fresh",
+        "salt"
+      ],
+      "category": "mixed",
+      "regionIds": [
+        "alaska",
+        "british-columbia"
+      ],
+      "habitats": [
+        "river",
+        "lake"
+      ],
+      "rarityBand": "uncommon"
+    },
+    {
+      "id": "spanish-mackerel",
+      "japaneseName": "スパニッシュマッカレル（暫定）",
+      "scientificName": "Scomberomorus commerson",
+      "waterTypes": [
+        "salt"
+      ],
+      "category": "saltwater",
+      "regionIds": [
+        "queensland"
+      ],
+      "habitats": [
+        "reef",
+        "open"
+      ],
+      "rarityBand": "uncommon"
+    },
+    {
+      "id": "steelhead",
+      "japaneseName": "スチールヘッド（暫定）",
+      "scientificName": "Oncorhynchus mykiss",
+      "waterTypes": [
+        "fresh",
+        "brackish"
+      ],
+      "category": "mixed",
+      "regionIds": [
+        "british-columbia"
+      ],
+      "habitats": [
+        "river",
+        "estuary"
+      ],
+      "rarityBand": "uncommon"
+    },
+    {
+      "id": "tachiuo",
+      "japaneseName": "タチウオ（暫定）",
+      "scientificName": "Trichiurus lepturus",
+      "waterTypes": [
+        "salt"
+      ],
+      "category": "saltwater",
+      "regionIds": [
+        "tokyo-area"
+      ],
+      "habitats": [
+        "open",
+        "deep"
+      ],
+      "rarityBand": "uncommon"
+    },
+    {
+      "id": "threadfin-salmon",
+      "japaneseName": "スレッドフィンサーモン（暫定）",
+      "scientificName": "Eleutheronema tetradactylum",
+      "waterTypes": [
+        "brackish",
+        "salt"
+      ],
+      "category": "mixed",
+      "regionIds": [
+        "queensland"
+      ],
+      "habitats": [
+        "estuary",
+        "sand"
+      ],
+      "rarityBand": "uncommon"
+    },
+    {
+      "id": "ugui",
+      "japaneseName": "ウグイ（暫定）",
+      "scientificName": "Pseudaspius hakonensis",
+      "waterTypes": [
+        "fresh",
+        "brackish"
+      ],
+      "category": "mixed",
+      "regionIds": [
+        "tokyo-area",
+        "hokkaido"
+      ],
+      "habitats": [
+        "river",
+        "stream"
+      ],
+      "rarityBand": "common"
+    },
+    {
+      "id": "unagi",
+      "japaneseName": "ニホンウナギ（暫定）",
+      "scientificName": "Anguilla japonica",
+      "waterTypes": [
+        "fresh",
+        "brackish"
+      ],
+      "category": "mixed",
+      "regionIds": [
+        "tokyo-area"
+      ],
+      "habitats": [
+        "river",
+        "estuary"
+      ],
+      "rarityBand": "uncommon"
+    },
+    {
+      "id": "wakasagi",
+      "japaneseName": "ワカサギ（暫定）",
+      "scientificName": "Hypomesus nipponensis",
+      "waterTypes": [
+        "fresh"
+      ],
+      "category": "freshwater",
+      "regionIds": [
+        "tokyo-area",
+        "hokkaido"
+      ],
+      "habitats": [
+        "lake",
+        "open"
+      ],
+      "rarityBand": "common"
+    },
+    {
+      "id": "white-sturgeon",
+      "japaneseName": "ホワイトスタージョン（暫定）",
+      "scientificName": "Acipenser transmontanus",
+      "waterTypes": [
+        "fresh",
+        "brackish"
+      ],
+      "category": "mixed",
+      "regionIds": [
+        "british-columbia"
+      ],
+      "habitats": [
+        "river",
+        "deep"
+      ],
+      "rarityBand": "rare"
+    },
+    {
+      "id": "yamame",
+      "japaneseName": "ヤマメ（暫定）",
+      "scientificName": "Oncorhynchus masou masou",
+      "waterTypes": [
+        "fresh"
+      ],
+      "category": "freshwater",
+      "regionIds": [
+        "tokyo-area",
+        "hokkaido"
+      ],
+      "habitats": [
+        "stream",
+        "river"
+      ],
+      "rarityBand": "common"
+    },
+    {
+      "id": "yelloweye-rockfish",
+      "japaneseName": "イエローアイロックフィッシュ（暫定）",
+      "scientificName": "Sebastes ruberrimus",
+      "waterTypes": [
+        "salt"
+      ],
+      "category": "saltwater",
+      "regionIds": [
+        "british-columbia",
+        "alaska"
+      ],
+      "habitats": [
+        "reef",
+        "deep"
+      ],
+      "rarityBand": "uncommon"
+    }
+  ],
+  "regions": [
+    {
+      "id": "alaska",
+      "name": "アラスカ",
+      "countryId": "united-states",
+      "countryName": "アメリカ合衆国",
+      "stage": "playable",
+      "packKey": "region:alaska"
+    },
+    {
+      "id": "amazonas",
+      "name": "アマゾナス",
+      "countryId": "brazil",
+      "countryName": "ブラジル",
+      "stage": "planned",
+      "packKey": null
+    },
+    {
+      "id": "baja-california",
+      "name": "バハ・カリフォルニア",
+      "countryId": "mexico",
+      "countryName": "メキシコ",
+      "stage": "planned",
+      "packKey": null
+    },
+    {
+      "id": "british-columbia",
+      "name": "ブリティッシュコロンビア",
+      "countryId": "canada",
+      "countryName": "カナダ",
+      "stage": "playable",
+      "packKey": "region:british-columbia"
+    },
+    {
+      "id": "gulf-of-thailand",
+      "name": "タイランド湾",
+      "countryId": "thailand",
+      "countryName": "タイ",
+      "stage": "planned",
+      "packKey": null
+    },
+    {
+      "id": "hokkaido",
+      "name": "北海道",
+      "countryId": "japan",
+      "countryName": "日本",
+      "stage": "playable",
+      "packKey": "region:hokkaido"
+    },
+    {
+      "id": "nordland",
+      "name": "ノルウェー北部",
+      "countryId": "norway",
+      "countryName": "ノルウェー",
+      "stage": "planned",
+      "packKey": null
+    },
+    {
+      "id": "queensland",
+      "name": "クイーンズランド",
+      "countryId": "australia",
+      "countryName": "オーストラリア",
+      "stage": "playable",
+      "packKey": "region:queensland"
+    },
+    {
+      "id": "southland",
+      "name": "サウスランド",
+      "countryId": "new-zealand",
+      "countryName": "ニュージーランド",
+      "stage": "planned",
+      "packKey": null
+    },
+    {
+      "id": "tokyo-area",
+      "name": "東京近郊",
+      "countryId": "japan",
+      "countryName": "日本",
+      "stage": "playable",
+      "packKey": "region:tokyo-area"
+    }
+  ],
+  "packs": [
+    {
+      "key": "region:alaska",
+      "kind": "region",
+      "label": "アラスカ",
+      "regionId": "alaska",
+      "kinds": [
+        "fishing-spots",
+        "buyers",
+        "contact-rewards"
+      ]
+    },
+    {
+      "key": "region:british-columbia",
+      "kind": "region",
+      "label": "ブリティッシュコロンビア",
+      "regionId": "british-columbia",
+      "kinds": [
+        "fishing-spots",
+        "buyers",
+        "contact-rewards"
+      ]
+    },
+    {
+      "key": "region:hokkaido",
+      "kind": "region",
+      "label": "北海道",
+      "regionId": "hokkaido",
+      "kinds": [
+        "fishing-spots",
+        "buyers",
+        "contact-rewards"
+      ]
+    },
+    {
+      "key": "region:queensland",
+      "kind": "region",
+      "label": "クイーンズランド",
+      "regionId": "queensland",
+      "kinds": [
+        "fishing-spots",
+        "buyers",
+        "contact-rewards"
+      ]
+    },
+    {
+      "key": "region:tokyo-area",
+      "kind": "region",
+      "label": "東京近郊",
+      "regionId": "tokyo-area",
+      "kinds": [
+        "fishing-spots",
+        "buyers",
+        "contact-rewards"
+      ]
+    },
+    {
+      "key": "species-detail",
+      "kind": "global",
+      "label": "Species detail",
+      "kinds": [
+        "fish-species",
+        "species-trade-profiles"
+      ]
+    },
+    {
+      "key": "tackle",
+      "kind": "global",
+      "label": "Tackle catalog",
+      "kinds": [
+        "gear",
+        "gear-series",
+        "brands",
+        "methods",
+        "shop-items"
+      ]
+    },
+    {
+      "key": "world",
+      "kind": "global",
+      "label": "World basics",
+      "kinds": [
+        "regions",
+        "countries",
+        "transports",
+        "expeditions"
+      ]
+    }
+  ]
+}

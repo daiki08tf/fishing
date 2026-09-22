@@ -1,0 +1,31 @@
+/* Content Pack の読み込み表示（Phase 15）。 */
+.content-loading {
+  text-align: center;
+}
+
+.content-loading__spinner {
+  margin: 0 0 0.25rem;
+  font-size: 1.5rem;
+  letter-spacing: 0.2em;
+  color: var(--color-accent);
+}
+
+.content-loading__spinner span {
+  opacity: 0.4;
+  animation: content-loading-pulse 1.2s ease-in-out infinite;
+}
+
+.content-loading__spinner span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+@keyframes content-loading-pulse {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
