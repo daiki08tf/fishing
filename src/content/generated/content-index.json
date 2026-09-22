@@ -6,7 +6,8 @@
     "regions": 14,
     "countries": 9,
     "buyers": 24,
-    "contact-rewards": 66,
+    "contacts": 1,
+    "contact-rewards": 69,
     "expeditions": 13,
     "species-trade-profiles": 229,
     "packs": 16
@@ -4622,6 +4623,7 @@
       "kinds": [
         "fishing-spots",
         "buyers",
+        "contacts",
         "contact-rewards"
       ]
     },
@@ -4633,6 +4635,7 @@
       "kinds": [
         "fishing-spots",
         "buyers",
+        "contacts",
         "contact-rewards"
       ]
     },
@@ -4644,6 +4647,7 @@
       "kinds": [
         "fishing-spots",
         "buyers",
+        "contacts",
         "contact-rewards"
       ]
     },
@@ -4655,6 +4659,7 @@
       "kinds": [
         "fishing-spots",
         "buyers",
+        "contacts",
         "contact-rewards"
       ]
     },
@@ -4666,6 +4671,7 @@
       "kinds": [
         "fishing-spots",
         "buyers",
+        "contacts",
         "contact-rewards"
       ]
     },
@@ -4677,6 +4683,7 @@
       "kinds": [
         "fishing-spots",
         "buyers",
+        "contacts",
         "contact-rewards"
       ]
     },
@@ -4688,6 +4695,7 @@
       "kinds": [
         "fishing-spots",
         "buyers",
+        "contacts",
         "contact-rewards"
       ]
     },
@@ -4699,6 +4707,7 @@
       "kinds": [
         "fishing-spots",
         "buyers",
+        "contacts",
         "contact-rewards"
       ]
     },
@@ -4710,6 +4719,7 @@
       "kinds": [
         "fishing-spots",
         "buyers",
+        "contacts",
         "contact-rewards"
       ]
     },
@@ -4721,6 +4731,7 @@
       "kinds": [
         "fishing-spots",
         "buyers",
+        "contacts",
         "contact-rewards"
       ]
     },
@@ -4732,6 +4743,7 @@
       "kinds": [
         "fishing-spots",
         "buyers",
+        "contacts",
         "contact-rewards"
       ]
     },
@@ -4743,6 +4755,7 @@
       "kinds": [
         "fishing-spots",
         "buyers",
+        "contacts",
         "contact-rewards"
       ]
     },
@@ -4754,6 +4767,7 @@
       "kinds": [
         "fishing-spots",
         "buyers",
+        "contacts",
         "contact-rewards"
       ]
     },
@@ -4765,6 +4779,7 @@
       "kinds": [
         "fishing-spots",
         "buyers",
+        "contacts",
         "contact-rewards"
       ]
     },

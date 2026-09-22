@@ -79,7 +79,7 @@ describe('loadContentDirectory', () => {
     // 検証用 fixture（サンプル魚）は src/content/data には置かない。
     expect(kinds.filter((kind) => kind === 'fish-species')).toHaveLength(229)
     expect(kinds.filter((kind) => kind === 'fishing-spots')).toHaveLength(140)
-    expect(kinds.filter((kind) => kind === 'transports')).toHaveLength(11)
+    expect(kinds.filter((kind) => kind === 'transports')).toHaveLength(13)
     expect(kinds.filter((kind) => kind === 'countries')).toHaveLength(9)
     expect(kinds.filter((kind) => kind === 'regions')).toHaveLength(14)
     expect(kinds.filter((kind) => kind === 'expeditions')).toHaveLength(13)
@@ -88,7 +88,8 @@ describe('loadContentDirectory', () => {
     expect(kinds.filter((kind) => kind === 'brands')).toHaveLength(13)
     expect(kinds.filter((kind) => kind === 'gear-series')).toHaveLength(89)
     expect(kinds.filter((kind) => kind === 'buyers')).toHaveLength(24)
+    expect(kinds.filter((kind) => kind === 'contacts')).toHaveLength(1)
     expect(kinds.filter((kind) => kind === 'species-trade-profiles')).toHaveLength(229)
-    expect(kinds.filter((kind) => kind === 'contact-rewards')).toHaveLength(66)
+    expect(kinds.filter((kind) => kind === 'contact-rewards')).toHaveLength(69)
   })
 })

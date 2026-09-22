@@ -7,7 +7,7 @@ import {
   TRANSPORT_OWNERSHIP_MODELS,
   TRANSPORT_TYPES,
 } from '../../domain/access/Transport'
-import { asTransportId } from '../../domain/ids'
+import { asContactId, asTransportId } from '../../domain/ids'
 import { nonEmptyString } from './primitives'
 
 export const transportTypeSchema = z.enum(TRANSPORT_TYPES)
@@ -44,6 +44,7 @@ export const transportSchema = z
     launchCapability: z.enum(LAUNCH_CAPABILITIES),
     boatCapability: z.enum(BOAT_CAPABILITIES),
     passengerCapacity: z.number().int().nonnegative(),
+    operatorContactId: nonEmptyString.transform(asContactId).optional(),
   })
   .superRefine((definition, context) => {
     if (definition.ownershipModel === 'owned' && definition.purchasePrice === undefined) {

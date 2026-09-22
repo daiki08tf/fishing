@@ -29,5 +29,6 @@ export const m9Name = "hokkaido-surf.json"
 export const load = async (): Promise<Readonly<Record<string, readonly unknown[]>>> => ({
     "fishing-spots": [m0, m1, m2, m3, m4, m5, m6, m7, m8, m9],
     "buyers": [],
+    "contacts": [],
     "contact-rewards": [],
 })

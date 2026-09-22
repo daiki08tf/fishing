@@ -25,5 +25,6 @@ export const m7Name = "alaska-trophy-lake.json"
 export const load = async (): Promise<Readonly<Record<string, readonly unknown[]>>> => ({
     "fishing-spots": [m0, m1, m2, m3, m4, m5, m6, m7],
     "buyers": [],
+    "contacts": [],
     "contact-rewards": [],
 })

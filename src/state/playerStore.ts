@@ -11,6 +11,7 @@ import { resolveCatch } from '../domain/catch'
 import { emptyCodexState, type CodexState } from '../domain/codex'
 import {
   addKeptCatch,
+  applyCharterTripOutcome,
   claimEligibleRewards,
   createInitialTradeState,
   sellCatches,
@@ -299,8 +300,16 @@ export type PlayerStoreState = PersistedPlayerSlice & {
   ): TripActionResult
   /** 釣り 1 回分の結果を世界へ反映する（時間と Knowledge が進む）。 */
   recordAttempt(input: RecordAttemptInput): TripActionResult
-  /** Spot を出て自宅へ戻る（帰路の時間が進む）。 */
-  returnHome(spot: FishingSpot, transports: readonly TransportDefinition[]): TripActionResult
+  /**
+   * Spot を出て自宅へ戻る（帰路の時間が進む）。
+   * Charter で来ていれば（Transport に operatorContactId があれば）、
+   * ボウズでも Base Trust が Captain / Guide へ入る（Phase 17C）。
+   */
+  returnHome(
+    spot: FishingSpot,
+    transports: readonly TransportDefinition[],
+    rewards?: readonly ContactReward[],
+  ): TripActionResult
   /** 商品を買う。買えると移動手段が増えることがある。 */
   purchaseItem(item: ShopItem): { readonly ok: boolean; readonly message: string | null }
   /** 翌朝まで休む（時間を進める）。 */
@@ -582,7 +591,7 @@ export const createPlayerStore = () =>
     },
 
     evaluateSpot: (spot, transports) => {
-      const { transport, knowledge, expedition } = get()
+      const { transport, knowledge, expedition, trade } = get()
 
       return evaluateAccess({
         spot,
@@ -591,6 +600,7 @@ export const createPlayerStore = () =>
         knowledge,
         permitsEnabled: true,
         permits: permitIdsForAccess(expedition),
+        contactTrust: trade.contactTrust,
       })
     },
 
@@ -603,6 +613,7 @@ export const createPlayerStore = () =>
         knowledge: state.knowledge,
         permitsEnabled: true,
         permits: permitIdsForAccess(state.expedition),
+        contactTrust: state.trade.contactTrust,
       })
       const cost = roundTripCostFor(travelOption)
 
@@ -619,7 +630,7 @@ export const createPlayerStore = () =>
         return { ok: false, reason: 'state', message: '読み込み中' }
       }
 
-      const { world, transport, knowledge, finance, expedition } = get()
+      const { world, transport, knowledge, finance, expedition, trade } = get()
 
       // Phase 8: 今いる地域の釣り場にしか行けない（Domain も leaveForSpot で強制する）。
       // 入口で先に見て、許可や費用より「遠征が必要」を優先して伝える。
@@ -650,6 +661,7 @@ export const createPlayerStore = () =>
         knowledge,
         permitsEnabled: true,
         permits: permitIdsForAccess(expedition),
+        contactTrust: trade.contactTrust,
       })
 
       if (!access.accessible) {
@@ -688,6 +700,7 @@ export const createPlayerStore = () =>
         transports,
         playerTransports: transport,
         permits: permitIdsForAccess(expedition),
+        contactTrust: trade.contactTrust,
         ...(transportId === undefined ? {} : { transportId }),
       })
 
@@ -750,12 +763,29 @@ export const createPlayerStore = () =>
       return { ok: true, message: null }
     },
 
-    returnHome: (spot, transports) => {
+    returnHome: (spot, transports, rewards = []) => {
       if (get().hydrationStatus !== 'ready') {
         return { ok: false, reason: 'state', message: '読み込み中' }
       }
 
-      const { world, transport, knowledge, finance, expedition } = get()
+      const { world, transport, knowledge, finance, expedition, trade } = get()
+
+      /*
+       * Phase 17C: Charter Trust はここで確定する（帰宅 = 釣行完了）。
+       * ボウズでも Base は入る。対象 Contact が無い Transport（徒歩・電車・
+       * レンタル一般など）では何も起きない（operatorContactId が無いため）。
+       */
+      const tripTransportId = world.trip?.transportId ?? null
+      const tripTransport =
+        tripTransportId === null
+          ? null
+          : (transports.find((entry) => entry.id === tripTransportId) ?? null)
+      const charterOutcome = applyCharterTripOutcome(trade, tripTransport, world.trip?.catches ?? 0)
+      const claim =
+        charterOutcome.contactId === null
+          ? { trade: charterOutcome.trade, newlyClaimed: [] as readonly ContactReward[] }
+          : claimEligibleRewards(charterOutcome.trade, charterOutcome.contactId, rewards)
+
       const left = leaveSpot({
         context: { world, knowledge },
         spot,
@@ -774,12 +804,21 @@ export const createPlayerStore = () =>
         return { ok: false, reason: 'state', message: home.message }
       }
 
-      const settledFinance = settleAfterAdvance(finance, world.time, home.context.world.time)
+      let nextWorld = home.context.world
+
+      for (const reward of claim.newlyClaimed) {
+        if (reward.kind === 'discover_spot' && reward.targetId !== undefined) {
+          nextWorld = discoverSpotFromContact(nextWorld, reward.targetId as FishingSpotId)
+        }
+      }
+
+      const settledFinance = settleAfterAdvance(finance, world.time, nextWorld.time)
 
       set({
-        world: home.context.world,
+        world: nextWorld,
         knowledge: home.context.knowledge,
         finance: settledFinance,
+        trade: claim.trade,
         lastSearch: null,
         searchPositionIndex: 0,
       })

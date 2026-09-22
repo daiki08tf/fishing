@@ -23,6 +23,15 @@
       "baseMinutes": 65,
       "distanceKm": 28,
       "baseOneWayCost": 0
+    },
+    {
+      "id": "sagami-charter",
+      "transportTypes": ["charter_boat"],
+      "requiredCapabilities": ["boat_required", "offshore"],
+      "features": ["boat_rental", "marina"],
+      "baseMinutes": 55,
+      "distanceKm": 28,
+      "baseOneWayCost": 0
     }
   ],
   "habitatTags": ["open", "deep"],

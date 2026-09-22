@@ -380,7 +380,7 @@ export const SpotScreen = () => {
           className="button"
           type="button"
           onClick={() => {
-            const result = returnHome(spot, content.value.transports)
+            const result = returnHome(spot, content.value.transports, content.value.contactRewards)
 
             if (result.ok) {
               setActiveScreen('home')

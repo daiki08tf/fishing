@@ -1,0 +1,8 @@
+{
+  "id": "fish-wholesaler-introduces-captain-taro",
+  "contactId": "fish-wholesaler",
+  "minTrust": 25,
+  "kind": "introduce_contact",
+  "message": "卸業者が「沖に詳しい船長を知っている」と、チャーター船のタロウ船長を紹介してくれた。",
+  "targetId": "captain-taro"
+}

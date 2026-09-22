@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { createTestSpot } from '../../../tests/fixtures/spots'
 import { createTestTransportState, TEST_TRANSPORTS } from '../../../tests/fixtures/transports'
-import { asPermitId } from '../ids'
+import { asPermitId, asRelationshipTargetId } from '../ids'
 import { emptyKnowledgeState } from '../knowledge/KnowledgeState'
 import { addSpotKnowledge } from '../knowledge/spotKnowledge'
 import { ACCESS_REQUIREMENT_KINDS } from './AccessRequirement'
@@ -339,5 +339,39 @@ describe('access engine', () => {
 
     expect(afterUnrelatedProgression.accessible).toBe(first.accessible)
     expect(afterUnrelatedProgression.travelOptions).toEqual(first.travelOptions)
+  })
+
+  it('gates a relationship requirement on the given contactTrust map (Phase 17C)', () => {
+    const spot = createTestSpot({
+      access: [
+        {
+          kind: 'relationship',
+          targetId: asRelationshipTargetId('captain-x'),
+          minimum: 30,
+        },
+      ],
+    })
+
+    // 未渡し（省略）は Trust 0 扱いなので拒否される。無条件通過にはしない。
+    const withoutTrustMap = evaluateAccess({ ...base, spot })
+    expect(withoutTrustMap.accessible).toBe(false)
+    expect(withoutTrustMap.blockedReasons).toEqual([
+      expect.objectContaining({ kind: 'relationship', required: 30, current: 0 }),
+    ])
+
+    const belowThreshold = evaluateAccess({
+      ...base,
+      spot,
+      contactTrust: { 'captain-x': 10 },
+    })
+    expect(belowThreshold.accessible).toBe(false)
+
+    const aboveThreshold = evaluateAccess({
+      ...base,
+      spot,
+      contactTrust: { 'captain-x': 30 },
+    })
+    expect(aboveThreshold.accessible).toBe(true)
+    expect(aboveThreshold.blockedReasons).toEqual([])
   })
 })

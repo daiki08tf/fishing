@@ -35,18 +35,22 @@ import m27 from '../../data/fishing-spots/yokohama-harbor.json'
 import m28 from '../../data/buyers/fish-wholesaler.json'
 import m29 from '../../data/buyers/local-izakaya.json'
 import m30 from '../../data/buyers/market-broker.json'
-import m31 from '../../data/contact-rewards/izakaya-rumor-canal.json'
-import m32 from '../../data/contact-rewards/izakaya-rumor-estuary.json'
-import m33 from '../../data/contact-rewards/izakaya-spot-canal.json'
-import m34 from '../../data/contact-rewards/izakaya-spot-estuary.json'
-import m35 from '../../data/contact-rewards/market-rumor-hokkaido-tributary.json'
-import m36 from '../../data/contact-rewards/market-spot-bc-estuary.json'
-import m37 from '../../data/contact-rewards/market-spot-hokkaido-tributary.json'
-import m38 from '../../data/contact-rewards/market-spot-mountain-pocket.json'
-import m39 from '../../data/contact-rewards/wholesaler-rumor-hokkaido-coast.json'
-import m40 from '../../data/contact-rewards/wholesaler-spot-alaska-branch.json'
-import m41 from '../../data/contact-rewards/wholesaler-spot-cove.json'
-import m42 from '../../data/contact-rewards/wholesaler-spot-hokkaido-coast.json'
+import m31 from '../../data/contacts/captain-taro.json'
+import m32 from '../../data/contact-rewards/captain-taro-intel-reading.json'
+import m33 from '../../data/contact-rewards/captain-taro-rumor-hidden-grounds.json'
+import m34 from '../../data/contact-rewards/fish-wholesaler-introduces-captain-taro.json'
+import m35 from '../../data/contact-rewards/izakaya-rumor-canal.json'
+import m36 from '../../data/contact-rewards/izakaya-rumor-estuary.json'
+import m37 from '../../data/contact-rewards/izakaya-spot-canal.json'
+import m38 from '../../data/contact-rewards/izakaya-spot-estuary.json'
+import m39 from '../../data/contact-rewards/market-rumor-hokkaido-tributary.json'
+import m40 from '../../data/contact-rewards/market-spot-bc-estuary.json'
+import m41 from '../../data/contact-rewards/market-spot-hokkaido-tributary.json'
+import m42 from '../../data/contact-rewards/market-spot-mountain-pocket.json'
+import m43 from '../../data/contact-rewards/wholesaler-rumor-hokkaido-coast.json'
+import m44 from '../../data/contact-rewards/wholesaler-spot-alaska-branch.json'
+import m45 from '../../data/contact-rewards/wholesaler-spot-cove.json'
+import m46 from '../../data/contact-rewards/wholesaler-spot-hokkaido-coast.json'
 
 export const m0Name = "arakawa-lower.json"
 export const m1Name = "bay-offshore-flat.json"
@@ -79,21 +83,26 @@ export const m27Name = "yokohama-harbor.json"
 export const m28Name = "fish-wholesaler.json"
 export const m29Name = "local-izakaya.json"
 export const m30Name = "market-broker.json"
-export const m31Name = "izakaya-rumor-canal.json"
-export const m32Name = "izakaya-rumor-estuary.json"
-export const m33Name = "izakaya-spot-canal.json"
-export const m34Name = "izakaya-spot-estuary.json"
-export const m35Name = "market-rumor-hokkaido-tributary.json"
-export const m36Name = "market-spot-bc-estuary.json"
-export const m37Name = "market-spot-hokkaido-tributary.json"
-export const m38Name = "market-spot-mountain-pocket.json"
-export const m39Name = "wholesaler-rumor-hokkaido-coast.json"
-export const m40Name = "wholesaler-spot-alaska-branch.json"
-export const m41Name = "wholesaler-spot-cove.json"
-export const m42Name = "wholesaler-spot-hokkaido-coast.json"
+export const m31Name = "captain-taro.json"
+export const m32Name = "captain-taro-intel-reading.json"
+export const m33Name = "captain-taro-rumor-hidden-grounds.json"
+export const m34Name = "fish-wholesaler-introduces-captain-taro.json"
+export const m35Name = "izakaya-rumor-canal.json"
+export const m36Name = "izakaya-rumor-estuary.json"
+export const m37Name = "izakaya-spot-canal.json"
+export const m38Name = "izakaya-spot-estuary.json"
+export const m39Name = "market-rumor-hokkaido-tributary.json"
+export const m40Name = "market-spot-bc-estuary.json"
+export const m41Name = "market-spot-hokkaido-tributary.json"
+export const m42Name = "market-spot-mountain-pocket.json"
+export const m43Name = "wholesaler-rumor-hokkaido-coast.json"
+export const m44Name = "wholesaler-spot-alaska-branch.json"
+export const m45Name = "wholesaler-spot-cove.json"
+export const m46Name = "wholesaler-spot-hokkaido-coast.json"
 
 export const load = async (): Promise<Readonly<Record<string, readonly unknown[]>>> => ({
     "fishing-spots": [m0, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15, m16, m17, m18, m19, m20, m21, m22, m23, m24, m25, m26, m27],
     "buyers": [m28, m29, m30],
-    "contact-rewards": [m31, m32, m33, m34, m35, m36, m37, m38, m39, m40, m41, m42],
+    "contacts": [m31],
+    "contact-rewards": [m32, m33, m34, m35, m36, m37, m38, m39, m40, m41, m42, m43, m44, m45, m46],
 })

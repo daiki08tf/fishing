@@ -19,7 +19,7 @@
   "travelOptions": [
     {
       "id": "rental_boat-1",
-      "transportTypes": ["rental_boat"],
+      "transportTypes": ["rental_boat", "owned_boat"],
       "requiredCapabilities": ["boat_required"],
       "features": [],
       "baseMinutes": 80,

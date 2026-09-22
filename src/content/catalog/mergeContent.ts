@@ -6,6 +6,7 @@ import type { FishSpecies } from '../../domain/fish/FishSpecies'
 import type { FishingMethod } from '../../domain/method/FishingMethod'
 import type { ShopItem } from '../../domain/shop/ShopItem'
 import type { BuyerDefinition } from '../../domain/trade/Buyer'
+import type { ContactDefinition } from '../../domain/trade/Contact'
 import type { ContactReward } from '../../domain/trade/ContactReward'
 import type { SpeciesTradeProfile } from '../../domain/trade/SpeciesTradeProfile'
 import type { TransportDefinition } from '../../domain/access/Transport'
@@ -32,6 +33,8 @@ export type ContentBuckets = {
   readonly regions: readonly RegionDefinition[]
   readonly expeditions: readonly ExpeditionDefinition[]
   readonly buyers: readonly BuyerDefinition[]
+  /** Phase 17C: 買い取りをしない汎用 Contact（船長・ガイドなど）。 */
+  readonly contacts: readonly ContactDefinition[]
   readonly speciesTradeProfiles: readonly SpeciesTradeProfile[]
   readonly contactRewards: readonly ContactReward[]
   readonly gear: readonly GearItem[]
@@ -49,6 +52,7 @@ export const emptyContentBuckets = (): ContentBuckets => ({
   regions: [],
   expeditions: [],
   buyers: [],
+  contacts: [],
   speciesTradeProfiles: [],
   contactRewards: [],
   gear: [],
@@ -91,6 +95,7 @@ export const mergeContentBuckets = (base: ContentBuckets, add: ContentBuckets): 
   regions: mergeList(base.regions, add.regions, (entry) => String(entry.id)),
   expeditions: mergeList(base.expeditions, add.expeditions, (entry) => String(entry.id)),
   buyers: mergeList(base.buyers, add.buyers, (entry) => String(entry.id)),
+  contacts: mergeList(base.contacts, add.contacts, (entry) => String(entry.id)),
   speciesTradeProfiles: mergeList(base.speciesTradeProfiles, add.speciesTradeProfiles, (entry) =>
     String(entry.speciesId),
   ),
@@ -161,6 +166,8 @@ export const toBuiltInContent = (
     expeditionById: indexBy(buckets.expeditions, (entry) => String(entry.id)),
     buyers: buckets.buyers,
     buyerById: indexBy(buckets.buyers, (entry) => String(entry.id)),
+    contacts: buckets.contacts,
+    contactById: indexBy(buckets.contacts, (entry) => String(entry.id)),
     speciesTradeProfiles: buckets.speciesTradeProfiles,
     speciesTradeProfileBySpeciesId: indexBy(buckets.speciesTradeProfiles, (entry) =>
       String(entry.speciesId),
@@ -192,6 +199,7 @@ export const bucketsFromBuiltInContent = (content: BuiltInContent): ContentBucke
   regions: content.regions,
   expeditions: content.expeditions,
   buyers: content.buyers,
+  contacts: content.contacts,
   speciesTradeProfiles: content.speciesTradeProfiles,
   contactRewards: content.contactRewards,
   gear: content.gear,

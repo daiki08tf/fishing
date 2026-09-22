@@ -1,4 +1,4 @@
-import { trustOf } from '../../domain/trade'
+import { isContactKnown, trustOf, type ContactType } from '../../domain/trade'
 import { useAppStore } from '../../state/appStore'
 import { usePlayerStore } from '../../state/playerStore'
 import { PixelIcon } from '../components/PixelIcon'
@@ -14,6 +14,14 @@ const REWARD_KIND_LABELS: Readonly<Record<string, string>> = {
   intel: '噂',
   discover_spot: '釣り場の発見',
   introduce_contact: '紹介',
+}
+
+/** Phase 17C: 買取をしない汎用 Contact（船長・ガイドなど）の role 表示。 */
+const CONTACT_TYPE_LABELS: Readonly<Record<ContactType, string>> = {
+  captain: '船長',
+  guide: 'ガイド',
+  local_fisher: '地元の釣り人',
+  rental_staff: 'レンタル店スタッフ',
 }
 
 /**
@@ -46,7 +54,10 @@ export const ContactsScreen = () => {
     return <ContentErrorPanel message={content.message} />
   }
 
-  const { buyers, contactRewards } = content.value
+  const { buyers, contacts, contactRewards } = content.value
+  const knownContacts = contacts.filter((contact) =>
+    isContactKnown(contact, contactRewards, trade.claimedRewardIds),
+  )
 
   return (
     <div className="fishing">
@@ -127,6 +138,59 @@ export const ContactsScreen = () => {
           )
         })}
       </ul>
+
+      {knownContacts.length === 0 ? null : (
+        <ul className="contact-card-list">
+          {knownContacts.map((contact) => {
+            const trust = Math.round(trustOf(trade, contact.id))
+            const rewards = contactRewards.filter(
+              (reward) => String(reward.contactId) === String(contact.id),
+            )
+            const claimed = rewards.filter((reward) => trade.claimedRewardIds.includes(reward.id))
+            const nextReward = rewards
+              .filter((reward) => !trade.claimedRewardIds.includes(reward.id))
+              .sort((left, right) => left.minTrust - right.minTrust)[0]
+
+            return (
+              <li className="contact-card" key={String(contact.id)}>
+                <div className="contact-card__head">
+                  <PixelIcon name="person" size={28} className="contact-card__portrait" />
+                  <div className="contact-card__title">
+                    <h3 className="panel__subheading">{contact.name}</h3>
+                    <p className="contact-card__role">{CONTACT_TYPE_LABELS[contact.type]}</p>
+                  </div>
+                </div>
+
+                <StatMeter
+                  label="Trust"
+                  value={trust}
+                  max={100}
+                  tone="trust"
+                  valueText={`${String(trust)} / 100`}
+                />
+
+                <p className="contact-card__desc">{contact.role}</p>
+
+                {claimed.length === 0 ? null : (
+                  <ul className="log">
+                    {claimed.map((reward) => (
+                      <li key={String(reward.id)}>
+                        [{REWARD_KIND_LABELS[reward.kind] ?? reward.kind}] {reward.message}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+
+                {nextReward === undefined ? null : (
+                  <p className="contact-card__locked">
+                    次の情報: ？？？（Trust {nextReward.minTrust} で解禁）
+                  </p>
+                )}
+              </li>
+            )
+          })}
+        </ul>
+      )}
     </div>
   )
 }

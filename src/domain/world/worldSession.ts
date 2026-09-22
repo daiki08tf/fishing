@@ -144,6 +144,8 @@ export const leaveForSpot = (input: {
   readonly transportId?: TransportId
   /** 所持している許可（遊漁券など）。 */
   readonly permits?: readonly string[]
+  /** Phase 17C: relationship 条件（人脈 Trust）の評価に使う。省略時は Trust 0 扱い。 */
+  readonly contactTrust?: Readonly<Record<string, number>>
   readonly tuning?: WorldTuning
 }): WorldActionResult => {
   const { world, knowledge } = input.context
@@ -176,6 +178,7 @@ export const leaveForSpot = (input: {
     knowledge,
     permitsEnabled: true,
     ...(input.permits === undefined ? {} : { permits: input.permits }),
+    ...(input.contactTrust === undefined ? {} : { contactTrust: input.contactTrust }),
   })
 
   if (!access.accessible) {

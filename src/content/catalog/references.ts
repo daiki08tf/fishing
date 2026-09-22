@@ -15,6 +15,7 @@ import type { KnowledgeState } from '../../domain/knowledge/KnowledgeState'
 import type { ExpeditionDefinition } from '../../domain/expedition/Expedition'
 import type { Country, RegionDefinition } from '../../domain/world/Region'
 import type { BuyerDefinition } from '../../domain/trade/Buyer'
+import type { ContactDefinition } from '../../domain/trade/Contact'
 import type { SpeciesTradeProfile } from '../../domain/trade/SpeciesTradeProfile'
 import { TRADE_TAGS } from '../../domain/trade/TradeTag'
 import type { ContactReward } from '../../domain/trade/ContactReward'
@@ -54,6 +55,7 @@ export type ContentReferenceInput = {
   readonly regions?: readonly RegionDefinition[]
   readonly expeditions?: readonly ExpeditionDefinition[]
   readonly buyers?: readonly BuyerDefinition[]
+  readonly contacts?: readonly ContactDefinition[]
   readonly speciesTradeProfiles?: readonly SpeciesTradeProfile[]
   readonly contactRewards?: readonly ContactReward[]
 }
@@ -189,6 +191,7 @@ export const validateContentReferences = (
   const regions = input.regions ?? []
   const expeditions = input.expeditions ?? []
   const buyers = input.buyers ?? []
+  const contacts = input.contacts ?? []
   const speciesTradeProfiles = input.speciesTradeProfiles ?? []
   const contactRewards = input.contactRewards ?? []
   const speciesIds = new Set(input.species.map((entry) => String(entry.id)))
@@ -269,6 +272,15 @@ export const validateContentReferences = (
     'buyers',
     buyers.map((entry) => String(entry.id)),
   )
+  duplicate(
+    'contacts',
+    contacts.map((entry) => String(entry.id)),
+  )
+  // Buyer / Contact は同じ ID 空間（ContactId）を共有するため、跨いだ重複も検査する。
+  duplicate('buyers+contacts', [
+    ...buyers.map((entry) => String(entry.id)),
+    ...contacts.map((entry) => String(entry.id)),
+  ])
   duplicate(
     'species-trade-profiles',
     speciesTradeProfiles.map((entry) => String(entry.speciesId)),
@@ -572,6 +584,23 @@ export const validateContentReferences = (
    * `npm run simulate:trade-network`（runtime Content だけを見る）が担当する。
    */
   const buyerIds = new Set(buyers.map((entry) => String(entry.id)))
+  // Phase 17C: Buyer と汎用 Contact は同じ ID 空間（ContactId）を共有する。
+  const contactIds = new Set(contacts.map((entry) => String(entry.id)))
+  const allContactIds = new Set([...buyerIds, ...contactIds])
+
+  // Phase 17C: Charter Transport の operatorContactId は実在する Contact を指す。
+  for (const transport of transports) {
+    if (
+      transport.operatorContactId !== undefined &&
+      allContactIds.size > 0 &&
+      !allContactIds.has(String(transport.operatorContactId))
+    ) {
+      issues.push({
+        path: `transports/${String(transport.id)}`,
+        message: `unknown operatorContactId ${String(transport.operatorContactId)}`,
+      })
+    }
+  }
 
   for (const profile of speciesTradeProfiles) {
     if (!speciesIds.has(String(profile.speciesId))) {
@@ -610,7 +639,7 @@ export const validateContentReferences = (
   const discoverableSpotIds = new Set<string>()
 
   for (const reward of contactRewards) {
-    if (buyerIds.size > 0 && !buyerIds.has(String(reward.contactId))) {
+    if (allContactIds.size > 0 && !allContactIds.has(String(reward.contactId))) {
       issues.push({
         path: `contact-rewards/${String(reward.id)}`,
         message: `unknown contactId ${String(reward.contactId)}`,
@@ -635,23 +664,17 @@ export const validateContentReferences = (
 
     if (reward.kind === 'introduce_contact') {
       /*
-       * Phase 13.1: introduce_contact は architecture のみで、
-       * 実際の unlock 挙動（Contact の追加）はまだ実装していない。
-       * Content に足すと「claim だけされて何も起きない」silent no-op になるため、
-       * Phase 13 では Content 側で禁止する（schema ではなく参照検証で止める）。
+       * Phase 17C: introduce_contact の unlock 挙動を実装した
+       * （`isContactKnown` が claimedRewardIds からこの reward の targetId を
+       * 解決する）。targetId は Buyer / 汎用 Contact のどちらでもよい
+       * （同じ ID 空間 = ContactId を共有する）。
        */
-      issues.push({
-        path: `contact-rewards/${String(reward.id)}`,
-        message:
-          'introduce_contact is reserved / not yet supported (claiming it would be a silent no-op). Implement the unlock behaviour before adding this content',
-      })
-
       if (reward.targetId === undefined) {
         issues.push({
           path: `contact-rewards/${String(reward.id)}`,
           message: 'introduce_contact reward requires targetId',
         })
-      } else if (buyerIds.size > 0 && !buyerIds.has(String(reward.targetId))) {
+      } else if (allContactIds.size > 0 && !allContactIds.has(String(reward.targetId))) {
         issues.push({
           path: `contact-rewards/${String(reward.id)}`,
           message: `unknown targetId (contact) ${String(reward.targetId)}`,

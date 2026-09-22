@@ -1,4 +1,4 @@
-import type { TransportId } from '../ids'
+import type { ContactId, TransportId } from '../ids'
 
 /**
  * Transport は「車名を AccessEngine の分岐へ増やす」ための enum ではなく、
@@ -16,6 +16,7 @@ export const TRANSPORT_TYPES = [
   'kayak',
   'rental_boat',
   'owned_boat',
+  'charter_boat',
 ] as const
 
 export type TransportType = (typeof TRANSPORT_TYPES)[number]
@@ -88,6 +89,14 @@ export type TransportDefinition = {
   readonly launchCapability: LaunchCapability
   readonly boatCapability: BoatCapability
   readonly passengerCapacity: number
+  /**
+   * Phase 17C: この Transport が特定の Captain / Guide が operate する
+   * Charter サービスであることを示す（任意）。予約システムは作らない —
+   * 「この Transport で釣行すると、この Contact の Trust が上がる」だけの
+   * data-driven な結び付け。Transport-ID による分岐は行わない
+   * （Domain はこのフィールドの有無だけを見る）。
+   */
+  readonly operatorContactId?: ContactId
 }
 
 /** Save に載る、プレイヤー側の利用可能・所有状態。rental は釣行ごとに解決する。 */

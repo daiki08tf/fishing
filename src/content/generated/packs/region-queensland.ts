@@ -17,5 +17,6 @@ export const m3Name = "qld-reef-edge.json"
 export const load = async (): Promise<Readonly<Record<string, readonly unknown[]>>> => ({
     "fishing-spots": [m0, m1, m2, m3],
     "buyers": [],
+    "contacts": [],
     "contact-rewards": [],
 })

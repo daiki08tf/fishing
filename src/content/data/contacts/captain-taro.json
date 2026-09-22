@@ -1,0 +1,9 @@
+{
+  "id": "captain-taro",
+  "regionId": "tokyo-area",
+  "name": "タロウ船長",
+  "type": "captain",
+  "role": "相模湾のチャーター船を操る船長。沖の反応を長年見てきた。",
+  "initiallyKnown": false,
+  "dataStatus": "provisional"
+}

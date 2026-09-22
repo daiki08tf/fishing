@@ -93,6 +93,12 @@ export type AccessEvaluationInput = {
   readonly month?: number
   readonly reputationEnabled?: boolean
   readonly permitsEnabled?: boolean
+  /**
+   * Phase 17C: `relationship` 条件の評価に使う Trust マップ（`TradeState.contactTrust` と
+   * 同じ形。キーは `String(ContactId)`）。省略時は Trust 0 として扱う。
+   * Trade Domain の型は import しない（Access は Trade を知らない）。
+   */
+  readonly contactTrust?: Readonly<Record<string, number>>
 }
 
 const CAPABILITY_LABELS: Readonly<Record<AccessCapability, string>> = {
@@ -527,10 +533,17 @@ export const evaluateAccess = (input: AccessEvaluationInput): AccessEvaluation =
       }
 
       case 'relationship': {
-        if (input.reputationEnabled) {
-          blockedReasons.push({ kind: 'relationship', label: '必要: 人脈（未実装）' })
-        } else {
+        const trust = input.contactTrust?.[String(requirement.targetId)] ?? 0
+
+        if (trust >= requirement.minimum) {
           satisfiedKinds.push('relationship')
+        } else {
+          blockedReasons.push({
+            kind: 'relationship',
+            label: `必要: 人脈 Trust ${String(requirement.minimum)}`,
+            required: requirement.minimum,
+            current: Math.round(trust),
+          })
         }
         break
       }

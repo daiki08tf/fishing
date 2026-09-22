@@ -47,5 +47,6 @@ export const m18Name = "thailand-riverside-restaurant-spot-8.json"
 export const load = async (): Promise<Readonly<Record<string, readonly unknown[]>>> => ({
     "fishing-spots": [m0, m1, m2, m3, m4, m5, m6, m7, m8, m9],
     "buyers": [m10, m11, m12],
+    "contacts": [],
     "contact-rewards": [m13, m14, m15, m16, m17, m18],
 })

@@ -1,0 +1,16 @@
+{
+  "id": "small-owned-boat",
+  "name": "小型自艇（トレーラブル）",
+  "transportType": "owned_boat",
+  "ownershipModel": "owned",
+  "purchasePrice": 1600000,
+  "travelCostModel": { "kind": "per_km", "yenPerKm": 45, "minimumOneWayCost": 2500 },
+  "travelTimeModifier": 0.55,
+  "maxRangeKm": 40,
+  "cargo": { "gearUnits": 8, "maxWeightKg": 150 },
+  "capabilities": ["boat_required", "island_access"],
+  "requiredRouteFeatures": [],
+  "launchCapability": "ramp",
+  "boatCapability": "nearshore",
+  "passengerCapacity": 3
+}

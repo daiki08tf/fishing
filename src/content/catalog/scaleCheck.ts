@@ -1,4 +1,5 @@
 import type { BuyerDefinition } from '../../domain/trade/Buyer'
+import type { ContactDefinition } from '../../domain/trade/Contact'
 import type { ContactReward } from '../../domain/trade/ContactReward'
 import type { ExpeditionDefinition } from '../../domain/expedition/Expedition'
 import type { FishSpecies } from '../../domain/fish/FishSpecies'
@@ -29,6 +30,7 @@ export type ContentScaleInput = {
   readonly spots: readonly FishingSpot[]
   readonly regions: readonly RegionDefinition[]
   readonly buyers: readonly BuyerDefinition[]
+  readonly contacts: readonly ContactDefinition[]
   readonly contactRewards: readonly ContactReward[]
   readonly expeditions: readonly ExpeditionDefinition[]
   readonly speciesTradeProfiles: readonly SpeciesTradeProfile[]
@@ -95,12 +97,18 @@ export const validateContentScale = (input: ContentScaleInput): readonly Content
   const issues: ContentScaleIssue[] = []
   const speciesIds = new Set(input.species.map((entry) => String(entry.id)))
   const buyerById = new Map(input.buyers.map((entry) => [String(entry.id), entry]))
+  const contactById = new Map(input.contacts.map((entry) => [String(entry.id), entry]))
   const regionIdOfSpot = new Map(
     input.spots.map((entry) => [String(entry.id), String(entry.regionId)]),
   )
   const regionIdOfBuyer = new Map(
     input.buyers.map((entry) => [String(entry.id), String(entry.regionId)]),
   )
+  const regionIdOfContact = new Map(
+    input.contacts.map((entry) => [String(entry.id), String(entry.regionId)]),
+  )
+  /** Buyer と汎用 Contact は同じ ContactId 空間を共有する（Phase 17C）。 */
+  const regionIdOfAnyContact = new Map([...regionIdOfBuyer, ...regionIdOfContact])
 
   // 1. id の一意性（scale の前提。既存検証と二重に確認する）。
   issues.push(...duplicateIds('fish-species', [...speciesIds]))
@@ -121,6 +129,18 @@ export const validateContentScale = (input: ContentScaleInput): readonly Content
       'buyers',
       input.buyers.map((entry) => String(entry.id)),
     ),
+  )
+  issues.push(
+    ...duplicateIds(
+      'contacts',
+      input.contacts.map((entry) => String(entry.id)),
+    ),
+  )
+  issues.push(
+    ...duplicateIds('buyers+contacts', [
+      ...input.buyers.map((entry) => String(entry.id)),
+      ...input.contacts.map((entry) => String(entry.id)),
+    ]),
   )
   issues.push(
     ...duplicateIds(
@@ -349,6 +369,20 @@ export const validateContentScale = (input: ContentScaleInput): readonly Content
         }
       }
 
+      if (kind === 'contacts') {
+        const contactId = file.replace(/\.json$/, '')
+        const regionId = contactById.has(contactId)
+          ? String(contactById.get(contactId)?.regionId)
+          : regionIdOfContact.get(contactId)
+
+        if (regionId !== undefined && owner !== `region:${regionId}`) {
+          issues.push({
+            path: key,
+            message: `contact must be owned by region:${regionId}, not ${owner}`,
+          })
+        }
+      }
+
       if (kind === 'fish-species' || kind === 'species-trade-profiles') {
         const speciesId = file.replace(/\.json$/, '')
         const shard = input.index.species.find(
@@ -372,7 +406,7 @@ export const validateContentScale = (input: ContentScaleInput): readonly Content
         const reward = input.contactRewards.find((entry) => String(entry.id) === rewardId)
 
         if (reward !== undefined) {
-          const regionId = regionIdOfBuyer.get(String(reward.contactId))
+          const regionId = regionIdOfAnyContact.get(String(reward.contactId))
 
           if (regionId !== undefined && owner !== `region:${regionId}`) {
             issues.push({
@@ -391,6 +425,7 @@ export const validateContentScale = (input: ContentScaleInput): readonly Content
     spots: input.spots.length,
     regions: input.regions.length,
     buyers: input.buyers.length,
+    contacts: input.contacts.length,
     'contact-rewards': input.contactRewards.length,
     expeditions: input.expeditions.length,
     'species-trade-profiles': input.speciesTradeProfiles.length,

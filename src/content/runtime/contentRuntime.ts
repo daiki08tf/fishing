@@ -115,6 +115,7 @@ const bucketsForPack = (loaded: Readonly<Record<string, readonly unknown[]>>): C
     regions: list('regions'),
     expeditions: list('expeditions'),
     buyers: list('buyers'),
+    contacts: list('contacts'),
     speciesTradeProfiles: list('species-trade-profiles'),
     contactRewards: list('contact-rewards'),
     gear: list('gear'),
