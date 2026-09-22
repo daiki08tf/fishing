@@ -14,15 +14,22 @@
   "travelOptions": [
     {
       "id": "local-walk",
-      "transportTypes": ["walk"],
-      "requiredCapabilities": ["reachable_on_foot"],
+      "transportTypes": [
+        "walk"
+      ],
+      "requiredCapabilities": [
+        "reachable_on_foot"
+      ],
       "features": [],
       "baseMinutes": 20,
       "distanceKm": 2,
       "baseOneWayCost": 0
     }
   ],
-  "habitatTags": ["shallow", "pier"],
+  "habitatTags": [
+    "shallow",
+    "pier"
+  ],
   "depth": {
     "depthRangeM": {
       "min": 1,
@@ -31,19 +38,19 @@
   },
   "fishTable": [
     {
-      "speciesId": "kanto-maaji",
+      "speciesId": "maaji",
       "basePresence": 1
     },
     {
-      "speciesId": "kanto-shirogisu",
+      "speciesId": "shirogisu",
       "basePresence": 0.6
     },
     {
-      "speciesId": "kanto-haze",
+      "speciesId": "haze",
       "basePresence": 0.5
     },
     {
-      "speciesId": "kanto-funa",
+      "speciesId": "funa",
       "basePresence": 0.7
     }
   ],
