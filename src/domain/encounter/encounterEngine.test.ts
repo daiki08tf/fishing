@@ -15,10 +15,20 @@ const roll = (presence: number, seed: number | string) =>
   })
 
 describe('encounter engine', () => {
-  it('derives the bite chance from presence', () => {
-    expect(biteChance([candidate(1)], DEFAULT_FISHING_TUNING)).toBeCloseTo(0.85, 5)
-    expect(biteChance([candidate(0.5)], DEFAULT_FISHING_TUNING)).toBeCloseTo(0.425, 5)
-    expect(biteChance([candidate(2)], DEFAULT_FISHING_TUNING)).toBe(1)
+  it('derives a saturating bite chance from presence', () => {
+    expect(biteChance([candidate(1)], DEFAULT_FISHING_TUNING)).toBeCloseTo(1 - Math.exp(-0.85), 5)
+    expect(biteChance([candidate(0.5)], DEFAULT_FISHING_TUNING)).toBeCloseTo(
+      1 - Math.exp(-0.425),
+      5,
+    )
+    expect(biteChance([candidate(2)], DEFAULT_FISHING_TUNING)).toBeCloseTo(1 - Math.exp(-1.7), 5)
+  })
+
+  it('does not make a common neutral fish an almost automatic bite', () => {
+    const chance = biteChance([candidate(0.8)], DEFAULT_FISHING_TUNING)
+
+    expect(chance).toBeGreaterThan(0.4)
+    expect(chance).toBeLessThan(0.55)
   })
 
   it('never bites when presence is zero', () => {
@@ -27,10 +37,11 @@ describe('encounter engine', () => {
     }
   })
 
-  it('always bites when presence is high enough', () => {
-    for (let seed = 0; seed < 20; seed += 1) {
-      expect(roll(2, seed).kind).toBe('bite')
-    }
+  it('keeps high presence strongly favorable without making it guaranteed', () => {
+    const chance = biteChance([candidate(2)], DEFAULT_FISHING_TUNING)
+
+    expect(chance).toBeGreaterThan(0.8)
+    expect(chance).toBeLessThan(1)
   })
 
   it('is reproducible for the same seed', () => {

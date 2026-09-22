@@ -70,7 +70,9 @@ type FightOptions = {
 
 /** ヒットさせてファイトまで進める。 */
 const createFightingEngine = (seed: number | string, options: FightOptions = {}): FishingEngine => {
-  const engine = createEngine({ seed, ...options })
+  // Phase 10.2 の Bite は飽和カーブで有限値から 100% にならない。
+  // この helper は「Bite 率」ではなくファイト挙動だけを検証するため、十分高い presence を使う。
+  const engine = createEngine({ seed, presence: 100, ...options })
 
   engine.cast()
   advanceUntil(engine, (snapshot) => snapshot.phase === 'HOOK_WINDOW')
