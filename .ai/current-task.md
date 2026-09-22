@@ -2,11 +2,48 @@
 
 ## Phase
 
-**Phase 11 — Casting Distance & Fishing Zones**
+**Phase 12 — Regional World Expansion / Alpha Content**
 
-状態: **完了**
+状態: **実装完了・最終 CI 確認中**
 
-遠投を単純な強さではなく、Spot 内の水域を選ぶ仕組みとして実装した。
+Phase 11 の Fishing Zone 基盤上で、魚種・Spot・Playable Region を Alpha 規模まで拡張した。
+新しい釣りシステムを作るのではなく、既存の Encounter / Catchability / Casting /
+Text Battle / Expedition を Content で広げることを優先した。
+
+## Phase 12 で実装したもの
+
+- runtime FishSpecies: **82 種**
+- FishingSpot: **45 Spot**
+- playable Region: **5 地域**
+  - 東京近郊
+  - 北海道
+  - アラスカ
+  - British Columbia
+  - Queensland
+- playable 45 Spot すべてに explicit Fishing Zone を設定
+- British Columbia / Queensland を planned → playable にし、Expedition を追加
+- 新規 Spot / 生態値 / 地形 /アクセス値は **PROVISIONAL**
+- FishSpecies ID を地域 prefix 依存から世界共通 canonical ID へ移行
+  - 例: `alaska-chinook-salmon` → `chinook-salmon`
+  - 同じ魚種を地域ごとに別 Species として重複させない
+  - 地域差は `FishOccurrence` の presence / season / temperature /
+    zoneAffinity / sizeModifier で表現する
+- Save schema **v8**
+  - v7 → v8 で Codex / fish Knowledge / repetition の旧 species key を canonical ID へ移行
+  - regional duplicate（Rainbow Trout 等）は catch count / record / knowledge を安全に統合
+- `simulate:regional-content` を追加
+  - 全 Species が最低 1 Spot に存在
+  - playable Region に Spot が存在
+  - 全 Spot に Fishing Zone がある
+  - zoneAffinity の参照先が存在
+  - Spot の Region と Species distribution が矛盾しない
+  - regional prefix の Species ID が残っていない
+- Content reference validation に zoneAffinity → FishingZone の参照検査を追加
+
+## 次
+
+Phase 13 候補は Catch Economy（売る / 持ち帰る / リリース）。
+UI のビジュアル刷新はその後に分離して行う。
 
 ## Phase 11 で実装したもの
 
