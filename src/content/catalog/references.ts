@@ -328,6 +328,22 @@ export const validateContentReferences = (
     }
   }
 
+  // 1b. Phase 12: zoneAffinity は同じ Spot に実在する Fishing Zone だけを参照する。
+  for (const spot of input.spots) {
+    const zoneIds = new Set((spot.fishingZones ?? []).map((zone) => zone.id))
+
+    for (const occurrence of spot.fishTable) {
+      for (const zoneId of Object.keys(occurrence.zoneAffinity ?? {})) {
+        if (zoneIds.size > 0 && !zoneIds.has(zoneId)) {
+          issues.push({
+            path: `fishing-spots/${String(spot.id)}/fishTable/${String(occurrence.speciesId)}`,
+            message: `zoneAffinity references unknown zoneId ${zoneId}`,
+          })
+        }
+      }
+    }
+  }
+
   // 2. Gear の brandId は実在するブランドを指す。
   for (const item of input.gear) {
     if (item.brandId !== undefined && !brandIds.has(String(item.brandId))) {
