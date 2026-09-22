@@ -329,8 +329,9 @@
   animation: ripple 2.2s ease-out infinite;
 }
 
+/* HIT の瞬間だけの短い演出（目安 100–300ms）。NEW RECORD 等の --motion-special とは分ける。 */
 .water-scene--bite {
-  animation: flash-accent var(--motion-special) var(--motion-ease);
+  animation: flash-accent var(--motion-normal) var(--motion-ease);
 }
 
 .water-scene--bite .water-scene__fish,

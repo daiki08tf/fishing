@@ -385,40 +385,46 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
               )}
             </div>
 
-            <dl className="fish__facts">
-              <div>
-                <dt>Length</dt>
-                <dd>{fish.individual.lengthCm} cm</dd>
-              </div>
-              <div>
-                <dt>Weight</dt>
-                <dd>{fish.individual.weightKg.toFixed(3)} kg</dd>
-              </div>
-              <div>
-                <dt>Condition</dt>
-                <dd>
-                  {CONDITION_LABELS[fish.conditionBand]}（{fish.individual.condition.toFixed(2)}）
-                </dd>
-              </div>
-              <div>
-                <dt>Rarity</dt>
-                <dd>
-                  {rarityLabel(fish.individual.percentile ?? 0)}（
-                  {(fish.individual.percentile ?? 0).toFixed(2)}）
-                </dd>
-              </div>
-            </dl>
+            {/* LANDED では同じ内容を ResultBanner が独立したカードとして見せるので、ここでは重複させない。 */}
+            {snapshot.phase === 'LANDED' ? null : (
+              <>
+                <dl className="fish__facts">
+                  <div>
+                    <dt>Length</dt>
+                    <dd>{fish.individual.lengthCm} cm</dd>
+                  </div>
+                  <div>
+                    <dt>Weight</dt>
+                    <dd>{fish.individual.weightKg.toFixed(3)} kg</dd>
+                  </div>
+                  <div>
+                    <dt>Condition</dt>
+                    <dd>
+                      {CONDITION_LABELS[fish.conditionBand]}（{fish.individual.condition.toFixed(2)}
+                      ）
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Rarity</dt>
+                    <dd>
+                      {rarityLabel(fish.individual.percentile ?? 0)}（
+                      {(fish.individual.percentile ?? 0).toFixed(2)}）
+                    </dd>
+                  </div>
+                </dl>
 
-            {fish.individual.traits.length === 0 ? (
-              <p className="panel__body">Trait なし</p>
-            ) : (
-              <ul className="traits">
-                {fish.individual.traits.map((trait) => (
-                  <li className="trait" key={trait} title={TRAIT_HINTS[trait]}>
-                    {TRAIT_LABELS[trait]}
-                  </li>
-                ))}
-              </ul>
+                {fish.individual.traits.length === 0 ? (
+                  <p className="panel__body">Trait なし</p>
+                ) : (
+                  <ul className="traits">
+                    {fish.individual.traits.map((trait) => (
+                      <li className="trait" key={trait} title={TRAIT_HINTS[trait]}>
+                        {TRAIT_LABELS[trait]}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </>
             )}
 
             <FishingMeter
