@@ -1,0 +1,45 @@
+{
+  "id": "tachiuo",
+  "japaneseName": "タチウオ（暫定）",
+  "scientificName": "Trichiurus lepturus",
+  "waterTypes": [
+    "salt"
+  ],
+  "distribution": [
+    "tokyo-area"
+  ],
+  "habitats": [
+    "open",
+    "deep"
+  ],
+  "depthRange": {
+    "min": 0,
+    "max": 65
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 75,
+    "dispersion": 0.16,
+    "minCm": 40,
+    "maxCm": 130
+  },
+  "weightModel": {
+    "lengthWeightA": 0.0095,
+    "lengthWeightB": 3.05
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "fightProfile": {
+    "strength": 0.62,
+    "stamina": 0.68,
+    "speed": 0.72
+  },
+  "rarity": 1.8,
+  "sourceRefs": [
+    {
+      "id": "phase12-provisional",
+      "title": "PROVISIONAL — Phase 12 gameplay tuning; biological values require later verification"
+    }
+  ]
+}
