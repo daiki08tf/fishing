@@ -1,9 +1,18 @@
 {
-  "id": "alaska-pink-salmon",
+  "id": "pink-salmon",
   "japaneseName": "カラフトマス（暫定）",
-  "waterTypes": ["fresh", "salt"],
-  "distribution": ["alaska"],
-  "habitats": ["river", "bay"],
+  "waterTypes": [
+    "fresh",
+    "salt"
+  ],
+  "distribution": [
+    "alaska",
+    "british-columbia"
+  ],
+  "habitats": [
+    "river",
+    "bay"
+  ],
   "depthRange": {
     "min": 1,
     "max": 15
@@ -13,18 +22,39 @@
     "max": 15
   },
   "seasonality": {
-    "months": [7, 8, 9]
+    "months": [
+      7,
+      8,
+      9
+    ]
   },
   "timeActivity": {
-    "periods": ["dawn", "morning", "evening"]
+    "periods": [
+      "dawn",
+      "morning",
+      "evening"
+    ]
   },
   "currentPreference": {
     "preference": "slow"
   },
-  "diet": ["small_fish"],
-  "baits": ["roe", "shrimp"],
-  "lureCategories": ["spoon", "minnow", "soft_plastic"],
-  "fishingMethods": ["lure", "light_lure", "bait"],
+  "diet": [
+    "small_fish"
+  ],
+  "baits": [
+    "roe",
+    "shrimp"
+  ],
+  "lureCategories": [
+    "spoon",
+    "minnow",
+    "soft_plastic"
+  ],
+  "fishingMethods": [
+    "lure",
+    "light_lure",
+    "bait"
+  ],
   "methodAffinity": {
     "lure": 1.15,
     "light_lure": 1.05,
@@ -63,8 +93,14 @@
   },
   "rarity": 1.6,
   "environmentAffinity": {
-    "preferredSeasons": ["summer"],
-    "preferredTimeOfDay": ["morning", "daytime", "evening"],
+    "preferredSeasons": [
+      "summer"
+    ],
+    "preferredTimeOfDay": [
+      "morning",
+      "daytime",
+      "evening"
+    ],
     "weatherAffinity": {
       "clear": 1.05,
       "cloudy": 1.05,
