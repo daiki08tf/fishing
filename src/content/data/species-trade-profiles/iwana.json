@@ -1,8 +1,9 @@
 {
   "speciesId": "iwana",
   "tradeStatus": "tradable",
+  "tradeTags": ["premium", "delicate", "game_fish", "local_favorite"],
   "baseYenPerKg": 780,
   "minimumUnitValueYen": 120,
-  "qualitySensitivity": 1.0,
-  "sizeSensitivity": 1.0
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
 }

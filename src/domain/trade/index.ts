@@ -9,6 +9,9 @@ export type { BuyerDefinition, BuyerPricingProfile, BuyerTrustProfile, BuyerType
 export { TRADE_STATUSES } from './SpeciesTradeProfile'
 export type { SpeciesTradeProfile, TradeStatus } from './SpeciesTradeProfile'
 
+export { isTradeTag, TRADE_TAGS } from './TradeTag'
+export type { TradeTag } from './TradeTag'
+
 export { CONTACT_REWARD_KINDS } from './ContactReward'
 export type { ContactReward, ContactRewardKind } from './ContactReward'
 
@@ -23,3 +26,12 @@ export type { CatchQuality } from './tradeValue'
 
 export { describeSaleValue, sellCatches } from './sellCatches'
 export type { SaleLine, SellCatchesInput, SellCatchesResult } from './sellCatches'
+
+export { quoteSale } from './quoteSale'
+export type {
+  QuoteSaleInput,
+  SaleQuote,
+  SaleQuoteExcluded,
+  SaleQuoteExcludedReason,
+  SaleQuoteLine,
+} from './quoteSale'

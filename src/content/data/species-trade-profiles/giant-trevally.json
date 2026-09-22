@@ -1,8 +1,9 @@
 {
   "speciesId": "giant-trevally",
   "tradeStatus": "tradable",
+  "tradeTags": ["game_fish", "large_fish", "premium"],
   "baseYenPerKg": 1610,
   "minimumUnitValueYen": 240,
-  "qualitySensitivity": 1.0,
-  "sizeSensitivity": 1.0
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
 }

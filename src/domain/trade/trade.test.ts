@@ -60,12 +60,21 @@ const buyer = (overrides: Partial<BuyerDefinition> = {}): BuyerDefinition => ({
     qualityWeight: 6,
     maxPerTransaction: 6,
   },
+  preferences: {
+    preferredTags: ['everyday', 'local_favorite'],
+    neutralTags: ['white_fish', 'oily', 'premium'],
+    preferredTagMultiplier: 1.25,
+    neutralTagMultiplier: 1,
+    otherTagMultiplier: 0.9,
+    localSourceMultiplier: 1.1,
+  },
   ...overrides,
 })
 
 const tradableProfile = (overrides: Partial<SpeciesTradeProfile> = {}): SpeciesTradeProfile => ({
   speciesId: asFishSpeciesId('test-species'),
   tradeStatus: 'tradable',
+  tradeTags: ['everyday'],
   baseYenPerKg: 1000,
   minimumUnitValueYen: 100,
   qualitySensitivity: 1,
@@ -165,6 +174,7 @@ describe('sellCatches', () => {
       finance: createInitialFinanceState(),
       trade: createInitialTradeState(),
       buyer: buyer(),
+      currentRegionId: asRegionId('tokyo-area'),
       catchIds: [entry.catchId],
       tradeProfileBySpeciesId: profiles,
       now: time(6),
@@ -178,8 +188,8 @@ describe('sellCatches', () => {
     expect(result.fishBox).toEqual([])
     expect(result.finance.cash).toBeGreaterThan(createInitialFinanceState().cash)
     expect(result.finance.transactions[0]?.kind).toBe('trade')
-    expect(result.trustGain).toBeGreaterThan(0)
-    expect(result.trade.contactTrust[String(buyer().id)]).toBe(result.trustGain)
+    expect(result.actualTrustGain).toBeGreaterThan(0)
+    expect(result.trade.contactTrust[String(buyer().id)]).toBe(result.actualTrustGain)
   })
 
   it('cannot sell the same catch twice (it is gone from the box)', () => {
@@ -189,6 +199,7 @@ describe('sellCatches', () => {
       finance: createInitialFinanceState(),
       trade: createInitialTradeState(),
       buyer: buyer(),
+      currentRegionId: asRegionId('tokyo-area'),
       catchIds: [entry.catchId],
       tradeProfileBySpeciesId: profiles,
       now: time(6),
@@ -204,6 +215,7 @@ describe('sellCatches', () => {
       finance: first.finance,
       trade: first.trade,
       buyer: buyer(),
+      currentRegionId: asRegionId('tokyo-area'),
       catchIds: [entry.catchId],
       tradeProfileBySpeciesId: profiles,
       now: time(7),
@@ -223,6 +235,7 @@ describe('sellCatches', () => {
       finance: createInitialFinanceState(),
       trade: createInitialTradeState(),
       buyer: buyer(),
+      currentRegionId: asRegionId('tokyo-area'),
       catchIds: [tradable.catchId, nonTradable.catchId],
       tradeProfileBySpeciesId: {
         ...profiles,
@@ -252,6 +265,7 @@ describe('sellCatches', () => {
       buyer: buyer({
         trustProfile: { perTransactionBase: 90, qualityWeight: 50, maxPerTransaction: 6 },
       }),
+      currentRegionId: asRegionId('tokyo-area'),
       catchIds: [trophy.catchId],
       tradeProfileBySpeciesId: profiles,
       now: time(6),
@@ -262,7 +276,7 @@ describe('sellCatches', () => {
       return
     }
 
-    expect(result.trustGain).toBe(6)
+    expect(result.actualTrustGain).toBe(6)
   })
 
   it('does not sell trust to 100 in a single big-fish transaction', () => {
@@ -272,6 +286,7 @@ describe('sellCatches', () => {
       finance: createInitialFinanceState(),
       trade: createInitialTradeState(),
       buyer: buyer(),
+      currentRegionId: asRegionId('tokyo-area'),
       catchIds: [trophy.catchId],
       tradeProfileBySpeciesId: profiles,
       now: time(6),

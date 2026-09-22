@@ -89,6 +89,7 @@ import {
   arriveHome,
   createInitialWorld,
   discoverSpotFromContact,
+  isSpotKnown,
   leaveForSpot,
   leaveSpot,
   moveToRegion,
@@ -169,7 +170,8 @@ export type SellToBuyerResult =
   | {
       readonly ok: true
       readonly totalValueYen: number
-      readonly trustGain: number
+      /** 実際に state へ入った Trust の増分（Trust 100 では 0）。 */
+      readonly actualTrustGain: number
       readonly lines: readonly SaleLine[]
       readonly excludedCatchIds: readonly FishIndividualId[]
       readonly newlyClaimedRewards: readonly ContactReward[]
@@ -459,6 +461,8 @@ export const createPlayerStore = () =>
         finance,
         trade,
         buyer: input.buyer,
+        // Phase 13.1: Domain 側でも現在地域を強制する（UI の出し分けだけに頼らない）。
+        currentRegionId: world.currentRegionId,
         catchIds: input.catchIds,
         tradeProfileBySpeciesId: input.tradeProfileBySpeciesId,
         now: world.time,
@@ -487,7 +491,7 @@ export const createPlayerStore = () =>
       return {
         ok: true,
         totalValueYen: result.totalValueYen,
-        trustGain: result.trustGain,
+        actualTrustGain: result.actualTrustGain,
         lines: result.lines,
         excludedCatchIds: result.excludedCatchIds,
         newlyClaimedRewards: claim.newlyClaimed,
@@ -586,6 +590,18 @@ export const createPlayerStore = () =>
           ok: false,
           reason: 'access',
           message: '今いる地域と違う釣り場へは行けない（遠征で移動する）',
+        }
+      }
+
+      /*
+       * Phase 13.1: 未発見の Hidden Spot は「知らない」ので出発できない。
+       * 交通費を引く前にここで止める（Domain の leaveForSpot と同じ規則）。
+       */
+      if (!isSpotKnown(world, spot)) {
+        return {
+          ok: false,
+          reason: 'access',
+          message: 'その釣り場の場所をまだ知らない（人脈から情報を得る）',
         }
       }
 

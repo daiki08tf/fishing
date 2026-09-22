@@ -5,16 +5,24 @@
   "regionId": "tokyo-area",
   "description": "近所の小さな居酒屋。少量でも買い取ってくれるが、鮮度と状態を重視する。PROVISIONAL — gameplay tuning。",
   "pricingProfile": {
-    "baseMultiplier": 1.0,
+    "baseMultiplier": 1,
     "qualitySensitivity": 1.4,
     "sizeSensitivity": 0.4,
     "freshnessSensitivity": 0.6,
-    "volumeBonusPerExtraCatch": 0.0,
-    "maxVolumeBonus": 0.0
+    "volumeBonusPerExtraCatch": 0,
+    "maxVolumeBonus": 0
   },
   "trustProfile": {
     "perTransactionBase": 2,
     "qualityWeight": 6,
     "maxPerTransaction": 6
+  },
+  "preferences": {
+    "preferredTags": ["everyday", "small_table_fish", "white_fish", "local_favorite"],
+    "neutralTags": ["delicate", "oily", "premium"],
+    "preferredTagMultiplier": 1.15,
+    "neutralTagMultiplier": 1,
+    "otherTagMultiplier": 0.85,
+    "localSourceMultiplier": 1.1
   }
 }

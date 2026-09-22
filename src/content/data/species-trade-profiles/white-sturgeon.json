@@ -1,8 +1,9 @@
 {
   "speciesId": "white-sturgeon",
   "tradeStatus": "tradable",
+  "tradeTags": ["premium", "large_fish", "game_fish"],
   "baseYenPerKg": 1810,
   "minimumUnitValueYen": 270,
-  "qualitySensitivity": 1.0,
-  "sizeSensitivity": 1.0
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
 }

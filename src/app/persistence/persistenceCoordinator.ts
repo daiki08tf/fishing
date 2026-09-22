@@ -17,7 +17,9 @@ import type { HydrationStatus, PlayerStoreState } from '../../state/playerStore'
  *   （Save が無ければ初期状態のまま ready、壊れていれば error）
  *
  * 以降:
- *   Store の保存対象 slice（progression / codex）が変わったら保存する。
+ *   Store の保存対象 slice（PersistedPlayerSlice: progression / codex / world /
+ *   transport / expedition / knowledge / finance / purchases / inventory /
+ *   loadout / trade）が変わったら保存する。
  *   ただし **hydration が完了するまでは絶対に書かない**。
  *   （初期状態で既存 Save を上書きしてしまう事故を防ぐ）
  *
@@ -96,6 +98,8 @@ export const createPersistenceCoordinator = (
       purchases: state.purchases,
       inventory: state.inventory,
       loadout: state.loadout,
+      // Phase 13.1: Fish Box / Trust / claimed rewards / known rumors も Save の一部。
+      trade: state.trade,
     }
 
     try {
@@ -167,7 +171,9 @@ export const createPersistenceCoordinator = (
         state.finance === previous.finance &&
         state.purchases === previous.purchases &&
         state.inventory === previous.inventory &&
-        state.loadout === previous.loadout
+        state.loadout === previous.loadout &&
+        // Phase 13.1: trade が変わったら保存対象（これが無いと Fish Box が消える）。
+        state.trade === previous.trade
       ) {
         return
       }

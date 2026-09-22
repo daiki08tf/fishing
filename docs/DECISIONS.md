@@ -285,8 +285,10 @@ Phase 0では、CI / lint / testで機械的に判定できる制約だけを定
 - FishSpecies の性能値（rarity 等）と経済データ（取引価格）を分離する。
   `SpeciesTradeProfile` を別 Content とし、「希少 = 市場価値が高い」を前提にしない
 - 全 runtime Species は `tradable` / `unpriced` / `non_tradable` / `unverified` の
-  いずれかを明示する。ただしこの完全性検査は `validateContentReferences`
-  （fixture 検証用魚種と混在する）ではなく `simulate:trade-network` に置く
+  いずれかを明示する。この完全性検査は `validateContentReferences`
+  （fixture 検証用魚種と混在する）には置かず、
+  `validate:content` CLI（runtime ディレクトリだけを見る）と
+  `simulate:trade-network` の両方で行う
   （Phase 10.1 の「runtime Content と fixture の分離」方針をそのまま踏襲する）
 - 売値は deterministic に計算する（RNG を使わない）。
   `base species trade value × weight × condition factor × size quality factor ×
@@ -297,10 +299,12 @@ Phase 0では、CI / lint / testで機械的に判定できる制約だけを定
 - Buyer（居酒屋 / 卸 / 市場の 3 type）は Contact の一種として同じ ID 空間
   （ContactId）を使う。data-driven な BuyerDefinition（pricingProfile /
   trustProfile）で差を表現し、具体的な店名・魚種 ID で Domain を分岐しない
-- Buyer ごとの評価の差は、個々の魚の condition / percentile / freshness への
-  感度（qualitySensitivity / sizeSensitivity / freshnessSensitivity）と
-  volume bonus だけで表現する。魚種 × Buyer の好みテーブルは作らない
-  （巨大な if 文にしない）
+- Buyer ごとの評価の差は、(1) 個々の魚の condition / percentile / freshness への
+  感度（qualitySensitivity / sizeSensitivity / freshnessSensitivity）、
+  (2) volume bonus、(3) **魚種の tradeTags × Buyer の preferredTags /
+  neutralTags**、(4) 産地一致（`buyer.regionId === catch.sourceRegionId`）で表現する。
+  魚種 ID を直接分岐する対応表は作らない（`if (speciesId === 'maaji')` を禁止する）。
+  生物データと経済データは分離したままにする（Phase 13.1 で明文化）
 - Trust は 0〜100。取引単位で上限（`maxPerTransaction`）を持たせ、
   1 回の大物取引で即 100 に到達しない設計にする。一方で 100 到達まで
   何も起きない設計も禁止し、複数の threshold（reward）を刻む
@@ -333,3 +337,46 @@ Phase 0では、CI / lint / testで機械的に判定できる制約だけを定
   （複数 seed・100+ 試行）で確認する。既存の給与 ¥300,000 / 生活費 ¥180,000 /
   自由資金 約¥120,000 の思想を破壊しない
 - Phase 14 の Visual Redesign はこの Phase の対象外。UI は構造と機能のみ作る
+
+## Phase 13.1 — 独立レビューを受けた Phase 13 の補強
+
+Phase 13 の独立レビューで見つかった不備を、同じ branch / 同じ PR 上で修正した。
+新しい Phase ではなく、Core Loop を実プレイで安全に成立させるための補強である。
+
+決定:
+
+- **Trade state は Save の一部である。** persistence coordinator の保存 payload に
+  `state.trade` を含め、変更検知（subscriber identity 判定）にも `state.trade` を
+  含める。Fish Box / Trust / claimedRewardIds / knownRumorIds が reload で消えたり、
+  売った魚が復活（= 二重売却）したりする状態を許さない。
+  実際の coordinator / repository を通る統合テストで確認する
+- **Fish Box から消えた魚は `trade.fishBox` にも反映する。** `sellCatches` の戻り値
+  `fishBox` と `trade.fishBox` が食い違うと、Store が保存する `trade` 側に
+  売却済みの魚が残る（レビューで実際に検出した）。Domain の戻り値は内部で整合させる
+- **魚は「今いる地域の買取先」にしか売れない。** `world.currentRegionId ===
+  buyer.regionId` でなければ `buyer_region_mismatch`。UI の出し分けだけを防壁にせず、
+  Domain（`sellCatches`）と Store（`sellToBuyer`）の両方で拒否する。
+  Trade 画面は現在地域の Buyer だけを出し、いない場合は自然な空状態を表示する
+- **未発見の Hidden Spot へは、Access 条件を満たしていても移動できない。**
+  Discovery（知っているか）と Access（行けるか）の分離は維持しつつ、
+  `leaveForSpot`（World Domain の最終境界）で `visibility === 'hidden' &&
+  !discoveredSpotIds.includes(id)` を拒否する。AccessEngine は Transport / Permit /
+  Knowledge の専門のままでよい。Store も交通費を引く前にここで止める
+- **売却見積りは Domain の単一関数（`quoteSale`）に一本化する。**
+  Trade 画面のプレビューと実際の売却が同じ関数を通る。`sum(lines.valueYen) ===
+  totalValueYen` を不変条件とし、volume bonus は「tradable と確定した配列」に対して
+  だけ計算する。取引不可の魚の位置や魚の並び順で合計額が変わってはいけない
+- **Trust は「計算上の増加量」ではなく「実際に state へ入った差分」を返す。**
+  `actualTrustGain = nextTrust - currentTrust`。Trust 100 では `+0` と表示する
+- **Discovery の表示は「訪問済み」ではなく「発見済み」。** Contact から場所を
+  教わっただけの Spot を訪問済みと呼ばない。HOME の Spot 件数は Map と同じ
+  visibility / discovery 規則で集計し、未発見 Hidden Spot の総数を漏らさない
+- **`introduce_contact` は Content で禁止する（reserved / not yet supported）。**
+  Domain / schema には kind として残すが、実装されていない unlock 挙動を
+  claim だけして何も起きない silent no-op にしないため、`validate:content` が
+  Content 追加を拒否する。実装したらこの検査を外す
+- **`simulate:trade-network` のバランス確認は「1 trial = 1 匹の売却」ではなく
+  「1 trial = 1 釣行」にする。** 移動 → 釣り ×N（既存 FishingEngine）→ Keep →
+  帰宅 → 地域内の買取先へ売却、を 100 釣行以上回し、attempt / landed / kept /
+  gross / travel cost / net / median / p90 / max / 月換算を出す。
+  現実の収入推定ではなく gameplay balance simulation である

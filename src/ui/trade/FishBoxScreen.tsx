@@ -22,6 +22,13 @@ export const FishBoxScreen = () => {
   }
 
   const { speciesById, buyers, speciesTradeProfileBySpeciesId } = content.value
+  /*
+   * Phase 13.1: 推定売却額は「今いる地域の買取先」のうち最も高い査定にする。
+   * 実際に売れるのは今いる地域の買取先だけ（Domain 側でも強制している）。
+   */
+  const localBuyers = buyers.filter(
+    (entry) => String(entry.regionId) === String(world.currentRegionId),
+  )
 
   return (
     <div className="fishing">
@@ -68,7 +75,9 @@ export const FishBoxScreen = () => {
                   ? 0
                   : Math.max(
                       0,
-                      ...buyers.map((buyer) => calcSaleValueYen(entry, buyer, profile, freshness)),
+                      ...localBuyers.map((buyer) =>
+                        calcSaleValueYen(entry, buyer, profile, freshness),
+                      ),
                     )
 
               return (
@@ -88,7 +97,9 @@ export const FishBoxScreen = () => {
                   <p className="spot-card__meta">
                     {profile === undefined || profile.tradeStatus !== 'tradable'
                       ? '取引不可（PROVISIONAL）'
-                      : `推定売却額: 最大 ¥${bestValue.toLocaleString('ja-JP')}（買取先により変動）`}
+                      : localBuyers.length === 0
+                        ? '今いる地域に買取先が無い'
+                        : `推定売却額: 最大 ¥${bestValue.toLocaleString('ja-JP')}（買取先により変動）`}
                   </p>
                 </li>
               )

@@ -1,8 +1,9 @@
 {
   "speciesId": "permit",
   "tradeStatus": "tradable",
+  "tradeTags": ["game_fish", "large_fish", "premium"],
   "baseYenPerKg": 1260,
   "minimumUnitValueYen": 190,
-  "qualitySensitivity": 1.0,
-  "sizeSensitivity": 1.0
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
 }

@@ -1,6 +1,7 @@
 import type { BuyerDefinition } from './Buyer'
 import type { KeptCatch } from './FishBox'
 import type { SpeciesTradeProfile } from './SpeciesTradeProfile'
+import type { TradeTag } from './TradeTag'
 
 /**
  * 売値の計算。deterministic（RNG を使わない）。
@@ -8,7 +9,9 @@ import type { SpeciesTradeProfile } from './SpeciesTradeProfile'
  * 実際の市場価格を再現したものではない。すべて Phase 13 の PROVISIONAL gameplay tuning。
  *
  *   base species trade value × weight × condition factor × size quality factor
- *     × freshness × buyer affinity
+ *     × freshness × buyer affinity（quality / size / freshness）
+ *     × trade tag affinity（魚種の性格 × 買取先の好み）
+ *     × local source bonus（産地 === 買取先の地域）
  */
 
 const clamp = (value: number, min: number, max: number): number =>
@@ -21,6 +24,44 @@ export type CatchQuality = {
   readonly sizeFactor: number
   readonly freshnessFactor: number
 }
+
+/** 1 つのタグに対する買取先の倍率。 */
+export const tagAffinityOf = (buyer: BuyerDefinition, tag: TradeTag): number => {
+  const preferences = buyer.preferences
+
+  if (preferences.preferredTags.includes(tag)) {
+    return preferences.preferredTagMultiplier
+  }
+
+  if (preferences.neutralTags.includes(tag)) {
+    return preferences.neutralTagMultiplier
+  }
+
+  return preferences.otherTagMultiplier
+}
+
+/**
+ * 魚種のタグ集合と買取先の好みから倍率を解決する。
+ *
+ * タグが複数ある魚は「一番相性の良いタグ」で評価する（順序に依存しない）。
+ * タグが 1 つも無い profile（unpriced / non_tradable など）は中立 1。
+ */
+export const resolveTagAffinity = (
+  profile: SpeciesTradeProfile,
+  buyer: BuyerDefinition,
+): number => {
+  if (profile.tradeTags.length === 0) {
+    return 1
+  }
+
+  return Math.max(...profile.tradeTags.map((tag) => tagAffinityOf(buyer, tag)))
+}
+
+/** 産地が買取先の地域と一致するときの倍率。 */
+export const resolveLocalSourceMultiplier = (entry: KeptCatch, buyer: BuyerDefinition): number =>
+  String(entry.sourceRegionId) === String(buyer.regionId)
+    ? buyer.preferences.localSourceMultiplier
+    : 1
 
 export const resolveCatchQuality = (
   entry: KeptCatch,
@@ -55,13 +96,17 @@ export const calcSaleValueYen = (
   }
 
   const quality = resolveCatchQuality(entry, buyer, profile, freshness)
+  const tagAffinity = resolveTagAffinity(profile, buyer)
+  const localSource = resolveLocalSourceMultiplier(entry, buyer)
   const raw =
     profile.baseYenPerKg *
     entry.weightKg *
     Math.max(0, quality.conditionFactor) *
     Math.max(0, quality.sizeFactor) *
     Math.max(0, quality.freshnessFactor) *
-    buyer.pricingProfile.baseMultiplier
+    buyer.pricingProfile.baseMultiplier *
+    tagAffinity *
+    localSource
 
   return Math.round(Math.max(profile.minimumUnitValueYen, raw))
 }

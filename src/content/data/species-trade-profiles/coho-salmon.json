@@ -1,8 +1,9 @@
 {
   "speciesId": "coho-salmon",
   "tradeStatus": "tradable",
+  "tradeTags": ["premium", "oily"],
   "baseYenPerKg": 1470,
   "minimumUnitValueYen": 220,
-  "qualitySensitivity": 1.0,
-  "sizeSensitivity": 1.0
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
 }

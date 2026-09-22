@@ -1,4 +1,5 @@
 import type { FishSpeciesId } from '../ids'
+import type { TradeTag } from './TradeTag'
 
 /**
  * 魚種の取引状態（Phase 13）。
@@ -17,6 +18,12 @@ export type TradeStatus = (typeof TRADE_STATUSES)[number]
 export type SpeciesTradeProfile = {
   readonly speciesId: FishSpeciesId
   readonly tradeStatus: TradeStatus
+  /**
+   * Phase 13.1: 取引上の性格タグ。Buyer の preferredTags / neutralTags と
+   * 突き合わせて価格の相性を解決する（魚種 ID の分岐を書かないため）。
+   * tradeStatus が 'tradable' のときは 1 つ以上必要（validate:content が検査する）。
+   */
+  readonly tradeTags: readonly TradeTag[]
   /** tradeStatus が 'tradable' のときだけ意味を持つ。 */
   readonly baseYenPerKg: number
   readonly minimumUnitValueYen: number

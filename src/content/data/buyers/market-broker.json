@@ -6,15 +6,23 @@
   "description": "仲買人。大型・高いコンディションの魚を高く評価するが、並サイズには厳しい。PROVISIONAL — gameplay tuning。",
   "pricingProfile": {
     "baseMultiplier": 1.15,
-    "qualitySensitivity": 1.0,
+    "qualitySensitivity": 1,
     "sizeSensitivity": 1.6,
     "freshnessSensitivity": 0.5,
-    "volumeBonusPerExtraCatch": 0.0,
-    "maxVolumeBonus": 0.0
+    "volumeBonusPerExtraCatch": 0,
+    "maxVolumeBonus": 0
   },
   "trustProfile": {
     "perTransactionBase": 1,
     "qualityWeight": 8,
     "maxPerTransaction": 7
+  },
+  "preferences": {
+    "preferredTags": ["premium", "large_fish", "game_fish"],
+    "neutralTags": ["white_fish", "delicate", "oily", "local_favorite"],
+    "preferredTagMultiplier": 1.2,
+    "neutralTagMultiplier": 1,
+    "otherTagMultiplier": 0.8,
+    "localSourceMultiplier": 1.05
   }
 }

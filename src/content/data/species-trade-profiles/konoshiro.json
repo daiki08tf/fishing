@@ -1,8 +1,9 @@
 {
   "speciesId": "konoshiro",
   "tradeStatus": "tradable",
+  "tradeTags": ["everyday", "bulk", "oily", "small_table_fish"],
   "baseYenPerKg": 440,
   "minimumUnitValueYen": 80,
-  "qualitySensitivity": 1.0,
-  "sizeSensitivity": 1.0
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
 }

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { calcSaleValueYen, resolveFreshness, trustOf, type ContactReward } from '../../domain/trade'
+import { quoteSale, trustOf, type ContactReward } from '../../domain/trade'
 import { formatYen } from '../../domain/economy'
 import { asFishIndividualId } from '../../domain/ids'
 import { useAppStore } from '../../state/appStore'
@@ -18,6 +18,12 @@ const BUYER_TYPE_LABELS: Readonly<Record<string, string>> = {
  *
  * Fish Box から売る魚を選び、1 つの買取先へまとめて売る。
  * 価格・Trust 上昇は deterministic（domain/trade/sellCatches）。
+ *
+ * Phase 13.1:
+ * - **今いる地域の買取先だけ**を出す（魚は今いる地域の店 / 卸 / 市場へ持ち込む）。
+ *   Domain 側（sellCatches）でも同じ規則で拒否するので、UI は防壁ではない。
+ * - プレビューは実際の売却と **同じ `quoteSale`** を呼ぶ（volume bonus 込みで一致する）。
+ * - Trust 表示は計算値ではなく実際に入った差分（actualTrustGain）を使う。
  */
 export const TradeScreen = () => {
   const content = useContentOrError()
@@ -34,7 +40,12 @@ export const TradeScreen = () => {
   }
 
   const { speciesById, buyers, speciesTradeProfileBySpeciesId, contactRewards } = content.value
-  const buyer = buyers.find((entry) => String(entry.id) === selectedBuyerId) ?? buyers[0]
+  const currentRegionId = String(world.currentRegionId)
+  const localBuyers = buyers
+    .filter((entry) => String(entry.regionId) === currentRegionId)
+    .slice()
+    .sort((left, right) => String(left.id).localeCompare(String(right.id)))
+  const buyer = localBuyers.find((entry) => String(entry.id) === selectedBuyerId) ?? localBuyers[0]
   const rewardsForBuyer: readonly ContactReward[] =
     buyer === undefined
       ? []
@@ -45,32 +56,27 @@ export const TradeScreen = () => {
     return profile !== undefined && profile.tradeStatus === 'tradable'
   })
 
-  const previewLines =
+  /*
+   * プレビューと実売却が同じ関数を通る（= ここで出た合計が実際の受け取り額）。
+   * volume bonus は tradable が確定した後に掛かるので、取引不可の魚が混ざっても変わらない。
+   */
+  const preview =
     buyer === undefined
-      ? []
-      : selectedCatchIds.flatMap((catchId) => {
-          const entry = trade.fishBox.find((candidate) => String(candidate.catchId) === catchId)
-          const profile =
-            entry === undefined
-              ? undefined
-              : speciesTradeProfileBySpeciesId[String(entry.speciesId)]
-
-          if (entry === undefined || profile === undefined) {
-            return []
-          }
-
-          const freshness = resolveFreshness(entry.caughtAt, world.time)
-          const valueYen = calcSaleValueYen(entry, buyer, profile, freshness)
-
-          return [
-            {
-              catchId,
-              speciesName: speciesById[String(entry.speciesId)]?.japaneseName ?? '',
-              valueYen,
-            },
-          ]
+      ? null
+      : quoteSale({
+          fishBox: trade.fishBox,
+          catchIds: selectedCatchIds.map(asFishIndividualId),
+          buyer,
+          tradeProfileBySpeciesId: speciesTradeProfileBySpeciesId,
+          now: world.time,
         })
-  const previewTotal = previewLines.reduce((sum, line) => sum + line.valueYen, 0)
+  const previewLines = (preview?.lines ?? []).map((line) => ({
+    catchId: String(line.catchId),
+    speciesName: speciesById[line.speciesId]?.japaneseName ?? line.speciesId,
+    valueYen: line.valueYen,
+  }))
+  const previewTotal = preview?.totalValueYen ?? 0
+  const previewExcluded = preview?.excluded ?? []
 
   const toggleCatch = (catchId: string): void => {
     setSelectedCatchIds((current) =>
@@ -95,24 +101,32 @@ export const TradeScreen = () => {
       <section className="panel">
         <p className="fishing__phase-code">TRADE</p>
         <h2 className="panel__heading">買取先へ売る</h2>
-        <div className="tabs">
-          {buyers.map((candidate) => {
-            const active = String(candidate.id) === String(buyer?.id)
+        {localBuyers.length === 0 ? (
+          <p className="panel__body">
+            この地域に買取先が無い。釣った魚は今いる地域の店・卸・市場にしか持ち込めない。
+            （自宅のある地域へ戻るか、遠征先で買取先を探す）
+          </p>
+        ) : (
+          <div className="tabs">
+            {localBuyers.map((candidate) => {
+              const active = String(candidate.id) === String(buyer?.id)
 
-            return (
-              <button
-                className={`button${active ? ' button--primary' : ' button--ghost'}`}
-                key={String(candidate.id)}
-                type="button"
-                onClick={() => {
-                  setSelectedBuyerId(String(candidate.id))
-                }}
-              >
-                {candidate.name}（{BUYER_TYPE_LABELS[candidate.buyerType] ?? candidate.buyerType}）
-              </button>
-            )
-          })}
-        </div>
+              return (
+                <button
+                  className={`button${active ? ' button--primary' : ' button--ghost'}`}
+                  key={String(candidate.id)}
+                  type="button"
+                  onClick={() => {
+                    setSelectedBuyerId(String(candidate.id))
+                  }}
+                >
+                  {candidate.name}（{BUYER_TYPE_LABELS[candidate.buyerType] ?? candidate.buyerType}
+                  ）
+                </button>
+              )
+            })}
+          </div>
+        )}
         {buyer === undefined ? null : (
           <>
             <p className="panel__body">{buyer.description}</p>
@@ -171,7 +185,18 @@ export const TradeScreen = () => {
                 ))}
               </ul>
               <p className="notice__title">合計 {formatYen(previewTotal)}</p>
+              {preview === null || preview.volumeBonus <= 0 ? null : (
+                <p className="fishing__legend">
+                  まとめ売り +{Math.round(preview.volumeBonus * 100)}%（
+                  {preview.tradableCount} 匹分）
+                </p>
+              )}
             </>
+          )}
+          {previewExcluded.length === 0 ? null : (
+            <p className="fishing__legend">
+              取引できない魚を {previewExcluded.length} 匹除外した（合計額には入らない）。
+            </p>
           )}
           <button
             className="control control--accent"
@@ -190,7 +215,11 @@ export const TradeScreen = () => {
               })
 
               if (!result.ok) {
-                setNotice('売却できなかった。')
+                setNotice(
+                  result.reason === 'buyer_region_mismatch'
+                    ? '今いる地域の買取先にしか売れない。'
+                    : '売却できなかった。',
+                )
                 return
               }
 
@@ -198,10 +227,13 @@ export const TradeScreen = () => {
                 result.newlyClaimedRewards.length === 0
                   ? ''
                   : ` / 新しい情報: ${result.newlyClaimedRewards.map((reward) => reward.message).join(' / ')}`
+              // Trust 100 では「+0」。計算値ではなく実際に入った差分を出す。
+              const trustText =
+                result.actualTrustGain > 0
+                  ? `Trust +${String(result.actualTrustGain)}`
+                  : 'Trust 上限（+0）'
 
-              setNotice(
-                `${formatYen(result.totalValueYen)} で売却（Trust +${result.trustGain}）${rewardText}`,
-              )
+              setNotice(`${formatYen(result.totalValueYen)} で売却（${trustText}）${rewardText}`)
               setSelectedCatchIds([])
             }}
           >

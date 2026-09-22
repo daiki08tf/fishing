@@ -1,8 +1,9 @@
 {
   "speciesId": "sayori",
   "tradeStatus": "tradable",
+  "tradeTags": ["premium", "small_table_fish", "delicate"],
   "baseYenPerKg": 510,
   "minimumUnitValueYen": 80,
-  "qualitySensitivity": 1.0,
-  "sizeSensitivity": 1.0
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
 }

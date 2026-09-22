@@ -1,8 +1,9 @@
 {
   "speciesId": "kanpachi",
   "tradeStatus": "tradable",
+  "tradeTags": ["premium", "large_fish", "delicate"],
   "baseYenPerKg": 1190,
   "minimumUnitValueYen": 180,
-  "qualitySensitivity": 1.0,
-  "sizeSensitivity": 1.0
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
 }

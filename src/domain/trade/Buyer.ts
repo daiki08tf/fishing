@@ -1,4 +1,5 @@
 import type { ContactId, RegionId } from '../ids'
+import type { TradeTag } from './TradeTag'
 
 /**
  * 買取先（Phase 13）。Buyer は Contact の一種として同じ ID 空間（ContactId）を使う。
@@ -32,6 +33,29 @@ export type BuyerTrustProfile = {
   readonly maxPerTransaction: number
 }
 
+/**
+ * 魚種タグ（SpeciesTradeProfile.tradeTags）への好み。
+ *
+ * 魚種 ID を直接持たない。「居酒屋は maaji」のようなどこかで魚種 ID を
+ * 分岐する設計を避け、買取先の性格だけを data-driven で表現する。
+ * 複数タグを持つ魚は **最も相性の良いタグ** で評価する（max）。
+ */
+export type BuyerPreferenceProfile = {
+  /** もっとも高く評価するタグ。 */
+  readonly preferredTags: readonly TradeTag[]
+  /** 普通に扱うタグ（preferred でも other でもない）。 */
+  readonly neutralTags: readonly TradeTag[]
+  readonly preferredTagMultiplier: number
+  readonly neutralTagMultiplier: number
+  /** どちらにも無いタグの倍率。1 に近いほど「何でも広く扱う」。 */
+  readonly otherTagMultiplier: number
+  /**
+   * 産地が自分の地域と一致する魚（KeptCatch.sourceRegionId === buyer.regionId）を
+   * 少し評価する倍率（地元の魚を優遇する）。
+   */
+  readonly localSourceMultiplier: number
+}
+
 export type BuyerDefinition = {
   readonly id: ContactId
   readonly name: string
@@ -40,4 +64,6 @@ export type BuyerDefinition = {
   readonly description: string
   readonly pricingProfile: BuyerPricingProfile
   readonly trustProfile: BuyerTrustProfile
+  /** Phase 13.1: 魚種タグの好み（data-driven）。 */
+  readonly preferences: BuyerPreferenceProfile
 }

@@ -1,8 +1,9 @@
 {
   "speciesId": "longtail-tuna",
   "tradeStatus": "tradable",
+  "tradeTags": ["premium", "large_fish", "oily"],
   "baseYenPerKg": 1400,
   "minimumUnitValueYen": 210,
-  "qualitySensitivity": 1.0,
-  "sizeSensitivity": 1.0
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
 }

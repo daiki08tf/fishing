@@ -1,8 +1,9 @@
 {
   "speciesId": "mebaru",
   "tradeStatus": "tradable",
+  "tradeTags": ["everyday", "small_table_fish", "delicate", "local_favorite"],
   "baseYenPerKg": 510,
   "minimumUnitValueYen": 80,
-  "qualitySensitivity": 1.0,
-  "sizeSensitivity": 1.0
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
 }

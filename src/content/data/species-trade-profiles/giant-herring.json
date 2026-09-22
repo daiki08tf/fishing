@@ -1,8 +1,9 @@
 {
   "speciesId": "giant-herring",
   "tradeStatus": "tradable",
+  "tradeTags": ["everyday", "bulk", "oily"],
   "baseYenPerKg": 990,
   "minimumUnitValueYen": 150,
-  "qualitySensitivity": 1.0,
-  "sizeSensitivity": 1.0
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
 }

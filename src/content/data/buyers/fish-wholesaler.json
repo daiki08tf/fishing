@@ -3,18 +3,26 @@
   "name": "Fish Wholesaler",
   "buyerType": "wholesaler",
   "regionId": "tokyo-area",
-  "description": "港近くの卸業者。1匹あたりの単価は控えめだが、まとめて持ち込むほど有利になる。PROVISIONAL — gameplay tuning。",
+  "description": "港近くの卸業者。多魚種を広く扱い、1匹あたりの単価は控えめだが、まとめて持ち込むほど有利になる。PROVISIONAL — gameplay tuning。",
   "pricingProfile": {
-    "baseMultiplier": 0.85,
+    "baseMultiplier": 1,
     "qualitySensitivity": 0.5,
     "sizeSensitivity": 0.3,
     "freshnessSensitivity": 0.3,
-    "volumeBonusPerExtraCatch": 0.03,
-    "maxVolumeBonus": 0.3
+    "volumeBonusPerExtraCatch": 0.02,
+    "maxVolumeBonus": 0.15
   },
   "trustProfile": {
     "perTransactionBase": 3,
     "qualityWeight": 2,
     "maxPerTransaction": 5
+  },
+  "preferences": {
+    "preferredTags": ["everyday", "bulk", "white_fish"],
+    "neutralTags": ["oily", "small_table_fish", "large_fish", "premium", "local_favorite"],
+    "preferredTagMultiplier": 1.1,
+    "neutralTagMultiplier": 1,
+    "otherTagMultiplier": 0.95,
+    "localSourceMultiplier": 1.05
   }
 }

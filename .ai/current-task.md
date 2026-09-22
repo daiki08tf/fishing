@@ -2,9 +2,14 @@
 
 ## Phase
 
-**Phase 13 — Fish Trade, Contacts & Hidden Spots**
+**Phase 13 — Fish Trade, Contacts & Hidden Spots（+ Phase 13.1 レビュー修正）**
 
-状態: **完了**（PR作成済み、未マージ）
+状態: **完了**（PR #15 作成済み、未マージ）
+
+Phase 13.1（独立レビューを受けた補強）: trade state の永続化、Buyer 地域の強制、
+Hidden Spot の Domain guard、`quoteSale` への一本化、tradeTags による Buyer 差、
+釣行ベースの balance simulation、`actualTrustGain`、Discovery 表示、
+`introduce_contact` の禁止。詳細は `docs/DECISIONS.md` の Phase 13.1 を参照。
 
 Phase 12 のAlpha Content（82 Species / 53 Spot / 5 playable Region）の上に、
 「魚を釣る」を Money / Relationship / Information / World Discovery へ接続する
@@ -104,33 +109,57 @@ job / PTO / work scheduling、multiplayer、Angler Level による Spot gate。
 ## Phase 13 検証
 
 - `npm run check`: typecheck / lint / format / validate:content /
-  simulate:regional-content / **simulate:trade-network**（新規） / test / build
-  すべて PASS
-- `validate:content`: 843 records
-- `simulate:trade-network`: 22/22 checks PASS
-  - Keep/Release/Fish Box、売却（Finance/Trust/二重売却防止）、Buyer 差、
-    Trust threshold、reward 二重防止、v8→v9 migration、Hidden Spot
-    discovery/access 分離、価格 deterministic、Species/Hidden Spot 完全性
-  - balance（120 trips, seed固定）: 平均 ¥1,696 / 中央値 ¥306 / 最小 ¥80 / 最大 ¥27,069
-    （PROVISIONAL な目安。給与 ¥300,000/月・自由資金 約¥120,000/月を破壊しない範囲）
-- tests: **72 files / 643 tests**（Phase 12 時点 71 files / 624 tests から
-  domain/trade の単体テスト 18 件、migration テスト 1 件を追加）
-- production bundle: JS 890.80 kB（gzip 207.31 kB）/ CSS 7.13 kB（gzip 1.86 kB）
-  （Phase 12: 845.44 kB。Vite 500 kB warning は既知、継続課題）
-- ブラウザ実機（Playwright + Chromium headless）: HOME → MAP（Hidden Spot 非表示を確認）
-  → Fish Box → Trade → Contacts の画面遷移を確認。console error なし。
-  実際に魚を釣って Keep → 売却 → Trust 上昇 → Reward → Hidden Spot 出現までの
-  クリック通しは未確認（釣行そのものが乱数依存で自動化しづらいため、
-  domain/simulate 側で同じ経路を検証している）
+  simulate:regional-content / **simulate:trade-network**（Phase 13.1 で釣行モデルへ） /
+  test / build すべて PASS
+- `validate:content`: 843 records + `trade profiles cover all 82 runtime species`
+- `simulate:trade-network`: Domain / Content の checks 全 PASS
+  - Keep/Release/Fish Box、売却（Finance/Trust/二重売却防止）、Buyer 地域強制、
+    quoteSale の不変条件、Trust 実増分、Hidden Spot の discovery guard、
+    Trust threshold、reward 二重防止、v8→v9 migration、Species/Hidden Spot 完全性
+  - trip simulation（120 trips × 6 attempts, seed 固定）: attempts/trip 6.00 /
+    landed 2.60 / kept 2.60 / gross ¥6,613 / travel cost ¥3,924 /
+    net mean ¥2,688 / median ¥533 / p90 ¥21,398 / max ¥81,403 /
+    月換算（中央値×8）¥4,264
+    （PROVISIONAL。給与 ¥300,000/月・自由資金 約¥120,000/月を破壊しない範囲）
+- tests: **77 files / 687 tests**（Phase 13 時点 72 files / 643 tests から
+  persistence 統合 3 / contract 33 / UI 9 を追加）
+- production bundle: JS 899.99 kB（gzip 209.18 kB）/ CSS 7.13 kB（gzip 1.86 kB）
+  （Phase 13 時点: JS 890.80 kB。Vite 500 kB warning は既知、継続課題）
+- ブラウザ smoke: 下記「Phase 13.1 検証」参照
+
+## Phase 13.1 検証（レビュー修正）
+
+- persistence 統合テスト（実際の coordinator / repository 経路）:
+  Keep → flush → reload で Fish Box 維持 / Sell → flush → reload で売却魚が復活せず
+  Cash 維持 / Trust・claimedRewardIds・knownRumorIds 維持 + reward 再 claim なし
+- Buyer 地域強制: Tokyo で Tokyo Buyer OK、Hokkaido へ Tokyo Buyer を Store から渡すと
+  `buyer_region_mismatch`（Cash も Fish Box も変化しない）
+- Hidden Spot: 未発見 + Transport 全部あり → `undiscovered` で拒否 /
+  発見済み + Transport 不足 → AccessEngine が拒否 /
+  発見済み + Access OK → 移動成功 / Public Spot → 従来どおり
+- quoteSale: `sum(lines.valueYen) === totalValueYen`、取引不可の魚の位置で bonus が
+  変わらない、並び順で合計が変わらない、preview と実売却が一致
+- Trust: 98 → +2（100 で頭打ち）、100 → +0（UI も `Trust 上限（+0）`）
+- Species tradeTags: 82 / 82（未知タグなし）。Buyer の preferredTags / neutralTags は
+  既知タグのみ、preferred と neutral の重複なし
+- 画面の通し smoke（jsdom + React DOM の実イベント。Chrome headless は sandbox の
+  制約で起動できない）: HOME → MAP（未発見 Hidden Spot 非表示）→ 釣り場 →
+  FISHING（CAST / HOOK / 巻く を実際にクリック）→ LANDED → Keep → HOME（Fish Box 1）→
+  FISH BOX → TRADE（買取先表示・プレビュー合計 = 実際の受け取り額・売却）→
+  追加釣行で Trust 15 以上 → CONTACTS → MAP（発見済みになった Hidden Spot が
+  「発見済み」として出る。「訪問済み」は出ない）まで PASS
 
 ## 既知のギャップ / 次の推奨タスク
 
 - Fish Box の容量上限・保存の耐久劣化は実装していない（意図的）
-- Buyer は地域 flavor（regionId）を持つが、Trade 画面では地域を問わず全 Buyer に
-  売却できる（「釣った魚を持ち帰って売る」という設定を優先し、遠征中の販路封鎖のような
-  複雑さを避けた）
+- Buyer は **今いる地域の買取先にしか売れない**（Phase 13.1）。
+  現在 Buyer がいるのは `tokyo-area` の 3 件だけなので、遠征先（北海道 / アラスカ /
+  BC / クイーンズランド）では TRADE 画面が空状態になる。
+  遠征先に買取先を出すには Content（`buyers/*.json`）を足すだけでよい
 - 非 Buyer Contact（地元アングラー / 船長 / 漁師 / ガイド）は `introduce_contact`
-  という報酬 kind として architecture は用意したが、実 Content では使っていない
+  という報酬 kind として architecture は用意したが、**実際の unlock 挙動は未実装**で、
+  Content は `validate:content` が拒否する（silent no-op を防ぐため）。
+  実装したら検査を外す
 - Trade / Fish Box / Contacts の実プレイテストによるバランス調整は未実施
   （`simulate:trade-network` の balance 数値は目安）
 - 次候補: Phase 14 Visual Redesign、または Buyer の地域差をもう少し出す調整

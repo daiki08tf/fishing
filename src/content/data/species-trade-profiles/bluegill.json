@@ -1,8 +1,9 @@
 {
   "speciesId": "bluegill",
   "tradeStatus": "tradable",
+  "tradeTags": ["game_fish", "small_table_fish"],
   "baseYenPerKg": 300,
   "minimumUnitValueYen": 80,
-  "qualitySensitivity": 1.0,
-  "sizeSensitivity": 1.0
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
 }

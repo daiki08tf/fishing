@@ -16,6 +16,7 @@ import type { ExpeditionDefinition } from '../../domain/expedition/Expedition'
 import type { Country, RegionDefinition } from '../../domain/world/Region'
 import type { BuyerDefinition } from '../../domain/trade/Buyer'
 import type { SpeciesTradeProfile } from '../../domain/trade/SpeciesTradeProfile'
+import { TRADE_TAGS } from '../../domain/trade/TradeTag'
 import type { ContactReward } from '../../domain/trade/ContactReward'
 import {
   SLOT_CATEGORIES,
@@ -191,6 +192,7 @@ export const validateContentReferences = (
   const speciesTradeProfiles = input.speciesTradeProfiles ?? []
   const contactRewards = input.contactRewards ?? []
   const speciesIds = new Set(input.species.map((entry) => String(entry.id)))
+  const knownTradeTags: ReadonlySet<string> = new Set(TRADE_TAGS)
   const gearById = new Map(input.gear.map((entry) => [String(entry.id), entry]))
   const methodIds = new Set(input.methods.map((entry) => entry.id))
   const brandIds = new Set(input.brands.map((entry) => String(entry.id)))
@@ -527,6 +529,37 @@ export const validateContentReferences = (
         message: `unknown regionId ${String(buyer.regionId)}`,
       })
     }
+
+    /*
+     * Phase 13.1: Buyer の好みは既知の tradeTag だけを指す。
+     * preferred と neutral が重なると、どちらの倍率が効くか読めなくなる。
+     */
+    for (const tag of [...buyer.preferences.preferredTags, ...buyer.preferences.neutralTags]) {
+      if (!knownTradeTags.has(tag)) {
+        issues.push({
+          path: `buyers/${String(buyer.id)}`,
+          message: `unknown tradeTag ${tag} in preferences`,
+        })
+      }
+    }
+
+    if (buyer.preferences.preferredTags.length === 0) {
+      issues.push({
+        path: `buyers/${String(buyer.id)}`,
+        message: 'buyer has no preferredTags (buyer affinity would be meaningless)',
+      })
+    }
+
+    const overlap = buyer.preferences.preferredTags.filter((tag) =>
+      buyer.preferences.neutralTags.includes(tag),
+    )
+
+    if (overlap.length > 0) {
+      issues.push({
+        path: `buyers/${String(buyer.id)}`,
+        message: `tradeTag is both preferred and neutral: ${overlap.join(', ')}`,
+      })
+    }
   }
 
   /*
@@ -546,6 +579,26 @@ export const validateContentReferences = (
         path: `species-trade-profiles/${String(profile.speciesId)}`,
         message: `unknown speciesId ${String(profile.speciesId)}`,
       })
+    }
+
+    /*
+     * Phase 13.1: 取引可能な魚種は必ず tradeTags を持つ。
+     * Buyer の好みはタグ経由で解決するため、タグが無いと差が付かない。
+     */
+    if (profile.tradeStatus === 'tradable' && profile.tradeTags.length === 0) {
+      issues.push({
+        path: `species-trade-profiles/${String(profile.speciesId)}`,
+        message: 'tradable species needs at least one tradeTag',
+      })
+    }
+
+    for (const tag of profile.tradeTags) {
+      if (!knownTradeTags.has(tag)) {
+        issues.push({
+          path: `species-trade-profiles/${String(profile.speciesId)}`,
+          message: `unknown tradeTag ${tag}`,
+        })
+      }
     }
   }
 
@@ -581,6 +634,18 @@ export const validateContentReferences = (
     }
 
     if (reward.kind === 'introduce_contact') {
+      /*
+       * Phase 13.1: introduce_contact は architecture のみで、
+       * 実際の unlock 挙動（Contact の追加）はまだ実装していない。
+       * Content に足すと「claim だけされて何も起きない」silent no-op になるため、
+       * Phase 13 では Content 側で禁止する（schema ではなく参照検証で止める）。
+       */
+      issues.push({
+        path: `contact-rewards/${String(reward.id)}`,
+        message:
+          'introduce_contact is reserved / not yet supported (claiming it would be a silent no-op). Implement the unlock behaviour before adding this content',
+      })
+
       if (reward.targetId === undefined) {
         issues.push({
           path: `contact-rewards/${String(reward.id)}`,

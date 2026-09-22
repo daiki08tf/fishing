@@ -1,8 +1,9 @@
 {
   "speciesId": "kawahagi",
   "tradeStatus": "tradable",
+  "tradeTags": ["premium", "delicate", "small_table_fish", "local_favorite"],
   "baseYenPerKg": 580,
   "minimumUnitValueYen": 90,
-  "qualitySensitivity": 1.0,
-  "sizeSensitivity": 1.0
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
 }

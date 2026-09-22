@@ -115,6 +115,42 @@ export const runValidateContent = (argv: readonly string[], cwd: string): Valida
     return { exitCode: 1, lines }
   }
 
+  /*
+   * Phase 13.1: **runtime Content の完全性**。
+   *
+   * 「全 runtime Species が SpeciesTradeProfile を持つ」は、参照整合性の検査
+   * （validateContentReferences）には置けない。テスト / simulation は検証用 fixture の
+   * 魚種を追加で読み込むため、必ず食い違うからである（Phase 10.1 の分離方針）。
+   * ここは runtime の `src/content/data` だけを見る CLI なので、完全性を検査できる。
+   */
+  const runtimeSpecies = of<FishSpecies>('fish-species')
+  const tradeProfiles = of<SpeciesTradeProfile>('species-trade-profiles')
+  /*
+   * 部分的な Content 集合（Tackle 専用の検証用 fixture など）には
+   * species-trade-profiles が無い。その場合は完全性を検査しない
+   * （既存の「transports がある時だけ route を見る」と同じ扱い）。
+   */
+  if (tradeProfiles.length > 0) {
+    const tradeProfileIds = new Set(tradeProfiles.map((profile) => String(profile.speciesId)))
+    const missingTradeProfiles = runtimeSpecies.filter(
+      (species) => !tradeProfileIds.has(String(species.id)),
+    )
+
+    if (missingTradeProfiles.length > 0) {
+      for (const species of missingTradeProfiles) {
+        lines.push(
+          `ERROR species-trade-profiles/${String(species.id)} — runtime species has no trade profile`,
+        )
+      }
+      lines.push(
+        `FAILED: ${String(missingTradeProfiles.length)} runtime species without a trade profile`,
+      )
+      return { exitCode: 1, lines }
+    }
+
+    lines.push(`trade profiles cover all ${String(runtimeSpecies.length)} runtime species`)
+  }
+
   lines.push('OK')
   return { exitCode: 0, lines }
 }

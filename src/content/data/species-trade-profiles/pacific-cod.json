@@ -1,8 +1,9 @@
 {
   "speciesId": "pacific-cod",
   "tradeStatus": "tradable",
+  "tradeTags": ["everyday", "large_fish", "white_fish", "bulk"],
   "baseYenPerKg": 920,
   "minimumUnitValueYen": 140,
-  "qualitySensitivity": 1.0,
-  "sizeSensitivity": 1.0
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
 }

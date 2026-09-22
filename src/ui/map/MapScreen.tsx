@@ -191,7 +191,9 @@ export const MapScreen = () => {
                   {ENVIRONMENT_LABELS[spot.environment] ?? spot.environment}
                   {spot.dataStatus === 'provisional' ? ' / 暫定データ' : ''}
                   {area === undefined ? '' : ` / ${area.name}`}
-                  {discovered ? ' / 訪問済み' : ''}
+                  {/* Phase 13.1: discoveredSpotIds は「訪問済み」ではなく「発見済み」。
+                      Contact から場所を教わっただけの Hidden Spot も含む。 */}
+                  {discovered ? ' / 発見済み' : ''}
                 </p>
                 <p className="spot-card__meta">
                   この釣り場の知識 {Math.round(score)}% / 魚種 {spot.fishTable.length} 種
