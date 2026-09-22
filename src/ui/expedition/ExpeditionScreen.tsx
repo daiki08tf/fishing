@@ -5,7 +5,10 @@ import { formatDuration } from '../../domain/world'
 import { DEFAULT_WORLD_TUNING } from '../../domain/world/WorldTuning'
 import { useAppStore } from '../../state/appStore'
 import { usePlayerStore } from '../../state/playerStore'
+import { contentRuntime } from '../../content/runtime/contentRuntime'
 import { ContentErrorPanel } from '../world/ContentErrorPanel'
+import { ContentLoadingPanel } from '../content/ContentLoadingPanel'
+import { useRegionPack } from '../content/contentRuntimeHooks'
 import { useContentOrError } from '../world/useContentOrError'
 
 /**
@@ -26,6 +29,26 @@ export const ExpeditionScreen = () => {
   const [notice, setNotice] = useState<string | null>(null)
   const [nightsByExpedition, setNightsByExpedition] = useState<Record<string, number>>({})
   const [lodgingByExpedition, setLodgingByExpedition] = useState<Record<string, string>>({})
+  const regionPack = useRegionPack(String(world.currentRegionId))
+
+  /*
+   * Phase 15.1: EXPEDITION を開いただけでは、どの地域の Content も読まない。
+   * 目的地のカードを触った / 出発する時に、その地域の pack だけを先読みする
+   * （ensureRegion は region pack + その地域の Species shard のみ）。
+   */
+  const preloadRegion = (regionId: string): void => {
+    void contentRuntime.ensureRegion(String(regionId)).catch(() => undefined)
+  }
+
+  if (regionPack.status !== 'ready') {
+    return (
+      <ContentLoadingPanel
+        message="地域情報を読み込み中…"
+        error={regionPack.error}
+        onRetry={regionPack.retry}
+      />
+    )
+  }
 
   if (!content.ok) {
     return <ContentErrorPanel message={content.message} />
@@ -150,7 +173,16 @@ export const ExpeditionScreen = () => {
             const selectedLodgingId = plan.lodging.id
 
             return (
-              <li className="spot-card" key={String(definition.id)}>
+              <li
+                className="spot-card"
+                key={String(definition.id)}
+                onFocusCapture={() => {
+                  preloadRegion(String(definition.regionId))
+                }}
+                onPointerEnter={() => {
+                  preloadRegion(String(definition.regionId))
+                }}
+              >
                 <div className="spot-card__head">
                   <h3 className="panel__subheading">{plan.name}</h3>
                   <span className={`badge${affordable ? '' : ' badge--alert'}`}>
@@ -254,6 +286,10 @@ export const ExpeditionScreen = () => {
                     className="control"
                     type="button"
                     onClick={() => {
+                      // 出発前に目的地の Content を先読み（移動後の待ち時間を減らす）。
+                      void contentRuntime
+                        .ensureRegion(String(definition.regionId))
+                        .catch(() => undefined)
                       const result = startExpedition(plan)
 
                       if (result.ok) {

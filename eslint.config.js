@@ -39,7 +39,14 @@ const domainRestrictedImports = [
 
 export default tseslint.config(
   {
-    ignores: ['dist/**', 'coverage/**', 'node_modules/**', 'public/sw.js'],
+    ignores: [
+      'dist/**',
+      'coverage/**',
+      'node_modules/**',
+      'public/sw.js',
+      // Phase 15: 生成物（scripts/build-content-index.ts が書き出す）。
+      'src/content/generated/**',
+    ],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,

@@ -7,6 +7,8 @@ import { usePlayerStore } from '../../state/playerStore'
 import { EmptyState } from '../components/EmptyState'
 import { StatMeter } from '../components/StatMeter'
 import { ContentErrorPanel } from '../world/ContentErrorPanel'
+import { ContentLoadingPanel } from '../content/ContentLoadingPanel'
+import { useRegionPack, useSpeciesDetail } from '../content/contentRuntimeHooks'
 import { useContentOrError } from '../world/useContentOrError'
 import { buyerPreferenceChips, buyerRoleLabel, describeBuyerRole } from './buyerPresentation'
 import './trade.css'
@@ -34,10 +36,33 @@ export const TradeScreen = () => {
   const setActiveScreen = useAppStore((state) => state.setActiveScreen)
   const trade = usePlayerStore((state) => state.trade)
   const world = usePlayerStore((state) => state.world)
+  const regionPack = useRegionPack(String(world.currentRegionId))
+  /* Phase 15.1: Fish Box の魚は別地域の Species かもしれない（必要分だけ追加で読む）。 */
+  const speciesDetail = useSpeciesDetail(trade.fishBox.map((entry) => String(entry.speciesId)))
   const sellToBuyer = usePlayerStore((state) => state.sellToBuyer)
   const [selectedBuyerId, setSelectedBuyerId] = useState<string | null>(null)
   const [selectedCatchIds, setSelectedCatchIds] = useState<readonly string[]>([])
   const [notice, setNotice] = useState<string | null>(null)
+
+  if (speciesDetail.status === 'error') {
+    return (
+      <ContentLoadingPanel
+        message="魚の情報を読み込み中…"
+        error={speciesDetail.error}
+        onRetry={speciesDetail.retry}
+      />
+    )
+  }
+
+  if (regionPack.status !== 'ready') {
+    return (
+      <ContentLoadingPanel
+        message="地域情報を読み込み中…"
+        error={regionPack.error}
+        onRetry={regionPack.retry}
+      />
+    )
+  }
 
   if (!content.ok) {
     return <ContentErrorPanel message={content.message} />

@@ -18,6 +18,8 @@ import { useAppStore } from '../../state/appStore'
 import { usePlayerStore } from '../../state/playerStore'
 import { PixelIcon } from '../components/PixelIcon'
 import { ContentErrorPanel } from '../world/ContentErrorPanel'
+import { ContentLoadingPanel } from '../content/ContentLoadingPanel'
+import { useRegionPack } from '../content/contentRuntimeHooks'
 import { useContentOrError } from '../world/useContentOrError'
 import { buildMapBoard, MAP_BAND_LABELS } from './spotPlacement'
 import './map.css'
@@ -69,6 +71,19 @@ export const MapScreen: FC<MapScreenProps> = ({ initialSelectedSpotId }) => {
   const [selectedRegionId, setSelectedRegionId] = useState<string | null>(null)
   /** 地図ボードで選んだ Spot（詳細と summary を出す）。 */
   const [selectedSpotId, setSelectedSpotId] = useState<string | null>(initialSelectedSpotId ?? null)
+  /* Phase 15: 表示中の地域の Content Pack を必要時に読み込む（hooks は早期 return より前）。 */
+  const visibleRegionId = selectedRegionId ?? String(world.currentRegionId)
+  const regionPack = useRegionPack(visibleRegionId)
+
+  if (regionPack.status !== 'ready') {
+    return (
+      <ContentLoadingPanel
+        message="地域情報を読み込み中…"
+        error={regionPack.error}
+        onRetry={regionPack.retry}
+      />
+    )
+  }
 
   if (!content.ok) {
     return <ContentErrorPanel message={content.message} />

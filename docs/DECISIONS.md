@@ -508,3 +508,119 @@ Phase 14 の iPhone 実機相当レビューで見つかった UI の問題を�
   家計の内訳（給与・生活費）のような補足は `<details>` にたたむ
 - Phase 14.1 で追加した依存は無い（jsdom / Playwright などの実行時依存は足していない）。
   新しい画像アセットも追加していない（装飾は CSS と既存 SVG のみ）
+
+## Phase 15 — Content Scale Foundation（1000+ Species）
+
+Phase 15 は「ゲームルールの追加」ではなく、1000+ Species / 多数 Region / 多数 Spot に
+耐える **Content Architecture** の整備である。既存の Content 量（82 Species / 53 Spot /
+10 Region / playable 5）は変えず、その表現方法と読み込み経路だけを変えた。
+
+決定:
+
+- **Species ID は今後も global。** 地域ごとに別 ID を作らない
+  （`tokyo-maaji` のような prefix 付き ID を禁止し、`validate:content` が検出する）。
+  地域差は Occurrence / Presence / Environment / Size tuning 側で表現する
+- **軽量カタログ（lightweight index）を起動時に読む。** `content-index.json` には
+  Species summary（id / 名前 / scientificName / englishName（あれば）/ waterTypes /
+  category / 分布 Region / habitats / rarityBand）と Region summary（id / 名前 /
+  country / stage / packKey）だけを置く。生物学の詳細・Spot 地形・Trade tuning は入れない。
+  Codex の一覧・検索・絞り込みはこの索引だけで完結する
+- **Content Pack は「1 pack = 1 dynamic import」にする。** 5 つの region pack
+  （tokyo-area / hokkaido / alaska / british-columbia / queensland）と 3 つの global pack
+  （species-detail / tackle / world）に分ける。pack の実体は
+  `scripts/build-content-index.ts` が生成する `src/content/generated/packs/*.ts` で、
+  JSON を **静的 import** する（dynamic import を並べると 1 ファイル = 1 chunk になり、
+  1000 Species 規模でリクエスト数が破綻するため）
+- **起動時に読むのは「軽量カタログ + 今いる地域 + species-detail + tackle + world」**。
+  他の地域は Expedition 画面で事前読み込みし、Region を選んだ時点で pack を読む。
+  「全 Region の Spot / occurrence / tuning を初期 chunk へ入れる」状態にしない
+- **Content loading は Application / UI 境界（`src/content/runtime`）で行う。**
+  Domain へ Promise / dynamic import / fetch を持ち込まない。Domain は
+  「読み込み済み Content」を受け取るだけである。loaded pack は application の
+  cache に置き、Save には保存しない（architecture の詳細を Save へ持ち込まない）
+- **pack loader は idle / loading / ready / error を持ち、同時要求は Promise を共有し、
+  失敗した pack だけ retry できる。** UI は「地域情報を読み込み中…」と retry を出し、
+  開発者向けの文言（pack 名 / chunk 名）は画面に出さない
+- **Node / CI は全 Content を集約して読む。** `validate:content` /
+  `simulate:regional-content` / `simulate:trade-network` / `simulate:content-scale` /
+  テストは従来どおり全 Content を使える（browser の遅延ロードとは役割を分離）。
+  Content 定義は二重管理しない（生成物は 1 つの generator から出す）
+- **validation を強化する。** pack manifest と生成 pack module の一致、
+  pack 所有権の重複・欠落（orphan content）なし、全 runtime Species の summary 存在、
+  全 playable Region の pack 存在、canonical Species ID の地域 prefix 禁止、
+  生成物の freshness（index を再生成して一致）を `validate:content` で検査する
+- **PWA の update strategy は変えない。** ただし offline 時に JS chunk 要求へ
+  index.html を返さない（navigation 要求だけに限定する）。hash 付き chunk を
+  古いキャッシュから返すこともない
+- **Save は v9 のまま。** pack / chunk / module path を Save に保存しない
+  （Save は SpeciesId / RegionId / SpotId / BuyerId 等の安定 ID のみ）
+
+## Phase 15.1 — True Lazy Loading（起動 critical path の削減）
+
+Phase 15 のレビューで「chunk は分かれたが runtime では起動時に全部読んでいた」問題を直した。
+Domain / Save v9 / gameplay rule は変更していない。
+
+決定:
+
+- **起動 critical path は「軽量カタログ + world + 今いる地域 + その地域の Species shard」だけ。**
+  AppShell が required にする pack は `bootPackKeys(regionId)` の 3 つで、tackle は
+  non-blocking の background preload、他地域と全 Species は起動では読まない
+- **Species detail は Region ごとの shard にする。** 1 つの global pack に 1000 Species を
+  入れて起動時に読む構造は禁止。各 shard は「その地域の釣り場に出る Species」だけを持ち、
+  同じ Species 定義は source 上コピーしない（同じ JSON を複数の shard module が参照し、
+  共有分は bundler が shared chunk にまとめる）。`detailShard` は各 Species の代表 shard
+  で、Fish Box の別地域の魚を読むときの入口になる
+- **Fish Box / Trade は保存された Species ID から必要な shard を追加で読む。**
+  Save には pack / shard 情報を書かない（Fish Box の魚が扱えなくなることを禁止）
+- **Tackle は HOME を block しない。** 起動では background preload だけ行い、
+  Tackle / Shop / Spot など本当に必要になる画面で gate する
+- **EXPEDITION は開いただけでは何も読まない。** 目的地カードの focus / 出発操作で、
+  その地域の pack だけを先読みする（全地域の一括 preload を廃止）
+- **Codex の名前検索は捕獲済みだけを対象にする。** 未捕獲 Species は名前 / 英語名 /
+  scientificName / id で検索しても 1 件も返さない（検索から存在を推測できない）。
+  Region / water filter の semantics は従来どおり
+- **二次的な画面は dynamic import にする。** Codex / Shop / Tackle / Expedition /
+  Fish Box / Trade / Contacts / Menu / Progression は初期 chunk に入れない
+  （HOME / MAP / SPOT / FISHING は最初の導線なので eager のまま）
+
+実測（production build）:
+
+| | Phase 14 | Phase 15.0（boot） | Phase 15.1（boot） |
+| --- | --- | --- | --- |
+| boot raw | 925.44 kB | 871.38 kB | **604.95 kB** |
+| boot gzip | 216.48 kB | 210.51 kB | **170.67 kB**（-21.2%） |
+| initial chunk | 925.44 kB | 536.35 kB | 512.00 kB |
+
+boot の内訳: index 512.00 / region-tokyo-area 39.01 / species-tokyo-area 31.26 /
+world 12.47 / 共有 Species chunk 8.21。Tokyo の起動で読む Species は 38 種（全 82 種ではない）。
+
+### Phase 15.2 — Startup Network Final Hardening
+
+Phase 15.1 のレビューで「tackle は required ではないが AppShell mount 直後に background fetch
+されるため、実効 startup network には含まれてしまう」問題を直した。
+
+決定:
+
+- **AppShell から tackle の preload を削除する。** 起動で読むのは
+  `bootContentFor(regionId)`（= `bootPackKeys`: world + 今いる地域 + その地域の Species shard）
+  だけ。tackle は Tackle / Shop / Spot / Fishing の gate（`usePack(GLOBAL_PACK_KEYS.tackle)`）
+  で、実際に必要になった時点で読む。HOME は tackle 未ロードでも
+  `NEUTRAL_FISHING_MODIFIERS` 等の fallback で成立する（Domain rule は変えない）
+- **requestIdleCallback による preload は行わない。** 「最も単純で安全なのは削除」
+  という方針に従い、起動直後の追加 fetch を 0 にする。将来的に preload する場合も
+  「初回 HOME が ready になった後 + browser idle」に限定する
+- **起動 network の保証は behavioral test にする。** `bootContentFor` が呼ぶ runtime を
+  instrumented importer に差し替え、実際に呼ばれた pack importer を数える:
+  - boot 直後: world / region:tokyo-area / species:tokyo-area の 3 つだけ
+  - tackle / hokkaido / alaska の importer = 0 calls
+  - HOME → MAP の遷移では新しい fetch なし
+  - Spot / Tackle / Shop / Fishing で tackle を **1 度だけ**読み、以降は cache
+  - 目的地を選ぶまで他地域 importer = 0 calls
+  source 文字列の検索は主要な保証にしない（Expedition の mount 一括 preload の
+  再発防止だけ、secondary guard として残す）
+- **analyze:content-scale は実際に即時要求される chunk を数える**（initial + boot packs +
+  それらが静的に読む shared chunk）。boot pack 一覧も出力し、tackle / 他地域が
+  含まれないことを検査する
+
+実測: boot raw 604.93 kB / boot gzip 170.62 kB（Phase 14 比 -21.2%、Phase 15.1 と同じ水準を
+immediate network set でも維持）。tackle chunk は 201.31 kB（gzip 32.05）で **boot に含まれない**。

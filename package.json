@@ -18,6 +18,7 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
+    "content:index": "tsx scripts/build-content-index.ts",
     "validate:content": "tsx scripts/validate-content.ts",
     "simulate:fishing": "tsx scripts/simulate-fishing.ts",
     "sample:individuals": "tsx scripts/sample-individuals.ts",
@@ -34,7 +35,9 @@
     "simulate:text-battle": "tsx scripts/simulate-text-battle.ts",
     "simulate:regional-content": "tsx scripts/simulate-regional-content.ts",
     "simulate:trade-network": "tsx scripts/simulate-trade-network.ts",
-    "check": "npm run typecheck && npm run lint && npm run format:check && npm run validate:content && npm run simulate:regional-content && npm run simulate:trade-network && npm run test:run && npm run build"
+    "simulate:content-scale": "tsx scripts/simulate-content-scale.ts",
+    "analyze:content-scale": "tsx scripts/analyze-content-scale.ts",
+    "check": "npm run typecheck && npm run lint && npm run format:check && npm run validate:content && npm run simulate:regional-content && npm run simulate:trade-network && npm run simulate:content-scale && npm run test:run && npm run build && npm run analyze:content-scale"
   },
   "dependencies": {
     "react": "^19.3.0",

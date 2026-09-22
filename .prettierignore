@@ -14,3 +14,6 @@ public/icons/
 
 # Intentionally invalid JSON fixture (asserts that invalid JSON is reported).
 src/content/fixtures/invalid/invalid-json/
+
+# Phase 15: 生成物（scripts/build-content-index.ts が書き出す）。
+src/content/generated/

@@ -1,27 +1,22 @@
-import { loadBuiltInContent, type BuiltInContent } from '../../content/catalog'
+import type { BuiltInContent } from '../../content/catalog'
+import { contentRuntime } from '../../content/runtime/contentRuntime'
 
 /**
- * 同梱コンテンツの共有キャッシュ。
+ * 画面から見た Content（Phase 15）。
  *
- * 検証（Zod）はアプリ起動時に 1 度だけ行えばよい。
- * 画面ごとに読み直すと、同じ検証を何度も走らせることになる。
+ * 実体は contentRuntime が持つ「読み込み済み pack の合成結果」。
+ * まだ読み込みが終わっていない間は ok: false を返すので、
+ * 呼び出し側（AppShell / 各画面の gate）が loading 表示を出す。
  */
 
 export type ContentResult =
   | { readonly ok: true; readonly value: BuiltInContent }
   | { readonly ok: false; readonly message: string }
 
-let cached: BuiltInContent | null = null
-
 export const tryGetBuiltInContent = (): ContentResult => {
-  if (cached !== null) {
-    return { ok: true, value: cached }
-  }
+  const content = contentRuntime.getState().content
 
-  try {
-    cached = loadBuiltInContent()
-    return { ok: true, value: cached }
-  } catch (error) {
-    return { ok: false, message: error instanceof Error ? error.message : String(error) }
-  }
+  return content === null
+    ? { ok: false, message: 'コンテンツを読み込み中' }
+    : { ok: true, value: content }
 }

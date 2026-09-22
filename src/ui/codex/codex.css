@@ -42,3 +42,35 @@
   font-size: 0.625rem;
   color: var(--color-text-muted);
 }
+
+/* Phase 15: 名前検索とページング表示（1000 種でも一覧を軽く保つ）。 */
+.codex-search {
+  display: block;
+  margin: 0.6rem 0 0.5rem;
+}
+
+.codex-search__label {
+  display: block;
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+}
+
+.codex-search__input {
+  width: 100%;
+  margin-top: 0.2rem;
+  padding: 0.45rem 0.6rem;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  font-size: 0.875rem;
+}
+
+.codex-count {
+  margin: 0.6rem 0 0;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}

@@ -1,6 +1,7 @@
-import { resolve } from 'node:path'
+import { readFileSync } from 'node:fs'
+import { relative, resolve } from 'node:path'
 import { pathToFileURL } from 'node:url'
-import { loadContentDirectory } from '../src/content/load/contentLoader'
+import { loadContentDirectory, type ContentLocation } from '../src/content/load/contentLoader'
 import { validateContentReferences } from '../src/content/catalog/references'
 import type { ContentKind } from '../src/content/schema'
 import type { BrandDefinition } from '../src/domain/gear/Brand'
@@ -16,6 +17,14 @@ import type { Country, RegionDefinition } from '../src/domain/world/Region'
 import type { BuyerDefinition } from '../src/domain/trade/Buyer'
 import type { SpeciesTradeProfile } from '../src/domain/trade/SpeciesTradeProfile'
 import type { ContactReward } from '../src/domain/trade/ContactReward'
+import { validateContentScale } from '../src/content/catalog/scaleCheck'
+import type { ContentIndex } from '../src/content/catalog/summary'
+import {
+  browserContentIndex,
+  buildContentIndex,
+  serializeContentIndex,
+} from './build-content-index'
+import { knownPackModuleKeys } from '../src/content/runtime/packModules'
 
 /**
  * Content 検証 CLI。
@@ -151,8 +160,102 @@ export const runValidateContent = (argv: readonly string[], cwd: string): Valida
     lines.push(`trade profiles cover all ${String(runtimeSpecies.length)} runtime species`)
   }
 
+  /*
+   * Phase 15: Content Scale の検証。
+   * runtime Content（既定ディレクトリ）のときだけ、生成済みカタログ / pack と突き合わせる。
+   * 部分的な fixture 集合では pack 境界の検査はできない。
+   */
+  if (directoryArgument === DEFAULT_CONTENT_DIR) {
+    const scaleIssues = runContentScaleValidation({
+      root,
+      locations: result.locations,
+      index: JSON.parse(
+        readFileSync(resolve(cwd, 'src/content/generated/content-index.json'), 'utf8'),
+      ) as ContentIndex,
+      ownership: JSON.parse(
+        readFileSync(resolve(cwd, 'src/content/generated/content-ownership.json'), 'utf8'),
+      ) as Record<string, string>,
+      speciesShards: JSON.parse(
+        readFileSync(resolve(cwd, 'src/content/generated/species-shards.json'), 'utf8'),
+      ) as Record<string, readonly string[]>,
+      packModuleKeys: knownPackModuleKeys(),
+      cwd,
+    })
+
+    if (scaleIssues.length > 0) {
+      for (const issue of scaleIssues) {
+        lines.push(`ERROR ${issue.path} — ${issue.message}`)
+      }
+      lines.push(`FAILED with ${String(scaleIssues.length)} content scale issue(s)`)
+      return { exitCode: 1, lines }
+    }
+
+    lines.push('content scale: catalog / packs / ownership / manifest OK')
+  }
+
   lines.push('OK')
   return { exitCode: 0, lines }
+}
+
+/**
+ * Content Scale 検証（Phase 15）。
+ * 生成物（index / ownership）が Content と一致しているかも含めて検査する。
+ */
+export const runContentScaleValidation = (input: {
+  readonly root: string
+  readonly locations: readonly ContentLocation[]
+  readonly index: ContentIndex
+  readonly ownership: Readonly<Record<string, string>>
+  readonly speciesShards: Readonly<Record<string, readonly string[]>>
+  readonly packModuleKeys: readonly string[]
+  readonly cwd: string
+}): readonly { readonly path: string; readonly message: string }[] => {
+  const of = <T>(kind: ContentKind): readonly T[] =>
+    input.locations.filter((entry) => entry.kind === kind).map((entry) => entry.value as T)
+
+  const filesByKind: Record<string, string[]> = {}
+  for (const entry of input.locations) {
+    const kindDirectory = resolve(input.root, entry.kind)
+    filesByKind[entry.kind] = [
+      ...(filesByKind[entry.kind] ?? []),
+      relative(kindDirectory, entry.filePath),
+    ]
+  }
+
+  const issues = [
+    ...validateContentScale({
+      species: of<FishSpecies>('fish-species'),
+      spots: of<FishingSpot>('fishing-spots'),
+      regions: of<RegionDefinition>('regions'),
+      buyers: of<BuyerDefinition>('buyers'),
+      contactRewards: of<ContactReward>('contact-rewards'),
+      expeditions: of<ExpeditionDefinition>('expeditions'),
+      speciesTradeProfiles: of<SpeciesTradeProfile>('species-trade-profiles'),
+      index: input.index,
+      ownership: input.ownership,
+      speciesShards: input.speciesShards,
+      filesByKind,
+      packModuleKeys: input.packModuleKeys,
+    }),
+  ]
+
+  // 生成物が古くないか（index を再生成して比較する）。
+  const regenerated = serializeContentIndex(
+    browserContentIndex(buildContentIndex(DEFAULT_CONTENT_DIR, { cwd: input.cwd })),
+  )
+  const committed = readFileSync(
+    resolve(input.cwd, 'src/content/generated/content-index.json'),
+    'utf8',
+  )
+
+  if (regenerated !== committed) {
+    issues.push({
+      path: 'content-index',
+      message: 'generated content index is stale (run npm run content:index)',
+    })
+  }
+
+  return issues
 }
 
 const isMainModule = (): boolean => {

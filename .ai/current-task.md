@@ -167,3 +167,84 @@ Phase 14 の iPhone 実機相当レビューで見つかった UI の問題を�
   375x812 / 390x844 / 430x932 の実測レイアウトとスクリーンショットは未取得。
   CSS の固定幅（300px 以上）0 件・`min-width` は 0 のみ・`overflow-x` 指定なしを
   静的に確認した
+
+
+## Phase 15（Content Scale Foundation / 1000+ Species Architecture）
+
+目的はゲームルールの追加ではなく、1000+ Species / 多数 Region / 多数 Spot に耐える
+Content Architecture の整備。既存 Content（82 Species / 53 Spot / 5 playable Region）は
+そのまま。Save v9 / Domain / FishingEngine / Trade / Trust / Hidden Spot は変更なし。
+
+### 作ったもの
+
+- `scripts/build-content-index.ts`（新規）: `src/content/data` から
+  - `src/content/generated/content-index.json`（軽量カタログ: species / region summary + pack manifest）
+  - `src/content/generated/content-ownership.json`（kind/file → pack。node / 検証専用）
+  - `src/content/generated/packs/*.ts`（pack module。JSON を静的 import）
+  を生成する。`npm run content:index` で再生成。
+- `src/content/catalog/summary.ts` / `speciesSearch.ts` / `mergeContent.ts` / `scaleCheck.ts`:
+  軽量サマリ型、検索・絞り込み・ページング（純粋関数）、Content の束と合成、
+  Content Scale 検証。
+- `src/content/runtime/contentRuntime.ts` + `packModules.ts`（新規）:
+  pack の遅延ロード（cache / 同時要求の共有 / retry / idle-loading-ready-error）、
+  `ensureRegion` / `ensureSpeciesDetail` / `ensureTackle` / `ensureWorld`。
+  `hydrateFully` は node / SSR / テスト用。
+- `src/ui/content/ContentLoadingPanel.tsx` + `contentRuntimeHooks.ts`:
+  「地域情報を読み込み中…」+ retry。AppShell が初期 pack を gate し、
+  Home / Map / Spot / Trade / Fish Box / Contacts / Expedition が
+  今いる（または表示中の）地域 pack を必要時に読む。
+- Codex: SpeciesSummary ベースに書き換え（full FishSpecies を読まない）、
+  日本語 / 英語 / scientificName / id 検索、捕獲・地域・水域フィルタ、
+  60 件ずつの段階表示（`さらに表示`）。
+- `scripts/simulate-content-scale.ts`（新規, `npm run check` に追加）:
+  production のカタログ / pack / 所有権の検査 + 1000 / 1500 件の synthetic summary で
+  検索・フィルタ・ページング・id 一意性を検証（時間は参考値、判定に使わない）。
+- `scripts/analyze-content-scale.ts`（新規, `npm run check` に追加）:
+  dist から初期 chunk と pack chunk のサイズを集計（初期 chunk ≤ 700 kB を検査）。
+
+### 結果（Phase 14 → Phase 15）
+
+| | Phase 14 | Phase 15 |
+| --- | --- | --- |
+| initial JS | 925.44 kB（gzip 216.48） | **536.35 kB（gzip 157.43）** |
+| total JS | 925.44 kB | 906.10 kB |
+| chunks | 1（全 Content 入り） | initial + 8 packs |
+| tests | 86 files / 748 | **90 files / 778** |
+
+pack 別: tackle 196.59 / species-detail 86.96 / region-tokyo-area 39.01 /
+world 12.47 / hokkaido 11.15 / alaska 8.80 / british-columbia 8.52 / queensland 6.23 kB。
+
+
+## Phase 15.1（True Lazy Loading / Content Scale Hardening）
+
+Phase 15 のレビュー指摘「chunk は分かれたが runtime では起動時に全部読む」を修正。
+Domain / Save v9 / gameplay rule は不変。
+
+- 起動 critical path = lightweight catalog + world + 今いる地域 + その地域の Species shard
+  （`bootPackKeys`）。Tackle は background preload、他地域と全 Species は起動で読まない
+- Species detail を **Region shard** に分割（tokyo-area 38 / hokkaido 13 / alaska 10 /
+  british-columbia 20 / queensland 16。重複定義なし・共有分は shared chunk）
+- Fish Box / Trade は保存された Species ID から必要 shard を追加 load（Save に pack 情報なし）
+- Expedition は mount 時には何も読まず、目的地の focus / 出発時にその地域だけ preload
+- Codex の名前検索は捕獲済み限定（未捕獲の存在を検索で漏らさない）。region / water filter は不変
+- 二次画面（Codex / Shop / Tackle / Expedition / Fish Box / Trade / Contacts / Menu /
+  Progression）を dynamic import 化して初期 chunk から外した
+- boot raw 925.44 → 604.95 kB / boot gzip 216.48 → 170.67 kB（-21.2%）/
+  initial chunk 512.00 kB、tests 91 files / 787
+
+
+## Phase 15.2（Startup Network Final Hardening）
+
+Phase 15.1 の「tackle が AppShell mount 直後に background fetch される」問題を修正。
+
+- AppShell から `ensureTackle()` の preload を削除（`src/ui/content/bootContent.ts` が
+  起動で読む唯一の入口 = `bootPackKeys` のみ）。tackle は Tackle / Shop / Spot / Fishing の
+  gate で必要な時に読む。HOME は neutral fallback で成立（Domain rule 不変）
+- requestIdleCallback preload は行わない（起動直後の追加 fetch を 0 にする）
+- 起動 network の保証を behavioral test に変更（instrumented importer で
+  boot / MAP / Spot / Tackle / Shop / 目的地選択ごとの呼び出し回数を検証）。
+  source 文字列検索は主要な保証にしない
+- `analyze:content-scale` は boot pack 一覧と「tackle / 他地域を含まない」ことを検査
+- boot raw 604.93 kB / boot gzip 170.62 kB（Phase 14 比 -21.2%）/
+  initial chunk 511.99 kB / tackle chunk 201.31 kB（boot 非含有）
+- tests 91 files / 791
