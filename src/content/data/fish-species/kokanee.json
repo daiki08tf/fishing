@@ -1,0 +1,45 @@
+{
+  "id": "kokanee",
+  "japaneseName": "コカニー（暫定）",
+  "scientificName": "Oncorhynchus nerka",
+  "waterTypes": [
+    "fresh"
+  ],
+  "distribution": [
+    "british-columbia"
+  ],
+  "habitats": [
+    "lake",
+    "open"
+  ],
+  "depthRange": {
+    "min": 0,
+    "max": 30
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 35,
+    "dispersion": 0.18,
+    "minCm": 18,
+    "maxCm": 60
+  },
+  "weightModel": {
+    "lengthWeightA": 0.009,
+    "lengthWeightB": 3.08
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "fightProfile": {
+    "strength": 0.48,
+    "stamina": 0.58,
+    "speed": 0.62
+  },
+  "rarity": 1.6,
+  "sourceRefs": [
+    {
+      "id": "phase12-provisional",
+      "title": "PROVISIONAL — Phase 12 gameplay tuning; biological values require later verification"
+    }
+  ]
+}
