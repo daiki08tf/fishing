@@ -21,6 +21,10 @@
     {
       "id": "chiba",
       "name": "千葉"
+    },
+    {
+      "id": "saitama",
+      "name": "埼玉"
     }
   ],
   "climate": {
