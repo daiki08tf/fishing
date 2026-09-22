@@ -1,0 +1,47 @@
+{
+  "id": "mangrove-jack",
+  "japaneseName": "マングローブジャック（暫定）",
+  "scientificName": "Lutjanus argentimaculatus",
+  "waterTypes": [
+    "brackish",
+    "salt"
+  ],
+  "distribution": [
+    "queensland"
+  ],
+  "habitats": [
+    "mangrove",
+    "estuary",
+    "structure"
+  ],
+  "depthRange": {
+    "min": 0,
+    "max": 50
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 50,
+    "dispersion": 0.18,
+    "minCm": 20,
+    "maxCm": 100
+  },
+  "weightModel": {
+    "lengthWeightA": 0.009,
+    "lengthWeightB": 3.08
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "fightProfile": {
+    "strength": 0.8,
+    "stamina": 0.76,
+    "speed": 0.72
+  },
+  "rarity": 2,
+  "sourceRefs": [
+    {
+      "id": "phase12-provisional",
+      "title": "PROVISIONAL — Phase 12 gameplay tuning; biological values require later verification"
+    }
+  ]
+}
