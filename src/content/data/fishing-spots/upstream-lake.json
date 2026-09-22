@@ -14,15 +14,23 @@
   "travelOptions": [
     {
       "id": "ordinary-road",
-      "transportTypes": ["compact_car", "suv", "motorcycle"],
-      "requiredCapabilities": ["road_access"],
+      "transportTypes": [
+        "compact_car",
+        "suv",
+        "motorcycle"
+      ],
+      "requiredCapabilities": [
+        "road_access"
+      ],
       "features": [],
       "baseMinutes": 190,
       "distanceKm": 75,
       "baseOneWayCost": 900
     }
   ],
-  "habitatTags": ["deep"],
+  "habitatTags": [
+    "deep"
+  ],
   "depth": {
     "depthRangeM": {
       "min": 3,
@@ -31,11 +39,11 @@
   },
   "fishTable": [
     {
-      "speciesId": "kanto-koi",
+      "speciesId": "koi",
       "basePresence": 0.6
     },
     {
-      "speciesId": "kanto-namazu",
+      "speciesId": "namazu",
       "basePresence": 0.3
     }
   ],
