@@ -1,0 +1,45 @@
+{
+  "id": "madai",
+  "japaneseName": "マダイ（暫定）",
+  "scientificName": "Pagrus major",
+  "waterTypes": [
+    "salt"
+  ],
+  "distribution": [
+    "tokyo-area"
+  ],
+  "habitats": [
+    "reef",
+    "deep"
+  ],
+  "depthRange": {
+    "min": 0,
+    "max": 43
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 45,
+    "dispersion": 0.16,
+    "minCm": 15,
+    "maxCm": 85
+  },
+  "weightModel": {
+    "lengthWeightA": 0.0095,
+    "lengthWeightB": 3.05
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "fightProfile": {
+    "strength": 0.68,
+    "stamina": 0.72,
+    "speed": 0.58
+  },
+  "rarity": 1.8,
+  "sourceRefs": [
+    {
+      "id": "phase12-provisional",
+      "title": "PROVISIONAL — Phase 12 gameplay tuning; biological values require later verification"
+    }
+  ]
+}
