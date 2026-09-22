@@ -2,13 +2,34 @@
   "id": "ugui",
   "japaneseName": "ウグイ（暫定）",
   "scientificName": "Pseudaspius hakonensis",
-  "waterTypes": ["fresh", "brackish"],
-  "habitats": ["river", "stream"],
-  "diet": ["aquatic_insect", "algae"],
-  "baits": ["worm", "dough"],
-  "lureCategories": ["spoon", "minnow"],
-  "fishingMethods": ["lure", "bait"],
-  "distribution": ["tokyo-area"],
+  "waterTypes": [
+    "fresh",
+    "brackish"
+  ],
+  "habitats": [
+    "river",
+    "stream"
+  ],
+  "diet": [
+    "aquatic_insect",
+    "algae"
+  ],
+  "baits": [
+    "worm",
+    "dough"
+  ],
+  "lureCategories": [
+    "spoon",
+    "minnow"
+  ],
+  "fishingMethods": [
+    "lure",
+    "bait"
+  ],
+  "distribution": [
+    "tokyo-area",
+    "hokkaido"
+  ],
   "lengthModel": {
     "kind": "normal",
     "meanCm": 32,
@@ -42,8 +63,15 @@
   },
   "rarity": 1,
   "environmentAffinity": {
-    "preferredSeasons": ["spring", "summer", "autumn"],
-    "preferredTimeOfDay": ["dawn", "evening"],
+    "preferredSeasons": [
+      "spring",
+      "summer",
+      "autumn"
+    ],
+    "preferredTimeOfDay": [
+      "dawn",
+      "evening"
+    ],
     "weatherAffinity": {
       "clear": 1,
       "cloudy": 1.05,
