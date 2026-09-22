@@ -1,0 +1,45 @@
+{
+  "id": "smallmouth-bass",
+  "japaneseName": "スモールマウスバス（暫定）",
+  "scientificName": "Micropterus dolomieu",
+  "waterTypes": [
+    "fresh"
+  ],
+  "distribution": [
+    "british-columbia"
+  ],
+  "habitats": [
+    "river",
+    "lake"
+  ],
+  "depthRange": {
+    "min": 0,
+    "max": 33
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 38,
+    "dispersion": 0.18,
+    "minCm": 18,
+    "maxCm": 65
+  },
+  "weightModel": {
+    "lengthWeightA": 0.009,
+    "lengthWeightB": 3.08
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "fightProfile": {
+    "strength": 0.64,
+    "stamina": 0.66,
+    "speed": 0.66
+  },
+  "rarity": 1.6,
+  "sourceRefs": [
+    {
+      "id": "phase12-provisional",
+      "title": "PROVISIONAL — Phase 12 gameplay tuning; biological values require later verification"
+    }
+  ]
+}
