@@ -1,0 +1,138 @@
+{
+  "id": "kanagawa-mountain-stream",
+  "name": "神奈川 山間渓流（暫定）",
+  "regionId": "tokyo-area",
+  "areaId": "kanagawa",
+  "environment": "river",
+  "access": [
+    {
+      "kind": "capability",
+      "capability": "road_access"
+    }
+  ],
+  "travelOptions": [
+    {
+      "id": "mountain-road",
+      "transportTypes": [
+        "rental_car"
+      ],
+      "requiredCapabilities": [
+        "road_access"
+      ],
+      "features": [
+        "vehicle_rental"
+      ],
+      "baseMinutes": 115,
+      "distanceKm": 60,
+      "baseOneWayCost": 0
+    }
+  ],
+  "habitatTags": [
+    "stream",
+    "rock"
+  ],
+  "depth": {
+    "depthRangeM": {
+      "min": 0.3,
+      "max": 3
+    }
+  },
+  "fishingZones": [
+    {
+      "id": "edge",
+      "name": "岸際",
+      "castDistanceM": {
+        "min": 0,
+        "max": 8
+      },
+      "depthRangeM": {
+        "min": 0.5,
+        "max": 2
+      },
+      "habitatTags": [
+        "bank",
+        "shallow"
+      ]
+    },
+    {
+      "id": "flow",
+      "name": "流芯",
+      "castDistanceM": {
+        "min": 8,
+        "max": 24
+      },
+      "depthRangeM": {
+        "min": 1.5,
+        "max": 4
+      },
+      "habitatTags": [
+        "river",
+        "current"
+      ]
+    },
+    {
+      "id": "far",
+      "name": "対岸寄り",
+      "castDistanceM": {
+        "min": 24,
+        "max": 45
+      },
+      "depthRangeM": {
+        "min": 1,
+        "max": 5
+      },
+      "habitatTags": [
+        "far-bank",
+        "current"
+      ]
+    }
+  ],
+  "fishTable": [
+    {
+      "speciesId": "yamame",
+      "basePresence": 0.38,
+      "zoneAffinity": {
+        "edge": 0.8,
+        "flow": 1.4,
+        "far": 1
+      }
+    },
+    {
+      "speciesId": "iwana",
+      "basePresence": 0.28,
+      "zoneAffinity": {
+        "edge": 1.2,
+        "flow": 1.1,
+        "far": 0.7
+      }
+    },
+    {
+      "speciesId": "kajika",
+      "basePresence": 0.35,
+      "zoneAffinity": {
+        "edge": 1.5,
+        "flow": 0.7,
+        "far": 0.2
+      }
+    }
+  ],
+  "dataStatus": "provisional",
+  "knowledgeConfig": {
+    "reveals": [
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "habitat",
+        "minKnowledge": 50
+      }
+    ]
+  },
+  "sourceRefs": [
+    {
+      "id": "phase12-provisional",
+      "title": "PROVISIONAL — gameplay-oriented spot layout; real access and regulations require verification"
+    }
+  ]
+}
