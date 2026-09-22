@@ -59,7 +59,7 @@ const fit = (input: {
 describe('catchability rules', () => {
   it('keeps a poor method / offering nonzero (soft affinity)', () => {
     const poor = fit({
-      speciesId: 'alaska-pacific-halibut',
+      speciesId: 'pacific-halibut',
       methodId: 'light_lure',
       offering: smallestLure,
     })
@@ -86,14 +86,14 @@ describe('catchability rules', () => {
   })
 
   it('keeps an undersized lure possible (asymmetric rule)', () => {
-    const undersized = fit({ speciesId: 'alaska-chinook-salmon', offering: smallestLure })
+    const undersized = fit({ speciesId: 'chinook-salmon', offering: smallestLure })
 
     expect(undersized.eligible).toBe(true)
     expect(undersized.affinityMultiplier).toBeGreaterThan(0)
   })
 
   it('keeps an undersized hook possible but worse at holding', () => {
-    const undersized = fit({ speciesId: 'alaska-chinook-salmon', hook: smallestHook })
+    const undersized = fit({ speciesId: 'chinook-salmon', hook: smallestHook })
 
     expect(undersized.eligible).toBe(true)
     expect(undersized.affinityMultiplier).toBeGreaterThan(0)
@@ -101,8 +101,8 @@ describe('catchability rules', () => {
   })
 
   it('does not hard-gate a species by rod class', () => {
-    const withLightRod = fit({ speciesId: 'alaska-chinook-salmon', rod: lightRod })
-    const withHeavyRod = fit({ speciesId: 'alaska-chinook-salmon', rod: heavyRod })
+    const withLightRod = fit({ speciesId: 'chinook-salmon', rod: lightRod })
+    const withHeavyRod = fit({ speciesId: 'chinook-salmon', rod: heavyRod })
 
     expect(withLightRod.eligible).toBe(true)
     expect(withHeavyRod.eligible).toBe(true)
@@ -123,8 +123,8 @@ describe('catchability rules', () => {
   })
 
   it('is deterministic for the same input', () => {
-    const first = fit({ speciesId: 'alaska-chinook-salmon' })
-    const second = fit({ speciesId: 'alaska-chinook-salmon' })
+    const first = fit({ speciesId: 'chinook-salmon' })
+    const second = fit({ speciesId: 'chinook-salmon' })
 
     expect(first).toEqual(second)
   })
