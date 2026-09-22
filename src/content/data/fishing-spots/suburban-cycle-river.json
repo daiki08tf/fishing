@@ -14,15 +14,22 @@
   "travelOptions": [
     {
       "id": "riverside-cycleway",
-      "transportTypes": ["bicycle"],
-      "requiredCapabilities": ["bicycle_access"],
+      "transportTypes": [
+        "bicycle"
+      ],
+      "requiredCapabilities": [
+        "bicycle_access"
+      ],
       "features": [],
       "baseMinutes": 50,
       "distanceKm": 12,
       "baseOneWayCost": 0
     }
   ],
-  "habitatTags": ["river", "shallow"],
+  "habitatTags": [
+    "river",
+    "shallow"
+  ],
   "depth": {
     "depthRangeM": {
       "min": 1,
@@ -31,11 +38,11 @@
   },
   "fishTable": [
     {
-      "speciesId": "kanto-funa",
+      "speciesId": "funa",
       "basePresence": 0.7
     },
     {
-      "speciesId": "kanto-ugui",
+      "speciesId": "ugui",
       "basePresence": 0.5
     }
   ],
