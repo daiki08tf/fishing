@@ -12,6 +12,7 @@ export {
   WEATHERS,
   WEATHER_LABELS,
   WIND_LEVEL_LABELS,
+  HEMISPHERES,
   seasonOf,
   seasonalFactor,
   pickSummaryEnvironment,

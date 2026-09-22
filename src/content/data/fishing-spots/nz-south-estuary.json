@@ -78,6 +78,22 @@
         "channel": 0.85,
         "flat": 1.3
       }
+    },
+    {
+      "speciesId": "australian-pilchard",
+      "basePresence": 0.4,
+      "zoneAffinity": {
+        "channel": 1.3,
+        "flat": 0.85
+      }
+    },
+    {
+      "speciesId": "australian-anchovy",
+      "basePresence": 0.35,
+      "zoneAffinity": {
+        "channel": 1.3,
+        "flat": 0.85
+      }
     }
   ],
   "knowledgeConfig": {

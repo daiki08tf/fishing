@@ -78,6 +78,14 @@
         "shoreline": 0.85,
         "open": 1.3
       }
+    },
+    {
+      "speciesId": "poor-cod",
+      "basePresence": 0.4,
+      "zoneAffinity": {
+        "shoreline": 0.85,
+        "open": 1.3
+      }
     }
   ],
   "knowledgeConfig": {

@@ -1,14 +1,14 @@
 {
   "generatedFrom": "src/content/data",
   "counts": {
-    "species": 212,
+    "species": 229,
     "spots": 140,
     "regions": 14,
     "countries": 9,
     "buyers": 24,
     "contact-rewards": 66,
     "expeditions": 13,
-    "species-trade-profiles": 212,
+    "species-trade-profiles": 229,
     "packs": 16
   },
   "species": [
@@ -320,6 +320,26 @@
       "detailShard": "species:new-zealand"
     },
     {
+      "id": "australian-anchovy",
+      "japaneseName": "オーストラリアンアンチョビ（暫定）",
+      "scientificName": "Engraulis australis",
+      "waterTypes": [
+        "salt",
+        "brackish"
+      ],
+      "category": "mixed",
+      "regionIds": [
+        "new-zealand"
+      ],
+      "habitats": [
+        "nearshore",
+        "estuary",
+        "open_water"
+      ],
+      "rarityBand": "common",
+      "detailShard": "species:new-zealand"
+    },
+    {
       "id": "australian-bass",
       "japaneseName": "オーストラリアンバス（暫定）",
       "scientificName": "Macquaria novemaculeata",
@@ -357,6 +377,26 @@
       ],
       "rarityBand": "uncommon",
       "detailShard": "species:queensland"
+    },
+    {
+      "id": "australian-pilchard",
+      "japaneseName": "オーストラリアンピルチャード（暫定）",
+      "scientificName": "Sardinops neopilchardus",
+      "waterTypes": [
+        "salt",
+        "brackish"
+      ],
+      "category": "mixed",
+      "regionIds": [
+        "new-zealand"
+      ],
+      "habitats": [
+        "nearshore",
+        "open_water",
+        "estuary"
+      ],
+      "rarityBand": "common",
+      "detailShard": "species:new-zealand"
     },
     {
       "id": "ayu",
@@ -460,6 +500,25 @@
       "detailShard": "species:okinawa"
     },
     {
+      "id": "black-ghost-knifefish",
+      "japaneseName": "ブラックゴースト（暫定）",
+      "scientificName": "Apteronotus albifrons",
+      "waterTypes": [
+        "fresh"
+      ],
+      "category": "freshwater",
+      "regionIds": [
+        "amazon-basin"
+      ],
+      "habitats": [
+        "tributary",
+        "floodplain",
+        "bottom"
+      ],
+      "rarityBand": "common",
+      "detailShard": "species:amazon-basin"
+    },
+    {
       "id": "black-piranha",
       "japaneseName": "ブラックピラニア（暫定）",
       "scientificName": "Serrasalmus rhombeus",
@@ -516,6 +575,25 @@
       ],
       "rarityBand": "uncommon",
       "detailShard": "species:new-zealand"
+    },
+    {
+      "id": "blue-whiting",
+      "japaneseName": "ブルーホワイティング（暫定）",
+      "scientificName": "Micromesistius poutassou",
+      "waterTypes": [
+        "salt"
+      ],
+      "category": "saltwater",
+      "regionIds": [
+        "norway-fjords"
+      ],
+      "habitats": [
+        "deep",
+        "open_water",
+        "bottom"
+      ],
+      "rarityBand": "uncommon",
+      "detailShard": "species:norway-fjords"
     },
     {
       "id": "bluefin-trevally",
@@ -599,6 +677,24 @@
       "detailShard": "species:hokuriku-japan-sea"
     },
     {
+      "id": "brown-marbled-grouper",
+      "japaneseName": "ブラウンマーブルグルーパー（暫定）",
+      "scientificName": "Epinephelus fuscoguttatus",
+      "waterTypes": [
+        "salt"
+      ],
+      "category": "saltwater",
+      "regionIds": [
+        "okinawa"
+      ],
+      "habitats": [
+        "reef",
+        "structure"
+      ],
+      "rarityBand": "uncommon",
+      "detailShard": "species:okinawa"
+    },
+    {
       "id": "budai",
       "japaneseName": "ブダイ（暫定）",
       "scientificName": "Calotomus japonicus",
@@ -661,6 +757,25 @@
       "detailShard": "species:hokkaido"
     },
     {
+      "id": "butterfish",
+      "japaneseName": "バターフィッシュ（暫定）",
+      "scientificName": "Odax pullus",
+      "waterTypes": [
+        "salt"
+      ],
+      "category": "saltwater",
+      "regionIds": [
+        "new-zealand"
+      ],
+      "habitats": [
+        "rock",
+        "kelp",
+        "reef"
+      ],
+      "rarityBand": "uncommon",
+      "detailShard": "species:new-zealand"
+    },
+    {
       "id": "cabezon",
       "japaneseName": "カベゾン（暫定）",
       "scientificName": "Scorpaenichthys marmoratus",
@@ -677,6 +792,25 @@
       ],
       "rarityBand": "uncommon",
       "detailShard": "species:british-columbia"
+    },
+    {
+      "id": "california-barracuda",
+      "japaneseName": "カリフォルニアバラクーダ（暫定）",
+      "scientificName": "Sphyraena argentea",
+      "waterTypes": [
+        "salt"
+      ],
+      "category": "saltwater",
+      "regionIds": [
+        "baja-california"
+      ],
+      "habitats": [
+        "nearshore",
+        "open_water",
+        "structure"
+      ],
+      "rarityBand": "uncommon",
+      "detailShard": "species:baja-california"
     },
     {
       "id": "california-corbina",
@@ -881,6 +1015,7 @@
       ],
       "category": "saltwater",
       "regionIds": [
+        "baja-california",
         "queensland"
       ],
       "habitats": [
@@ -888,7 +1023,7 @@
         "reef"
       ],
       "rarityBand": "uncommon",
-      "detailShard": "species:queensland"
+      "detailShard": "species:baja-california"
     },
     {
       "id": "coho-salmon",
@@ -967,6 +1102,24 @@
       "detailShard": "species:new-zealand"
     },
     {
+      "id": "coral-grouper",
+      "japaneseName": "コーラルグルーパー（暫定）",
+      "scientificName": "Cephalopholis miniata",
+      "waterTypes": [
+        "salt"
+      ],
+      "category": "saltwater",
+      "regionIds": [
+        "okinawa"
+      ],
+      "habitats": [
+        "reef",
+        "rock"
+      ],
+      "rarityBand": "uncommon",
+      "detailShard": "species:okinawa"
+    },
+    {
       "id": "coral-trout",
       "japaneseName": "コーラルトラウト（暫定）",
       "scientificName": "Plectropomus leopardus",
@@ -983,6 +1136,25 @@
       ],
       "rarityBand": "uncommon",
       "detailShard": "species:okinawa"
+    },
+    {
+      "id": "corydoras",
+      "japaneseName": "コリドラス（暫定）",
+      "scientificName": "Corydoras aeneus",
+      "waterTypes": [
+        "fresh"
+      ],
+      "category": "freshwater",
+      "regionIds": [
+        "amazon-basin"
+      ],
+      "habitats": [
+        "tributary",
+        "floodplain",
+        "bottom"
+      ],
+      "rarityBand": "common",
+      "detailShard": "species:amazon-basin"
     },
     {
       "id": "curimata",
@@ -1021,6 +1193,25 @@
       ],
       "rarityBand": "uncommon",
       "detailShard": "species:okinawa"
+    },
+    {
+      "id": "discus",
+      "japaneseName": "ディスカス（暫定）",
+      "scientificName": "Symphysodon aequifasciatus",
+      "waterTypes": [
+        "fresh"
+      ],
+      "category": "freshwater",
+      "regionIds": [
+        "amazon-basin"
+      ],
+      "habitats": [
+        "floodplain",
+        "lake",
+        "structure"
+      ],
+      "rarityBand": "common",
+      "detailShard": "species:amazon-basin"
     },
     {
       "id": "dojou",
@@ -1198,6 +1389,25 @@
       "detailShard": "species:baja-california"
     },
     {
+      "id": "freshwater-angelfish",
+      "japaneseName": "エンゼルフィッシュ（暫定）",
+      "scientificName": "Pterophyllum scalare",
+      "waterTypes": [
+        "fresh"
+      ],
+      "category": "freshwater",
+      "regionIds": [
+        "amazon-basin"
+      ],
+      "habitats": [
+        "floodplain",
+        "lake",
+        "structure"
+      ],
+      "rarityBand": "common",
+      "detailShard": "species:amazon-basin"
+    },
+    {
       "id": "funa",
       "japaneseName": "ギンブナ（暫定）",
       "scientificName": "Carassius sp.",
@@ -1207,6 +1417,7 @@
       ],
       "category": "mixed",
       "regionIds": [
+        "hokkaido",
         "hokuriku-japan-sea",
         "tohoku-pacific",
         "tokyo-area"
@@ -1217,7 +1428,7 @@
         "pond"
       ],
       "rarityBand": "common",
-      "detailShard": "species:hokuriku-japan-sea"
+      "detailShard": "species:hokkaido"
     },
     {
       "id": "giant-gourami",
@@ -1537,6 +1748,25 @@
       "detailShard": "species:hokkaido"
     },
     {
+      "id": "hoki",
+      "japaneseName": "ホキ（暫定）",
+      "scientificName": "Macruronus novaezelandiae",
+      "waterTypes": [
+        "salt"
+      ],
+      "category": "saltwater",
+      "regionIds": [
+        "new-zealand"
+      ],
+      "habitats": [
+        "deep",
+        "open_water",
+        "bottom"
+      ],
+      "rarityBand": "uncommon",
+      "detailShard": "species:new-zealand"
+    },
+    {
       "id": "hokke",
       "japaneseName": "ホッケ（暫定）",
       "scientificName": "Pleurogrammus azonus",
@@ -1778,6 +2008,25 @@
       "detailShard": "species:izu-peninsula"
     },
     {
+      "id": "jaraqui",
+      "japaneseName": "ジャラキ（暫定）",
+      "scientificName": "Semaprochilodus insignis",
+      "waterTypes": [
+        "fresh"
+      ],
+      "category": "freshwater",
+      "regionIds": [
+        "amazon-basin"
+      ],
+      "habitats": [
+        "river",
+        "tributary",
+        "floodplain"
+      ],
+      "rarityBand": "uncommon",
+      "detailShard": "species:amazon-basin"
+    },
+    {
       "id": "jatuarana",
       "japaneseName": "ジャトゥアラナ（暫定）",
       "scientificName": "Hemiodus unimaculatus",
@@ -1870,7 +2119,7 @@
         "bottom"
       ],
       "rarityBand": "common",
-      "detailShard": "species:tohoku-pacific"
+      "detailShard": "species:hokkaido"
     },
     {
       "id": "kamasu",
@@ -2039,7 +2288,8 @@
       ],
       "category": "freshwater",
       "regionIds": [
-        "british-columbia"
+        "british-columbia",
+        "tokyo-area"
       ],
       "habitats": [
         "lake",
@@ -2217,7 +2467,8 @@
       ],
       "category": "saltwater",
       "regionIds": [
-        "british-columbia"
+        "british-columbia",
+        "tokyo-area"
       ],
       "habitats": [
         "reef",
@@ -2791,6 +3042,24 @@
       "detailShard": "species:hokkaido"
     },
     {
+      "id": "pacific-bonito",
+      "japaneseName": "パシフィックボニート（暫定）",
+      "scientificName": "Sarda chiliensis",
+      "waterTypes": [
+        "salt"
+      ],
+      "category": "saltwater",
+      "regionIds": [
+        "baja-california"
+      ],
+      "habitats": [
+        "nearshore",
+        "open_water"
+      ],
+      "rarityBand": "uncommon",
+      "detailShard": "species:baja-california"
+    },
+    {
       "id": "pacific-cod",
       "japaneseName": "マダラ（太平洋系・暫定）",
       "scientificName": "Gadus macrocephalus",
@@ -2802,7 +3071,8 @@
         "alaska",
         "british-columbia",
         "hokkaido",
-        "hokuriku-japan-sea"
+        "hokuriku-japan-sea",
+        "tokyo-area"
       ],
       "habitats": [
         "deep",
@@ -2995,6 +3265,44 @@
       ],
       "rarityBand": "uncommon",
       "detailShard": "species:amazon-basin"
+    },
+    {
+      "id": "pleco",
+      "japaneseName": "プレコ（暫定）",
+      "scientificName": "Hypostomus plecostomus",
+      "waterTypes": [
+        "fresh"
+      ],
+      "category": "freshwater",
+      "regionIds": [
+        "amazon-basin"
+      ],
+      "habitats": [
+        "river",
+        "tributary",
+        "bottom"
+      ],
+      "rarityBand": "common",
+      "detailShard": "species:amazon-basin"
+    },
+    {
+      "id": "poor-cod",
+      "japaneseName": "プアコッド（暫定）",
+      "scientificName": "Trisopterus minutus",
+      "waterTypes": [
+        "salt"
+      ],
+      "category": "saltwater",
+      "regionIds": [
+        "norway-fjords"
+      ],
+      "habitats": [
+        "nearshore",
+        "sand",
+        "bottom"
+      ],
+      "rarityBand": "common",
+      "detailShard": "species:norway-fjords"
     },
     {
       "id": "queenfish",
@@ -3203,7 +3511,8 @@
       "regionIds": [
         "alaska",
         "british-columbia",
-        "hokuriku-japan-sea"
+        "hokuriku-japan-sea",
+        "tokyo-area"
       ],
       "habitats": [
         "deep",
@@ -3776,6 +4085,26 @@
       "detailShard": "species:okinawa"
     },
     {
+      "id": "three-spot-gourami",
+      "japaneseName": "スリースポットグーラミー（暫定）",
+      "scientificName": "Trichopodus trichopterus",
+      "waterTypes": [
+        "fresh"
+      ],
+      "category": "freshwater",
+      "regionIds": [
+        "amazon-basin",
+        "thailand"
+      ],
+      "habitats": [
+        "canal",
+        "lake",
+        "floodplain"
+      ],
+      "rarityBand": "common",
+      "detailShard": "species:amazon-basin"
+    },
+    {
       "id": "tiger-shovelnose-catfish",
       "japaneseName": "タイガーショベルノーズ（暫定）",
       "scientificName": "Pseudoplatystoma tigrinum",
@@ -4087,7 +4416,7 @@
         "river"
       ],
       "rarityBand": "common",
-      "detailShard": "species:hokuriku-japan-sea"
+      "detailShard": "species:hokkaido"
     },
     {
       "id": "yellow-eyed-mullet",
@@ -4623,9 +4952,14 @@
     "species:amazon-basin": [
       "arapaima",
       "bicuda",
+      "black-ghost-knifefish",
       "black-piranha",
+      "corydoras",
       "curimata",
+      "discus",
       "electric-eel",
+      "freshwater-angelfish",
+      "jaraqui",
       "jatuarana",
       "jau-catfish",
       "lebranche-mullet",
@@ -4636,19 +4970,23 @@
       "peacock-bass",
       "piraiba-catfish",
       "piraputanga",
+      "pleco",
       "red-bellied-piranha",
       "redtail-catfish",
       "silver-arowana",
       "silver-dollar",
       "tambaqui",
+      "three-spot-gourami",
       "tiger-shovelnose-catfish",
       "traira"
     ],
     "species:baja-california": [
       "bonefish",
+      "california-barracuda",
       "california-corbina",
       "california-halibut",
       "california-yellowtail",
+      "cobia",
       "finescale-triggerfish",
       "golden-trevally",
       "gulf-corvina",
@@ -4657,6 +4995,7 @@
       "mahi-mahi",
       "mangrove-jack",
       "opaleye",
+      "pacific-bonito",
       "pacific-crevalle",
       "roosterfish",
       "sierra-mackerel",
@@ -4694,10 +5033,12 @@
       "ainame",
       "amemasu",
       "buri",
+      "funa",
       "hirame",
       "hokke",
       "ito",
       "iwana",
+      "kajika",
       "kurosoi",
       "marbled-flounder",
       "masu-salmon",
@@ -4707,7 +5048,8 @@
       "saba",
       "sanma",
       "seabass",
-      "ugui"
+      "ugui",
+      "yamame"
     ],
     "species:hokuriku-japan-sea": [
       "ainame",
@@ -4796,13 +5138,17 @@
     ],
     "species:new-zealand": [
       "australasian-snapper",
+      "australian-anchovy",
+      "australian-pilchard",
       "barracouta",
       "blue-moki",
       "bull-trout",
+      "butterfish",
       "chinook-salmon",
       "common-sole",
       "european-perch",
       "hiramasa",
+      "hoki",
       "jack-mackerel",
       "kahawai",
       "leatherjacket",
@@ -4823,6 +5169,7 @@
       "atlantic-mackerel",
       "atlantic-redfish",
       "atlantic-salmon",
+      "blue-whiting",
       "bull-trout",
       "capelin",
       "coalfish",
@@ -4835,6 +5182,7 @@
       "haddock",
       "iwana",
       "lumpfish",
+      "poor-cod",
       "turbot",
       "tusk",
       "whiting",
@@ -4846,7 +5194,9 @@
       "akahata",
       "bigeye-trevally",
       "bluefin-trevally",
+      "brown-marbled-grouper",
       "budai",
+      "coral-grouper",
       "coral-trout",
       "datsu",
       "giant-grouper",
@@ -4916,6 +5266,7 @@
       "striped-catfish",
       "striped-snakehead",
       "threadfin-salmon",
+      "three-spot-gourami",
       "tinfoil-barb",
       "walking-catfish"
     ],
@@ -4978,9 +5329,11 @@
       "katsuo",
       "kawahagi",
       "koi",
+      "kokanee",
       "konoshiro",
       "kurodai",
       "largemouth-bass",
+      "lingcod",
       "maaji",
       "madai",
       "magochi",
@@ -4989,8 +5342,10 @@
       "mejina",
       "namazu",
       "oikawa",
+      "pacific-cod",
       "rainbow-trout",
       "saba",
+      "sablefish",
       "sappa",
       "sayori",
       "seabass",
@@ -5029,9 +5384,14 @@
     "walleye-pollock.json": "species:alaska",
     "arapaima.json": "species:amazon-basin",
     "bicuda.json": "species:amazon-basin",
+    "black-ghost-knifefish.json": "species:amazon-basin",
     "black-piranha.json": "species:amazon-basin",
+    "corydoras.json": "species:amazon-basin",
     "curimata.json": "species:amazon-basin",
+    "discus.json": "species:amazon-basin",
     "electric-eel.json": "species:amazon-basin",
+    "freshwater-angelfish.json": "species:amazon-basin",
+    "jaraqui.json": "species:amazon-basin",
     "jatuarana.json": "species:amazon-basin",
     "jau-catfish.json": "species:amazon-basin",
     "lebranche-mullet.json": "species:amazon-basin",
@@ -5042,17 +5402,21 @@
     "peacock-bass.json": "species:amazon-basin",
     "piraiba-catfish.json": "species:amazon-basin",
     "piraputanga.json": "species:amazon-basin",
+    "pleco.json": "species:amazon-basin",
     "red-bellied-piranha.json": "species:amazon-basin",
     "redtail-catfish.json": "species:amazon-basin",
     "silver-arowana.json": "species:amazon-basin",
     "silver-dollar.json": "species:amazon-basin",
     "tambaqui.json": "species:amazon-basin",
+    "three-spot-gourami.json": "species:amazon-basin",
     "tiger-shovelnose-catfish.json": "species:amazon-basin",
     "traira.json": "species:amazon-basin",
     "bonefish.json": "species:baja-california",
+    "california-barracuda.json": "species:baja-california",
     "california-corbina.json": "species:baja-california",
     "california-halibut.json": "species:baja-california",
     "california-yellowtail.json": "species:baja-california",
+    "cobia.json": "species:baja-california",
     "finescale-triggerfish.json": "species:baja-california",
     "golden-trevally.json": "species:baja-california",
     "gulf-corvina.json": "species:baja-california",
@@ -5061,6 +5425,7 @@
     "mahi-mahi.json": "species:baja-california",
     "mangrove-jack.json": "species:baja-california",
     "opaleye.json": "species:baja-california",
+    "pacific-bonito.json": "species:baja-california",
     "pacific-crevalle.json": "species:baja-california",
     "roosterfish.json": "species:baja-california",
     "sierra-mackerel.json": "species:baja-california",
@@ -5085,11 +5450,14 @@
     "amemasu.json": "species:hokkaido",
     "kanto-buri.json": "species:hokkaido",
     "buri.json": "species:hokkaido",
+    "kanto-funa.json": "species:hokkaido",
+    "funa.json": "species:hokkaido",
     "hirame.json": "species:hokkaido",
     "hokke.json": "species:hokkaido",
     "hokkaido-ito.json": "species:hokkaido",
     "ito.json": "species:hokkaido",
     "iwana.json": "species:hokkaido",
+    "kajika.json": "species:hokkaido",
     "kurosoi.json": "species:hokkaido",
     "marbled-flounder.json": "species:hokkaido",
     "hokkaido-masu-salmon.json": "species:hokkaido",
@@ -5102,14 +5470,13 @@
     "seabass.json": "species:hokkaido",
     "kanto-ugui.json": "species:hokkaido",
     "ugui.json": "species:hokkaido",
+    "yamame.json": "species:hokkaido",
     "amadai.json": "species:hokuriku-japan-sea",
     "ayu.json": "species:hokuriku-japan-sea",
     "kanto-bora.json": "species:hokuriku-japan-sea",
     "bora.json": "species:hokuriku-japan-sea",
     "chidai.json": "species:hokuriku-japan-sea",
     "dojou.json": "species:hokuriku-japan-sea",
-    "kanto-funa.json": "species:hokuriku-japan-sea",
-    "funa.json": "species:hokuriku-japan-sea",
     "hatahata.json": "species:hokuriku-japan-sea",
     "hiramasa.json": "species:hokuriku-japan-sea",
     "honmoroko.json": "species:hokuriku-japan-sea",
@@ -5134,7 +5501,6 @@
     "tachiuo.json": "species:hokuriku-japan-sea",
     "unagi.json": "species:hokuriku-japan-sea",
     "urumeiwashi.json": "species:hokuriku-japan-sea",
-    "yamame.json": "species:hokuriku-japan-sea",
     "yoshinobori.json": "species:hokuriku-japan-sea",
     "aigo.json": "species:izu-peninsula",
     "aohata.json": "species:izu-peninsula",
@@ -5151,10 +5517,14 @@
     "muroaji.json": "species:izu-peninsula",
     "surgeonfish.json": "species:izu-peninsula",
     "australasian-snapper.json": "species:new-zealand",
+    "australian-anchovy.json": "species:new-zealand",
+    "australian-pilchard.json": "species:new-zealand",
     "barracouta.json": "species:new-zealand",
     "blue-moki.json": "species:new-zealand",
+    "butterfish.json": "species:new-zealand",
     "common-sole.json": "species:new-zealand",
     "european-perch.json": "species:new-zealand",
+    "hoki.json": "species:new-zealand",
     "jack-mackerel.json": "species:new-zealand",
     "kahawai.json": "species:new-zealand",
     "leatherjacket.json": "species:new-zealand",
@@ -5172,6 +5542,7 @@
     "atlantic-mackerel.json": "species:norway-fjords",
     "atlantic-redfish.json": "species:norway-fjords",
     "atlantic-salmon.json": "species:norway-fjords",
+    "blue-whiting.json": "species:norway-fjords",
     "capelin.json": "species:norway-fjords",
     "coalfish.json": "species:norway-fjords",
     "common-dab.json": "species:norway-fjords",
@@ -5181,6 +5552,7 @@
     "european-plaice.json": "species:norway-fjords",
     "haddock.json": "species:norway-fjords",
     "lumpfish.json": "species:norway-fjords",
+    "poor-cod.json": "species:norway-fjords",
     "turbot.json": "species:norway-fjords",
     "tusk.json": "species:norway-fjords",
     "whiting.json": "species:norway-fjords",
@@ -5188,6 +5560,8 @@
     "akahata.json": "species:okinawa",
     "bigeye-trevally.json": "species:okinawa",
     "bluefin-trevally.json": "species:okinawa",
+    "brown-marbled-grouper.json": "species:okinawa",
+    "coral-grouper.json": "species:okinawa",
     "coral-trout.json": "species:okinawa",
     "datsu.json": "species:okinawa",
     "giant-grouper.json": "species:okinawa",
@@ -5207,7 +5581,6 @@
     "australian-bass.json": "species:queensland",
     "australian-catfish.json": "species:queensland",
     "barramundi.json": "species:queensland",
-    "cobia.json": "species:queensland",
     "giant-herring.json": "species:queensland",
     "permit.json": "species:queensland",
     "spanish-mackerel.json": "species:queensland",
@@ -5230,7 +5603,6 @@
     "anago.json": "species:tohoku-pacific",
     "kanto-haze.json": "species:tohoku-pacific",
     "haze.json": "species:tohoku-pacific",
-    "kajika.json": "species:tohoku-pacific",
     "oikawa.json": "species:tohoku-pacific",
     "bluegill.json": "species:tokyo-area",
     "kanto-koi.json": "species:tokyo-area",

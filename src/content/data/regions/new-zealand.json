@@ -24,6 +24,7 @@
     }
   ],
   "climate": {
+    "hemisphere": "south",
     "annualMeanWaterC": 13,
     "seasonalSwingC": 7,
     "weatherWeights": {

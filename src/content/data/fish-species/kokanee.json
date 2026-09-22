@@ -3,7 +3,7 @@
   "japaneseName": "コカニー（暫定）",
   "scientificName": "Oncorhynchus nerka",
   "waterTypes": ["fresh"],
-  "distribution": ["british-columbia"],
+  "distribution": ["british-columbia", "tokyo-area"],
   "habitats": ["lake", "open"],
   "depthRange": {
     "min": 0,

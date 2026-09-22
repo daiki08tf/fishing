@@ -95,6 +95,14 @@
         "near": 1.3,
         "far": 0.85
       }
+    },
+    {
+      "speciesId": "butterfish",
+      "basePresence": 0.35,
+      "zoneAffinity": {
+        "near": 1.3,
+        "far": 0.85
+      }
     }
   ],
   "knowledgeConfig": {

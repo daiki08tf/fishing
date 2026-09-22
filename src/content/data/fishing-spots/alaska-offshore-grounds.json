@@ -49,6 +49,24 @@
     {
       "speciesId": "coho-salmon",
       "basePresence": 0.35
+    },
+    {
+      "speciesId": "walleye-pollock",
+      "basePresence": 0.35,
+      "zoneAffinity": {
+        "surface": 0.85,
+        "mid-water": 0.85,
+        "bottom": 1.25
+      }
+    },
+    {
+      "speciesId": "black-rockfish",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "surface": 0.85,
+        "mid-water": 0.85,
+        "bottom": 1.25
+      }
     }
   ],
   "knowledgeConfig": {

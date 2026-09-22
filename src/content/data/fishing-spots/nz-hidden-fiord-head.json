@@ -92,6 +92,14 @@
         "near": 0.85,
         "deep": 1.3
       }
+    },
+    {
+      "speciesId": "hoki",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "near": 0.85,
+        "deep": 1.3
+      }
     }
   ],
   "knowledgeConfig": {

@@ -91,6 +91,22 @@
         "shore": 1.3,
         "offshore": 0.85
       }
+    },
+    {
+      "speciesId": "discus",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "shore": 1.3,
+        "offshore": 0.85
+      }
+    },
+    {
+      "speciesId": "corydoras",
+      "basePresence": 0.35,
+      "zoneAffinity": {
+        "shore": 0.85,
+        "offshore": 1.3
+      }
     }
   ],
   "knowledgeConfig": {

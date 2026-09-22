@@ -60,6 +60,33 @@
         "outer-surf": 0.7,
         "current-line": 1.5
       }
+    },
+    {
+      "speciesId": "ainame",
+      "basePresence": 0.4,
+      "zoneAffinity": {
+        "shore-wash": 0.85,
+        "outer-surf": 0.85,
+        "current-line": 1.25
+      }
+    },
+    {
+      "speciesId": "hokke",
+      "basePresence": 0.4,
+      "zoneAffinity": {
+        "shore-wash": 0.85,
+        "outer-surf": 0.85,
+        "current-line": 1.25
+      }
+    },
+    {
+      "speciesId": "nishin",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "shore-wash": 0.85,
+        "outer-surf": 1.25,
+        "current-line": 0.85
+      }
     }
   ],
   "knowledgeConfig": {

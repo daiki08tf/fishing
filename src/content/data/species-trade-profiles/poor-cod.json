@@ -1,0 +1,9 @@
+{
+  "speciesId": "poor-cod",
+  "tradeStatus": "tradable",
+  "tradeTags": ["white_fish", "everyday"],
+  "baseYenPerKg": 480,
+  "minimumUnitValueYen": 90,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 0.85
+}

@@ -207,3 +207,26 @@
   padding: 0.35rem 0.5rem;
   font-size: 0.8125rem;
 }
+
+/* Phase 16 Part 2b: EXPEDITION の国内 / 海外グループとカードの状態バッジ。 */
+.expedition-group__title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin: 0 0 0.4rem;
+  padding: 0 0.25rem;
+}
+
+.expedition-group__count {
+  font-size: 0.6875rem;
+  font-weight: 400;
+  color: var(--color-text-muted);
+}
+
+.spot-card__badges {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  justify-content: flex-end;
+}

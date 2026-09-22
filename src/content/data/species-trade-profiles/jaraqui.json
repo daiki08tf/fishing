@@ -1,0 +1,9 @@
+{
+  "speciesId": "jaraqui",
+  "tradeStatus": "tradable",
+  "tradeTags": ["local_favorite", "everyday"],
+  "baseYenPerKg": 640,
+  "minimumUnitValueYen": 130,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 0.9
+}

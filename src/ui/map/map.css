@@ -216,6 +216,8 @@
   font: inherit;
   font-size: 0.8125rem;
   box-shadow: var(--shadow-panel);
+  max-width: 100%;
+  overflow-wrap: anywhere;
   cursor: pointer;
 }
 

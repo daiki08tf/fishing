@@ -1,10 +1,28 @@
 # Handoff
 
-最終更新: Phase 16 Part 2（World Expansion I — depth / progression / world UX）完了
+最終更新: Phase 16 Part 2b（Final World Hardening）完了
 （branch `phase-16-world-expansion-i`、PR #18）
 
 > 現在状態は Phase 15 → 14 → 13 → 12 → 11 → 10.2 → 10.1 → 10 の順で優先する。
 > 詳細は `.ai/current-task.md` と `docs/DECISIONS.md` も参照。
+
+## Phase 16 Part 2b（Final World Hardening）
+
+- 南半球の季節を修正。`ClimateProfile.hemisphere`（north / south）を追加し、
+  `seasonOf` / `seasonalFactor` が半球で位相反転（NZ / Queensland = south、既定 north）。
+  Region ID 分岐なし。Save schema 不変
+- 熱帯 sanity test（Queensland / Okinawa / Thailand / Amazon は年較差が小さく、
+  通年 18℃以上、年平均 24℃以上）。`tests/content/climateHemisphere.test.ts`
+- occurrence depth: Amazon 22→29 / Baja 18→21 / NZ 20→24 / Norway 23→25 /
+  Okinawa 28→30 / Thailand 26→27。legacy Spot の外道も追加し、
+  残 warning は既知の scientificName 重複のみ
+- ExpeditionScreen を 国内 / 海外 でグループ化（`Country.domestic`）。mount 時の
+  destination pack load は 0 のまま
+- lazy-load / 地域外 travel 不可 / 未発見 Hidden Spot 非表示を behavioral test で固定
+- tests 95 files / 834、validate:content 1312 records
+- Initial 572.15 kB / Tokyo boot 686.33 kB（gzip 161.21 / 195.76、予算 200 kB）
+- 未検証: 実ブラウザ / 実機での 375 / 390 / 430 目視（環境がブラウザ起動不可）。静的チェックのみ
+- 残: giant-queenfish / queenfish の統合は future dedicated canonical-ID migration
 
 ## Phase 16 Part 2（depth / progression / world UX）
 

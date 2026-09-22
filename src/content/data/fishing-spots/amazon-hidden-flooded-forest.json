@@ -92,6 +92,22 @@
         "shore": 1.3,
         "offshore": 0.85
       }
+    },
+    {
+      "speciesId": "pleco",
+      "basePresence": 0.4,
+      "zoneAffinity": {
+        "shore": 0.85,
+        "offshore": 1.3
+      }
+    },
+    {
+      "speciesId": "black-ghost-knifefish",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "shore": 1.3,
+        "offshore": 0.85
+      }
     }
   ],
   "knowledgeConfig": {

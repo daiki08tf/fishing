@@ -51,6 +51,24 @@
         "inner-break": 0.9,
         "open-water": 0.4
       }
+    },
+    {
+      "speciesId": "funa",
+      "basePresence": 0.4,
+      "zoneAffinity": {
+        "bank-cover": 0.85,
+        "inner-break": 1.25,
+        "open-water": 0.85
+      }
+    },
+    {
+      "speciesId": "ugui",
+      "basePresence": 0.35,
+      "zoneAffinity": {
+        "bank-cover": 1.25,
+        "inner-break": 0.85,
+        "open-water": 0.85
+      }
     }
   ],
   "knowledgeConfig": {

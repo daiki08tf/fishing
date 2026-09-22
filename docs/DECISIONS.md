@@ -698,3 +698,38 @@ Part 1 の世界骨格の上に、深さ・進行・World UX を積んだ。新�
 - **giant-queenfish / queenfish は統合しない。** 同一 scientificName を持つ既知の
   canonical ID 問題として warning を維持し、Save/Codex/Trade を跨ぐ専用 migration
   Phase に送る。新規の重複は Hard check で禁止する
+
+
+### Phase 16 Part 2b — Final World Hardening
+
+Part 2 の世界を最終 hardening した。新規 Region / 新規 gameplay は追加しない。
+Save v9 / Phase 15 lazy loading / Domain rule は不変。
+
+決定:
+
+- **季節は半球つきで解決する。** 以前は暦月だけで季節を決めていたため、
+  New Zealand / Queensland が北半球と同じ季節になっていた。
+  `ClimateProfile.hemisphere`（`north` | `south`）を追加し、
+  `seasonOf(month, hemisphere)` / `seasonalFactor(month, hemisphere)` は
+  半球で位相を反転させる（南半球のピークは 2 月、底は 8 月。1 月 = summer）。
+  Region ID による分岐は書かない。既定は `north` なので既存 Region と Save schema は
+  そのまま互換である
+- **熱帯気候を sanity test で押さえる。** Queensland / Okinawa / Thailand / Amazon は
+  年平均水温 24℃以上・年間の水温振れが温帯より小さいことを test にする。
+  値はすべて PROVISIONAL なゲーム調整であり、実在の気候データの主張ではない
+- **occurrence depth は外道と地域性で厚くする。** 数字を増やすための追加はせず、
+  生物学・ゲーム的に自然な範囲で Amazon / Baja / NZ / Norway / Okinawa / Thailand を
+  底上げした（Amazon 22→29 など）。legacy Spot の 2〜3 species も audit し、
+  自然なものへ共通外道を足した。残る warning は既知の scientificName 重複のみ
+- **Expedition を 国内 / 海外 でグループ化する。** 既存 `Country.domestic` を使い、
+  カードと Phase 14 の見た目は維持する。EXPEDITION を開いただけでは
+  destination の Region pack を読まない（Phase 15 の保証は不変）
+- **最終 scale contract を test で固定する。** 14 playable Region /
+  200〜230 Species / 130〜150 Spot / 20〜28 Buyer。giant-queenfish / queenfish は
+  warning のまま維持し、統合は Save / Codex / Trade を跨ぐ
+  **future dedicated canonical-ID migration** に送る（Phase 17 = Boat/Offshore とは別）
+- **実機目視は未実施。** この環境ではブラウザを起動できないため、375 / 390 / 430 の
+  確認は DOM / CSS の静的チェックに留め、目視したとは報告しない
+
+実測（Part 2b）: Initial 572.15 kB（gzip 161.21）/ Tokyo boot 686.33 kB（gzip 195.76、
+予算 200 kB / Phase 14 baseline 216.48 kB）/ tests 95 files / 834。

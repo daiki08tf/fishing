@@ -41,6 +41,24 @@
     {
       "speciesId": "buri",
       "basePresence": 0.5
+    },
+    {
+      "speciesId": "pacific-cod",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "surface": 0.85,
+        "mid-water": 0.85,
+        "bottom": 1.25
+      }
+    },
+    {
+      "speciesId": "sablefish",
+      "basePresence": 0.25,
+      "zoneAffinity": {
+        "surface": 0.85,
+        "mid-water": 0.85,
+        "bottom": 1.25
+      }
     }
   ],
   "knowledgeConfig": {

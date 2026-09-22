@@ -84,6 +84,14 @@
         "near": 0.85,
         "far": 1.3
       }
+    },
+    {
+      "speciesId": "pacific-bonito",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "near": 1.3,
+        "far": 0.85
+      }
     }
   ],
   "knowledgeConfig": {

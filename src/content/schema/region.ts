@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { asAreaId, asCountryId, asRegionId } from '../../domain/ids'
 import { REGION_STAGES, WORLD_DATA_STATUSES } from '../../domain/world/Region'
-import { WEATHERS } from '../../domain/environment/Environment'
+import { HEMISPHERES, WEATHERS } from '../../domain/environment/Environment'
 import { nonEmptyString } from './primitives'
 
 const areaSchema = z.strictObject({
@@ -20,6 +20,8 @@ const baseSchema = z.strictObject({
  * 気象モデルではなく「地域ごとの傾向」だけを持つ（PROVISIONAL）。
  */
 const climateSchema = z.strictObject({
+  /** Phase 16 Part 2b: 季節の半球。省略時は 'north'（既存 Content はそのまま）。 */
+  hemisphere: z.enum(HEMISPHERES).default('north'),
   annualMeanWaterC: z.number(),
   seasonalSwingC: z.number().nonnegative(),
   weatherWeights: z.record(z.enum(WEATHERS), z.number().nonnegative()),

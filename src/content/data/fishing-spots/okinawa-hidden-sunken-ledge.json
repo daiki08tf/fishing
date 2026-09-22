@@ -96,6 +96,14 @@
         "near": 1.3,
         "far": 0.85
       }
+    },
+    {
+      "speciesId": "brown-marbled-grouper",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "near": 1.3,
+        "far": 0.85
+      }
     }
   ],
   "knowledgeConfig": {

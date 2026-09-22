@@ -38,8 +38,11 @@ describe('world expansion scale', () => {
       ).toBe(true)
     }
 
-    expect(content.species.length).toBeGreaterThanOrEqual(140)
-    expect(content.spots.length).toBeGreaterThanOrEqual(95)
+    // Phase 16 の最終レンジ（Part 2b で確定）。
+    expect(content.species.length).toBeGreaterThanOrEqual(200)
+    expect(content.species.length).toBeLessThanOrEqual(230)
+    expect(content.spots.length).toBeGreaterThanOrEqual(130)
+    expect(content.spots.length).toBeLessThanOrEqual(150)
   })
 
   it('gives every Phase 16 region spots, an expedition and a buyer', () => {
@@ -169,7 +172,7 @@ describe('species identity', () => {
       warning.startsWith('scientificName duplicate'),
     )
 
-    // 既知の 1 組（giant-queenfish / queenfish）は Phase 17 で統合する。
+    // 既知の 1 組（giant-queenfish / queenfish）は future dedicated canonical-ID migration で扱う。
     expect(scientificWarnings.length).toBeLessThanOrEqual(1)
   })
 })

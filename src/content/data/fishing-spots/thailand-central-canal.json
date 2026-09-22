@@ -78,6 +78,14 @@
         "wall": 1.3,
         "middle": 0.85
       }
+    },
+    {
+      "speciesId": "three-spot-gourami",
+      "basePresence": 0.35,
+      "zoneAffinity": {
+        "wall": 1.3,
+        "middle": 0.85
+      }
     }
   ],
   "knowledgeConfig": {

@@ -91,6 +91,14 @@
         "riffle": 1.3,
         "pool": 0.85
       }
+    },
+    {
+      "speciesId": "jaraqui",
+      "basePresence": 0.4,
+      "zoneAffinity": {
+        "riffle": 1.3,
+        "pool": 0.85
+      }
     }
   ],
   "knowledgeConfig": {

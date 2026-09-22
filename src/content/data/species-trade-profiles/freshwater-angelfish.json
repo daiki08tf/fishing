@@ -1,0 +1,9 @@
+{
+  "speciesId": "freshwater-angelfish",
+  "tradeStatus": "tradable",
+  "tradeTags": ["local_favorite", "everyday"],
+  "baseYenPerKg": 420,
+  "minimumUnitValueYen": 80,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 0.85
+}

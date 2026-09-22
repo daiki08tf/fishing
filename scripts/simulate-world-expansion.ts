@@ -135,8 +135,22 @@ export const simulateWorldExpansion = (): WorldExpansionResult => {
   const knownSpeciesIds = new Set(content.species.map((species) => String(species.id)))
   const audits = content.spots.map((spot) => auditSpot(spot, knownSpeciesIds))
 
+  const publicSpots = content.spots.filter((spot) => spot.visibility !== 'hidden')
+  const hiddenSpotCount = content.spots.length - publicSpots.length
+
+  lines.push('--- world summary ---')
   lines.push(
-    `world: species=${String(content.species.length)} regions=${String(content.regions.length)} (playable ${String(playableRegions.length)}) spots=${String(content.spots.length)} expeditions=${String(content.expeditions.length)}`,
+    [
+      `countries=${String(content.countries.length)}`,
+      `playableRegions=${String(playableRegions.length)}`,
+      `species=${String(content.species.length)}`,
+      `spots=${String(content.spots.length)}`,
+      `publicSpots=${String(publicSpots.length)}`,
+      `hiddenSpots=${String(hiddenSpotCount)}`,
+      `buyers=${String(content.buyers.length)}`,
+      `contactRewards=${String(content.contactRewards.length)}`,
+      `expeditions=${String(content.expeditions.length)}`,
+    ].join(' '),
   )
 
   // 1. Hard failures.
@@ -257,8 +271,26 @@ export const simulateWorldExpansion = (): WorldExpansionResult => {
   }
 
   // 6. Balance report + warnings.
+  const expeditionCostOf = (regionId: string): number | null => {
+    const expedition = content.expeditions.find((entry) => String(entry.regionId) === regionId)
+
+    if (expedition === undefined) {
+      return null
+    }
+
+    const lodging = expedition.lodgings[Math.floor((expedition.lodgings.length - 1) / 2)]
+
+    return (
+      expedition.flight.oneWayCostYen * 2 +
+      (lodging?.nightlyCostYen ?? 0) * expedition.nights.default +
+      (expedition.permit?.costYen ?? 0)
+    )
+  }
+
   const regionRows = playableRegions.map((region) => {
-    const regionAudits = audits.filter((audit) => String(audit.spot.regionId) === String(region.id))
+    const regionId = String(region.id)
+    const regionAudits = audits.filter((audit) => String(audit.spot.regionId) === regionId)
+    const regionSpots = content.spots.filter((spot) => String(spot.regionId) === regionId)
     const speciesInRegion = new Set(
       regionAudits.flatMap((audit) =>
         audit.spot.fishTable.map((occurrence) => String(occurrence.speciesId)),
@@ -272,19 +304,30 @@ export const simulateWorldExpansion = (): WorldExpansionResult => {
     const warningCount = regionAudits.reduce((sum, audit) => sum + audit.warnings.length, 0)
 
     return {
-      regionId: String(region.id),
+      regionId,
       spots: regionAudits.length,
+      publicSpots: regionSpots.filter((spot) => spot.visibility !== 'hidden').length,
+      hiddenSpots: regionSpots.filter((spot) => spot.visibility === 'hidden').length,
+      environments: new Set(regionSpots.map((spot) => spot.environment)).size,
       species: speciesInRegion.size,
+      buyers: content.buyers.filter((buyer) => String(buyer.regionId) === regionId).length,
+      rewards: content.contactRewards.filter((reward) =>
+        content.buyers.some(
+          (buyer) =>
+            String(buyer.regionId) === regionId && String(buyer.id) === String(reward.contactId),
+        ),
+      ).length,
+      expeditionCost: expeditionCostOf(regionId),
       meanDiversity,
       warningCount,
     }
   })
 
   lines.push('')
-  lines.push('--- region occurrence report ---')
+  lines.push('--- region report ---')
   for (const row of regionRows) {
     lines.push(
-      `  ${row.regionId.padEnd(22)} spots=${String(row.spots).padStart(2)} species=${String(row.species).padStart(3)} mean-diversity=${row.meanDiversity.toFixed(2)} warnings=${String(row.warningCount)}`,
+      `  ${row.regionId.padEnd(22)} spots=${String(row.spots).padStart(2)}(public ${String(row.publicSpots)} / hidden ${String(row.hiddenSpots)}) env=${String(row.environments)} species=${String(row.species).padStart(3)} buyers=${String(row.buyers)} rewards=${String(row.rewards)} expCost=${row.expeditionCost === null ? '—' : `¥${String(row.expeditionCost)}`} diversity=${row.meanDiversity.toFixed(2)} warn=${String(row.warningCount)}`,
     )
   }
 

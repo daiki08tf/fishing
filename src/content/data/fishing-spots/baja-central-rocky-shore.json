@@ -78,6 +78,22 @@
         "shoreline": 1.3,
         "open": 0.85
       }
+    },
+    {
+      "speciesId": "california-barracuda",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "shoreline": 1.3,
+        "open": 0.85
+      }
+    },
+    {
+      "speciesId": "cobia",
+      "basePresence": 0.2,
+      "zoneAffinity": {
+        "shoreline": 1.3,
+        "open": 0.85
+      }
     }
   ],
   "knowledgeConfig": {

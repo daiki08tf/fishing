@@ -37,6 +37,24 @@
     {
       "speciesId": "rainbow-trout",
       "basePresence": 0.4
+    },
+    {
+      "speciesId": "bluegill",
+      "basePresence": 0.35,
+      "zoneAffinity": {
+        "shoreline": 1.25,
+        "break": 0.85,
+        "open-water": 0.85
+      }
+    },
+    {
+      "speciesId": "wakasagi",
+      "basePresence": 0.25,
+      "zoneAffinity": {
+        "shoreline": 1.0,
+        "break": 1.0,
+        "open-water": 1.0
+      }
     }
   ],
   "knowledgeConfig": {

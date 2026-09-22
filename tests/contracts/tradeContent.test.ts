@@ -50,7 +50,7 @@ describe('runtime trade content', () => {
     )
 
     expect(missing).toEqual([])
-    expect(content.speciesTradeProfiles).toHaveLength(212)
+    expect(content.speciesTradeProfiles).toHaveLength(229)
   })
 
   it('gives every tradable profile at least one known tradeTag', () => {

@@ -46,6 +46,26 @@
     {
       "speciesId": "buri",
       "basePresence": 0.2
+    },
+    {
+      "speciesId": "pacific-cod",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "foot": 0.85,
+        "harbor": 0.85,
+        "channel": 0.85,
+        "outer": 1.25
+      }
+    },
+    {
+      "speciesId": "lingcod",
+      "basePresence": 0.25,
+      "zoneAffinity": {
+        "foot": 0.85,
+        "harbor": 0.85,
+        "channel": 0.85,
+        "outer": 1.25
+      }
     }
   ],
   "knowledgeConfig": {

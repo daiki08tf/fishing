@@ -37,6 +37,24 @@
     {
       "speciesId": "kurodai",
       "basePresence": 0.5
+    },
+    {
+      "speciesId": "maaji",
+      "basePresence": 0.35,
+      "zoneAffinity": {
+        "shore": 0.85,
+        "reef-edge": 1.25,
+        "outer": 0.85
+      }
+    },
+    {
+      "speciesId": "kamasu",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "shore": 0.85,
+        "reef-edge": 0.85,
+        "outer": 1.25
+      }
     }
   ],
   "knowledgeConfig": {

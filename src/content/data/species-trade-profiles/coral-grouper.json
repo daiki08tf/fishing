@@ -1,0 +1,9 @@
+{
+  "speciesId": "coral-grouper",
+  "tradeStatus": "tradable",
+  "tradeTags": ["delicate", "local_favorite"],
+  "baseYenPerKg": 680,
+  "minimumUnitValueYen": 120,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

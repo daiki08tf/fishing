@@ -28,34 +28,36 @@ import m20 from '../../data/fish-species/snakeskin-gourami.json'
 import m21 from '../../data/fish-species/striped-catfish.json'
 import m22 from '../../data/fish-species/striped-snakehead.json'
 import m23 from '../../data/fish-species/threadfin-salmon.json'
-import m24 from '../../data/fish-species/tinfoil-barb.json'
-import m25 from '../../data/fish-species/walking-catfish.json'
-import m26 from '../../data/species-trade-profiles/barramundi.json'
-import m27 from '../../data/species-trade-profiles/bigeye-trevally.json'
-import m28 from '../../data/species-trade-profiles/climbing-perch.json'
-import m29 from '../../data/species-trade-profiles/datsu.json'
-import m30 from '../../data/species-trade-profiles/featherback.json'
-import m31 from '../../data/species-trade-profiles/giant-gourami.json'
-import m32 from '../../data/species-trade-profiles/giant-snakehead.json'
-import m33 from '../../data/species-trade-profiles/hamafuefuki.json'
-import m34 from '../../data/species-trade-profiles/hampala-barb.json'
-import m35 from '../../data/species-trade-profiles/itoyoridai.json'
-import m36 from '../../data/species-trade-profiles/java-barb.json'
-import m37 from '../../data/species-trade-profiles/mangrove-jack.json'
-import m38 from '../../data/species-trade-profiles/marbled-sleeper.json'
-import m39 from '../../data/species-trade-profiles/milkfish.json'
-import m40 from '../../data/species-trade-profiles/nile-tilapia.json'
-import m41 from '../../data/species-trade-profiles/onikamasu.json'
-import m42 from '../../data/species-trade-profiles/queenfish.json'
-import m43 from '../../data/species-trade-profiles/rohu.json'
-import m44 from '../../data/species-trade-profiles/siamese-mud-carp.json'
-import m45 from '../../data/species-trade-profiles/silver-carp.json'
-import m46 from '../../data/species-trade-profiles/snakeskin-gourami.json'
-import m47 from '../../data/species-trade-profiles/striped-catfish.json'
-import m48 from '../../data/species-trade-profiles/striped-snakehead.json'
-import m49 from '../../data/species-trade-profiles/threadfin-salmon.json'
-import m50 from '../../data/species-trade-profiles/tinfoil-barb.json'
-import m51 from '../../data/species-trade-profiles/walking-catfish.json'
+import m24 from '../../data/fish-species/three-spot-gourami.json'
+import m25 from '../../data/fish-species/tinfoil-barb.json'
+import m26 from '../../data/fish-species/walking-catfish.json'
+import m27 from '../../data/species-trade-profiles/barramundi.json'
+import m28 from '../../data/species-trade-profiles/bigeye-trevally.json'
+import m29 from '../../data/species-trade-profiles/climbing-perch.json'
+import m30 from '../../data/species-trade-profiles/datsu.json'
+import m31 from '../../data/species-trade-profiles/featherback.json'
+import m32 from '../../data/species-trade-profiles/giant-gourami.json'
+import m33 from '../../data/species-trade-profiles/giant-snakehead.json'
+import m34 from '../../data/species-trade-profiles/hamafuefuki.json'
+import m35 from '../../data/species-trade-profiles/hampala-barb.json'
+import m36 from '../../data/species-trade-profiles/itoyoridai.json'
+import m37 from '../../data/species-trade-profiles/java-barb.json'
+import m38 from '../../data/species-trade-profiles/mangrove-jack.json'
+import m39 from '../../data/species-trade-profiles/marbled-sleeper.json'
+import m40 from '../../data/species-trade-profiles/milkfish.json'
+import m41 from '../../data/species-trade-profiles/nile-tilapia.json'
+import m42 from '../../data/species-trade-profiles/onikamasu.json'
+import m43 from '../../data/species-trade-profiles/queenfish.json'
+import m44 from '../../data/species-trade-profiles/rohu.json'
+import m45 from '../../data/species-trade-profiles/siamese-mud-carp.json'
+import m46 from '../../data/species-trade-profiles/silver-carp.json'
+import m47 from '../../data/species-trade-profiles/snakeskin-gourami.json'
+import m48 from '../../data/species-trade-profiles/striped-catfish.json'
+import m49 from '../../data/species-trade-profiles/striped-snakehead.json'
+import m50 from '../../data/species-trade-profiles/threadfin-salmon.json'
+import m51 from '../../data/species-trade-profiles/three-spot-gourami.json'
+import m52 from '../../data/species-trade-profiles/tinfoil-barb.json'
+import m53 from '../../data/species-trade-profiles/walking-catfish.json'
 
 export const m0Name = "barramundi.json"
 export const m1Name = "bigeye-trevally.json"
@@ -81,36 +83,38 @@ export const m20Name = "snakeskin-gourami.json"
 export const m21Name = "striped-catfish.json"
 export const m22Name = "striped-snakehead.json"
 export const m23Name = "threadfin-salmon.json"
-export const m24Name = "tinfoil-barb.json"
-export const m25Name = "walking-catfish.json"
-export const m26Name = "barramundi.json"
-export const m27Name = "bigeye-trevally.json"
-export const m28Name = "climbing-perch.json"
-export const m29Name = "datsu.json"
-export const m30Name = "featherback.json"
-export const m31Name = "giant-gourami.json"
-export const m32Name = "giant-snakehead.json"
-export const m33Name = "hamafuefuki.json"
-export const m34Name = "hampala-barb.json"
-export const m35Name = "itoyoridai.json"
-export const m36Name = "java-barb.json"
-export const m37Name = "mangrove-jack.json"
-export const m38Name = "marbled-sleeper.json"
-export const m39Name = "milkfish.json"
-export const m40Name = "nile-tilapia.json"
-export const m41Name = "onikamasu.json"
-export const m42Name = "queenfish.json"
-export const m43Name = "rohu.json"
-export const m44Name = "siamese-mud-carp.json"
-export const m45Name = "silver-carp.json"
-export const m46Name = "snakeskin-gourami.json"
-export const m47Name = "striped-catfish.json"
-export const m48Name = "striped-snakehead.json"
-export const m49Name = "threadfin-salmon.json"
-export const m50Name = "tinfoil-barb.json"
-export const m51Name = "walking-catfish.json"
+export const m24Name = "three-spot-gourami.json"
+export const m25Name = "tinfoil-barb.json"
+export const m26Name = "walking-catfish.json"
+export const m27Name = "barramundi.json"
+export const m28Name = "bigeye-trevally.json"
+export const m29Name = "climbing-perch.json"
+export const m30Name = "datsu.json"
+export const m31Name = "featherback.json"
+export const m32Name = "giant-gourami.json"
+export const m33Name = "giant-snakehead.json"
+export const m34Name = "hamafuefuki.json"
+export const m35Name = "hampala-barb.json"
+export const m36Name = "itoyoridai.json"
+export const m37Name = "java-barb.json"
+export const m38Name = "mangrove-jack.json"
+export const m39Name = "marbled-sleeper.json"
+export const m40Name = "milkfish.json"
+export const m41Name = "nile-tilapia.json"
+export const m42Name = "onikamasu.json"
+export const m43Name = "queenfish.json"
+export const m44Name = "rohu.json"
+export const m45Name = "siamese-mud-carp.json"
+export const m46Name = "silver-carp.json"
+export const m47Name = "snakeskin-gourami.json"
+export const m48Name = "striped-catfish.json"
+export const m49Name = "striped-snakehead.json"
+export const m50Name = "threadfin-salmon.json"
+export const m51Name = "three-spot-gourami.json"
+export const m52Name = "tinfoil-barb.json"
+export const m53Name = "walking-catfish.json"
 
 export const load = async (): Promise<Readonly<Record<string, readonly unknown[]>>> => ({
-    "fish-species": [m0, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15, m16, m17, m18, m19, m20, m21, m22, m23, m24, m25],
-    "species-trade-profiles": [m26, m27, m28, m29, m30, m31, m32, m33, m34, m35, m36, m37, m38, m39, m40, m41, m42, m43, m44, m45, m46, m47, m48, m49, m50, m51],
+    "fish-species": [m0, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15, m16, m17, m18, m19, m20, m21, m22, m23, m24, m25, m26],
+    "species-trade-profiles": [m27, m28, m29, m30, m31, m32, m33, m34, m35, m36, m37, m38, m39, m40, m41, m42, m43, m44, m45, m46, m47, m48, m49, m50, m51, m52, m53],
 })

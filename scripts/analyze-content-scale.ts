@@ -198,6 +198,16 @@ export const analyzeContentScale = (distDir = 'dist'): BundleReport => {
     lines.push(`  pack ${pack.name.padEnd(26)} ${kb(pack.bytes)} (gzip ${kb(pack.gzipBytes)})`)
   }
 
+  const regionPacks = packs.filter((entry) => entry.name.startsWith('region-'))
+  const speciesShards = packs.filter((entry) => entry.name.startsWith('species-'))
+  const largest = (entries: readonly BundleReportEntry[]): string => {
+    const top = [...entries].sort((left, right) => right.bytes - left.bytes)[0]
+
+    return top === undefined ? '—' : `${top.name} ${kb(top.bytes)} (gzip ${kb(top.gzipBytes)})`
+  }
+
+  lines.push(`Largest region pack:  ${largest(regionPacks)}`)
+  lines.push(`Largest species shard: ${largest(speciesShards)}`)
   lines.push(`Total JS:          ${kb(total)}`)
   lines.push('')
   lines.push('--- boot critical path (catalog + world + current region + its species) ---')
