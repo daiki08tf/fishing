@@ -27,7 +27,7 @@
       "baseOneWayCost": 420
     }
   ],
-  "habitatTags": ["phase1-sample-deep", "phase1-sample-surf"],
+  "habitatTags": ["deep", "surf"],
   "depth": {
     "depthRangeM": {
       "min": 5,
@@ -36,15 +36,15 @@
   },
   "fishTable": [
     {
-      "speciesId": "phase2-sample-fish-c",
+      "speciesId": "kanto-seabass",
       "basePresence": 0.6
     },
     {
-      "speciesId": "phase2-sample-fish-e",
+      "speciesId": "kanto-bora",
       "basePresence": 0.4
     },
     {
-      "speciesId": "phase2-sample-fish-i",
+      "speciesId": "kanto-buri",
       "basePresence": 0.2
     }
   ],

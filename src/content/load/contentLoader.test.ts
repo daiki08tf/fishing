@@ -69,13 +69,15 @@ describe('loadContentDirectory', () => {
     expect(result.diagnostics[0]?.issues[0]?.message).toContain('does not exist')
   })
 
-  it('validates the sample content that ships with the repository', () => {
+  it('validates the runtime content that ships with the repository', () => {
     const result = loadContentDirectory(`${repositoryRoot}src/content/data`)
 
     expect(result.diagnostics).toEqual([])
     const kinds = result.locations.map((location) => location.kind)
 
-    expect(kinds.filter((kind) => kind === 'fish-species')).toHaveLength(22)
+    // 件数は Content を増減するたびに変わる（検証の中身は validate:content が見る）。
+    // 検証用 fixture（サンプル魚）は src/content/data には置かない。
+    expect(kinds.filter((kind) => kind === 'fish-species')).toHaveLength(26)
     expect(kinds.filter((kind) => kind === 'fishing-spots')).toHaveLength(22)
     expect(kinds.filter((kind) => kind === 'transports')).toHaveLength(11)
     expect(kinds.filter((kind) => kind === 'countries')).toHaveLength(9)

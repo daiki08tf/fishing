@@ -2,16 +2,64 @@
 
 ## Phase
 
-**Phase 10 — Text Fishing Battle**
+**Phase 10.1 — Playtest Cleanup**
 
 状態: **完了**
+
+実機（iPhone）のプレイで見つかった「開発・検証用の残り」を消した。新機能は追加していない。
+
+## Phase 10.1 で直したもの
+
+### runtime Content から検証用魚を外す
+
+- `src/content/data` に検証用の合成魚（サンプル魚 A〜J）が残っていた。東京近郊の
+  Spot の `fishTable` がこれを参照していたため、最初に釣れる魚も Codex も結果表示も
+  「サンプル魚E（検証用）」になっていた
+- 実在の魚名（東京近郊 13 / 北海道 3 / アラスカ 10 = 26 件）に置き換えた。
+  数値プロファイルは移設した検証用魚から引き継ぎ、**ゲームバランスは変えていない**
+- 検証用の合成魚は `tests/fixtures/content/fish-species/` へ移動。test / simulation だけが
+  `tests/fixtures/content.ts` の `loadFixtureContent()` で追加読み込みする
+  （`loadContentFromDirectory(root, { fixtureRoots })` は species だけを足す）。
+  runtime の Spot は今の Content しか参照できない
+- 内部タグ（`*-sample-*`）と brand 説明の「検証用」も外した
+
+### 通常プレイ画面から内部情報を消す
+
+- Fishing 画面の `tick XX / この状態 XX` / `seed: ...` / `RAWSTATE`（IDLE など）を削除
+- 「同じSeedで再挑戦」→「同じ展開でもう一度」、「RESET」→「もう一度釣る」に整理
+- 結果表示を「直近の釣果」と「〈魚種名〉の記録」に分け、矛盾しないようにした
+
+### 釣行中の Engine を作り直さない
+
+- 釣果を記録すると世界時間が進み、Environment → Conditions → playerModifiers が変わる。
+  これを依存にしていたため、**取り込んだ直後に Engine が作り直されて画面が待機へ戻っていた**
+  （「直近の釣果」と「この魚種の記録はまだない」が同時に見えていた原因）
+- セッション開始時の入力を ref に持ち、Engine はセッション（Spot / seed）が変わるときだけ作る
+
+### Save の扱い
+
+- 古い Save に今の Content に無い魚種 id が残っていても落ちない。
+  記録種数は今の Content にある魚種だけを数える（`recordedSpeciesCount(state, knownIds)`）。
+  **Save 自体は書き換えない**
+- 開発ビルド（`import.meta.env.DEV`）の HOME に「セーブデータを初期化」を追加。
+  起動時に勝手に Save を消す処理は入れない
+
+### 検証
+
+- `npm run check`: PASS（70 test files / 617 tests）
+- `npm run validate:content`: PASS（657 records）
+- simulations はすべて green（text-battle 10/10、catchability 14/14、environment 8/8、
+  big-game 9/9、expedition 12/12、transport 18/18、tackle 11/11、catalog 9/9、
+  day 9/9、trip 6/6、progression 9/9、sample:individuals invalid=0）
+- `simulate:fishing --seed demo`: LANDED（44 ticks / 48 steps、釣れる魚は「マアジ」）
+- 新規 Save の通し（HOME → MAP → 釣り場 → 釣り → 記録）を jsdom + React DOM で確認
+
+## Phase 10 で実装したもの（履歴）
 
 釣りのファイト（HOOKED 以降）を、REEL / GIVE 中心の操作から
 「魚の行動を文章で読み、コマンドを選ぶ」ターン制バトルへ進めた。
 Encounter → Bite → Hook（Phase 9 / 9.1）と、Phase 9 までの構造
 （World / Expedition / Access / Economy / Environment / FishingEngine）は作り直していない。
-
-## Phase 10 で実装したもの
 
 ### Text Fishing Battle（`src/domain/fishing/battle`）
 

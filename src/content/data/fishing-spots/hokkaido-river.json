@@ -26,17 +26,37 @@
       "baseOneWayCost": 0
     }
   ],
-  "habitatTags": ["hokkaido-sample-river", "hokkaido-sample-gravel"],
-  "depth": { "depthRangeM": { "min": 1, "max": 7 } },
+  "habitatTags": ["river", "gravel"],
+  "depth": {
+    "depthRangeM": {
+      "min": 1,
+      "max": 7
+    }
+  },
   "fishTable": [
-    { "speciesId": "hokkaido-masu-salmon", "basePresence": 0.5 },
-    { "speciesId": "hokkaido-ame-masu", "basePresence": 0.55 },
-    { "speciesId": "phase2-sample-fish-d", "basePresence": 0.3 }
+    {
+      "speciesId": "hokkaido-masu-salmon",
+      "basePresence": 0.5
+    },
+    {
+      "speciesId": "hokkaido-ame-masu",
+      "basePresence": 0.55
+    },
+    {
+      "speciesId": "kanto-ugui",
+      "basePresence": 0.3
+    }
   ],
   "knowledgeConfig": {
     "reveals": [
-      { "field": "main_species", "minKnowledge": 20 },
-      { "field": "time_pattern", "minKnowledge": 40 }
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "time_pattern",
+        "minKnowledge": 40
+      }
     ]
   }
 }

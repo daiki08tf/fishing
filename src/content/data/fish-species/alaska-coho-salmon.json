@@ -3,7 +3,7 @@
   "japaneseName": "ギンザケ（暫定）",
   "waterTypes": ["fresh", "salt"],
   "distribution": ["alaska"],
-  "habitats": ["alaska-sample-river", "alaska-sample-bay"],
+  "habitats": ["river", "bay"],
   "depthRange": {
     "min": 1,
     "max": 25
@@ -21,7 +21,7 @@
   "currentPreference": {
     "preference": "moderate"
   },
-  "diet": ["alaska-sample-prey"],
+  "diet": ["small_fish"],
   "baits": ["roe", "cut", "shrimp"],
   "lureCategories": ["spoon", "minnow", "jig"],
   "fishingMethods": ["lure", "bait"],
@@ -67,21 +67,21 @@
     "preferredSeasons": ["autumn"],
     "preferredTimeOfDay": ["dawn", "evening"],
     "weatherAffinity": {
-      "clear": 1.0,
+      "clear": 1,
       "cloudy": 1.1,
       "light_rain": 1.05,
-      "rain": 1.0,
+      "rain": 1,
       "windy": 0.9
     },
     "tideAffinity": {
       "low": 0.9,
       "rising": 1.15,
       "high": 1.1,
-      "falling": 1.0
+      "falling": 1
     },
     "flowAffinity": {
       "none": 0.95,
-      "slow": 1.0,
+      "slow": 1,
       "moderate": 1.1,
       "strong": 0.95
     },
@@ -94,6 +94,6 @@
     "preferredOfferingRatio": 0.16,
     "largeOfferingPenaltyStart": 0.3,
     "maxOfferingRatio": 0.5,
-    "mouthSizeFactor": 1.0
+    "mouthSizeFactor": 1
   }
 }

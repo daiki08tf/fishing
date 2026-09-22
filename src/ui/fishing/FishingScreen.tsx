@@ -232,13 +232,11 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
         >
           成長 Lv{progression.anglerLevel} / SP {progression.skillPoints}
         </button>
-        <span className="fishing__seed">
-          {spotName ?? '釣り場未選択'} / seed: {seed}
-        </span>
+        {/* 通常プレイの画面には seed や内部 state 名を出さない（開発情報は表示しない）。 */}
+        <span className="fishing__seed">{spotName ?? '釣り場未選択'}</span>
       </header>
 
       <section className="panel">
-        <p className="fishing__phase-code">{snapshot.phase}</p>
         <h2 className="panel__heading">{PHASE_LABELS[snapshot.phase]}</h2>
         {environment === null || conditions === null ? null : (
           <p className="fishing__legend">
@@ -345,7 +343,7 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
 
       {snapshot.battle === null ? null : (
         <section className="panel">
-          <p className="fishing__phase-code">{snapshot.battle.behaviourLabel}</p>
+          <p className="fishing__phase-code">魚の様子: {snapshot.battle.behaviourLabel}</p>
           <h3 className="panel__subheading">
             {snapshot.phase === 'LANDING' ? '取り込みの体勢' : 'ファイト'}
           </h3>
@@ -437,10 +435,10 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
               className="control"
               type="button"
               onClick={() => {
-                send('reset')
+                restart()
               }}
             >
-              RESET
+              もう一度釣る
             </button>
             <button
               className="control"
@@ -449,26 +447,18 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
                 restart(seed)
               }}
             >
-              同じSeedで再挑戦
-            </button>
-            <button
-              className="control"
-              type="button"
-              onClick={() => {
-                restart()
-              }}
-            >
-              新しいSeedで再挑戦
+              同じ展開でもう一度
             </button>
           </div>
         ) : null}
       </section>
 
       <section className="panel">
-        <h3 className="panel__subheading">自己記録</h3>
+        <h3 className="panel__subheading">釣果と記録</h3>
 
         {lastCatch === null ? null : (
           <div className="notice">
+            <p className="notice__eyebrow">直近の釣果</p>
             <p className="notice__title">
               {lastCatch.speciesName} — +{lastCatch.xpGained} XP
             </p>
@@ -506,37 +496,42 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
           </div>
         )}
 
-        {record === undefined ? (
-          <p className="panel__body">この魚種の記録はまだない</p>
+        {fish === null ? (
+          <p className="panel__body">魚が掛かると、この魚種の記録が出る。</p>
+        ) : record === undefined ? (
+          <p className="panel__body">{fish.speciesName} の記録はまだない。</p>
         ) : (
-          <dl className="record">
-            <div>
-              <dt>Catch</dt>
-              <dd>{record.catchCount} 匹</dd>
-            </div>
-            <div>
-              <dt>Largest</dt>
-              <dd>{record.largestLengthCm} cm</dd>
-            </div>
-            <div>
-              <dt>Heaviest</dt>
-              <dd>{record.heaviestWeightKg.toFixed(3)} kg</dd>
-            </div>
-            <div>
-              <dt>Best</dt>
-              <dd>
-                {record.personalBest.lengthCm} cm / {rarityLabel(record.bestPercentile)}
-              </dd>
-            </div>
-            <div>
-              <dt>Traits</dt>
-              <dd>
-                {record.caughtTraits.length === 0
-                  ? '—'
-                  : record.caughtTraits.map((trait) => TRAIT_LABELS[trait]).join(', ')}
-              </dd>
-            </div>
-          </dl>
+          <>
+            <p className="notice__eyebrow">{fish.speciesName} の記録</p>
+            <dl className="record">
+              <div>
+                <dt>Catch</dt>
+                <dd>{record.catchCount} 匹</dd>
+              </div>
+              <div>
+                <dt>Largest</dt>
+                <dd>{record.largestLengthCm} cm</dd>
+              </div>
+              <div>
+                <dt>Heaviest</dt>
+                <dd>{record.heaviestWeightKg.toFixed(3)} kg</dd>
+              </div>
+              <div>
+                <dt>Best</dt>
+                <dd>
+                  {record.personalBest.lengthCm} cm / {rarityLabel(record.bestPercentile)}
+                </dd>
+              </div>
+              <div>
+                <dt>Traits</dt>
+                <dd>
+                  {record.caughtTraits.length === 0
+                    ? '—'
+                    : record.caughtTraits.map((trait) => TRAIT_LABELS[trait]).join(', ')}
+                </dd>
+              </div>
+            </dl>
+          </>
         )}
       </section>
 
@@ -551,9 +546,6 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
             ))}
           </ul>
         )}
-        <p className="fishing__ticks">
-          tick {snapshot.totalTicks} / この状態 {snapshot.ticksInPhase}
-        </p>
       </section>
     </div>
   )

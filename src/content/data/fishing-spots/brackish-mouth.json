@@ -31,7 +31,7 @@
       "baseOneWayCost": 520
     }
   ],
-  "habitatTags": ["phase1-sample-estuary", "phase1-sample-shallow"],
+  "habitatTags": ["estuary", "shallow"],
   "depth": {
     "depthRangeM": {
       "min": 1,
@@ -40,19 +40,19 @@
   },
   "fishTable": [
     {
-      "speciesId": "phase2-sample-fish-b",
+      "speciesId": "kanto-shirogisu",
       "basePresence": 0.6
     },
     {
-      "speciesId": "phase2-sample-fish-c",
+      "speciesId": "kanto-seabass",
       "basePresence": 0.5
     },
     {
-      "speciesId": "phase2-sample-fish-h",
+      "speciesId": "kanto-funa",
       "basePresence": 0.7
     },
     {
-      "speciesId": "phase2-sample-fish-e",
+      "speciesId": "kanto-bora",
       "basePresence": 0.2
     }
   ],

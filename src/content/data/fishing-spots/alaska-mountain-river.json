@@ -6,8 +6,14 @@
   "environment": "river",
   "dataStatus": "provisional",
   "access": [
-    { "kind": "capability", "capability": "road_access" },
-    { "kind": "permit", "permitId": "alaska-fishing-permit" }
+    {
+      "kind": "capability",
+      "capability": "road_access"
+    },
+    {
+      "kind": "permit",
+      "permitId": "alaska-fishing-permit"
+    }
   ],
   "travelOptions": [
     {
@@ -20,19 +26,45 @@
       "baseOneWayCost": 0
     }
   ],
-  "habitatTags": ["alaska-sample-river", "alaska-sample-cold"],
-  "depth": { "depthRangeM": { "min": 1, "max": 8 } },
+  "habitatTags": ["river", "cold"],
+  "depth": {
+    "depthRangeM": {
+      "min": 1,
+      "max": 8
+    }
+  },
   "fishTable": [
-    { "speciesId": "alaska-rainbow-trout", "basePresence": 0.6 },
-    { "speciesId": "alaska-dolly-varden", "basePresence": 0.5 },
-    { "speciesId": "alaska-arctic-char", "basePresence": 0.4 },
-    { "speciesId": "alaska-sockeye-salmon", "basePresence": 0.3 },
-    { "speciesId": "alaska-lake-trout", "basePresence": 0.2 }
+    {
+      "speciesId": "alaska-rainbow-trout",
+      "basePresence": 0.6
+    },
+    {
+      "speciesId": "alaska-dolly-varden",
+      "basePresence": 0.5
+    },
+    {
+      "speciesId": "alaska-arctic-char",
+      "basePresence": 0.4
+    },
+    {
+      "speciesId": "alaska-sockeye-salmon",
+      "basePresence": 0.3
+    },
+    {
+      "speciesId": "alaska-lake-trout",
+      "basePresence": 0.2
+    }
   ],
   "knowledgeConfig": {
     "reveals": [
-      { "field": "main_species", "minKnowledge": 20 },
-      { "field": "habitat", "minKnowledge": 50 }
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "habitat",
+        "minKnowledge": 50
+      }
     ]
   }
 }

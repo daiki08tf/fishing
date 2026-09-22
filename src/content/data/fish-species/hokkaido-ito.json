@@ -1,0 +1,79 @@
+{
+  "id": "hokkaido-ito",
+  "japaneseName": "イトウ（暫定）",
+  "scientificName": "Parahucho perryi",
+  "waterTypes": ["fresh"],
+  "habitats": ["lake", "river", "deep"],
+  "diet": ["small_fish"],
+  "baits": ["live"],
+  "lureCategories": ["spoon", "minnow"],
+  "fishingMethods": ["lure"],
+  "distribution": ["hokkaido"],
+  "depthRange": {
+    "min": 20,
+    "max": 90
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 60,
+    "dispersion": 0.13,
+    "minCm": 25,
+    "maxCm": 90
+  },
+  "methodAffinity": {
+    "lure": 0.9,
+    "light_lure": 0.7,
+    "bait": 1.15,
+    "bottom": 1.15
+  },
+  "offeringAffinity": {
+    "jig": 1.2,
+    "cut": 1.2,
+    "live": 1.15,
+    "large": 1.25,
+    "big": 1.3
+  },
+  "weightModel": {
+    "lengthWeightA": 0.0075,
+    "lengthWeightB": 3.05
+  },
+  "conditionModel": {
+    "variability": 0.4
+  },
+  "traitConfiguration": {
+    "heavyWeightRatioThreshold": 1.05
+  },
+  "fightProfile": {
+    "strength": 0.7,
+    "stamina": 0.65,
+    "speed": 0.4
+  },
+  "rarity": 3,
+  "environmentAffinity": {
+    "preferredSeasons": ["spring", "summer"],
+    "preferredTimeOfDay": ["dawn", "morning"],
+    "weatherAffinity": {
+      "clear": 1.05,
+      "cloudy": 1.05,
+      "light_rain": 1,
+      "rain": 1,
+      "windy": 0.9
+    },
+    "preferredTemperatureC": {
+      "min": 14,
+      "max": 22
+    }
+  },
+  "feedingProfile": {
+    "preferredOfferingRatio": 0.16,
+    "largeOfferingPenaltyStart": 0.28,
+    "maxOfferingRatio": 0.4,
+    "mouthSizeFactor": 1
+  },
+  "sourceRefs": [
+    {
+      "id": "provisional-values",
+      "title": "PROVISIONAL — ゲーム調整用の暫定値であり、実在の生態データではない"
+    }
+  ]
+}

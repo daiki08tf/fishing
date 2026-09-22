@@ -1,7 +1,7 @@
 {
   "id": "blue-horizon",
   "name": "Blue Horizon",
-  "description": "ブルーホライズン。大型番手・オフショア・強度重視の Big Game ブランド。（架空ブランド。検証用）",
+  "description": "ブルーホライズン。大型番手・オフショア・強度重視の Big Game ブランド。（架空ブランド）",
   "specialties": ["big-game", "offshore", "heavy"],
   "countryStyle": "international",
   "tagline": "その先の一匹へ。"

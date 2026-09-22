@@ -1,0 +1,54 @@
+{
+  "id": "kanto-kurodai",
+  "japaneseName": "クロダイ（暫定）",
+  "scientificName": "Acanthopagrus schlegelii",
+  "waterTypes": ["salt", "brackish"],
+  "habitats": ["pier", "structure", "estuary"],
+  "diet": ["crustacean", "shellfish"],
+  "baits": ["crab", "worm"],
+  "lureCategories": ["soft_plastic", "minnow"],
+  "fishingMethods": ["bait", "light_lure"],
+  "distribution": ["tokyo-area"],
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 38,
+    "dispersion": 0.09,
+    "minCm": 18,
+    "maxCm": 50
+  },
+  "methodAffinity": {
+    "lure": 1.15,
+    "light_lure": 0.95,
+    "bait": 0.95,
+    "bottom": 0.9
+  },
+  "offeringAffinity": {
+    "vibration": 1.2,
+    "minnow": 1.1,
+    "jig": 1.05,
+    "topwater": 1.1,
+    "mid": 1.1
+  },
+  "weightModel": {
+    "lengthWeightA": 0.009,
+    "lengthWeightB": 3
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "traitConfiguration": {
+    "oldChance": 0.1
+  },
+  "fightProfile": {
+    "strength": 0.55,
+    "stamina": 0.55,
+    "speed": 0.6
+  },
+  "rarity": 2,
+  "sourceRefs": [
+    {
+      "id": "provisional-values",
+      "title": "PROVISIONAL — ゲーム調整用の暫定値であり、実在の生態データではない"
+    }
+  ]
+}

@@ -170,6 +170,22 @@ Skillが緩やかに改善してよい対象:
 - Knowledge は予兆の文章の精度にだけ効く（結果は変えない）。
   Knowledge が低くてもゲームは成立する
 
+### Phase 10.1 — Playtest Cleanup（runtime Content と fixture の分離）
+
+- **プレイヤーが見る Content（`src/content/data`）に検証用の合成魚を置かない。**
+  合成魚（サンプル魚 A〜J）は `tests/fixtures/content/fish-species/` に置き、
+  test / simulation だけが `loadFixtureContent()` で追加読み込みする。
+  runtime の Spot は常に `src/content/data` だけを参照する
+- 通常プレイの画面に内部情報（seed / tick / 内部 state 名 / phase code）を出さない。
+  開発用の導線は `import.meta.env.DEV` のときだけ表示する
+- 古い Save に「今の Content に無い魚種 id」が残っていてもアプリは落ちない。
+  表示（記録種数）は今の Content にある魚種だけを数え、**Save 自体は書き換えない**
+- プレイテストのやり直しは、開発ビルドの HOME にある「セーブデータを初期化」で行う。
+  起動時に勝手に Save を消す処理は入れない
+- 釣行中の FishingEngine は、釣果記録の副作用（世界時間 → Environment → Conditions、
+  成長 → 倍率）では作り直さない。セッション開始時の入力で固定する
+  （作り直すと、取り込んだ瞬間に画面が最初の状態へ戻ってしまう）
+
 ## 6. Phase 0 で定義する機械判定可能な制約
 
 Phase 0では、CI / lint / testで機械的に判定できる制約だけを定義する。

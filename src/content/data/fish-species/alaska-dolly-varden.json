@@ -3,7 +3,7 @@
   "japaneseName": "ドリーバーデン（暫定）",
   "waterTypes": ["fresh", "brackish"],
   "distribution": ["alaska"],
-  "habitats": ["alaska-sample-river", "alaska-sample-gravel"],
+  "habitats": ["river", "gravel"],
   "depthRange": {
     "min": 1,
     "max": 15
@@ -21,7 +21,7 @@
   "currentPreference": {
     "preference": "slow"
   },
-  "diet": ["alaska-sample-prey"],
+  "diet": ["small_fish"],
   "baits": ["roe", "worm", "shrimp"],
   "lureCategories": ["spoon", "minnow", "soft_plastic", "jig"],
   "fishingMethods": ["light_lure", "lure", "bait"],
@@ -66,10 +66,10 @@
     "preferredSeasons": ["summer", "autumn"],
     "preferredTimeOfDay": ["dawn", "evening"],
     "weatherAffinity": {
-      "clear": 1.0,
+      "clear": 1,
       "cloudy": 1.05,
       "light_rain": 1.05,
-      "rain": 1.0,
+      "rain": 1,
       "windy": 0.9
     },
     "flowAffinity": {
@@ -87,6 +87,6 @@
     "preferredOfferingRatio": 0.16,
     "largeOfferingPenaltyStart": 0.3,
     "maxOfferingRatio": 0.4,
-    "mouthSizeFactor": 1.0
+    "mouthSizeFactor": 1
   }
 }

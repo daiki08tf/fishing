@@ -11,6 +11,7 @@ import { NEUTRAL_FISHING_MODIFIERS } from '../../domain/fishing/PlayerFishingMod
 import { bestFishFinderOf, resolveTackle } from '../../domain/tackle'
 import { DAY_OF_WEEK_LABELS, dayOfWeekOf, formatWorldTime, isWeekend } from '../../domain/world'
 import { spotKnowledgeScore } from '../../domain/knowledge/spotKnowledge'
+import { clearDevelopmentSave } from '../../app/persistence/developmentReset'
 import { useAppStore } from '../../state/appStore'
 import { usePlayerStore } from '../../state/playerStore'
 import { ContentErrorPanel } from '../world/ContentErrorPanel'
@@ -92,6 +93,11 @@ export const HomeScreen = () => {
   const speciesNames = Object.fromEntries(
     content.value.species.map((species) => [String(species.id), species.japaneseName]),
   )
+  /*
+   * 古い Save に、今の Content に無い魚種 id が残っていることがある
+   * （Content の入れ替え・削除）。記録数は「今いる魚種」だけを数える。
+   */
+  const knownSpeciesIds = new Set(content.value.species.map((species) => String(species.id)))
   const trip = world.trip
   const monthlyFree = finance.salaryIncome - finance.simplifiedLivingCost
 
@@ -129,7 +135,7 @@ export const HomeScreen = () => {
           </div>
           <div>
             <dt>記録した魚種</dt>
-            <dd>{recordedSpeciesCount(codex)} 種</dd>
+            <dd>{recordedSpeciesCount(codex, knownSpeciesIds)} 種</dd>
           </div>
           <div>
             <dt>発見した釣り場</dt>
@@ -199,6 +205,35 @@ export const HomeScreen = () => {
 
         {notice === null ? null : <p className="notice">{notice}</p>}
       </section>
+
+      {/*
+        開発用（`npm run dev` / `vite dev` のみ）。production build では出ない。
+        プレイテストで最初から遊び直すための手段を 1 つだけ置く。
+      */}
+      {import.meta.env.DEV ? (
+        <section className="panel">
+          <h3 className="panel__subheading">開発用</h3>
+          <p className="panel__body">
+            保存（Codex / 成長 / 所持金 / 釣り場）を初期化して、最初からやり直す。
+          </p>
+          <button
+            className="button"
+            type="button"
+            onClick={() => {
+              void (async () => {
+                if (!window.confirm('保存データを初期化して、最初からやり直しますか？')) {
+                  return
+                }
+
+                await clearDevelopmentSave()
+                window.location.reload()
+              })()
+            }}
+          >
+            セーブデータを初期化
+          </button>
+        </section>
+      ) : null}
 
       {environment === null || conditions === null ? null : (
         <ConditionPanel

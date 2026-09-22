@@ -1,7 +1,7 @@
 {
   "id": "gamakaze",
   "name": "Gamakaze",
-  "description": "ガマカゼ。実戦本位。高負荷での安定性とフック・磯・餌釣りを得意とする。（架空ブランド。検証用）",
+  "description": "ガマカゼ。実戦本位。高負荷での安定性とフック・磯・餌釣りを得意とする。（架空ブランド）",
   "specialties": ["reliability", "hooking", "abrasion"],
   "countryStyle": "japan_domestic",
   "tagline": "掛けて、獲る。"

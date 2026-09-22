@@ -26,7 +26,7 @@
       "baseOneWayCost": 600
     }
   ],
-  "habitatTags": ["phase1-sample-deep"],
+  "habitatTags": ["deep"],
   "depth": {
     "depthRangeM": {
       "min": 2,
@@ -35,11 +35,11 @@
   },
   "fishTable": [
     {
-      "speciesId": "phase2-sample-fish-e",
+      "speciesId": "kanto-koi",
       "basePresence": 0.6
     },
     {
-      "speciesId": "phase2-sample-fish-i",
+      "speciesId": "kanto-namazu",
       "basePresence": 0.3
     }
   ],

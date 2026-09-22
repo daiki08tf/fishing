@@ -26,17 +26,37 @@
       "baseOneWayCost": 0
     }
   ],
-  "habitatTags": ["hokkaido-sample-coast", "hokkaido-sample-surf"],
-  "depth": { "depthRangeM": { "min": 2, "max": 25 } },
+  "habitatTags": ["coast", "surf"],
+  "depth": {
+    "depthRangeM": {
+      "min": 2,
+      "max": 25
+    }
+  },
   "fishTable": [
-    { "speciesId": "hokkaido-masu-salmon", "basePresence": 0.35 },
-    { "speciesId": "phase2-sample-fish-c", "basePresence": 0.5 },
-    { "speciesId": "phase2-sample-fish-i", "basePresence": 0.3 }
+    {
+      "speciesId": "hokkaido-masu-salmon",
+      "basePresence": 0.35
+    },
+    {
+      "speciesId": "kanto-seabass",
+      "basePresence": 0.5
+    },
+    {
+      "speciesId": "kanto-buri",
+      "basePresence": 0.3
+    }
   ],
   "knowledgeConfig": {
     "reveals": [
-      { "field": "main_species", "minKnowledge": 20 },
-      { "field": "habitat", "minKnowledge": 50 }
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "habitat",
+        "minKnowledge": 50
+      }
     ]
   }
 }

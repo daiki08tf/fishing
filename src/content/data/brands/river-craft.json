@@ -1,7 +1,7 @@
 {
   "id": "river-craft",
   "name": "River Craft",
-  "description": "リバークラフト。渓流・トラウト・小型プラグに特化する。（架空ブランド。検証用）",
+  "description": "リバークラフト。渓流・トラウト・小型プラグに特化する。（架空ブランド）",
   "specialties": ["trout", "stream", "finesse"],
   "countryStyle": "japan_domestic",
   "tagline": "流れを、読む。"

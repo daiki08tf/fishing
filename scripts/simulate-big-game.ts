@@ -1,5 +1,5 @@
 import { pathToFileURL } from 'node:url'
-import { loadContentFromDirectory } from '../src/content/load/nodeContent'
+import { loadFixtureContent, SAMPLE_SPECIES } from '../tests/fixtures/content'
 import type { BuiltInContent } from '../src/content/catalog/assembleContent'
 import type { GearItem, RodDefinition } from '../src/domain/gear/Gear'
 import { FishingEngine } from '../src/domain/fishing'
@@ -132,7 +132,7 @@ export const buildTackleLoadout = (input: {
 }
 
 export const simulateBigGame = (): BigGameResult => {
-  const content = loadContentFromDirectory()
+  const content = loadFixtureContent()
   const lines: string[] = []
   const skill = resolveFishingModifiers({
     skills: createInitialProgression().skills,
@@ -251,7 +251,7 @@ export const simulateBigGame = (): BigGameResult => {
 
   const chinook = runSpecies('alaska-chinook-salmon')
   const halibut = runSpecies('alaska-pacific-halibut')
-  const small = runSpecies('phase1-sample-fish')
+  const small = runSpecies(SAMPLE_SPECIES.small)
 
   const report = (title: string, stats: Readonly<Record<string, Stats>>): void => {
     lines.push('', `=== ${title} ===`)

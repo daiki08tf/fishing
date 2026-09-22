@@ -1,7 +1,7 @@
 {
   "id": "daiva",
   "name": "Daiva",
-  "description": "ダイヴァ。軽量・高感度。軽さと低慣性でレスポンスを稼ぐ。（架空ブランド。検証用）",
+  "description": "ダイヴァ。軽量・高感度。軽さと低慣性でレスポンスを稼ぐ。（架空ブランド）",
   "specialties": ["lightweight", "response", "sensitivity"],
   "countryStyle": "japan_domestic",
   "tagline": "感度の先へ。"

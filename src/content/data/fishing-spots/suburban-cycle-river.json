@@ -22,7 +22,7 @@
       "baseOneWayCost": 0
     }
   ],
-  "habitatTags": ["phase1-sample-river", "phase1-sample-shallow"],
+  "habitatTags": ["river", "shallow"],
   "depth": {
     "depthRangeM": {
       "min": 1,
@@ -31,11 +31,11 @@
   },
   "fishTable": [
     {
-      "speciesId": "phase1-sample-fish",
+      "speciesId": "kanto-funa",
       "basePresence": 0.7
     },
     {
-      "speciesId": "phase2-sample-fish-d",
+      "speciesId": "kanto-ugui",
       "basePresence": 0.5
     }
   ],

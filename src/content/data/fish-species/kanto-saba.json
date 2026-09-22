@@ -1,0 +1,53 @@
+{
+  "id": "kanto-saba",
+  "japaneseName": "マサバ（暫定）",
+  "scientificName": "Scomber japonicus",
+  "waterTypes": ["salt", "brackish"],
+  "habitats": ["bay", "surf", "offshore"],
+  "diet": ["plankton", "small_fish"],
+  "baits": ["cut"],
+  "lureCategories": ["metal_jig"],
+  "fishingMethods": ["light_lure", "bait"],
+  "distribution": ["tokyo-area"],
+  "lengthModel": {
+    "kind": "normal",
+    "meanCm": 28,
+    "standardDeviationCm": 3.5,
+    "minCm": 12,
+    "maxCm": 39
+  },
+  "methodAffinity": {
+    "lure": 1.05,
+    "light_lure": 1,
+    "bait": 1,
+    "bottom": 1
+  },
+  "offeringAffinity": {
+    "minnow": 1.1,
+    "vibration": 1.05,
+    "cut": 1.05,
+    "mid": 1.1
+  },
+  "weightModel": {
+    "lengthWeightA": 0.0098,
+    "lengthWeightB": 3.05
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "traitConfiguration": {
+    "scarredChance": 0.15
+  },
+  "fightProfile": {
+    "strength": 0.5,
+    "stamina": 0.5,
+    "speed": 0.55
+  },
+  "rarity": 2,
+  "sourceRefs": [
+    {
+      "id": "provisional-values",
+      "title": "PROVISIONAL — ゲーム調整用の暫定値であり、実在の生態データではない"
+    }
+  ]
+}

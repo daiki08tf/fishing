@@ -22,7 +22,7 @@
       "baseOneWayCost": 0
     }
   ],
-  "habitatTags": ["phase1-sample-shallow", "phase1-sample-surf"],
+  "habitatTags": ["shallow", "surf"],
   "depth": {
     "depthRangeM": {
       "min": 2,
@@ -31,11 +31,11 @@
   },
   "fishTable": [
     {
-      "speciesId": "phase2-sample-fish-c",
+      "speciesId": "kanto-seabass",
       "basePresence": 0.6
     },
     {
-      "speciesId": "phase2-sample-fish-g",
+      "speciesId": "kanto-kurodai",
       "basePresence": 0.5
     }
   ],

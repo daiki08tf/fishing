@@ -1,0 +1,109 @@
+{
+  "id": "kanto-maaji",
+  "japaneseName": "マアジ（暫定）",
+  "scientificName": "Trachurus japonicus",
+  "waterTypes": ["salt", "brackish"],
+  "habitats": ["shallow", "pier", "estuary"],
+  "diet": ["plankton", "small_fish"],
+  "baits": ["worm", "cut"],
+  "lureCategories": ["minnow", "metal_jig"],
+  "fishingMethods": ["light_lure", "bait"],
+  "distribution": ["tokyo-area"],
+  "depthRange": {
+    "min": 1,
+    "max": 15
+  },
+  "temperatureRange": {
+    "min": 12,
+    "max": 24
+  },
+  "seasonality": {
+    "months": [4, 5, 6, 7, 8, 9, 10]
+  },
+  "timeActivity": {
+    "periods": ["dawn", "morning", "evening"]
+  },
+  "tidePreference": {
+    "preference": "rising"
+  },
+  "currentPreference": {
+    "preference": "moderate"
+  },
+  "methodAffinity": {
+    "lure": 1.05,
+    "light_lure": 1.1,
+    "bait": 1,
+    "bottom": 0.9
+  },
+  "offeringAffinity": {
+    "minnow": 1.1,
+    "spoon": 1.05,
+    "soft_plastic": 1.1,
+    "worm": 1.05,
+    "mid": 1.15,
+    "small": 0.95
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 26,
+    "dispersion": 0.12,
+    "minCm": 10,
+    "maxCm": 38
+  },
+  "weightModel": {
+    "lengthWeightA": 0.0095,
+    "lengthWeightB": 3.05
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "traitConfiguration": {
+    "trophyPercentileThreshold": 1,
+    "strongRunnerChance": 0.06
+  },
+  "fightProfile": {
+    "strength": 0.45,
+    "stamina": 0.5,
+    "speed": 0.55
+  },
+  "rarity": 1,
+  "environmentAffinity": {
+    "preferredSeasons": ["spring", "summer", "autumn"],
+    "preferredTimeOfDay": ["dawn", "evening"],
+    "weatherAffinity": {
+      "clear": 1,
+      "cloudy": 1.1,
+      "light_rain": 1,
+      "rain": 0.95,
+      "windy": 0.9
+    },
+    "tideAffinity": {
+      "low": 0.85,
+      "rising": 1.2,
+      "high": 1.05,
+      "falling": 1
+    },
+    "flowAffinity": {
+      "none": 1,
+      "slow": 1.05,
+      "moderate": 1.05,
+      "strong": 0.95
+    },
+    "preferredTemperatureC": {
+      "min": 16,
+      "max": 24
+    }
+  },
+  "feedingProfile": {
+    "preferredOfferingRatio": 0.16,
+    "largeOfferingPenaltyStart": 0.28,
+    "maxOfferingRatio": 0.4,
+    "mouthSizeFactor": 1
+  },
+  "sourceRefs": [
+    {
+      "id": "provisional-values",
+      "title": "PROVISIONAL — ゲーム調整用の暫定値であり、実在の生態データではない"
+    }
+  ]
+}

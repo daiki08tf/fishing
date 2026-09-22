@@ -3,7 +3,7 @@
   "japaneseName": "キングサーモン（暫定）",
   "waterTypes": ["fresh", "salt"],
   "distribution": ["alaska"],
-  "habitats": ["alaska-sample-river", "alaska-sample-deep"],
+  "habitats": ["river", "deep"],
   "depthRange": {
     "min": 1,
     "max": 30
@@ -21,7 +21,7 @@
   "currentPreference": {
     "preference": "moderate"
   },
-  "diet": ["alaska-sample-prey"],
+  "diet": ["small_fish"],
   "baits": ["roe", "cut", "fish"],
   "lureCategories": ["spoon", "jig", "minnow"],
   "fishingMethods": ["lure", "bait", "bottom"],
@@ -79,11 +79,11 @@
       "low": 0.9,
       "rising": 1.15,
       "high": 1.05,
-      "falling": 1.0
+      "falling": 1
     },
     "flowAffinity": {
       "none": 0.95,
-      "slow": 1.0,
+      "slow": 1,
       "moderate": 1.1,
       "strong": 0.95
     },

@@ -5,7 +5,12 @@
   "areaId": "kenai",
   "environment": "river",
   "dataStatus": "provisional",
-  "access": [{ "kind": "permit", "permitId": "alaska-fishing-permit" }],
+  "access": [
+    {
+      "kind": "permit",
+      "permitId": "alaska-fishing-permit"
+    }
+  ],
   "travelOptions": [
     {
       "id": "creek-walk",
@@ -26,18 +31,41 @@
       "baseOneWayCost": 0
     }
   ],
-  "habitatTags": ["alaska-sample-cold", "alaska-sample-gravel"],
-  "depth": { "depthRangeM": { "min": 1, "max": 5 } },
+  "habitatTags": ["cold", "gravel"],
+  "depth": {
+    "depthRangeM": {
+      "min": 1,
+      "max": 5
+    }
+  },
   "fishTable": [
-    { "speciesId": "alaska-sockeye-salmon", "basePresence": 0.5 },
-    { "speciesId": "alaska-chum-salmon", "basePresence": 0.4 },
-    { "speciesId": "alaska-dolly-varden", "basePresence": 0.4 },
-    { "speciesId": "alaska-arctic-char", "basePresence": 0.3 }
+    {
+      "speciesId": "alaska-sockeye-salmon",
+      "basePresence": 0.5
+    },
+    {
+      "speciesId": "alaska-chum-salmon",
+      "basePresence": 0.4
+    },
+    {
+      "speciesId": "alaska-dolly-varden",
+      "basePresence": 0.4
+    },
+    {
+      "speciesId": "alaska-arctic-char",
+      "basePresence": 0.3
+    }
   ],
   "knowledgeConfig": {
     "reveals": [
-      { "field": "main_species", "minKnowledge": 20 },
-      { "field": "season_pattern", "minKnowledge": 60 }
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "season_pattern",
+        "minKnowledge": 60
+      }
     ]
   }
 }

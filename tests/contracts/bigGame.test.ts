@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { loadContentFromDirectory } from '../../src/content/load/nodeContent'
+import { loadFixtureContent, SAMPLE_SPECIES } from '../fixtures/content'
 import { createFightingFish } from '../../src/domain/fishing/createFightingFish'
 import { FishingEngine } from '../../src/domain/fishing'
 import type { FishIndividual } from '../../src/domain/fish/FishIndividual'
@@ -14,7 +14,7 @@ import { runFightToTerminal } from '../fixtures/fishingPolicies'
 // Phase 9: 大型魚と装備（ライン / リーダー / ドラッグ / フックサイズ）の関係。
 // 期待は「Heavy が大型魚で安定する / ただし万能ではない」。
 
-const content = loadContentFromDirectory()
+const content = loadFixtureContent()
 const skill = resolveFishingModifiers({
   skills: createInitialProgression().skills,
   perks: [],
@@ -151,7 +151,7 @@ describe('big game balance', () => {
   })
 
   it('penalises a hook that does not match the fish size', () => {
-    const small = content.speciesById['phase1-sample-fish']
+    const small = content.speciesById[SAMPLE_SPECIES.small]
     const loadout = heavyLoadout()
     const bigHook = loadout.hookId
     const smallHook = asGearId(

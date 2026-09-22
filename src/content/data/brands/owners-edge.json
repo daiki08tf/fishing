@@ -1,7 +1,7 @@
 {
   "id": "owners-edge",
   "name": "Owner's Edge",
-  "description": "オーナーズエッジ。フックとターミナルタックル。最後の一点で逃がさない。（架空ブランド。検証用）",
+  "description": "オーナーズエッジ。フックとターミナルタックル。最後の一点で逃がさない。（架空ブランド）",
   "specialties": ["hook", "terminal", "reliability"],
   "countryStyle": "japan_domestic",
   "tagline": "最後の一点で、逃がさない。"

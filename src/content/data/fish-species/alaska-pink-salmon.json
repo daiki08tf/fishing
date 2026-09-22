@@ -3,7 +3,7 @@
   "japaneseName": "カラフトマス（暫定）",
   "waterTypes": ["fresh", "salt"],
   "distribution": ["alaska"],
-  "habitats": ["alaska-sample-river", "alaska-sample-bay"],
+  "habitats": ["river", "bay"],
   "depthRange": {
     "min": 1,
     "max": 15
@@ -21,7 +21,7 @@
   "currentPreference": {
     "preference": "slow"
   },
-  "diet": ["alaska-sample-prey"],
+  "diet": ["small_fish"],
   "baits": ["roe", "shrimp"],
   "lureCategories": ["spoon", "minnow", "soft_plastic"],
   "fishingMethods": ["lure", "light_lure", "bait"],
@@ -68,7 +68,7 @@
     "weatherAffinity": {
       "clear": 1.05,
       "cloudy": 1.05,
-      "light_rain": 1.0,
+      "light_rain": 1,
       "rain": 0.95,
       "windy": 0.9
     },
@@ -79,7 +79,7 @@
       "falling": 1.05
     },
     "flowAffinity": {
-      "none": 1.0,
+      "none": 1,
       "slow": 1.05,
       "moderate": 1.05,
       "strong": 0.9

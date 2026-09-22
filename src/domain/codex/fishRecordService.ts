@@ -108,5 +108,17 @@ export const recordCatch = (state: CodexState, entry: FishRecordEntry): CatchRec
   }
 }
 
-/** 記録済みの魚種数。 */
-export const recordedSpeciesCount = (state: CodexState): number => Object.keys(state.species).length
+/**
+ * 記録済みの魚種数。
+ *
+ * `knownSpeciesIds` を渡すと、その集合に含まれる魚種だけを数える。
+ * 古い Save に残った、今の Content に存在しない魚種 id（削除・改名された魚）を
+ * 「記録した魚種」として数えないための入口である（Save 自体は書き換えない）。
+ */
+export const recordedSpeciesCount = (
+  state: CodexState,
+  knownSpeciesIds?: ReadonlySet<string>,
+): number =>
+  knownSpeciesIds === undefined
+    ? Object.keys(state.species).length
+    : Object.keys(state.species).filter((id) => knownSpeciesIds.has(id)).length

@@ -1,9 +1,62 @@
 # Handoff
 
-最終更新: Phase 10（Text Fishing Battle）完了
+最終更新: Phase 10.1（Playtest Cleanup）完了
 
 > 以下の Phase 6 / 6.5 節は履歴として残している。件数・Save version・次 Phase については、
-> この Phase 10 / 9 / 8 / 7A.1 / 7A 節と `.ai/current-task.md` を優先する。
+> この Phase 10.1 / 10 / 9 / 8 / 7A.1 / 7A 節と `.ai/current-task.md` を優先する。
+
+## Phase 10.1（Playtest Cleanup）
+
+実機プレイで見つかった「開発・検証用の残り」を消した。新機能は追加していない。
+
+### 何が漏れていたか
+
+- **runtime Content に検証用の合成魚が入っていた**
+  （`src/content/data/fish-species/phase1-sample-fish` / `phase2-sample-fish-*` の 10 件）。
+  東京近郊の釣り場の `fishTable` がこれを参照していたため、
+  最初に釣れる魚も Codex も結果表示も「サンプル魚E（検証用）」になっていた
+- Fishing 画面に `tick XX / この状態 XX` / `seed: ...` / `RAWSTATE`（IDLE / FIGHTING など）が出ていた
+- 釣り上げた直後に画面が「待機」に戻り、直近の釣果と「この魚種の記録はまだない」が
+  並んで見えていた（釣果記録の副作用で Engine が作り直されていた）
+
+### 直したこと
+
+- runtime Content を実在の魚名に置き換えた（東京近郊 13 / 北海道 3 / アラスカ 10 = 26 件）。
+  数値プロファイルは移設した検証用魚から引き継ぎ、**ゲームバランスは変えていない**
+  （`simulate:big-game` / `text-battle` / `catchability` / `environment` は同じ結果）
+- 検証用の合成魚（サンプル魚 A〜J）は `tests/fixtures/content/fish-species/` へ移動し、
+  test / simulation だけが `tests/fixtures/content.ts` の `loadFixtureContent()` で読む。
+  runtime の Spot からは参照できない（Spot は常に `src/content/data` を見る）
+- 通常プレイの画面から seed / tick / 内部 state 名 / phase code を削除した
+- 釣行中の Engine は、釣果記録の副作用（世界時間 → Environment、成長 → 倍率）で
+  作り直さない。セッション開始時の入力で固定する（`sessionInputsRef`）
+- 結果表示を「直近の釣果」と「〈魚種名〉の記録」に分け、矛盾しないようにした
+- 古い Save に今の Content に無い魚種 id が残っていても落ちない
+  （記録数は今の Content にある魚種だけを数える。Save は書き換えない）
+- 開発ビルドの HOME に「セーブデータを初期化」を追加（`import.meta.env.DEV` のときだけ表示）
+
+### 検証状況（phase-10.1-playtest-cleanup 時点）
+
+- `npm run check`: PASS（70 test files / 617 tests）
+- `npm run validate:content`: PASS（657 records = 653 − 10 + 14）
+- simulations: text-battle 10/10、catchability 14/14、environment 8/8、big-game 9/9、
+  expedition 12/12、transport 18/18、tackle 11/11、catalog 9/9、day 9/9、trip 6/6、
+  progression 9/9、sample:individuals invalid=0
+- `simulate:fishing --seed demo`: LANDED（44 ticks / 48 steps、釣れる魚は「マアジ」）
+- bundle: JS 751.26 kB（gzip 186.43 kB）、CSS 7.13 kB（gzip 1.86 kB）
+- 新規 Save で HOME → MAP → 釣り場 → CAST → アワセ → Text Battle → 取り込み → 記録 を
+  jsdom + React DOM の実イベントで確認（内部情報が画面に出ないこと、
+  最初の 1 匹が `kanto-*` の魚であることを確認）
+- 古い Save 相当（codex に `phase2-sample-fish-e` が残る状態）で HOME が落ちず、
+  「記録した魚種 0 種」と表示することを確認
+- 実ブラウザ（Chrome headless）は sandbox 制約で起動できないため未実施
+
+### Save / reset
+
+- Save schema は v7 のまま（battle も Content の入れ替えも Save 形式を変えない）
+- 古い Save の魚種 id は消さない（読み飛ばすだけ）。プレイテストで最初から遊ぶときは
+  開発ビルドの HOME →「セーブデータを初期化」を使う。
+  手動の場合はブラウザのサイトデータ（IndexedDB）を削除する
 
 ## Phase 10（Text Fishing Battle）
 

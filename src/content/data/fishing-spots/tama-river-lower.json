@@ -31,7 +31,7 @@
       "baseOneWayCost": 520
     }
   ],
-  "habitatTags": ["phase1-sample-river", "phase1-sample-shallow"],
+  "habitatTags": ["river", "shallow"],
   "depth": {
     "depthRangeM": {
       "min": 1,
@@ -40,19 +40,19 @@
   },
   "fishTable": [
     {
-      "speciesId": "phase1-sample-fish",
+      "speciesId": "kanto-maaji",
       "basePresence": 0.7
     },
     {
-      "speciesId": "phase2-sample-fish-d",
+      "speciesId": "kanto-ugui",
       "basePresence": 0.5
     },
     {
-      "speciesId": "phase2-sample-fish-f",
+      "speciesId": "kanto-haze",
       "basePresence": 0.6
     },
     {
-      "speciesId": "phase2-sample-fish-h",
+      "speciesId": "kanto-funa",
       "basePresence": 0.6
     }
   ],
