@@ -1,0 +1,44 @@
+.buyer-card-list {
+  display: grid;
+  gap: 0.6rem;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.buyer-card {
+  width: 100%;
+  display: block;
+  text-align: left;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-panel);
+  padding: 0.7rem 0.8rem;
+  font: inherit;
+  color: var(--color-text);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.buyer-card--active {
+  border-color: var(--color-accent);
+  background-color: color-mix(in srgb, var(--color-accent) 10%, var(--color-surface));
+}
+
+.buyer-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.buyer-card__desc {
+  margin: 0.5rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
+.quote-compare {
+  margin-top: 0.5rem;
+}
