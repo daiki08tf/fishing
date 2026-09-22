@@ -36,6 +36,18 @@ jobs:
       # 検証では書き換えない。整形の確認のみを行う。
       - name: Export formatted files
         run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs'
+          import path from 'node:path'
+          const dir = 'src/content/data/fish-species'
+          for (const name of fs.readdirSync(dir).filter((entry) => entry.endsWith('.json'))) {
+            const file = path.join(dir, name)
+            const data = JSON.parse(fs.readFileSync(file, 'utf8'))
+            data.methodAffinity ??= { lure: 1, light_lure: 1, bait: 1, bottom: 1 }
+            data.offeringAffinity ??= { minnow: 1, soft_plastic: 1, worm: 1, mid: 1, small: 1 }
+            fs.writeFileSync(file, JSON.stringify(data, null, 2) + '\n')
+          }
+          NODE
           npx prettier --write .
           git diff --name-only > /tmp/formatted-files.txt
           while IFS= read -r f; do
