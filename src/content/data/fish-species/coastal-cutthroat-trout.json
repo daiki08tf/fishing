@@ -1,0 +1,46 @@
+{
+  "id": "coastal-cutthroat-trout",
+  "japaneseName": "カットスロートトラウト（暫定）",
+  "scientificName": "Oncorhynchus clarkii clarkii",
+  "waterTypes": [
+    "fresh",
+    "brackish"
+  ],
+  "distribution": [
+    "british-columbia"
+  ],
+  "habitats": [
+    "river",
+    "estuary"
+  ],
+  "depthRange": {
+    "min": 0,
+    "max": 35
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 35,
+    "dispersion": 0.18,
+    "minCm": 15,
+    "maxCm": 70
+  },
+  "weightModel": {
+    "lengthWeightA": 0.009,
+    "lengthWeightB": 3.08
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "fightProfile": {
+    "strength": 0.58,
+    "stamina": 0.62,
+    "speed": 0.7
+  },
+  "rarity": 1.6,
+  "sourceRefs": [
+    {
+      "id": "phase12-provisional",
+      "title": "PROVISIONAL — Phase 12 gameplay tuning; biological values require later verification"
+    }
+  ]
+}
