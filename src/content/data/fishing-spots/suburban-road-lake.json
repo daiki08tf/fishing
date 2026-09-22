@@ -14,15 +14,27 @@
   "travelOptions": [
     {
       "id": "ordinary-road",
-      "transportTypes": ["compact_car", "suv", "motorcycle", "rental_car"],
-      "requiredCapabilities": ["road_access"],
-      "features": ["vehicle_rental"],
+      "transportTypes": [
+        "compact_car",
+        "suv",
+        "motorcycle",
+        "rental_car"
+      ],
+      "requiredCapabilities": [
+        "road_access"
+      ],
+      "features": [
+        "vehicle_rental"
+      ],
       "baseMinutes": 110,
       "distanceKm": 40,
       "baseOneWayCost": 500
     }
   ],
-  "habitatTags": ["shallow", "deep"],
+  "habitatTags": [
+    "shallow",
+    "deep"
+  ],
   "depth": {
     "depthRangeM": {
       "min": 2,
@@ -31,11 +43,11 @@
   },
   "fishTable": [
     {
-      "speciesId": "kanto-funa",
+      "speciesId": "funa",
       "basePresence": 0.6
     },
     {
-      "speciesId": "kanto-nijimasu",
+      "speciesId": "rainbow-trout",
       "basePresence": 0.4
     }
   ],
