@@ -1,9 +1,18 @@
 {
-  "id": "alaska-dolly-varden",
+  "id": "dolly-varden",
   "japaneseName": "ドリーバーデン（暫定）",
-  "waterTypes": ["fresh", "brackish"],
-  "distribution": ["alaska"],
-  "habitats": ["river", "gravel"],
+  "waterTypes": [
+    "fresh",
+    "brackish"
+  ],
+  "distribution": [
+    "alaska",
+    "british-columbia"
+  ],
+  "habitats": [
+    "river",
+    "gravel"
+  ],
   "depthRange": {
     "min": 1,
     "max": 15
@@ -13,18 +22,42 @@
     "max": 14
   },
   "seasonality": {
-    "months": [6, 7, 8, 9]
+    "months": [
+      6,
+      7,
+      8,
+      9
+    ]
   },
   "timeActivity": {
-    "periods": ["dawn", "morning", "evening"]
+    "periods": [
+      "dawn",
+      "morning",
+      "evening"
+    ]
   },
   "currentPreference": {
     "preference": "slow"
   },
-  "diet": ["small_fish"],
-  "baits": ["roe", "worm", "shrimp"],
-  "lureCategories": ["spoon", "minnow", "soft_plastic", "jig"],
-  "fishingMethods": ["light_lure", "lure", "bait"],
+  "diet": [
+    "small_fish"
+  ],
+  "baits": [
+    "roe",
+    "worm",
+    "shrimp"
+  ],
+  "lureCategories": [
+    "spoon",
+    "minnow",
+    "soft_plastic",
+    "jig"
+  ],
+  "fishingMethods": [
+    "light_lure",
+    "lure",
+    "bait"
+  ],
   "methodAffinity": {
     "lure": 1.1,
     "light_lure": 1.15,
@@ -63,8 +96,14 @@
   },
   "rarity": 1.4,
   "environmentAffinity": {
-    "preferredSeasons": ["summer", "autumn"],
-    "preferredTimeOfDay": ["dawn", "evening"],
+    "preferredSeasons": [
+      "summer",
+      "autumn"
+    ],
+    "preferredTimeOfDay": [
+      "dawn",
+      "evening"
+    ],
     "weatherAffinity": {
       "clear": 1,
       "cloudy": 1.05,
