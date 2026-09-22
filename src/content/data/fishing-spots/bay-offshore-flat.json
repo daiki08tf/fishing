@@ -19,15 +19,22 @@
   "travelOptions": [
     {
       "id": "rail-route",
-      "transportTypes": ["train"],
-      "requiredCapabilities": ["public_transport"],
+      "transportTypes": [
+        "train"
+      ],
+      "requiredCapabilities": [
+        "public_transport"
+      ],
       "features": [],
       "baseMinutes": 50,
       "distanceKm": 32,
       "baseOneWayCost": 420
     }
   ],
-  "habitatTags": ["deep", "surf"],
+  "habitatTags": [
+    "deep",
+    "surf"
+  ],
   "depth": {
     "depthRangeM": {
       "min": 5,
@@ -36,15 +43,15 @@
   },
   "fishTable": [
     {
-      "speciesId": "kanto-seabass",
+      "speciesId": "seabass",
       "basePresence": 0.6
     },
     {
-      "speciesId": "kanto-bora",
+      "speciesId": "bora",
       "basePresence": 0.4
     },
     {
-      "speciesId": "kanto-buri",
+      "speciesId": "buri",
       "basePresence": 0.2
     }
   ],
