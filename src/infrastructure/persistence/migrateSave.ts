@@ -3,7 +3,14 @@ import { emptyRepetitionState } from '../../domain/progression/repetitionDecay'
 import { emptyCodexState } from '../../domain/codex'
 import { createInitialTransportState, grantOwnedTransport } from '../../domain/access/Transport'
 import { createInitialExpeditionState } from '../../domain/expedition'
-import { asGearId, asRegionId, asTransportId, type TransportId } from '../../domain/ids'
+import {
+  asFishSpeciesId,
+  asGearId,
+  asRegionId,
+  asTransportId,
+  type FishSpeciesId,
+  type TransportId,
+} from '../../domain/ids'
 import { createStarterLoadout, starterInventoryIds } from '../../domain/tackle/Loadout'
 import { createInitialWorld } from '../../domain/world/worldSession'
 import { DEFAULT_WORLD_TUNING } from '../../domain/world/WorldTuning'
@@ -15,6 +22,8 @@ import {
   SAVE_SCHEMA_VERSION_V4,
   SAVE_SCHEMA_VERSION_V5,
   SAVE_SCHEMA_VERSION_V6,
+  SAVE_SCHEMA_VERSION_V7,
+  SAVE_SCHEMA_VERSION_V8,
   type CurrentSave,
   type LegacyTransportType,
   type LegacyWorldState,
@@ -25,6 +34,7 @@ import {
   type SaveGameV5,
   type SaveGameV6,
   type SaveGameV7,
+  type SaveGameV8,
 } from '../../domain/save/SaveGame'
 import {
   currentSaveSchema,
@@ -34,6 +44,7 @@ import {
   saveGameV4Schema,
   saveGameV5Schema,
   saveGameV6Schema,
+  saveGameV7Schema,
 } from './saveSchema'
 
 /**
@@ -271,7 +282,7 @@ export const migrateV5ToV6 = (v5: SaveGameV5): SaveGameV6 => {
  * Loadout はそのまま保持する。
  */
 export const migrateV6ToV7 = (v6: SaveGameV6): SaveGameV7 => ({
-  schemaVersion: CURRENT_SAVE_SCHEMA_VERSION,
+  schemaVersion: SAVE_SCHEMA_VERSION_V7,
   createdAt: v6.createdAt,
   updatedAt: v6.updatedAt,
   progression: v6.progression,
@@ -289,8 +300,130 @@ export const migrateV6ToV7 = (v6: SaveGameV6): SaveGameV7 => ({
   loadout: v6.loadout,
 })
 
-const toCurrent = (save: SaveGameV4): SaveGameV7 =>
-  migrateV6ToV7(migrateV5ToV6(migrateV4ToV5(save)))
+/**
+ * Phase 12: 旧「地域-prefixed」魚種 ID を世界共通 ID へ正規化する。
+ *
+ * FishSpecies は世界で 1 つ。地域差は FishOccurrence に置く。
+ * v8 migration では、プレイヤーの既存記録を失わないよう
+ * Codex / Knowledge / repetition の species key を同時に移す。
+ */
+export const LEGACY_SPECIES_ID_MAP: Readonly<Record<string, string>> = {
+  'alaska-arctic-char': 'arctic-char',
+  'alaska-chinook-salmon': 'chinook-salmon',
+  'alaska-chum-salmon': 'chum-salmon',
+  'alaska-coho-salmon': 'coho-salmon',
+  'alaska-dolly-varden': 'dolly-varden',
+  'alaska-lake-trout': 'lake-trout',
+  'alaska-pacific-halibut': 'pacific-halibut',
+  'alaska-pink-salmon': 'pink-salmon',
+  'alaska-rainbow-trout': 'rainbow-trout',
+  'alaska-sockeye-salmon': 'sockeye-salmon',
+  'hokkaido-ame-masu': 'amemasu',
+  'hokkaido-ito': 'ito',
+  'hokkaido-masu-salmon': 'masu-salmon',
+  'kanto-bora': 'bora',
+  'kanto-buri': 'buri',
+  'kanto-funa': 'funa',
+  'kanto-haze': 'haze',
+  'kanto-koi': 'koi',
+  'kanto-kurodai': 'kurodai',
+  'kanto-maaji': 'maaji',
+  'kanto-namazu': 'namazu',
+  'kanto-nijimasu': 'rainbow-trout',
+  'kanto-saba': 'saba',
+  'kanto-seabass': 'seabass',
+  'kanto-shirogisu': 'shirogisu',
+  'kanto-ugui': 'ugui',
+}
+
+export const canonicalSpeciesId = (id: string): FishSpeciesId =>
+  asFishSpeciesId(LEGACY_SPECIES_ID_MAP[id] ?? id)
+
+const remapNumberRecord = (
+  input: Readonly<Record<string, number>>,
+  merge: (existing: number, incoming: number) => number,
+): Readonly<Record<string, number>> => {
+  const output: Record<string, number> = {}
+
+  for (const [rawId, value] of Object.entries(input)) {
+    const id = String(canonicalSpeciesId(rawId))
+    output[id] = output[id] === undefined ? value : merge(output[id] ?? 0, value)
+  }
+
+  return output
+}
+
+const mergeTraits = <T extends string>(left: readonly T[], right: readonly T[]): readonly T[] => {
+  const result = [...left]
+
+  for (const trait of right) {
+    if (!result.includes(trait)) {
+      result.push(trait)
+    }
+  }
+
+  return result
+}
+
+export const migrateV7ToV8 = (v7: SaveGameV7): SaveGameV8 => {
+  const species: Record<string, SaveGameV7['codex']['species'][string]> = {}
+
+  for (const [rawId, record] of Object.entries(v7.codex.species)) {
+    const id = canonicalSpeciesId(rawId)
+    const key = String(id)
+    const personalBest = {
+      ...record.personalBest,
+      speciesId: id,
+    }
+    const incoming = {
+      ...record,
+      speciesId: id,
+      personalBest,
+    }
+    const existing = species[key]
+
+    if (existing === undefined) {
+      species[key] = incoming
+      continue
+    }
+
+    const useIncomingBest = incoming.bestPercentile > existing.bestPercentile
+    species[key] = {
+      speciesId: id,
+      catchCount: existing.catchCount + incoming.catchCount,
+      largestLengthCm: Math.max(existing.largestLengthCm, incoming.largestLengthCm),
+      heaviestWeightKg: Math.max(existing.heaviestWeightKg, incoming.heaviestWeightKg),
+      bestPercentile: Math.max(existing.bestPercentile, incoming.bestPercentile),
+      caughtTraits: mergeTraits(existing.caughtTraits, incoming.caughtTraits),
+      personalBest: useIncomingBest ? incoming.personalBest : existing.personalBest,
+    }
+  }
+
+  return {
+    ...v7,
+    schemaVersion: SAVE_SCHEMA_VERSION_V8,
+    codex: { species },
+    progression: {
+      ...v7.progression,
+      repetition: {
+        ...v7.progression.repetition,
+        species: remapNumberRecord(
+          v7.progression.repetition.species,
+          (existing, incoming) => existing + incoming,
+        ),
+      },
+    },
+    knowledge: {
+      ...v7.knowledge,
+      fish: remapNumberRecord(v7.knowledge.fish, (existing, incoming) =>
+        Math.max(existing, incoming),
+      ),
+    },
+  }
+}
+
+const toCurrent = (save: SaveGameV4): SaveGameV8 =>
+  migrateV7ToV8(migrateV6ToV7(migrateV5ToV6(migrateV4ToV5(save))))
 
 export const migrateSave = (raw: unknown): SaveMigrationResult => {
   if (typeof raw !== 'object' || raw === null || Array.isArray(raw)) {
@@ -431,7 +564,9 @@ export const migrateSave = (raw: unknown): SaveMigrationResult => {
       )
     }
 
-    const migrated = currentSaveSchema.safeParse(migrateV6ToV7(migrateV5ToV6(parsed.data)))
+    const migrated = currentSaveSchema.safeParse(
+      migrateV7ToV8(migrateV6ToV7(migrateV5ToV6(parsed.data))),
+    )
 
     if (!migrated.success) {
       return failure(
@@ -455,7 +590,7 @@ export const migrateSave = (raw: unknown): SaveMigrationResult => {
       )
     }
 
-    const migrated = currentSaveSchema.safeParse(migrateV6ToV7(parsed.data))
+    const migrated = currentSaveSchema.safeParse(migrateV7ToV8(migrateV6ToV7(parsed.data)))
 
     if (!migrated.success) {
       return failure(
@@ -466,6 +601,30 @@ export const migrateSave = (raw: unknown): SaveMigrationResult => {
     }
 
     return { ok: true, save: migrated.data, migratedFrom: SAVE_SCHEMA_VERSION_V6 }
+  }
+
+  if (schemaVersion === SAVE_SCHEMA_VERSION_V7) {
+    const parsed = saveGameV7Schema.safeParse(record)
+
+    if (!parsed.success) {
+      return failure(
+        'invalid_save',
+        'save data failed v7 schema validation',
+        toIssues(parsed.error),
+      )
+    }
+
+    const migrated = currentSaveSchema.safeParse(migrateV7ToV8(parsed.data))
+
+    if (!migrated.success) {
+      return failure(
+        'invalid_save',
+        'migrated save failed current schema validation',
+        toIssues(migrated.error),
+      )
+    }
+
+    return { ok: true, save: migrated.data, migratedFrom: SAVE_SCHEMA_VERSION_V7 }
   }
 
   const parsed = currentSaveSchema.safeParse(record)
