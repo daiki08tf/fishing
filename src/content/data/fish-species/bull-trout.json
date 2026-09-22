@@ -2,16 +2,9 @@
   "id": "bull-trout",
   "japaneseName": "ブルトラウト（暫定）",
   "scientificName": "Salvelinus confluentus",
-  "waterTypes": [
-    "fresh"
-  ],
-  "distribution": [
-    "british-columbia"
-  ],
-  "habitats": [
-    "river",
-    "lake"
-  ],
+  "waterTypes": ["fresh"],
+  "distribution": ["british-columbia"],
+  "habitats": ["river", "lake"],
   "depthRange": {
     "min": 0,
     "max": 50

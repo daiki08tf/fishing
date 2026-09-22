@@ -14,12 +14,8 @@
   "travelOptions": [
     {
       "id": "rail-route",
-      "transportTypes": [
-        "train"
-      ],
-      "requiredCapabilities": [
-        "public_transport"
-      ],
+      "transportTypes": ["train"],
+      "requiredCapabilities": ["public_transport"],
       "features": [],
       "baseMinutes": 40,
       "distanceKm": 24,
@@ -27,22 +23,15 @@
     },
     {
       "id": "bus-route",
-      "transportTypes": [
-        "bus"
-      ],
-      "requiredCapabilities": [
-        "public_transport"
-      ],
+      "transportTypes": ["bus"],
+      "requiredCapabilities": ["public_transport"],
       "features": [],
       "baseMinutes": 55,
       "distanceKm": 24,
       "baseOneWayCost": 520
     }
   ],
-  "habitatTags": [
-    "estuary",
-    "shallow"
-  ],
+  "habitatTags": ["estuary", "shallow"],
   "depth": {
     "depthRangeM": {
       "min": 1,
@@ -115,10 +104,7 @@
         "min": 1,
         "max": 3
       },
-      "habitatTags": [
-        "estuary",
-        "shallow"
-      ]
+      "habitatTags": ["estuary", "shallow"]
     },
     {
       "id": "channel",
@@ -131,10 +117,7 @@
         "min": 2,
         "max": 7
       },
-      "habitatTags": [
-        "estuary",
-        "current"
-      ]
+      "habitatTags": ["estuary", "current"]
     },
     {
       "id": "outer-flow",
@@ -147,10 +130,7 @@
         "min": 4,
         "max": 10
       },
-      "habitatTags": [
-        "open",
-        "current"
-      ]
+      "habitatTags": ["open", "current"]
     }
   ]
 }

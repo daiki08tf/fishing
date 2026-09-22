@@ -2,16 +2,9 @@
   "id": "tachiuo",
   "japaneseName": "タチウオ（暫定）",
   "scientificName": "Trichiurus lepturus",
-  "waterTypes": [
-    "salt"
-  ],
-  "distribution": [
-    "tokyo-area"
-  ],
-  "habitats": [
-    "open",
-    "deep"
-  ],
+  "waterTypes": ["salt"],
+  "distribution": ["tokyo-area"],
+  "habitats": ["open", "deep"],
   "depthRange": {
     "min": 0,
     "max": 65

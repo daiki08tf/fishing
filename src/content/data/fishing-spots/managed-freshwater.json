@@ -18,21 +18,15 @@
   "travelOptions": [
     {
       "id": "bus-route",
-      "transportTypes": [
-        "bus"
-      ],
-      "requiredCapabilities": [
-        "public_transport"
-      ],
+      "transportTypes": ["bus"],
+      "requiredCapabilities": ["public_transport"],
       "features": [],
       "baseMinutes": 70,
       "distanceKm": 38,
       "baseOneWayCost": 520
     }
   ],
-  "habitatTags": [
-    "stream"
-  ],
+  "habitatTags": ["stream"],
   "depth": {
     "depthRangeM": {
       "min": 1,
@@ -73,10 +67,7 @@
         "min": 0.5,
         "max": 2.5
       },
-      "habitatTags": [
-        "bank",
-        "shallow"
-      ]
+      "habitatTags": ["bank", "shallow"]
     },
     {
       "id": "pond-center",
@@ -89,10 +80,7 @@
         "min": 1.5,
         "max": 5
       },
-      "habitatTags": [
-        "open",
-        "pond"
-      ]
+      "habitatTags": ["open", "pond"]
     }
   ]
 }

@@ -2,32 +2,13 @@
   "id": "namazu",
   "japaneseName": "ナマズ（暫定）",
   "scientificName": "Silurus asotus",
-  "waterTypes": [
-    "fresh"
-  ],
-  "habitats": [
-    "lake",
-    "river",
-    "deep"
-  ],
-  "diet": [
-    "small_fish",
-    "crustacean"
-  ],
-  "baits": [
-    "worm",
-    "live"
-  ],
-  "lureCategories": [
-    "small"
-  ],
-  "fishingMethods": [
-    "bait",
-    "light_lure"
-  ],
-  "distribution": [
-    "tokyo-area"
-  ],
+  "waterTypes": ["fresh"],
+  "habitats": ["lake", "river", "deep"],
+  "diet": ["small_fish", "crustacean"],
+  "baits": ["worm", "live"],
+  "lureCategories": ["small"],
+  "fishingMethods": ["bait", "light_lure"],
+  "distribution": ["tokyo-area"],
   "depthRange": {
     "min": 30,
     "max": 120

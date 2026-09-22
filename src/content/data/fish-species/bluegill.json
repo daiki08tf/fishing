@@ -2,16 +2,9 @@
   "id": "bluegill",
   "japaneseName": "ブルーギル（暫定）",
   "scientificName": "Lepomis macrochirus",
-  "waterTypes": [
-    "fresh"
-  ],
-  "distribution": [
-    "tokyo-area"
-  ],
-  "habitats": [
-    "lake",
-    "shallow"
-  ],
+  "waterTypes": ["fresh"],
+  "distribution": ["tokyo-area"],
+  "habitats": ["lake", "shallow"],
   "depthRange": {
     "min": 0,
     "max": 15

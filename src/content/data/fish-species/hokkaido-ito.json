@@ -2,30 +2,13 @@
   "id": "ito",
   "japaneseName": "イトウ（暫定）",
   "scientificName": "Parahucho perryi",
-  "waterTypes": [
-    "fresh"
-  ],
-  "habitats": [
-    "lake",
-    "river",
-    "deep"
-  ],
-  "diet": [
-    "small_fish"
-  ],
-  "baits": [
-    "live"
-  ],
-  "lureCategories": [
-    "spoon",
-    "minnow"
-  ],
-  "fishingMethods": [
-    "lure"
-  ],
-  "distribution": [
-    "hokkaido"
-  ],
+  "waterTypes": ["fresh"],
+  "habitats": ["lake", "river", "deep"],
+  "diet": ["small_fish"],
+  "baits": ["live"],
+  "lureCategories": ["spoon", "minnow"],
+  "fishingMethods": ["lure"],
+  "distribution": ["hokkaido"],
   "depthRange": {
     "min": 20,
     "max": 90
@@ -67,14 +50,8 @@
   },
   "rarity": 3,
   "environmentAffinity": {
-    "preferredSeasons": [
-      "spring",
-      "summer"
-    ],
-    "preferredTimeOfDay": [
-      "dawn",
-      "morning"
-    ],
+    "preferredSeasons": ["spring", "summer"],
+    "preferredTimeOfDay": ["dawn", "morning"],
     "weatherAffinity": {
       "clear": 1.05,
       "cloudy": 1.05,

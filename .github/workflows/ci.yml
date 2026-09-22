@@ -33,16 +33,9 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      - name: Export formatted files
-        run: |
-          npx prettier --write .
-          git diff --name-only > /tmp/formatted-files.txt
-          while IFS= read -r f; do
-            echo "::FORMAT_FILE::$f"
-            base64 -w0 "$f"
-            echo
-          done < /tmp/formatted-files.txt
-          exit 1
+      # 検証では書き換えない。整形の確認のみを行う。
+      - name: Format check
+        run: npm run format:check
 
       - name: Validate content
         run: npm run validate:content

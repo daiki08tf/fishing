@@ -2,17 +2,9 @@
   "id": "coastal-cutthroat-trout",
   "japaneseName": "カットスロートトラウト（暫定）",
   "scientificName": "Oncorhynchus clarkii clarkii",
-  "waterTypes": [
-    "fresh",
-    "brackish"
-  ],
-  "distribution": [
-    "british-columbia"
-  ],
-  "habitats": [
-    "river",
-    "estuary"
-  ],
+  "waterTypes": ["fresh", "brackish"],
+  "distribution": ["british-columbia"],
+  "habitats": ["river", "estuary"],
   "depthRange": {
     "min": 0,
     "max": 35

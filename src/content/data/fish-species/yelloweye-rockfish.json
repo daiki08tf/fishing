@@ -2,17 +2,9 @@
   "id": "yelloweye-rockfish",
   "japaneseName": "イエローアイロックフィッシュ（暫定）",
   "scientificName": "Sebastes ruberrimus",
-  "waterTypes": [
-    "salt"
-  ],
-  "distribution": [
-    "british-columbia",
-    "alaska"
-  ],
-  "habitats": [
-    "reef",
-    "deep"
-  ],
+  "waterTypes": ["salt"],
+  "distribution": ["british-columbia", "alaska"],
+  "habitats": ["reef", "deep"],
   "depthRange": {
     "min": 0,
     "max": 45

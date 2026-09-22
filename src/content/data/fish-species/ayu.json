@@ -2,18 +2,9 @@
   "id": "ayu",
   "japaneseName": "アユ（暫定）",
   "scientificName": "Plecoglossus altivelis",
-  "waterTypes": [
-    "fresh",
-    "brackish"
-  ],
-  "distribution": [
-    "tokyo-area",
-    "hokkaido"
-  ],
-  "habitats": [
-    "river",
-    "current"
-  ],
+  "waterTypes": ["fresh", "brackish"],
+  "distribution": ["tokyo-area", "hokkaido"],
+  "habitats": ["river", "current"],
   "depthRange": {
     "min": 0,
     "max": 16

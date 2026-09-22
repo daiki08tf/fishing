@@ -2,15 +2,9 @@
   "id": "coral-trout",
   "japaneseName": "コーラルトラウト（暫定）",
   "scientificName": "Plectropomus leopardus",
-  "waterTypes": [
-    "salt"
-  ],
-  "distribution": [
-    "queensland"
-  ],
-  "habitats": [
-    "reef"
-  ],
+  "waterTypes": ["salt"],
+  "distribution": ["queensland"],
+  "habitats": ["reef"],
   "depthRange": {
     "min": 0,
     "max": 50

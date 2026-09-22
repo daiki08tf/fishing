@@ -2,33 +2,13 @@
   "id": "haze",
   "japaneseName": "マハゼ（暫定）",
   "scientificName": "Acanthogobius flavimanus",
-  "waterTypes": [
-    "brackish",
-    "fresh",
-    "salt"
-  ],
-  "habitats": [
-    "estuary",
-    "mud_bottom",
-    "canal"
-  ],
-  "diet": [
-    "small_crustacean",
-    "worm"
-  ],
-  "baits": [
-    "worm"
-  ],
-  "lureCategories": [
-    "small"
-  ],
-  "fishingMethods": [
-    "bait",
-    "light_lure"
-  ],
-  "distribution": [
-    "tokyo-area"
-  ],
+  "waterTypes": ["brackish", "fresh", "salt"],
+  "habitats": ["estuary", "mud_bottom", "canal"],
+  "diet": ["small_crustacean", "worm"],
+  "baits": ["worm"],
+  "lureCategories": ["small"],
+  "fishingMethods": ["bait", "light_lure"],
+  "distribution": ["tokyo-area"],
   "lengthModel": {
     "kind": "normal",
     "meanCm": 12,

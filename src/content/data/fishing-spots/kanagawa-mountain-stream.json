@@ -13,24 +13,15 @@
   "travelOptions": [
     {
       "id": "mountain-road",
-      "transportTypes": [
-        "rental_car"
-      ],
-      "requiredCapabilities": [
-        "road_access"
-      ],
-      "features": [
-        "vehicle_rental"
-      ],
+      "transportTypes": ["rental_car"],
+      "requiredCapabilities": ["road_access"],
+      "features": ["vehicle_rental"],
       "baseMinutes": 115,
       "distanceKm": 60,
       "baseOneWayCost": 0
     }
   ],
-  "habitatTags": [
-    "stream",
-    "rock"
-  ],
+  "habitatTags": ["stream", "rock"],
   "depth": {
     "depthRangeM": {
       "min": 0.3,
@@ -49,10 +40,7 @@
         "min": 0.5,
         "max": 2
       },
-      "habitatTags": [
-        "bank",
-        "shallow"
-      ]
+      "habitatTags": ["bank", "shallow"]
     },
     {
       "id": "flow",
@@ -65,10 +53,7 @@
         "min": 1.5,
         "max": 4
       },
-      "habitatTags": [
-        "river",
-        "current"
-      ]
+      "habitatTags": ["river", "current"]
     },
     {
       "id": "far",
@@ -81,10 +66,7 @@
         "min": 1,
         "max": 5
       },
-      "habitatTags": [
-        "far-bank",
-        "current"
-      ]
+      "habitatTags": ["far-bank", "current"]
     }
   ],
   "fishTable": [

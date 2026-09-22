@@ -2,34 +2,13 @@
   "id": "maaji",
   "japaneseName": "マアジ（暫定）",
   "scientificName": "Trachurus japonicus",
-  "waterTypes": [
-    "salt",
-    "brackish"
-  ],
-  "habitats": [
-    "shallow",
-    "pier",
-    "estuary"
-  ],
-  "diet": [
-    "plankton",
-    "small_fish"
-  ],
-  "baits": [
-    "worm",
-    "cut"
-  ],
-  "lureCategories": [
-    "minnow",
-    "metal_jig"
-  ],
-  "fishingMethods": [
-    "light_lure",
-    "bait"
-  ],
-  "distribution": [
-    "tokyo-area"
-  ],
+  "waterTypes": ["salt", "brackish"],
+  "habitats": ["shallow", "pier", "estuary"],
+  "diet": ["plankton", "small_fish"],
+  "baits": ["worm", "cut"],
+  "lureCategories": ["minnow", "metal_jig"],
+  "fishingMethods": ["light_lure", "bait"],
+  "distribution": ["tokyo-area"],
   "depthRange": {
     "min": 1,
     "max": 15
@@ -39,22 +18,10 @@
     "max": 24
   },
   "seasonality": {
-    "months": [
-      4,
-      5,
-      6,
-      7,
-      8,
-      9,
-      10
-    ]
+    "months": [4, 5, 6, 7, 8, 9, 10]
   },
   "timeActivity": {
-    "periods": [
-      "dawn",
-      "morning",
-      "evening"
-    ]
+    "periods": ["dawn", "morning", "evening"]
   },
   "tidePreference": {
     "preference": "rising"
@@ -101,15 +68,8 @@
   },
   "rarity": 1,
   "environmentAffinity": {
-    "preferredSeasons": [
-      "spring",
-      "summer",
-      "autumn"
-    ],
-    "preferredTimeOfDay": [
-      "dawn",
-      "evening"
-    ],
+    "preferredSeasons": ["spring", "summer", "autumn"],
+    "preferredTimeOfDay": ["dawn", "evening"],
     "weatherAffinity": {
       "clear": 1,
       "cloudy": 1.1,

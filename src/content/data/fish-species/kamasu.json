@@ -2,16 +2,9 @@
   "id": "kamasu",
   "japaneseName": "カマス（暫定）",
   "scientificName": "Sphyraena pinguis",
-  "waterTypes": [
-    "salt"
-  ],
-  "distribution": [
-    "tokyo-area"
-  ],
-  "habitats": [
-    "bay",
-    "open"
-  ],
+  "waterTypes": ["salt"],
+  "distribution": ["tokyo-area"],
+  "habitats": ["bay", "open"],
   "depthRange": {
     "min": 0,
     "max": 23

@@ -2,32 +2,13 @@
   "id": "saba",
   "japaneseName": "マサバ（暫定）",
   "scientificName": "Scomber japonicus",
-  "waterTypes": [
-    "salt",
-    "brackish"
-  ],
-  "habitats": [
-    "bay",
-    "surf",
-    "offshore"
-  ],
-  "diet": [
-    "plankton",
-    "small_fish"
-  ],
-  "baits": [
-    "cut"
-  ],
-  "lureCategories": [
-    "metal_jig"
-  ],
-  "fishingMethods": [
-    "light_lure",
-    "bait"
-  ],
-  "distribution": [
-    "tokyo-area"
-  ],
+  "waterTypes": ["salt", "brackish"],
+  "habitats": ["bay", "surf", "offshore"],
+  "diet": ["plankton", "small_fish"],
+  "baits": ["cut"],
+  "lureCategories": ["metal_jig"],
+  "fishingMethods": ["light_lure", "bait"],
+  "distribution": ["tokyo-area"],
   "lengthModel": {
     "kind": "normal",
     "meanCm": 28,

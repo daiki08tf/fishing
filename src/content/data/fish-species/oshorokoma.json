@@ -2,16 +2,9 @@
   "id": "oshorokoma",
   "japaneseName": "オショロコマ（暫定）",
   "scientificName": "Salvelinus curilus",
-  "waterTypes": [
-    "fresh"
-  ],
-  "distribution": [
-    "hokkaido"
-  ],
-  "habitats": [
-    "stream",
-    "river"
-  ],
+  "waterTypes": ["fresh"],
+  "distribution": ["hokkaido"],
+  "habitats": ["stream", "river"],
   "depthRange": {
     "min": 0,
     "max": 20

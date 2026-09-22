@@ -14,23 +14,15 @@
   "travelOptions": [
     {
       "id": "ordinary-road",
-      "transportTypes": [
-        "compact_car",
-        "suv",
-        "motorcycle"
-      ],
-      "requiredCapabilities": [
-        "road_access"
-      ],
+      "transportTypes": ["compact_car", "suv", "motorcycle"],
+      "requiredCapabilities": ["road_access"],
       "features": [],
       "baseMinutes": 190,
       "distanceKm": 75,
       "baseOneWayCost": 900
     }
   ],
-  "habitatTags": [
-    "deep"
-  ],
+  "habitatTags": ["deep"],
   "depth": {
     "depthRangeM": {
       "min": 3,
@@ -71,10 +63,7 @@
         "min": 0.5,
         "max": 4
       },
-      "habitatTags": [
-        "bank",
-        "shallow"
-      ]
+      "habitatTags": ["bank", "shallow"]
     },
     {
       "id": "break",
@@ -87,10 +76,7 @@
         "min": 3,
         "max": 10
       },
-      "habitatTags": [
-        "break",
-        "deep"
-      ]
+      "habitatTags": ["break", "deep"]
     },
     {
       "id": "open-water",
@@ -103,10 +89,7 @@
         "min": 8,
         "max": 25
       },
-      "habitatTags": [
-        "open",
-        "deep"
-      ]
+      "habitatTags": ["open", "deep"]
     }
   ]
 }

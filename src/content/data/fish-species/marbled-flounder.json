@@ -2,18 +2,9 @@
   "id": "marbled-flounder",
   "japaneseName": "マコガレイ（暫定）",
   "scientificName": "Pseudopleuronectes yokohamae",
-  "waterTypes": [
-    "salt",
-    "brackish"
-  ],
-  "distribution": [
-    "tokyo-area",
-    "hokkaido"
-  ],
-  "habitats": [
-    "sand",
-    "bottom"
-  ],
+  "waterTypes": ["salt", "brackish"],
+  "distribution": ["tokyo-area", "hokkaido"],
+  "habitats": ["sand", "bottom"],
   "depthRange": {
     "min": 0,
     "max": 28

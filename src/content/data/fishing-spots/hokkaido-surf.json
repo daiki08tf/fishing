@@ -13,24 +13,15 @@
   "travelOptions": [
     {
       "id": "east-surf-road",
-      "transportTypes": [
-        "rental_car"
-      ],
-      "requiredCapabilities": [
-        "road_access"
-      ],
-      "features": [
-        "vehicle_rental"
-      ],
+      "transportTypes": ["rental_car"],
+      "requiredCapabilities": ["road_access"],
+      "features": ["vehicle_rental"],
       "baseMinutes": 80,
       "distanceKm": 55,
       "baseOneWayCost": 0
     }
   ],
-  "habitatTags": [
-    "surf",
-    "sand"
-  ],
+  "habitatTags": ["surf", "sand"],
   "depth": {
     "depthRangeM": {
       "min": 0,
@@ -49,10 +40,7 @@
         "min": 0,
         "max": 4
       },
-      "habitatTags": [
-        "surf",
-        "shallow"
-      ]
+      "habitatTags": ["surf", "shallow"]
     },
     {
       "id": "break",
@@ -65,10 +53,7 @@
         "min": 3,
         "max": 10
       },
-      "habitatTags": [
-        "sand",
-        "break"
-      ]
+      "habitatTags": ["sand", "break"]
     },
     {
       "id": "outer",
@@ -81,10 +66,7 @@
         "min": 8,
         "max": 22
       },
-      "habitatTags": [
-        "open",
-        "current"
-      ]
+      "habitatTags": ["open", "current"]
     }
   ],
   "fishTable": [

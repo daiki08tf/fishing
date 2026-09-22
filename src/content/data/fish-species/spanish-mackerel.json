@@ -2,16 +2,9 @@
   "id": "spanish-mackerel",
   "japaneseName": "スパニッシュマッカレル（暫定）",
   "scientificName": "Scomberomorus commerson",
-  "waterTypes": [
-    "salt"
-  ],
-  "distribution": [
-    "queensland"
-  ],
-  "habitats": [
-    "reef",
-    "open"
-  ],
+  "waterTypes": ["salt"],
+  "distribution": ["queensland"],
+  "habitats": ["reef", "open"],
   "depthRange": {
     "min": 0,
     "max": 100

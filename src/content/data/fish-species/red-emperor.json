@@ -2,16 +2,9 @@
   "id": "red-emperor",
   "japaneseName": "レッドエンペラー（暫定）",
   "scientificName": "Lutjanus sebae",
-  "waterTypes": [
-    "salt"
-  ],
-  "distribution": [
-    "queensland"
-  ],
-  "habitats": [
-    "reef",
-    "deep"
-  ],
+  "waterTypes": ["salt"],
+  "distribution": ["queensland"],
+  "habitats": ["reef", "deep"],
   "depthRange": {
     "min": 0,
     "max": 60

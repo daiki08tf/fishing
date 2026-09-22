@@ -19,22 +19,15 @@
   "travelOptions": [
     {
       "id": "rail-route",
-      "transportTypes": [
-        "train"
-      ],
-      "requiredCapabilities": [
-        "public_transport"
-      ],
+      "transportTypes": ["train"],
+      "requiredCapabilities": ["public_transport"],
       "features": [],
       "baseMinutes": 50,
       "distanceKm": 32,
       "baseOneWayCost": 420
     }
   ],
-  "habitatTags": [
-    "deep",
-    "surf"
-  ],
+  "habitatTags": ["deep", "surf"],
   "depth": {
     "depthRangeM": {
       "min": 5,
@@ -83,10 +76,7 @@
         "min": 1,
         "max": 4
       },
-      "habitatTags": [
-        "structure",
-        "shallow"
-      ]
+      "habitatTags": ["structure", "shallow"]
     },
     {
       "id": "harbor",
@@ -99,10 +89,7 @@
         "min": 2,
         "max": 8
       },
-      "habitatTags": [
-        "bay",
-        "open"
-      ]
+      "habitatTags": ["bay", "open"]
     },
     {
       "id": "channel",
@@ -115,10 +102,7 @@
         "min": 5,
         "max": 15
       },
-      "habitatTags": [
-        "channel",
-        "current"
-      ]
+      "habitatTags": ["channel", "current"]
     },
     {
       "id": "outer",
@@ -131,10 +115,7 @@
         "min": 8,
         "max": 20
       },
-      "habitatTags": [
-        "open",
-        "current"
-      ]
+      "habitatTags": ["open", "current"]
     }
   ]
 }

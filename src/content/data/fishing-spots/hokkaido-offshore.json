@@ -17,26 +17,15 @@
   "travelOptions": [
     {
       "id": "hokkaido-offshore-boat",
-      "transportTypes": [
-        "rental_boat"
-      ],
-      "requiredCapabilities": [
-        "boat_required",
-        "offshore"
-      ],
-      "features": [
-        "boat_rental",
-        "marina"
-      ],
+      "transportTypes": ["rental_boat"],
+      "requiredCapabilities": ["boat_required", "offshore"],
+      "features": ["boat_rental", "marina"],
       "baseMinutes": 75,
       "distanceKm": 32,
       "baseOneWayCost": 0
     }
   ],
-  "habitatTags": [
-    "open",
-    "deep"
-  ],
+  "habitatTags": ["open", "deep"],
   "depth": {
     "depthRangeM": {
       "min": 15,
@@ -51,10 +40,7 @@
         "min": 0,
         "max": 12
       },
-      "habitatTags": [
-        "surface",
-        "open"
-      ]
+      "habitatTags": ["surface", "open"]
     },
     {
       "id": "mid",
@@ -63,10 +49,7 @@
         "min": 12,
         "max": 45
       },
-      "habitatTags": [
-        "mid-water",
-        "open"
-      ]
+      "habitatTags": ["mid-water", "open"]
     },
     {
       "id": "bottom",
@@ -75,10 +58,7 @@
         "min": 45,
         "max": 120
       },
-      "habitatTags": [
-        "bottom",
-        "deep"
-      ]
+      "habitatTags": ["bottom", "deep"]
     }
   ],
   "fishTable": [

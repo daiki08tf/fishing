@@ -2,16 +2,9 @@
   "id": "quillback-rockfish",
   "japaneseName": "クイルバックロックフィッシュ（暫定）",
   "scientificName": "Sebastes maliger",
-  "waterTypes": [
-    "salt"
-  ],
-  "distribution": [
-    "british-columbia"
-  ],
-  "habitats": [
-    "reef",
-    "deep"
-  ],
+  "waterTypes": ["salt"],
+  "distribution": ["british-columbia"],
+  "habitats": ["reef", "deep"],
   "depthRange": {
     "min": 0,
     "max": 38

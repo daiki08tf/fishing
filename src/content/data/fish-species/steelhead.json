@@ -2,17 +2,9 @@
   "id": "steelhead",
   "japaneseName": "スチールヘッド（暫定）",
   "scientificName": "Oncorhynchus mykiss",
-  "waterTypes": [
-    "fresh",
-    "brackish"
-  ],
-  "distribution": [
-    "british-columbia"
-  ],
-  "habitats": [
-    "river",
-    "estuary"
-  ],
+  "waterTypes": ["fresh", "brackish"],
+  "distribution": ["british-columbia"],
+  "habitats": ["river", "estuary"],
   "depthRange": {
     "min": 0,
     "max": 60

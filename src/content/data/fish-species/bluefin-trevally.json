@@ -2,16 +2,9 @@
   "id": "bluefin-trevally",
   "japaneseName": "カスミアジ（暫定）",
   "scientificName": "Caranx melampygus",
-  "waterTypes": [
-    "salt"
-  ],
-  "distribution": [
-    "queensland"
-  ],
-  "habitats": [
-    "reef",
-    "open"
-  ],
+  "waterTypes": ["salt"],
+  "distribution": ["queensland"],
+  "habitats": ["reef", "open"],
   "depthRange": {
     "min": 0,
     "max": 58

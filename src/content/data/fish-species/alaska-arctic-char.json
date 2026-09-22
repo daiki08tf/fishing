@@ -1,16 +1,9 @@
 {
   "id": "arctic-char",
   "japaneseName": "アークティックチャー（暫定）",
-  "waterTypes": [
-    "fresh"
-  ],
-  "distribution": [
-    "alaska"
-  ],
-  "habitats": [
-    "lake",
-    "river"
-  ],
+  "waterTypes": ["fresh"],
+  "distribution": ["alaska"],
+  "habitats": ["lake", "river"],
   "depthRange": {
     "min": 2,
     "max": 25
@@ -20,42 +13,18 @@
     "max": 12
   },
   "seasonality": {
-    "months": [
-      6,
-      7,
-      8,
-      9
-    ]
+    "months": [6, 7, 8, 9]
   },
   "timeActivity": {
-    "periods": [
-      "dawn",
-      "day",
-      "evening"
-    ]
+    "periods": ["dawn", "day", "evening"]
   },
   "currentPreference": {
     "preference": "slow"
   },
-  "diet": [
-    "small_fish"
-  ],
-  "baits": [
-    "worm",
-    "krill",
-    "roe"
-  ],
-  "lureCategories": [
-    "spoon",
-    "jig",
-    "soft_plastic"
-  ],
-  "fishingMethods": [
-    "light_lure",
-    "lure",
-    "bait",
-    "bottom"
-  ],
+  "diet": ["small_fish"],
+  "baits": ["worm", "krill", "roe"],
+  "lureCategories": ["spoon", "jig", "soft_plastic"],
+  "fishingMethods": ["light_lure", "lure", "bait", "bottom"],
   "methodAffinity": {
     "lure": 1.05,
     "light_lure": 1.1,
@@ -94,13 +63,8 @@
   },
   "rarity": 1.5,
   "environmentAffinity": {
-    "preferredSeasons": [
-      "summer"
-    ],
-    "preferredTimeOfDay": [
-      "dawn",
-      "daytime"
-    ],
+    "preferredSeasons": ["summer"],
+    "preferredTimeOfDay": ["dawn", "daytime"],
     "weatherAffinity": {
       "clear": 1.05,
       "cloudy": 1.05,

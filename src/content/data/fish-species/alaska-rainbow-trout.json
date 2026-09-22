@@ -1,19 +1,9 @@
 {
   "id": "rainbow-trout",
   "japaneseName": "レインボートラウト（暫定）",
-  "waterTypes": [
-    "fresh"
-  ],
-  "distribution": [
-    "alaska",
-    "british-columbia",
-    "tokyo-area",
-    "hokkaido"
-  ],
-  "habitats": [
-    "river",
-    "lake"
-  ],
+  "waterTypes": ["fresh"],
+  "distribution": ["alaska", "british-columbia", "tokyo-area", "hokkaido"],
+  "habitats": ["river", "lake"],
   "depthRange": {
     "min": 1,
     "max": 12
@@ -23,42 +13,18 @@
     "max": 16
   },
   "seasonality": {
-    "months": [
-      5,
-      6,
-      7,
-      8,
-      9
-    ]
+    "months": [5, 6, 7, 8, 9]
   },
   "timeActivity": {
-    "periods": [
-      "dawn",
-      "evening"
-    ]
+    "periods": ["dawn", "evening"]
   },
   "currentPreference": {
     "preference": "slow"
   },
-  "diet": [
-    "small_fish"
-  ],
-  "baits": [
-    "worm",
-    "roe",
-    "insect"
-  ],
-  "lureCategories": [
-    "spoon",
-    "minnow",
-    "soft_plastic",
-    "spinner"
-  ],
-  "fishingMethods": [
-    "light_lure",
-    "lure",
-    "bait"
-  ],
+  "diet": ["small_fish"],
+  "baits": ["worm", "roe", "insect"],
+  "lureCategories": ["spoon", "minnow", "soft_plastic", "spinner"],
+  "fishingMethods": ["light_lure", "lure", "bait"],
   "methodAffinity": {
     "lure": 1.1,
     "light_lure": 1.25,
@@ -97,15 +63,8 @@
   },
   "rarity": 1.3,
   "environmentAffinity": {
-    "preferredSeasons": [
-      "spring",
-      "summer",
-      "autumn"
-    ],
-    "preferredTimeOfDay": [
-      "dawn",
-      "evening"
-    ],
+    "preferredSeasons": ["spring", "summer", "autumn"],
+    "preferredTimeOfDay": ["dawn", "evening"],
     "weatherAffinity": {
       "clear": 1,
       "cloudy": 1.1,

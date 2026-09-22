@@ -21,26 +21,15 @@
   "travelOptions": [
     {
       "id": "bc-offshore-boat",
-      "transportTypes": [
-        "rental_boat"
-      ],
-      "requiredCapabilities": [
-        "boat_required",
-        "offshore"
-      ],
-      "features": [
-        "boat_rental",
-        "marina"
-      ],
+      "transportTypes": ["rental_boat"],
+      "requiredCapabilities": ["boat_required", "offshore"],
+      "features": ["boat_rental", "marina"],
       "baseMinutes": 90,
       "distanceKm": 45,
       "baseOneWayCost": 0
     }
   ],
-  "habitatTags": [
-    "open",
-    "deep"
-  ],
+  "habitatTags": ["open", "deep"],
   "depth": {
     "depthRangeM": {
       "min": 20,
@@ -55,10 +44,7 @@
         "min": 0,
         "max": 15
       },
-      "habitatTags": [
-        "surface",
-        "open"
-      ]
+      "habitatTags": ["surface", "open"]
     },
     {
       "id": "mid",
@@ -67,10 +53,7 @@
         "min": 15,
         "max": 50
       },
-      "habitatTags": [
-        "mid-water",
-        "open"
-      ]
+      "habitatTags": ["mid-water", "open"]
     },
     {
       "id": "bottom",
@@ -79,11 +62,7 @@
         "min": 50,
         "max": 150
       },
-      "habitatTags": [
-        "bottom",
-        "reef",
-        "deep"
-      ]
+      "habitatTags": ["bottom", "reef", "deep"]
     }
   ],
   "fishTable": [

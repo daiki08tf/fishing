@@ -2,17 +2,9 @@
   "id": "ainame",
   "japaneseName": "アイナメ（暫定）",
   "scientificName": "Hexagrammos otakii",
-  "waterTypes": [
-    "salt"
-  ],
-  "distribution": [
-    "tokyo-area",
-    "hokkaido"
-  ],
-  "habitats": [
-    "rock",
-    "bottom"
-  ],
+  "waterTypes": ["salt"],
+  "distribution": ["tokyo-area", "hokkaido"],
+  "habitats": ["rock", "bottom"],
   "depthRange": {
     "min": 0,
     "max": 30

@@ -2,16 +2,9 @@
   "id": "isaki",
   "japaneseName": "イサキ（暫定）",
   "scientificName": "Parapristipoma trilineatum",
-  "waterTypes": [
-    "salt"
-  ],
-  "distribution": [
-    "tokyo-area"
-  ],
-  "habitats": [
-    "reef",
-    "open"
-  ],
+  "waterTypes": ["salt"],
+  "distribution": ["tokyo-area"],
+  "habitats": ["reef", "open"],
   "depthRange": {
     "min": 0,
     "max": 25

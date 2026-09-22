@@ -2,17 +2,9 @@
   "id": "wakasagi",
   "japaneseName": "ワカサギ（暫定）",
   "scientificName": "Hypomesus nipponensis",
-  "waterTypes": [
-    "fresh"
-  ],
-  "distribution": [
-    "tokyo-area",
-    "hokkaido"
-  ],
-  "habitats": [
-    "lake",
-    "open"
-  ],
+  "waterTypes": ["fresh"],
+  "distribution": ["tokyo-area", "hokkaido"],
+  "habitats": ["lake", "open"],
   "depthRange": {
     "min": 0,
     "max": 10

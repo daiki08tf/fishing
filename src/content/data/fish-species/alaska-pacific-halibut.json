@@ -1,17 +1,9 @@
 {
   "id": "pacific-halibut",
   "japaneseName": "オヒョウ（暫定）",
-  "waterTypes": [
-    "salt"
-  ],
-  "distribution": [
-    "alaska",
-    "british-columbia"
-  ],
-  "habitats": [
-    "offshore",
-    "deep"
-  ],
+  "waterTypes": ["salt"],
+  "distribution": ["alaska", "british-columbia"],
+  "habitats": ["offshore", "deep"],
   "depthRange": {
     "min": 20,
     "max": 200
@@ -21,19 +13,10 @@
     "max": 10
   },
   "seasonality": {
-    "months": [
-      5,
-      6,
-      7,
-      8,
-      9
-    ]
+    "months": [5, 6, 7, 8, 9]
   },
   "timeActivity": {
-    "periods": [
-      "day",
-      "morning"
-    ]
+    "periods": ["day", "morning"]
   },
   "tidePreference": {
     "preference": "any"
@@ -41,23 +24,10 @@
   "currentPreference": {
     "preference": "moderate"
   },
-  "diet": [
-    "small_fish"
-  ],
-  "baits": [
-    "cut",
-    "fish",
-    "squid"
-  ],
-  "lureCategories": [
-    "jig",
-    "metal_vibration"
-  ],
-  "fishingMethods": [
-    "bottom",
-    "bait",
-    "lure"
-  ],
+  "diet": ["small_fish"],
+  "baits": ["cut", "fish", "squid"],
+  "lureCategories": ["jig", "metal_vibration"],
+  "fishingMethods": ["bottom", "bait", "lure"],
   "methodAffinity": {
     "lure": 0.95,
     "light_lure": 0.5,
@@ -97,13 +67,8 @@
   },
   "rarity": 4,
   "environmentAffinity": {
-    "preferredSeasons": [
-      "summer"
-    ],
-    "preferredTimeOfDay": [
-      "morning",
-      "daytime"
-    ],
+    "preferredSeasons": ["summer"],
+    "preferredTimeOfDay": ["morning", "daytime"],
     "weatherAffinity": {
       "clear": 1.1,
       "cloudy": 1,

@@ -2,31 +2,13 @@
   "id": "koi",
   "japaneseName": "コイ（暫定）",
   "scientificName": "Cyprinus carpio",
-  "waterTypes": [
-    "fresh"
-  ],
-  "habitats": [
-    "lake",
-    "pond",
-    "river"
-  ],
-  "diet": [
-    "aquatic_insect",
-    "algae"
-  ],
-  "baits": [
-    "dough",
-    "corn"
-  ],
-  "lureCategories": [
-    "small"
-  ],
-  "fishingMethods": [
-    "bait"
-  ],
-  "distribution": [
-    "tokyo-area"
-  ],
+  "waterTypes": ["fresh"],
+  "habitats": ["lake", "pond", "river"],
+  "diet": ["aquatic_insect", "algae"],
+  "baits": ["dough", "corn"],
+  "lureCategories": ["small"],
+  "fishingMethods": ["bait"],
+  "distribution": ["tokyo-area"],
   "depthRange": {
     "min": 30,
     "max": 120

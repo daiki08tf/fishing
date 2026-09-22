@@ -1,16 +1,9 @@
 {
   "id": "lake-trout",
   "japaneseName": "レイクトラウト（暫定）",
-  "waterTypes": [
-    "fresh"
-  ],
-  "distribution": [
-    "alaska"
-  ],
-  "habitats": [
-    "lake",
-    "deep"
-  ],
+  "waterTypes": ["fresh"],
+  "distribution": ["alaska"],
+  "habitats": ["lake", "deep"],
   "depthRange": {
     "min": 3,
     "max": 45
@@ -20,41 +13,18 @@
     "max": 12
   },
   "seasonality": {
-    "months": [
-      5,
-      6,
-      7,
-      8,
-      9
-    ]
+    "months": [5, 6, 7, 8, 9]
   },
   "timeActivity": {
-    "periods": [
-      "dawn",
-      "day"
-    ]
+    "periods": ["dawn", "day"]
   },
   "currentPreference": {
     "preference": "none"
   },
-  "diet": [
-    "small_fish"
-  ],
-  "baits": [
-    "cut",
-    "fish",
-    "roe"
-  ],
-  "lureCategories": [
-    "spoon",
-    "jig",
-    "minnow"
-  ],
-  "fishingMethods": [
-    "lure",
-    "bait",
-    "bottom"
-  ],
+  "diet": ["small_fish"],
+  "baits": ["cut", "fish", "roe"],
+  "lureCategories": ["spoon", "jig", "minnow"],
+  "fishingMethods": ["lure", "bait", "bottom"],
   "methodAffinity": {
     "lure": 1.05,
     "light_lure": 0.85,
@@ -93,14 +63,8 @@
   },
   "rarity": 2.2,
   "environmentAffinity": {
-    "preferredSeasons": [
-      "spring",
-      "summer"
-    ],
-    "preferredTimeOfDay": [
-      "dawn",
-      "daytime"
-    ],
+    "preferredSeasons": ["spring", "summer"],
+    "preferredTimeOfDay": ["dawn", "daytime"],
     "weatherAffinity": {
       "clear": 1.05,
       "cloudy": 1.05,

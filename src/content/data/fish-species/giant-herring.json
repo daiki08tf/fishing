@@ -2,17 +2,9 @@
   "id": "giant-herring",
   "japaneseName": "オオニシン類（暫定）",
   "scientificName": "Elops hawaiensis",
-  "waterTypes": [
-    "brackish",
-    "salt"
-  ],
-  "distribution": [
-    "queensland"
-  ],
-  "habitats": [
-    "estuary",
-    "coast"
-  ],
+  "waterTypes": ["brackish", "salt"],
+  "distribution": ["queensland"],
+  "habitats": ["estuary", "coast"],
   "depthRange": {
     "min": 0,
     "max": 50

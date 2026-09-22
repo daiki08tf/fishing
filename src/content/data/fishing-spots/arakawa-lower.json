@@ -14,12 +14,8 @@
   "travelOptions": [
     {
       "id": "rail-route",
-      "transportTypes": [
-        "train"
-      ],
-      "requiredCapabilities": [
-        "public_transport"
-      ],
+      "transportTypes": ["train"],
+      "requiredCapabilities": ["public_transport"],
       "features": [],
       "baseMinutes": 32,
       "distanceKm": 18,
@@ -27,22 +23,15 @@
     },
     {
       "id": "bus-route",
-      "transportTypes": [
-        "bus"
-      ],
-      "requiredCapabilities": [
-        "public_transport"
-      ],
+      "transportTypes": ["bus"],
+      "requiredCapabilities": ["public_transport"],
       "features": [],
       "baseMinutes": 45,
       "distanceKm": 18,
       "baseOneWayCost": 520
     }
   ],
-  "habitatTags": [
-    "shallow",
-    "river"
-  ],
+  "habitatTags": ["shallow", "river"],
   "depth": {
     "depthRangeM": {
       "min": 1,
@@ -128,10 +117,7 @@
         "min": 1,
         "max": 2.5
       },
-      "habitatTags": [
-        "shallow",
-        "structure"
-      ]
+      "habitatTags": ["shallow", "structure"]
     },
     {
       "id": "channel",
@@ -144,10 +130,7 @@
         "min": 2,
         "max": 4.5
       },
-      "habitatTags": [
-        "river",
-        "current"
-      ]
+      "habitatTags": ["river", "current"]
     },
     {
       "id": "far-channel",
@@ -160,10 +143,7 @@
         "min": 3,
         "max": 6
       },
-      "habitatTags": [
-        "current",
-        "deep"
-      ]
+      "habitatTags": ["current", "deep"]
     }
   ]
 }

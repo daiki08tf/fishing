@@ -2,17 +2,9 @@
   "id": "hiramasa",
   "japaneseName": "ヒラマサ（暫定）",
   "scientificName": "Seriola lalandi",
-  "waterTypes": [
-    "salt"
-  ],
-  "distribution": [
-    "tokyo-area",
-    "queensland"
-  ],
-  "habitats": [
-    "open",
-    "reef"
-  ],
+  "waterTypes": ["salt"],
+  "distribution": ["tokyo-area", "queensland"],
+  "habitats": ["open", "reef"],
   "depthRange": {
     "min": 0,
     "max": 85

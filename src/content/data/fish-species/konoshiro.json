@@ -2,17 +2,9 @@
   "id": "konoshiro",
   "japaneseName": "コノシロ（暫定）",
   "scientificName": "Konosirus punctatus",
-  "waterTypes": [
-    "salt",
-    "brackish"
-  ],
-  "distribution": [
-    "tokyo-area"
-  ],
-  "habitats": [
-    "bay",
-    "estuary"
-  ],
+  "waterTypes": ["salt", "brackish"],
+  "distribution": ["tokyo-area"],
+  "habitats": ["bay", "estuary"],
   "depthRange": {
     "min": 0,
     "max": 18

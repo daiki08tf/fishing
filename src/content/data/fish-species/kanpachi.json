@@ -2,17 +2,9 @@
   "id": "kanpachi",
   "japaneseName": "カンパチ（暫定）",
   "scientificName": "Seriola dumerili",
-  "waterTypes": [
-    "salt"
-  ],
-  "distribution": [
-    "tokyo-area",
-    "queensland"
-  ],
-  "habitats": [
-    "open",
-    "reef"
-  ],
+  "waterTypes": ["salt"],
+  "distribution": ["tokyo-area", "queensland"],
+  "habitats": ["open", "reef"],
   "depthRange": {
     "min": 0,
     "max": 80

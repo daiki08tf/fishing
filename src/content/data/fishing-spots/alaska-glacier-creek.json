@@ -14,12 +14,8 @@
   "travelOptions": [
     {
       "id": "creek-walk",
-      "transportTypes": [
-        "walk"
-      ],
-      "requiredCapabilities": [
-        "reachable_on_foot"
-      ],
+      "transportTypes": ["walk"],
+      "requiredCapabilities": ["reachable_on_foot"],
       "features": [],
       "baseMinutes": 55,
       "distanceKm": 4,
@@ -27,24 +23,15 @@
     },
     {
       "id": "creek-road",
-      "transportTypes": [
-        "rental_car"
-      ],
-      "requiredCapabilities": [
-        "road_access"
-      ],
-      "features": [
-        "vehicle_rental"
-      ],
+      "transportTypes": ["rental_car"],
+      "requiredCapabilities": ["road_access"],
+      "features": ["vehicle_rental"],
       "baseMinutes": 50,
       "distanceKm": 35,
       "baseOneWayCost": 0
     }
   ],
-  "habitatTags": [
-    "cold",
-    "gravel"
-  ],
+  "habitatTags": ["cold", "gravel"],
   "depth": {
     "depthRangeM": {
       "min": 1,
@@ -93,10 +80,7 @@
         "min": 0.5,
         "max": 2.5
       },
-      "habitatTags": [
-        "bank",
-        "shallow"
-      ]
+      "habitatTags": ["bank", "shallow"]
     },
     {
       "id": "main-flow",
@@ -109,10 +93,7 @@
         "min": 1.5,
         "max": 5
       },
-      "habitatTags": [
-        "river",
-        "current"
-      ]
+      "habitatTags": ["river", "current"]
     },
     {
       "id": "far-run",
@@ -125,10 +106,7 @@
         "min": 2,
         "max": 6
       },
-      "habitatTags": [
-        "current",
-        "far-bank"
-      ]
+      "habitatTags": ["current", "far-bank"]
     }
   ]
 }

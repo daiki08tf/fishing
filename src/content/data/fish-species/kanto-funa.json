@@ -2,33 +2,13 @@
   "id": "funa",
   "japaneseName": "ギンブナ（暫定）",
   "scientificName": "Carassius sp.",
-  "waterTypes": [
-    "fresh",
-    "brackish"
-  ],
-  "habitats": [
-    "river",
-    "canal",
-    "pond"
-  ],
-  "diet": [
-    "aquatic_insect",
-    "algae"
-  ],
-  "baits": [
-    "dough",
-    "worm"
-  ],
-  "lureCategories": [
-    "small"
-  ],
-  "fishingMethods": [
-    "bait",
-    "light_lure"
-  ],
-  "distribution": [
-    "tokyo-area"
-  ],
+  "waterTypes": ["fresh", "brackish"],
+  "habitats": ["river", "canal", "pond"],
+  "diet": ["aquatic_insect", "algae"],
+  "baits": ["dough", "worm"],
+  "lureCategories": ["small"],
+  "fishingMethods": ["bait", "light_lure"],
+  "distribution": ["tokyo-area"],
   "lengthModel": {
     "kind": "normal",
     "meanCm": 22,

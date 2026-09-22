@@ -2,16 +2,9 @@
   "id": "mebaru",
   "japaneseName": "メバル（暫定）",
   "scientificName": "Sebastes inermis",
-  "waterTypes": [
-    "salt"
-  ],
-  "distribution": [
-    "tokyo-area"
-  ],
-  "habitats": [
-    "rock",
-    "pier"
-  ],
+  "waterTypes": ["salt"],
+  "distribution": ["tokyo-area"],
+  "habitats": ["rock", "pier"],
   "depthRange": {
     "min": 0,
     "max": 16

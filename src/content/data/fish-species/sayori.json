@@ -2,17 +2,9 @@
   "id": "sayori",
   "japaneseName": "サヨリ（暫定）",
   "scientificName": "Hyporhamphus sajori",
-  "waterTypes": [
-    "salt",
-    "brackish"
-  ],
-  "distribution": [
-    "tokyo-area"
-  ],
-  "habitats": [
-    "surface",
-    "bay"
-  ],
+  "waterTypes": ["salt", "brackish"],
+  "distribution": ["tokyo-area"],
+  "habitats": ["surface", "bay"],
   "depthRange": {
     "min": 0,
     "max": 20

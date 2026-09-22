@@ -22,27 +22,15 @@
   "travelOptions": [
     {
       "id": "marina-offshore",
-      "transportTypes": [
-        "rental_boat",
-        "owned_boat"
-      ],
-      "requiredCapabilities": [
-        "boat_required",
-        "offshore"
-      ],
-      "features": [
-        "boat_rental",
-        "marina"
-      ],
+      "transportTypes": ["rental_boat", "owned_boat"],
+      "requiredCapabilities": ["boat_required", "offshore"],
+      "features": ["boat_rental", "marina"],
       "baseMinutes": 150,
       "distanceKm": 60,
       "baseOneWayCost": 0
     }
   ],
-  "habitatTags": [
-    "offshore",
-    "deep"
-  ],
+  "habitatTags": ["offshore", "deep"],
   "depth": {
     "depthRangeM": {
       "min": 30,
@@ -83,10 +71,7 @@
         "min": 0,
         "max": 10
       },
-      "habitatTags": [
-        "open",
-        "surface"
-      ]
+      "habitatTags": ["open", "surface"]
     },
     {
       "id": "mid-water",
@@ -95,10 +80,7 @@
         "min": 10,
         "max": 35
       },
-      "habitatTags": [
-        "open",
-        "mid-water"
-      ]
+      "habitatTags": ["open", "mid-water"]
     },
     {
       "id": "bottom",
@@ -107,11 +89,7 @@
         "min": 35,
         "max": 100
       },
-      "habitatTags": [
-        "deep",
-        "bottom",
-        "reef"
-      ]
+      "habitatTags": ["deep", "bottom", "reef"]
     }
   ]
 }

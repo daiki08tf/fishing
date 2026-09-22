@@ -2,16 +2,9 @@
   "id": "kokanee",
   "japaneseName": "コカニー（暫定）",
   "scientificName": "Oncorhynchus nerka",
-  "waterTypes": [
-    "fresh"
-  ],
-  "distribution": [
-    "british-columbia"
-  ],
-  "habitats": [
-    "lake",
-    "open"
-  ],
+  "waterTypes": ["fresh"],
+  "distribution": ["british-columbia"],
+  "habitats": ["lake", "open"],
   "depthRange": {
     "min": 0,
     "max": 30

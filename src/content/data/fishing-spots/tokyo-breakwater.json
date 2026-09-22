@@ -13,22 +13,15 @@
   "travelOptions": [
     {
       "id": "breakwater-rail",
-      "transportTypes": [
-        "train"
-      ],
-      "requiredCapabilities": [
-        "public_transport"
-      ],
+      "transportTypes": ["train"],
+      "requiredCapabilities": ["public_transport"],
       "features": [],
       "baseMinutes": 50,
       "distanceKm": 25,
       "baseOneWayCost": 450
     }
   ],
-  "habitatTags": [
-    "breakwater",
-    "open"
-  ],
+  "habitatTags": ["breakwater", "open"],
   "depth": {
     "depthRangeM": {
       "min": 3,
@@ -47,10 +40,7 @@
         "min": 1,
         "max": 4
       },
-      "habitatTags": [
-        "shore",
-        "structure"
-      ]
+      "habitatTags": ["shore", "structure"]
     },
     {
       "id": "mid",
@@ -63,10 +53,7 @@
         "min": 3,
         "max": 10
       },
-      "habitatTags": [
-        "open",
-        "break"
-      ]
+      "habitatTags": ["open", "break"]
     },
     {
       "id": "far",
@@ -79,10 +66,7 @@
         "min": 8,
         "max": 22
       },
-      "habitatTags": [
-        "open",
-        "current"
-      ]
+      "habitatTags": ["open", "current"]
     }
   ],
   "fishTable": [

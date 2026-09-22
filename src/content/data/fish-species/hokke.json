@@ -2,16 +2,9 @@
   "id": "hokke",
   "japaneseName": "ホッケ（暫定）",
   "scientificName": "Pleurogrammus azonus",
-  "waterTypes": [
-    "salt"
-  ],
-  "distribution": [
-    "hokkaido"
-  ],
-  "habitats": [
-    "rock",
-    "coast"
-  ],
+  "waterTypes": ["salt"],
+  "distribution": ["hokkaido"],
+  "habitats": ["rock", "coast"],
   "depthRange": {
     "min": 0,
     "max": 30

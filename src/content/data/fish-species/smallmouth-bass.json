@@ -2,16 +2,9 @@
   "id": "smallmouth-bass",
   "japaneseName": "スモールマウスバス（暫定）",
   "scientificName": "Micropterus dolomieu",
-  "waterTypes": [
-    "fresh"
-  ],
-  "distribution": [
-    "british-columbia"
-  ],
-  "habitats": [
-    "river",
-    "lake"
-  ],
+  "waterTypes": ["fresh"],
+  "distribution": ["british-columbia"],
+  "habitats": ["river", "lake"],
   "depthRange": {
     "min": 0,
     "max": 33

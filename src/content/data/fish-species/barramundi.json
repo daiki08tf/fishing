@@ -2,19 +2,9 @@
   "id": "barramundi",
   "japaneseName": "バラマンディ（暫定）",
   "scientificName": "Lates calcarifer",
-  "waterTypes": [
-    "fresh",
-    "brackish",
-    "salt"
-  ],
-  "distribution": [
-    "queensland"
-  ],
-  "habitats": [
-    "estuary",
-    "mangrove",
-    "river"
-  ],
+  "waterTypes": ["fresh", "brackish", "salt"],
+  "distribution": ["queensland"],
+  "habitats": ["estuary", "mangrove", "river"],
   "depthRange": {
     "min": 0,
     "max": 75

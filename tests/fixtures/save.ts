@@ -239,7 +239,6 @@ export const createValidSaveV7 = (): SaveGameV7 => {
   }
 }
 
-
 /** Phase 12 の現行 Save（schema v8）。構造は v7 と同じで species ID を canonical 化する。 */
 export const createValidSaveV8 = (): SaveGameV8 => {
   const v7 = createValidSaveV7()

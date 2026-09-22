@@ -2,17 +2,9 @@
   "id": "unagi",
   "japaneseName": "ニホンウナギ（暫定）",
   "scientificName": "Anguilla japonica",
-  "waterTypes": [
-    "fresh",
-    "brackish"
-  ],
-  "distribution": [
-    "tokyo-area"
-  ],
-  "habitats": [
-    "river",
-    "estuary"
-  ],
+  "waterTypes": ["fresh", "brackish"],
+  "distribution": ["tokyo-area"],
+  "habitats": ["river", "estuary"],
   "depthRange": {
     "min": 0,
     "max": 50

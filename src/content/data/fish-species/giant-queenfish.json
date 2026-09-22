@@ -2,16 +2,9 @@
   "id": "giant-queenfish",
   "japaneseName": "オオクイーンフィッシュ（暫定）",
   "scientificName": "Scomberoides commersonnianus",
-  "waterTypes": [
-    "salt"
-  ],
-  "distribution": [
-    "queensland"
-  ],
-  "habitats": [
-    "coast",
-    "open"
-  ],
+  "waterTypes": ["salt"],
+  "distribution": ["queensland"],
+  "habitats": ["coast", "open"],
   "depthRange": {
     "min": 0,
     "max": 70

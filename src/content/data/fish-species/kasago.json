@@ -2,16 +2,9 @@
   "id": "kasago",
   "japaneseName": "カサゴ（暫定）",
   "scientificName": "Sebastiscus marmoratus",
-  "waterTypes": [
-    "salt"
-  ],
-  "distribution": [
-    "tokyo-area"
-  ],
-  "habitats": [
-    "rock",
-    "structure"
-  ],
+  "waterTypes": ["salt"],
+  "distribution": ["tokyo-area"],
+  "habitats": ["rock", "structure"],
   "depthRange": {
     "min": 0,
     "max": 19

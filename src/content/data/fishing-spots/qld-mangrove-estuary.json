@@ -13,24 +13,15 @@
   "travelOptions": [
     {
       "id": "qld-estuary-road",
-      "transportTypes": [
-        "rental_car"
-      ],
-      "requiredCapabilities": [
-        "road_access"
-      ],
-      "features": [
-        "vehicle_rental"
-      ],
+      "transportTypes": ["rental_car"],
+      "requiredCapabilities": ["road_access"],
+      "features": ["vehicle_rental"],
       "baseMinutes": 55,
       "distanceKm": 32,
       "baseOneWayCost": 0
     }
   ],
-  "habitatTags": [
-    "mangrove",
-    "estuary"
-  ],
+  "habitatTags": ["mangrove", "estuary"],
   "depth": {
     "depthRangeM": {
       "min": 0.5,
@@ -49,10 +40,7 @@
         "min": 0.5,
         "max": 3
       },
-      "habitatTags": [
-        "mangrove",
-        "structure"
-      ]
+      "habitatTags": ["mangrove", "structure"]
     },
     {
       "id": "channel",
@@ -65,10 +53,7 @@
         "min": 2,
         "max": 8
       },
-      "habitatTags": [
-        "estuary",
-        "current"
-      ]
+      "habitatTags": ["estuary", "current"]
     },
     {
       "id": "mouth",
@@ -81,10 +66,7 @@
         "min": 4,
         "max": 14
       },
-      "habitatTags": [
-        "open",
-        "current"
-      ]
+      "habitatTags": ["open", "current"]
     }
   ],
   "fishTable": [

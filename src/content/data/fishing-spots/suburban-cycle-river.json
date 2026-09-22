@@ -14,22 +14,15 @@
   "travelOptions": [
     {
       "id": "riverside-cycleway",
-      "transportTypes": [
-        "bicycle"
-      ],
-      "requiredCapabilities": [
-        "bicycle_access"
-      ],
+      "transportTypes": ["bicycle"],
+      "requiredCapabilities": ["bicycle_access"],
       "features": [],
       "baseMinutes": 50,
       "distanceKm": 12,
       "baseOneWayCost": 0
     }
   ],
-  "habitatTags": [
-    "river",
-    "shallow"
-  ],
+  "habitatTags": ["river", "shallow"],
   "depth": {
     "depthRangeM": {
       "min": 1,
@@ -70,10 +63,7 @@
         "min": 0.5,
         "max": 2.5
       },
-      "habitatTags": [
-        "bank",
-        "shallow"
-      ]
+      "habitatTags": ["bank", "shallow"]
     },
     {
       "id": "main-flow",
@@ -86,10 +76,7 @@
         "min": 1.5,
         "max": 5
       },
-      "habitatTags": [
-        "river",
-        "current"
-      ]
+      "habitatTags": ["river", "current"]
     },
     {
       "id": "far-run",
@@ -102,10 +89,7 @@
         "min": 2,
         "max": 6
       },
-      "habitatTags": [
-        "current",
-        "far-bank"
-      ]
+      "habitatTags": ["current", "far-bank"]
     }
   ]
 }

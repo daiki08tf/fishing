@@ -2,16 +2,9 @@
   "id": "katsuo",
   "japaneseName": "カツオ（暫定）",
   "scientificName": "Katsuwonus pelamis",
-  "waterTypes": [
-    "salt"
-  ],
-  "distribution": [
-    "tokyo-area",
-    "queensland"
-  ],
-  "habitats": [
-    "open"
-  ],
+  "waterTypes": ["salt"],
+  "distribution": ["tokyo-area", "queensland"],
+  "habitats": ["open"],
   "depthRange": {
     "min": 0,
     "max": 50

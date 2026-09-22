@@ -18,23 +18,15 @@
   "travelOptions": [
     {
       "id": "rough-forest-road",
-      "transportTypes": [
-        "compact_car",
-        "suv"
-      ],
-      "requiredCapabilities": [
-        "road_access",
-        "rough_road"
-      ],
+      "transportTypes": ["compact_car", "suv"],
+      "requiredCapabilities": ["road_access", "rough_road"],
       "features": [],
       "baseMinutes": 240,
       "distanceKm": 90,
       "baseOneWayCost": 600
     }
   ],
-  "habitatTags": [
-    "deep"
-  ],
+  "habitatTags": ["deep"],
   "depth": {
     "depthRangeM": {
       "min": 2,
@@ -85,10 +77,7 @@
         "min": 2,
         "max": 6
       },
-      "habitatTags": [
-        "bank",
-        "cover"
-      ]
+      "habitatTags": ["bank", "cover"]
     },
     {
       "id": "inner-break",
@@ -101,10 +90,7 @@
         "min": 5,
         "max": 14
       },
-      "habitatTags": [
-        "break",
-        "deep"
-      ]
+      "habitatTags": ["break", "deep"]
     },
     {
       "id": "open-water",
@@ -117,10 +103,7 @@
         "min": 10,
         "max": 25
       },
-      "habitatTags": [
-        "open",
-        "deep"
-      ]
+      "habitatTags": ["open", "deep"]
     }
   ]
 }

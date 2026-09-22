@@ -2,17 +2,9 @@
   "id": "sablefish",
   "japaneseName": "ギンダラ（暫定）",
   "scientificName": "Anoplopoma fimbria",
-  "waterTypes": [
-    "salt"
-  ],
-  "distribution": [
-    "british-columbia",
-    "alaska"
-  ],
-  "habitats": [
-    "deep",
-    "bottom"
-  ],
+  "waterTypes": ["salt"],
+  "distribution": ["british-columbia", "alaska"],
+  "habitats": ["deep", "bottom"],
   "depthRange": {
     "min": 0,
     "max": 60

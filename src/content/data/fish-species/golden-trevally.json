@@ -2,16 +2,9 @@
   "id": "golden-trevally",
   "japaneseName": "ゴールデントレバリー（暫定）",
   "scientificName": "Gnathanodon speciosus",
-  "waterTypes": [
-    "salt"
-  ],
-  "distribution": [
-    "queensland"
-  ],
-  "habitats": [
-    "reef",
-    "open"
-  ],
+  "waterTypes": ["salt"],
+  "distribution": ["queensland"],
+  "habitats": ["reef", "open"],
   "depthRange": {
     "min": 0,
     "max": 50

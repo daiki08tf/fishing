@@ -1,17 +1,9 @@
 {
   "id": "magochi",
   "japaneseName": "マゴチ（暫定）",
-  "waterTypes": [
-    "salt",
-    "brackish"
-  ],
-  "distribution": [
-    "tokyo-area"
-  ],
-  "habitats": [
-    "sand",
-    "estuary"
-  ],
+  "waterTypes": ["salt", "brackish"],
+  "distribution": ["tokyo-area"],
+  "habitats": ["sand", "estuary"],
   "depthRange": {
     "min": 0,
     "max": 38

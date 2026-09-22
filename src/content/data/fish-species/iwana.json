@@ -2,17 +2,9 @@
   "id": "iwana",
   "japaneseName": "イワナ（暫定）",
   "scientificName": "Salvelinus leucomaenis",
-  "waterTypes": [
-    "fresh"
-  ],
-  "distribution": [
-    "tokyo-area",
-    "hokkaido"
-  ],
-  "habitats": [
-    "stream",
-    "river"
-  ],
+  "waterTypes": ["fresh"],
+  "distribution": ["tokyo-area", "hokkaido"],
+  "habitats": ["stream", "river"],
   "depthRange": {
     "min": 0,
     "max": 28

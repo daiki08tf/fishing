@@ -9,12 +9,8 @@
   "travelOptions": [
     {
       "id": "hokkaido-coast-walk",
-      "transportTypes": [
-        "walk"
-      ],
-      "requiredCapabilities": [
-        "reachable_on_foot"
-      ],
+      "transportTypes": ["walk"],
+      "requiredCapabilities": ["reachable_on_foot"],
       "features": [],
       "baseMinutes": 40,
       "distanceKm": 3,
@@ -22,24 +18,15 @@
     },
     {
       "id": "hokkaido-coast-road",
-      "transportTypes": [
-        "rental_car"
-      ],
-      "requiredCapabilities": [
-        "road_access"
-      ],
-      "features": [
-        "vehicle_rental"
-      ],
+      "transportTypes": ["rental_car"],
+      "requiredCapabilities": ["road_access"],
+      "features": ["vehicle_rental"],
       "baseMinutes": 55,
       "distanceKm": 38,
       "baseOneWayCost": 0
     }
   ],
-  "habitatTags": [
-    "coast",
-    "surf"
-  ],
+  "habitatTags": ["coast", "surf"],
   "depth": {
     "depthRangeM": {
       "min": 2,
@@ -99,10 +86,7 @@
         "min": 2,
         "max": 6
       },
-      "habitatTags": [
-        "coast",
-        "wash"
-      ]
+      "habitatTags": ["coast", "wash"]
     },
     {
       "id": "outer-surf",
@@ -115,10 +99,7 @@
         "min": 5,
         "max": 14
       },
-      "habitatTags": [
-        "surf",
-        "break"
-      ]
+      "habitatTags": ["surf", "break"]
     },
     {
       "id": "current-line",
@@ -131,10 +112,7 @@
         "min": 10,
         "max": 25
       },
-      "habitatTags": [
-        "open",
-        "current"
-      ]
+      "habitatTags": ["open", "current"]
     }
   ]
 }

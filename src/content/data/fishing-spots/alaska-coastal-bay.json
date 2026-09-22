@@ -9,12 +9,8 @@
   "travelOptions": [
     {
       "id": "bay-walk",
-      "transportTypes": [
-        "walk"
-      ],
-      "requiredCapabilities": [
-        "reachable_on_foot"
-      ],
+      "transportTypes": ["walk"],
+      "requiredCapabilities": ["reachable_on_foot"],
       "features": [],
       "baseMinutes": 25,
       "distanceKm": 1.8,
@@ -22,24 +18,15 @@
     },
     {
       "id": "bay-road",
-      "transportTypes": [
-        "rental_car"
-      ],
-      "requiredCapabilities": [
-        "road_access"
-      ],
-      "features": [
-        "vehicle_rental"
-      ],
+      "transportTypes": ["rental_car"],
+      "requiredCapabilities": ["road_access"],
+      "features": ["vehicle_rental"],
       "baseMinutes": 30,
       "distanceKm": 14,
       "baseOneWayCost": 0
     }
   ],
-  "habitatTags": [
-    "bay",
-    "surf"
-  ],
+  "habitatTags": ["bay", "surf"],
   "depth": {
     "depthRangeM": {
       "min": 2,
@@ -117,10 +104,7 @@
         "min": 2,
         "max": 6
       },
-      "habitatTags": [
-        "bay",
-        "shallow"
-      ]
+      "habitatTags": ["bay", "shallow"]
     },
     {
       "id": "bay-channel",
@@ -133,10 +117,7 @@
         "min": 5,
         "max": 16
       },
-      "habitatTags": [
-        "bay",
-        "current"
-      ]
+      "habitatTags": ["bay", "current"]
     },
     {
       "id": "outer-drop",
@@ -149,10 +130,7 @@
         "min": 12,
         "max": 30
       },
-      "habitatTags": [
-        "open",
-        "deep"
-      ]
+      "habitatTags": ["open", "deep"]
     }
   ]
 }

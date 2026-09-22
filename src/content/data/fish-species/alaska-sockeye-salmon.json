@@ -1,18 +1,9 @@
 {
   "id": "sockeye-salmon",
   "japaneseName": "ベニザケ（暫定）",
-  "waterTypes": [
-    "fresh",
-    "salt"
-  ],
-  "distribution": [
-    "alaska",
-    "british-columbia"
-  ],
-  "habitats": [
-    "river",
-    "lake"
-  ],
+  "waterTypes": ["fresh", "salt"],
+  "distribution": ["alaska", "british-columbia"],
+  "habitats": ["river", "lake"],
   "depthRange": {
     "min": 2,
     "max": 40
@@ -22,38 +13,18 @@
     "max": 13
   },
   "seasonality": {
-    "months": [
-      6,
-      7,
-      8
-    ]
+    "months": [6, 7, 8]
   },
   "timeActivity": {
-    "periods": [
-      "dawn",
-      "morning"
-    ]
+    "periods": ["dawn", "morning"]
   },
   "currentPreference": {
     "preference": "moderate"
   },
-  "diet": [
-    "small_fish"
-  ],
-  "baits": [
-    "roe",
-    "krill",
-    "shrimp"
-  ],
-  "lureCategories": [
-    "spoon",
-    "jig"
-  ],
-  "fishingMethods": [
-    "lure",
-    "bait",
-    "bottom"
-  ],
+  "diet": ["small_fish"],
+  "baits": ["roe", "krill", "shrimp"],
+  "lureCategories": ["spoon", "jig"],
+  "fishingMethods": ["lure", "bait", "bottom"],
   "methodAffinity": {
     "lure": 1,
     "light_lure": 0.8,
@@ -91,13 +62,8 @@
   },
   "rarity": 2.5,
   "environmentAffinity": {
-    "preferredSeasons": [
-      "summer"
-    ],
-    "preferredTimeOfDay": [
-      "dawn",
-      "morning"
-    ],
+    "preferredSeasons": ["summer"],
+    "preferredTimeOfDay": ["dawn", "morning"],
     "weatherAffinity": {
       "clear": 1.05,
       "cloudy": 1.05,

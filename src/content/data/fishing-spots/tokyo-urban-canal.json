@@ -14,22 +14,15 @@
   "travelOptions": [
     {
       "id": "local-walk",
-      "transportTypes": [
-        "walk"
-      ],
-      "requiredCapabilities": [
-        "reachable_on_foot"
-      ],
+      "transportTypes": ["walk"],
+      "requiredCapabilities": ["reachable_on_foot"],
       "features": [],
       "baseMinutes": 20,
       "distanceKm": 2,
       "baseOneWayCost": 0
     }
   ],
-  "habitatTags": [
-    "shallow",
-    "pier"
-  ],
+  "habitatTags": ["shallow", "pier"],
   "depth": {
     "depthRangeM": {
       "min": 1,
@@ -82,10 +75,7 @@
         "min": 1,
         "max": 3
       },
-      "habitatTags": [
-        "wall",
-        "structure"
-      ]
+      "habitatTags": ["wall", "structure"]
     },
     {
       "id": "canal-center",
@@ -98,10 +88,7 @@
         "min": 2,
         "max": 5
       },
-      "habitatTags": [
-        "canal",
-        "open"
-      ]
+      "habitatTags": ["canal", "open"]
     },
     {
       "id": "far-wall",
@@ -114,10 +101,7 @@
         "min": 1,
         "max": 4
       },
-      "habitatTags": [
-        "wall",
-        "far-bank"
-      ]
+      "habitatTags": ["wall", "far-bank"]
     }
   ]
 }

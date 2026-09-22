@@ -2,16 +2,9 @@
   "id": "mejina",
   "japaneseName": "メジナ（暫定）",
   "scientificName": "Girella punctata",
-  "waterTypes": [
-    "salt"
-  ],
-  "distribution": [
-    "tokyo-area"
-  ],
-  "habitats": [
-    "rock",
-    "reef"
-  ],
+  "waterTypes": ["salt"],
+  "distribution": ["tokyo-area"],
+  "habitats": ["rock", "reef"],
   "depthRange": {
     "min": 0,
     "max": 28

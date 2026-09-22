@@ -2,16 +2,9 @@
   "id": "cabezon",
   "japaneseName": "カベゾン（暫定）",
   "scientificName": "Scorpaenichthys marmoratus",
-  "waterTypes": [
-    "salt"
-  ],
-  "distribution": [
-    "british-columbia"
-  ],
-  "habitats": [
-    "reef",
-    "bottom"
-  ],
+  "waterTypes": ["salt"],
+  "distribution": ["british-columbia"],
+  "habitats": ["reef", "bottom"],
   "depthRange": {
     "min": 0,
     "max": 50

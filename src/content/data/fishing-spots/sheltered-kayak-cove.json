@@ -14,24 +14,15 @@
   "travelOptions": [
     {
       "id": "sheltered-launch",
-      "transportTypes": [
-        "kayak"
-      ],
-      "requiredCapabilities": [
-        "kayak_launch"
-      ],
-      "features": [
-        "launch_point"
-      ],
+      "transportTypes": ["kayak"],
+      "requiredCapabilities": ["kayak_launch"],
+      "features": ["launch_point"],
       "baseMinutes": 60,
       "distanceKm": 6,
       "baseOneWayCost": 0
     }
   ],
-  "habitatTags": [
-    "shallow",
-    "surf"
-  ],
+  "habitatTags": ["shallow", "surf"],
   "depth": {
     "depthRangeM": {
       "min": 2,
@@ -72,10 +63,7 @@
         "min": 1,
         "max": 5
       },
-      "habitatTags": [
-        "shore",
-        "shallow"
-      ]
+      "habitatTags": ["shore", "shallow"]
     },
     {
       "id": "reef-edge",
@@ -88,10 +76,7 @@
         "min": 3,
         "max": 10
       },
-      "habitatTags": [
-        "reef",
-        "weed"
-      ]
+      "habitatTags": ["reef", "weed"]
     },
     {
       "id": "outer",
@@ -104,10 +89,7 @@
         "min": 6,
         "max": 18
       },
-      "habitatTags": [
-        "open",
-        "current"
-      ]
+      "habitatTags": ["open", "current"]
     }
   ]
 }

@@ -8,22 +8,15 @@
   "travelOptions": [
     {
       "id": "harbor-walk",
-      "transportTypes": [
-        "walk"
-      ],
-      "requiredCapabilities": [
-        "reachable_on_foot"
-      ],
+      "transportTypes": ["walk"],
+      "requiredCapabilities": ["reachable_on_foot"],
       "features": [],
       "baseMinutes": 30,
       "distanceKm": 2.2,
       "baseOneWayCost": 0
     }
   ],
-  "habitatTags": [
-    "pier",
-    "harbor"
-  ],
+  "habitatTags": ["pier", "harbor"],
   "depth": {
     "depthRangeM": {
       "min": 2,
@@ -42,10 +35,7 @@
         "min": 1,
         "max": 4
       },
-      "habitatTags": [
-        "shore",
-        "structure"
-      ]
+      "habitatTags": ["shore", "structure"]
     },
     {
       "id": "mid",
@@ -58,10 +48,7 @@
         "min": 3,
         "max": 10
       },
-      "habitatTags": [
-        "open",
-        "break"
-      ]
+      "habitatTags": ["open", "break"]
     },
     {
       "id": "far",
@@ -74,10 +61,7 @@
         "min": 8,
         "max": 22
       },
-      "habitatTags": [
-        "open",
-        "current"
-      ]
+      "habitatTags": ["open", "current"]
     }
   ],
   "fishTable": [

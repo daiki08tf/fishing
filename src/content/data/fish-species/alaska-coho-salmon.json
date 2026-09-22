@@ -1,18 +1,9 @@
 {
   "id": "coho-salmon",
   "japaneseName": "ギンザケ（暫定）",
-  "waterTypes": [
-    "fresh",
-    "salt"
-  ],
-  "distribution": [
-    "alaska",
-    "british-columbia"
-  ],
-  "habitats": [
-    "river",
-    "bay"
-  ],
+  "waterTypes": ["fresh", "salt"],
+  "distribution": ["alaska", "british-columbia"],
+  "habitats": ["river", "bay"],
   "depthRange": {
     "min": 1,
     "max": 25
@@ -22,38 +13,18 @@
     "max": 15
   },
   "seasonality": {
-    "months": [
-      8,
-      9,
-      10
-    ]
+    "months": [8, 9, 10]
   },
   "timeActivity": {
-    "periods": [
-      "dawn",
-      "evening"
-    ]
+    "periods": ["dawn", "evening"]
   },
   "currentPreference": {
     "preference": "moderate"
   },
-  "diet": [
-    "small_fish"
-  ],
-  "baits": [
-    "roe",
-    "cut",
-    "shrimp"
-  ],
-  "lureCategories": [
-    "spoon",
-    "minnow",
-    "jig"
-  ],
-  "fishingMethods": [
-    "lure",
-    "bait"
-  ],
+  "diet": ["small_fish"],
+  "baits": ["roe", "cut", "shrimp"],
+  "lureCategories": ["spoon", "minnow", "jig"],
+  "fishingMethods": ["lure", "bait"],
   "methodAffinity": {
     "lure": 1.15,
     "light_lure": 0.85,
@@ -93,13 +64,8 @@
   },
   "rarity": 2.5,
   "environmentAffinity": {
-    "preferredSeasons": [
-      "autumn"
-    ],
-    "preferredTimeOfDay": [
-      "dawn",
-      "evening"
-    ],
+    "preferredSeasons": ["autumn"],
+    "preferredTimeOfDay": ["dawn", "evening"],
     "weatherAffinity": {
       "clear": 1,
       "cloudy": 1.1,

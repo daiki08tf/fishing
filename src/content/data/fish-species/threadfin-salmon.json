@@ -2,17 +2,9 @@
   "id": "threadfin-salmon",
   "japaneseName": "スレッドフィンサーモン（暫定）",
   "scientificName": "Eleutheronema tetradactylum",
-  "waterTypes": [
-    "brackish",
-    "salt"
-  ],
-  "distribution": [
-    "queensland"
-  ],
-  "habitats": [
-    "estuary",
-    "sand"
-  ],
+  "waterTypes": ["brackish", "salt"],
+  "distribution": ["queensland"],
+  "habitats": ["estuary", "sand"],
   "depthRange": {
     "min": 0,
     "max": 65

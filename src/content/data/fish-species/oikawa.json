@@ -2,16 +2,9 @@
   "id": "oikawa",
   "japaneseName": "オイカワ（暫定）",
   "scientificName": "Opsariichthys platypus",
-  "waterTypes": [
-    "fresh"
-  ],
-  "distribution": [
-    "tokyo-area"
-  ],
-  "habitats": [
-    "river",
-    "shallow"
-  ],
+  "waterTypes": ["fresh"],
+  "distribution": ["tokyo-area"],
+  "habitats": ["river", "shallow"],
   "depthRange": {
     "min": 0,
     "max": 10

@@ -2,17 +2,9 @@
   "id": "yamame",
   "japaneseName": "ヤマメ（暫定）",
   "scientificName": "Oncorhynchus masou masou",
-  "waterTypes": [
-    "fresh"
-  ],
-  "distribution": [
-    "tokyo-area",
-    "hokkaido"
-  ],
-  "habitats": [
-    "stream",
-    "river"
-  ],
+  "waterTypes": ["fresh"],
+  "distribution": ["tokyo-area", "hokkaido"],
+  "habitats": ["stream", "river"],
   "depthRange": {
     "min": 0,
     "max": 23

@@ -1,17 +1,9 @@
 {
   "id": "masu-salmon",
   "japaneseName": "サクラマス（暫定）",
-  "waterTypes": [
-    "fresh",
-    "salt"
-  ],
-  "distribution": [
-    "hokkaido"
-  ],
-  "habitats": [
-    "river",
-    "coast"
-  ],
+  "waterTypes": ["fresh", "salt"],
+  "distribution": ["hokkaido"],
+  "habitats": ["river", "coast"],
   "depthRange": {
     "min": 1,
     "max": 20
@@ -21,40 +13,18 @@
     "max": 15
   },
   "seasonality": {
-    "months": [
-      4,
-      5,
-      6,
-      9,
-      10
-    ]
+    "months": [4, 5, 6, 9, 10]
   },
   "timeActivity": {
-    "periods": [
-      "dawn",
-      "evening"
-    ]
+    "periods": ["dawn", "evening"]
   },
   "currentPreference": {
     "preference": "moderate"
   },
-  "diet": [
-    "small_fish"
-  ],
-  "baits": [
-    "roe",
-    "worm"
-  ],
-  "lureCategories": [
-    "spoon",
-    "minnow",
-    "spinner"
-  ],
-  "fishingMethods": [
-    "light_lure",
-    "lure",
-    "bait"
-  ],
+  "diet": ["small_fish"],
+  "baits": ["roe", "worm"],
+  "lureCategories": ["spoon", "minnow", "spinner"],
+  "fishingMethods": ["light_lure", "lure", "bait"],
   "methodAffinity": {
     "lure": 1.1,
     "light_lure": 1.2,
@@ -93,14 +63,8 @@
   },
   "rarity": 2,
   "environmentAffinity": {
-    "preferredSeasons": [
-      "spring",
-      "autumn"
-    ],
-    "preferredTimeOfDay": [
-      "dawn",
-      "evening"
-    ],
+    "preferredSeasons": ["spring", "autumn"],
+    "preferredTimeOfDay": ["dawn", "evening"],
     "weatherAffinity": {
       "clear": 1,
       "cloudy": 1.1,

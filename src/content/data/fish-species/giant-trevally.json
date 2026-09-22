@@ -2,16 +2,9 @@
   "id": "giant-trevally",
   "japaneseName": "ジャイアントトレバリー（暫定）",
   "scientificName": "Caranx ignobilis",
-  "waterTypes": [
-    "salt"
-  ],
-  "distribution": [
-    "queensland"
-  ],
-  "habitats": [
-    "reef",
-    "open"
-  ],
+  "waterTypes": ["salt"],
+  "distribution": ["queensland"],
+  "habitats": ["reef", "open"],
   "depthRange": {
     "min": 0,
     "max": 85

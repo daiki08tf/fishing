@@ -21,26 +21,15 @@
   "travelOptions": [
     {
       "id": "qld-offshore-boat",
-      "transportTypes": [
-        "rental_boat"
-      ],
-      "requiredCapabilities": [
-        "boat_required",
-        "offshore"
-      ],
-      "features": [
-        "boat_rental",
-        "marina"
-      ],
+      "transportTypes": ["rental_boat"],
+      "requiredCapabilities": ["boat_required", "offshore"],
+      "features": ["boat_rental", "marina"],
       "baseMinutes": 95,
       "distanceKm": 50,
       "baseOneWayCost": 0
     }
   ],
-  "habitatTags": [
-    "open",
-    "bluewater"
-  ],
+  "habitatTags": ["open", "bluewater"],
   "depth": {
     "depthRangeM": {
       "min": 20,
@@ -55,10 +44,7 @@
         "min": 0,
         "max": 15
       },
-      "habitatTags": [
-        "surface",
-        "open"
-      ]
+      "habitatTags": ["surface", "open"]
     },
     {
       "id": "mid",
@@ -67,10 +53,7 @@
         "min": 15,
         "max": 60
       },
-      "habitatTags": [
-        "mid-water",
-        "open"
-      ]
+      "habitatTags": ["mid-water", "open"]
     },
     {
       "id": "deep",
@@ -79,11 +62,7 @@
         "min": 60,
         "max": 180
       },
-      "habitatTags": [
-        "deep",
-        "reef",
-        "bottom"
-      ]
+      "habitatTags": ["deep", "reef", "bottom"]
     }
   ],
   "fishTable": [

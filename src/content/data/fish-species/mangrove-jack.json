@@ -2,18 +2,9 @@
   "id": "mangrove-jack",
   "japaneseName": "マングローブジャック（暫定）",
   "scientificName": "Lutjanus argentimaculatus",
-  "waterTypes": [
-    "brackish",
-    "salt"
-  ],
-  "distribution": [
-    "queensland"
-  ],
-  "habitats": [
-    "mangrove",
-    "estuary",
-    "structure"
-  ],
+  "waterTypes": ["brackish", "salt"],
+  "distribution": ["queensland"],
+  "habitats": ["mangrove", "estuary", "structure"],
   "depthRange": {
     "min": 0,
     "max": 50

@@ -2,17 +2,9 @@
   "id": "mahi-mahi",
   "japaneseName": "シイラ（暫定）",
   "scientificName": "Coryphaena hippurus",
-  "waterTypes": [
-    "salt"
-  ],
-  "distribution": [
-    "tokyo-area",
-    "queensland"
-  ],
-  "habitats": [
-    "surface",
-    "open"
-  ],
+  "waterTypes": ["salt"],
+  "distribution": ["tokyo-area", "queensland"],
+  "habitats": ["surface", "open"],
   "depthRange": {
     "min": 0,
     "max": 85

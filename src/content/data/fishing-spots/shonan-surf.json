@@ -13,22 +13,15 @@
   "travelOptions": [
     {
       "id": "shonan-rail",
-      "transportTypes": [
-        "train"
-      ],
-      "requiredCapabilities": [
-        "public_transport"
-      ],
+      "transportTypes": ["train"],
+      "requiredCapabilities": ["public_transport"],
       "features": [],
       "baseMinutes": 75,
       "distanceKm": 45,
       "baseOneWayCost": 700
     }
   ],
-  "habitatTags": [
-    "surf",
-    "sand"
-  ],
+  "habitatTags": ["surf", "sand"],
   "depth": {
     "depthRangeM": {
       "min": 0,
@@ -47,10 +40,7 @@
         "min": 0,
         "max": 3
       },
-      "habitatTags": [
-        "surf",
-        "shallow"
-      ]
+      "habitatTags": ["surf", "shallow"]
     },
     {
       "id": "break",
@@ -63,10 +53,7 @@
         "min": 2,
         "max": 6
       },
-      "habitatTags": [
-        "break",
-        "sand"
-      ]
+      "habitatTags": ["break", "sand"]
     },
     {
       "id": "outer",
@@ -79,10 +66,7 @@
         "min": 5,
         "max": 15
       },
-      "habitatTags": [
-        "open",
-        "current"
-      ]
+      "habitatTags": ["open", "current"]
     }
   ],
   "fishTable": [

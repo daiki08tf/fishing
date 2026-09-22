@@ -2,15 +2,9 @@
   "id": "longtail-tuna",
   "japaneseName": "ロングテールツナ（暫定）",
   "scientificName": "Thunnus tonggol",
-  "waterTypes": [
-    "salt"
-  ],
-  "distribution": [
-    "queensland"
-  ],
-  "habitats": [
-    "open"
-  ],
+  "waterTypes": ["salt"],
+  "distribution": ["queensland"],
+  "habitats": ["open"],
   "depthRange": {
     "min": 0,
     "max": 75

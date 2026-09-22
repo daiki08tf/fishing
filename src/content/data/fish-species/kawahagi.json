@@ -2,16 +2,9 @@
   "id": "kawahagi",
   "japaneseName": "カワハギ（暫定）",
   "scientificName": "Stephanolepis cirrhifer",
-  "waterTypes": [
-    "salt"
-  ],
-  "distribution": [
-    "tokyo-area"
-  ],
-  "habitats": [
-    "reef",
-    "pier"
-  ],
+  "waterTypes": ["salt"],
+  "distribution": ["tokyo-area"],
+  "habitats": ["reef", "pier"],
   "depthRange": {
     "min": 0,
     "max": 18

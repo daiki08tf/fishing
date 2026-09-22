@@ -1,17 +1,9 @@
 {
   "id": "amemasu",
   "japaneseName": "アメマス（暫定）",
-  "waterTypes": [
-    "fresh",
-    "brackish"
-  ],
-  "distribution": [
-    "hokkaido"
-  ],
-  "habitats": [
-    "river",
-    "lake"
-  ],
+  "waterTypes": ["fresh", "brackish"],
+  "distribution": ["hokkaido"],
+  "habitats": ["river", "lake"],
   "depthRange": {
     "min": 1,
     "max": 18
@@ -21,43 +13,18 @@
     "max": 14
   },
   "seasonality": {
-    "months": [
-      5,
-      6,
-      7,
-      8,
-      9,
-      10
-    ]
+    "months": [5, 6, 7, 8, 9, 10]
   },
   "timeActivity": {
-    "periods": [
-      "dawn",
-      "morning",
-      "evening"
-    ]
+    "periods": ["dawn", "morning", "evening"]
   },
   "currentPreference": {
     "preference": "slow"
   },
-  "diet": [
-    "small_fish"
-  ],
-  "baits": [
-    "worm",
-    "roe",
-    "insect"
-  ],
-  "lureCategories": [
-    "spoon",
-    "spinner",
-    "minnow"
-  ],
-  "fishingMethods": [
-    "light_lure",
-    "lure",
-    "bait"
-  ],
+  "diet": ["small_fish"],
+  "baits": ["worm", "roe", "insect"],
+  "lureCategories": ["spoon", "spinner", "minnow"],
+  "fishingMethods": ["light_lure", "lure", "bait"],
   "methodAffinity": {
     "lure": 1.05,
     "light_lure": 1.2,
@@ -96,16 +63,8 @@
   },
   "rarity": 1.4,
   "environmentAffinity": {
-    "preferredSeasons": [
-      "spring",
-      "summer",
-      "autumn"
-    ],
-    "preferredTimeOfDay": [
-      "dawn",
-      "morning",
-      "evening"
-    ],
+    "preferredSeasons": ["spring", "summer", "autumn"],
+    "preferredTimeOfDay": ["dawn", "morning", "evening"],
     "weatherAffinity": {
       "clear": 1,
       "cloudy": 1.05,

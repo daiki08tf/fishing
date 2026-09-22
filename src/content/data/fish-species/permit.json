@@ -2,16 +2,9 @@
   "id": "permit",
   "japaneseName": "パーミット（暫定）",
   "scientificName": "Trachinotus falcatus",
-  "waterTypes": [
-    "salt"
-  ],
-  "distribution": [
-    "queensland"
-  ],
-  "habitats": [
-    "flat",
-    "reef"
-  ],
+  "waterTypes": ["salt"],
+  "distribution": ["queensland"],
+  "habitats": ["flat", "reef"],
   "depthRange": {
     "min": 0,
     "max": 60

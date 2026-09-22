@@ -18,24 +18,15 @@
   "travelOptions": [
     {
       "id": "mountain-road",
-      "transportTypes": [
-        "rental_car"
-      ],
-      "requiredCapabilities": [
-        "road_access"
-      ],
-      "features": [
-        "vehicle_rental"
-      ],
+      "transportTypes": ["rental_car"],
+      "requiredCapabilities": ["road_access"],
+      "features": ["vehicle_rental"],
       "baseMinutes": 95,
       "distanceKm": 60,
       "baseOneWayCost": 0
     }
   ],
-  "habitatTags": [
-    "river",
-    "cold"
-  ],
+  "habitatTags": ["river", "cold"],
   "depth": {
     "depthRangeM": {
       "min": 1,
@@ -88,10 +79,7 @@
         "min": 0.5,
         "max": 2.5
       },
-      "habitatTags": [
-        "bank",
-        "shallow"
-      ]
+      "habitatTags": ["bank", "shallow"]
     },
     {
       "id": "main-flow",
@@ -104,10 +92,7 @@
         "min": 1.5,
         "max": 5
       },
-      "habitatTags": [
-        "river",
-        "current"
-      ]
+      "habitatTags": ["river", "current"]
     },
     {
       "id": "far-run",
@@ -120,10 +105,7 @@
         "min": 2,
         "max": 6
       },
-      "habitatTags": [
-        "current",
-        "far-bank"
-      ]
+      "habitatTags": ["current", "far-bank"]
     }
   ]
 }

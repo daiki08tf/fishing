@@ -2,16 +2,9 @@
   "id": "largemouth-bass",
   "japaneseName": "ブラックバス（暫定）",
   "scientificName": "Micropterus salmoides",
-  "waterTypes": [
-    "fresh"
-  ],
-  "distribution": [
-    "tokyo-area"
-  ],
-  "habitats": [
-    "lake",
-    "cover"
-  ],
+  "waterTypes": ["fresh"],
+  "distribution": ["tokyo-area"],
+  "habitats": ["lake", "cover"],
   "depthRange": {
     "min": 0,
     "max": 35

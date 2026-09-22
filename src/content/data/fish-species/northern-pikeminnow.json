@@ -2,16 +2,9 @@
   "id": "northern-pikeminnow",
   "japaneseName": "ノーザンパイクミノー（暫定）",
   "scientificName": "Ptychocheilus oregonensis",
-  "waterTypes": [
-    "fresh"
-  ],
-  "distribution": [
-    "british-columbia"
-  ],
-  "habitats": [
-    "river",
-    "lake"
-  ],
+  "waterTypes": ["fresh"],
+  "distribution": ["british-columbia"],
+  "habitats": ["river", "lake"],
   "depthRange": {
     "min": 0,
     "max": 35

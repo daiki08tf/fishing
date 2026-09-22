@@ -13,24 +13,15 @@
   "travelOptions": [
     {
       "id": "reservoir-road",
-      "transportTypes": [
-        "rental_car"
-      ],
-      "requiredCapabilities": [
-        "road_access"
-      ],
-      "features": [
-        "vehicle_rental"
-      ],
+      "transportTypes": ["rental_car"],
+      "requiredCapabilities": ["road_access"],
+      "features": ["vehicle_rental"],
       "baseMinutes": 100,
       "distanceKm": 65,
       "baseOneWayCost": 0
     }
   ],
-  "habitatTags": [
-    "lake",
-    "cover"
-  ],
+  "habitatTags": ["lake", "cover"],
   "depth": {
     "depthRangeM": {
       "min": 1,
@@ -49,10 +40,7 @@
         "min": 0.5,
         "max": 4
       },
-      "habitatTags": [
-        "bank",
-        "shallow"
-      ]
+      "habitatTags": ["bank", "shallow"]
     },
     {
       "id": "break",
@@ -65,10 +53,7 @@
         "min": 3,
         "max": 10
       },
-      "habitatTags": [
-        "break",
-        "deep"
-      ]
+      "habitatTags": ["break", "deep"]
     },
     {
       "id": "open",
@@ -81,10 +66,7 @@
         "min": 8,
         "max": 20
       },
-      "habitatTags": [
-        "open",
-        "deep"
-      ]
+      "habitatTags": ["open", "deep"]
     }
   ],
   "fishTable": [

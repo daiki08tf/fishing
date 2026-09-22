@@ -2,16 +2,9 @@
   "id": "madai",
   "japaneseName": "マダイ（暫定）",
   "scientificName": "Pagrus major",
-  "waterTypes": [
-    "salt"
-  ],
-  "distribution": [
-    "tokyo-area"
-  ],
-  "habitats": [
-    "reef",
-    "deep"
-  ],
+  "waterTypes": ["salt"],
+  "distribution": ["tokyo-area"],
+  "habitats": ["reef", "deep"],
   "depthRange": {
     "min": 0,
     "max": 43

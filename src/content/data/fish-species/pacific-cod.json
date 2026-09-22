@@ -2,17 +2,9 @@
   "id": "pacific-cod",
   "japaneseName": "マダラ（太平洋系・暫定）",
   "scientificName": "Gadus macrocephalus",
-  "waterTypes": [
-    "salt"
-  ],
-  "distribution": [
-    "british-columbia",
-    "alaska"
-  ],
-  "habitats": [
-    "deep",
-    "bottom"
-  ],
+  "waterTypes": ["salt"],
+  "distribution": ["british-columbia", "alaska"],
+  "habitats": ["deep", "bottom"],
   "depthRange": {
     "min": 0,
     "max": 60

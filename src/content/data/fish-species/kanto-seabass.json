@@ -2,35 +2,13 @@
   "id": "seabass",
   "japaneseName": "スズキ（暫定）",
   "scientificName": "Lateolabrax japonicus",
-  "waterTypes": [
-    "salt",
-    "brackish",
-    "fresh"
-  ],
-  "habitats": [
-    "estuary",
-    "river",
-    "pier"
-  ],
-  "diet": [
-    "small_fish",
-    "crustacean"
-  ],
-  "baits": [
-    "live",
-    "worm"
-  ],
-  "lureCategories": [
-    "minnow",
-    "vibration"
-  ],
-  "fishingMethods": [
-    "lure",
-    "light_lure"
-  ],
-  "distribution": [
-    "tokyo-area"
-  ],
+  "waterTypes": ["salt", "brackish", "fresh"],
+  "habitats": ["estuary", "river", "pier"],
+  "diet": ["small_fish", "crustacean"],
+  "baits": ["live", "worm"],
+  "lureCategories": ["minnow", "vibration"],
+  "fishingMethods": ["lure", "light_lure"],
+  "distribution": ["tokyo-area"],
   "depthRange": {
     "min": 8,
     "max": 40
@@ -72,14 +50,8 @@
   },
   "rarity": 2,
   "environmentAffinity": {
-    "preferredSeasons": [
-      "summer",
-      "autumn"
-    ],
-    "preferredTimeOfDay": [
-      "night",
-      "dawn"
-    ],
+    "preferredSeasons": ["summer", "autumn"],
+    "preferredTimeOfDay": ["night", "dawn"],
     "weatherAffinity": {
       "clear": 1,
       "cloudy": 1.1,

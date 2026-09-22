@@ -17,24 +17,15 @@
   "travelOptions": [
     {
       "id": "bc-lake-road",
-      "transportTypes": [
-        "rental_car"
-      ],
-      "requiredCapabilities": [
-        "road_access"
-      ],
-      "features": [
-        "vehicle_rental"
-      ],
+      "transportTypes": ["rental_car"],
+      "requiredCapabilities": ["road_access"],
+      "features": ["vehicle_rental"],
       "baseMinutes": 110,
       "distanceKm": 85,
       "baseOneWayCost": 0
     }
   ],
-  "habitatTags": [
-    "lake",
-    "deep"
-  ],
+  "habitatTags": ["lake", "deep"],
   "depth": {
     "depthRangeM": {
       "min": 1,
@@ -53,10 +44,7 @@
         "min": 1,
         "max": 5
       },
-      "habitatTags": [
-        "bank",
-        "shallow"
-      ]
+      "habitatTags": ["bank", "shallow"]
     },
     {
       "id": "break",
@@ -69,10 +57,7 @@
         "min": 4,
         "max": 14
       },
-      "habitatTags": [
-        "break",
-        "deep"
-      ]
+      "habitatTags": ["break", "deep"]
     },
     {
       "id": "open",
@@ -85,10 +70,7 @@
         "min": 10,
         "max": 30
       },
-      "habitatTags": [
-        "open",
-        "deep"
-      ]
+      "habitatTags": ["open", "deep"]
     }
   ],
   "fishTable": [
