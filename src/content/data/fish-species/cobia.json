@@ -1,0 +1,45 @@
+{
+  "id": "cobia",
+  "japaneseName": "コビア（暫定）",
+  "scientificName": "Rachycentron canadum",
+  "waterTypes": [
+    "salt"
+  ],
+  "distribution": [
+    "queensland"
+  ],
+  "habitats": [
+    "open",
+    "reef"
+  ],
+  "depthRange": {
+    "min": 0,
+    "max": 90
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 90,
+    "dispersion": 0.18,
+    "minCm": 40,
+    "maxCm": 180
+  },
+  "weightModel": {
+    "lengthWeightA": 0.009,
+    "lengthWeightB": 3.08
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "fightProfile": {
+    "strength": 0.9,
+    "stamina": 0.9,
+    "speed": 0.86
+  },
+  "rarity": 2.4,
+  "sourceRefs": [
+    {
+      "id": "phase12-provisional",
+      "title": "PROVISIONAL — Phase 12 gameplay tuning; biological values require later verification"
+    }
+  ]
+}
