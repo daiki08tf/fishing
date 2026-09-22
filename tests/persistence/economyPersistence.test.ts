@@ -104,7 +104,7 @@ describe('economy persistence', () => {
       expect(result.ok).toBe(true)
 
       if (result.ok) {
-        expect(result.save.schemaVersion).toBe(7)
+        expect(result.save.schemaVersion).toBe(8)
         expect(result.save.world.phase).toBe('HOME')
       }
     }
