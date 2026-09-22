@@ -1,6 +1,6 @@
 # Handoff
 
-最終更新: Phase 12（Regional World Expansion / Alpha Content）実装完了・最終 CI 確認中
+最終更新: Phase 12（Regional World Expansion / Alpha Content）完了
 
 > 現在状態は Phase 12 → 11 → 10.2 → 10.1 → 10 の順で優先する。
 > 詳細は `.ai/current-task.md` と `docs/DECISIONS.md` も参照。
@@ -23,6 +23,12 @@
 - `simulate:regional-content` を CI と `npm run check` に追加
 - Phase 13 候補: Catch Economy（売却 / 持ち帰り / リリース）
 - Visual Redesign は Content / Economy が安定した後の別 Phase
+- 最終 CI: typecheck / lint / format / validate / regional audit / test / build 全 PASS
+- `validate:content`: 738 records
+- regional audit: species 82 / spots 45 / playableRegions 5 / explicitZones 45 — PASS
+- tests: 71 files / 624 tests
+- bundle: JS 845.44 kB（gzip 198.91 kB）/ CSS 7.13 kB（gzip 1.86 kB）
+- Vite 500 kB warning は既知。Phase 12 blocker ではない
 
 ## Phase 11（Casting Distance & Fishing Zones）
 
