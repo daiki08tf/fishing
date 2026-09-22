@@ -13,15 +13,24 @@
   "travelOptions": [
     {
       "id": "bc-river-road",
-      "transportTypes": ["rental_car"],
-      "requiredCapabilities": ["road_access"],
-      "features": ["vehicle_rental"],
+      "transportTypes": [
+        "rental_car"
+      ],
+      "requiredCapabilities": [
+        "road_access"
+      ],
+      "features": [
+        "vehicle_rental"
+      ],
       "baseMinutes": 70,
       "distanceKm": 48,
       "baseOneWayCost": 0
     }
   ],
-  "habitatTags": ["river", "gravel"],
+  "habitatTags": [
+    "river",
+    "gravel"
+  ],
   "depth": {
     "depthRangeM": {
       "min": 1,
@@ -40,7 +49,10 @@
         "min": 0.5,
         "max": 2.5
       },
-      "habitatTags": ["bank", "shallow"]
+      "habitatTags": [
+        "bank",
+        "shallow"
+      ]
     },
     {
       "id": "run",
@@ -53,7 +65,10 @@
         "min": 2,
         "max": 6
       },
-      "habitatTags": ["river", "current"]
+      "habitatTags": [
+        "river",
+        "current"
+      ]
     },
     {
       "id": "far",
@@ -66,7 +81,10 @@
         "min": 2,
         "max": 8
       },
-      "habitatTags": ["current", "far-bank"]
+      "habitatTags": [
+        "current",
+        "far-bank"
+      ]
     }
   ],
   "fishTable": [
@@ -104,6 +122,15 @@
         "edge": 0.5,
         "run": 1.5,
         "far": 1.1
+      }
+    },
+    {
+      "speciesId": "northern-pikeminnow",
+      "basePresence": 0.28,
+      "zoneAffinity": {
+        "edge": 0.9,
+        "run": 1.3,
+        "far": 1
       }
     }
   ],
