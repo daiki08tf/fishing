@@ -147,6 +147,24 @@ Spotはゲーム上の最小フィールド単位。
 
 最終的には数百〜1000以上のSpot追加に耐えられる構造にする。
 
+
+### 4.3 Phase 12 — Regional World Expansion
+
+世界拡張では、魚種数や Spot 数そのものを目的にしない。
+各地域に「そこへ行って狙いたい魚」と「その場所で狙う水域」を作る。
+
+- FishSpecies は世界共通 identity。地域ごとに同じ魚種を複製しない
+- 地域差は Spot の FishOccurrence（presence / season / temperature / zoneAffinity /
+  sizeModifier）に置く
+- 旅行先は Level で解禁しない。資金・移動手段・許可・物理アクセスで行ける範囲が広がる
+- playable Spot は Fishing Zone を持ち、同じ Spot でも狙う水域によって Encounter が変わる
+- 海外も国内と同じ Expedition / Access / Economy / Fishing Domain を使う
+- Content の生態・地形・アクセス・規制情報は verified source が無い限り PROVISIONAL とする
+- 大量 Content 追加後も「物理的不可能以外は soft」を維持し、魚種追加を hard gate 増加に使わない
+
+Phase 12 の Alpha Content は 82 Species / 45 Spot / 5 playable Region
+（東京近郊 / 北海道 / Alaska / British Columbia / Queensland）。
+
 ## 5. 魚
 
 魚はゲーム都合だけで配置しない。
