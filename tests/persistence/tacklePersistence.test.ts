@@ -100,8 +100,8 @@ describe('tackle persistence', () => {
     expect(migrateSave(broken).ok).toBe(false)
   })
 
-  it('rejects an unknown schemaVersion after v7', () => {
-    const result = migrateSave({ ...createValidSaveV8(), schemaVersion: 8 })
+  it('rejects an unknown schemaVersion after v8', () => {
+    const result = migrateSave({ ...createValidSaveV8(), schemaVersion: 9 })
 
     expect(result.ok).toBe(false)
     if (!result.ok) {
