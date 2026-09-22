@@ -5,48 +5,64 @@
  */
 
 import m0 from '../../data/fish-species/alaska-arctic-char.json'
-import m1 from '../../data/fish-species/alaska-chinook-salmon.json'
-import m2 from '../../data/fish-species/alaska-chum-salmon.json'
-import m3 from '../../data/fish-species/alaska-coho-salmon.json'
-import m4 from '../../data/fish-species/alaska-dolly-varden.json'
-import m5 from '../../data/fish-species/alaska-lake-trout.json'
-import m6 from '../../data/fish-species/alaska-pacific-halibut.json'
-import m7 from '../../data/fish-species/alaska-pink-salmon.json'
-import m8 from '../../data/fish-species/alaska-rainbow-trout.json'
-import m9 from '../../data/fish-species/alaska-sockeye-salmon.json'
-import m10 from '../../data/species-trade-profiles/arctic-char.json'
-import m11 from '../../data/species-trade-profiles/chinook-salmon.json'
-import m12 from '../../data/species-trade-profiles/chum-salmon.json'
-import m13 from '../../data/species-trade-profiles/coho-salmon.json'
-import m14 from '../../data/species-trade-profiles/dolly-varden.json'
-import m15 from '../../data/species-trade-profiles/lake-trout.json'
-import m16 from '../../data/species-trade-profiles/pacific-halibut.json'
-import m17 from '../../data/species-trade-profiles/pink-salmon.json'
-import m18 from '../../data/species-trade-profiles/rainbow-trout.json'
-import m19 from '../../data/species-trade-profiles/sockeye-salmon.json'
+import m1 from '../../data/fish-species/black-rockfish.json'
+import m2 from '../../data/fish-species/alaska-chinook-salmon.json'
+import m3 from '../../data/fish-species/alaska-chum-salmon.json'
+import m4 from '../../data/fish-species/alaska-coho-salmon.json'
+import m5 from '../../data/fish-species/alaska-dolly-varden.json'
+import m6 from '../../data/fish-species/kelp-greenling.json'
+import m7 from '../../data/fish-species/alaska-lake-trout.json'
+import m8 from '../../data/fish-species/pacific-cod.json'
+import m9 from '../../data/fish-species/alaska-pacific-halibut.json'
+import m10 from '../../data/fish-species/alaska-pink-salmon.json'
+import m11 from '../../data/fish-species/alaska-rainbow-trout.json'
+import m12 from '../../data/fish-species/alaska-sockeye-salmon.json'
+import m13 from '../../data/fish-species/walleye-pollock.json'
+import m14 from '../../data/species-trade-profiles/arctic-char.json'
+import m15 from '../../data/species-trade-profiles/black-rockfish.json'
+import m16 from '../../data/species-trade-profiles/chinook-salmon.json'
+import m17 from '../../data/species-trade-profiles/chum-salmon.json'
+import m18 from '../../data/species-trade-profiles/coho-salmon.json'
+import m19 from '../../data/species-trade-profiles/dolly-varden.json'
+import m20 from '../../data/species-trade-profiles/kelp-greenling.json'
+import m21 from '../../data/species-trade-profiles/lake-trout.json'
+import m22 from '../../data/species-trade-profiles/pacific-cod.json'
+import m23 from '../../data/species-trade-profiles/pacific-halibut.json'
+import m24 from '../../data/species-trade-profiles/pink-salmon.json'
+import m25 from '../../data/species-trade-profiles/rainbow-trout.json'
+import m26 from '../../data/species-trade-profiles/sockeye-salmon.json'
+import m27 from '../../data/species-trade-profiles/walleye-pollock.json'
 
 export const m0Name = "alaska-arctic-char.json"
-export const m1Name = "alaska-chinook-salmon.json"
-export const m2Name = "alaska-chum-salmon.json"
-export const m3Name = "alaska-coho-salmon.json"
-export const m4Name = "alaska-dolly-varden.json"
-export const m5Name = "alaska-lake-trout.json"
-export const m6Name = "alaska-pacific-halibut.json"
-export const m7Name = "alaska-pink-salmon.json"
-export const m8Name = "alaska-rainbow-trout.json"
-export const m9Name = "alaska-sockeye-salmon.json"
-export const m10Name = "arctic-char.json"
-export const m11Name = "chinook-salmon.json"
-export const m12Name = "chum-salmon.json"
-export const m13Name = "coho-salmon.json"
-export const m14Name = "dolly-varden.json"
-export const m15Name = "lake-trout.json"
-export const m16Name = "pacific-halibut.json"
-export const m17Name = "pink-salmon.json"
-export const m18Name = "rainbow-trout.json"
-export const m19Name = "sockeye-salmon.json"
+export const m1Name = "black-rockfish.json"
+export const m2Name = "alaska-chinook-salmon.json"
+export const m3Name = "alaska-chum-salmon.json"
+export const m4Name = "alaska-coho-salmon.json"
+export const m5Name = "alaska-dolly-varden.json"
+export const m6Name = "kelp-greenling.json"
+export const m7Name = "alaska-lake-trout.json"
+export const m8Name = "pacific-cod.json"
+export const m9Name = "alaska-pacific-halibut.json"
+export const m10Name = "alaska-pink-salmon.json"
+export const m11Name = "alaska-rainbow-trout.json"
+export const m12Name = "alaska-sockeye-salmon.json"
+export const m13Name = "walleye-pollock.json"
+export const m14Name = "arctic-char.json"
+export const m15Name = "black-rockfish.json"
+export const m16Name = "chinook-salmon.json"
+export const m17Name = "chum-salmon.json"
+export const m18Name = "coho-salmon.json"
+export const m19Name = "dolly-varden.json"
+export const m20Name = "kelp-greenling.json"
+export const m21Name = "lake-trout.json"
+export const m22Name = "pacific-cod.json"
+export const m23Name = "pacific-halibut.json"
+export const m24Name = "pink-salmon.json"
+export const m25Name = "rainbow-trout.json"
+export const m26Name = "sockeye-salmon.json"
+export const m27Name = "walleye-pollock.json"
 
 export const load = async (): Promise<Readonly<Record<string, readonly unknown[]>>> => ({
-    "fish-species": [m0, m1, m2, m3, m4, m5, m6, m7, m8, m9],
-    "species-trade-profiles": [m10, m11, m12, m13, m14, m15, m16, m17, m18, m19],
+    "fish-species": [m0, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13],
+    "species-trade-profiles": [m14, m15, m16, m17, m18, m19, m20, m21, m22, m23, m24, m25, m26, m27],
 })

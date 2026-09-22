@@ -1,0 +1,116 @@
+{
+  "id": "norway-hidden-fjord-deep",
+  "name": "ノルウェー 静かな入り江（要情報・暫定）",
+  "regionId": "norway-fjords",
+  "areaId": "norway-coast",
+  "environment": "offshore",
+  "dataStatus": "provisional",
+  "visibility": "hidden",
+  "access": [
+    {
+      "kind": "knowledge",
+      "minimum": 20
+    }
+  ],
+  "travelOptions": [
+    {
+      "id": "rental_boat-1",
+      "transportTypes": ["rental_boat"],
+      "requiredCapabilities": ["boat_required"],
+      "features": [],
+      "baseMinutes": 70,
+      "distanceKm": 20,
+      "baseOneWayCost": 14000
+    }
+  ],
+  "habitatTags": ["offshore", "deep"],
+  "fishingZones": [
+    {
+      "id": "near",
+      "name": "近距離",
+      "castDistanceM": {
+        "min": 0,
+        "max": 30
+      },
+      "habitatTags": ["offshore", "deep"]
+    },
+    {
+      "id": "deep",
+      "name": "深場",
+      "castDistanceM": {
+        "min": 30,
+        "max": 90
+      },
+      "habitatTags": ["offshore", "deep"]
+    }
+  ],
+  "fishTable": [
+    {
+      "speciesId": "atlantic-halibut",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "near": 0.85,
+        "deep": 1.3
+      }
+    },
+    {
+      "speciesId": "atlantic-cod",
+      "basePresence": 0.45,
+      "zoneAffinity": {
+        "near": 0.85,
+        "deep": 1.3
+      }
+    },
+    {
+      "speciesId": "haddock",
+      "basePresence": 0.35,
+      "zoneAffinity": {
+        "near": 0.85,
+        "deep": 1.3
+      }
+    },
+    {
+      "speciesId": "wolffish",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "near": 0.85,
+        "deep": 1.3
+      }
+    },
+    {
+      "speciesId": "turbot",
+      "basePresence": 0.25,
+      "zoneAffinity": {
+        "near": 0.85,
+        "deep": 1.3
+      }
+    },
+    {
+      "speciesId": "coalfish",
+      "basePresence": 0.4,
+      "zoneAffinity": {
+        "near": 0.85,
+        "deep": 1.3
+      }
+    }
+  ],
+  "knowledgeConfig": {
+    "reveals": [
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "time_pattern",
+        "minKnowledge": 40
+      }
+    ]
+  },
+  "regulations": [],
+  "sourceRefs": [
+    {
+      "id": "phase16-provisional",
+      "title": "PROVISIONAL — Phase 16 gameplay content; 実在の釣り場・立入可否の主張ではない"
+    }
+  ]
+}

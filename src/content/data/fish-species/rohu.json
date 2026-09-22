@@ -1,0 +1,109 @@
+{
+  "id": "rohu",
+  "japaneseName": "ロフ（暫定）",
+  "scientificName": "Labeo rohita",
+  "waterTypes": ["fresh"],
+  "habitats": ["river", "floodplain"],
+  "diet": ["plants", "plankton"],
+  "baits": ["dough", "corn"],
+  "lureCategories": ["soft_plastic"],
+  "fishingMethods": ["bait"],
+  "distribution": ["thailand"],
+  "depthRange": {
+    "min": 0,
+    "max": 10
+  },
+  "temperatureRange": {
+    "min": 22,
+    "max": 32
+  },
+  "seasonality": {
+    "months": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+  },
+  "timeActivity": {
+    "periods": ["dawn", "morning", "evening"]
+  },
+  "tidePreference": {
+    "preference": "rising"
+  },
+  "currentPreference": {
+    "preference": "moderate"
+  },
+  "methodAffinity": {
+    "lure": 1.1,
+    "bait": 1.05,
+    "light_lure": 1.05,
+    "bottom": 1
+  },
+  "offeringAffinity": {
+    "soft_plastic": 1.1,
+    "topwater": 1.1,
+    "minnow": 1.05,
+    "dough": 1.1,
+    "worm": 1.05,
+    "insect": 1.1
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 50,
+    "dispersion": 0.14,
+    "minCm": 25,
+    "maxCm": 85
+  },
+  "weightModel": {
+    "lengthWeightA": 0.0125,
+    "lengthWeightB": 3.05
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "traitConfiguration": {
+    "trophyPercentileThreshold": 1,
+    "strongRunnerChance": 0.04
+  },
+  "fightProfile": {
+    "strength": 0.65,
+    "stamina": 0.6,
+    "speed": 0.5
+  },
+  "rarity": 2.2,
+  "environmentAffinity": {
+    "preferredSeasons": ["summer", "autumn"],
+    "preferredTimeOfDay": ["dawn", "morning", "evening"],
+    "weatherAffinity": {
+      "clear": 1,
+      "cloudy": 1.05,
+      "light_rain": 1,
+      "rain": 0.95,
+      "windy": 0.9
+    },
+    "tideAffinity": {
+      "low": 1,
+      "rising": 1,
+      "high": 1,
+      "falling": 1
+    },
+    "flowAffinity": {
+      "none": 0.95,
+      "slow": 1.1,
+      "moderate": 1.05,
+      "strong": 0.95
+    },
+    "preferredTemperatureC": {
+      "min": 22,
+      "max": 32
+    }
+  },
+  "feedingProfile": {
+    "preferredOfferingRatio": 0.18,
+    "largeOfferingPenaltyStart": 0.3,
+    "maxOfferingRatio": 0.42,
+    "mouthSizeFactor": 1.05
+  },
+  "sourceRefs": [
+    {
+      "id": "phase16-provisional",
+      "title": "PROVISIONAL — Phase 16 gameplay tuning; 実在の生態・漁業規制の主張ではない"
+    }
+  ]
+}

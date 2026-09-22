@@ -1,0 +1,39 @@
+{
+  "id": "norway-fjords",
+  "countryId": "norway",
+  "name": "ノルウェー・フィヨルド",
+  "stage": "playable",
+  "dataStatus": "provisional",
+  "base": {
+    "id": "norway-base",
+    "name": "Norway Fjord Base",
+    "areaId": "norway-fjord"
+  },
+  "areas": [
+    {
+      "id": "norway-fjord",
+      "name": "Fjord"
+    },
+    {
+      "id": "norway-coast",
+      "name": "Outer Coast"
+    },
+    {
+      "id": "norway-inland",
+      "name": "Inland River"
+    }
+  ],
+  "climate": {
+    "annualMeanWaterC": 8,
+    "seasonalSwingC": 7,
+    "weatherWeights": {
+      "clear": 16,
+      "cloudy": 38,
+      "light_rain": 18,
+      "rain": 16,
+      "windy": 12
+    },
+    "tidePhaseOffset": 0.6,
+    "tideRange": "large"
+  }
+}

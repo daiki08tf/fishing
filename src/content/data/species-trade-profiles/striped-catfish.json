@@ -1,0 +1,9 @@
+{
+  "speciesId": "striped-catfish",
+  "tradeStatus": "tradable",
+  "tradeTags": ["local_favorite", "everyday", "white_fish"],
+  "baseYenPerKg": 1210,
+  "minimumUnitValueYen": 220,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1.3
+}

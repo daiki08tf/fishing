@@ -1,0 +1,9 @@
+{
+  "speciesId": "australian-catfish",
+  "tradeStatus": "tradable",
+  "tradeTags": ["local_favorite", "everyday", "white_fish"],
+  "baseYenPerKg": 830,
+  "minimumUnitValueYen": 150,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

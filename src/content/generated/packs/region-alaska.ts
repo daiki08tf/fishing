@@ -10,7 +10,8 @@ import m2 from '../../data/fishing-spots/alaska-hidden-river-branch.json'
 import m3 from '../../data/fishing-spots/alaska-mountain-river.json'
 import m4 from '../../data/fishing-spots/alaska-offshore-grounds.json'
 import m5 from '../../data/fishing-spots/alaska-salmon-river.json'
-import m6 from '../../data/fishing-spots/alaska-trophy-lake.json'
+import m6 from '../../data/fishing-spots/alaska-sound-shore.json'
+import m7 from '../../data/fishing-spots/alaska-trophy-lake.json'
 
 export const m0Name = "alaska-coastal-bay.json"
 export const m1Name = "alaska-glacier-creek.json"
@@ -18,10 +19,11 @@ export const m2Name = "alaska-hidden-river-branch.json"
 export const m3Name = "alaska-mountain-river.json"
 export const m4Name = "alaska-offshore-grounds.json"
 export const m5Name = "alaska-salmon-river.json"
-export const m6Name = "alaska-trophy-lake.json"
+export const m6Name = "alaska-sound-shore.json"
+export const m7Name = "alaska-trophy-lake.json"
 
 export const load = async (): Promise<Readonly<Record<string, readonly unknown[]>>> => ({
-    "fishing-spots": [m0, m1, m2, m3, m4, m5, m6],
+    "fishing-spots": [m0, m1, m2, m3, m4, m5, m6, m7],
     "buyers": [],
     "contact-rewards": [],
 })

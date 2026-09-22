@@ -17,6 +17,7 @@ import { createTestSpecies } from '../../../tests/fixtures/species'
 // Phase 9: Environment は決定論的で、同じ入力なら同じ結果になる。
 
 const climate: ClimateProfile = {
+  hemisphere: 'north',
   annualMeanWaterC: 18,
   seasonalSwingC: 9,
   weatherWeights: { clear: 30, cloudy: 30, light_rain: 12, rain: 8, windy: 6 },

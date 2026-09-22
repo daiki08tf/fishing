@@ -174,7 +174,7 @@ export const waterConditionFor = (input: {
     temperatureFloor,
     round1(
       input.climate.annualMeanWaterC +
-        input.climate.seasonalSwingC * seasonalFactor(input.time.month) +
+        input.climate.seasonalSwingC * seasonalFactor(input.time.month, input.climate.hemisphere) +
         dailyNoise +
         weatherCooling,
     ),
@@ -211,7 +211,7 @@ export const resolveEnvironment = (input: {
   return {
     date: dateKeyOf(input.time),
     month: input.time.month,
-    season: seasonOf(input.time.month),
+    season: seasonOf(input.time.month, input.climate.hemisphere),
     timeOfDay: timeOfDayOf(input.time),
     weather,
     tide: tideFor({ time: input.time, climate: input.climate, kind: water.kind }),

@@ -1,0 +1,8 @@
+{
+  "id": "tohoku-hama-market-spot-11",
+  "contactId": "tohoku-hama-market",
+  "minTrust": 58,
+  "kind": "discover_spot",
+  "message": "食堂の人が、湧水の小川の正確な場所を教えてくれた。",
+  "targetId": "tohoku-hidden-spring-stream"
+}

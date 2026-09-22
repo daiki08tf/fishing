@@ -1,0 +1,131 @@
+{
+  "id": "amazon-floodplain-channel",
+  "name": "アマゾン 氾濫原 水路（暫定）",
+  "regionId": "amazon-basin",
+  "areaId": "amazon-floodplain",
+  "environment": "canal",
+  "dataStatus": "provisional",
+  "access": [
+    {
+      "kind": "knowledge",
+      "minimum": 10
+    }
+  ],
+  "travelOptions": [
+    {
+      "id": "rental_boat-1",
+      "transportTypes": ["rental_boat"],
+      "requiredCapabilities": ["boat_required"],
+      "features": [],
+      "baseMinutes": 50,
+      "distanceKm": 10,
+      "baseOneWayCost": 8000
+    }
+  ],
+  "habitatTags": ["canal", "urban"],
+  "fishingZones": [
+    {
+      "id": "wall",
+      "name": "壁際",
+      "castDistanceM": {
+        "min": 0,
+        "max": 12
+      },
+      "habitatTags": ["canal", "urban"]
+    },
+    {
+      "id": "middle",
+      "name": "中央",
+      "castDistanceM": {
+        "min": 12,
+        "max": 30
+      },
+      "habitatTags": ["canal", "urban"]
+    }
+  ],
+  "fishTable": [
+    {
+      "speciesId": "silver-dollar",
+      "basePresence": 0.45,
+      "zoneAffinity": {
+        "wall": 1.3,
+        "middle": 0.85
+      }
+    },
+    {
+      "speciesId": "jatuarana",
+      "basePresence": 0.45,
+      "zoneAffinity": {
+        "wall": 1.3,
+        "middle": 0.85
+      }
+    },
+    {
+      "speciesId": "oscar",
+      "basePresence": 0.4,
+      "zoneAffinity": {
+        "wall": 1.3,
+        "middle": 0.85
+      }
+    },
+    {
+      "speciesId": "black-piranha",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "wall": 1.3,
+        "middle": 0.85
+      }
+    },
+    {
+      "speciesId": "traira",
+      "basePresence": 0.4,
+      "zoneAffinity": {
+        "wall": 1.3,
+        "middle": 0.85
+      }
+    },
+    {
+      "speciesId": "curimata",
+      "basePresence": 0.4,
+      "zoneAffinity": {
+        "wall": 1.3,
+        "middle": 0.85
+      }
+    },
+    {
+      "speciesId": "freshwater-angelfish",
+      "basePresence": 0.35,
+      "zoneAffinity": {
+        "wall": 1.3,
+        "middle": 0.85
+      }
+    },
+    {
+      "speciesId": "three-spot-gourami",
+      "basePresence": 0.25,
+      "zoneAffinity": {
+        "wall": 1.3,
+        "middle": 0.85
+      }
+    }
+  ],
+  "knowledgeConfig": {
+    "reveals": [
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "time_pattern",
+        "minKnowledge": 40
+      }
+    ]
+  },
+  "regulations": [],
+  "sourceRefs": [
+    {
+      "id": "phase16-provisional",
+      "title": "PROVISIONAL — Phase 16 gameplay content; 実在の釣り場・立入可否の主張ではない"
+    }
+  ]
+}

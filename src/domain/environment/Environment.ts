@@ -85,7 +85,18 @@ export const WIND_LEVEL_LABELS: Readonly<Record<WindLevel, string>> = {
  * 地域の気候プロファイル（Content）。
  * 地域ごとの違いはここだけに置き、Resolver に地域固有の分岐を書かない。
  */
+/**
+ * 季節の半球（Phase 16 Part 2b）。
+ *
+ * 南半球では暦月と季節・水温の位相が半年ずれる（1 月が夏）。
+ * Region ID で分岐せず、ClimateProfile のデータとして扱う。
+ */
+export const HEMISPHERES = ['north', 'south'] as const
+export type Hemisphere = (typeof HEMISPHERES)[number]
+
 export type ClimateProfile = {
+  /** 季節の半球。省略時は 'north'（Content 側の既定）。 */
+  readonly hemisphere: Hemisphere
   /** 年平均の水温（℃）。 */
   readonly annualMeanWaterC: number
   /** 夏 + / 冬 − の振れ幅（℃）。 */
@@ -119,8 +130,8 @@ export type EnvironmentSnapshot = {
   readonly water: WaterCondition
 }
 
-/** 月 → 季節（北半球の暦。地域差は Species 側の affinity で表す）。 */
-export const seasonOf = (month: number): Season => {
+/** 月 → 季節（北半球の暦）。 */
+const seasonOfNorth = (month: number): Season => {
   if (month >= 3 && month <= 5) {
     return 'spring'
   }
@@ -134,6 +145,21 @@ export const seasonOf = (month: number): Season => {
   }
 
   return 'winter'
+}
+
+/**
+ * 月 → 季節。hemisphere を渡すと南半球の暦になる（1 月 = 夏 / 7 月 = 冬）。
+ * 省略時は 'north'（既存の呼び出しは挙動が変わらない）。
+ */
+export const seasonOf = (month: number, hemisphere: Hemisphere = 'north'): Season => {
+  if (hemisphere === 'north') {
+    return seasonOfNorth(month)
+  }
+
+  // 南半球は 6 か月ずらす（暦月のみで決まる。Region ID では分岐しない）。
+  const shifted = ((month - 1 + 6) % 12) + 1
+
+  return seasonOfNorth(shifted)
 }
 
 /** 時刻 → 時間帯。 */
@@ -180,10 +206,14 @@ export const waterKindOf = (environment: string): WaterKind => {
   }
 }
 
-/** 季節の進行度（夏 +1 / 冬 −1 / 春・秋 0）。水温の推定に使う。 */
-export const seasonalFactor = (month: number): number => {
-  // 8 月を +1、2 月を −1 とする余弦。
-  return Math.cos(((month - 8) / 12) * Math.PI * 2)
+/**
+ * 季節の進行度（その半球の夏 +1 / 冬 −1 / 春・秋 0）。水温の推定に使う。
+ * 北半球は 8 月、南半球は 2 月がピーク。
+ */
+export const seasonalFactor = (month: number, hemisphere: Hemisphere = 'north'): number => {
+  const peakMonth = hemisphere === 'south' ? 2 : 8
+
+  return Math.cos(((month - peakMonth) / 12) * Math.PI * 2)
 }
 
 /**

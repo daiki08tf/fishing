@@ -37,6 +37,24 @@
     {
       "speciesId": "ugui",
       "basePresence": 0.5
+    },
+    {
+      "speciesId": "oikawa",
+      "basePresence": 0.4,
+      "zoneAffinity": {
+        "bank-edge": 0.85,
+        "main-flow": 1.25,
+        "far-run": 0.85
+      }
+    },
+    {
+      "speciesId": "haze",
+      "basePresence": 0.2,
+      "zoneAffinity": {
+        "bank-edge": 1.0,
+        "main-flow": 1.0,
+        "far-run": 1.0
+      }
     }
   ],
   "knowledgeConfig": {

@@ -3,7 +3,7 @@
   "japaneseName": "スレッドフィンサーモン（暫定）",
   "scientificName": "Eleutheronema tetradactylum",
   "waterTypes": ["brackish", "salt"],
-  "distribution": ["queensland"],
+  "distribution": ["okinawa", "queensland", "thailand"],
   "habitats": ["estuary", "sand"],
   "depthRange": {
     "min": 0,

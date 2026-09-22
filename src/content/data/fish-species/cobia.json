@@ -3,7 +3,7 @@
   "japaneseName": "コビア（暫定）",
   "scientificName": "Rachycentron canadum",
   "waterTypes": ["salt"],
-  "distribution": ["queensland"],
+  "distribution": ["baja-california", "queensland"],
   "habitats": ["open", "reef"],
   "depthRange": {
     "min": 0,

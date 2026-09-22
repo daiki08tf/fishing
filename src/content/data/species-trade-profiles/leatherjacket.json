@@ -1,0 +1,9 @@
+{
+  "speciesId": "leatherjacket",
+  "tradeStatus": "tradable",
+  "tradeTags": ["delicate", "local_favorite"],
+  "baseYenPerKg": 590,
+  "minimumUnitValueYen": 110,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

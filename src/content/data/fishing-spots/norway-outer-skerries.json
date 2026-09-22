@@ -1,0 +1,119 @@
+{
+  "id": "norway-outer-skerries",
+  "name": "ノルウェー 外海 島礁（暫定）",
+  "regionId": "norway-fjords",
+  "areaId": "norway-coast",
+  "environment": "bay_shore",
+  "dataStatus": "provisional",
+  "access": [],
+  "travelOptions": [
+    {
+      "id": "walk-1",
+      "transportTypes": ["walk"],
+      "requiredCapabilities": ["reachable_on_foot"],
+      "features": [],
+      "baseMinutes": 25,
+      "distanceKm": 2,
+      "baseOneWayCost": 0
+    },
+    {
+      "id": "rental_car-2",
+      "transportTypes": ["rental_car"],
+      "requiredCapabilities": ["road_access"],
+      "features": [],
+      "baseMinutes": 45,
+      "distanceKm": 22,
+      "baseOneWayCost": 0
+    }
+  ],
+  "habitatTags": ["bay", "pier"],
+  "fishingZones": [
+    {
+      "id": "shoreline",
+      "name": "岸壁際",
+      "castDistanceM": {
+        "min": 0,
+        "max": 10
+      },
+      "habitatTags": ["bay", "pier"]
+    },
+    {
+      "id": "open",
+      "name": "沖目",
+      "castDistanceM": {
+        "min": 15,
+        "max": 45
+      },
+      "habitatTags": ["bay", "pier"]
+    }
+  ],
+  "fishTable": [
+    {
+      "speciesId": "lumpfish",
+      "basePresence": 0.35,
+      "zoneAffinity": {
+        "shoreline": 0.85,
+        "open": 1.3
+      }
+    },
+    {
+      "speciesId": "atlantic-redfish",
+      "basePresence": 0.35,
+      "zoneAffinity": {
+        "shoreline": 0.85,
+        "open": 1.3
+      }
+    },
+    {
+      "speciesId": "tusk",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "shoreline": 0.85,
+        "open": 1.3
+      }
+    },
+    {
+      "speciesId": "whiting",
+      "basePresence": 0.4,
+      "zoneAffinity": {
+        "shoreline": 0.85,
+        "open": 1.3
+      }
+    },
+    {
+      "speciesId": "coalfish",
+      "basePresence": 0.4,
+      "zoneAffinity": {
+        "shoreline": 0.85,
+        "open": 1.3
+      }
+    },
+    {
+      "speciesId": "atlantic-mackerel",
+      "basePresence": 0.35,
+      "zoneAffinity": {
+        "shoreline": 1.3,
+        "open": 0.85
+      }
+    }
+  ],
+  "knowledgeConfig": {
+    "reveals": [
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "time_pattern",
+        "minKnowledge": 40
+      }
+    ]
+  },
+  "regulations": [],
+  "sourceRefs": [
+    {
+      "id": "phase16-provisional",
+      "title": "PROVISIONAL — Phase 16 gameplay content; 実在の釣り場・立入可否の主張ではない"
+    }
+  ]
+}

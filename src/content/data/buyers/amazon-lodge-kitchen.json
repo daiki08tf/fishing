@@ -1,0 +1,28 @@
+{
+  "id": "amazon-lodge-kitchen",
+  "name": "アマゾン ロッジの厨房",
+  "buyerType": "izakaya",
+  "regionId": "amazon-basin",
+  "description": "ロッジの厨房。獲れたての魚を状態で評価する。PROVISIONAL — gameplay tuning。",
+  "pricingProfile": {
+    "baseMultiplier": 1.05,
+    "qualitySensitivity": 1.3,
+    "sizeSensitivity": 0.9,
+    "freshnessSensitivity": 0.6,
+    "volumeBonusPerExtraCatch": 0,
+    "maxVolumeBonus": 0
+  },
+  "trustProfile": {
+    "perTransactionBase": 2,
+    "qualityWeight": 6,
+    "maxPerTransaction": 6
+  },
+  "preferences": {
+    "preferredTags": ["delicate", "local_favorite", "white_fish"],
+    "neutralTags": ["premium", "large_fish", "game_fish", "everyday"],
+    "preferredTagMultiplier": 1.16,
+    "neutralTagMultiplier": 1,
+    "otherTagMultiplier": 0.86,
+    "localSourceMultiplier": 1.1
+  }
+}

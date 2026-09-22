@@ -1,0 +1,9 @@
+{
+  "speciesId": "california-yellowtail",
+  "tradeStatus": "tradable",
+  "tradeTags": ["premium", "large_fish"],
+  "baseYenPerKg": 1430,
+  "minimumUnitValueYen": 260,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1.3
+}

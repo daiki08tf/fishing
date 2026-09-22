@@ -3,7 +3,7 @@
   "japaneseName": "オイカワ（暫定）",
   "scientificName": "Opsariichthys platypus",
   "waterTypes": ["fresh"],
-  "distribution": ["tokyo-area"],
+  "distribution": ["tohoku-pacific", "tokyo-area"],
   "habitats": ["river", "shallow"],
   "depthRange": {
     "min": 0,

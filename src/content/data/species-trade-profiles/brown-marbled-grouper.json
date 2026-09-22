@@ -1,0 +1,9 @@
+{
+  "speciesId": "brown-marbled-grouper",
+  "tradeStatus": "tradable",
+  "tradeTags": ["delicate", "local_favorite"],
+  "baseYenPerKg": 1210,
+  "minimumUnitValueYen": 220,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1.3
+}

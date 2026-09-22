@@ -1,0 +1,107 @@
+{
+  "id": "atlantic-halibut",
+  "japaneseName": "タイセイヨウオヒョウ（暫定）",
+  "scientificName": "Hippoglossus hippoglossus",
+  "waterTypes": ["salt"],
+  "habitats": ["deep", "sand", "bottom"],
+  "diet": ["small_fish", "crustacean"],
+  "baits": ["cut", "live"],
+  "lureCategories": ["jig"],
+  "fishingMethods": ["bottom"],
+  "distribution": ["norway-fjords"],
+  "depthRange": {
+    "min": 20,
+    "max": 300
+  },
+  "temperatureRange": {
+    "min": 2,
+    "max": 10
+  },
+  "seasonality": {
+    "months": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+  },
+  "timeActivity": {
+    "periods": ["dawn", "morning", "evening"]
+  },
+  "tidePreference": {
+    "preference": "rising"
+  },
+  "currentPreference": {
+    "preference": "moderate"
+  },
+  "methodAffinity": {
+    "bottom": 1.2,
+    "bait": 1.15,
+    "lure": 1,
+    "light_lure": 0.95
+  },
+  "offeringAffinity": {
+    "soft_plastic": 1.1,
+    "worm": 1.15,
+    "cut": 1.1,
+    "jig": 1
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 120,
+    "dispersion": 0.2,
+    "minCm": 60,
+    "maxCm": 250
+  },
+  "weightModel": {
+    "lengthWeightA": 0.0135,
+    "lengthWeightB": 3.05
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "traitConfiguration": {
+    "trophyPercentileThreshold": 1,
+    "strongRunnerChance": 0.032
+  },
+  "fightProfile": {
+    "strength": 0.9,
+    "stamina": 0.85,
+    "speed": 0.4
+  },
+  "rarity": 3.6,
+  "environmentAffinity": {
+    "preferredSeasons": ["summer", "autumn", "winter"],
+    "preferredTimeOfDay": ["dawn", "morning", "evening"],
+    "weatherAffinity": {
+      "clear": 1,
+      "cloudy": 1.05,
+      "light_rain": 1,
+      "rain": 0.95,
+      "windy": 0.9
+    },
+    "tideAffinity": {
+      "low": 0.95,
+      "rising": 1.1,
+      "high": 1.1,
+      "falling": 1.05
+    },
+    "flowAffinity": {
+      "none": 1,
+      "slow": 1.1,
+      "moderate": 1.05,
+      "strong": 0.9
+    },
+    "preferredTemperatureC": {
+      "min": 2,
+      "max": 10
+    }
+  },
+  "feedingProfile": {
+    "preferredOfferingRatio": 0.12,
+    "largeOfferingPenaltyStart": 0.24,
+    "maxOfferingRatio": 0.34,
+    "mouthSizeFactor": 1.1
+  },
+  "sourceRefs": [
+    {
+      "id": "phase16-provisional",
+      "title": "PROVISIONAL — Phase 16 gameplay tuning; 実在の生態・漁業規制の主張ではない"
+    }
+  ]
+}

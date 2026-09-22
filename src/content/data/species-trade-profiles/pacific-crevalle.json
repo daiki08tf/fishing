@@ -1,0 +1,9 @@
+{
+  "speciesId": "pacific-crevalle",
+  "tradeStatus": "tradable",
+  "tradeTags": ["premium", "large_fish"],
+  "baseYenPerKg": 1280,
+  "minimumUnitValueYen": 230,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1.3
+}

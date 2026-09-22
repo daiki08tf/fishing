@@ -1,0 +1,28 @@
+{
+  "id": "okinawa-reef-deli",
+  "name": "沖縄 リーフの惣菜店",
+  "buyerType": "market",
+  "regionId": "okinawa",
+  "description": "港町の惣菜店。礁魚の状態をよく見る。PROVISIONAL — gameplay tuning。",
+  "pricingProfile": {
+    "baseMultiplier": 1.12,
+    "qualitySensitivity": 1.15,
+    "sizeSensitivity": 1.15,
+    "freshnessSensitivity": 0.6,
+    "volumeBonusPerExtraCatch": 0,
+    "maxVolumeBonus": 0
+  },
+  "trustProfile": {
+    "perTransactionBase": 2,
+    "qualityWeight": 6,
+    "maxPerTransaction": 6
+  },
+  "preferences": {
+    "preferredTags": ["premium", "delicate", "local_favorite"],
+    "neutralTags": ["white_fish", "large_fish", "oily", "everyday"],
+    "preferredTagMultiplier": 1.2,
+    "neutralTagMultiplier": 1,
+    "otherTagMultiplier": 0.84,
+    "localSourceMultiplier": 1.08
+  }
+}

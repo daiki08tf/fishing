@@ -1,0 +1,28 @@
+{
+  "id": "tohoku-hama-market",
+  "name": "東北 浜の市場",
+  "buyerType": "market",
+  "regionId": "tohoku-pacific",
+  "description": "東北の浜にある市場。季節の回遊魚と底ものを扱う。PROVISIONAL — gameplay tuning。",
+  "pricingProfile": {
+    "baseMultiplier": 1.12,
+    "qualitySensitivity": 1,
+    "sizeSensitivity": 1.4,
+    "freshnessSensitivity": 0.5,
+    "volumeBonusPerExtraCatch": 0,
+    "maxVolumeBonus": 0
+  },
+  "trustProfile": {
+    "perTransactionBase": 1,
+    "qualityWeight": 7,
+    "maxPerTransaction": 7
+  },
+  "preferences": {
+    "preferredTags": ["premium", "large_fish", "game_fish"],
+    "neutralTags": ["white_fish", "delicate", "oily", "local_favorite"],
+    "preferredTagMultiplier": 1.2,
+    "neutralTagMultiplier": 1,
+    "otherTagMultiplier": 0.82,
+    "localSourceMultiplier": 1.05
+  }
+}

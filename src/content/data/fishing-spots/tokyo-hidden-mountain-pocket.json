@@ -6,7 +6,12 @@
   "environment": "river",
   "dataStatus": "provisional",
   "visibility": "hidden",
-  "access": [{ "kind": "capability", "capability": "rough_road" }],
+  "access": [
+    {
+      "kind": "capability",
+      "capability": "rough_road"
+    }
+  ],
   "travelOptions": [
     {
       "id": "forest-road",
@@ -19,20 +24,52 @@
     }
   ],
   "habitatTags": ["stream", "pool"],
-  "depth": { "depthRangeM": { "min": 0.3, "max": 2.5 } },
+  "depth": {
+    "depthRangeM": {
+      "min": 0.3,
+      "max": 2.5
+    }
+  },
   "fishTable": [
-    { "speciesId": "rainbow-trout", "basePresence": 0.4 },
-    { "speciesId": "funa", "basePresence": 0.2 }
+    {
+      "speciesId": "rainbow-trout",
+      "basePresence": 0.35,
+      "zoneAffinity": {
+        "pool": 1.2
+      }
+    },
+    {
+      "speciesId": "funa",
+      "basePresence": 0.2
+    },
+    {
+      "speciesId": "yamame",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "pool": 1.0
+      }
+    }
   ],
   "knowledgeConfig": {
-    "reveals": [{ "field": "main_species", "minKnowledge": 20 }]
+    "reveals": [
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      }
+    ]
   },
   "fishingZones": [
     {
       "id": "pool",
       "name": "淵",
-      "castDistanceM": { "min": 0, "max": 12 },
-      "depthRangeM": { "min": 0.5, "max": 2.5 },
+      "castDistanceM": {
+        "min": 0,
+        "max": 12
+      },
+      "depthRangeM": {
+        "min": 0.5,
+        "max": 2.5
+      },
       "habitatTags": ["pool", "shade"]
     }
   ],

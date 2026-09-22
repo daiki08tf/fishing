@@ -1,0 +1,108 @@
+{
+  "id": "sappa",
+  "japaneseName": "サッパ（暫定）",
+  "scientificName": "Sardinella zunasi",
+  "waterTypes": ["salt", "brackish"],
+  "habitats": ["nearshore", "shallow"],
+  "diet": ["plankton"],
+  "baits": ["dough", "worm"],
+  "lureCategories": ["soft_plastic", "spoon"],
+  "fishingMethods": ["light_lure", "bait"],
+  "distribution": ["izu-peninsula", "tohoku-pacific", "hokuriku-japan-sea", "tokyo-area"],
+  "depthRange": {
+    "min": 0,
+    "max": 20
+  },
+  "temperatureRange": {
+    "min": 12,
+    "max": 26
+  },
+  "seasonality": {
+    "months": [4, 5, 6, 7, 8, 9, 10, 11]
+  },
+  "timeActivity": {
+    "periods": ["dawn", "morning", "evening"]
+  },
+  "tidePreference": {
+    "preference": "rising"
+  },
+  "currentPreference": {
+    "preference": "moderate"
+  },
+  "methodAffinity": {
+    "lure": 1.1,
+    "light_lure": 1.05,
+    "bait": 1,
+    "bottom": 0.85
+  },
+  "offeringAffinity": {
+    "minnow": 1.1,
+    "jig": 1.1,
+    "spoon": 1.05,
+    "stickbait": 1.05,
+    "cut": 1.05
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 12,
+    "dispersion": 0.1,
+    "minCm": 7,
+    "maxCm": 20
+  },
+  "weightModel": {
+    "lengthWeightA": 0.0085,
+    "lengthWeightB": 3.05
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "traitConfiguration": {
+    "trophyPercentileThreshold": 1,
+    "strongRunnerChance": 0.04
+  },
+  "fightProfile": {
+    "strength": 0.3,
+    "stamina": 0.4,
+    "speed": 0.5
+  },
+  "rarity": 1,
+  "environmentAffinity": {
+    "preferredSeasons": ["spring", "summer", "autumn"],
+    "preferredTimeOfDay": ["dawn", "morning", "evening"],
+    "weatherAffinity": {
+      "clear": 1,
+      "cloudy": 1.05,
+      "light_rain": 1,
+      "rain": 0.95,
+      "windy": 0.9
+    },
+    "tideAffinity": {
+      "low": 0.9,
+      "rising": 1.15,
+      "high": 1.05,
+      "falling": 1
+    },
+    "flowAffinity": {
+      "none": 1,
+      "slow": 1,
+      "moderate": 1.1,
+      "strong": 1
+    },
+    "preferredTemperatureC": {
+      "min": 12,
+      "max": 26
+    }
+  },
+  "feedingProfile": {
+    "preferredOfferingRatio": 0.16,
+    "largeOfferingPenaltyStart": 0.28,
+    "maxOfferingRatio": 0.4,
+    "mouthSizeFactor": 1
+  },
+  "sourceRefs": [
+    {
+      "id": "phase16-provisional",
+      "title": "PROVISIONAL — Phase 16 gameplay tuning; 実在の生態・漁業規制の主張ではない"
+    }
+  ]
+}

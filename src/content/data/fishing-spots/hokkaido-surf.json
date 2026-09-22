@@ -96,6 +96,24 @@
         "break": 1.3,
         "outer": 1
       }
+    },
+    {
+      "speciesId": "nishin",
+      "basePresence": 0.35,
+      "zoneAffinity": {
+        "wash": 0.85,
+        "break": 1.25,
+        "outer": 0.85
+      }
+    },
+    {
+      "speciesId": "hokke",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "wash": 0.85,
+        "break": 0.85,
+        "outer": 1.25
+      }
     }
   ],
   "dataStatus": "provisional",

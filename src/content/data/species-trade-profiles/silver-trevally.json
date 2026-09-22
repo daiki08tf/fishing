@@ -1,0 +1,9 @@
+{
+  "speciesId": "silver-trevally",
+  "tradeStatus": "tradable",
+  "tradeTags": ["everyday", "oily"],
+  "baseYenPerKg": 830,
+  "minimumUnitValueYen": 150,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

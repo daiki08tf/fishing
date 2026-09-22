@@ -1,0 +1,28 @@
+{
+  "id": "thailand-river-market",
+  "name": "タイ 川辺の市場",
+  "buyerType": "wholesaler",
+  "regionId": "thailand",
+  "description": "川辺の市場。淡水と汽水の魚をまとめて扱う。PROVISIONAL — gameplay tuning。",
+  "pricingProfile": {
+    "baseMultiplier": 1,
+    "qualitySensitivity": 0.8,
+    "sizeSensitivity": 0.9,
+    "freshnessSensitivity": 0.6,
+    "volumeBonusPerExtraCatch": 0.02,
+    "maxVolumeBonus": 0.14
+  },
+  "trustProfile": {
+    "perTransactionBase": 3,
+    "qualityWeight": 3,
+    "maxPerTransaction": 5
+  },
+  "preferences": {
+    "preferredTags": ["everyday", "bulk", "local_favorite"],
+    "neutralTags": ["white_fish", "large_fish", "premium", "oily", "small_table_fish"],
+    "preferredTagMultiplier": 1.12,
+    "neutralTagMultiplier": 1,
+    "otherTagMultiplier": 0.93,
+    "localSourceMultiplier": 1.08
+  }
+}

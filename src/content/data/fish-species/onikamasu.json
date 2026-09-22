@@ -1,0 +1,108 @@
+{
+  "id": "onikamasu",
+  "japaneseName": "オニカマス（暫定）",
+  "scientificName": "Sphyraena barracuda",
+  "waterTypes": ["salt", "brackish"],
+  "habitats": ["reef", "nearshore", "estuary"],
+  "diet": ["small_fish"],
+  "baits": ["live", "cut"],
+  "lureCategories": ["stickbait", "popper", "jig"],
+  "fishingMethods": ["lure"],
+  "distribution": ["okinawa", "thailand"],
+  "depthRange": {
+    "min": 1,
+    "max": 40
+  },
+  "temperatureRange": {
+    "min": 20,
+    "max": 30
+  },
+  "seasonality": {
+    "months": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+  },
+  "timeActivity": {
+    "periods": ["dawn", "morning", "evening"]
+  },
+  "tidePreference": {
+    "preference": "rising"
+  },
+  "currentPreference": {
+    "preference": "moderate"
+  },
+  "methodAffinity": {
+    "lure": 1.1,
+    "light_lure": 1.05,
+    "bait": 1,
+    "bottom": 0.85
+  },
+  "offeringAffinity": {
+    "minnow": 1.1,
+    "jig": 1.1,
+    "spoon": 1.05,
+    "stickbait": 1.05,
+    "cut": 1.05
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 75,
+    "dispersion": 0.16,
+    "minCm": 40,
+    "maxCm": 140
+  },
+  "weightModel": {
+    "lengthWeightA": 0.008,
+    "lengthWeightB": 3
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "traitConfiguration": {
+    "trophyPercentileThreshold": 1,
+    "strongRunnerChance": 0.068
+  },
+  "fightProfile": {
+    "strength": 0.8,
+    "stamina": 0.65,
+    "speed": 0.85
+  },
+  "rarity": 2.8,
+  "environmentAffinity": {
+    "preferredSeasons": ["summer", "autumn"],
+    "preferredTimeOfDay": ["dawn", "morning", "evening"],
+    "weatherAffinity": {
+      "clear": 1,
+      "cloudy": 1.05,
+      "light_rain": 1,
+      "rain": 0.95,
+      "windy": 0.9
+    },
+    "tideAffinity": {
+      "low": 0.9,
+      "rising": 1.15,
+      "high": 1.05,
+      "falling": 1
+    },
+    "flowAffinity": {
+      "none": 1,
+      "slow": 1,
+      "moderate": 1.1,
+      "strong": 1
+    },
+    "preferredTemperatureC": {
+      "min": 20,
+      "max": 30
+    }
+  },
+  "feedingProfile": {
+    "preferredOfferingRatio": 0.16,
+    "largeOfferingPenaltyStart": 0.28,
+    "maxOfferingRatio": 0.4,
+    "mouthSizeFactor": 1
+  },
+  "sourceRefs": [
+    {
+      "id": "phase16-provisional",
+      "title": "PROVISIONAL — Phase 16 gameplay tuning; 実在の生態・漁業規制の主張ではない"
+    }
+  ]
+}

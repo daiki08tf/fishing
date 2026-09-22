@@ -2,7 +2,7 @@
   "id": "amemasu",
   "japaneseName": "アメマス（暫定）",
   "waterTypes": ["fresh", "brackish"],
-  "distribution": ["hokkaido"],
+  "distribution": ["hokkaido", "tohoku-pacific"],
   "habitats": ["river", "lake"],
   "depthRange": {
     "min": 1,

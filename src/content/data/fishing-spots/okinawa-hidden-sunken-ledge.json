@@ -1,0 +1,128 @@
+{
+  "id": "okinawa-hidden-sunken-ledge",
+  "name": "沖縄 沈み瀬（要情報・暫定）",
+  "regionId": "okinawa",
+  "areaId": "okinawa-outer",
+  "environment": "nearshore",
+  "dataStatus": "provisional",
+  "visibility": "hidden",
+  "access": [
+    {
+      "kind": "capability",
+      "capability": "boat_required"
+    },
+    {
+      "kind": "knowledge",
+      "minimum": 25
+    }
+  ],
+  "travelOptions": [
+    {
+      "id": "rental_boat-1",
+      "transportTypes": ["rental_boat"],
+      "requiredCapabilities": ["boat_required"],
+      "features": [],
+      "baseMinutes": 55,
+      "distanceKm": 14,
+      "baseOneWayCost": 11000
+    }
+  ],
+  "habitatTags": ["open_water", "surf"],
+  "fishingZones": [
+    {
+      "id": "near",
+      "name": "近距離",
+      "castDistanceM": {
+        "min": 0,
+        "max": 25
+      },
+      "habitatTags": ["open_water", "surf"]
+    },
+    {
+      "id": "far",
+      "name": "遠投",
+      "castDistanceM": {
+        "min": 25,
+        "max": 70
+      },
+      "habitatTags": ["open_water", "surf"]
+    }
+  ],
+  "fishTable": [
+    {
+      "speciesId": "giant-grouper",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "near": 1.3,
+        "far": 0.85
+      }
+    },
+    {
+      "speciesId": "mangrove-jack",
+      "basePresence": 0.4,
+      "zoneAffinity": {
+        "near": 1.3,
+        "far": 0.85
+      }
+    },
+    {
+      "speciesId": "red-emperor",
+      "basePresence": 0.4,
+      "zoneAffinity": {
+        "near": 1.3,
+        "far": 0.85
+      }
+    },
+    {
+      "speciesId": "bigeye-trevally",
+      "basePresence": 0.35,
+      "zoneAffinity": {
+        "near": 1.3,
+        "far": 0.85
+      }
+    },
+    {
+      "speciesId": "coral-trout",
+      "basePresence": 0.35,
+      "zoneAffinity": {
+        "near": 1.3,
+        "far": 0.85
+      }
+    },
+    {
+      "speciesId": "onikamasu",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "near": 1.3,
+        "far": 0.85
+      }
+    },
+    {
+      "speciesId": "brown-marbled-grouper",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "near": 1.3,
+        "far": 0.85
+      }
+    }
+  ],
+  "knowledgeConfig": {
+    "reveals": [
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "time_pattern",
+        "minKnowledge": 40
+      }
+    ]
+  },
+  "regulations": [],
+  "sourceRefs": [
+    {
+      "id": "phase16-provisional",
+      "title": "PROVISIONAL — Phase 16 gameplay content; 実在の釣り場・立入可否の主張ではない"
+    }
+  ]
+}

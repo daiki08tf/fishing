@@ -1,0 +1,107 @@
+{
+  "id": "pigfish",
+  "japaneseName": "ピッグフィッシュ（暫定）",
+  "scientificName": "Bodianus unimaculatus",
+  "waterTypes": ["salt"],
+  "habitats": ["reef", "rock"],
+  "diet": ["crustacean", "small_fish"],
+  "baits": ["cut", "shrimp"],
+  "lureCategories": ["soft_plastic"],
+  "fishingMethods": ["bottom"],
+  "distribution": ["new-zealand"],
+  "depthRange": {
+    "min": 1,
+    "max": 40
+  },
+  "temperatureRange": {
+    "min": 12,
+    "max": 20
+  },
+  "seasonality": {
+    "months": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+  },
+  "timeActivity": {
+    "periods": ["dawn", "morning", "evening"]
+  },
+  "tidePreference": {
+    "preference": "rising"
+  },
+  "currentPreference": {
+    "preference": "moderate"
+  },
+  "methodAffinity": {
+    "bottom": 1.15,
+    "lure": 1.05,
+    "bait": 1.05,
+    "light_lure": 1
+  },
+  "offeringAffinity": {
+    "soft_plastic": 1.15,
+    "jig": 1.1,
+    "cut": 1.1,
+    "minnow": 1.05
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 32,
+    "dispersion": 0.13,
+    "minCm": 16,
+    "maxCm": 55
+  },
+  "weightModel": {
+    "lengthWeightA": 0.0115,
+    "lengthWeightB": 3.05
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "traitConfiguration": {
+    "trophyPercentileThreshold": 1,
+    "strongRunnerChance": 0.04
+  },
+  "fightProfile": {
+    "strength": 0.6,
+    "stamina": 0.6,
+    "speed": 0.5
+  },
+  "rarity": 2,
+  "environmentAffinity": {
+    "preferredSeasons": ["spring", "summer", "autumn"],
+    "preferredTimeOfDay": ["dawn", "morning", "evening"],
+    "weatherAffinity": {
+      "clear": 1,
+      "cloudy": 1.05,
+      "light_rain": 1,
+      "rain": 0.95,
+      "windy": 0.9
+    },
+    "tideAffinity": {
+      "low": 0.9,
+      "rising": 1.15,
+      "high": 1.1,
+      "falling": 1
+    },
+    "flowAffinity": {
+      "none": 1,
+      "slow": 1.05,
+      "moderate": 1.1,
+      "strong": 0.95
+    },
+    "preferredTemperatureC": {
+      "min": 12,
+      "max": 20
+    }
+  },
+  "feedingProfile": {
+    "preferredOfferingRatio": 0.15,
+    "largeOfferingPenaltyStart": 0.27,
+    "maxOfferingRatio": 0.4,
+    "mouthSizeFactor": 1.05
+  },
+  "sourceRefs": [
+    {
+      "id": "phase16-provisional",
+      "title": "PROVISIONAL — Phase 16 gameplay tuning; 実在の生態・漁業規制の主張ではない"
+    }
+  ]
+}

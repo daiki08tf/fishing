@@ -1,0 +1,9 @@
+{
+  "speciesId": "nodoguro",
+  "tradeStatus": "tradable",
+  "tradeTags": ["premium", "game_fish", "white_fish", "everyday"],
+  "baseYenPerKg": 1280,
+  "minimumUnitValueYen": 230,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

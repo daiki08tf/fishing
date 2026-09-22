@@ -1,0 +1,9 @@
+{
+  "speciesId": "hampala-barb",
+  "tradeStatus": "tradable",
+  "tradeTags": ["local_favorite", "everyday"],
+  "baseYenPerKg": 780,
+  "minimumUnitValueYen": 140,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

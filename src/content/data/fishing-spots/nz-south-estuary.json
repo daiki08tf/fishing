@@ -1,0 +1,118 @@
+{
+  "id": "nz-south-estuary",
+  "name": "NZ 河口（暫定）",
+  "regionId": "new-zealand",
+  "areaId": "nz-south",
+  "environment": "estuary",
+  "dataStatus": "provisional",
+  "access": [],
+  "travelOptions": [
+    {
+      "id": "walk-1",
+      "transportTypes": ["walk"],
+      "requiredCapabilities": ["reachable_on_foot"],
+      "features": [],
+      "baseMinutes": 20,
+      "distanceKm": 2,
+      "baseOneWayCost": 0
+    }
+  ],
+  "habitatTags": ["estuary", "brackish"],
+  "fishingZones": [
+    {
+      "id": "channel",
+      "name": "流芯",
+      "castDistanceM": {
+        "min": 10,
+        "max": 40
+      },
+      "habitatTags": ["estuary", "brackish"]
+    },
+    {
+      "id": "flat",
+      "name": "浅場",
+      "castDistanceM": {
+        "min": 0,
+        "max": 20
+      },
+      "habitatTags": ["estuary", "brackish"]
+    }
+  ],
+  "fishTable": [
+    {
+      "speciesId": "yellow-eyed-mullet",
+      "basePresence": 0.5,
+      "zoneAffinity": {
+        "channel": 0.85,
+        "flat": 1.3
+      }
+    },
+    {
+      "speciesId": "kahawai",
+      "basePresence": 0.4,
+      "zoneAffinity": {
+        "channel": 1.3,
+        "flat": 0.85
+      }
+    },
+    {
+      "speciesId": "longfin-eel",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "channel": 0.85,
+        "flat": 1.3
+      }
+    },
+    {
+      "speciesId": "silver-trevally",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "channel": 1.3,
+        "flat": 0.85
+      }
+    },
+    {
+      "speciesId": "sand-flounder",
+      "basePresence": 0.4,
+      "zoneAffinity": {
+        "channel": 0.85,
+        "flat": 1.3
+      }
+    },
+    {
+      "speciesId": "australian-pilchard",
+      "basePresence": 0.4,
+      "zoneAffinity": {
+        "channel": 1.3,
+        "flat": 0.85
+      }
+    },
+    {
+      "speciesId": "australian-anchovy",
+      "basePresence": 0.35,
+      "zoneAffinity": {
+        "channel": 1.3,
+        "flat": 0.85
+      }
+    }
+  ],
+  "knowledgeConfig": {
+    "reveals": [
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "time_pattern",
+        "minKnowledge": 40
+      }
+    ]
+  },
+  "regulations": [],
+  "sourceRefs": [
+    {
+      "id": "phase16-provisional",
+      "title": "PROVISIONAL — Phase 16 gameplay content; 実在の釣り場・立入可否の主張ではない"
+    }
+  ]
+}

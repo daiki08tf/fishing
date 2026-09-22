@@ -1,0 +1,9 @@
+{
+  "speciesId": "kahawai",
+  "tradeStatus": "tradable",
+  "tradeTags": ["game_fish", "everyday", "oily"],
+  "baseYenPerKg": 950,
+  "minimumUnitValueYen": 170,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

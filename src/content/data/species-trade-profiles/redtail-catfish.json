@@ -1,0 +1,9 @@
+{
+  "speciesId": "redtail-catfish",
+  "tradeStatus": "tradable",
+  "tradeTags": ["premium", "large_fish", "local_favorite", "everyday"],
+  "baseYenPerKg": 1590,
+  "minimumUnitValueYen": 290,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1.3
+}

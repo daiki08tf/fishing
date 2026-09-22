@@ -248,3 +248,71 @@ Phase 15.1 の「tackle が AppShell mount 直後に background fetch される�
 - boot raw 604.93 kB / boot gzip 170.62 kB（Phase 14 比 -21.2%）/
   initial chunk 511.99 kB / tackle chunk 201.31 kB（boot 非含有）
 - tests 91 files / 791
+
+
+## Phase 16（World Expansion I — Part 1）
+
+Phase 15 の Pack / lazy loading 基盤の上に世界を拡張した。今回は **Part 1**
+（世界の骨格 + 9 地域の representative content）。目標 200〜230 Species /
+130〜150 Spot へは Part 2 で積み増す。
+
+- 14 playable region（既存 planned 4 を要求 id へ統合 + 日本 4 地域 + 国際 5 地域）
+- species 82 → 144（新規 62。canonical global ID、既存 Species の distribution を拡張して再利用）
+- spot 53 → 99（新規 46。地域ごとに 3 種類以上の environment、public 4 + hidden 1 程度）
+- expedition 4 → 13、buyer 3 → 12、contact reward 12 → 30（rumor 15 / discover 35）
+- wild spot は外道込み 4 species 以上・1 種支配 75% 未満を検査
+  （`simulate:world-expansion` を新設し `npm run check` へ追加）
+- scientificName 重複は report（既知の 1 組のみ。ID 統合は future dedicated canonical-ID migration）
+- boot: initial 541.83 kB / boot 644.70 kB（gzip 187.21 kB、Phase 14 比 raw -30% / gzip -13.5%）。
+  catalog が Species 数に比例するため analyzer は比率ではなく 200 kB 予算 + 内訳レポートに変更
+- tests 92 files / 802、validate:content 1053 records
+
+
+## Phase 16 Part 2（World Expansion I — depth / progression / world UX）
+
+- species 144 → **212**（+68。Part 2 は bycatch / 地域性の追加に限定し、既存 Species の再利用も実施）
+- spot 99 → **140**（+41。各 Phase 16 Region が 9〜10 Spot、hidden 2〜4）
+- buyer 12 → **24**、contact reward 30 → **66**
+  （Region ごとに 3 段階チェーン × 2 本。閾値は Region ごとに変更）
+- 既存 Region の薄い Spot に外道を追加（Queensland 2 か所）／残りは warning レポート
+- `simulate:world-expansion` に trust balance / expedition economy / region diversity を追加
+- MAP の Region 選択を「国 → 地域」の折りたたみセレクタへ（14 Region で横帯にしない）
+- 新規の scientificName 重複は禁止（既知の giant-queenfish/queenfish は warning のまま）
+- tests 93 files / 813、validate:content 1278 records、boot gzip 191.74 kB
+- 残: Region occurrence target のうち 5 国際 Region（Amazon/Baja/NZ/Norway/Okinawa/Thailand）が
+  まだ下限未満（Part 2b 候補）。legacy Spot の外道も一部未対応（warning で可視化）
+
+
+## Phase 16 Part 2b（Final World Hardening）
+
+Phase 16 Part 2 の仕上げ。新規 Region / 新規システムは追加しない。
+Save v9 / Phase 15 の lazy loading / Domain rule（FishingEngine / Trade / Access）は不変。
+
+- **南半球の季節を修正。** Environment は暦月だけで季節を決めていたため、
+  New Zealand / Queensland の季節が北半球と同じになっていた。
+  `ClimateProfile.hemisphere`（`north` / `south`）を追加し、
+  `seasonOf(month, hemisphere)` / `seasonalFactor(month, hemisphere)` が
+  半球で位相を反転する（南半球のピークは 2 月、底は 8 月。1 月 = summer）。
+  Region ID 分岐は書かず `climate.hemisphere` だけを見る。既定は `north` なので
+  既存 Region / Save schema はそのまま
+- **熱帯気候の sanity test。** Queensland / Okinawa / Thailand / Amazon は
+  `annualMeanWaterC` 24℃以上・年間の水温振れが温帯より小さいことを
+  `tests/content/climateHemisphere.test.ts` が検査する（値は PROVISIONAL tuning）
+- **Occurrence depth を底上げ。** 外道になり得る canonical Species を追加・再利用し、
+  Amazon 22→29 / Baja 18→21 / NZ 20→24 / Norway 23→25 / Okinawa 28→30 /
+  Thailand 26→27。数字合わせだけの追加はしない
+- legacy Spot（Tokyo / Hokkaido / Alaska / BC）の 2〜3 species を audit し、
+  自然なものへ共通外道を追加。wild Spot は 4 species 以上・1 種 75% 未満を
+  `simulate:world-expansion` が検査する。残る warning は既知の scientificName 重複のみ
+- **ExpeditionScreen を 国内 / 海外 でグループ化**（既存 `Country.domestic` を使用）。
+  mount 時に destination pack を読まない性質は不変
+- 最終 scale contract を test で固定（14 region / 200〜230 species / 130〜150 spot /
+  20〜28 buyer）。giant-queenfish / queenfish の重複は warning のまま
+  （統合は future dedicated canonical-ID migration。Phase 17 = Boat/Offshore とは別）
+- lazy-load を behavioral test で確認（Tokyo boot = world + tokyo region + tokyo species、
+  Izu 選択は Izu のみ、Amazon は idle、地域外の Spot へ直接 travel 不可、
+  未発見 Hidden Spot は MAP markup に出ない）
+- boot: Initial 572.15 kB（gzip 161.21）/ Tokyo boot 686.33 kB（gzip 195.76、予算 200 kB）
+- tests 95 files / 834、validate:content 1312 records
+- 未検証: 実ブラウザ / 実機での mobile viewport 目視（この環境ではブラウザ起動不可）。
+  375 / 390 / 430 は DOM / CSS の静的チェックのみ

@@ -8,7 +8,7 @@
   "baits": ["worm", "dough"],
   "lureCategories": ["spoon", "minnow"],
   "fishingMethods": ["lure", "bait"],
-  "distribution": ["tokyo-area", "hokkaido"],
+  "distribution": ["hokkaido", "hokuriku-japan-sea", "tohoku-pacific", "tokyo-area"],
   "lengthModel": {
     "kind": "normal",
     "meanCm": 32,

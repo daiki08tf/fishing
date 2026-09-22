@@ -1,0 +1,108 @@
+{
+  "id": "atlantic-salmon",
+  "japaneseName": "タイセイヨウサケ（暫定）",
+  "scientificName": "Salmo salar",
+  "waterTypes": ["fresh", "salt"],
+  "habitats": ["river", "estuary"],
+  "diet": ["small_fish", "insect"],
+  "baits": ["worm", "insect", "roe"],
+  "lureCategories": ["spoon", "minnow"],
+  "fishingMethods": ["lure", "light_lure", "bait"],
+  "distribution": ["norway-fjords"],
+  "depthRange": {
+    "min": 0,
+    "max": 30
+  },
+  "temperatureRange": {
+    "min": 4,
+    "max": 16
+  },
+  "seasonality": {
+    "months": [6, 7, 8, 9]
+  },
+  "timeActivity": {
+    "periods": ["dawn", "morning", "evening"]
+  },
+  "tidePreference": {
+    "preference": "rising"
+  },
+  "currentPreference": {
+    "preference": "moderate"
+  },
+  "methodAffinity": {
+    "lure": 1.15,
+    "light_lure": 1.1,
+    "bait": 1.05,
+    "bottom": 0.9
+  },
+  "offeringAffinity": {
+    "spoon": 1.15,
+    "minnow": 1.1,
+    "worm": 1.05,
+    "roe": 1.1,
+    "insect": 1.1
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 75,
+    "dispersion": 0.16,
+    "minCm": 45,
+    "maxCm": 130
+  },
+  "weightModel": {
+    "lengthWeightA": 0.0102,
+    "lengthWeightB": 3.05
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "traitConfiguration": {
+    "trophyPercentileThreshold": 1,
+    "strongRunnerChance": 0.055999999999999994
+  },
+  "fightProfile": {
+    "strength": 0.85,
+    "stamina": 0.8,
+    "speed": 0.7
+  },
+  "rarity": 3,
+  "environmentAffinity": {
+    "preferredSeasons": ["summer", "autumn"],
+    "preferredTimeOfDay": ["dawn", "morning", "evening"],
+    "weatherAffinity": {
+      "clear": 1,
+      "cloudy": 1.05,
+      "light_rain": 1,
+      "rain": 0.95,
+      "windy": 0.9
+    },
+    "tideAffinity": {
+      "low": 1,
+      "rising": 1.05,
+      "high": 1.05,
+      "falling": 1
+    },
+    "flowAffinity": {
+      "none": 0.9,
+      "slow": 1.05,
+      "moderate": 1.15,
+      "strong": 1.05
+    },
+    "preferredTemperatureC": {
+      "min": 4,
+      "max": 16
+    }
+  },
+  "feedingProfile": {
+    "preferredOfferingRatio": 0.13,
+    "largeOfferingPenaltyStart": 0.25,
+    "maxOfferingRatio": 0.36,
+    "mouthSizeFactor": 1
+  },
+  "sourceRefs": [
+    {
+      "id": "phase16-provisional",
+      "title": "PROVISIONAL — Phase 16 gameplay tuning; 実在の生態・漁業規制の主張ではない"
+    }
+  ]
+}

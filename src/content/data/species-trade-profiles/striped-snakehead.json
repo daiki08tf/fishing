@@ -1,0 +1,9 @@
+{
+  "speciesId": "striped-snakehead",
+  "tradeStatus": "tradable",
+  "tradeTags": ["local_favorite", "everyday"],
+  "baseYenPerKg": 1010,
+  "minimumUnitValueYen": 180,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

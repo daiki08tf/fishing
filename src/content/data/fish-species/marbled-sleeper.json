@@ -1,0 +1,107 @@
+{
+  "id": "marbled-sleeper",
+  "japaneseName": "マーブルドスリーパー（暫定）",
+  "scientificName": "Oxyeleotris marmorata",
+  "waterTypes": ["fresh", "brackish"],
+  "habitats": ["river", "canal", "bottom"],
+  "diet": ["small_fish", "crustacean"],
+  "baits": ["cut", "live"],
+  "lureCategories": ["soft_plastic"],
+  "fishingMethods": ["bottom"],
+  "distribution": ["thailand"],
+  "depthRange": {
+    "min": 0,
+    "max": 10
+  },
+  "temperatureRange": {
+    "min": 24,
+    "max": 32
+  },
+  "seasonality": {
+    "months": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+  },
+  "timeActivity": {
+    "periods": ["evening", "night", "dawn"]
+  },
+  "tidePreference": {
+    "preference": "rising"
+  },
+  "currentPreference": {
+    "preference": "moderate"
+  },
+  "methodAffinity": {
+    "bottom": 1.2,
+    "bait": 1.15,
+    "lure": 1,
+    "light_lure": 0.9
+  },
+  "offeringAffinity": {
+    "cut": 1.2,
+    "live": 1.15,
+    "dough": 1.05,
+    "soft_plastic": 1
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 30,
+    "dispersion": 0.13,
+    "minCm": 15,
+    "maxCm": 50
+  },
+  "weightModel": {
+    "lengthWeightA": 0.0115,
+    "lengthWeightB": 3.1
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "traitConfiguration": {
+    "trophyPercentileThreshold": 1,
+    "strongRunnerChance": 0.027999999999999997
+  },
+  "fightProfile": {
+    "strength": 0.55,
+    "stamina": 0.55,
+    "speed": 0.35
+  },
+  "rarity": 1.8,
+  "environmentAffinity": {
+    "preferredSeasons": ["summer", "autumn"],
+    "preferredTimeOfDay": ["evening", "night", "dawn"],
+    "weatherAffinity": {
+      "clear": 1,
+      "cloudy": 1.05,
+      "light_rain": 1,
+      "rain": 0.95,
+      "windy": 0.9
+    },
+    "tideAffinity": {
+      "low": 1,
+      "rising": 1,
+      "high": 1,
+      "falling": 1
+    },
+    "flowAffinity": {
+      "none": 1.05,
+      "slow": 1.1,
+      "moderate": 1,
+      "strong": 0.9
+    },
+    "preferredTemperatureC": {
+      "min": 24,
+      "max": 32
+    }
+  },
+  "feedingProfile": {
+    "preferredOfferingRatio": 0.2,
+    "largeOfferingPenaltyStart": 0.32,
+    "maxOfferingRatio": 0.45,
+    "mouthSizeFactor": 1.15
+  },
+  "sourceRefs": [
+    {
+      "id": "phase16-provisional",
+      "title": "PROVISIONAL — Phase 16 gameplay tuning; 実在の生態・漁業規制の主張ではない"
+    }
+  ]
+}

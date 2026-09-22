@@ -1,0 +1,9 @@
+{
+  "speciesId": "california-corbina",
+  "tradeStatus": "tradable",
+  "tradeTags": ["white_fish", "everyday"],
+  "baseYenPerKg": 830,
+  "minimumUnitValueYen": 150,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

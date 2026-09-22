@@ -1,10 +1,54 @@
 # Handoff
 
-最終更新: Phase 15.2（Startup Network Final Hardening）完了
-（branch `phase-15-content-scale-foundation`、PR #17）
+最終更新: Phase 16 Part 2b（Final World Hardening）完了
+（branch `phase-16-world-expansion-i`、PR #18）
 
 > 現在状態は Phase 15 → 14 → 13 → 12 → 11 → 10.2 → 10.1 → 10 の順で優先する。
 > 詳細は `.ai/current-task.md` と `docs/DECISIONS.md` も参照。
+
+## Phase 16 Part 2b（Final World Hardening）
+
+- 南半球の季節を修正。`ClimateProfile.hemisphere`（north / south）を追加し、
+  `seasonOf` / `seasonalFactor` が半球で位相反転（NZ / Queensland = south、既定 north）。
+  Region ID 分岐なし。Save schema 不変
+- 熱帯 sanity test（Queensland / Okinawa / Thailand / Amazon は年較差が小さく、
+  通年 18℃以上、年平均 24℃以上）。`tests/content/climateHemisphere.test.ts`
+- occurrence depth: Amazon 22→29 / Baja 18→21 / NZ 20→24 / Norway 23→25 /
+  Okinawa 28→30 / Thailand 26→27。legacy Spot の外道も追加し、
+  残 warning は既知の scientificName 重複のみ
+- ExpeditionScreen を 国内 / 海外 でグループ化（`Country.domestic`）。mount 時の
+  destination pack load は 0 のまま
+- lazy-load / 地域外 travel 不可 / 未発見 Hidden Spot 非表示を behavioral test で固定
+- tests 95 files / 834、validate:content 1312 records
+- Initial 572.15 kB / Tokyo boot 686.33 kB（gzip 161.21 / 195.76、予算 200 kB）
+- 未検証: 実ブラウザ / 実機での 375 / 390 / 430 目視（環境がブラウザ起動不可）。静的チェックのみ
+- 残: giant-queenfish / queenfish の統合は future dedicated canonical-ID migration
+
+## Phase 16 Part 2（depth / progression / world UX）
+
+- species 144 → 212 / spot 99 → 140 / buyer 12 → 24 / reward 30 → 66
+- Region ごとに 3 段階の Trust チェーン（intel → intel → discover_spot、閾値は地域別）
+- `simulate:world-expansion`: trust balance（1 回で全解禁しない / 5〜15 回で discovery）、
+  expedition cost curve（国内 < 国際、Izu 最安、Amazon 最高、自由資金 6 か月以内）、
+  region occurrence diversity（目標下限比）を追加
+- MAP の Region 選択を「国 → 地域」の折りたたみセレクタへ
+- 既存 Region の薄い Spot に外道を一部追加（残りは warning）
+- tests 93 files / 813、validate:content 1278 records、Initial 565.98 kB / boot 674.25 kB（gzip 191.74）
+- 残課題（Part 2b）: 5〜6 国際 Region の occurrence diversity 下限、
+  legacy Spot の外道、giant-queenfish/queenfish の ID 統合（専用 migration Phase）
+
+## Phase 16（World Expansion I — Part 1）
+
+- 14 playable region / 144 species / 99 spot / 13 expedition / 12 buyer / 30 reward
+- 新規 Species 62（canonical global ID。既存 Species は distribution を拡張して再利用）
+- 新規 Spot 46（地域ごとに 3+ environment、public 4 + hidden 1 程度、外道込み 4+ species）
+- 各地域に Buyer + rumor(Trust15) + discover_spot(Trust35) の Hidden Spot を用意
+- `simulate:world-expansion` を追加（spot 構成 / hidden discovery / region 配線 /
+  species identity / scientificName 重複レポート）し `npm run check` へ組み込み
+- boot: initial 541.83 kB / boot 644.70 kB（gzip 187.21）。analyzer は 200 kB 予算 + 内訳
+- tests 92 files / 802、validate:content 1053 records
+- Part 2 候補: Species +60〜90 / Spot +30〜50（目標 200〜230 / 130〜150）、
+  giant-queenfish と queenfish の ID 統合、既存 Spot の外道拡充
 
 ## Phase 15.2（Startup Network Final Hardening）
 

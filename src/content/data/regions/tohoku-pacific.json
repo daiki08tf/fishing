@@ -1,0 +1,39 @@
+{
+  "id": "tohoku-pacific",
+  "countryId": "japan",
+  "name": "東北 太平洋側",
+  "stage": "playable",
+  "dataStatus": "provisional",
+  "base": {
+    "id": "tohoku-base",
+    "name": "東北 ベース",
+    "areaId": "tohoku-central"
+  },
+  "areas": [
+    {
+      "id": "tohoku-north",
+      "name": "青森・岩手"
+    },
+    {
+      "id": "tohoku-central",
+      "name": "宮城"
+    },
+    {
+      "id": "tohoku-south",
+      "name": "福島"
+    }
+  ],
+  "climate": {
+    "annualMeanWaterC": 15,
+    "seasonalSwingC": 10,
+    "weatherWeights": {
+      "clear": 26,
+      "cloudy": 34,
+      "light_rain": 14,
+      "rain": 10,
+      "windy": 16
+    },
+    "tidePhaseOffset": 0.3,
+    "tideRange": "moderate"
+  }
+}

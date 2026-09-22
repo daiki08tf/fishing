@@ -1,0 +1,9 @@
+{
+  "speciesId": "leopard-grouper",
+  "tradeStatus": "tradable",
+  "tradeTags": ["premium", "large_fish", "delicate", "local_favorite"],
+  "baseYenPerKg": 1280,
+  "minimumUnitValueYen": 230,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1.3
+}

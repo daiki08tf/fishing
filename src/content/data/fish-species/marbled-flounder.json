@@ -3,7 +3,7 @@
   "japaneseName": "マコガレイ（暫定）",
   "scientificName": "Pseudopleuronectes yokohamae",
   "waterTypes": ["salt", "brackish"],
-  "distribution": ["tokyo-area", "hokkaido"],
+  "distribution": ["hokkaido", "tohoku-pacific", "tokyo-area"],
   "habitats": ["sand", "bottom"],
   "depthRange": {
     "min": 0,

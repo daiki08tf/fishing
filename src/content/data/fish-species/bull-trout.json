@@ -3,7 +3,7 @@
   "japaneseName": "ブルトラウト（暫定）",
   "scientificName": "Salvelinus confluentus",
   "waterTypes": ["fresh"],
-  "distribution": ["british-columbia"],
+  "distribution": ["british-columbia", "new-zealand", "norway-fjords"],
   "habitats": ["river", "lake"],
   "depthRange": {
     "min": 0,

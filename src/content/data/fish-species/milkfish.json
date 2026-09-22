@@ -1,0 +1,107 @@
+{
+  "id": "milkfish",
+  "japaneseName": "サバヒー（暫定）",
+  "scientificName": "Chanos chanos",
+  "waterTypes": ["salt", "brackish", "fresh"],
+  "habitats": ["lagoon", "estuary", "shallow"],
+  "diet": ["algae", "plankton"],
+  "baits": ["dough", "corn"],
+  "lureCategories": ["minnow", "spoon"],
+  "fishingMethods": ["bait", "lure"],
+  "distribution": ["okinawa", "thailand"],
+  "depthRange": {
+    "min": 0,
+    "max": 30
+  },
+  "temperatureRange": {
+    "min": 22,
+    "max": 30
+  },
+  "seasonality": {
+    "months": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+  },
+  "timeActivity": {
+    "periods": ["dawn", "morning", "evening"]
+  },
+  "tidePreference": {
+    "preference": "rising"
+  },
+  "currentPreference": {
+    "preference": "moderate"
+  },
+  "methodAffinity": {
+    "bottom": 1.15,
+    "lure": 1.05,
+    "bait": 1.05,
+    "light_lure": 1
+  },
+  "offeringAffinity": {
+    "soft_plastic": 1.15,
+    "jig": 1.1,
+    "cut": 1.1,
+    "minnow": 1.05
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 60,
+    "dispersion": 0.14,
+    "minCm": 30,
+    "maxCm": 110
+  },
+  "weightModel": {
+    "lengthWeightA": 0.0095,
+    "lengthWeightB": 3.05
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "traitConfiguration": {
+    "trophyPercentileThreshold": 1,
+    "strongRunnerChance": 0.055999999999999994
+  },
+  "fightProfile": {
+    "strength": 0.75,
+    "stamina": 0.7,
+    "speed": 0.7
+  },
+  "rarity": 2,
+  "environmentAffinity": {
+    "preferredSeasons": ["summer", "autumn"],
+    "preferredTimeOfDay": ["dawn", "morning", "evening"],
+    "weatherAffinity": {
+      "clear": 1,
+      "cloudy": 1.05,
+      "light_rain": 1,
+      "rain": 0.95,
+      "windy": 0.9
+    },
+    "tideAffinity": {
+      "low": 0.9,
+      "rising": 1.15,
+      "high": 1.1,
+      "falling": 1
+    },
+    "flowAffinity": {
+      "none": 1,
+      "slow": 1.05,
+      "moderate": 1.1,
+      "strong": 0.95
+    },
+    "preferredTemperatureC": {
+      "min": 22,
+      "max": 30
+    }
+  },
+  "feedingProfile": {
+    "preferredOfferingRatio": 0.15,
+    "largeOfferingPenaltyStart": 0.27,
+    "maxOfferingRatio": 0.4,
+    "mouthSizeFactor": 1.05
+  },
+  "sourceRefs": [
+    {
+      "id": "phase16-provisional",
+      "title": "PROVISIONAL — Phase 16 gameplay tuning; 実在の生態・漁業規制の主張ではない"
+    }
+  ]
+}

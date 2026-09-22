@@ -3,7 +3,7 @@
   "japaneseName": "カスミアジ（暫定）",
   "scientificName": "Caranx melampygus",
   "waterTypes": ["salt"],
-  "distribution": ["queensland"],
+  "distribution": ["okinawa", "queensland"],
   "habitats": ["reef", "open"],
   "depthRange": {
     "min": 0,

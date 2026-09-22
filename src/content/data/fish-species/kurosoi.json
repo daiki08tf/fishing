@@ -1,0 +1,107 @@
+{
+  "id": "kurosoi",
+  "japaneseName": "クロソイ（暫定）",
+  "scientificName": "Sebastes schlegelii",
+  "waterTypes": ["salt"],
+  "habitats": ["rock", "structure", "bottom"],
+  "diet": ["small_fish", "crustacean"],
+  "baits": ["cut", "worm"],
+  "lureCategories": ["soft_plastic", "jig"],
+  "fishingMethods": ["bottom", "lure"],
+  "distribution": ["hokkaido", "hokuriku-japan-sea", "tohoku-pacific"],
+  "depthRange": {
+    "min": 3,
+    "max": 50
+  },
+  "temperatureRange": {
+    "min": 8,
+    "max": 20
+  },
+  "seasonality": {
+    "months": [10, 11, 12, 1, 2, 3]
+  },
+  "timeActivity": {
+    "periods": ["dawn", "morning", "evening", "night"]
+  },
+  "tidePreference": {
+    "preference": "rising"
+  },
+  "currentPreference": {
+    "preference": "moderate"
+  },
+  "methodAffinity": {
+    "bottom": 1.15,
+    "lure": 1.05,
+    "bait": 1.05,
+    "light_lure": 0.95
+  },
+  "offeringAffinity": {
+    "soft_plastic": 1.15,
+    "jig": 1.05,
+    "worm": 1.1,
+    "cut": 1.05
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 28,
+    "dispersion": 0.12,
+    "minCm": 15,
+    "maxCm": 48
+  },
+  "weightModel": {
+    "lengthWeightA": 0.0105,
+    "lengthWeightB": 3.05
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "traitConfiguration": {
+    "trophyPercentileThreshold": 1,
+    "strongRunnerChance": 0.04
+  },
+  "fightProfile": {
+    "strength": 0.6,
+    "stamina": 0.6,
+    "speed": 0.5
+  },
+  "rarity": 1.8,
+  "environmentAffinity": {
+    "preferredSeasons": ["autumn", "winter", "spring"],
+    "preferredTimeOfDay": ["dawn", "morning", "evening", "night"],
+    "weatherAffinity": {
+      "clear": 1,
+      "cloudy": 1.05,
+      "light_rain": 1,
+      "rain": 0.95,
+      "windy": 0.9
+    },
+    "tideAffinity": {
+      "low": 0.85,
+      "rising": 1.1,
+      "high": 1.15,
+      "falling": 1
+    },
+    "flowAffinity": {
+      "none": 0.95,
+      "slow": 1.05,
+      "moderate": 1.1,
+      "strong": 0.95
+    },
+    "preferredTemperatureC": {
+      "min": 8,
+      "max": 20
+    }
+  },
+  "feedingProfile": {
+    "preferredOfferingRatio": 0.14,
+    "largeOfferingPenaltyStart": 0.26,
+    "maxOfferingRatio": 0.38,
+    "mouthSizeFactor": 1.05
+  },
+  "sourceRefs": [
+    {
+      "id": "phase16-provisional",
+      "title": "PROVISIONAL — Phase 16 gameplay tuning; 実在の生態・漁業規制の主張ではない"
+    }
+  ]
+}

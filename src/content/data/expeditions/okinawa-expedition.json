@@ -1,0 +1,29 @@
+{
+  "id": "okinawa-expedition",
+  "regionId": "okinawa",
+  "name": "沖縄遠征",
+  "dataStatus": "provisional",
+  "flight": {
+    "transportType": "domestic_flight",
+    "name": "国内線 東京→沖縄",
+    "oneWayCostYen": 26000,
+    "oneWayMinutes": 210
+  },
+  "nights": {
+    "default": 4,
+    "min": 2,
+    "max": 10
+  },
+  "lodgings": [
+    {
+      "id": "okinawa-city-hotel",
+      "name": "City Hotel",
+      "nightlyCostYen": 9000
+    },
+    {
+      "id": "okinawa-beach-hotel",
+      "name": "Beach Hotel",
+      "nightlyCostYen": 19000
+    }
+  ]
+}

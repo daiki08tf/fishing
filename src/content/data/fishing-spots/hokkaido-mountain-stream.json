@@ -96,6 +96,15 @@
         "flow": 1.1,
         "far": 0.6
       }
+    },
+    {
+      "speciesId": "kajika",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "edge": 0.85,
+        "flow": 0.85,
+        "far": 1.25
+      }
     }
   ],
   "dataStatus": "provisional",

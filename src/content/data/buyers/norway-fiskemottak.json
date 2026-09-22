@@ -1,0 +1,28 @@
+{
+  "id": "norway-fiskemottak",
+  "name": "ノルウェー 漁協の買取所",
+  "buyerType": "wholesaler",
+  "regionId": "norway-fjords",
+  "description": "フィヨルドの漁協買取所。まとまった水揚げを広く扱う。PROVISIONAL — gameplay tuning。",
+  "pricingProfile": {
+    "baseMultiplier": 1,
+    "qualitySensitivity": 0.7,
+    "sizeSensitivity": 0.8,
+    "freshnessSensitivity": 0.35,
+    "volumeBonusPerExtraCatch": 0.02,
+    "maxVolumeBonus": 0.16
+  },
+  "trustProfile": {
+    "perTransactionBase": 3,
+    "qualityWeight": 2,
+    "maxPerTransaction": 5
+  },
+  "preferences": {
+    "preferredTags": ["everyday", "bulk", "white_fish", "large_fish"],
+    "neutralTags": ["oily", "premium", "local_favorite", "small_table_fish"],
+    "preferredTagMultiplier": 1.1,
+    "neutralTagMultiplier": 1,
+    "otherTagMultiplier": 0.94,
+    "localSourceMultiplier": 1.06
+  }
+}

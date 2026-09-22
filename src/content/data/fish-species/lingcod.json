@@ -3,7 +3,7 @@
   "japaneseName": "リングコッド（暫定）",
   "scientificName": "Ophiodon elongatus",
   "waterTypes": ["salt"],
-  "distribution": ["british-columbia"],
+  "distribution": ["british-columbia", "tokyo-area"],
   "habitats": ["reef", "bottom"],
   "depthRange": {
     "min": 0,

@@ -1,0 +1,107 @@
+{
+  "id": "kelp-greenling",
+  "japaneseName": "ケルプグリーンリング（暫定）",
+  "scientificName": "Hexagrammos decagrammus",
+  "waterTypes": ["salt"],
+  "habitats": ["rock", "kelp", "structure"],
+  "diet": ["crustacean", "small_fish"],
+  "baits": ["cut", "worm"],
+  "lureCategories": ["soft_plastic"],
+  "fishingMethods": ["bottom", "lure"],
+  "distribution": ["alaska", "british-columbia"],
+  "depthRange": {
+    "min": 1,
+    "max": 40
+  },
+  "temperatureRange": {
+    "min": 8,
+    "max": 16
+  },
+  "seasonality": {
+    "months": [1, 2, 3, 4, 5, 6, 9, 10, 11, 12]
+  },
+  "timeActivity": {
+    "periods": ["dawn", "morning", "evening", "night"]
+  },
+  "tidePreference": {
+    "preference": "rising"
+  },
+  "currentPreference": {
+    "preference": "moderate"
+  },
+  "methodAffinity": {
+    "bottom": 1.15,
+    "lure": 1.05,
+    "bait": 1.05,
+    "light_lure": 0.95
+  },
+  "offeringAffinity": {
+    "soft_plastic": 1.15,
+    "jig": 1.05,
+    "worm": 1.1,
+    "cut": 1.05
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 35,
+    "dispersion": 0.13,
+    "minCm": 18,
+    "maxCm": 55
+  },
+  "weightModel": {
+    "lengthWeightA": 0.0095,
+    "lengthWeightB": 3.05
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "traitConfiguration": {
+    "trophyPercentileThreshold": 1,
+    "strongRunnerChance": 0.04
+  },
+  "fightProfile": {
+    "strength": 0.6,
+    "stamina": 0.6,
+    "speed": 0.5
+  },
+  "rarity": 1.8,
+  "environmentAffinity": {
+    "preferredSeasons": ["spring", "summer", "autumn"],
+    "preferredTimeOfDay": ["dawn", "morning", "evening", "night"],
+    "weatherAffinity": {
+      "clear": 1,
+      "cloudy": 1.05,
+      "light_rain": 1,
+      "rain": 0.95,
+      "windy": 0.9
+    },
+    "tideAffinity": {
+      "low": 0.85,
+      "rising": 1.1,
+      "high": 1.15,
+      "falling": 1
+    },
+    "flowAffinity": {
+      "none": 0.95,
+      "slow": 1.05,
+      "moderate": 1.1,
+      "strong": 0.95
+    },
+    "preferredTemperatureC": {
+      "min": 8,
+      "max": 16
+    }
+  },
+  "feedingProfile": {
+    "preferredOfferingRatio": 0.14,
+    "largeOfferingPenaltyStart": 0.26,
+    "maxOfferingRatio": 0.38,
+    "mouthSizeFactor": 1.05
+  },
+  "sourceRefs": [
+    {
+      "id": "phase16-provisional",
+      "title": "PROVISIONAL — Phase 16 gameplay tuning; 実在の生態・漁業規制の主張ではない"
+    }
+  ]
+}

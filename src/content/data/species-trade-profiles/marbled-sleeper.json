@@ -1,0 +1,9 @@
+{
+  "speciesId": "marbled-sleeper",
+  "tradeStatus": "tradable",
+  "tradeTags": ["local_favorite", "everyday", "white_fish"],
+  "baseYenPerKg": 680,
+  "minimumUnitValueYen": 120,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

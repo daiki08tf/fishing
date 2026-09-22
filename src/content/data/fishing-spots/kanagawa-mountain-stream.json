@@ -96,6 +96,15 @@
         "flow": 0.7,
         "far": 0.2
       }
+    },
+    {
+      "speciesId": "rainbow-trout",
+      "basePresence": 0.15,
+      "zoneAffinity": {
+        "edge": 0.95,
+        "flow": 1.1,
+        "far": 0.9
+      }
     }
   ],
   "dataStatus": "provisional",

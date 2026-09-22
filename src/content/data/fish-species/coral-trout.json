@@ -3,7 +3,7 @@
   "japaneseName": "コーラルトラウト（暫定）",
   "scientificName": "Plectropomus leopardus",
   "waterTypes": ["salt"],
-  "distribution": ["queensland"],
+  "distribution": ["okinawa", "queensland"],
   "habitats": ["reef"],
   "depthRange": {
     "min": 0,

@@ -1,0 +1,28 @@
+{
+  "id": "hokuriku-fuyu-ryutsu",
+  "name": "北陸 冬魚の卸",
+  "buyerType": "wholesaler",
+  "regionId": "hokuriku-japan-sea",
+  "description": "日本海側の卸。冬のまとまった水揚げを広く扱う。PROVISIONAL — gameplay tuning。",
+  "pricingProfile": {
+    "baseMultiplier": 0.98,
+    "qualitySensitivity": 0.7,
+    "sizeSensitivity": 0.7,
+    "freshnessSensitivity": 0.4,
+    "volumeBonusPerExtraCatch": 0.02,
+    "maxVolumeBonus": 0.16
+  },
+  "trustProfile": {
+    "perTransactionBase": 3,
+    "qualityWeight": 2,
+    "maxPerTransaction": 5
+  },
+  "preferences": {
+    "preferredTags": ["everyday", "bulk", "oily", "white_fish"],
+    "neutralTags": ["local_favorite", "large_fish", "premium", "small_table_fish"],
+    "preferredTagMultiplier": 1.12,
+    "neutralTagMultiplier": 1,
+    "otherTagMultiplier": 0.94,
+    "localSourceMultiplier": 1.06
+  }
+}

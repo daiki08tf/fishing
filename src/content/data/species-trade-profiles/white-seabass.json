@@ -1,0 +1,9 @@
+{
+  "speciesId": "white-seabass",
+  "tradeStatus": "tradable",
+  "tradeTags": ["premium", "large_fish", "game_fish"],
+  "baseYenPerKg": 1350,
+  "minimumUnitValueYen": 240,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1.3
+}

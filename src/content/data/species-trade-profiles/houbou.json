@@ -1,0 +1,9 @@
+{
+  "speciesId": "houbou",
+  "tradeStatus": "tradable",
+  "tradeTags": ["white_fish", "everyday"],
+  "baseYenPerKg": 590,
+  "minimumUnitValueYen": 110,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

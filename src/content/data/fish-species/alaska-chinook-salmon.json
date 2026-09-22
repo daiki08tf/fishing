@@ -2,7 +2,7 @@
   "id": "chinook-salmon",
   "japaneseName": "キングサーモン（暫定）",
   "waterTypes": ["fresh", "salt"],
-  "distribution": ["alaska", "british-columbia"],
+  "distribution": ["alaska", "british-columbia", "new-zealand"],
   "habitats": ["river", "deep"],
   "depthRange": {
     "min": 1,

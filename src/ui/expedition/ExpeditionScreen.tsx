@@ -136,6 +136,25 @@ export const ExpeditionScreen = () => {
     return plan === null ? [] : [{ definition, region, country, plan }]
   })
 
+  /* Phase 16 Part 2b: 目的地を国内 / 海外にグループ化する（カードは既存のまま）。 */
+  const groups = (
+    [
+      {
+        key: 'domestic',
+        label: '国内',
+        entries: destinations.filter((entry) => entry.country.domestic),
+      },
+      {
+        key: 'overseas',
+        label: '海外',
+        entries: destinations.filter((entry) => !entry.country.domestic),
+      },
+    ] as const
+  ).filter((group) => group.entries.length > 0)
+
+  const visitedRegionIds = new Set(expedition.visitedRegionIds.map(String))
+  const currentRegionId = String(world.currentRegionId)
+
   return (
     <div className="fishing">
       <header className="fishing__header">
@@ -166,152 +185,165 @@ export const ExpeditionScreen = () => {
         </p>
       </section>
 
-      <section>
-        <ul className="spots">
-          {destinations.map(({ definition, region, country, plan }) => {
-            const affordable = finance.cash >= plan.totalCostYen
-            const selectedLodgingId = plan.lodging.id
+      {groups.map((group) => (
+        <section key={group.key}>
+          <h3 className="panel__subheading expedition-group__title">
+            {group.label}
+            <span className="expedition-group__count">{group.entries.length} 件</span>
+          </h3>
+          <ul className="spots">
+            {group.entries.map(({ definition, region, country, plan }) => {
+              const affordable = finance.cash >= plan.totalCostYen
+              const selectedLodgingId = plan.lodging.id
 
-            return (
-              <li
-                className="spot-card"
-                key={String(definition.id)}
-                onFocusCapture={() => {
-                  preloadRegion(String(definition.regionId))
-                }}
-                onPointerEnter={() => {
-                  preloadRegion(String(definition.regionId))
-                }}
-              >
-                <div className="spot-card__head">
-                  <h3 className="panel__subheading">{plan.name}</h3>
-                  <span className={`badge${affordable ? '' : ' badge--alert'}`}>
-                    {country.domestic ? '国内' : '海外'}
-                  </span>
-                </div>
-                <p className="spot-card__meta">
-                  {country.name} / {region.name} / 拠点 {region.base.name}
-                </p>
-                <p className="spot-card__meta">
-                  {definition.flight.name} 往復 {formatYen(definition.flight.oneWayCostYen * 2)} /
-                  移動 {formatDuration(definition.flight.oneWayMinutes * 2)}（往復）
-                </p>
+              return (
+                <li
+                  className="spot-card"
+                  key={String(definition.id)}
+                  onFocusCapture={() => {
+                    preloadRegion(String(definition.regionId))
+                  }}
+                  onPointerEnter={() => {
+                    preloadRegion(String(definition.regionId))
+                  }}
+                >
+                  <div className="spot-card__head">
+                    <h3 className="panel__subheading">{plan.name}</h3>
+                    <span className="spot-card__badges">
+                      {String(region.id) === currentRegionId ? (
+                        <span className="badge">いま ここ</span>
+                      ) : visitedRegionIds.has(String(region.id)) ? (
+                        <span className="badge">訪問済み</span>
+                      ) : null}
+                      <span className={`badge${affordable ? '' : ' badge--alert'}`}>
+                        {country.domestic ? '国内' : '海外'}
+                      </span>
+                    </span>
+                  </div>
+                  <p className="spot-card__meta">
+                    {country.name} / {region.name} / 拠点 {region.base.name}
+                  </p>
+                  <p className="spot-card__meta">
+                    {definition.flight.name} 往復 {formatYen(definition.flight.oneWayCostYen * 2)} /
+                    移動 {formatDuration(definition.flight.oneWayMinutes * 2)}（往復）
+                  </p>
 
-                <div className="field">
-                  <span className="field__label">泊数</span>
-                  <span className="control-row">
-                    <button
-                      className="control control--compact"
-                      type="button"
-                      onClick={() => {
-                        setNightsByExpedition((currentNights) => ({
-                          ...currentNights,
-                          [definition.id]: Math.max(definition.nights.min, plan.nights - 1),
-                        }))
-                      }}
-                    >
-                      −
-                    </button>
-                    <span>{plan.nights} 泊</span>
-                    <button
-                      className="control control--compact"
-                      type="button"
-                      onClick={() => {
-                        setNightsByExpedition((currentNights) => ({
-                          ...currentNights,
-                          [definition.id]: Math.min(definition.nights.max, plan.nights + 1),
-                        }))
-                      }}
-                    >
-                      ＋
-                    </button>
-                  </span>
-                </div>
-
-                <ul className="travel-options">
-                  {definition.lodgings.map((lodging) => {
-                    const chosen = lodging.id === selectedLodgingId
-                    const nightlyPlan = planExpedition({
-                      definition,
-                      countryId: region.countryId,
-                      countryName: country.name,
-                      regionName: region.name,
-                      baseId: region.base.id,
-                      baseName: region.base.name,
-                      domestic: country.domestic,
-                      nights: plan.nights,
-                      lodgingId: lodging.id,
-                    })
-
-                    return (
-                      <li
-                        className={`travel-option${chosen ? ' travel-option--selected' : ''}`}
-                        key={lodging.id}
+                  <div className="field">
+                    <span className="field__label">泊数</span>
+                    <span className="control-row">
+                      <button
+                        className="control control--compact"
+                        type="button"
+                        onClick={() => {
+                          setNightsByExpedition((currentNights) => ({
+                            ...currentNights,
+                            [definition.id]: Math.max(definition.nights.min, plan.nights - 1),
+                          }))
+                        }}
                       >
-                        <button
-                          className="travel-option__choice"
-                          type="button"
-                          aria-pressed={chosen}
-                          onClick={() => {
-                            setLodgingByExpedition((currentLodging) => ({
-                              ...currentLodging,
-                              [definition.id]: lodging.id,
-                            }))
-                          }}
+                        −
+                      </button>
+                      <span>{plan.nights} 泊</span>
+                      <button
+                        className="control control--compact"
+                        type="button"
+                        onClick={() => {
+                          setNightsByExpedition((currentNights) => ({
+                            ...currentNights,
+                            [definition.id]: Math.min(definition.nights.max, plan.nights + 1),
+                          }))
+                        }}
+                      >
+                        ＋
+                      </button>
+                    </span>
+                  </div>
+
+                  <ul className="travel-options">
+                    {definition.lodgings.map((lodging) => {
+                      const chosen = lodging.id === selectedLodgingId
+                      const nightlyPlan = planExpedition({
+                        definition,
+                        countryId: region.countryId,
+                        countryName: country.name,
+                        regionName: region.name,
+                        baseId: region.base.id,
+                        baseName: region.base.name,
+                        domestic: country.domestic,
+                        nights: plan.nights,
+                        lodgingId: lodging.id,
+                      })
+
+                      return (
+                        <li
+                          className={`travel-option${chosen ? ' travel-option--selected' : ''}`}
+                          key={lodging.id}
                         >
-                          <span className="travel-option__name">{`${chosen ? '●' : '○'} ${lodging.name}`}</span>
-                          <span className="travel-option__meta">
-                            {`1泊 ${formatYen(lodging.nightlyCostYen)} / 合計 ${formatYen(
-                              nightlyPlan?.totalCostYen ?? 0,
-                            )}`}
-                          </span>
-                        </button>
-                      </li>
-                    )
-                  })}
-                </ul>
-
-                <p className="spot-card__meta">
-                  {plan.costComponents
-                    .map((component) => `${component.label} ${formatYen(component.amount)}`)
-                    .join(' / ')}
-                </p>
-                <p className="panel__body">
-                  総額 {formatYen(plan.totalCostYen)}
-                  {plan.permitName === null ? '' : ` / 許可: ${plan.permitName}`}
-                </p>
-
-                {affordable ? (
-                  <button
-                    className="control"
-                    type="button"
-                    onClick={() => {
-                      // 出発前に目的地の Content を先読み（移動後の待ち時間を減らす）。
-                      void contentRuntime
-                        .ensureRegion(String(definition.regionId))
-                        .catch(() => undefined)
-                      const result = startExpedition(plan)
-
-                      if (result.ok) {
-                        setActiveScreen('home')
-                        return
-                      }
-
-                      setNotice(result.message)
-                    }}
-                  >
-                    {plan.name} を開始する
-                  </button>
-                ) : (
-                  <ul className="blocked">
-                    <li>資金が足りない（あと {formatYen(plan.totalCostYen - finance.cash)}）</li>
+                          <button
+                            className="travel-option__choice"
+                            type="button"
+                            aria-pressed={chosen}
+                            onClick={() => {
+                              setLodgingByExpedition((currentLodging) => ({
+                                ...currentLodging,
+                                [definition.id]: lodging.id,
+                              }))
+                            }}
+                          >
+                            <span className="travel-option__name">{`${chosen ? '●' : '○'} ${lodging.name}`}</span>
+                            <span className="travel-option__meta">
+                              {`1泊 ${formatYen(lodging.nightlyCostYen)} / 合計 ${formatYen(
+                                nightlyPlan?.totalCostYen ?? 0,
+                              )}`}
+                            </span>
+                          </button>
+                        </li>
+                      )
+                    })}
                   </ul>
-                )}
-              </li>
-            )
-          })}
-        </ul>
-      </section>
+
+                  <p className="spot-card__meta">
+                    {plan.costComponents
+                      .map((component) => `${component.label} ${formatYen(component.amount)}`)
+                      .join(' / ')}
+                  </p>
+                  <p className="panel__body">
+                    総額 {formatYen(plan.totalCostYen)}
+                    {plan.permitName === null ? '' : ` / 許可: ${plan.permitName}`}
+                  </p>
+
+                  {affordable ? (
+                    <button
+                      className="control"
+                      type="button"
+                      onClick={() => {
+                        // 出発前に目的地の Content を先読み（移動後の待ち時間を減らす）。
+                        void contentRuntime
+                          .ensureRegion(String(definition.regionId))
+                          .catch(() => undefined)
+                        const result = startExpedition(plan)
+
+                        if (result.ok) {
+                          setActiveScreen('home')
+                          return
+                        }
+
+                        setNotice(result.message)
+                      }}
+                    >
+                      {plan.name} を開始する
+                    </button>
+                  ) : (
+                    <ul className="blocked">
+                      <li>資金が足りない（あと {formatYen(plan.totalCostYen - finance.cash)}）</li>
+                    </ul>
+                  )}
+                </li>
+              )
+            })}
+          </ul>
+        </section>
+      ))}
 
       {notice === null ? null : <p className="notice">{notice}</p>}
     </div>

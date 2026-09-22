@@ -3,7 +3,13 @@
   "japaneseName": "ヤマメ（暫定）",
   "scientificName": "Oncorhynchus masou masou",
   "waterTypes": ["fresh"],
-  "distribution": ["tokyo-area", "hokkaido"],
+  "distribution": [
+    "hokkaido",
+    "hokuriku-japan-sea",
+    "norway-fjords",
+    "tohoku-pacific",
+    "tokyo-area"
+  ],
   "habitats": ["stream", "river"],
   "depthRange": {
     "min": 0,

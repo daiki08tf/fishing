@@ -1,0 +1,9 @@
+{
+  "speciesId": "bicuda",
+  "tradeStatus": "tradable",
+  "tradeTags": ["local_favorite", "everyday"],
+  "baseYenPerKg": 1070,
+  "minimumUnitValueYen": 190,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

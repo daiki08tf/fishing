@@ -1,0 +1,9 @@
+{
+  "speciesId": "takasago",
+  "tradeStatus": "tradable",
+  "tradeTags": ["delicate", "local_favorite"],
+  "baseYenPerKg": 480,
+  "minimumUnitValueYen": 90,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 0.85
+}

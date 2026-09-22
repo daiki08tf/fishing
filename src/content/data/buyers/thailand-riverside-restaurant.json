@@ -1,0 +1,28 @@
+{
+  "id": "thailand-riverside-restaurant",
+  "name": "タイ 川辺のレストラン",
+  "buyerType": "izakaya",
+  "regionId": "thailand",
+  "description": "川辺のレストラン。状態の良い魚と珍しい魚を評価する。PROVISIONAL — gameplay tuning。",
+  "pricingProfile": {
+    "baseMultiplier": 1.12,
+    "qualitySensitivity": 1.25,
+    "sizeSensitivity": 1.1,
+    "freshnessSensitivity": 0.6,
+    "volumeBonusPerExtraCatch": 0,
+    "maxVolumeBonus": 0
+  },
+  "trustProfile": {
+    "perTransactionBase": 2,
+    "qualityWeight": 6,
+    "maxPerTransaction": 6
+  },
+  "preferences": {
+    "preferredTags": ["premium", "large_fish", "local_favorite"],
+    "neutralTags": ["delicate", "white_fish", "everyday"],
+    "preferredTagMultiplier": 1.2,
+    "neutralTagMultiplier": 1,
+    "otherTagMultiplier": 0.85,
+    "localSourceMultiplier": 1.08
+  }
+}

@@ -3,7 +3,7 @@
   "japaneseName": "イワナ（暫定）",
   "scientificName": "Salvelinus leucomaenis",
   "waterTypes": ["fresh"],
-  "distribution": ["tokyo-area", "hokkaido"],
+  "distribution": ["hokkaido", "norway-fjords", "tohoku-pacific", "tokyo-area"],
   "habitats": ["stream", "river"],
   "depthRange": {
     "min": 0,

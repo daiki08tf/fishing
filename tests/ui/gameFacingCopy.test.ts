@@ -38,11 +38,24 @@ describe('buyer presentation', () => {
     }
   })
 
-  it('separates the three buyer types by role words, not by species', () => {
-    const roles = content.buyers.map((buyer) => describeBuyerRole(buyer))
+  it('gives every region a buyer whose role text is distinct within that region', () => {
+    // Phase 16 で地域ごとに 1 人以上の Buyer が増えた。同じ地域の中で
+    // 役割文が重複すると「選ぶ意味」が見えなくなるので、地域単位で検査する。
+    const byRegion = new Map<string, typeof content.buyers>()
 
-    // 同じ文章が並ぶと「選ぶ意味」が見えなくなる。
-    expect(new Set(roles).size).toBe(roles.length)
+    for (const buyer of content.buyers) {
+      const regionId = String(buyer.regionId)
+      byRegion.set(regionId, [...(byRegion.get(regionId) ?? []), buyer])
+    }
+
+    for (const [regionId, buyers] of byRegion) {
+      const roles = buyers.map((buyer) => describeBuyerRole(buyer))
+
+      expect(new Set(roles).size, regionId).toBe(roles.length)
+      for (const role of roles) {
+        expect(role.length, regionId).toBeGreaterThan(0)
+      }
+    }
   })
 
   it('labels buyer types in Japanese for the player', () => {

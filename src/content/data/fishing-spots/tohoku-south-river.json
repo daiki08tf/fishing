@@ -1,0 +1,127 @@
+{
+  "id": "tohoku-south-river",
+  "name": "東北 南 河川下流（暫定）",
+  "regionId": "tohoku-pacific",
+  "areaId": "tohoku-south",
+  "environment": "river",
+  "dataStatus": "provisional",
+  "access": [],
+  "travelOptions": [
+    {
+      "id": "walk-1",
+      "transportTypes": ["walk"],
+      "requiredCapabilities": ["reachable_on_foot"],
+      "features": [],
+      "baseMinutes": 35,
+      "distanceKm": 4,
+      "baseOneWayCost": 0
+    },
+    {
+      "id": "rental_car-2",
+      "transportTypes": ["rental_car"],
+      "requiredCapabilities": ["road_access"],
+      "features": [],
+      "baseMinutes": 40,
+      "distanceKm": 22,
+      "baseOneWayCost": 0
+    }
+  ],
+  "habitatTags": ["river", "stream"],
+  "fishingZones": [
+    {
+      "id": "riffle",
+      "name": "瀬",
+      "castDistanceM": {
+        "min": 5,
+        "max": 25
+      },
+      "habitatTags": ["river", "stream"]
+    },
+    {
+      "id": "pool",
+      "name": "淵",
+      "castDistanceM": {
+        "min": 5,
+        "max": 30
+      },
+      "habitatTags": ["river", "stream"]
+    }
+  ],
+  "fishTable": [
+    {
+      "speciesId": "masu-salmon",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "riffle": 1.3,
+        "pool": 0.85
+      }
+    },
+    {
+      "speciesId": "ayu",
+      "basePresence": 0.45,
+      "zoneAffinity": {
+        "riffle": 1.3,
+        "pool": 0.85
+      }
+    },
+    {
+      "speciesId": "yamame",
+      "basePresence": 0.4,
+      "zoneAffinity": {
+        "riffle": 1.3,
+        "pool": 0.85
+      }
+    },
+    {
+      "speciesId": "iwana",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "riffle": 1.3,
+        "pool": 0.85
+      }
+    },
+    {
+      "speciesId": "ugui",
+      "basePresence": 0.5,
+      "zoneAffinity": {
+        "riffle": 1.3,
+        "pool": 0.85
+      }
+    },
+    {
+      "speciesId": "oikawa",
+      "basePresence": 0.45,
+      "zoneAffinity": {
+        "riffle": 1.3,
+        "pool": 0.85
+      }
+    },
+    {
+      "speciesId": "menada",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "riffle": 0.85,
+        "pool": 1.3
+      }
+    }
+  ],
+  "knowledgeConfig": {
+    "reveals": [
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "time_pattern",
+        "minKnowledge": 40
+      }
+    ]
+  },
+  "regulations": [],
+  "sourceRefs": [
+    {
+      "id": "phase16-provisional",
+      "title": "PROVISIONAL — Phase 16 gameplay content; 実在の釣り場・立入可否の主張ではない"
+    }
+  ]
+}

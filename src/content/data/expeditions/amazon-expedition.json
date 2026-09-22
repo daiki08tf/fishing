@@ -1,0 +1,39 @@
+{
+  "id": "amazon-expedition",
+  "regionId": "amazon-basin",
+  "name": "アマゾン遠征",
+  "dataStatus": "provisional",
+  "flight": {
+    "transportType": "international_flight",
+    "name": "国際線 東京→マナウス",
+    "oneWayCostYen": 160000,
+    "oneWayMinutes": 1500
+  },
+  "nights": {
+    "default": 6,
+    "min": 4,
+    "max": 16
+  },
+  "lodgings": [
+    {
+      "id": "amazon-budget-lodge",
+      "name": "Budget Lodge",
+      "nightlyCostYen": 12000
+    },
+    {
+      "id": "amazon-river-lodge",
+      "name": "River Lodge",
+      "nightlyCostYen": 24000
+    },
+    {
+      "id": "amazon-fishing-camp",
+      "name": "Fishing Camp",
+      "nightlyCostYen": 38000
+    }
+  ],
+  "permit": {
+    "permitId": "amazon-fishing-licence",
+    "name": "Amazon Fishing Licence（暫定）",
+    "costYen": 9000
+  }
+}

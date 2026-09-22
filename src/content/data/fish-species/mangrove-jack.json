@@ -3,7 +3,7 @@
   "japaneseName": "マングローブジャック（暫定）",
   "scientificName": "Lutjanus argentimaculatus",
   "waterTypes": ["brackish", "salt"],
-  "distribution": ["queensland"],
+  "distribution": ["baja-california", "okinawa", "queensland", "thailand"],
   "habitats": ["mangrove", "estuary", "structure"],
   "depthRange": {
     "min": 0,

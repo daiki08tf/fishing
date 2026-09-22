@@ -1,0 +1,108 @@
+{
+  "id": "datsu",
+  "japaneseName": "ダツ（暫定）",
+  "scientificName": "Tylosurus crocodilus",
+  "waterTypes": ["salt", "brackish"],
+  "habitats": ["nearshore", "surface"],
+  "diet": ["small_fish"],
+  "baits": ["live"],
+  "lureCategories": ["minnow", "jig"],
+  "fishingMethods": ["lure"],
+  "distribution": ["okinawa", "thailand"],
+  "depthRange": {
+    "min": 0,
+    "max": 20
+  },
+  "temperatureRange": {
+    "min": 20,
+    "max": 30
+  },
+  "seasonality": {
+    "months": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+  },
+  "timeActivity": {
+    "periods": ["dawn", "morning", "evening"]
+  },
+  "tidePreference": {
+    "preference": "rising"
+  },
+  "currentPreference": {
+    "preference": "moderate"
+  },
+  "methodAffinity": {
+    "lure": 1.1,
+    "light_lure": 1.05,
+    "bait": 1,
+    "bottom": 0.85
+  },
+  "offeringAffinity": {
+    "minnow": 1.1,
+    "jig": 1.1,
+    "spoon": 1.05,
+    "stickbait": 1.05,
+    "cut": 1.05
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 70,
+    "dispersion": 0.15,
+    "minCm": 35,
+    "maxCm": 120
+  },
+  "weightModel": {
+    "lengthWeightA": 0.0016,
+    "lengthWeightB": 3.1
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "traitConfiguration": {
+    "trophyPercentileThreshold": 1,
+    "strongRunnerChance": 0.064
+  },
+  "fightProfile": {
+    "strength": 0.5,
+    "stamina": 0.5,
+    "speed": 0.8
+  },
+  "rarity": 1.7,
+  "environmentAffinity": {
+    "preferredSeasons": ["summer"],
+    "preferredTimeOfDay": ["dawn", "morning", "evening"],
+    "weatherAffinity": {
+      "clear": 1,
+      "cloudy": 1.05,
+      "light_rain": 1,
+      "rain": 0.95,
+      "windy": 0.9
+    },
+    "tideAffinity": {
+      "low": 0.9,
+      "rising": 1.15,
+      "high": 1.05,
+      "falling": 1
+    },
+    "flowAffinity": {
+      "none": 1,
+      "slow": 1,
+      "moderate": 1.1,
+      "strong": 1
+    },
+    "preferredTemperatureC": {
+      "min": 20,
+      "max": 30
+    }
+  },
+  "feedingProfile": {
+    "preferredOfferingRatio": 0.16,
+    "largeOfferingPenaltyStart": 0.28,
+    "maxOfferingRatio": 0.4,
+    "mouthSizeFactor": 1
+  },
+  "sourceRefs": [
+    {
+      "id": "phase16-provisional",
+      "title": "PROVISIONAL — Phase 16 gameplay tuning; 実在の生態・漁業規制の主張ではない"
+    }
+  ]
+}

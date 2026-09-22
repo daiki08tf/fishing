@@ -1,0 +1,39 @@
+{
+  "id": "thailand",
+  "countryId": "thailand",
+  "name": "タイ",
+  "stage": "playable",
+  "dataStatus": "provisional",
+  "base": {
+    "id": "thailand-base",
+    "name": "Thailand Fishing Base",
+    "areaId": "thailand-central"
+  },
+  "areas": [
+    {
+      "id": "thailand-gulf",
+      "name": "Gulf Coast"
+    },
+    {
+      "id": "thailand-central",
+      "name": "Central Plain"
+    },
+    {
+      "id": "thailand-peninsula",
+      "name": "Peninsula"
+    }
+  ],
+  "climate": {
+    "annualMeanWaterC": 28,
+    "seasonalSwingC": 3,
+    "weatherWeights": {
+      "clear": 30,
+      "cloudy": 30,
+      "light_rain": 18,
+      "rain": 18,
+      "windy": 4
+    },
+    "tidePhaseOffset": 0.15,
+    "tideRange": "small"
+  }
+}

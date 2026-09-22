@@ -1,0 +1,28 @@
+{
+  "id": "okinawa-outer-island-shop",
+  "name": "沖縄 離島の商店",
+  "buyerType": "wholesaler",
+  "regionId": "okinawa",
+  "description": "離島の商店。まとめて持ち込むと強い。PROVISIONAL — gameplay tuning。",
+  "pricingProfile": {
+    "baseMultiplier": 0.96,
+    "qualitySensitivity": 0.8,
+    "sizeSensitivity": 0.8,
+    "freshnessSensitivity": 0.4,
+    "volumeBonusPerExtraCatch": 0.02,
+    "maxVolumeBonus": 0.15
+  },
+  "trustProfile": {
+    "perTransactionBase": 3,
+    "qualityWeight": 2,
+    "maxPerTransaction": 5
+  },
+  "preferences": {
+    "preferredTags": ["everyday", "bulk", "local_favorite"],
+    "neutralTags": ["white_fish", "delicate", "large_fish", "premium", "oily"],
+    "preferredTagMultiplier": 1.12,
+    "neutralTagMultiplier": 1,
+    "otherTagMultiplier": 0.94,
+    "localSourceMultiplier": 1.07
+  }
+}

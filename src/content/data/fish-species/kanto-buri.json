@@ -8,7 +8,7 @@
   "baits": ["live", "cut"],
   "lureCategories": ["metal_jig", "plug"],
   "fishingMethods": ["lure", "bait"],
-  "distribution": ["tokyo-area", "hokkaido"],
+  "distribution": ["hokkaido", "hokuriku-japan-sea", "izu-peninsula", "tokyo-area"],
   "depthRange": {
     "min": 30,
     "max": 120

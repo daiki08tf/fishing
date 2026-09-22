@@ -8,7 +8,13 @@
   "baits": ["worm", "cut"],
   "lureCategories": ["minnow", "metal_jig"],
   "fishingMethods": ["light_lure", "bait"],
-  "distribution": ["tokyo-area"],
+  "distribution": [
+    "hokuriku-japan-sea",
+    "izu-peninsula",
+    "okinawa",
+    "tohoku-pacific",
+    "tokyo-area"
+  ],
   "depthRange": {
     "min": 1,
     "max": 15

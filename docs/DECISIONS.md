@@ -624,3 +624,112 @@ Phase 15.1 のレビューで「tackle は required ではないが AppShell mou
 
 実測: boot raw 604.93 kB / boot gzip 170.62 kB（Phase 14 比 -21.2%、Phase 15.1 と同じ水準を
 immediate network set でも維持）。tackle chunk は 201.31 kB（gzip 32.05）で **boot に含まれない**。
+
+## Phase 16 — World Expansion I（Japan + International）
+
+Phase 15 の Content Pack / Region lazy loading / Species shard / 軽量カタログ /
+Codex scale 基盤を、実際の大規模コンテンツで使う最初の Phase。
+**今回は Part 1**（世界の骨格 + 9 地域の representative content）であり、
+目標の 200〜230 Species / 130〜150 Spot へは Part 2 で積み増す。
+
+決定:
+
+- **世界は 14 playable Region**（Tokyo / Hokkaido / Alaska / British Columbia /
+  Queensland + Izu Peninsula / Tohoku Pacific / Hokuriku Japan Sea / Okinawa /
+  Norway Fjords / New Zealand / Baja California / Thailand / Amazon Basin）。
+  既存の planned region は Phase 16 の要求 id へ統合した
+  （nordland→norway-fjords / southland→new-zealand /
+  gulf-of-thailand→thailand / amazonas→amazon-basin。planned は Save に載らないため移行不要）
+- **Species ID は今後も canonical global。** regional prefix は禁止で、
+  同じ生物に 2 つの ID を作らない。Region 差は occurrence / presence / seasonality /
+  temperature / size / zone affinity / habitat / timing で表現する
+- **Spot は架空 / 一般化 / 複合**（実在の秘密ポイントや正確な座標を扱わない）。
+  各 Phase 16 地域は public 4 + hidden 1（Amazon は 6）で、
+  Region ごとに 3 種類以上の environment を持つ
+- **外道を普通に混ぜる。** Phase 16 の野生 Spot は 4 Species 以上、
+  1 種が encounter weight の 75% を超えないことを `simulate:world-expansion` が検査する
+  （managed pond / 既存 Phase の Spot は警告に留める）
+- **Discovery と Access は分離したまま。** 各地域に 1 つ以上の Hidden Spot を置き、
+  必ず discover_spot 報酬（Trust 35）から発見できる。噂（intel, Trust 15）は
+  Spot 名や正確な場所を明かさない
+- **Trust / Rumor / Buyer も地域ごとに用意。** 9 地域に Buyer を 1 つずつ追加し、
+  既存の tag affinity / local source bonus / region enforcement をそのまま使う
+- **PROVISIONAL を維持。** 追加した分布・季節・サイズ・価格・fight tuning は
+  gameplay PROVISIONAL であり、sourceRefs にその旨を明記する。
+  実在の漁業規制・保護区・立入可否の主張はしない
+- **scientificName 重複は report（warning）。** 既存 Content に 1 組
+  （`giant-queenfish` / `queenfish` = Scomberoides commersonnianus）があり、
+  ID 統合は Save / Codex / Trade を跨ぐ作業のため、Phase 16 では検出と報告に留め、
+  新規重複を作らないことを Hard check にする
+
+実測（Part 1）: species 82 → **144** / playable region 5 → **14** / spot 53 → **99** /
+expedition 4 → **13** / buyer 3 → **12** / contact reward 12 → **30**。
+boot は catalog が Species 数に比例するため 170.62 → 187.21 kB gzip
+（Phase 14 比 -13.5%、raw は 644.70 / 925.44 = -30%）。
+
+### Phase 16 Part 2 — World Expansion I: depth / progression / world UX
+
+Part 1 の世界骨格の上に、深さ・進行・World UX を積んだ。新しい Phase ではなく、
+同じ Phase 16 の続きである（Save v9 / Domain rule は不変）。
+
+決定:
+
+- **Content scale は目標範囲に収める。** Species 212（200〜230）、Spot 140（130〜150）、
+  Buyer 24（20〜28）、playable Region 14（変更なし）。数字のための水増しはせず、
+  各 Region の bycatch / 地域性を厚くする追加に限定した
+- **Region ごとの 3 段階チェーン。** 各 Phase 16 Region に
+  「漠然とした噂（intel）→ より具体的な intel → discover_spot」を用意し、
+  **閾値は Region ごとに変える**（例: Amazon 12/24/40、Okinawa 18/32/52、
+  Thailand 13/25/43）。3 段階は Region 内の別 Buyer に分散し、人脈を広げる動機にする
+- **Trust balance は simulation で確認する。** 平均 quality の売却あたり Trust から
+  「最初の報酬まで 2〜5 回」「Hidden Spot まで 5〜15 回」を
+  `simulate:world-expansion` が検査する（1 回で全部解禁しない / 何十回も要さない）
+- **Expedition の cost curve を検査する。** 国内 < 国際、Izu が最安、Amazon が最高、
+  どの旅も自由資金の 6 か月分以内（実在の旅行価格の主張ではなく PROVISIONAL）
+- **Discovery と Access は分離したまま。** discover_spot 報酬は「知る」だけを与え、
+  travel は既存 AccessEngine（transport / permit / knowledge / cost）が判定する。
+  Hidden Spot の半分以上は capability などの access 条件を持つ
+- **Region selector を横一列のタブから「国 → 地域」の折りたたみに変える。**
+  14 Region でも破綻せず、現在地は「いま ここ」、選択中は強調表示。
+  MAP board / 詳細リストの構造は変えない
+- **legacy Spot の外道を部分的に補う。** 2〜3 Species しかない既存 Spot のうち、
+  設計上自然なものへ共通外道を 1〜2 種足した。残りは warning として報告し、
+  Part 2b の作業対象にする（管理釣り場などの例外はそのまま）
+- **giant-queenfish / queenfish は統合しない。** 同一 scientificName を持つ既知の
+  canonical ID 問題として warning を維持し、Save/Codex/Trade を跨ぐ専用 migration
+  Phase に送る。新規の重複は Hard check で禁止する
+
+
+### Phase 16 Part 2b — Final World Hardening
+
+Part 2 の世界を最終 hardening した。新規 Region / 新規 gameplay は追加しない。
+Save v9 / Phase 15 lazy loading / Domain rule は不変。
+
+決定:
+
+- **季節は半球つきで解決する。** 以前は暦月だけで季節を決めていたため、
+  New Zealand / Queensland が北半球と同じ季節になっていた。
+  `ClimateProfile.hemisphere`（`north` | `south`）を追加し、
+  `seasonOf(month, hemisphere)` / `seasonalFactor(month, hemisphere)` は
+  半球で位相を反転させる（南半球のピークは 2 月、底は 8 月。1 月 = summer）。
+  Region ID による分岐は書かない。既定は `north` なので既存 Region と Save schema は
+  そのまま互換である
+- **熱帯気候を sanity test で押さえる。** Queensland / Okinawa / Thailand / Amazon は
+  年平均水温 24℃以上・年間の水温振れが温帯より小さいことを test にする。
+  値はすべて PROVISIONAL なゲーム調整であり、実在の気候データの主張ではない
+- **occurrence depth は外道と地域性で厚くする。** 数字を増やすための追加はせず、
+  生物学・ゲーム的に自然な範囲で Amazon / Baja / NZ / Norway / Okinawa / Thailand を
+  底上げした（Amazon 22→29 など）。legacy Spot の 2〜3 species も audit し、
+  自然なものへ共通外道を足した。残る warning は既知の scientificName 重複のみ
+- **Expedition を 国内 / 海外 でグループ化する。** 既存 `Country.domestic` を使い、
+  カードと Phase 14 の見た目は維持する。EXPEDITION を開いただけでは
+  destination の Region pack を読まない（Phase 15 の保証は不変）
+- **最終 scale contract を test で固定する。** 14 playable Region /
+  200〜230 Species / 130〜150 Spot / 20〜28 Buyer。giant-queenfish / queenfish は
+  warning のまま維持し、統合は Save / Codex / Trade を跨ぐ
+  **future dedicated canonical-ID migration** に送る（Phase 17 = Boat/Offshore とは別）
+- **実機目視は未実施。** この環境ではブラウザを起動できないため、375 / 390 / 430 の
+  確認は DOM / CSS の静的チェックに留め、目視したとは報告しない
+
+実測（Part 2b）: Initial 572.15 kB（gzip 161.21）/ Tokyo boot 686.33 kB（gzip 195.76、
+予算 200 kB / Phase 14 baseline 216.48 kB）/ tests 95 files / 834。

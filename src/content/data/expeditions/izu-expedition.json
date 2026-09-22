@@ -1,0 +1,29 @@
+{
+  "id": "izu-expedition",
+  "regionId": "izu-peninsula",
+  "name": "伊豆遠征",
+  "dataStatus": "provisional",
+  "flight": {
+    "transportType": "domestic_flight",
+    "name": "国内線 東京→伊豆",
+    "oneWayCostYen": 14000,
+    "oneWayMinutes": 90
+  },
+  "nights": {
+    "default": 2,
+    "min": 1,
+    "max": 5
+  },
+  "lodgings": [
+    {
+      "id": "izu-business-hotel",
+      "name": "Business Hotel",
+      "nightlyCostYen": 8000
+    },
+    {
+      "id": "izu-onsen-inn",
+      "name": "Onsen Inn",
+      "nightlyCostYen": 15000
+    }
+  ]
+}

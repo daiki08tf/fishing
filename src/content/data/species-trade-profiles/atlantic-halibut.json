@@ -1,0 +1,9 @@
+{
+  "speciesId": "atlantic-halibut",
+  "tradeStatus": "tradable",
+  "tradeTags": ["premium", "large_fish", "white_fish", "everyday"],
+  "baseYenPerKg": 1940,
+  "minimumUnitValueYen": 350,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1.3
+}

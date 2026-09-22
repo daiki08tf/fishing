@@ -1,0 +1,9 @@
+{
+  "speciesId": "giant-grouper",
+  "tradeStatus": "tradable",
+  "tradeTags": ["premium", "large_fish", "delicate", "local_favorite"],
+  "baseYenPerKg": 2140,
+  "minimumUnitValueYen": 390,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1.3
+}

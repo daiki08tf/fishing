@@ -3,7 +3,7 @@
   "japaneseName": "レッドエンペラー（暫定）",
   "scientificName": "Lutjanus sebae",
   "waterTypes": ["salt"],
-  "distribution": ["queensland"],
+  "distribution": ["okinawa", "queensland"],
   "habitats": ["reef", "deep"],
   "depthRange": {
     "min": 0,

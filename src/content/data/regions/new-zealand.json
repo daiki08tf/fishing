@@ -1,0 +1,40 @@
+{
+  "id": "new-zealand",
+  "countryId": "new-zealand",
+  "name": "ニュージーランド",
+  "stage": "playable",
+  "dataStatus": "provisional",
+  "base": {
+    "id": "nz-base",
+    "name": "New Zealand Base",
+    "areaId": "nz-south"
+  },
+  "areas": [
+    {
+      "id": "nz-south",
+      "name": "South Island"
+    },
+    {
+      "id": "nz-lakes",
+      "name": "Lakes"
+    },
+    {
+      "id": "nz-coast",
+      "name": "Coast"
+    }
+  ],
+  "climate": {
+    "hemisphere": "south",
+    "annualMeanWaterC": 13,
+    "seasonalSwingC": 7,
+    "weatherWeights": {
+      "clear": 20,
+      "cloudy": 36,
+      "light_rain": 18,
+      "rain": 16,
+      "windy": 10
+    },
+    "tidePhaseOffset": 0.7,
+    "tideRange": "moderate"
+  }
+}

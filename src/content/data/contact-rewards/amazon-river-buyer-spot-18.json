@@ -1,0 +1,8 @@
+{
+  "id": "amazon-river-buyer-spot-18",
+  "contactId": "amazon-river-buyer",
+  "minTrust": 50,
+  "kind": "discover_spot",
+  "message": "担当が、浸水林の正確な場所を教えてくれた。",
+  "targetId": "amazon-hidden-flooded-forest"
+}

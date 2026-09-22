@@ -1,0 +1,8 @@
+{
+  "id": "baja-pescaderia-spot-16",
+  "contactId": "baja-pescaderia",
+  "minTrust": 55,
+  "kind": "discover_spot",
+  "message": "魚屋の人が、隠れた根の正確な場所を教えてくれた。",
+  "targetId": "baja-hidden-reef-pinnacle"
+}

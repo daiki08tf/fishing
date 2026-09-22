@@ -1,0 +1,28 @@
+{
+  "id": "izu-harbor-coop",
+  "name": "伊豆 港の買取所",
+  "buyerType": "wholesaler",
+  "regionId": "izu-peninsula",
+  "description": "伊豆の港で地元の魚を扱う買取所。PROVISIONAL — gameplay tuning。",
+  "pricingProfile": {
+    "baseMultiplier": 1,
+    "qualitySensitivity": 0.9,
+    "sizeSensitivity": 0.6,
+    "freshnessSensitivity": 0.5,
+    "volumeBonusPerExtraCatch": 0.02,
+    "maxVolumeBonus": 0.15
+  },
+  "trustProfile": {
+    "perTransactionBase": 3,
+    "qualityWeight": 3,
+    "maxPerTransaction": 5
+  },
+  "preferences": {
+    "preferredTags": ["everyday", "local_favorite", "white_fish"],
+    "neutralTags": ["delicate", "premium", "small_table_fish", "large_fish", "oily"],
+    "preferredTagMultiplier": 1.12,
+    "neutralTagMultiplier": 1,
+    "otherTagMultiplier": 0.92,
+    "localSourceMultiplier": 1.08
+  }
+}

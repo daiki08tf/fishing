@@ -105,6 +105,15 @@
         "edge": 1,
         "channel": 1.6
       }
+    },
+    {
+      "speciesId": "australian-bass",
+      "basePresence": 0.25,
+      "zoneAffinity": {
+        "inside": 0.85,
+        "edge": 1.25,
+        "channel": 0.85
+      }
     }
   ],
   "dataStatus": "provisional",

@@ -1,0 +1,28 @@
+{
+  "id": "thailand-floating-market",
+  "name": "タイ 水上マーケット",
+  "buyerType": "wholesaler",
+  "regionId": "thailand",
+  "description": "水上マーケットの買取。淡水魚を広く扱う。PROVISIONAL — gameplay tuning。",
+  "pricingProfile": {
+    "baseMultiplier": 1.02,
+    "qualitySensitivity": 0.8,
+    "sizeSensitivity": 1.35,
+    "freshnessSensitivity": 0.5,
+    "volumeBonusPerExtraCatch": 0,
+    "maxVolumeBonus": 0
+  },
+  "trustProfile": {
+    "perTransactionBase": 2,
+    "qualityWeight": 5,
+    "maxPerTransaction": 6
+  },
+  "preferences": {
+    "preferredTags": ["large_fish", "local_favorite", "premium"],
+    "neutralTags": ["everyday", "bulk", "white_fish", "oily"],
+    "preferredTagMultiplier": 1.14,
+    "neutralTagMultiplier": 1,
+    "otherTagMultiplier": 0.9,
+    "localSourceMultiplier": 1.07
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "speciesId": "hatahata",
+  "tradeStatus": "tradable",
+  "tradeTags": ["white_fish", "everyday"],
+  "baseYenPerKg": 510,
+  "minimumUnitValueYen": 90,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 0.85
+}

@@ -1,0 +1,28 @@
+{
+  "id": "nz-harbor-kitchen",
+  "name": "NZ 港の食堂",
+  "buyerType": "izakaya",
+  "regionId": "new-zealand",
+  "description": "港の食堂。獲れたての魚を好む。PROVISIONAL — gameplay tuning。",
+  "pricingProfile": {
+    "baseMultiplier": 1.05,
+    "qualitySensitivity": 1.3,
+    "sizeSensitivity": 0.6,
+    "freshnessSensitivity": 0.65,
+    "volumeBonusPerExtraCatch": 0,
+    "maxVolumeBonus": 0
+  },
+  "trustProfile": {
+    "perTransactionBase": 2,
+    "qualityWeight": 6,
+    "maxPerTransaction": 6
+  },
+  "preferences": {
+    "preferredTags": ["delicate", "game_fish", "local_favorite", "white_fish"],
+    "neutralTags": ["premium", "large_fish", "everyday", "oily"],
+    "preferredTagMultiplier": 1.17,
+    "neutralTagMultiplier": 1,
+    "otherTagMultiplier": 0.86,
+    "localSourceMultiplier": 1.1
+  }
+}

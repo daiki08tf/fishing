@@ -37,6 +37,24 @@
     {
       "speciesId": "ito",
       "basePresence": 0.5
+    },
+    {
+      "speciesId": "funa",
+      "basePresence": 0.4,
+      "zoneAffinity": {
+        "shoreline": 0.85,
+        "break": 1.25,
+        "open-water": 0.85
+      }
+    },
+    {
+      "speciesId": "ugui",
+      "basePresence": 0.35,
+      "zoneAffinity": {
+        "shoreline": 1.25,
+        "break": 0.85,
+        "open-water": 0.85
+      }
     }
   ],
   "knowledgeConfig": {

@@ -1,0 +1,39 @@
+{
+  "id": "izu-peninsula",
+  "countryId": "japan",
+  "name": "伊豆半島",
+  "stage": "playable",
+  "dataStatus": "provisional",
+  "base": {
+    "id": "izu-base",
+    "name": "伊豆 ベース",
+    "areaId": "izu-east"
+  },
+  "areas": [
+    {
+      "id": "izu-east",
+      "name": "東伊豆"
+    },
+    {
+      "id": "izu-west",
+      "name": "西伊豆"
+    },
+    {
+      "id": "izu-south",
+      "name": "南伊豆"
+    }
+  ],
+  "climate": {
+    "annualMeanWaterC": 19,
+    "seasonalSwingC": 8,
+    "weatherWeights": {
+      "clear": 32,
+      "cloudy": 30,
+      "light_rain": 14,
+      "rain": 12,
+      "windy": 12
+    },
+    "tidePhaseOffset": 0.2,
+    "tideRange": "moderate"
+  }
+}

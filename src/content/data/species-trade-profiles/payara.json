@@ -1,0 +1,9 @@
+{
+  "speciesId": "payara",
+  "tradeStatus": "tradable",
+  "tradeTags": ["premium", "large_fish", "local_favorite", "everyday"],
+  "baseYenPerKg": 1510,
+  "minimumUnitValueYen": 270,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1.3
+}

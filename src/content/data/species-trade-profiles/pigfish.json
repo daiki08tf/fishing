@@ -1,0 +1,9 @@
+{
+  "speciesId": "pigfish",
+  "tradeStatus": "tradable",
+  "tradeTags": ["delicate", "local_favorite"],
+  "baseYenPerKg": 780,
+  "minimumUnitValueYen": 140,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

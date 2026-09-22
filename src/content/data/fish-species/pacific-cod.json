@@ -3,7 +3,7 @@
   "japaneseName": "マダラ（太平洋系・暫定）",
   "scientificName": "Gadus macrocephalus",
   "waterTypes": ["salt"],
-  "distribution": ["british-columbia", "alaska", "hokkaido"],
+  "distribution": ["alaska", "british-columbia", "hokkaido", "hokuriku-japan-sea", "tokyo-area"],
   "habitats": ["deep", "bottom"],
   "depthRange": {
     "min": 0,

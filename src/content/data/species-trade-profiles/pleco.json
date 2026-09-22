@@ -1,0 +1,9 @@
+{
+  "speciesId": "pleco",
+  "tradeStatus": "tradable",
+  "tradeTags": ["local_favorite", "everyday", "white_fish"],
+  "baseYenPerKg": 510,
+  "minimumUnitValueYen": 90,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

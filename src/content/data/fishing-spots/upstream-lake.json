@@ -37,6 +37,24 @@
     {
       "speciesId": "namazu",
       "basePresence": 0.3
+    },
+    {
+      "speciesId": "rainbow-trout",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "shoreline": 0.85,
+        "break": 1.25,
+        "open-water": 0.85
+      }
+    },
+    {
+      "speciesId": "kokanee",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "shoreline": 1.25,
+        "break": 0.85,
+        "open-water": 0.85
+      }
     }
   ],
   "knowledgeConfig": {

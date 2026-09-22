@@ -8,7 +8,7 @@
   "baits": ["worm"],
   "lureCategories": ["small"],
   "fishingMethods": ["bait", "light_lure"],
-  "distribution": ["tokyo-area"],
+  "distribution": ["hokuriku-japan-sea", "izu-peninsula", "tohoku-pacific", "tokyo-area"],
   "depthRange": {
     "min": 1,
     "max": 8

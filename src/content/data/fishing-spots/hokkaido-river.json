@@ -45,6 +45,15 @@
     {
       "speciesId": "ugui",
       "basePresence": 0.3
+    },
+    {
+      "speciesId": "yamame",
+      "basePresence": 0.35,
+      "zoneAffinity": {
+        "bank-edge": 0.85,
+        "main-flow": 1.25,
+        "far-run": 0.85
+      }
     }
   ],
   "knowledgeConfig": {

@@ -1,0 +1,9 @@
+{
+  "speciesId": "bonefish",
+  "tradeStatus": "tradable",
+  "tradeTags": ["game_fish", "everyday", "oily"],
+  "baseYenPerKg": 1210,
+  "minimumUnitValueYen": 220,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

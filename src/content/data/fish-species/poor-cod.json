@@ -1,0 +1,108 @@
+{
+  "id": "poor-cod",
+  "japaneseName": "プアコッド（暫定）",
+  "scientificName": "Trisopterus minutus",
+  "waterTypes": ["salt"],
+  "habitats": ["nearshore", "sand", "bottom"],
+  "diet": ["crustacean", "small_fish"],
+  "baits": ["cut", "worm"],
+  "lureCategories": ["soft_plastic", "jig"],
+  "fishingMethods": ["bottom"],
+  "distribution": ["norway-fjords"],
+  "depthRange": {
+    "min": 5,
+    "max": 80
+  },
+  "temperatureRange": {
+    "min": 5,
+    "max": 16
+  },
+  "seasonality": {
+    "months": [1, 2, 3, 4, 5, 6, 9, 10, 11, 12]
+  },
+  "timeActivity": {
+    "periods": ["dawn", "day", "evening"]
+  },
+  "tidePreference": {
+    "preference": "rising"
+  },
+  "currentPreference": {
+    "preference": "moderate"
+  },
+  "methodAffinity": {
+    "bottom": 1.2,
+    "bait": 1.1,
+    "lure": 0.95,
+    "light_lure": 0.9
+  },
+  "offeringAffinity": {
+    "cut": 1.15,
+    "jig": 1.05,
+    "soft_plastic": 1,
+    "worm": 1.05,
+    "live": 1.1
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 22,
+    "dispersion": 0.11,
+    "minCm": 12,
+    "maxCm": 35
+  },
+  "weightModel": {
+    "lengthWeightA": 0.0095,
+    "lengthWeightB": 3.05
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "traitConfiguration": {
+    "trophyPercentileThreshold": 1,
+    "strongRunnerChance": 0.036000000000000004
+  },
+  "fightProfile": {
+    "strength": 0.4,
+    "stamina": 0.45,
+    "speed": 0.45
+  },
+  "rarity": 1.3,
+  "environmentAffinity": {
+    "preferredSeasons": ["spring", "summer", "autumn"],
+    "preferredTimeOfDay": ["dawn", "daytime", "evening"],
+    "weatherAffinity": {
+      "clear": 1,
+      "cloudy": 1.05,
+      "light_rain": 1,
+      "rain": 0.95,
+      "windy": 0.9
+    },
+    "tideAffinity": {
+      "low": 1,
+      "rising": 1.05,
+      "high": 1.1,
+      "falling": 1
+    },
+    "flowAffinity": {
+      "none": 1,
+      "slow": 1.05,
+      "moderate": 1.05,
+      "strong": 0.95
+    },
+    "preferredTemperatureC": {
+      "min": 5,
+      "max": 16
+    }
+  },
+  "feedingProfile": {
+    "preferredOfferingRatio": 0.14,
+    "largeOfferingPenaltyStart": 0.26,
+    "maxOfferingRatio": 0.4,
+    "mouthSizeFactor": 1.05
+  },
+  "sourceRefs": [
+    {
+      "id": "phase16-provisional",
+      "title": "PROVISIONAL — Phase 16 gameplay tuning; 実在の生態・漁業規制の主張ではない"
+    }
+  ]
+}

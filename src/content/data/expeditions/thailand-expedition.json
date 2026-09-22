@@ -1,0 +1,34 @@
+{
+  "id": "thailand-expedition",
+  "regionId": "thailand",
+  "name": "タイ遠征",
+  "dataStatus": "provisional",
+  "flight": {
+    "transportType": "international_flight",
+    "name": "国際線 東京→バンコク",
+    "oneWayCostYen": 70000,
+    "oneWayMinutes": 420
+  },
+  "nights": {
+    "default": 5,
+    "min": 3,
+    "max": 14
+  },
+  "lodgings": [
+    {
+      "id": "thailand-guesthouse",
+      "name": "Guesthouse",
+      "nightlyCostYen": 6000
+    },
+    {
+      "id": "thailand-riverside-lodge",
+      "name": "Riverside Lodge",
+      "nightlyCostYen": 14000
+    },
+    {
+      "id": "thailand-fishing-lodge",
+      "name": "Fishing Lodge",
+      "nightlyCostYen": 24000
+    }
+  ]
+}

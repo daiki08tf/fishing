@@ -1,0 +1,39 @@
+{
+  "id": "baja-expedition",
+  "regionId": "baja-california",
+  "name": "バハ遠征",
+  "dataStatus": "provisional",
+  "flight": {
+    "transportType": "international_flight",
+    "name": "国際線 東京→ロスカボス",
+    "oneWayCostYen": 110000,
+    "oneWayMinutes": 720
+  },
+  "nights": {
+    "default": 5,
+    "min": 3,
+    "max": 14
+  },
+  "lodgings": [
+    {
+      "id": "baja-budget-hotel",
+      "name": "Budget Hotel",
+      "nightlyCostYen": 9000
+    },
+    {
+      "id": "baja-pescador-lodge",
+      "name": "Pescador Lodge",
+      "nightlyCostYen": 18000
+    },
+    {
+      "id": "baja-fishing-lodge",
+      "name": "Fishing Lodge",
+      "nightlyCostYen": 28000
+    }
+  ],
+  "permit": {
+    "permitId": "baja-fishing-permit",
+    "name": "Baja Fishing Permit（暫定）",
+    "costYen": 8000
+  }
+}

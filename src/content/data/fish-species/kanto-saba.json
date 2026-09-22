@@ -8,7 +8,13 @@
   "baits": ["cut"],
   "lureCategories": ["metal_jig"],
   "fishingMethods": ["light_lure", "bait"],
-  "distribution": ["tokyo-area"],
+  "distribution": [
+    "hokkaido",
+    "hokuriku-japan-sea",
+    "izu-peninsula",
+    "tohoku-pacific",
+    "tokyo-area"
+  ],
   "lengthModel": {
     "kind": "normal",
     "meanCm": 28,

@@ -1,0 +1,28 @@
+{
+  "id": "hokuriku-jizakana-shop",
+  "name": "北陸 地魚の店",
+  "buyerType": "izakaya",
+  "regionId": "hokuriku-japan-sea",
+  "description": "日本海側の地魚を出す店。冬の魚をとくに好む。PROVISIONAL — gameplay tuning。",
+  "pricingProfile": {
+    "baseMultiplier": 1,
+    "qualitySensitivity": 1.4,
+    "sizeSensitivity": 0.4,
+    "freshnessSensitivity": 0.6,
+    "volumeBonusPerExtraCatch": 0,
+    "maxVolumeBonus": 0
+  },
+  "trustProfile": {
+    "perTransactionBase": 2,
+    "qualityWeight": 6,
+    "maxPerTransaction": 6
+  },
+  "preferences": {
+    "preferredTags": ["everyday", "small_table_fish", "white_fish", "local_favorite"],
+    "neutralTags": ["delicate", "oily", "premium"],
+    "preferredTagMultiplier": 1.15,
+    "neutralTagMultiplier": 1,
+    "otherTagMultiplier": 0.85,
+    "localSourceMultiplier": 1.1
+  }
+}

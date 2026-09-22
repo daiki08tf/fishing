@@ -1,0 +1,107 @@
+{
+  "id": "common-sole",
+  "japaneseName": "コモンソール（暫定）",
+  "scientificName": "Peltorhamphus novaezeelandiae",
+  "waterTypes": ["salt", "brackish"],
+  "habitats": ["sand", "estuary", "bottom"],
+  "diet": ["worm", "crustacean"],
+  "baits": ["worm", "cut"],
+  "lureCategories": ["soft_plastic"],
+  "fishingMethods": ["bottom", "bait"],
+  "distribution": ["new-zealand"],
+  "depthRange": {
+    "min": 0,
+    "max": 40
+  },
+  "temperatureRange": {
+    "min": 10,
+    "max": 20
+  },
+  "seasonality": {
+    "months": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+  },
+  "timeActivity": {
+    "periods": ["dawn", "morning", "evening"]
+  },
+  "tidePreference": {
+    "preference": "rising"
+  },
+  "currentPreference": {
+    "preference": "moderate"
+  },
+  "methodAffinity": {
+    "bottom": 1.2,
+    "bait": 1.15,
+    "lure": 1,
+    "light_lure": 0.95
+  },
+  "offeringAffinity": {
+    "soft_plastic": 1.1,
+    "worm": 1.15,
+    "cut": 1.1,
+    "jig": 1
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 26,
+    "dispersion": 0.12,
+    "minCm": 14,
+    "maxCm": 42
+  },
+  "weightModel": {
+    "lengthWeightA": 0.0115,
+    "lengthWeightB": 3.05
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "traitConfiguration": {
+    "trophyPercentileThreshold": 1,
+    "strongRunnerChance": 0.032
+  },
+  "fightProfile": {
+    "strength": 0.45,
+    "stamina": 0.5,
+    "speed": 0.4
+  },
+  "rarity": 1.6,
+  "environmentAffinity": {
+    "preferredSeasons": ["spring", "summer", "autumn"],
+    "preferredTimeOfDay": ["dawn", "morning", "evening"],
+    "weatherAffinity": {
+      "clear": 1,
+      "cloudy": 1.05,
+      "light_rain": 1,
+      "rain": 0.95,
+      "windy": 0.9
+    },
+    "tideAffinity": {
+      "low": 0.95,
+      "rising": 1.1,
+      "high": 1.1,
+      "falling": 1.05
+    },
+    "flowAffinity": {
+      "none": 1,
+      "slow": 1.1,
+      "moderate": 1.05,
+      "strong": 0.9
+    },
+    "preferredTemperatureC": {
+      "min": 10,
+      "max": 20
+    }
+  },
+  "feedingProfile": {
+    "preferredOfferingRatio": 0.12,
+    "largeOfferingPenaltyStart": 0.24,
+    "maxOfferingRatio": 0.34,
+    "mouthSizeFactor": 1.1
+  },
+  "sourceRefs": [
+    {
+      "id": "phase16-provisional",
+      "title": "PROVISIONAL — Phase 16 gameplay tuning; 実在の生態・漁業規制の主張ではない"
+    }
+  ]
+}

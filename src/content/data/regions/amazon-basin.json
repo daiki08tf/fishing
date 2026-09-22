@@ -1,0 +1,39 @@
+{
+  "id": "amazon-basin",
+  "countryId": "brazil",
+  "name": "アマゾン流域",
+  "stage": "playable",
+  "dataStatus": "provisional",
+  "base": {
+    "id": "amazon-base",
+    "name": "Amazon Fishing Base",
+    "areaId": "amazon-main"
+  },
+  "areas": [
+    {
+      "id": "amazon-main",
+      "name": "Main River"
+    },
+    {
+      "id": "amazon-tributary",
+      "name": "Tributary"
+    },
+    {
+      "id": "amazon-floodplain",
+      "name": "Floodplain"
+    }
+  ],
+  "climate": {
+    "annualMeanWaterC": 27,
+    "seasonalSwingC": 3,
+    "weatherWeights": {
+      "clear": 30,
+      "cloudy": 30,
+      "light_rain": 15,
+      "rain": 22,
+      "windy": 3
+    },
+    "tidePhaseOffset": 0.05,
+    "tideRange": "small"
+  }
+}

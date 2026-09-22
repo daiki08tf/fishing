@@ -3,7 +3,7 @@
   "japaneseName": "メバル（暫定）",
   "scientificName": "Sebastes inermis",
   "waterTypes": ["salt"],
-  "distribution": ["tokyo-area"],
+  "distribution": ["hokuriku-japan-sea", "izu-peninsula", "tokyo-area"],
   "habitats": ["rock", "pier"],
   "depthRange": {
     "min": 0,

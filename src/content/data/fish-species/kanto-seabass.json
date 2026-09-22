@@ -8,7 +8,13 @@
   "baits": ["live", "worm"],
   "lureCategories": ["minnow", "vibration"],
   "fishingMethods": ["lure", "light_lure"],
-  "distribution": ["tokyo-area", "hokkaido"],
+  "distribution": [
+    "hokkaido",
+    "hokuriku-japan-sea",
+    "izu-peninsula",
+    "tohoku-pacific",
+    "tokyo-area"
+  ],
   "depthRange": {
     "min": 8,
     "max": 40

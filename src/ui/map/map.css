@@ -177,3 +177,60 @@
   border-color: var(--palette-orange);
   box-shadow: var(--shadow-pop);
 }
+
+/* Phase 16 Part 2: Region selector（14 Region でも横帯にしない）。 */
+.region-selector {
+  margin-top: 0.6rem;
+}
+
+.region-selector__body {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.region-selector__country {
+  margin: 0 0 0.25rem;
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  color: var(--color-text-muted);
+}
+
+.region-selector__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.region-selector__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.6rem;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  font-size: 0.8125rem;
+  box-shadow: var(--shadow-panel);
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+}
+
+.region-selector__item--active {
+  border-color: var(--color-accent);
+  background-color: color-mix(in srgb, var(--color-accent) 16%, var(--color-surface));
+  box-shadow: var(--shadow-pop);
+}
+
+.region-selector__tag {
+  border-radius: var(--radius-pill);
+  padding: 0.05rem 0.4rem;
+  background-color: var(--palette-sand);
+  color: var(--palette-navy-deep);
+  font-size: 0.625rem;
+}
