@@ -107,8 +107,9 @@ describe('biteChance', () => {
       profile({ biteAffinity: 0 }),
     )
 
-    // Phase 9.1: 0.5（出現度）* 1.3（魚種の相性）* 0.85 * 1.8（soft 上限）
-    expect(extreme).toBeCloseTo(0.9945, 6)
+    // Phase 10.2: pressure = 0.5 * 1.3 * 0.85 * 1.8（soft 上限）。
+    // 最終 Bite 確率は飽和カーブ 1 - exp(-pressure) で解決する。
+    expect(extreme).toBeCloseTo(1 - Math.exp(-0.9945), 6)
     expect(extreme).toBeLessThan(1)
     // 相性 0 でも soft 下限（0.15）で確率は 0 にならない。
     expect(hostile).toBeGreaterThan(0)

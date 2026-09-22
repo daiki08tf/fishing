@@ -36,15 +36,30 @@
   "fishTable": [
     {
       "speciesId": "hokkaido-masu-salmon",
-      "basePresence": 0.35
+      "basePresence": 0.35,
+      "zoneAffinity": {
+        "shore-wash": 0.5,
+        "outer-surf": 1.1,
+        "current-line": 1.4
+      }
     },
     {
       "speciesId": "kanto-seabass",
-      "basePresence": 0.5
+      "basePresence": 0.5,
+      "zoneAffinity": {
+        "shore-wash": 0.8,
+        "outer-surf": 1.2,
+        "current-line": 0.9
+      }
     },
     {
       "speciesId": "kanto-buri",
-      "basePresence": 0.3
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "shore-wash": 0.2,
+        "outer-surf": 0.7,
+        "current-line": 1.5
+      }
     }
   ],
   "knowledgeConfig": {
@@ -58,5 +73,46 @@
         "minKnowledge": 50
       }
     ]
-  }
+  },
+  "fishingZones": [
+    {
+      "id": "shore-wash",
+      "name": "波打ち際",
+      "castDistanceM": {
+        "min": 0,
+        "max": 20
+      },
+      "depthRangeM": {
+        "min": 2,
+        "max": 6
+      },
+      "habitatTags": ["coast", "wash"]
+    },
+    {
+      "id": "outer-surf",
+      "name": "沖のブレイク",
+      "castDistanceM": {
+        "min": 20,
+        "max": 50
+      },
+      "depthRangeM": {
+        "min": 5,
+        "max": 14
+      },
+      "habitatTags": ["surf", "break"]
+    },
+    {
+      "id": "current-line",
+      "name": "沖の潮目",
+      "castDistanceM": {
+        "min": 50,
+        "max": 85
+      },
+      "depthRangeM": {
+        "min": 10,
+        "max": 25
+      },
+      "habitatTags": ["open", "current"]
+    }
+  ]
 }

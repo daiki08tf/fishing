@@ -16,7 +16,7 @@ export type FishingTuning = {
   readonly castTicks: number
   readonly minWaitTicks: number
   readonly maxWaitTicks: number
-  /** basePresence = 1 のときのヒット確率。 */
+  /** 実効出現度を Bite の pressure に変換する係数（最終確率は飽和カーブで解決）。 */
   readonly biteChancePerPresence: number
   readonly biteTicks: number
   readonly hookWindowTicks: number

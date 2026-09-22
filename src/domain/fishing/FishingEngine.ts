@@ -133,6 +133,11 @@ export type FishingEngineOptions = {
   /** Phase 10: Text Battle の調整値。 */
   readonly battleTuning?: BattleTuning
   /**
+   * Phase 11: 実際に仕掛けが着水した水平距離。
+   * Engine は Zone や Gear を知らず、解決済みの数値だけを受け取る。
+   */
+  readonly initialFightDistanceM?: number
+  /**
    * Phase 10: その Spot の Knowledge（0〜100）。
    * 予兆（telegraph）の文章の精度にだけ使う（結果は変えない）。
    */
@@ -192,6 +197,7 @@ export class FishingEngine {
   private battleLog: string[] = []
   private readonly battleTuning: BattleTuning
   private readonly knowledgeScore: number
+  private readonly initialFightDistanceM: number | undefined
   private events: FishingEvent[] = []
 
   constructor(options: FishingEngineOptions) {
@@ -204,6 +210,7 @@ export class FishingEngine {
     this.encounterProfile = options.encounterProfile
     this.battleTuning = options.battleTuning ?? DEFAULT_BATTLE_TUNING
     this.knowledgeScore = options.knowledgeScore ?? 0
+    this.initialFightDistanceM = options.initialFightDistanceM
   }
 
   // ---------------------------------------------------------------- commands
@@ -550,7 +557,8 @@ export class FishingEngine {
   /**
    * ファイト開始（HOOKED 完了時）。
    *
-   * 初期距離は魚の大きさ（個体の重さ）で決まる。小さい魚は近く、大型は遠い。
+   * 初期距離は魚の大きさと Phase 11 の実着水距離から決まる。
+   * 着水距離は圧縮して反映し、小魚の遠投が単調な長期戦にならないようにする。
    * フック保持は Phase 9.1 の保持能力（hookRetentionMultiplier）を上限にする。
    */
   private startTextBattle(): void {
@@ -563,9 +571,13 @@ export class FishingEngine {
 
     const profile = state.fish.battleProfile
     const maxTension = this.effectiveMaxTension()
-    const distanceM =
+    const sizeDistanceM =
       this.battleTuning.initialDistanceBaseM +
       this.battleTuning.initialDistancePerSizeM * profile.sizeFactor
+    const castDistanceM =
+      (this.initialFightDistanceM ?? 0) *
+      (this.battleTuning.castDistanceToFightDistanceMultiplier ?? 0.35)
+    const distanceM = Math.max(sizeDistanceM, castDistanceM)
     const hookHoldCapacity = Math.max(
       0.01,
       this.hitHookRetentionMultiplier * profile.hookHoldCapacity,

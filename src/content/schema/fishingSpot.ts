@@ -3,7 +3,7 @@ import { asAreaId, asFishingSpotId, asRegionId, asRegulationId } from '../../dom
 import { accessRequirementSchema } from './accessRequirement'
 import { currentProfileSchema, depthProfileSchema } from './profiles'
 import { fishOccurrenceSchema } from './fishOccurrence'
-import { nonEmptyString } from './primitives'
+import { nonEmptyString, rangeSchema } from './primitives'
 import { sourceRefsSchema } from './sourceRef'
 import { accessCapabilitySchema, routeFeatureSchema, transportTypeSchema } from './transport'
 import { SPOT_DATA_STATUSES } from '../../domain/world/FishingSpot'
@@ -32,6 +32,14 @@ export const spotTravelOptionSchema = z.strictObject({
 
 export const spotDataStatusSchema = z.enum(SPOT_DATA_STATUSES)
 
+export const fishingZoneSchema = z.strictObject({
+  id: nonEmptyString,
+  name: nonEmptyString,
+  castDistanceM: rangeSchema.optional(),
+  depthRangeM: rangeSchema.optional(),
+  habitatTags: z.array(nonEmptyString),
+})
+
 export const fishingSpotSchema = z.strictObject({
   id: nonEmptyString.transform(asFishingSpotId),
   name: nonEmptyString,
@@ -52,6 +60,9 @@ export const fishingSpotSchema = z.strictObject({
 
   depth: depthProfileSchema.optional(),
   current: currentProfileSchema.optional(),
+
+  /** Phase 11: 未設定なら runtime が fallback Zone を 1 つ作る。 */
+  fishingZones: z.array(fishingZoneSchema).min(1).optional(),
 
   fishTable: z.array(fishOccurrenceSchema),
 

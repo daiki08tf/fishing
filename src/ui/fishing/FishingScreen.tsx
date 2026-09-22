@@ -11,6 +11,7 @@ import {
 } from '../../domain/fishing'
 import { useEffect, useState } from 'react'
 import { suggestBattleCommand } from '../../domain/fishing/battle'
+import { castTargetStatus, type CastTargetStatus } from '../../domain/casting'
 import { FishingMeter } from './FishingMeter'
 import { useFishingSession } from './useFishingSession'
 import { usePlayerStore } from '../../state/playerStore'
@@ -126,6 +127,16 @@ const FIGHT_COMMANDS: readonly FishingCommand[] = [
 const LANDING_COMMANDS: readonly FishingCommand[] = ['land', 'wait']
 const PRE_FIGHT_COMMANDS: readonly FishingCommand[] = ['cast', 'hook']
 
+const CAST_STATUS_LABELS: Readonly<Record<CastTargetStatus, string>> = {
+  comfortable: '余裕',
+  reachable: '届く',
+  marginal: 'ギリギリ',
+  unreachable: '届かない',
+}
+
+const rangeLabel = (range: { readonly min: number; readonly max: number } | undefined): string =>
+  range === undefined ? '距離指定なし' : `${String(range.min)}〜${String(range.max)}m`
+
 /** 百分位を釣り人の言葉にする。 */
 const rarityLabel = (percentile: number): string => {
   const top = 100 - percentile
@@ -154,8 +165,22 @@ export type FishingScreenProps = {
 }
 
 export const FishingScreen = ({ onExit }: FishingScreenProps) => {
-  const { contentError, snapshot, spotName, environment, conditions, seed, send, restart } =
-    useFishingSession()
+  const {
+    contentError,
+    snapshot,
+    spotName,
+    environment,
+    conditions,
+    seed,
+    fishingZones,
+    targetZoneId,
+    castCapability,
+    resolvedCast,
+    canCast,
+    selectTargetZone,
+    send,
+    restart,
+  } = useFishingSession()
   const codex = usePlayerStore((state) => state.codex)
   const lastCatch = usePlayerStore((state) => state.lastCatch)
   const progression = usePlayerStore((state) => state.progression)
@@ -247,6 +272,54 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
         )}
         <p className="panel__body">{PHASE_HINTS[snapshot.phase]}</p>
       </section>
+
+      {castCapability === null ? null : (
+        <section className="panel">
+          <h3 className="panel__subheading">狙う場所</h3>
+          <p className="panel__body">
+            快適距離 {castCapability.comfortableDistanceM}m / 最大距離 {castCapability.maxDistanceM}
+            m / 精度 {Math.round(castCapability.precision * 100)}%
+          </p>
+          <p className="fishing__legend">
+            遠くへ投げるほど有利ではない。狙う水域によって出会いやすい魚が変わる。
+          </p>
+          <div className="controls">
+            {fishingZones.map((zone) => {
+              const status = castTargetStatus(zone, castCapability)
+              const selected = zone.id === targetZoneId
+
+              return (
+                <button
+                  className={`control${selected ? ' control--accent' : ''}`}
+                  key={zone.id}
+                  type="button"
+                  disabled={snapshot.phase !== 'IDLE' || status === 'unreachable'}
+                  onClick={() => {
+                    selectTargetZone(zone.id)
+                  }}
+                >
+                  {zone.name} / {rangeLabel(zone.castDistanceM)} / {CAST_STATUS_LABELS[status]}
+                </button>
+              )
+            })}
+          </div>
+
+          {snapshot.phase === 'IDLE' || resolvedCast === null || !resolvedCast.reachable ? null : (
+            <p className="notice">
+              {resolvedCast.actualDistanceM}m先へ着水 /{' '}
+              {fishingZones.find((zone) => zone.id === resolvedCast.landedZoneId)?.name ??
+                resolvedCast.landedZoneId}
+              {resolvedCast.quality === 'clean'
+                ? ''
+                : resolvedCast.quality === 'short'
+                  ? '（狙いより手前）'
+                  : '（狙いより奥）'}
+            </p>
+          )}
+
+          {canCast ? null : <p className="notice">今のタックルでは選択中の水域まで届かない。</p>}
+        </section>
+      )}
 
       <section className="panel">
         {fish === null ? (
@@ -389,7 +462,7 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
                 className={`control${command === 'land' ? ' control--accent' : ''}`}
                 key={command}
                 type="button"
-                disabled={!allowed.includes(command)}
+                disabled={!allowed.includes(command) || (command === 'cast' && !canCast)}
                 onClick={() => {
                   send(command)
                 }}

@@ -16,5 +16,8 @@ export const fishOccurrenceSchema = z.strictObject({
 
   preferredHabitats: z.array(nonEmptyString).optional(),
 
+  /** Phase 11: Zone ID -> presence multiplier。未指定 Zone は 1.0。 */
+  zoneAffinity: z.record(z.string().min(1), z.number().nonnegative()).optional(),
+
   sizeModifier: z.number().positive().optional(),
 })
