@@ -1,0 +1,46 @@
+{
+  "id": "pacific-cod",
+  "japaneseName": "マダラ（太平洋系・暫定）",
+  "scientificName": "Gadus macrocephalus",
+  "waterTypes": [
+    "salt"
+  ],
+  "distribution": [
+    "british-columbia",
+    "alaska"
+  ],
+  "habitats": [
+    "deep",
+    "bottom"
+  ],
+  "depthRange": {
+    "min": 0,
+    "max": 60
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 65,
+    "dispersion": 0.18,
+    "minCm": 25,
+    "maxCm": 120
+  },
+  "weightModel": {
+    "lengthWeightA": 0.009,
+    "lengthWeightB": 3.08
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "fightProfile": {
+    "strength": 0.64,
+    "stamina": 0.78,
+    "speed": 0.42
+  },
+  "rarity": 1.7,
+  "sourceRefs": [
+    {
+      "id": "phase12-provisional",
+      "title": "PROVISIONAL — Phase 12 gameplay tuning; biological values require later verification"
+    }
+  ]
+}
