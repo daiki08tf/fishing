@@ -69,5 +69,55 @@
         "minKnowledge": 60
       }
     ]
-  }
+  },
+  "fishingZones": [
+    {
+      "id": "wall",
+      "name": "護岸際",
+      "castDistanceM": {
+        "min": 0,
+        "max": 5
+      },
+      "depthRangeM": {
+        "min": 1,
+        "max": 3
+      },
+      "habitatTags": [
+        "wall",
+        "structure"
+      ]
+    },
+    {
+      "id": "canal-center",
+      "name": "運河中央",
+      "castDistanceM": {
+        "min": 5,
+        "max": 15
+      },
+      "depthRangeM": {
+        "min": 2,
+        "max": 5
+      },
+      "habitatTags": [
+        "canal",
+        "open"
+      ]
+    },
+    {
+      "id": "far-wall",
+      "name": "対岸際",
+      "castDistanceM": {
+        "min": 15,
+        "max": 30
+      },
+      "depthRangeM": {
+        "min": 1,
+        "max": 4
+      },
+      "habitatTags": [
+        "wall",
+        "far-bank"
+      ]
+    }
+  ]
 }
