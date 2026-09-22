@@ -8,6 +8,9 @@ import { SpotScreen } from './spot/SpotScreen'
 import { ShopScreen } from './shop/ShopScreen'
 import { TackleScreen } from './tackle/TackleScreen'
 import { ExpeditionScreen } from './expedition/ExpeditionScreen'
+import { FishBoxScreen } from './trade/FishBoxScreen'
+import { TradeScreen } from './trade/TradeScreen'
+import { ContactsScreen } from './contacts/ContactsScreen'
 import './styles/world.css'
 
 /**
@@ -88,6 +91,9 @@ export const AppShell = () => {
         {activeScreen === 'shop' ? <ShopScreen /> : null}
         {activeScreen === 'tackle' ? <TackleScreen /> : null}
         {activeScreen === 'expedition' ? <ExpeditionScreen /> : null}
+        {activeScreen === 'fishbox' ? <FishBoxScreen /> : null}
+        {activeScreen === 'trade' ? <TradeScreen /> : null}
+        {activeScreen === 'contacts' ? <ContactsScreen /> : null}
       </main>
     </div>
   )

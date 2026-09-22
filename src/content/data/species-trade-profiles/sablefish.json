@@ -1,0 +1,8 @@
+{
+  "speciesId": "sablefish",
+  "tradeStatus": "tradable",
+  "baseYenPerKg": 1120,
+  "minimumUnitValueYen": 170,
+  "qualitySensitivity": 1.0,
+  "sizeSensitivity": 1.0
+}

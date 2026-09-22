@@ -1,0 +1,8 @@
+{
+  "speciesId": "longtail-tuna",
+  "tradeStatus": "tradable",
+  "baseYenPerKg": 1400,
+  "minimumUnitValueYen": 210,
+  "qualitySensitivity": 1.0,
+  "sizeSensitivity": 1.0
+}

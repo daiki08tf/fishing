@@ -1,0 +1,8 @@
+{
+  "speciesId": "threadfin-salmon",
+  "tradeStatus": "tradable",
+  "baseYenPerKg": 990,
+  "minimumUnitValueYen": 150,
+  "qualitySensitivity": 1.0,
+  "sizeSensitivity": 1.0
+}

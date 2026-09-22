@@ -1,0 +1,8 @@
+{
+  "speciesId": "smallmouth-bass",
+  "tradeStatus": "tradable",
+  "baseYenPerKg": 850,
+  "minimumUnitValueYen": 130,
+  "qualitySensitivity": 1.0,
+  "sizeSensitivity": 1.0
+}

@@ -25,7 +25,7 @@ import {
   type CastCapability,
   type ResolvedCast,
 } from '../../domain/casting'
-import type { FishingZone } from '../../domain/world/FishingSpot'
+import type { FishingSpot, FishingZone } from '../../domain/world/FishingSpot'
 import { SeededRandomSource } from '../../domain/rng/SeededRandomSource'
 import { resolveBiteCompatibility } from '../../domain/tackle/biteCompatibility'
 import type { FishSpecies } from '../../domain/fish/FishSpecies'
@@ -56,6 +56,7 @@ const SESSION_END_EVENTS: readonly FishingEvent[] = [
 export type FishingSession = {
   readonly contentError: string | null
   readonly snapshot: FishingSnapshot | null
+  readonly spot: FishingSpot | undefined
   readonly spotName: string | null
   /** Phase 9: 今の環境と釣況（UI 表示用）。 */
   readonly environment: EnvironmentSnapshot | null
@@ -481,6 +482,7 @@ export const useFishingSession = (): FishingSession => {
   return {
     contentError: content.ok ? null : content.message,
     snapshot,
+    spot,
     spotName: spot?.name ?? null,
     environment,
     conditions,

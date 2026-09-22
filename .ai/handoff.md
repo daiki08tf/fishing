@@ -1,9 +1,57 @@
 # Handoff
 
-最終更新: Phase 12（Regional World Expansion / Alpha Content）完了
+最終更新: Phase 13（Fish Trade, Contacts & Hidden Spots）完了（PR作成済み、未マージ）
 
-> 現在状態は Phase 12 → 11 → 10.2 → 10.1 → 10 の順で優先する。
+> 現在状態は Phase 13 → 12 → 11 → 10.2 → 10.1 → 10 の順で優先する。
 > 詳細は `.ai/current-task.md` と `docs/DECISIONS.md` も参照。
+
+## Phase 13（Fish Trade, Contacts & Hidden Spots）
+
+- branch: `phase-13-fish-trade-contacts-hidden-spots`（base: main、Phase 12 は main に merge 済み）
+- PR: "Phase 13: fish trade, contacts and hidden spots"（作成済み、MERGEはしていない）
+- Core Loop: Catch → Keep/Release → Fish Box → 売却先を選ぶ → Cash + Trust →
+  Rumor/Intel/Contact → Hidden Spot Discovery → 既存 Access 判定 → 新しい釣り
+- `src/domain/trade/`（新規）: FishBox / Freshness / Buyer / SpeciesTradeProfile /
+  ContactReward / TradeState / rewardClaim / tradeValue / sellCatches
+- Content 追加: `buyers`（3）/ `species-trade-profiles`（82、全 Species 分）/
+  `contact-rewards`（12）。`fishing-spots` に Hidden Spot 8 件（`visibility: hidden`）を追加
+- FishingSpot に optional `visibility`（`public` | `hidden`）を追加。省略時 `public`
+  なので既存 45 Spot の挙動は変わらない
+- Hidden Spot の discovered 判定は新state を増やさず、既存 `world.discoveredSpotIds`
+  を再利用（`discoverSpotFromContact` を worldSession.ts に追加）
+- Buyer は Contact の一種として `ContactId` を共有。Trust 0〜100、取引単位で
+  上限つき。ContactReward（intel / discover_spot / introduce_contact）は
+  `minTrust` 到達で 1 度だけ claim（`claimedRewardIds` で判定）
+- 価格計算は deterministic（RNG不使用）。Buyer の差は個々の魚の
+  condition/percentile/freshness への感度だけで表現し、魚種×Buyerの対応表は作らない
+- Save schema **v9**（`trade: TradeState`）。v1〜v8 いずれの旧 Save からも
+  migration chain が v9 まで届くよう更新した
+- Finance の `TRANSACTION_KINDS` に `trade` を追加。売却は既存 `earnCash` を使う
+  （Finance state を二重化しない）
+- UI: FISHING に Keep/Release ボタン、新規 FISH BOX / TRADE / CONTACTS 画面、
+  MAP は Hidden Spot 未発見時は表示しない
+- `simulate:trade-network`（新規）を `npm run check` に追加。22/22 checks PASS +
+  balance（120 trips 固定 seed）: 平均 ¥1,696 / 中央値 ¥306 / 最小 ¥80 / 最大 ¥27,069
+- 全 Species の trade profile 完全性チェックは `validateContentReferences` ではなく
+  `simulate:trade-network` 側に置いた（fixture 検証用魚種と実 Content の
+  species-trade-profiles が必ず食い違うため。Phase 10.1 の fixture 分離方針を踏襲）
+- Phase 13 の新規 Buyer 単価・Trust チューニング・Hidden Spot の地形/アクセス値は
+  すべて **PROVISIONAL**。Hidden Spot は fictional / generalized（実在の秘密の
+  釣り場の座標を収集していない）
+- 最終 CI: typecheck / lint / format / validate / regional audit /
+  trade network / test / build 全 PASS
+- `validate:content`: 843 records
+- tests: 72 files / 643 tests（Phase 12比 +1 files / +19 tests）
+- bundle: JS 890.80 kB（gzip 207.31 kB）/ CSS 7.13 kB（gzip 1.86 kB）
+- Playwright（Chromium headless）で HOME → MAP（Hidden Spot 非表示確認）→
+  Fish Box → Trade → Contacts の画面遷移を確認、console error なし。
+  実釣行での Keep → 売却 → Reward → Hidden Spot 出現の通しクリック確認は
+  未実施（釣行が乱数依存で自動化しづらいため、同じ経路を
+  `simulate:trade-network` の domain 直接呼び出しで検証している）
+- 既知のギャップ: Fish Box 容量上限なし（意図的） / Buyer は地域を問わず売却可 /
+  非 Buyer Contact（introduce_contact）は architecture のみで未使用 /
+  実プレイテストによるバランス調整は未実施
+- 次候補: Phase 14 Visual Redesign、または Buyer の地域差の調整
 
 ## Phase 12（Regional World Expansion / Alpha Content）
 

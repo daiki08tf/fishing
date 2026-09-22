@@ -1,0 +1,20 @@
+{
+  "id": "fish-wholesaler",
+  "name": "Fish Wholesaler",
+  "buyerType": "wholesaler",
+  "regionId": "tokyo-area",
+  "description": "港近くの卸業者。1匹あたりの単価は控えめだが、まとめて持ち込むほど有利になる。PROVISIONAL — gameplay tuning。",
+  "pricingProfile": {
+    "baseMultiplier": 0.85,
+    "qualitySensitivity": 0.5,
+    "sizeSensitivity": 0.3,
+    "freshnessSensitivity": 0.3,
+    "volumeBonusPerExtraCatch": 0.03,
+    "maxVolumeBonus": 0.3
+  },
+  "trustProfile": {
+    "perTransactionBase": 3,
+    "qualityWeight": 2,
+    "maxPerTransaction": 5
+  }
+}

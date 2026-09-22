@@ -8,7 +8,7 @@ import { addGear, ownsGear } from '../../src/domain/tackle'
 import { InMemorySaveRepository } from '../../src/infrastructure/persistence/inMemorySaveRepository'
 import { migrateSave } from '../../src/infrastructure/persistence/migrateSave'
 import { createPlayerStore } from '../../src/state/playerStore'
-import { createValidSaveV4, createValidSaveV8 } from '../fixtures/save'
+import { createValidSaveV4, createValidSaveV9 } from '../fixtures/save'
 
 /**
  * Tackle（Phase 6）の永続化。
@@ -49,7 +49,7 @@ const reload = async (save: CurrentSave): Promise<CurrentSave> => {
 
 describe('tackle persistence', () => {
   it('round trips the inventory', async () => {
-    const save = createValidSaveV8()
+    const save = createValidSaveV9()
     const withGear = {
       ...save,
       inventory: addGear(save.inventory, asGearId('rod-finesse')),
@@ -62,7 +62,7 @@ describe('tackle persistence', () => {
   })
 
   it('round trips the loadout', async () => {
-    const save = createValidSaveV8()
+    const save = createValidSaveV9()
     const withLoadout: CurrentSave = {
       ...save,
       loadout: {
@@ -81,7 +81,7 @@ describe('tackle persistence', () => {
 
   it('rejects a malformed inventory instead of loading it', () => {
     const broken = {
-      ...createValidSaveV8(),
+      ...createValidSaveV9(),
       inventory: { ownedGearIds: 'not-an-array' },
     }
 
@@ -94,14 +94,14 @@ describe('tackle persistence', () => {
   })
 
   it('rejects a malformed loadout instead of loading it', () => {
-    const save = createValidSaveV8()
+    const save = createValidSaveV9()
     const broken = { ...save, loadout: { ...save.loadout, rodId: 42 } }
 
     expect(migrateSave(broken).ok).toBe(false)
   })
 
-  it('rejects an unknown schemaVersion after v8', () => {
-    const result = migrateSave({ ...createValidSaveV8(), schemaVersion: 9 })
+  it('rejects an unknown schemaVersion after v9', () => {
+    const result = migrateSave({ ...createValidSaveV9(), schemaVersion: 10 })
 
     expect(result.ok).toBe(false)
     if (!result.ok) {
@@ -169,7 +169,7 @@ describe('tackle migration from v4', () => {
 describe('tackle store wiring', () => {
   it('hydrates inventory and loadout from a save', async () => {
     const repository = new InMemorySaveRepository()
-    const save = createValidSaveV8()
+    const save = createValidSaveV9()
     await repository.save({
       ...save,
       inventory: addGear(save.inventory, asGearId('lure-minnow-light')),
@@ -253,7 +253,7 @@ describe('tackle store wiring', () => {
 
   it('refuses a gear the player cannot afford and leaves the save alone', async () => {
     const repository = new InMemorySaveRepository()
-    const save = createValidSaveV8()
+    const save = createValidSaveV9()
     await repository.save({ ...save, finance: { ...save.finance, cash: 0 } })
 
     const store = createPlayerStore()

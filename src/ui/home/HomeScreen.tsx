@@ -39,6 +39,7 @@ export const HomeScreen = () => {
   const expedition = usePlayerStore((state) => state.expedition)
   const loadout = usePlayerStore((state) => state.loadout)
   const inventory = usePlayerStore((state) => state.inventory)
+  const trade = usePlayerStore((state) => state.trade)
 
   if (!content.ok) {
     return <ContentErrorPanel message={content.message} />
@@ -191,6 +192,24 @@ export const HomeScreen = () => {
           }}
         >
           成長を見る
+        </button>
+        <button
+          className="button"
+          type="button"
+          onClick={() => {
+            setActiveScreen('fishbox')
+          }}
+        >
+          Fish Box（{trade.fishBox.length}）
+        </button>
+        <button
+          className="button"
+          type="button"
+          onClick={() => {
+            setActiveScreen('contacts')
+          }}
+        >
+          人脈（CONTACTS）
         </button>
         <button
           className="button"

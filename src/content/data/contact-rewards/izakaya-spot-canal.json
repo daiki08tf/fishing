@@ -1,0 +1,8 @@
+{
+  "id": "izakaya-spot-canal",
+  "contactId": "local-izakaya",
+  "minTrust": 25,
+  "kind": "discover_spot",
+  "message": "大将が場所を詳しく教えてくれた。地図に載っていない護岸に行けるようになった。",
+  "targetId": "tokyo-hidden-canal-wall"
+}

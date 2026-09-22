@@ -47,6 +47,21 @@ const expeditionModules = import.meta.glob<unknown>('../data/expeditions/*.json'
   import: 'default',
 })
 
+const buyerModules = import.meta.glob<unknown>('../data/buyers/*.json', {
+  eager: true,
+  import: 'default',
+})
+
+const speciesTradeProfileModules = import.meta.glob<unknown>(
+  '../data/species-trade-profiles/*.json',
+  { eager: true, import: 'default' },
+)
+
+const contactRewardModules = import.meta.glob<unknown>('../data/contact-rewards/*.json', {
+  eager: true,
+  import: 'default',
+})
+
 const gearModules = import.meta.glob<unknown>('../data/gear/*.json', {
   eager: true,
   import: 'default',
@@ -82,6 +97,9 @@ export const loadBuiltInContent = (): BuiltInContent =>
     countries: toSources(countryModules),
     regions: toSources(regionModules),
     expeditions: toSources(expeditionModules),
+    buyers: toSources(buyerModules),
+    speciesTradeProfiles: toSources(speciesTradeProfileModules),
+    contactRewards: toSources(contactRewardModules),
     gear: toSources(gearModules),
     methods: toSources(methodModules),
     brands: toSources(brandModules),

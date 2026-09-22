@@ -1,0 +1,20 @@
+{
+  "id": "market-broker",
+  "name": "Market Broker",
+  "buyerType": "market",
+  "regionId": "tokyo-area",
+  "description": "仲買人。大型・高いコンディションの魚を高く評価するが、並サイズには厳しい。PROVISIONAL — gameplay tuning。",
+  "pricingProfile": {
+    "baseMultiplier": 1.15,
+    "qualitySensitivity": 1.0,
+    "sizeSensitivity": 1.6,
+    "freshnessSensitivity": 0.5,
+    "volumeBonusPerExtraCatch": 0.0,
+    "maxVolumeBonus": 0.0
+  },
+  "trustProfile": {
+    "perTransactionBase": 1,
+    "qualityWeight": 8,
+    "maxPerTransaction": 7
+  }
+}

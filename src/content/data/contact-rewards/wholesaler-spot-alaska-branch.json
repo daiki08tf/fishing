@@ -1,0 +1,8 @@
+{
+  "id": "wholesaler-spot-alaska-branch",
+  "contactId": "fish-wholesaler",
+  "minTrust": 80,
+  "kind": "discover_spot",
+  "message": "取引先のガイドから、アラスカの支流の場所を紹介してもらえた。",
+  "targetId": "alaska-hidden-river-branch"
+}

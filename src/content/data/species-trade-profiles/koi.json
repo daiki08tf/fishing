@@ -1,0 +1,8 @@
+{
+  "speciesId": "koi",
+  "tradeStatus": "tradable",
+  "baseYenPerKg": 2500,
+  "minimumUnitValueYen": 380,
+  "qualitySensitivity": 1.0,
+  "sizeSensitivity": 1.0
+}

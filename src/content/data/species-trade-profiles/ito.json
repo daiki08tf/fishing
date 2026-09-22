@@ -1,0 +1,8 @@
+{
+  "speciesId": "ito",
+  "tradeStatus": "tradable",
+  "baseYenPerKg": 1810,
+  "minimumUnitValueYen": 270,
+  "qualitySensitivity": 1.0,
+  "sizeSensitivity": 1.0
+}

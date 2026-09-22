@@ -13,6 +13,9 @@ import type { FishingSpot } from '../src/domain/world/FishingSpot'
 import type { TransportDefinition } from '../src/domain/access/Transport'
 import type { ExpeditionDefinition } from '../src/domain/expedition/Expedition'
 import type { Country, RegionDefinition } from '../src/domain/world/Region'
+import type { BuyerDefinition } from '../src/domain/trade/Buyer'
+import type { SpeciesTradeProfile } from '../src/domain/trade/SpeciesTradeProfile'
+import type { ContactReward } from '../src/domain/trade/ContactReward'
 
 /**
  * Content 検証 CLI。
@@ -99,6 +102,9 @@ export const runValidateContent = (argv: readonly string[], cwd: string): Valida
     countries: of<Country>('countries'),
     regions: of<RegionDefinition>('regions'),
     expeditions: of<ExpeditionDefinition>('expeditions'),
+    buyers: of<BuyerDefinition>('buyers'),
+    speciesTradeProfiles: of<SpeciesTradeProfile>('species-trade-profiles'),
+    contactRewards: of<ContactReward>('contact-rewards'),
   })
 
   if (referenceIssues.length > 0) {

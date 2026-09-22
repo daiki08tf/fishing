@@ -1,0 +1,45 @@
+{
+  "id": "tokyo-hidden-mountain-pocket",
+  "name": "林道終点の小さな淵（要情報）",
+  "regionId": "tokyo-area",
+  "areaId": "saitama",
+  "environment": "river",
+  "dataStatus": "provisional",
+  "visibility": "hidden",
+  "access": [{ "kind": "capability", "capability": "rough_road" }],
+  "travelOptions": [
+    {
+      "id": "forest-road",
+      "transportTypes": ["suv", "rental_car"],
+      "requiredCapabilities": ["rough_road"],
+      "features": [],
+      "baseMinutes": 95,
+      "distanceKm": 58,
+      "baseOneWayCost": 0
+    }
+  ],
+  "habitatTags": ["stream", "pool"],
+  "depth": { "depthRangeM": { "min": 0.3, "max": 2.5 } },
+  "fishTable": [
+    { "speciesId": "rainbow-trout", "basePresence": 0.4 },
+    { "speciesId": "funa", "basePresence": 0.2 }
+  ],
+  "knowledgeConfig": {
+    "reveals": [{ "field": "main_species", "minKnowledge": 20 }]
+  },
+  "fishingZones": [
+    {
+      "id": "pool",
+      "name": "淵",
+      "castDistanceM": { "min": 0, "max": 12 },
+      "depthRangeM": { "min": 0.5, "max": 2.5 },
+      "habitatTags": ["pool", "shade"]
+    }
+  ],
+  "sourceRefs": [
+    {
+      "id": "phase13-hidden-fictional",
+      "title": "PROVISIONAL / fictional — Hidden Spot はゲーム用の架空地点であり、実在の座標や立入可否を示すものではない"
+    }
+  ]
+}

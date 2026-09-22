@@ -2,6 +2,7 @@ import { z } from 'zod'
 import { TRANSACTION_KINDS } from '../../domain/economy/FinanceState'
 import { FISH_TRAITS } from '../../domain/fish/FishTrait'
 import {
+  asContactRewardId,
   asCountryId,
   asExpeditionId,
   asFishIndividualId,
@@ -25,6 +26,7 @@ import {
   SAVE_SCHEMA_VERSION_V6,
   SAVE_SCHEMA_VERSION_V7,
   SAVE_SCHEMA_VERSION_V8,
+  SAVE_SCHEMA_VERSION_V9,
 } from '../../domain/save/SaveGame'
 import { WORLD_PHASES } from '../../domain/world/worldSession'
 
@@ -388,10 +390,38 @@ export const saveGameV7Schema = z.strictObject({
   loadout: loadoutSchema,
 })
 
-/** Phase 12 の現行 Save。構造は v7 と同じで、species ID の canonical 化を migration で保証する。 */
+/** Phase 12 の Save。構造は v7 と同じで、species ID の canonical 化を migration で保証する。 */
 export const saveGameV8Schema = saveGameV7Schema.extend({
   schemaVersion: z.literal(SAVE_SCHEMA_VERSION_V8),
 })
 
+/** Fish Box に入っている 1 匹。 */
+const keptCatchSchema = z.strictObject({
+  catchId: z.string().min(1).transform(asFishIndividualId),
+  speciesId: z.string().min(1).transform(asFishSpeciesId),
+  lengthCm: z.number().positive(),
+  weightKg: z.number().positive(),
+  condition: z.number().min(0).max(1),
+  percentile: z.number().min(0).max(100),
+  traits: z.array(z.enum(FISH_TRAITS)),
+  caughtAt: worldTimeSchema,
+  sourceSpotId: z.string().min(1).transform(asFishingSpotId),
+  sourceRegionId: z.string().min(1).transform(asRegionId),
+})
+
+/** Phase 13: Fish Box / Trade / Contact の player state。 */
+const tradeStateSchema = z.strictObject({
+  fishBox: z.array(keptCatchSchema),
+  contactTrust: z.record(z.string(), z.number().min(0).max(100)),
+  claimedRewardIds: z.array(z.string().min(1).transform(asContactRewardId)),
+  knownRumorIds: z.array(z.string().min(1).transform(asContactRewardId)),
+})
+
+/** Phase 13 の現行 Save。Fish Box / Trade / Contact を独立ブロックとして追加する。 */
+export const saveGameV9Schema = saveGameV8Schema.extend({
+  schemaVersion: z.literal(SAVE_SCHEMA_VERSION_V9),
+  trade: tradeStateSchema,
+})
+
 /** 現行 version の Save スキーマ。Migration 後の検証に使う。 */
-export const currentSaveSchema = saveGameV8Schema
+export const currentSaveSchema = saveGameV9Schema

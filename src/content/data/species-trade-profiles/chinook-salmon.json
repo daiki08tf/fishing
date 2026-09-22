@@ -1,0 +1,8 @@
+{
+  "speciesId": "chinook-salmon",
+  "tradeStatus": "tradable",
+  "baseYenPerKg": 2160,
+  "minimumUnitValueYen": 320,
+  "qualitySensitivity": 1.0,
+  "sizeSensitivity": 1.0
+}

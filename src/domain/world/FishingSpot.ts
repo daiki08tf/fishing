@@ -83,6 +83,17 @@ export type SpotTravelRoute = {
 export const SPOT_DATA_STATUSES = ['provisional', 'verified'] as const
 export type SpotDataStatus = (typeof SPOT_DATA_STATUSES)[number]
 
+/**
+ * Phase 13 — Spot Discovery。
+ *
+ * `hidden` は「物理的には行けるが、存在を知らないので Map に出ない」Spot。
+ * Access（実際に行けるか）とは完全に分離する。既存の `world.discoveredSpotIds` を
+ * discovered かどうかの authority として使う（新しい state を増やさない）。
+ * 省略時は `public` として扱う（既存 Spot は挙動が変わらない）。
+ */
+export const SPOT_VISIBILITIES = ['public', 'hidden'] as const
+export type SpotVisibility = (typeof SPOT_VISIBILITIES)[number]
+
 export type FishingSpot = {
   readonly id: FishingSpotId
   readonly name: string
@@ -99,6 +110,9 @@ export type FishingSpot = {
 
   /** データの信頼度。UI は provisional を「暫定」と表示する。 */
   readonly dataStatus: SpotDataStatus
+
+  /** Phase 13: 省略時は 'public'。 */
+  readonly visibility?: SpotVisibility
 
   readonly habitatTags: readonly string[]
 

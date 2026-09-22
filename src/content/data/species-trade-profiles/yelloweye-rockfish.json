@@ -1,0 +1,8 @@
+{
+  "speciesId": "yelloweye-rockfish",
+  "tradeStatus": "tradable",
+  "baseYenPerKg": 1190,
+  "minimumUnitValueYen": 180,
+  "qualitySensitivity": 1.0,
+  "sizeSensitivity": 1.0
+}

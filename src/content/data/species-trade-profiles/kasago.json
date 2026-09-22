@@ -1,0 +1,8 @@
+{
+  "speciesId": "kasago",
+  "tradeStatus": "tradable",
+  "baseYenPerKg": 580,
+  "minimumUnitValueYen": 90,
+  "qualitySensitivity": 1.0,
+  "sizeSensitivity": 1.0
+}

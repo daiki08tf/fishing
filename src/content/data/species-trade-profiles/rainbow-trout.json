@@ -1,0 +1,8 @@
+{
+  "speciesId": "rainbow-trout",
+  "tradeStatus": "tradable",
+  "baseYenPerKg": 640,
+  "minimumUnitValueYen": 100,
+  "qualitySensitivity": 1.0,
+  "sizeSensitivity": 1.0
+}

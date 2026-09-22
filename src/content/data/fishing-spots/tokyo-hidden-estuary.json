@@ -1,0 +1,53 @@
+{
+  "id": "tokyo-hidden-estuary",
+  "name": "奥まった汽水の入江（要情報）",
+  "regionId": "tokyo-area",
+  "areaId": "chiba",
+  "environment": "estuary",
+  "dataStatus": "provisional",
+  "visibility": "hidden",
+  "access": [{ "kind": "capability", "capability": "road_access" }],
+  "travelOptions": [
+    {
+      "id": "local-road",
+      "transportTypes": ["compact_car", "rental_car"],
+      "requiredCapabilities": ["road_access"],
+      "features": [],
+      "baseMinutes": 55,
+      "distanceKm": 32,
+      "baseOneWayCost": 0
+    }
+  ],
+  "habitatTags": ["estuary", "reed"],
+  "depth": { "depthRangeM": { "min": 0.5, "max": 5 } },
+  "fishTable": [
+    { "speciesId": "kurodai", "basePresence": 0.4 },
+    { "speciesId": "haze", "basePresence": 0.55 },
+    { "speciesId": "seabass", "basePresence": 0.3 }
+  ],
+  "knowledgeConfig": {
+    "reveals": [{ "field": "main_species", "minKnowledge": 20 }]
+  },
+  "fishingZones": [
+    {
+      "id": "reed",
+      "name": "葦際",
+      "castDistanceM": { "min": 0, "max": 18 },
+      "depthRangeM": { "min": 0.5, "max": 2 },
+      "habitatTags": ["reed", "shallow"]
+    },
+    {
+      "id": "mouth",
+      "name": "河口寄り",
+      "castDistanceM": { "min": 18, "max": 40 },
+      "depthRangeM": { "min": 1.5, "max": 5 },
+      "habitatTags": ["current", "open"]
+    }
+  ],
+  "sourceRefs": [
+    {
+      "id": "phase13-hidden-fictional",
+      "title": "PROVISIONAL / fictional — Hidden Spot はゲーム用の架空地点であり、実在の座標や立入可否を示すものではない"
+    }
+  ]
+}

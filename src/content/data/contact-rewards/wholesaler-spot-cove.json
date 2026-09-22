@@ -1,0 +1,8 @@
+{
+  "id": "wholesaler-spot-cove",
+  "contactId": "fish-wholesaler",
+  "minTrust": 15,
+  "kind": "discover_spot",
+  "message": "港の仲買人が「うちの船が使う入江がある」と場所を教えてくれた。",
+  "targetId": "tokyo-hidden-rocky-cove"
+}

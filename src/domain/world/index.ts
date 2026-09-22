@@ -27,10 +27,12 @@ export {
   arriveAtSpot,
   arriveHome,
   createInitialWorld,
+  discoverSpotFromContact,
   leaveForSpot,
   leaveSpot,
   moveToRegion,
   recordFishingAttempt,
+  rememberSpot,
   WORLD_EVENTS,
   WORLD_PHASES,
 } from './worldSession'
@@ -44,7 +46,7 @@ export type {
   WorldState,
 } from './worldSession'
 
-export { SPOT_DATA_STATUSES } from './FishingSpot'
+export { SPOT_DATA_STATUSES, SPOT_VISIBILITIES } from './FishingSpot'
 export type {
   EnvironmentType,
   FishingSpot,
@@ -53,6 +55,7 @@ export type {
   SpotKnowledgeConfig,
   SpotKnowledgeReveal,
   SpotTravelRoute,
+  SpotVisibility,
 } from './FishingSpot'
 export type { FishOccurrence } from './FishOccurrence'
 export { REGION_TYPES } from './Region'

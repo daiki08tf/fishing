@@ -8,23 +8,47 @@ import {
   createValidSaveV6,
   createValidSaveV7,
   createValidSaveV8,
+  createValidSaveV9,
 } from '../../../tests/fixtures/save'
 import { asShopItemId } from '../../domain/ids'
 import { migrateSave } from './migrateSave'
 
 describe('migrateSave', () => {
   it('loads a valid current save', () => {
-    const result = migrateSave(createValidSaveV8())
+    const result = migrateSave(createValidSaveV9())
 
     expect(result.ok).toBe(true)
 
     if (result.ok) {
-      expect(result.migratedFrom).toBe(8)
-      expect(result.save.schemaVersion).toBe(8)
+      expect(result.migratedFrom).toBe(9)
+      expect(result.save.schemaVersion).toBe(9)
       expect(result.save.progression.anglerLevel).toBe(3)
       expect(result.save.progression.unlockedPerks).toEqual([])
       expect(result.save.progression.repetition.species['test-species']).toBe(3)
+      expect(result.save.trade.fishBox).toEqual([])
     }
+  })
+
+  it('migrates a v8 save into v9 with an empty Fish Box and Trade state', () => {
+    const v8 = createValidSaveV8()
+    const result = migrateSave(v8)
+
+    expect(result.ok).toBe(true)
+    if (!result.ok) {
+      return
+    }
+
+    expect(result.migratedFrom).toBe(8)
+    expect(result.save.schemaVersion).toBe(9)
+    expect(result.save.trade).toEqual({
+      fishBox: [],
+      contactTrust: {},
+      claimedRewardIds: [],
+      knownRumorIds: [],
+    })
+    // 既存ブロックは失われない。
+    expect(result.save.codex).toEqual(v8.codex)
+    expect(result.save.world).toEqual(v8.world)
   })
 
   it('migrates a v6 save into v7 with the home region and an empty expedition', () => {
@@ -37,7 +61,7 @@ describe('migrateSave', () => {
     }
 
     expect(result.migratedFrom).toBe(6)
-    expect(result.save.schemaVersion).toBe(8)
+    expect(result.save.schemaVersion).toBe(9)
     expect(result.save.world.currentRegionId).toBe('tokyo-area')
     expect(result.save.expedition.current).toBeNull()
     expect(result.save.expedition.visitedRegionIds).toEqual(['tokyo-area'])
@@ -63,7 +87,7 @@ describe('migrateSave', () => {
     }
 
     expect(result.migratedFrom).toBe(4)
-    expect(result.save.schemaVersion).toBe(8)
+    expect(result.save.schemaVersion).toBe(9)
 
     // 成長・記録・世界・知識・資金・購入は失わない。
     expect(result.save.progression).toEqual(v4.progression)
@@ -97,7 +121,7 @@ describe('migrateSave', () => {
     }
 
     expect(result.migratedFrom).toBe(5)
-    expect(result.save.schemaVersion).toBe(8)
+    expect(result.save.schemaVersion).toBe(9)
     expect(result.save.transport.ownedTransportIds).toContain('used-compact-car')
     expect(result.save.transport.availableTransportIds).toContain('used-compact-car')
     expect(result.save.progression).toEqual(v5.progression)
@@ -120,7 +144,7 @@ describe('migrateSave', () => {
     }
 
     expect(result.migratedFrom).toBe(1)
-    expect(result.save.schemaVersion).toBe(8)
+    expect(result.save.schemaVersion).toBe(9)
 
     // 既存の成長は保持する。
     expect(result.save.progression.anglerLevel).toBe(v1.progression.anglerLevel)
@@ -163,7 +187,7 @@ describe('migrateSave', () => {
     }
 
     expect(result.migratedFrom).toBe(2)
-    expect(result.save.schemaVersion).toBe(8)
+    expect(result.save.schemaVersion).toBe(9)
 
     // 成長と記録は失わない。
     expect(result.save.progression).toEqual(v2.progression)
@@ -232,7 +256,7 @@ describe('migrateSave', () => {
     }
 
     expect(result.migratedFrom).toBe(7)
-    expect(result.save.schemaVersion).toBe(8)
+    expect(result.save.schemaVersion).toBe(9)
     expect(result.save.codex.species['kanto-nijimasu']).toBeUndefined()
     expect(result.save.codex.species['alaska-rainbow-trout']).toBeUndefined()
     expect(result.save.codex.species['rainbow-trout']?.catchCount).toBe(5)

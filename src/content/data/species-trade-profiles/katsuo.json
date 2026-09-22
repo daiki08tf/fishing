@@ -1,0 +1,8 @@
+{
+  "speciesId": "katsuo",
+  "tradeStatus": "tradable",
+  "baseYenPerKg": 1060,
+  "minimumUnitValueYen": 160,
+  "qualitySensitivity": 1.0,
+  "sizeSensitivity": 1.0
+}

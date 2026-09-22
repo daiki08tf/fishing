@@ -1,0 +1,8 @@
+{
+  "id": "izakaya-spot-estuary",
+  "contactId": "local-izakaya",
+  "minTrust": 65,
+  "kind": "discover_spot",
+  "message": "信頼して正確な場所を教えてもらえた。奥まった汽水の入江へ行けるようになった。",
+  "targetId": "tokyo-hidden-estuary"
+}

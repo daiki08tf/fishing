@@ -95,10 +95,22 @@ export const createInitialWorld = (tuning: WorldTuning = DEFAULT_WORLD_TUNING): 
   discoveredSpotIds: [],
 })
 
-const rememberSpot = (
+export const rememberSpot = (
   discovered: readonly FishingSpotId[],
   spotId: FishingSpotId,
 ): readonly FishingSpotId[] => (discovered.includes(spotId) ? discovered : [...discovered, spotId])
+
+/**
+ * Phase 13: Contact から場所を教えてもらった Hidden Spot を Map に出す。
+ *
+ * `discoveredSpotIds` を Discovery の authority としてそのまま使う。
+ * 実際に訪れたわけではないので、初訪問 Knowledge ボーナス（`arriveAtSpot`）は与えない。
+ * Access（実際に行けるか）はここでは判定しない。既存の AccessEngine が別途判定する。
+ */
+export const discoverSpotFromContact = (world: WorldState, spotId: FishingSpotId): WorldState => ({
+  ...world,
+  discoveredSpotIds: rememberSpot(world.discoveredSpotIds, spotId),
+})
 
 /**
  * 自宅を出て Spot へ向かう。所要時間をゲーム内時間へ加算する。

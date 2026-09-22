@@ -1,0 +1,45 @@
+{
+  "id": "hokkaido-hidden-rocky-coast",
+  "name": "静かな岩礁帯（要情報）",
+  "regionId": "hokkaido",
+  "areaId": "hokkaido-east",
+  "environment": "bay_shore",
+  "dataStatus": "provisional",
+  "visibility": "hidden",
+  "access": [{ "kind": "capability", "capability": "road_access" }],
+  "travelOptions": [
+    {
+      "id": "coast-road",
+      "transportTypes": ["rental_car", "suv"],
+      "requiredCapabilities": ["road_access"],
+      "features": ["vehicle_rental"],
+      "baseMinutes": 80,
+      "distanceKm": 55,
+      "baseOneWayCost": 0
+    }
+  ],
+  "habitatTags": ["reef", "rocky"],
+  "depth": { "depthRangeM": { "min": 1, "max": 9 } },
+  "fishTable": [
+    { "speciesId": "ainame", "basePresence": 0.4 },
+    { "speciesId": "hokke", "basePresence": 0.35 }
+  ],
+  "knowledgeConfig": {
+    "reveals": [{ "field": "main_species", "minKnowledge": 20 }]
+  },
+  "fishingZones": [
+    {
+      "id": "reef",
+      "name": "根周り",
+      "castDistanceM": { "min": 0, "max": 25 },
+      "depthRangeM": { "min": 1, "max": 6 },
+      "habitatTags": ["reef", "structure"]
+    }
+  ],
+  "sourceRefs": [
+    {
+      "id": "phase13-hidden-fictional",
+      "title": "PROVISIONAL / fictional — Hidden Spot はゲーム用の架空地点であり、実在の座標や立入可否を示すものではない"
+    }
+  ]
+}

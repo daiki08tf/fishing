@@ -1,0 +1,45 @@
+{
+  "id": "bc-hidden-secluded-estuary",
+  "name": "地元漁師だけが知る入江（要情報）",
+  "regionId": "british-columbia",
+  "areaId": "bc-coast",
+  "environment": "estuary",
+  "dataStatus": "provisional",
+  "visibility": "hidden",
+  "access": [{ "kind": "capability", "capability": "kayak_launch" }],
+  "travelOptions": [
+    {
+      "id": "kayak-route",
+      "transportTypes": ["kayak"],
+      "requiredCapabilities": ["kayak_launch"],
+      "features": [],
+      "baseMinutes": 60,
+      "distanceKm": 10,
+      "baseOneWayCost": 0
+    }
+  ],
+  "habitatTags": ["estuary", "reed"],
+  "depth": { "depthRangeM": { "min": 1, "max": 6 } },
+  "fishTable": [
+    { "speciesId": "coho-salmon", "basePresence": 0.4 },
+    { "speciesId": "coastal-cutthroat-trout", "basePresence": 0.3 }
+  ],
+  "knowledgeConfig": {
+    "reveals": [{ "field": "main_species", "minKnowledge": 20 }]
+  },
+  "fishingZones": [
+    {
+      "id": "estuary",
+      "name": "汽水",
+      "castDistanceM": { "min": 0, "max": 20 },
+      "depthRangeM": { "min": 1, "max": 5 },
+      "habitatTags": ["estuary", "current"]
+    }
+  ],
+  "sourceRefs": [
+    {
+      "id": "phase13-hidden-fictional",
+      "title": "PROVISIONAL / fictional — Hidden Spot はゲーム用の架空地点であり、実在の座標や立入可否を示すものではない"
+    }
+  ]
+}

@@ -272,3 +272,64 @@ Phase 0では、CI / lint / testで機械的に判定できる制約だけを定
 - Content 規模が増えたため `simulate:regional-content` を CI gate にする
 - 82 Species 程度では既存 eager Content loading を維持する。1000 Species 規模へ進む前に
   bundle 計測を見て Region pack / lazy loading を別 Phase で判断する
+
+## Phase 13 — Fish Trade, Contacts & Hidden Spots
+
+決定:
+
+- Core Loop は「Catch → Keep/Release → Fish Box → 売却先を選ぶ → Cash + Trust →
+  Rumor/Intel/Contact → Hidden Spot Discovery → 既存 Access 判定 → 新しい釣り」とする。
+  単なる「魚を売る→お金が増える」だけの機能にしない
+- LANDED 時点の Codex / XP 記録（`resolveCatch`）は Keep / Release の判断と独立させる。
+  Release しても既存の「釣った記録」は失わない
+- FishSpecies の性能値（rarity 等）と経済データ（取引価格）を分離する。
+  `SpeciesTradeProfile` を別 Content とし、「希少 = 市場価値が高い」を前提にしない
+- 全 runtime Species は `tradable` / `unpriced` / `non_tradable` / `unverified` の
+  いずれかを明示する。ただしこの完全性検査は `validateContentReferences`
+  （fixture 検証用魚種と混在する）ではなく `simulate:trade-network` に置く
+  （Phase 10.1 の「runtime Content と fixture の分離」方針をそのまま踏襲する）
+- 売値は deterministic に計算する（RNG を使わない）。
+  `base species trade value × weight × condition factor × size quality factor ×
+  freshness × buyer affinity`
+- 実際の市場価格を再現したとは主張しない。すべて **Phase 13 gameplay PROVISIONAL**
+  チューニング値である。魚の販売可否・価格・漁業法・遊漁規制について、
+  調査していないものを現実の法的事実として断定しない
+- Buyer（居酒屋 / 卸 / 市場の 3 type）は Contact の一種として同じ ID 空間
+  （ContactId）を使う。data-driven な BuyerDefinition（pricingProfile /
+  trustProfile）で差を表現し、具体的な店名・魚種 ID で Domain を分岐しない
+- Buyer ごとの評価の差は、個々の魚の condition / percentile / freshness への
+  感度（qualitySensitivity / sizeSensitivity / freshnessSensitivity）と
+  volume bonus だけで表現する。魚種 × Buyer の好みテーブルは作らない
+  （巨大な if 文にしない）
+- Trust は 0〜100。取引単位で上限（`maxPerTransaction`）を持たせ、
+  1 回の大物取引で即 100 に到達しない設計にする。一方で 100 到達まで
+  何も起きない設計も禁止し、複数の threshold（reward）を刻む
+- ContactReward（intel / discover_spot / introduce_contact）は `minTrust` 到達で
+  1 度だけ claim する。`claimedRewardIds` を Save に永続化し、それだけを
+  判定材料にする（Save/load をまたいでも重複付与されない）
+- 「秘密の釣り場」は実在の秘密座標や立入禁止場所を収集する機能ではない。
+  ゲーム用の fictional / generalized Spot として扱う
+- Hidden Spot の **Discovery（存在を知っているか）** と **Access（実際に
+  行けるか）** を完全に分離する。Discovery の authority は既存の
+  `world.discoveredSpotIds` をそのまま再利用し、新しい二重 state
+  （`hiddenSpotState` 等）を作らない
+- Contact から場所を教わった瞬間は `discoveredSpotIds` に追加するだけで、
+  実訪問の初回 Knowledge ボーナス（`arriveAtSpot`）は与えない（teleport 的な
+  「教わった瞬間から一切のハードルなく行ける」体験にしない。Access は
+  AccessEngine が通常どおり判定する）
+- 一部の情報は Rumor（intel、正確な場所はまだ出さない）→ Exact Spot
+  （discover_spot）の 2 段階にする。ただし巨大な Quest System は作らない
+- 既存 45 Spot を全て hidden にはしない。新規 Content として Hidden Spot を
+  追加し、公共 Spot / 最初から知っている近場 Spot / Knowledge で発見する Spot /
+  Contact から教わる Hidden Spot が混在するようにする
+- Encounter を「目的魚だけが効率よく出る」方向へ単純化しない。外道にも
+  Trade を通じて価値を持たせる（Buyer によっては売れる、Trust に使える）
+- 売却金は既存 Finance Domain（`earnCash` / `TransactionKind: 'trade'`）へ統合する。
+  Finance state を二重化しない
+- Save schema **v9**。`trade: TradeState`（fishBox / contactTrust /
+  claimedRewardIds / knownRumorIds）を追加する。v8 までの全ブロックは変更しない
+- 通常の近場釣行は「数百円〜数千円台」、かなり良い釣行で「1万円前後〜数万円」を
+  目安に開始し、`simulate:trade-network` の balance simulation
+  （複数 seed・100+ 試行）で確認する。既存の給与 ¥300,000 / 生活費 ¥180,000 /
+  自由資金 約¥120,000 の思想を破壊しない
+- Phase 14 の Visual Redesign はこの Phase の対象外。UI は構造と機能のみ作る

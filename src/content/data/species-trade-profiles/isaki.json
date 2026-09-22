@@ -1,0 +1,8 @@
+{
+  "speciesId": "isaki",
+  "tradeStatus": "tradable",
+  "baseYenPerKg": 710,
+  "minimumUnitValueYen": 110,
+  "qualitySensitivity": 1.0,
+  "sizeSensitivity": 1.0
+}

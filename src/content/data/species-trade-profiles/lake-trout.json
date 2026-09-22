@@ -1,0 +1,8 @@
+{
+  "speciesId": "lake-trout",
+  "tradeStatus": "tradable",
+  "baseYenPerKg": 1260,
+  "minimumUnitValueYen": 190,
+  "qualitySensitivity": 1.0,
+  "sizeSensitivity": 1.0
+}

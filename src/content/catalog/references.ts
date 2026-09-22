@@ -14,6 +14,9 @@ import {
 import type { KnowledgeState } from '../../domain/knowledge/KnowledgeState'
 import type { ExpeditionDefinition } from '../../domain/expedition/Expedition'
 import type { Country, RegionDefinition } from '../../domain/world/Region'
+import type { BuyerDefinition } from '../../domain/trade/Buyer'
+import type { SpeciesTradeProfile } from '../../domain/trade/SpeciesTradeProfile'
+import type { ContactReward } from '../../domain/trade/ContactReward'
 import {
   SLOT_CATEGORIES,
   STARTER_GEAR_IDS,
@@ -49,6 +52,9 @@ export type ContentReferenceInput = {
   readonly countries?: readonly Country[]
   readonly regions?: readonly RegionDefinition[]
   readonly expeditions?: readonly ExpeditionDefinition[]
+  readonly buyers?: readonly BuyerDefinition[]
+  readonly speciesTradeProfiles?: readonly SpeciesTradeProfile[]
+  readonly contactRewards?: readonly ContactReward[]
 }
 
 /** offering の相性タグとして使える語彙（lureType / baitType / gear の targetProfile）。 */
@@ -181,6 +187,9 @@ export const validateContentReferences = (
   const countries = input.countries ?? []
   const regions = input.regions ?? []
   const expeditions = input.expeditions ?? []
+  const buyers = input.buyers ?? []
+  const speciesTradeProfiles = input.speciesTradeProfiles ?? []
+  const contactRewards = input.contactRewards ?? []
   const speciesIds = new Set(input.species.map((entry) => String(entry.id)))
   const gearById = new Map(input.gear.map((entry) => [String(entry.id), entry]))
   const methodIds = new Set(input.methods.map((entry) => entry.id))
@@ -253,6 +262,18 @@ export const validateContentReferences = (
   duplicate(
     'expeditions',
     expeditions.map((entry) => String(entry.id)),
+  )
+  duplicate(
+    'buyers',
+    buyers.map((entry) => String(entry.id)),
+  )
+  duplicate(
+    'species-trade-profiles',
+    speciesTradeProfiles.map((entry) => String(entry.speciesId)),
+  )
+  duplicate(
+    'contact-rewards',
+    contactRewards.map((entry) => String(entry.id)),
   )
 
   // 0b. 世界階層（Phase 8）: Country → Region → Area → Spot。
@@ -497,6 +518,111 @@ export const validateContentReferences = (
       shopItems: input.shopItems,
     }),
   )
+
+  // 8. Phase 13: Buyer は実在する Region を指す。
+  for (const buyer of buyers) {
+    if (regions.length > 0 && !regionById.has(String(buyer.regionId))) {
+      issues.push({
+        path: `buyers/${String(buyer.id)}`,
+        message: `unknown regionId ${String(buyer.regionId)}`,
+      })
+    }
+  }
+
+  /*
+   * 9. Phase 13: SpeciesTradeProfile は実在する魚種を指す。
+   *
+   * 「全 runtime Species が明示的な trade status を持つ」という**完全性**の検査は、
+   * ここ（参照整合性）には置かない。test / simulation は fixture の検証用魚種
+   * （tests/fixtures/content）を追加で読み込むため、実 Content 側にしかない
+   * species-trade-profiles と必ず食い違う。完全性の監査は
+   * `npm run simulate:trade-network`（runtime Content だけを見る）が担当する。
+   */
+  const buyerIds = new Set(buyers.map((entry) => String(entry.id)))
+
+  for (const profile of speciesTradeProfiles) {
+    if (!speciesIds.has(String(profile.speciesId))) {
+      issues.push({
+        path: `species-trade-profiles/${String(profile.speciesId)}`,
+        message: `unknown speciesId ${String(profile.speciesId)}`,
+      })
+    }
+  }
+
+  // 10. Phase 13: ContactReward の参照先を kind ごとに検証する。
+  const spotIds = new Set(input.spots.map((entry) => String(entry.id)))
+  const hiddenSpotIds = new Set(
+    input.spots.filter((spot) => spot.visibility === 'hidden').map((entry) => String(entry.id)),
+  )
+  const discoverableSpotIds = new Set<string>()
+
+  for (const reward of contactRewards) {
+    if (buyerIds.size > 0 && !buyerIds.has(String(reward.contactId))) {
+      issues.push({
+        path: `contact-rewards/${String(reward.id)}`,
+        message: `unknown contactId ${String(reward.contactId)}`,
+      })
+    }
+
+    if (reward.kind === 'discover_spot') {
+      if (reward.targetId === undefined) {
+        issues.push({
+          path: `contact-rewards/${String(reward.id)}`,
+          message: 'discover_spot reward requires targetId',
+        })
+      } else if (!spotIds.has(String(reward.targetId))) {
+        issues.push({
+          path: `contact-rewards/${String(reward.id)}`,
+          message: `unknown targetId (spot) ${String(reward.targetId)}`,
+        })
+      } else {
+        discoverableSpotIds.add(String(reward.targetId))
+      }
+    }
+
+    if (reward.kind === 'introduce_contact') {
+      if (reward.targetId === undefined) {
+        issues.push({
+          path: `contact-rewards/${String(reward.id)}`,
+          message: 'introduce_contact reward requires targetId',
+        })
+      } else if (buyerIds.size > 0 && !buyerIds.has(String(reward.targetId))) {
+        issues.push({
+          path: `contact-rewards/${String(reward.id)}`,
+          message: `unknown targetId (contact) ${String(reward.targetId)}`,
+        })
+      } else if (String(reward.targetId) === String(reward.contactId)) {
+        issues.push({
+          path: `contact-rewards/${String(reward.id)}`,
+          message: 'introduce_contact cannot target itself',
+        })
+      }
+    }
+  }
+
+  // 11. Phase 13: Hidden Spot には必ず discover_spot 報酬（発見経路）があること。
+  // contactRewards を渡さない部分的な Content 集合（Tackle 専用テストなど）では検査しない。
+  if (contactRewards.length > 0) {
+    for (const spotId of hiddenSpotIds) {
+      if (!discoverableSpotIds.has(spotId)) {
+        issues.push({
+          path: `fishing-spots/${spotId}`,
+          message:
+            'hidden spot has no contact-rewards discover_spot entry (unreachable via discovery)',
+        })
+      }
+    }
+  }
+
+  // 12. Phase 13: Hidden Spot も Fishing Zone を明示する（Phase 12 の playable Spot と同じ規律）。
+  for (const spot of input.spots) {
+    if (spot.visibility === 'hidden' && (spot.fishingZones?.length ?? 0) === 0) {
+      issues.push({
+        path: `fishing-spots/${String(spot.id)}`,
+        message: 'hidden spot has no explicit fishingZones',
+      })
+    }
+  }
 
   return issues
 }

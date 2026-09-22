@@ -1,0 +1,8 @@
+{
+  "speciesId": "haze",
+  "tradeStatus": "tradable",
+  "baseYenPerKg": 440,
+  "minimumUnitValueYen": 80,
+  "qualitySensitivity": 1.0,
+  "sizeSensitivity": 1.0
+}

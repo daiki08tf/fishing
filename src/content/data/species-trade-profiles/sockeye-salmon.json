@@ -1,0 +1,8 @@
+{
+  "speciesId": "sockeye-salmon",
+  "tradeStatus": "tradable",
+  "baseYenPerKg": 1470,
+  "minimumUnitValueYen": 220,
+  "qualitySensitivity": 1.0,
+  "sizeSensitivity": 1.0
+}

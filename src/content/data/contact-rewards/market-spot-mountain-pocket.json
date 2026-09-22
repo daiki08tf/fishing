@@ -1,0 +1,8 @@
+{
+  "id": "market-spot-mountain-pocket",
+  "contactId": "market-broker",
+  "minTrust": 20,
+  "kind": "discover_spot",
+  "message": "仲買人が「珍しいサイズが出る淵がある」と場所を教えてくれた。",
+  "targetId": "tokyo-hidden-mountain-pocket"
+}

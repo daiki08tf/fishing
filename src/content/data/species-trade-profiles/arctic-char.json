@@ -1,0 +1,8 @@
+{
+  "speciesId": "arctic-char",
+  "tradeStatus": "tradable",
+  "baseYenPerKg": 780,
+  "minimumUnitValueYen": 120,
+  "qualitySensitivity": 1.0,
+  "sizeSensitivity": 1.0
+}

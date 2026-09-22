@@ -1,0 +1,8 @@
+{
+  "id": "wholesaler-spot-hokkaido-coast",
+  "contactId": "fish-wholesaler",
+  "minTrust": 60,
+  "kind": "discover_spot",
+  "message": "北海道の岩礁帯の正確な場所を教えてもらえた。",
+  "targetId": "hokkaido-hidden-rocky-coast"
+}

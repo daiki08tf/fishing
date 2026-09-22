@@ -14,7 +14,7 @@ import type { WorldState } from '../../src/domain/world/worldSession'
 import { InMemorySaveRepository } from '../../src/infrastructure/persistence/inMemorySaveRepository'
 import { migrateSave } from '../../src/infrastructure/persistence/migrateSave'
 import { createPlayerStore, type PlayerStore } from '../../src/state/playerStore'
-import { createValidSaveV1, createValidSaveV2, createValidSaveV8 } from '../fixtures/save'
+import { createValidSaveV1, createValidSaveV2, createValidSaveV9 } from '../fixtures/save'
 import { createTestSpot } from '../fixtures/spots'
 import { createTestTransportState, TEST_TRANSPORTS } from '../fixtures/transports'
 
@@ -61,7 +61,7 @@ const worldAfterFishing = (): WorldState => {
 
 const saveWithWorld = (
   world: WorldState,
-  save: CurrentSave = createValidSaveV8(),
+  save: CurrentSave = createValidSaveV9(),
 ): CurrentSave => ({
   ...save,
   world,
@@ -104,7 +104,7 @@ describe('world persistence', () => {
 
   it('restores the spot knowledge after a reload', async () => {
     const knowledge = addSpotKnowledge(emptyKnowledgeState(), 'test-spot', 23)
-    const restored = await reload({ ...createValidSaveV8(), knowledge })
+    const restored = await reload({ ...createValidSaveV9(), knowledge })
 
     expect(restored.knowledge.spots['test-spot']).toBe(23)
   })
@@ -145,7 +145,7 @@ describe('world persistence', () => {
     expect(result.ok).toBe(true)
 
     if (result.ok) {
-      expect(result.save.schemaVersion).toBe(8)
+      expect(result.save.schemaVersion).toBe(9)
       expect(result.save.world.phase).toBe('HOME')
       expect(result.save.codex.species).toEqual({})
     }
@@ -153,7 +153,7 @@ describe('world persistence', () => {
 
   it('rejects a malformed world instead of loading it', () => {
     const broken = {
-      ...createValidSaveV8(),
+      ...createValidSaveV9(),
       world: {
         ...createInitialWorld(),
         time: { year: 2026, month: 5, day: 2, hour: 99, minute: 0 },
@@ -170,7 +170,7 @@ describe('world persistence', () => {
 
   it('rejects an unknown world phase', () => {
     const broken = {
-      ...createValidSaveV8(),
+      ...createValidSaveV9(),
       world: { ...createInitialWorld(), phase: 'DIVING' },
     }
 

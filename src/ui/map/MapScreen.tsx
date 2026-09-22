@@ -81,7 +81,12 @@ export const MapScreen = () => {
         left.countryId.localeCompare(right.countryId) || left.name.localeCompare(right.name),
     )
   const region = content.value.regionById[regionId]
-  const regionSpots = content.value.spots.filter((spot) => String(spot.regionId) === regionId)
+  // Phase 13: Hidden Spot は discover 前（world.discoveredSpotIds に無い）は Map に出さない。
+  const regionSpots = content.value.spots.filter(
+    (spot) =>
+      String(spot.regionId) === regionId &&
+      (spot.visibility !== 'hidden' || world.discoveredSpotIds.includes(spot.id)),
+  )
   const inRegion = regionId === currentRegionId
 
   return (

@@ -1,0 +1,8 @@
+{
+  "speciesId": "sayori",
+  "tradeStatus": "tradable",
+  "baseYenPerKg": 510,
+  "minimumUnitValueYen": 80,
+  "qualitySensitivity": 1.0,
+  "sizeSensitivity": 1.0
+}
