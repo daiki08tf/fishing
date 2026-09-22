@@ -36,11 +36,21 @@
   "fishTable": [
     {
       "speciesId": "kanto-koi",
-      "basePresence": 0.6
+      "basePresence": 0.6,
+      "zoneAffinity": {
+        "bank-cover": 1.1,
+        "inner-break": 1.2,
+        "open-water": 0.7
+      }
     },
     {
       "speciesId": "kanto-namazu",
-      "basePresence": 0.3
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "bank-cover": 1.3,
+        "inner-break": 0.9,
+        "open-water": 0.4
+      }
     }
   ],
   "knowledgeConfig": {
@@ -54,5 +64,46 @@
         "minKnowledge": 60
       }
     ]
-  }
+  },
+  "fishingZones": [
+    {
+      "id": "bank-cover",
+      "name": "岸際のカバー",
+      "castDistanceM": {
+        "min": 0,
+        "max": 12
+      },
+      "depthRangeM": {
+        "min": 2,
+        "max": 6
+      },
+      "habitatTags": ["bank", "cover"]
+    },
+    {
+      "id": "inner-break",
+      "name": "かけ上がり",
+      "castDistanceM": {
+        "min": 12,
+        "max": 35
+      },
+      "depthRangeM": {
+        "min": 5,
+        "max": 14
+      },
+      "habitatTags": ["break", "deep"]
+    },
+    {
+      "id": "open-water",
+      "name": "沖のオープン",
+      "castDistanceM": {
+        "min": 35,
+        "max": 65
+      },
+      "depthRangeM": {
+        "min": 10,
+        "max": 25
+      },
+      "habitatTags": ["open", "deep"]
+    }
+  ]
 }

@@ -68,6 +68,26 @@ Fishing combat is decision-driven, not button-spam driven.
 
 プレイヤーは反射神経ではなく、状況を読んで次の一手を選ぶ。
 
+### 3.2 キャスト距離と Fishing Zone（Phase 11）
+
+遠投は「遠くへ投げるほど強い」ステータスにはしない。
+Spot の中を複数の Fishing Zone に分け、**どの水域を狙うか**を選ぶための能力として扱う。
+
+- Zone は足元 / 流芯 / かけ上がり / 沖の潮目など、水域の意味で命名する
+- 各 Zone は水平距離（m）・水深・habitat tag を持てる
+- タックルから「快適距離 / 最大距離 / 精度」を解決し、狙える Zone が変わる
+- 最大距離ぎりぎりのキャストは精度が落ち、狙いより手前の Zone へ着水することがある
+- 遠投そのものに Bite bonus は付けない。着水した Zone にいる魚の Encounter が変わる
+- 岸際の魚を狙う場合は近投が正解になり得る。遠投は上位互換ではない
+- Skill は距離と精度を少し助けるが、Level で魚種や Zone を解禁しない
+- Zone に届かない場合の hard gate は「その水域へ物理的に仕掛けが届かない」ことだけ
+- 実着水距離は Text Battle の開始距離にも弱く反映する。ただし小魚のテンポを壊さないよう圧縮する
+- 船の真下など水平距離が重要でない Zone は距離指定なしで表現できる
+
+飛距離は Rod の長さ / casting profile / 適正ルアー重量、Line の太さ、
+Reel の capacity / control、釣法、Casting Skill、風から解決する。
+具体的な Gear ID・魚種 ID・地域名で Domain Engine を分岐しない。
+
 ## 4. 世界設計
 
 ### 4.1 日本全体を巨大なゲームワールドとして扱う

@@ -36,23 +36,48 @@
   "fishTable": [
     {
       "speciesId": "alaska-coho-salmon",
-      "basePresence": 0.5
+      "basePresence": 0.5,
+      "zoneAffinity": {
+        "shoreline": 0.8,
+        "bay-channel": 1.3,
+        "outer-drop": 1
+      }
     },
     {
       "speciesId": "alaska-pink-salmon",
-      "basePresence": 0.45
+      "basePresence": 0.45,
+      "zoneAffinity": {
+        "shoreline": 0.7,
+        "bay-channel": 1.2,
+        "outer-drop": 1.1
+      }
     },
     {
       "speciesId": "alaska-chum-salmon",
-      "basePresence": 0.35
+      "basePresence": 0.35,
+      "zoneAffinity": {
+        "shoreline": 0.6,
+        "bay-channel": 1.1,
+        "outer-drop": 1.3
+      }
     },
     {
       "speciesId": "alaska-dolly-varden",
-      "basePresence": 0.3
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "shoreline": 1.3,
+        "bay-channel": 1,
+        "outer-drop": 0.5
+      }
     },
     {
       "speciesId": "alaska-pacific-halibut",
-      "basePresence": 0.15
+      "basePresence": 0.15,
+      "zoneAffinity": {
+        "shoreline": 0.1,
+        "bay-channel": 0.6,
+        "outer-drop": 1.5
+      }
     }
   ],
   "knowledgeConfig": {
@@ -66,5 +91,46 @@
         "minKnowledge": 40
       }
     ]
-  }
+  },
+  "fishingZones": [
+    {
+      "id": "shoreline",
+      "name": "Shoreline",
+      "castDistanceM": {
+        "min": 0,
+        "max": 18
+      },
+      "depthRangeM": {
+        "min": 2,
+        "max": 6
+      },
+      "habitatTags": ["bay", "shallow"]
+    },
+    {
+      "id": "bay-channel",
+      "name": "Bay Channel",
+      "castDistanceM": {
+        "min": 18,
+        "max": 45
+      },
+      "depthRangeM": {
+        "min": 5,
+        "max": 16
+      },
+      "habitatTags": ["bay", "current"]
+    },
+    {
+      "id": "outer-drop",
+      "name": "Outer Drop",
+      "castDistanceM": {
+        "min": 45,
+        "max": 85
+      },
+      "depthRangeM": {
+        "min": 12,
+        "max": 30
+      },
+      "habitatTags": ["open", "deep"]
+    }
+  ]
 }

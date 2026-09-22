@@ -11,6 +11,11 @@ export type BattleTuning = {
   /** 初期距離（m）: base + scale * sizeFactor。 */
   readonly initialDistanceBaseM: number
   readonly initialDistancePerSizeM: number
+  /**
+   * Phase 11: 実着水距離をファイト開始距離へ写す割合。
+   * 小魚が 60m 先で掛かっただけで 60m 分の単調な巻き取りにならないよう圧縮する。
+   */
+  readonly castDistanceToFightDistanceMultiplier?: number
   /** 魚の重さから sizeFactor を作る（0.3〜5.0 に丸める）。 */
   readonly sizeFactorReferenceKg: number
   readonly sizeFactorMin: number
@@ -80,6 +85,7 @@ export const DEFAULT_BATTLE_TUNING: BattleTuning = {
   initialTensionRatio: 0.35,
   initialDistanceBaseM: 6,
   initialDistancePerSizeM: 10,
+  castDistanceToFightDistanceMultiplier: 0.35,
   sizeFactorReferenceKg: 2.5,
   sizeFactorMin: 0.3,
   sizeFactorMax: 5,

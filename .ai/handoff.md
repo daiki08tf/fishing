@@ -1,9 +1,37 @@
 # Handoff
 
-最終更新: Phase 10.1（Playtest Cleanup）完了
+最終更新: Phase 11（Casting Distance & Fishing Zones）完了
 
-> 以下の Phase 6 / 6.5 節は履歴として残している。件数・Save version・次 Phase については、
-> この Phase 10.1 / 10 / 9 / 8 / 7A.1 / 7A 節と `.ai/current-task.md` を優先する。
+> 以下の古い Phase 節は履歴として残している。現在状態は
+> Phase 11 / 10.2 / 10.1 / 10 と `.ai/current-task.md` を優先する。
+
+## Phase 11（Casting Distance & Fishing Zones）
+
+- branch: `phase-11-casting-zones`
+- base: `phase-10.2-bite-pacing`（PR #9 / #10 が未 merge のため stacked）
+- PR #11 は Phase 11 の draft PR。merge 順は #9 → #10 → #11
+- `src/domain/casting` を追加。Gear の実スペックを
+  `comfortableDistanceM / maxDistanceM / precision` へ解決する
+- Spot に optional `fishingZones`、FishOccurrence に optional `zoneAffinity`
+- Zone 未設定 Spot は fallback Zone を使うため、既存 Content は壊さない
+- UI は Zone 名を選ぶ方式。キャスト power の目押し / タップゲームは作らない
+- marginal cast は狙いより手前へ落ちることがある。実着水 Zone が Encounter に効く
+- 遠投そのものには Bite bonus を与えない
+- FishingEngine へは `initialFightDistanceM` だけを渡し、Zone / Gear ID を持ち込まない
+- 実着水距離は battle 開始距離へ圧縮して反映する
+- Save schema は v7 のまま
+- 初期 Zone Content 6 Spot はすべて PROVISIONAL
+- Phase 12 はこの基盤上で日本 / 世界 / 魚種を拡張する
+- 最終 CI: typecheck / lint / format / validate / test / build 全 PASS
+- Content: 657 records、tests: 71 files / 623 tests
+- production bundle: JS 761.71 kB（gzip 189.59 kB）、CSS 7.13 kB（gzip 1.86 kB）
+  （Vite の 500 kB warning は既知。Phase 11 の blocker ではない）
+
+## Phase 10.2（Bite Pacing）
+
+- Bite 確率を線形から `1 - exp(-pressure)` の飽和カーブへ変更
+- 普通の魚で「投げればほぼ必ず食う」を減らしつつ、好条件は引き続き有利
+- Fight tuning / Catchability の soft/hard gate 原則は変更しない
 
 ## Phase 10.1（Playtest Cleanup）
 

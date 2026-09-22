@@ -220,3 +220,29 @@ Phase 0では、CI / lint / testで機械的に判定できる制約だけを定
 - この文書の変更は、意志決定として記録する
 - 設計文書の変更は、そのPhaseの範囲に限定する
 - 実装で得た知見は設計へ戻す（設計を先に固定しすぎない）
+
+
+## Phase 11 — Casting Distance & Fishing Zones
+
+決定:
+
+- **遠投は上位互換ではない。** 距離は Spot 内で狙える水域を変えるために使う
+- Spot は optional な `FishingZone` を持てる。Zone は距離・水深・habitat を Content として表す
+- 既存 Spot に Zone が無い場合は runtime が 1 つの fallback Zone を作り、従来の釣りを壊さない
+- FishOccurrence は `zoneAffinity` を持てる。Zone は Encounter presence を変えるが、
+  遠投そのものへ直接 Bite bonus を付けない
+- Cast capability は実スペックを元に `comfortableDistanceM / maxDistanceM / precision` へ解決する
+- 主な入力は Rod length / castingProfile / lure weight range、offering weight、
+  Line diameter、Reel line capacity / control、method、Casting Skill、wind
+- 重いルアーほど無条件に飛ぶ設計にはしない。ロッドの適正重量域との fit を見る
+- リール番手や具体 Gear ID を性能分岐に使わない。line capacity は実数値を使う
+- 最大距離ぎりぎりでは着水誤差が増え、別 Zone へ落ちることがある
+- Level で Zone や魚種を解禁しない。届くかどうかは物理的なキャスト能力で決まる
+- Casting Domain は決定論的で、乱数は `RandomSource` を注入する
+- FishingEngine は Zone / Gear / 天候を知らない。実着水距離など resolved numerical value だけを受け取る
+- 実着水距離は Text Battle の初期距離へ圧縮して反映し、小魚の遠投を単調な長期戦にしない
+- Zone / cast selection は釣行中の一時状態なので Save schema は v7 のまま
+- Phase 11 の Zone 数値は PROVISIONAL。実在釣り場の地形・魚分布を verified として断定しない
+
+初期の Zone Content は荒川下流、多摩川下流、河口部、林道奥の貯水池ワンド、
+北海道の海岸、Alaska Coastal Bay に入れる。Phase 12 の魚種 / Spot 拡張はこの Zone 構造を使う。

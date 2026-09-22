@@ -2,11 +2,34 @@
 
 ## Phase
 
-**Phase 10.1 — Playtest Cleanup**
+**Phase 11 — Casting Distance & Fishing Zones**
 
 状態: **完了**
 
-実機（iPhone）のプレイで見つかった「開発・検証用の残り」を消した。新機能は追加していない。
+遠投を単純な強さではなく、Spot 内の水域を選ぶ仕組みとして実装した。
+
+## Phase 11 で実装したもの
+
+- `FishingZone`: Spot 内の距離帯 / 水深 / habitat を Content 化
+- `FishOccurrence.zoneAffinity`: 着水 Zone によって Encounter presence が変わる
+- `resolveCastCapability`: Rod / Reel / Line / offering / method / Casting Skill / wind から
+  快適距離・最大距離・精度をメートルで解決
+- `resolveCast`: Zone を狙い、seed 固定で実着水距離と landed Zone を決める
+- `comfortable / reachable / marginal / unreachable` の 4 状態
+- 最大距離ぎりぎりでは手前の Zone へ落ちる可能性がある
+- 遠投そのものには Bite bonus を付けない
+- Zone 未設定 Spot は fallback Zone で従来どおり遊べる
+- Fishing UI に「狙う場所」を追加。Power ゲージ / 目押しは入れない
+- 実着水距離を Text Battle 初期距離へ 0.35 倍で弱く接続
+- Save schema は v7 のまま
+- 初期 PROVISIONAL Zone: 荒川下流 / 多摩川下流 / 河口部 /
+  林道奥の貯水池ワンド / 北海道の海岸 / Alaska Coastal Bay
+
+## Phase 10.2（Bite Pacing）
+
+実機プレイの「アジ・サバ等が投げると簡単に食いすぎる」感触に対し、
+Bite 確率を線形から飽和カーブ `1 - exp(-pressure)` に変更した。
+ファイト難易度は変更していない。
 
 ## Phase 10.1 で直したもの
 

@@ -41,23 +41,48 @@
   "fishTable": [
     {
       "speciesId": "kanto-maaji",
-      "basePresence": 0.8
+      "basePresence": 0.8,
+      "zoneAffinity": {
+        "bank-edge": 0.3,
+        "channel": 0.9,
+        "far-channel": 1.3
+      }
     },
     {
       "speciesId": "kanto-shirogisu",
-      "basePresence": 0.5
+      "basePresence": 0.5,
+      "zoneAffinity": {
+        "bank-edge": 0.2,
+        "channel": 0.6,
+        "far-channel": 1.4
+      }
     },
     {
       "speciesId": "kanto-ugui",
-      "basePresence": 0.6
+      "basePresence": 0.6,
+      "zoneAffinity": {
+        "bank-edge": 0.8,
+        "channel": 1.2,
+        "far-channel": 0.7
+      }
     },
     {
       "speciesId": "kanto-kurodai",
-      "basePresence": 0.4
+      "basePresence": 0.4,
+      "zoneAffinity": {
+        "bank-edge": 1.2,
+        "channel": 1,
+        "far-channel": 0.5
+      }
     },
     {
       "speciesId": "kanto-saba",
-      "basePresence": 0.5
+      "basePresence": 0.5,
+      "zoneAffinity": {
+        "bank-edge": 0.2,
+        "channel": 0.7,
+        "far-channel": 1.4
+      }
     }
   ],
   "knowledgeConfig": {
@@ -79,5 +104,46 @@
         "minKnowledge": 80
       }
     ]
-  }
+  },
+  "fishingZones": [
+    {
+      "id": "bank-edge",
+      "name": "岸際",
+      "castDistanceM": {
+        "min": 0,
+        "max": 10
+      },
+      "depthRangeM": {
+        "min": 1,
+        "max": 2.5
+      },
+      "habitatTags": ["shallow", "structure"]
+    },
+    {
+      "id": "channel",
+      "name": "流芯",
+      "castDistanceM": {
+        "min": 10,
+        "max": 30
+      },
+      "depthRangeM": {
+        "min": 2,
+        "max": 4.5
+      },
+      "habitatTags": ["river", "current"]
+    },
+    {
+      "id": "far-channel",
+      "name": "沖の流れ",
+      "castDistanceM": {
+        "min": 30,
+        "max": 50
+      },
+      "depthRangeM": {
+        "min": 3,
+        "max": 6
+      },
+      "habitatTags": ["current", "deep"]
+    }
+  ]
 }
