@@ -1,0 +1,45 @@
+{
+  "id": "queenfish",
+  "japaneseName": "クイーンフィッシュ（暫定）",
+  "scientificName": "Scomberoides commersonnianus",
+  "waterTypes": [
+    "salt"
+  ],
+  "distribution": [
+    "queensland"
+  ],
+  "habitats": [
+    "coast",
+    "open"
+  ],
+  "depthRange": {
+    "min": 0,
+    "max": 60
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 65,
+    "dispersion": 0.18,
+    "minCm": 30,
+    "maxCm": 120
+  },
+  "weightModel": {
+    "lengthWeightA": 0.009,
+    "lengthWeightB": 3.08
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "fightProfile": {
+    "strength": 0.78,
+    "stamina": 0.72,
+    "speed": 0.94
+  },
+  "rarity": 1.8,
+  "sourceRefs": [
+    {
+      "id": "phase12-provisional",
+      "title": "PROVISIONAL — Phase 12 gameplay tuning; biological values require later verification"
+    }
+  ]
+}
