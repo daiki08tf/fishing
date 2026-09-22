@@ -104,7 +104,7 @@ const EVENT_LABELS: Readonly<Record<FishingEvent, string>> = {
   SESSION_RESET: '仕切り直し',
 }
 
-const ACTION_LABELS: Readonly<Record<FishingCommand, string>> = {
+export const ACTION_LABELS: Readonly<Record<FishingCommand, string>> = {
   cast: 'CAST',
   hook: 'HOOK',
   reel: '巻く',
@@ -118,7 +118,7 @@ const ACTION_LABELS: Readonly<Record<FishingCommand, string>> = {
   reset: 'RESET',
 }
 
-const FIGHT_COMMANDS: readonly FishingCommand[] = [
+export const FIGHT_COMMANDS: readonly FishingCommand[] = [
   'reel',
   'power_reel',
   'hold',
@@ -126,8 +126,8 @@ const FIGHT_COMMANDS: readonly FishingCommand[] = [
   'loosen_drag',
   'tighten_drag',
 ]
-const LANDING_COMMANDS: readonly FishingCommand[] = ['land', 'wait']
-const PRE_FIGHT_COMMANDS: readonly FishingCommand[] = ['cast', 'hook']
+export const LANDING_COMMANDS: readonly FishingCommand[] = ['land', 'wait']
+export const PRE_FIGHT_COMMANDS: readonly FishingCommand[] = ['cast', 'hook']
 
 const CAST_STATUS_LABELS: Readonly<Record<CastTargetStatus, string>> = {
   comfortable: '余裕',
