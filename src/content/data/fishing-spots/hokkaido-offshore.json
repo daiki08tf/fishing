@@ -23,6 +23,15 @@
       "baseMinutes": 75,
       "distanceKm": 32,
       "baseOneWayCost": 0
+    },
+    {
+      "id": "hokkaido-offshore-charter",
+      "transportTypes": ["charter_boat"],
+      "requiredCapabilities": ["boat_required", "offshore"],
+      "features": ["boat_rental", "marina"],
+      "baseMinutes": 65,
+      "distanceKm": 32,
+      "baseOneWayCost": 0
     }
   ],
   "habitatTags": ["open", "deep"],

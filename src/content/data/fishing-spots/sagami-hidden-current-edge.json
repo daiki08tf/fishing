@@ -1,0 +1,130 @@
+{
+  "id": "sagami-hidden-current-edge",
+  "name": "相模湾 潮目の際（要人脈・暫定）",
+  "regionId": "tokyo-area",
+  "areaId": "kanagawa",
+  "environment": "offshore",
+  "visibility": "hidden",
+  "dataStatus": "provisional",
+  "access": [
+    {
+      "kind": "capability",
+      "capability": "boat_required"
+    },
+    {
+      "kind": "capability",
+      "capability": "offshore"
+    },
+    {
+      "kind": "relationship",
+      "targetId": "captain-taro",
+      "minimum": 40
+    }
+  ],
+  "travelOptions": [
+    {
+      "id": "sagami-current-edge-charter",
+      "transportTypes": ["charter_boat"],
+      "requiredCapabilities": ["boat_required", "offshore"],
+      "features": ["boat_rental", "marina"],
+      "baseMinutes": 60,
+      "distanceKm": 30,
+      "baseOneWayCost": 0
+    }
+  ],
+  "habitatTags": ["offshore", "deep"],
+  "current": {
+    "preference": "strong"
+  },
+  "depth": {
+    "depthRangeM": {
+      "min": 20,
+      "max": 110
+    }
+  },
+  "fishingZones": [
+    {
+      "id": "surface",
+      "name": "表層",
+      "depthRangeM": {
+        "min": 0,
+        "max": 18
+      },
+      "habitatTags": ["surface", "open"]
+    },
+    {
+      "id": "mid",
+      "name": "中層",
+      "depthRangeM": {
+        "min": 18,
+        "max": 55
+      },
+      "habitatTags": ["mid-water", "open"]
+    },
+    {
+      "id": "bottom",
+      "name": "底",
+      "depthRangeM": {
+        "min": 55,
+        "max": 110
+      },
+      "habitatTags": ["bottom", "deep"]
+    }
+  ],
+  "fishTable": [
+    {
+      "speciesId": "katsuo",
+      "basePresence": 0.26,
+      "zoneAffinity": {
+        "surface": 1.6,
+        "mid": 0.7,
+        "bottom": 0.1
+      }
+    },
+    {
+      "speciesId": "mahi-mahi",
+      "basePresence": 0.24,
+      "zoneAffinity": {
+        "surface": 1.5,
+        "mid": 0.7,
+        "bottom": 0.1
+      }
+    },
+    {
+      "speciesId": "kanpachi",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "surface": 0.5,
+        "mid": 1.5,
+        "bottom": 0.7
+      }
+    },
+    {
+      "speciesId": "madai",
+      "basePresence": 0.28,
+      "zoneAffinity": {
+        "surface": 0.1,
+        "mid": 0.8,
+        "bottom": 1.5
+      }
+    }
+  ],
+  "knowledgeConfig": {
+    "reveals": [
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "habitat",
+        "minKnowledge": 50
+      }
+    ]
+  },
+  "sourceRefs": [
+    {
+      "id": "phase17-provisional",
+      "title": "PROVISIONAL — fictional/generalized secret spot; not a real location"
+    }
+  ]
+}

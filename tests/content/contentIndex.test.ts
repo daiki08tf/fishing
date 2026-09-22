@@ -102,6 +102,7 @@ describe('content packs', () => {
       'fish-species',
       'fishing-spots',
       'buyers',
+      'contacts',
       'contact-rewards',
       'expeditions',
       'species-trade-profiles',
@@ -152,11 +153,19 @@ describe('content packs', () => {
       expect(ownership[`buyers/${file}`]).toBe(`region:${String(buyer.regionId)}`)
     }
 
+    for (const contact of content.contacts) {
+      const file = `${String(contact.id)}.json`
+
+      expect(ownership[`contacts/${file}`]).toBe(`region:${String(contact.regionId)}`)
+    }
+
     for (const reward of content.contactRewards) {
-      const buyer = content.buyers.find((entry) => String(entry.id) === String(reward.contactId))
+      const owner =
+        content.buyers.find((entry) => String(entry.id) === String(reward.contactId)) ??
+        content.contacts.find((entry) => String(entry.id) === String(reward.contactId))
       const file = `${String(reward.id)}.json`
 
-      expect(ownership[`contact-rewards/${file}`]).toBe(`region:${String(buyer?.regionId)}`)
+      expect(ownership[`contact-rewards/${file}`]).toBe(`region:${String(owner?.regionId)}`)
     }
   })
 
@@ -170,6 +179,7 @@ describe('content packs', () => {
       spots: content.spots,
       regions: content.regions,
       buyers: content.buyers,
+      contacts: content.contacts,
       contactRewards: content.contactRewards,
       expeditions: content.expeditions,
       speciesTradeProfiles: content.speciesTradeProfiles,

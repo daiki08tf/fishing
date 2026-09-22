@@ -3,10 +3,11 @@ import { validateContentReferences } from '../../src/content/catalog/references'
 import { loadContentFromDirectory } from '../../src/content/load/nodeContent'
 import type { BuiltInContent } from '../../src/content/catalog/assembleContent'
 import type { BuyerDefinition } from '../../src/domain/trade/Buyer'
+import type { ContactDefinition } from '../../src/domain/trade/Contact'
 import type { ContactReward } from '../../src/domain/trade/ContactReward'
 import type { SpeciesTradeProfile } from '../../src/domain/trade/SpeciesTradeProfile'
 import { TRADE_TAGS } from '../../src/domain/trade/TradeTag'
-import { asContactRewardId, asRegionId } from '../../src/domain/ids'
+import { asContactId, asContactRewardId, asRegionId } from '../../src/domain/ids'
 
 /**
  * Phase 13.1 — Content 検証の契約。
@@ -19,6 +20,7 @@ const content: BuiltInContent = loadContentFromDirectory()
 
 const referencesOf = (overrides: {
   readonly buyers?: readonly BuyerDefinition[]
+  readonly contacts?: readonly ContactDefinition[]
   readonly speciesTradeProfiles?: readonly SpeciesTradeProfile[]
   readonly contactRewards?: readonly ContactReward[]
 }): ReturnType<typeof validateContentReferences> =>
@@ -35,6 +37,7 @@ const referencesOf = (overrides: {
     regions: content.regions,
     expeditions: content.expeditions,
     buyers: overrides.buyers ?? content.buyers,
+    contacts: overrides.contacts ?? content.contacts,
     speciesTradeProfiles: overrides.speciesTradeProfiles ?? content.speciesTradeProfiles,
     contactRewards: overrides.contactRewards ?? content.contactRewards,
   })
@@ -102,10 +105,21 @@ describe('runtime trade content', () => {
     }
   })
 
-  it('does not ship any introduce_contact reward (reserved, would be a silent no-op)', () => {
-    expect(content.contactRewards.filter((reward) => reward.kind === 'introduce_contact')).toEqual(
-      [],
+  it('ships at least one introduce_contact reward that resolves to a real Contact (Phase 17C)', () => {
+    const introductions = content.contactRewards.filter(
+      (reward) => reward.kind === 'introduce_contact',
     )
+    const allContactIds = new Set([
+      ...content.buyers.map((entry) => String(entry.id)),
+      ...content.contacts.map((entry) => String(entry.id)),
+    ])
+
+    expect(introductions.length).toBeGreaterThan(0)
+
+    for (const reward of introductions) {
+      expect(reward.targetId).not.toBeUndefined()
+      expect(allContactIds.has(String(reward.targetId))).toBe(true)
+    }
   })
 })
 
@@ -168,24 +182,44 @@ describe('trade content validation catches broken content', () => {
     expect(issues.some((issue) => issue.message.includes('unknown regionId'))).toBe(true)
   })
 
-  it('rejects an introduce_contact reward (reserved / not yet supported)', () => {
+  it('rejects an introduce_contact reward pointing at an unknown contact', () => {
     const [first] = content.buyers
 
     if (first === undefined) {
       throw new Error('no buyers')
     }
 
-    const reserved: ContactReward = {
-      id: asContactRewardId('future-introduction'),
+    const broken: ContactReward = {
+      id: asContactRewardId('broken-introduction'),
       contactId: first.id,
       minTrust: 50,
       kind: 'introduce_contact',
-      message: '知り合いを紹介する（未実装）',
+      message: '存在しない人物を紹介する',
+      targetId: asContactId('no-such-contact'),
+    }
+    const issues = referencesOf({ contactRewards: [...content.contactRewards, broken] })
+
+    expect(issues.some((issue) => issue.message.includes('unknown targetId'))).toBe(true)
+  })
+
+  it('rejects an introduce_contact reward that targets itself', () => {
+    const [first] = content.buyers
+
+    if (first === undefined) {
+      throw new Error('no buyers')
+    }
+
+    const broken: ContactReward = {
+      id: asContactRewardId('self-introduction'),
+      contactId: first.id,
+      minTrust: 50,
+      kind: 'introduce_contact',
+      message: '自分自身を紹介する',
       targetId: first.id,
     }
-    const issues = referencesOf({ contactRewards: [...content.contactRewards, reserved] })
+    const issues = referencesOf({ contactRewards: [...content.contactRewards, broken] })
 
-    expect(issues.some((issue) => issue.message.includes('reserved'))).toBe(true)
+    expect(issues.some((issue) => issue.message.includes('cannot target itself'))).toBe(true)
   })
 
   it('rejects a hidden spot with no discover_spot reward', () => {

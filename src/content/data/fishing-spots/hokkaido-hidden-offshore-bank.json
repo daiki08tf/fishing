@@ -1,0 +1,117 @@
+{
+  "id": "hokkaido-hidden-offshore-bank",
+  "name": "北海道 沖の瀬（要人脈・暫定）",
+  "regionId": "hokkaido",
+  "areaId": "hokkaido-west",
+  "environment": "offshore",
+  "visibility": "hidden",
+  "dataStatus": "provisional",
+  "access": [
+    {
+      "kind": "capability",
+      "capability": "boat_required"
+    },
+    {
+      "kind": "capability",
+      "capability": "offshore"
+    },
+    {
+      "kind": "relationship",
+      "targetId": "captain-daisuke",
+      "minimum": 34
+    }
+  ],
+  "travelOptions": [
+    {
+      "id": "hokkaido-offshore-bank-charter",
+      "transportTypes": ["charter_boat"],
+      "requiredCapabilities": ["boat_required", "offshore"],
+      "features": ["boat_rental", "marina"],
+      "baseMinutes": 65,
+      "distanceKm": 28,
+      "baseOneWayCost": 0
+    }
+  ],
+  "habitatTags": ["offshore", "deep"],
+  "current": {
+    "preference": "moderate"
+  },
+  "depth": {
+    "depthRangeM": {
+      "min": 25,
+      "max": 140
+    }
+  },
+  "fishingZones": [
+    {
+      "id": "mid",
+      "name": "中層",
+      "depthRangeM": {
+        "min": 25,
+        "max": 65
+      },
+      "habitatTags": ["mid-water", "open"]
+    },
+    {
+      "id": "bottom",
+      "name": "底",
+      "depthRangeM": {
+        "min": 65,
+        "max": 140
+      },
+      "habitatTags": ["bottom", "deep"]
+    }
+  ],
+  "fishTable": [
+    {
+      "speciesId": "pacific-cod",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "mid": 0.6,
+        "bottom": 1.5
+      }
+    },
+    {
+      "speciesId": "buri",
+      "basePresence": 0.24,
+      "zoneAffinity": {
+        "mid": 1.4,
+        "bottom": 0.5
+      }
+    },
+    {
+      "speciesId": "hirame",
+      "basePresence": 0.22,
+      "zoneAffinity": {
+        "mid": 0.3,
+        "bottom": 1.5
+      }
+    },
+    {
+      "speciesId": "kurosoi",
+      "basePresence": 0.26,
+      "zoneAffinity": {
+        "mid": 0.7,
+        "bottom": 1.3
+      }
+    }
+  ],
+  "knowledgeConfig": {
+    "reveals": [
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "habitat",
+        "minKnowledge": 50
+      }
+    ]
+  },
+  "sourceRefs": [
+    {
+      "id": "phase17-provisional",
+      "title": "PROVISIONAL — fictional/generalized secret spot; not a real location"
+    }
+  ]
+}

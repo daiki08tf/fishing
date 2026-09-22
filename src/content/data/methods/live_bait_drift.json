@@ -1,0 +1,11 @@
+{
+  "id": "live_bait_drift",
+  "name": "泳がせ釣り（ドリフト）",
+  "description": "活き餌を船から流し、潮に乗せて中層〜底を探る。",
+  "requiresOffering": "bait",
+  "offeringTags": ["live"],
+  "presentation": {
+    "mode": "drift",
+    "supportedPlatforms": ["kayak", "nearshore_boat", "offshore_boat"]
+  }
+}

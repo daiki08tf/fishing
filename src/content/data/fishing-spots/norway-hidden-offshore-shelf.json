@@ -1,0 +1,117 @@
+{
+  "id": "norway-hidden-offshore-shelf",
+  "name": "ノルウェー 沖の陸棚（要人脈・暫定）",
+  "regionId": "norway-fjords",
+  "areaId": "norway-coast",
+  "environment": "offshore",
+  "visibility": "hidden",
+  "dataStatus": "provisional",
+  "access": [
+    {
+      "kind": "capability",
+      "capability": "boat_required"
+    },
+    {
+      "kind": "capability",
+      "capability": "offshore"
+    },
+    {
+      "kind": "relationship",
+      "targetId": "captain-erik",
+      "minimum": 34
+    }
+  ],
+  "travelOptions": [
+    {
+      "id": "norway-offshore-shelf-charter",
+      "transportTypes": ["charter_boat"],
+      "requiredCapabilities": ["boat_required", "offshore"],
+      "features": ["boat_rental", "marina"],
+      "baseMinutes": 75,
+      "distanceKm": 34,
+      "baseOneWayCost": 0
+    }
+  ],
+  "habitatTags": ["offshore", "deep"],
+  "current": {
+    "preference": "moderate"
+  },
+  "depth": {
+    "depthRangeM": {
+      "min": 40,
+      "max": 190
+    }
+  },
+  "fishingZones": [
+    {
+      "id": "mid",
+      "name": "中層",
+      "depthRangeM": {
+        "min": 40,
+        "max": 90
+      },
+      "habitatTags": ["mid-water", "open"]
+    },
+    {
+      "id": "shelf",
+      "name": "陸棚の底",
+      "depthRangeM": {
+        "min": 90,
+        "max": 190
+      },
+      "habitatTags": ["bottom", "deep"]
+    }
+  ],
+  "fishTable": [
+    {
+      "speciesId": "atlantic-halibut",
+      "basePresence": 0.22,
+      "zoneAffinity": {
+        "mid": 0.3,
+        "shelf": 1.6
+      }
+    },
+    {
+      "speciesId": "common-ling",
+      "basePresence": 0.28,
+      "zoneAffinity": {
+        "mid": 0.6,
+        "shelf": 1.4
+      }
+    },
+    {
+      "speciesId": "tusk",
+      "basePresence": 0.26,
+      "zoneAffinity": {
+        "mid": 0.5,
+        "shelf": 1.4
+      }
+    },
+    {
+      "speciesId": "atlantic-redfish",
+      "basePresence": 0.24,
+      "zoneAffinity": {
+        "mid": 0.8,
+        "shelf": 1.2
+      }
+    }
+  ],
+  "knowledgeConfig": {
+    "reveals": [
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "habitat",
+        "minKnowledge": 50
+      }
+    ]
+  },
+  "sourceRefs": [
+    {
+      "id": "phase17-provisional",
+      "title": "PROVISIONAL — fictional/generalized secret spot; not a real location"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "id": "vertical_jigging",
+  "name": "バーチカルジギング",
+  "description": "船の真下へメタルジグを落とし、しゃくり上げて誘う。中層〜底を探る。",
+  "requiresOffering": "lure",
+  "offeringTags": ["jig"],
+  "presentation": {
+    "mode": "vertical",
+    "supportedPlatforms": ["kayak", "nearshore_boat", "offshore_boat"]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "id": "trolling",
+  "name": "トローリング",
+  "description": "船を走らせてルアーを曳き、回遊魚に追わせる。",
+  "requiresOffering": "lure",
+  "offeringTags": ["minnow"],
+  "presentation": {
+    "mode": "troll",
+    "supportedPlatforms": ["nearshore_boat", "offshore_boat"]
+  }
+}

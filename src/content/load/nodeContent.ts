@@ -72,6 +72,7 @@ export const loadContentFromDirectory = (
     regions: readKindDirectory(root, 'regions'),
     expeditions: readKindDirectory(root, 'expeditions'),
     buyers: readKindDirectory(root, 'buyers'),
+    contacts: readKindDirectory(root, 'contacts'),
     speciesTradeProfiles: readKindDirectory(root, 'species-trade-profiles'),
     contactRewards: readKindDirectory(root, 'contact-rewards'),
     gear: readKindDirectory(root, 'gear'),

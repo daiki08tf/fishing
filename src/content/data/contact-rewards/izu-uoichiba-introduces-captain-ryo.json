@@ -1,0 +1,8 @@
+{
+  "id": "izu-uoichiba-introduces-captain-ryo",
+  "contactId": "izu-uoichiba",
+  "minTrust": 30,
+  "kind": "introduce_contact",
+  "message": "魚市場の目利きが「沖に強い船長がいる」と、リョウ船長を紹介してくれた。",
+  "targetId": "captain-ryo"
+}

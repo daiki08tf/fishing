@@ -1,0 +1,8 @@
+{
+  "id": "captain-daisuke-spot-offshore-bank",
+  "contactId": "captain-daisuke",
+  "minTrust": 26,
+  "kind": "discover_spot",
+  "message": "ダイスケ船長が「まだ客を連れて行っていない瀬がある」と、沖の瀬の場所を教えてくれた。",
+  "targetId": "hokkaido-hidden-offshore-bank"
+}

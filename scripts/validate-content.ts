@@ -15,6 +15,7 @@ import type { TransportDefinition } from '../src/domain/access/Transport'
 import type { ExpeditionDefinition } from '../src/domain/expedition/Expedition'
 import type { Country, RegionDefinition } from '../src/domain/world/Region'
 import type { BuyerDefinition } from '../src/domain/trade/Buyer'
+import type { ContactDefinition } from '../src/domain/trade/Contact'
 import type { SpeciesTradeProfile } from '../src/domain/trade/SpeciesTradeProfile'
 import type { ContactReward } from '../src/domain/trade/ContactReward'
 import { validateContentScale } from '../src/content/catalog/scaleCheck'
@@ -112,6 +113,7 @@ export const runValidateContent = (argv: readonly string[], cwd: string): Valida
     regions: of<RegionDefinition>('regions'),
     expeditions: of<ExpeditionDefinition>('expeditions'),
     buyers: of<BuyerDefinition>('buyers'),
+    contacts: of<ContactDefinition>('contacts'),
     speciesTradeProfiles: of<SpeciesTradeProfile>('species-trade-profiles'),
     contactRewards: of<ContactReward>('contact-rewards'),
   })
@@ -228,6 +230,7 @@ export const runContentScaleValidation = (input: {
       spots: of<FishingSpot>('fishing-spots'),
       regions: of<RegionDefinition>('regions'),
       buyers: of<BuyerDefinition>('buyers'),
+      contacts: of<ContactDefinition>('contacts'),
       contactRewards: of<ContactReward>('contact-rewards'),
       expeditions: of<ExpeditionDefinition>('expeditions'),
       speciesTradeProfiles: of<SpeciesTradeProfile>('species-trade-profiles'),

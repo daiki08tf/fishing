@@ -1,0 +1,9 @@
+{
+  "id": "captain-ryo",
+  "regionId": "izu-peninsula",
+  "name": "リョウ船長",
+  "type": "captain",
+  "role": "伊豆西海岸のチャーター船を操る船長。根周りの潮を熟知している。",
+  "initiallyKnown": false,
+  "dataStatus": "provisional"
+}

@@ -2,6 +2,7 @@ import { mkdirSync, readdirSync, unlinkSync, writeFileSync } from 'node:fs'
 import { join, relative, resolve } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import type { BuyerDefinition } from '../src/domain/trade/Buyer'
+import type { ContactDefinition } from '../src/domain/trade/Contact'
 import type { ContactReward } from '../src/domain/trade/ContactReward'
 import type { ExpeditionDefinition } from '../src/domain/expedition/Expedition'
 import type { FishSpecies } from '../src/domain/fish/FishSpecies'
@@ -92,6 +93,7 @@ export const buildContentIndex = (
   const regions = of<RegionDefinition>(result.locations, 'regions')
   const countries = of<{ id: string; name: string }>(result.locations, 'countries')
   const buyers = of<BuyerDefinition>(result.locations, 'buyers')
+  const contacts = of<ContactDefinition>(result.locations, 'contacts')
   const rewards = of<ContactReward>(result.locations, 'contact-rewards')
   const expeditions = of<ExpeditionDefinition>(result.locations, 'expeditions')
   const tradeProfiles = of<SpeciesTradeProfile>(result.locations, 'species-trade-profiles')
@@ -190,20 +192,30 @@ export const buildContentIndex = (
         .flatMap((entry) => fileOf('fishing-spots', String(entry.id)))
       const regionBuyerEntries = buyers.filter((entry) => String(entry.regionId) === regionId)
       const regionBuyers = regionBuyerEntries.flatMap((entry) => fileOf('buyers', String(entry.id)))
-      const regionBuyerIds = new Set(regionBuyerEntries.map((entry) => String(entry.id)))
+      const regionContactEntries = contacts.filter((entry) => String(entry.regionId) === regionId)
+      const regionContacts = regionContactEntries.flatMap((entry) =>
+        fileOf('contacts', String(entry.id)),
+      )
+      // Buyer と汎用 Contact は同じ ID 空間（ContactId）を共有するので、
+      // このリージョンの ContactReward はどちらの ID でも拾う。
+      const regionContactIds = new Set([
+        ...regionBuyerEntries.map((entry) => String(entry.id)),
+        ...regionContactEntries.map((entry) => String(entry.id)),
+      ])
       const regionRewards = rewards
-        .filter((entry) => regionBuyerIds.has(String(entry.contactId)))
+        .filter((entry) => regionContactIds.has(String(entry.contactId)))
         .flatMap((entry) => fileOf('contact-rewards', String(entry.id)))
       return {
         key: `region:${regionId}`,
         kind: 'region' as const,
         label: region?.name ?? regionId,
         regionId: asRegionId(regionId),
-        kinds: ['fishing-spots', 'buyers', 'contact-rewards'],
+        kinds: ['fishing-spots', 'buyers', 'contacts', 'contact-rewards'],
         // 実際のファイル一覧は生成される pack module が持つ（初期 chunk を増やさない）。
         ownership: {
           'fishing-spots': regionSpots,
           buyers: regionBuyers,
+          contacts: regionContacts,
           'contact-rewards': regionRewards,
         },
       }
@@ -275,6 +287,7 @@ export const buildContentIndex = (
       regions: regions.length,
       countries: countries.length,
       buyers: buyers.length,
+      contacts: contacts.length,
       'contact-rewards': rewards.length,
       expeditions: expeditions.length,
       'species-trade-profiles': tradeProfiles.length,

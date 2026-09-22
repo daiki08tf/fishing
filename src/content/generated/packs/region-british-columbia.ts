@@ -23,5 +23,6 @@ export const m6Name = "bc-tidal-flat.json"
 export const load = async (): Promise<Readonly<Record<string, readonly unknown[]>>> => ({
     "fishing-spots": [m0, m1, m2, m3, m4, m5, m6],
     "buyers": [],
+    "contacts": [],
     "contact-rewards": [],
 })

@@ -12,6 +12,7 @@ import { countrySchema } from './country'
 import { regionSchema } from './region'
 import { expeditionSchema } from './expedition'
 import { buyerSchema } from './buyer'
+import { contactSchema } from './contact'
 import { speciesTradeProfileSchema } from './speciesTradeProfile'
 import { contactRewardSchema } from './contactReward'
 
@@ -35,6 +36,7 @@ export const CONTENT_SCHEMAS = {
   regions: regionSchema,
   expeditions: expeditionSchema,
   buyers: buyerSchema,
+  contacts: contactSchema,
   'species-trade-profiles': speciesTradeProfileSchema,
   'contact-rewards': contactRewardSchema,
 } as const
@@ -152,6 +154,12 @@ export const parseContentRecord = (kind: ContentKind, value: unknown): ContentPa
         ? { ok: true, value: result.data }
         : { ok: false, issues: toIssues(result.error) }
     }
+    case 'contacts': {
+      const result = contactSchema.safeParse(value)
+      return result.success
+        ? { ok: true, value: result.data }
+        : { ok: false, issues: toIssues(result.error) }
+    }
     case 'species-trade-profiles': {
       const result = speciesTradeProfileSchema.safeParse(value)
       return result.success
@@ -191,5 +199,6 @@ export { countrySchema } from './country'
 export { regionSchema } from './region'
 export { expeditionSchema } from './expedition'
 export { buyerSchema } from './buyer'
+export { contactSchema } from './contact'
 export { speciesTradeProfileSchema } from './speciesTradeProfile'
 export { contactRewardSchema } from './contactReward'

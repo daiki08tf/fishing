@@ -1,0 +1,18 @@
+{
+  "id": "blue-horizon-tairubber-150",
+  "name": "Tairubber 150 Heavy",
+  "price": 3200,
+  "category": "lure",
+  "brandId": "blue-horizon",
+  "lureType": "tai_rubber",
+  "weightG": 150,
+  "lengthMm": 170,
+  "depthRangeM": {
+    "min": 40,
+    "max": 120
+  },
+  "retrieveStyle": "steady_fall_and_wind",
+  "action": "flutter",
+  "visualProfile": "natural",
+  "targetProfile": ["bottom", "large", "big"]
+}

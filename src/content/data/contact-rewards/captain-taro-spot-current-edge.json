@@ -1,0 +1,8 @@
+{
+  "id": "captain-taro-spot-current-edge",
+  "contactId": "captain-taro",
+  "minTrust": 32,
+  "kind": "discover_spot",
+  "message": "タロウ船長が「まだ客を連れて行っていない潮目がある」と、正確な場所を教えてくれた。",
+  "targetId": "sagami-hidden-current-edge"
+}

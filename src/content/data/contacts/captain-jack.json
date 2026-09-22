@@ -1,0 +1,9 @@
+{
+  "id": "captain-jack",
+  "regionId": "alaska",
+  "name": "Captain Jack",
+  "type": "captain",
+  "role": "港で顔なじみのチャーター船長。沖の海底谷を知り尽くしている。",
+  "initiallyKnown": true,
+  "dataStatus": "provisional"
+}

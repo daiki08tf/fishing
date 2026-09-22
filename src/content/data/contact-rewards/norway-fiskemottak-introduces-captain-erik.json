@@ -1,0 +1,8 @@
+{
+  "id": "norway-fiskemottak-introduces-captain-erik",
+  "contactId": "norway-fiskemottak",
+  "minTrust": 27,
+  "kind": "introduce_contact",
+  "message": "食堂の人が「沖に強い船長がいる」と、エリック船長を紹介してくれた。",
+  "targetId": "captain-erik"
+}

@@ -144,6 +144,13 @@ export const leaveForSpot = (input: {
   readonly transportId?: TransportId
   /** 所持している許可（遊漁券など）。 */
   readonly permits?: readonly string[]
+  /** Phase 17C: relationship 条件（人脈 Trust）の評価に使う。省略時は Trust 0 扱い。 */
+  readonly contactTrust?: Readonly<Record<string, number>>
+  /**
+   * Phase 17 Final Fix: 知っている Contact の ID 集合。`operatorContactId` を持つ
+   * Charter Transport は、この集合にその Contact が含まれるときだけ選べる。
+   */
+  readonly knownContactIds?: ReadonlySet<string> | readonly string[]
   readonly tuning?: WorldTuning
 }): WorldActionResult => {
   const { world, knowledge } = input.context
@@ -176,6 +183,8 @@ export const leaveForSpot = (input: {
     knowledge,
     permitsEnabled: true,
     ...(input.permits === undefined ? {} : { permits: input.permits }),
+    ...(input.contactTrust === undefined ? {} : { contactTrust: input.contactTrust }),
+    ...(input.knownContactIds === undefined ? {} : { knownContactIds: input.knownContactIds }),
   })
 
   if (!access.accessible) {
@@ -373,6 +382,13 @@ export const leaveSpot = (input: {
   readonly transports: readonly TransportDefinition[]
   readonly playerTransports: PlayerTransportState
   readonly permits?: readonly string[]
+  /**
+   * Phase 17 Final Fix: 行きで使った Charter が帰りにも選べるよう、
+   * 出発時と同じ知っている Contact の集合を渡す
+   * （relationship 条件そのものは往路と同じく評価しない — 帰路は「今日会った
+   * 船長の船で帰る」だけなので Trust の再チェックはしない）。
+   */
+  readonly knownContactIds?: ReadonlySet<string> | readonly string[]
   readonly tuning?: WorldTuning
 }): WorldActionResult => {
   const { world, knowledge } = input.context
@@ -391,6 +407,7 @@ export const leaveSpot = (input: {
     playerTransports: input.playerTransports,
     knowledge,
     permitsEnabled: true,
+    ...(input.knownContactIds === undefined ? {} : { knownContactIds: input.knownContactIds }),
     ...(input.permits === undefined ? {} : { permits: input.permits }),
   })
   const outboundTransportId = world.trip?.transportId ?? null

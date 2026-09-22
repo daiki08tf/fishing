@@ -1,0 +1,10 @@
+{
+  "id": "blue-horizon-live-baitfish",
+  "name": "Live Baitfish",
+  "price": 2600,
+  "category": "bait",
+  "brandId": "blue-horizon",
+  "baitType": "live",
+  "presentation": "活かしたまま流す泳がせ餌",
+  "targetProfile": ["large", "big"]
+}

@@ -1,0 +1,18 @@
+{
+  "id": "charter-boat-alaska",
+  "name": "アラスカ チャーター船",
+  "transportType": "charter_boat",
+  "ownershipModel": "rental",
+  "rentalCost": 65000,
+  "travelCostModel": { "kind": "per_km", "yenPerKm": 45, "minimumOneWayCost": 2500 },
+  "travelTimeModifier": 0.4,
+  "maxRangeKm": 100,
+  "cargo": { "gearUnits": 12, "maxWeightKg": 260 },
+  "capabilities": ["boat_required", "offshore", "island_access"],
+  "requiredRouteFeatures": ["boat_rental", "marina"],
+  "launchCapability": "marina",
+  "boatCapability": "offshore",
+  "passengerCapacity": 6,
+  "serviceRegionIds": ["alaska"],
+  "operatorContactId": "captain-jack"
+}

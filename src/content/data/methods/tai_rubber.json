@@ -1,0 +1,11 @@
+{
+  "id": "tai_rubber",
+  "name": "タイラバ",
+  "description": "ヘッドとワームが一体になった仕掛けを底付近で巻き上げる。着底の取り直しを繰り返す。",
+  "requiresOffering": "lure",
+  "offeringTags": ["tai_rubber"],
+  "presentation": {
+    "mode": "vertical",
+    "supportedPlatforms": ["kayak", "nearshore_boat", "offshore_boat"]
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "id": "captain-taro-intel-reading",
+  "contactId": "captain-taro",
+  "minTrust": 10,
+  "kind": "intel",
+  "message": "タロウ船長が、魚探の反応と潮のタイミングの読み方を教えてくれた。"
+}

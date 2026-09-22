@@ -25,7 +25,26 @@ import {
   type CastCapability,
   type ResolvedCast,
 } from '../../domain/casting'
+import {
+  depthToFightDistanceM,
+  resolveDepthCapability,
+  resolveDeployment,
+  resolveDriftStrength,
+  resolveFishingPlatform,
+  resolveMarineReadiness,
+  resolveSeaState,
+  type DepthCapability,
+  type FishingPlatformContext,
+  type MarineReadinessResult,
+  type ResolvedDeployment,
+  type SeaState,
+} from '../../domain/depth'
 import type { FishingSpot, FishingZone } from '../../domain/world/FishingSpot'
+import {
+  methodSupportsPlatform,
+  presentationOf,
+  type PresentationMode,
+} from '../../domain/method/FishingMethod'
 import { SeededRandomSource } from '../../domain/rng/SeededRandomSource'
 import { resolveBiteCompatibility } from '../../domain/tackle/biteCompatibility'
 import type { FishSpecies } from '../../domain/fish/FishSpecies'
@@ -33,6 +52,7 @@ import { spotKnowledgeScore } from '../../domain/knowledge/spotKnowledge'
 import { NEUTRAL_FISHING_MODIFIERS } from '../../domain/fishing/PlayerFishingModifiers'
 import { usePlayerStore } from '../../state/playerStore'
 import { useContentOrError } from '../world/useContentOrError'
+import { resolveCanCast } from './canCast'
 
 /**
  * 釣行 1 回分のセッション。
@@ -68,7 +88,18 @@ export type FishingSession = {
   readonly targetZoneId: string | null
   readonly castCapability: CastCapability | null
   readonly resolvedCast: ResolvedCast | null
+  /** Phase 17A: 今回の Transport から derive した Fishing Platform（船 / カヤック / 岸）。 */
+  readonly platform: FishingPlatformContext
+  /** Phase 17A: 狙う水域が depth-only Zone のときだけ埋まる。 */
+  readonly depthCapability: DepthCapability | null
+  readonly resolvedDeployment: ResolvedDeployment | null
+  readonly seaState: SeaState | null
+  readonly marineReadiness: MarineReadinessResult | null
   readonly canCast: boolean
+  /** Phase 17B: 今の釣法がこの Platform で使えないときだけ false。 */
+  readonly methodPlatformOk: boolean
+  /** Phase 17B: 今の釣法の提示方式（投げる/落とす/流す/曳き始める のどれか）。 */
+  readonly presentationMode: PresentationMode
   readonly selectTargetZone: (zoneId: string) => void
   readonly send: (command: FishingCommand) => void
   /** 新しい seed でやり直す。seed を渡すと同じ経過を再挑戦できる。 */
@@ -155,6 +186,20 @@ export const useFishingSession = (): FishingSession => {
   }, [content, loadout])
 
   /*
+   * Phase 17A: Fishing Platform は Save しない派生値。
+   * 今回の釣行で使った Transport（world.trip.transportId）から毎回 derive する。
+   */
+  const platform = useMemo<FishingPlatformContext>(() => {
+    const transportId = world.trip?.transportId ?? null
+    const transport =
+      !content.ok || transportId === null
+        ? null
+        : (content.value.transportById[String(transportId)] ?? null)
+
+    return resolveFishingPlatform(transport)
+  }, [content, world.trip])
+
+  /*
    * Phase 9: 環境（季節 / 時間 / 天候 / 潮 / 水）を解決し、
    * 釣況（Encounter 重み・Fight 倍率）へ写す。
    * Engine へは解決済みの数値だけを渡す（雨・潮・国は見せない）。
@@ -214,6 +259,62 @@ export const useFishingSession = (): FishingSession => {
     })
   }, [castCapability, activeTargetZoneId, fishingZones, session.seed, spot])
 
+  /*
+   * Phase 17A: castDistanceM を持たない（= 船の真下などを表す）Zone は、
+   * 水平キャストではなく水深で狙う。既存の resolvedCast は変更しない
+   * （castDistanceM を持つ Zone は今までどおり Casting Domain だけを通る）。
+   */
+  const activeZone = fishingZones.find((zone) => zone.id === activeTargetZoneId) ?? null
+  const isDepthTargetZone =
+    activeZone !== null &&
+    activeZone.castDistanceM === undefined &&
+    activeZone.depthRangeM !== undefined
+
+  const depthCapability = useMemo<DepthCapability | null>(() => {
+    if (!platform.canPresentVertically || castingGear === null || !isDepthTargetZone) {
+      return null
+    }
+
+    return resolveDepthCapability({
+      reel: castingGear.reel,
+      line: castingGear.line,
+      offering: castingGear.offering,
+      platform: platform.platform,
+      skillControlMultiplier: skillModifiers.castingPrecisionMultiplier,
+    })
+  }, [platform, castingGear, isDepthTargetZone, skillModifiers.castingPrecisionMultiplier])
+
+  const resolvedDeployment = useMemo<ResolvedDeployment | null>(() => {
+    if (
+      depthCapability === null ||
+      activeTargetZoneId === null ||
+      fishingZones.length === 0 ||
+      spot === undefined
+    ) {
+      return null
+    }
+
+    return resolveDeployment({
+      zones: fishingZones,
+      targetZoneId: activeTargetZoneId,
+      capability: depthCapability,
+      random: new SeededRandomSource(
+        `${session.seed}:depth:${String(spot.id)}:${activeTargetZoneId}`,
+      ),
+      drift: resolveDriftStrength(spot.current),
+    })
+  }, [depthCapability, activeTargetZoneId, fishingZones, session.seed, spot])
+
+  const seaState = useMemo<SeaState | null>(
+    () => (environment === null ? null : resolveSeaState(environment)),
+    [environment],
+  )
+
+  const marineReadiness = useMemo<MarineReadinessResult | null>(
+    () => (seaState === null ? null : resolveMarineReadiness(platform.platform, seaState)),
+    [platform.platform, seaState],
+  )
+
   const finder = content.ok ? bestFishFinderOf(inventory, content.value.gear) : null
   const searchSign =
     lastSearch !== null && spot !== undefined && lastSearch.spotId === String(spot.id)
@@ -258,8 +359,11 @@ export const useFishingSession = (): FishingSession => {
       }
 
       const environmentWeight = conditions?.speciesModifiers[String(found.id)] ?? 1
-      const landedZoneId =
-        resolvedCast !== null && resolvedCast.reachable
+      const landedZoneId = isDepthTargetZone
+        ? resolvedDeployment !== null && resolvedDeployment.reachable
+          ? resolvedDeployment.landedZoneId
+          : activeTargetZoneId
+        : resolvedCast !== null && resolvedCast.reachable
           ? resolvedCast.landedZoneId
           : activeTargetZoneId
       const zoneWeight =
@@ -283,7 +387,17 @@ export const useFishingSession = (): FishingSession => {
         },
       ]
     })
-  }, [spot, species, conditions, content, loadout, resolvedCast, activeTargetZoneId])
+  }, [
+    spot,
+    species,
+    conditions,
+    content,
+    loadout,
+    resolvedCast,
+    activeTargetZoneId,
+    isDepthTargetZone,
+    resolvedDeployment,
+  ])
 
   const playerModifiers = useMemo(() => {
     const base =
@@ -311,6 +425,19 @@ export const useFishingSession = (): FishingSession => {
     spot === undefined ? 'none' : `${String(spot.id)}:${activeTargetZoneId ?? 'no-zone'}`
 
   /*
+   * Phase 17A: 狙う水域が depth-only Zone なら、水深をファイト距離へ圧縮した値を使う
+   * （100m の水深がそのまま 100 step の REEL にはならない）。
+   * それ以外は既存どおり Casting Domain の actualDistanceM を使う。
+   */
+  const initialFightDistanceM = isDepthTargetZone
+    ? resolvedDeployment !== null && resolvedDeployment.reachable
+      ? depthToFightDistanceM(resolvedDeployment.actualDepthM)
+      : undefined
+    : resolvedCast !== null && resolvedCast.reachable
+      ? resolvedCast.actualDistanceM
+      : undefined
+
+  /*
    * セッションの入力（Encounter・倍率・Knowledge）。
    *
    * これらは釣行の途中で「釣果を記録した副作用」としても変わる
@@ -323,16 +450,14 @@ export const useFishingSession = (): FishingSession => {
     playerModifiers,
     encounterProfile,
     knowledgeScore: spotKnowledgeScore(knowledge, spot === undefined ? '' : String(spot.id)),
-    initialFightDistanceM:
-      resolvedCast !== null && resolvedCast.reachable ? resolvedCast.actualDistanceM : undefined,
+    initialFightDistanceM,
   })
   sessionInputsRef.current = {
     encounters,
     playerModifiers,
     encounterProfile,
     knowledgeScore: spotKnowledgeScore(knowledge, spot === undefined ? '' : String(spot.id)),
-    initialFightDistanceM:
-      resolvedCast !== null && resolvedCast.reachable ? resolvedCast.actualDistanceM : undefined,
+    initialFightDistanceM,
   }
 
   // セッション開始（Spot・seed が変わったとき）。釣行中は作り直さない。
@@ -439,7 +564,23 @@ export const useFishingSession = (): FishingSession => {
     }
   }, [isRunning, session, encountersKey, resolveSessionEnd])
 
-  const canCast = resolvedCast?.reachable === true
+  /*
+   * Phase 17B: 今の釣法がこの Platform で物理的に成立するか
+   * （例: トローリングは船が動いていないと成立しない）。Method ID / Platform ID の
+   * 分岐ではなく、Content の presentation.supportedPlatforms から判定する。
+   */
+  const methodPlatformOk =
+    tackle === null || methodSupportsPlatform(tackle.method, platform.platform)
+  const presentationMode: PresentationMode =
+    tackle === null ? 'cast' : presentationOf(tackle.method).mode
+
+  const canCast = resolveCanCast({
+    methodPlatformOk,
+    marineReadiness,
+    isDepthTargetZone,
+    resolvedCast,
+    resolvedDeployment,
+  })
 
   const send = useCallback(
     (command: FishingCommand) => {
@@ -491,7 +632,14 @@ export const useFishingSession = (): FishingSession => {
     targetZoneId: activeTargetZoneId,
     castCapability,
     resolvedCast,
+    platform,
+    depthCapability,
+    resolvedDeployment,
+    seaState,
+    marineReadiness,
     canCast,
+    methodPlatformOk,
+    presentationMode,
     selectTargetZone,
     send,
     restart,

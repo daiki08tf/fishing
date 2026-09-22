@@ -10,11 +10,13 @@ import type { TransportDefinition } from '../../domain/access/Transport'
 import type { ExpeditionDefinition } from '../../domain/expedition/Expedition'
 import type { Country, RegionDefinition } from '../../domain/world/Region'
 import type { BuyerDefinition } from '../../domain/trade/Buyer'
+import type { ContactDefinition } from '../../domain/trade/Contact'
 import type { SpeciesTradeProfile } from '../../domain/trade/SpeciesTradeProfile'
 import type { ContactReward } from '../../domain/trade/ContactReward'
 import {
   brandSchema,
   buyerSchema,
+  contactSchema,
   contactRewardSchema,
   countrySchema,
   expeditionSchema,
@@ -54,6 +56,9 @@ export type BuiltInContent = {
   /** Phase 13: 買取先 / 魚種の取引状態 / Trust 報酬。 */
   readonly buyers: readonly BuyerDefinition[]
   readonly buyerById: Readonly<Record<string, BuyerDefinition>>
+  /** Phase 17C: 買い取りをしない汎用 Contact（船長・ガイドなど）。 */
+  readonly contacts: readonly ContactDefinition[]
+  readonly contactById: Readonly<Record<string, ContactDefinition>>
   readonly speciesTradeProfiles: readonly SpeciesTradeProfile[]
   readonly speciesTradeProfileBySpeciesId: Readonly<Record<string, SpeciesTradeProfile>>
   readonly contactRewards: readonly ContactReward[]
@@ -231,6 +236,19 @@ const parseBuyer = (source: string, value: unknown): BuyerDefinition => {
   return parsed.data
 }
 
+const parseContact = (source: string, value: unknown): ContactDefinition => {
+  const parsed = contactSchema.safeParse(value)
+
+  if (!parsed.success) {
+    throw new ContentValidationError(
+      'contacts',
+      formatIssues('contacts', source, parsed.error.issues),
+    )
+  }
+
+  return parsed.data
+}
+
 const parseSpeciesTradeProfile = (source: string, value: unknown): SpeciesTradeProfile => {
   const parsed = speciesTradeProfileSchema.safeParse(value)
 
@@ -306,6 +324,7 @@ export const assembleBuiltInContent = (input: {
   readonly regions?: readonly ContentSource[]
   readonly expeditions?: readonly ContentSource[]
   readonly buyers?: readonly ContentSource[]
+  readonly contacts?: readonly ContentSource[]
   readonly speciesTradeProfiles?: readonly ContentSource[]
   readonly contactRewards?: readonly ContentSource[]
   readonly gear?: readonly ContentSource[]
@@ -325,6 +344,7 @@ export const assembleBuiltInContent = (input: {
     parseExpedition(entry.source, entry.value),
   )
   const buyers = (input.buyers ?? []).map((entry) => parseBuyer(entry.source, entry.value))
+  const contacts = (input.contacts ?? []).map((entry) => parseContact(entry.source, entry.value))
   const speciesTradeProfiles = (input.speciesTradeProfiles ?? []).map((entry) =>
     parseSpeciesTradeProfile(entry.source, entry.value),
   )
@@ -353,6 +373,7 @@ export const assembleBuiltInContent = (input: {
   const regionById: Record<string, RegionDefinition> = {}
   const expeditionById: Record<string, ExpeditionDefinition> = {}
   const buyerById: Record<string, BuyerDefinition> = {}
+  const contactById: Record<string, ContactDefinition> = {}
   const speciesTradeProfileBySpeciesId: Record<string, SpeciesTradeProfile> = {}
 
   for (const entry of species) {
@@ -395,6 +416,10 @@ export const assembleBuiltInContent = (input: {
     buyerById[String(entry.id)] = entry
   }
 
+  for (const entry of contacts) {
+    contactById[String(entry.id)] = entry
+  }
+
   for (const entry of speciesTradeProfiles) {
     speciesTradeProfileBySpeciesId[String(entry.speciesId)] = entry
   }
@@ -413,6 +438,7 @@ export const assembleBuiltInContent = (input: {
     regions,
     expeditions,
     buyers,
+    contacts,
     speciesTradeProfiles,
     contactRewards,
   })
@@ -439,6 +465,8 @@ export const assembleBuiltInContent = (input: {
     expeditionById,
     buyers,
     buyerById,
+    contacts,
+    contactById,
     speciesTradeProfiles,
     speciesTradeProfileBySpeciesId,
     contactRewards,

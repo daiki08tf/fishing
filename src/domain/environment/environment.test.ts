@@ -161,7 +161,7 @@ describe('environment', () => {
       spotId: 'test-spot',
       time: at(7, 5, 6),
       species: [salmon],
-      hasFishFinder: false,
+      finder: null,
     })
     const withFinder = searchWater({
       environment,
@@ -169,11 +169,77 @@ describe('environment', () => {
       spotId: 'test-spot',
       time: at(7, 5, 6),
       species: [salmon],
-      hasFishFinder: true,
+      finder: { detectionDepthM: 80, accuracy: 0.6 },
     })
 
     expect(without.speciesIds).toEqual([])
     expect(withFinder.speciesIds).toEqual(['test-salmon'])
     expect(withFinder.sign).not.toBe('weak')
+    expect(without.depthSignals).toBeNull()
+    expect(without.baitActivity).toBeNull()
+    expect(withFinder.baitActivity).not.toBeNull()
+  })
+
+  it('reads depth-only zones only up to the detection depth (Phase 17B)', () => {
+    const environment = environmentAt(at(7, 5, 6))
+    const zones = [
+      { id: 'mid', name: '中層', depthRangeM: { min: 10, max: 35 }, habitatTags: [] },
+      { id: 'bottom', name: '底', depthRangeM: { min: 35, max: 150 }, habitatTags: [] },
+    ]
+
+    const shallowFinder = searchWater({
+      environment,
+      regionId: 'test-region',
+      spotId: 'test-spot',
+      time: at(7, 5, 6),
+      species: [],
+      finder: { detectionDepthM: 40, accuracy: 0.8 },
+      depthZones: zones,
+      spotDepthRangeM: { min: 0, max: 150 },
+    })
+
+    // 40m までしか見えない finder は、150m まである底 Zone の全容を「不明」のままにする。
+    expect(shallowFinder.bottomKnown).toBe(false)
+    expect(shallowFinder.depthSignals).not.toBeNull()
+    expect(shallowFinder.depthSignals?.length).toBeGreaterThan(0)
+
+    const deepFinder = searchWater({
+      environment,
+      regionId: 'test-region',
+      spotId: 'test-spot',
+      time: at(7, 5, 6),
+      species: [],
+      finder: { detectionDepthM: 200, accuracy: 0.9 },
+      depthZones: zones,
+      spotDepthRangeM: { min: 0, max: 150 },
+    })
+
+    expect(deepFinder.bottomKnown).toBe(true)
+  })
+
+  it('gives a Knowledge-tiered hint without ever naming an unseen species (Phase 17B)', () => {
+    const environment = environmentAt(at(7, 5, 6))
+    const low = searchWater({
+      environment,
+      regionId: 'test-region',
+      spotId: 'test-spot',
+      time: at(7, 5, 6),
+      species: [],
+      finder: null,
+      knowledgeScore: 0,
+    })
+    const high = searchWater({
+      environment,
+      regionId: 'test-region',
+      spotId: 'test-spot',
+      time: at(7, 5, 6),
+      species: [],
+      finder: null,
+      knowledgeScore: 90,
+    })
+
+    expect(low.knowledgeHint).not.toBeNull()
+    expect(high.knowledgeHint).not.toBeNull()
+    expect(low.knowledgeHint).not.toEqual(high.knowledgeHint)
   })
 })

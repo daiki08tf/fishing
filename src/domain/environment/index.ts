@@ -49,4 +49,4 @@ export type {
 } from './fishingConditions'
 
 export { searchWater } from './fishFinder'
-export type { SearchResult } from './fishFinder'
+export type { DepthSignal, FishFinderReading, SearchResult } from './fishFinder'

@@ -1,4 +1,4 @@
-import type { TransportId } from '../ids'
+import type { ContactId, RegionId, TransportId } from '../ids'
 
 /**
  * Transport は「車名を AccessEngine の分岐へ増やす」ための enum ではなく、
@@ -16,6 +16,7 @@ export const TRANSPORT_TYPES = [
   'kayak',
   'rental_boat',
   'owned_boat',
+  'charter_boat',
 ] as const
 
 export type TransportType = (typeof TRANSPORT_TYPES)[number]
@@ -88,6 +89,27 @@ export type TransportDefinition = {
   readonly launchCapability: LaunchCapability
   readonly boatCapability: BoatCapability
   readonly passengerCapacity: number
+  /**
+   * Phase 17C: この Transport が特定の Captain / Guide が operate する
+   * Charter サービスであることを示す（任意）。予約システムは作らない —
+   * 「この Transport で釣行すると、この Contact の Trust が上がる」だけの
+   * data-driven な結び付け。Transport-ID による分岐は行わない
+   * （Domain はこのフィールドの有無だけを見る）。
+   */
+  readonly operatorContactId?: ContactId
+  /**
+   * この Transport が「サービスとして営業している範囲」（任意）。
+   *
+   * Charter のように operator が現地で営業している Transport は、その海域でしか
+   * 乗れない。`transportType` は分類（charter_boat）でしかなく、route は分類でしか
+   * 一致しないため、範囲を持たない Charter は他地域の Charter route まで満たしてしまう。
+   *
+   * 省略時は「どこでも使える」（自家用車・レンタル・所有船など、従来の Transport の挙動）。
+   * 指定した場合、AccessEngine はその Spot の Region が含まれるときだけ候補にする。
+   * Region ごとに Transport 種別を増やさず、1 人の船長が複数海域で営業する場合も
+   * 複数の Captain が同じ海域で営業する場合も、この 1 つのフィールドで表せる。
+   */
+  readonly serviceRegionIds?: readonly RegionId[]
 }
 
 /** Save に載る、プレイヤー側の利用可能・所有状態。rental は釣行ごとに解決する。 */

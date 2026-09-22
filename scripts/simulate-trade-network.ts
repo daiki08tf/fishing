@@ -385,6 +385,19 @@ export const simulateTradeNetwork = (): TradeSimulationResult => {
     const hiddenPermits = hiddenSpot.access.flatMap((requirement) =>
       requirement.kind === 'permit' ? [String(requirement.permitId)] : [],
     )
+    /*
+     * Phase 17C: 一部の Hidden Spot は `relationship`（Captain Trust 等）も要求する。
+     * ここは「発見済み + Access OK なら移動できる」という一般則の smoke test なので、
+     * その Spot が要求する関係を満たす Trust を都度組み立てる
+     * （特定の Contact ID をハードコードしない）。
+     */
+    const hiddenContactTrust = Object.fromEntries(
+      hiddenSpot.access.flatMap((requirement) =>
+        requirement.kind === 'relationship'
+          ? [[String(requirement.targetId), requirement.minimum]]
+          : [],
+      ),
+    )
     const hiddenKnowledge = {
       ...emptyKnowledgeState(),
       spots: { [String(hiddenSpot.id)]: 100 },
@@ -415,6 +428,7 @@ export const simulateTradeNetwork = (): TradeSimulationResult => {
       knowledge: hiddenKnowledge,
       permitsEnabled: true,
       permits: hiddenPermits,
+      contactTrust: hiddenContactTrust,
     })
     const discoveredTravel = leaveForSpot({
       context: { world: discoveredWorld, knowledge: hiddenKnowledge },
@@ -422,6 +436,7 @@ export const simulateTradeNetwork = (): TradeSimulationResult => {
       transports,
       playerTransports,
       permits: hiddenPermits,
+      contactTrust: hiddenContactTrust,
       ...(discoveredAccess.travelOptions[0] === undefined
         ? {}
         : { transportId: discoveredAccess.travelOptions[0].transportId }),

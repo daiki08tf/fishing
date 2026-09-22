@@ -1,0 +1,9 @@
+{
+  "id": "captain-erik",
+  "regionId": "norway-fjords",
+  "name": "エリック船長",
+  "type": "captain",
+  "role": "フィヨルド沖のチャーター船を操る船長。陸棚の底物に詳しい。",
+  "initiallyKnown": false,
+  "dataStatus": "provisional"
+}

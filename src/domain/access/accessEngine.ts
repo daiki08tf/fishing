@@ -54,6 +54,7 @@ export const ACCESS_BLOCKED_REASON_KINDS = [
   'ownership_required',
   'rental_unavailable',
   'facility_required',
+  'out_of_service_area',
 ] as const
 
 export type AccessBlockedReasonKind = (typeof ACCESS_BLOCKED_REASON_KINDS)[number]
@@ -93,6 +94,23 @@ export type AccessEvaluationInput = {
   readonly month?: number
   readonly reputationEnabled?: boolean
   readonly permitsEnabled?: boolean
+  /**
+   * Phase 17C: `relationship` 条件の評価に使う Trust マップ（`TradeState.contactTrust` と
+   * 同じ形。キーは `String(ContactId)`）。省略時は Trust 0 として扱う。
+   * Trade Domain の型は import しない（Access は Trade を知らない）。
+   */
+  readonly contactTrust?: Readonly<Record<string, number>>
+  /**
+   * Phase 17 Final Fix: プレイヤーが「知っている」Contact の ID 集合
+   * （`String(ContactId)`）。`TransportDefinition.operatorContactId` を持つ
+   * Charter Transport は、この集合にその Contact が含まれているときだけ
+   * 利用可能になる（Captain-ID / Transport-ID による分岐ではなく、汎用
+   * フィールドの有無 + この集合の有無だけで判定する）。
+   * 「知っている」の算出自体（Buyer は常に true、汎用 Contact は
+   * `isContactKnown`）は Trade Domain 側の責務で、ここでは import しない。
+   * 省略時は空集合（Charter は一切使えない）。
+   */
+  readonly knownContactIds?: ReadonlySet<string> | readonly string[]
 }
 
 const CAPABILITY_LABELS: Readonly<Record<AccessCapability, string>> = {
@@ -121,11 +139,44 @@ const includesAll = <T>(available: readonly T[], required: readonly T[]): boolea
 const rejectionRank = (rejection: TransportCandidateRejection): number =>
   TRANSPORT_CANDIDATE_REJECTIONS.indexOf(rejection)
 
+/** `AccessEvaluationInput.knownContactIds` を毎回同じ形（Set）で扱う。 */
+const knownContactIdSetOf = (input: AccessEvaluationInput): ReadonlySet<string> =>
+  input.knownContactIds instanceof Set
+    ? input.knownContactIds
+    : new Set(input.knownContactIds ?? [])
+
+/**
+ * Phase 17 Final Fix: `operatorContactId` を持つ Charter は、通常の
+ * `availableTransportIds`（徒歩・電車・所有物）には決して入らない
+ * （購入アイテムが配らないため）。代わりに、その Contact を知っていれば
+ * 使える、という派生ルールをここに 1 箇所だけ持つ。
+ */
+const isCharterAvailableViaContact = (
+  definition: TransportDefinition,
+  knownContactIds: ReadonlySet<string>,
+): boolean =>
+  definition.operatorContactId !== undefined &&
+  knownContactIds.has(String(definition.operatorContactId))
+
+/**
+ * その Transport がこの Spot で「営業している」か。
+ *
+ * `serviceRegionIds` を持たない Transport（自家用車・レンタル・所有船）は常に true。
+ * 持つ Transport（Charter サービスなど）は、その Spot の Region を含むときだけ候補になる。
+ * Region-ID で分岐するのではなく、Content が宣言した範囲と Spot の Region を比べるだけである。
+ */
+const transportServesSpot = (definition: TransportDefinition, spot: FishingSpot): boolean =>
+  definition.serviceRegionIds === undefined ||
+  definition.serviceRegionIds.some((regionId) => String(regionId) === String(spot.regionId))
+
 const isTransportAvailable = (
   definition: TransportDefinition,
   state: PlayerTransportState,
+  knownContactIds: ReadonlySet<string>,
 ): boolean => {
-  if (!state.availableTransportIds.includes(definition.id)) {
+  const baseAvailable = state.availableTransportIds.includes(definition.id)
+
+  if (!baseAvailable && !isCharterAvailableViaContact(definition, knownContactIds)) {
     return false
   }
 
@@ -136,8 +187,9 @@ const isTransportAvailable = (
 const availabilityRejection = (
   definition: TransportDefinition,
   state: PlayerTransportState,
+  knownContactIds: ReadonlySet<string>,
 ): TransportCandidateRejection | null => {
-  if (isTransportAvailable(definition, state)) {
+  if (isTransportAvailable(definition, state, knownContactIds)) {
     return null
   }
 
@@ -251,11 +303,16 @@ const capabilityRequirements = (spot: FishingSpot): readonly AccessCapability[] 
 
 const resolveTravelOptions = (input: AccessEvaluationInput): readonly ResolvedTravelOption[] => {
   const requiredBySpot = capabilityRequirements(input.spot)
+  const knownContactIds = knownContactIdSetOf(input)
   const resolved: ResolvedTravelOption[] = []
 
   for (const route of input.spot.travelOptions) {
     for (const definition of input.transports) {
-      if (!isTransportAvailable(definition, input.playerTransports)) {
+      if (!isTransportAvailable(definition, input.playerTransports, knownContactIds)) {
+        continue
+      }
+
+      if (!transportServesSpot(definition, input.spot)) {
         continue
       }
 
@@ -284,9 +341,11 @@ const resolveTravelOptions = (input: AccessEvaluationInput): readonly ResolvedTr
 const isTransportInPlayerScope = (
   definition: TransportDefinition,
   state: PlayerTransportState,
+  knownContactIds: ReadonlySet<string>,
 ): boolean =>
   state.availableTransportIds.includes(definition.id) ||
-  state.ownedTransportIds.includes(definition.id)
+  state.ownedTransportIds.includes(definition.id) ||
+  isCharterAvailableViaContact(definition, knownContactIds)
 
 const routeCanBeUsed = (
   definition: TransportDefinition,
@@ -340,14 +399,38 @@ const missingRouteFeatures = (
  */
 const diagnoseBlockedTransport = (input: AccessEvaluationInput): readonly AccessBlockedReason[] => {
   const { spot, transports, playerTransports } = input
+  const knownContactIds = knownContactIdSetOf(input)
   const requiredBySpot = capabilityRequirements(spot)
 
-  // 1. 手持ちの移動手段がその capability をまったく提供しない場合だけ「不足」と言う。
+  /*
+   * 1. この Spot で営業していないサービスを持っているだけ、という状態を先に説明する。
+   * （別の海域の Charter を持っていることは「capability 不足」でも「route 非対応」でもない）
+   */
+  const outOfServiceArea = transports.filter(
+    (definition) =>
+      !transportServesSpot(definition, spot) &&
+      isTransportInPlayerScope(definition, playerTransports, knownContactIds) &&
+      includesAll(definition.capabilities, requiredBySpot) &&
+      routeCanBeUsed(definition, spot.travelOptions),
+  )
+
+  if (outOfServiceArea.length > 0) {
+    return [
+      {
+        kind: 'out_of_service_area',
+        label: '必要: この地域で営業しているサービス（手配できるのは別の地域の船・事業者）',
+        transportIds: outOfServiceArea.map((definition) => String(definition.id)),
+      },
+    ]
+  }
+
+  // 2. 手持ちの移動手段がその capability をまったく提供しない場合だけ「不足」と言う。
   const missingCapabilities = requiredBySpot.filter(
     (capability) =>
       !transports.some(
         (definition) =>
-          isTransportInPlayerScope(definition, playerTransports) &&
+          transportServesSpot(definition, spot) &&
+          isTransportInPlayerScope(definition, playerTransports, knownContactIds) &&
           definition.capabilities.includes(capability),
       ),
   )
@@ -360,12 +443,13 @@ const diagnoseBlockedTransport = (input: AccessEvaluationInput): readonly Access
     }))
   }
 
-  // 2. Spot の capability を 1 台で満たせる候補だけで、残りの段階を調べる。
-  const candidates = transports.filter((definition) =>
-    includesAll(definition.capabilities, requiredBySpot),
+  // 3. Spot の capability を 1 台で満たせる候補だけで、残りの段階を調べる。
+  const candidates = transports.filter(
+    (definition) =>
+      transportServesSpot(definition, spot) && includesAll(definition.capabilities, requiredBySpot),
   )
   const usable = (definition: TransportDefinition): boolean =>
-    isTransportAvailable(definition, playerTransports) &&
+    isTransportAvailable(definition, playerTransports, knownContactIds) &&
     routeCanBeUsed(definition, spot.travelOptions)
 
   if (candidates.some(usable)) {
@@ -375,8 +459,8 @@ const diagnoseBlockedTransport = (input: AccessEvaluationInput): readonly Access
 
   const ownership = candidates.filter(
     (definition) =>
-      availabilityRejection(definition, playerTransports) === 'ownership_required' &&
-      routeCanBeUsed(definition, spot.travelOptions),
+      availabilityRejection(definition, playerTransports, knownContactIds) ===
+        'ownership_required' && routeCanBeUsed(definition, spot.travelOptions),
   )
 
   if (ownership.length > 0) {
@@ -391,8 +475,8 @@ const diagnoseBlockedTransport = (input: AccessEvaluationInput): readonly Access
 
   const rental = candidates.filter(
     (definition) =>
-      availabilityRejection(definition, playerTransports) === 'rental_unavailable' &&
-      routeCanBeUsed(definition, spot.travelOptions),
+      availabilityRejection(definition, playerTransports, knownContactIds) ===
+        'rental_unavailable' && routeCanBeUsed(definition, spot.travelOptions),
   )
 
   if (rental.length > 0) {
@@ -411,8 +495,8 @@ const diagnoseBlockedTransport = (input: AccessEvaluationInput): readonly Access
    */
   const inScope = candidates.filter(
     (definition) =>
-      isTransportInPlayerScope(definition, playerTransports) &&
-      availabilityRejection(definition, playerTransports) === null,
+      isTransportInPlayerScope(definition, playerTransports, knownContactIds) &&
+      availabilityRejection(definition, playerTransports, knownContactIds) === null,
   )
   const facilityBlocked: TransportDefinition[] = []
   let deepest: TransportCandidateRejection | null = null
@@ -527,10 +611,17 @@ export const evaluateAccess = (input: AccessEvaluationInput): AccessEvaluation =
       }
 
       case 'relationship': {
-        if (input.reputationEnabled) {
-          blockedReasons.push({ kind: 'relationship', label: '必要: 人脈（未実装）' })
-        } else {
+        const trust = input.contactTrust?.[String(requirement.targetId)] ?? 0
+
+        if (trust >= requirement.minimum) {
           satisfiedKinds.push('relationship')
+        } else {
+          blockedReasons.push({
+            kind: 'relationship',
+            label: `必要: 人脈 Trust ${String(requirement.minimum)}`,
+            required: requirement.minimum,
+            current: Math.round(trust),
+          })
         }
         break
       }

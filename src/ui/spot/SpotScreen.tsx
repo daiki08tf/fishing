@@ -1,10 +1,16 @@
 import { useState } from 'react'
 import { knowledgeTierFor, revealedFields } from '../../domain/knowledge/spotKnowledge'
-import { resolveEnvironment, resolveFishingConditions } from '../../domain/environment'
+import {
+  WATER_FLOW_LABELS,
+  resolveEnvironment,
+  resolveFishingConditions,
+} from '../../domain/environment'
 import { NEUTRAL_FISHING_MODIFIERS } from '../../domain/fishing/PlayerFishingModifiers'
 import { bestFishFinderOf, resolveTackle } from '../../domain/tackle'
 import { fishingZonesForSpot } from '../../domain/casting'
+import { SEA_STATE_LABELS, resolveFishingPlatform, resolveSeaState } from '../../domain/depth'
 import { resolveBiteCompatibility } from '../../domain/tackle/biteCompatibility'
+import { knownContactIdsOf } from '../../domain/trade'
 import { formatWorldTime } from '../../domain/world'
 import { spotKnowledgeScore } from '../../domain/knowledge/spotKnowledge'
 import { GLOBAL_PACK_KEYS } from '../../content/runtime/contentRuntime'
@@ -48,10 +54,12 @@ export const SpotScreen = () => {
   const tacklePack = usePack(GLOBAL_PACK_KEYS.tackle)
   const regionPack = useRegionPack(String(world.currentRegionId))
   const knowledge = usePlayerStore((state) => state.knowledge)
+  const trade = usePlayerStore((state) => state.trade)
   const loadout = usePlayerStore((state) => state.loadout)
   const inventory = usePlayerStore((state) => state.inventory)
   const lastSearch = usePlayerStore((state) => state.lastSearch)
   const searchWater = usePlayerStore((state) => state.searchWater)
+  const reposition = usePlayerStore((state) => state.reposition)
   const returnHome = usePlayerStore((state) => state.returnHome)
   const [notice, setNotice] = useState<string | null>(null)
 
@@ -101,6 +109,13 @@ export const SpotScreen = () => {
     )
   }
 
+  const knownContactIds = knownContactIdsOf(
+    content.value.buyers,
+    content.value.contacts,
+    content.value.contactRewards,
+    trade.claimedRewardIds,
+  )
+
   const score = spotKnowledgeScore(knowledge, String(spot.id))
   const fields = revealedFields(spot, score)
   const knownSpecies = fields.includes('main_species')
@@ -129,6 +144,15 @@ export const SpotScreen = () => {
     const species = content.value.speciesById[String(occurrence.speciesId)]
     return species === undefined ? [] : [species]
   })
+  /*
+   * Phase 17A: Fishing Platform は Save しない派生値。今回の釣行で使った
+   * Transport（world.trip.transportId）から derive するだけ（新しい state は増やさない）。
+   */
+  const tripTransportId = world.trip?.transportId ?? null
+  const tripTransport =
+    tripTransportId === null ? null : (content.value.transportById[String(tripTransportId)] ?? null)
+  const platform = resolveFishingPlatform(tripTransport)
+  const seaState = environment === null ? null : resolveSeaState(environment)
   const finder = bestFishFinderOf(inventory, content.value.gear)
   const searchSign =
     lastSearch !== null && lastSearch.spotId === String(spot.id) ? lastSearch.sign : null
@@ -186,6 +210,16 @@ export const SpotScreen = () => {
           {ENVIRONMENT_LABELS[spot.environment] ?? spot.environment}
           {spot.dataStatus === 'provisional' ? ' / 暫定データ（詳細は未検証）' : ''}
         </p>
+        {platform.platform === 'shore' ? null : (
+          <p className="fishing__legend">
+            乗船: {platform.transportName ?? '—'}
+            {spot.depth === undefined
+              ? ''
+              : ` / 水深 ${String(spot.depth.depthRangeM.min)}〜${String(spot.depth.depthRangeM.max)}m`}
+            {seaState === null ? '' : ` / 海況 ${SEA_STATE_LABELS[seaState]}`}
+            {environment === null ? '' : ` / 流れ ${WATER_FLOW_LABELS[environment.water.flow]}`}
+          </p>
+        )}
         <dl className="record">
           <div>
             <dt>知識</dt>
@@ -218,13 +252,33 @@ export const SpotScreen = () => {
               spot,
               species: spotSpecies,
               environment,
-              hasFishFinder: finder !== null,
+              finder:
+                finder === null
+                  ? null
+                  : { detectionDepthM: finder.detectionDepthM, accuracy: finder.accuracy },
+              depthZones: fishingZones.filter(
+                (zone) => zone.castDistanceM === undefined && zone.depthRangeM !== undefined,
+              ),
+              spotDepthRangeM: spot.depth?.depthRangeM,
+              knowledgeScore: score,
             })
             setNotice(result.message)
           }}
         >
           水面を探る（Search Water）
         </button>
+        {!platform.canReposition ? null : (
+          <button
+            className="button"
+            type="button"
+            onClick={() => {
+              const result = reposition(content.value.transports)
+              setNotice(result.message)
+            }}
+          >
+            少し移動して探り直す（Reposition）
+          </button>
+        )}
         {notice === null ? null : <p className="notice">{notice}</p>}
       </section>
 
@@ -249,6 +303,9 @@ export const SpotScreen = () => {
                   {zone.castDistanceM === undefined
                     ? ''
                     : ` — ${String(zone.castDistanceM.min)}〜${String(zone.castDistanceM.max)}m`}
+                  {zone.depthRangeM === undefined
+                    ? ''
+                    : ` — 水深 ${String(zone.depthRangeM.min)}〜${String(zone.depthRangeM.max)}m`}
                 </li>
               ))}
             </ul>
@@ -332,7 +389,12 @@ export const SpotScreen = () => {
           className="button"
           type="button"
           onClick={() => {
-            const result = returnHome(spot, content.value.transports)
+            const result = returnHome(
+              spot,
+              content.value.transports,
+              content.value.contactRewards,
+              knownContactIds,
+            )
 
             if (result.ok) {
               setActiveScreen('home')

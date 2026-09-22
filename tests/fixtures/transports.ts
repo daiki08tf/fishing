@@ -4,7 +4,7 @@ import {
   type PlayerTransportState,
   type TransportDefinition,
 } from '../../src/domain/access/Transport'
-import { asTransportId } from '../../src/domain/ids'
+import { asContactId, asTransportId } from '../../src/domain/ids'
 
 const definition = (
   input: Pick<
@@ -28,6 +28,7 @@ const definition = (
   ...(input.purchasePrice === undefined ? {} : { purchasePrice: input.purchasePrice }),
   ...(input.rentalCost === undefined ? {} : { rentalCost: input.rentalCost }),
   ...(input.maxRangeKm === undefined ? {} : { maxRangeKm: input.maxRangeKm }),
+  ...(input.operatorContactId === undefined ? {} : { operatorContactId: input.operatorContactId }),
 })
 
 export const TEST_TRANSPORTS: readonly TransportDefinition[] = [
@@ -142,6 +143,20 @@ export const TEST_TRANSPORTS: readonly TransportDefinition[] = [
     requiredRouteFeatures: ['marina'],
     launchCapability: 'marina',
     boatCapability: 'offshore',
+  }),
+  /** Phase 17 Final Fix: operatorContactId を持つ Charter の fixture。 */
+  definition({
+    id: asTransportId('charter-boat'),
+    name: 'チャーター船',
+    transportType: 'charter_boat',
+    ownershipModel: 'rental',
+    rentalCost: 45_000,
+    maxRangeKm: 100,
+    capabilities: ['boat_required', 'offshore'],
+    requiredRouteFeatures: ['boat_rental', 'marina'],
+    launchCapability: 'marina',
+    boatCapability: 'offshore',
+    operatorContactId: asContactId('test-captain'),
   }),
 ]
 

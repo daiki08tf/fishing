@@ -118,6 +118,7 @@ export const simulateContentScale = (): ContentScaleResult => {
     spots: content.spots,
     regions: content.regions,
     buyers: content.buyers,
+    contacts: content.contacts,
     contactRewards: content.contactRewards,
     expeditions: content.expeditions,
     speciesTradeProfiles: content.speciesTradeProfiles,

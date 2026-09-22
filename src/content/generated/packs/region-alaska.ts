@@ -6,24 +6,33 @@
 
 import m0 from '../../data/fishing-spots/alaska-coastal-bay.json'
 import m1 from '../../data/fishing-spots/alaska-glacier-creek.json'
-import m2 from '../../data/fishing-spots/alaska-hidden-river-branch.json'
-import m3 from '../../data/fishing-spots/alaska-mountain-river.json'
-import m4 from '../../data/fishing-spots/alaska-offshore-grounds.json'
-import m5 from '../../data/fishing-spots/alaska-salmon-river.json'
-import m6 from '../../data/fishing-spots/alaska-sound-shore.json'
-import m7 from '../../data/fishing-spots/alaska-trophy-lake.json'
+import m2 from '../../data/fishing-spots/alaska-hidden-offshore-canyon.json'
+import m3 from '../../data/fishing-spots/alaska-hidden-river-branch.json'
+import m4 from '../../data/fishing-spots/alaska-mountain-river.json'
+import m5 from '../../data/fishing-spots/alaska-offshore-grounds.json'
+import m6 from '../../data/fishing-spots/alaska-salmon-river.json'
+import m7 from '../../data/fishing-spots/alaska-sound-shore.json'
+import m8 from '../../data/fishing-spots/alaska-trophy-lake.json'
+import m9 from '../../data/contacts/captain-jack.json'
+import m10 from '../../data/contact-rewards/captain-jack-intel-reading.json'
+import m11 from '../../data/contact-rewards/captain-jack-spot-offshore-canyon.json'
 
 export const m0Name = "alaska-coastal-bay.json"
 export const m1Name = "alaska-glacier-creek.json"
-export const m2Name = "alaska-hidden-river-branch.json"
-export const m3Name = "alaska-mountain-river.json"
-export const m4Name = "alaska-offshore-grounds.json"
-export const m5Name = "alaska-salmon-river.json"
-export const m6Name = "alaska-sound-shore.json"
-export const m7Name = "alaska-trophy-lake.json"
+export const m2Name = "alaska-hidden-offshore-canyon.json"
+export const m3Name = "alaska-hidden-river-branch.json"
+export const m4Name = "alaska-mountain-river.json"
+export const m5Name = "alaska-offshore-grounds.json"
+export const m6Name = "alaska-salmon-river.json"
+export const m7Name = "alaska-sound-shore.json"
+export const m8Name = "alaska-trophy-lake.json"
+export const m9Name = "captain-jack.json"
+export const m10Name = "captain-jack-intel-reading.json"
+export const m11Name = "captain-jack-spot-offshore-canyon.json"
 
 export const load = async (): Promise<Readonly<Record<string, readonly unknown[]>>> => ({
-    "fishing-spots": [m0, m1, m2, m3, m4, m5, m6, m7],
+    "fishing-spots": [m0, m1, m2, m3, m4, m5, m6, m7, m8],
     "buyers": [],
-    "contact-rewards": [],
+    "contacts": [m9],
+    "contact-rewards": [m10, m11],
 })

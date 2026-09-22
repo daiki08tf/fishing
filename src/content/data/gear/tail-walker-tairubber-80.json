@@ -1,0 +1,18 @@
+{
+  "id": "tail-walker-tairubber-80",
+  "name": "Tairubber 80",
+  "price": 2400,
+  "category": "lure",
+  "brandId": "tail-walker",
+  "lureType": "tai_rubber",
+  "weightG": 80,
+  "lengthMm": 150,
+  "depthRangeM": {
+    "min": 20,
+    "max": 70
+  },
+  "retrieveStyle": "steady_fall_and_wind",
+  "action": "flutter",
+  "visualProfile": "flash",
+  "targetProfile": ["bottom", "mid", "large"]
+}

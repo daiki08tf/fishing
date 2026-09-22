@@ -11,6 +11,7 @@ import { resolveCatch } from '../domain/catch'
 import { emptyCodexState, type CodexState } from '../domain/codex'
 import {
   addKeptCatch,
+  applyCharterTripOutcome,
   claimEligibleRewards,
   createInitialTradeState,
   sellCatches,
@@ -22,10 +23,15 @@ import {
   type TradeState,
 } from '../domain/trade'
 import {
+  SEARCH_SIGN_LABELS,
   searchWater as resolveSearchWater,
+  type DepthSignal,
   type EnvironmentSnapshot,
+  type FishFinderReading,
   type SearchSign,
 } from '../domain/environment'
+import type { FishingZone } from '../domain/world/FishingSpot'
+import type { Range } from '../domain/primitives'
 import {
   createInitialExpeditionState,
   permitIdsForAccess,
@@ -77,11 +83,14 @@ import {
 } from '../domain/tackle'
 import {
   advanceMinutes,
+  dateKeyOf,
   formatWorldTime,
   MINUTES_PER_DAY,
   sleepUntilMorning,
   type WorldTime,
 } from '../domain/world/WorldTime'
+import { resolveFishingPlatform } from '../domain/depth'
+import { SeededRandomSource } from '../domain/rng/SeededRandomSource'
 import type { FishingSpot } from '../domain/world/FishingSpot'
 import { DEFAULT_WORLD_TUNING } from '../domain/world/WorldTuning'
 import {
@@ -148,6 +157,11 @@ export type SearchOutcome = {
   readonly sign: SearchSign
   readonly speciesIds: readonly string[]
   readonly at: WorldTime
+  /** Phase 17B: depth-only Zone があり、Fish Finder を持っているときだけ埋まる。 */
+  readonly depthSignals: readonly DepthSignal[] | null
+  readonly bottomKnown: boolean | null
+  readonly baitActivity: SearchSign | null
+  readonly knowledgeHint: string | null
 }
 
 export type RecordCatchInput = {
@@ -245,6 +259,11 @@ export type PlayerStoreState = PersistedPlayerSlice & {
   readonly lastCatch: LastCatchSummary | null
   readonly skillAllocationError: SkillAllocationFailure | null
   readonly lastSearch: SearchOutcome | null
+  /**
+   * Phase 17B: 今の Spot での「探索位置」。Reposition で進む。Save には載せない
+   * （Spot を出る・帰宅する・別の釣行を始めると 0 に戻る。reload でリセットされても問題ない）。
+   */
+  readonly searchPositionIndex: number
 
   beginHydration(): void
   /** 保存済みの状態を適用する。Domain の副作用（XP 加算や記録判定）は起こさない。 */
@@ -267,23 +286,46 @@ export type PlayerStoreState = PersistedPlayerSlice & {
   resetSkills(): void
 
   /** Spot のアクセス判定（状態は変えない）。 */
-  evaluateSpot(spot: FishingSpot, transports: readonly TransportDefinition[]): AccessEvaluation
+  evaluateSpot(
+    spot: FishingSpot,
+    transports: readonly TransportDefinition[],
+    knownContactIds?: ReadonlySet<string> | readonly string[],
+  ): AccessEvaluation
   /** 釣行前の判定（行けるか / 費用が足りるか）。 */
   evaluateTrip(
     spot: FishingSpot,
     travelOption: ResolvedTravelOption,
     transports: readonly TransportDefinition[],
+    knownContactIds?: ReadonlySet<string> | readonly string[],
   ): TripReadiness
-  /** 自宅を出て Spot へ移動する（時間が進む）。 */
+  /**
+   * 自宅を出て Spot へ移動する（時間が進む）。
+   * `knownContactIds`（Phase 17 Final Fix）は `operatorContactId` を持つ Charter
+   * Transport の利用可否を derive するための、知っている Contact の集合
+   * （Buyer は常に含む・汎用 Contact は `isContactKnown` 由来。UI が
+   * `knownContactIdsOf` で組み立てて渡す。省略時は Charter を一切使えない）。
+   */
   travelToSpot(
     spot: FishingSpot,
     transports: readonly TransportDefinition[],
     transportId?: TransportId,
+    knownContactIds?: ReadonlySet<string> | readonly string[],
   ): TripActionResult
   /** 釣り 1 回分の結果を世界へ反映する（時間と Knowledge が進む）。 */
   recordAttempt(input: RecordAttemptInput): TripActionResult
-  /** Spot を出て自宅へ戻る（帰路の時間が進む）。 */
-  returnHome(spot: FishingSpot, transports: readonly TransportDefinition[]): TripActionResult
+  /**
+   * Spot を出て自宅へ戻る（帰路の時間が進む）。
+   * Charter で来ていれば（Transport に operatorContactId があれば）、
+   * ボウズでも Base Trust が Captain / Guide へ入る（Phase 17C）。
+   * `knownContactIds`（Phase 17 Final Fix）は往路と同じ Charter で
+   * 帰れるようにするために渡す。
+   */
+  returnHome(
+    spot: FishingSpot,
+    transports: readonly TransportDefinition[],
+    rewards?: readonly ContactReward[],
+    knownContactIds?: ReadonlySet<string> | readonly string[],
+  ): TripActionResult
   /** 商品を買う。買えると移動手段が増えることがある。 */
   purchaseItem(item: ShopItem): { readonly ok: boolean; readonly message: string | null }
   /** 翌朝まで休む（時間を進める）。 */
@@ -296,8 +338,25 @@ export type PlayerStoreState = PersistedPlayerSlice & {
     readonly spot: FishingSpot
     readonly species: readonly FishSpecies[]
     readonly environment: EnvironmentSnapshot
-    readonly hasFishFinder: boolean
+    readonly finder: FishFinderReading | null
+    /** Phase 17B: depth-only Zone（船の真下など）。岸釣りでは省略でよい。 */
+    readonly depthZones?: readonly FishingZone[]
+    readonly spotDepthRangeM?: Range
+    readonly knowledgeScore?: number
   }): { readonly ok: boolean; readonly message: string | null }
+  /**
+   * Reposition（Phase 17B）。船 / カヤックで少し移動し、探索位置を進める。
+   * 無料の reroll にはしない（ゲーム内時間 15〜30 分を消費する）。
+   * 移動後は前回の Search Water 結果を無効にする。
+   *
+   * Phase 17 Final Fix: UI の非表示だけを防壁にしない。今回の釣行の Transport
+   * （`world.trip.transportId`）から Platform を derive し、船に乗っていない
+   * （`FishingPlatform.canReposition === false`）ときは Domain の入口で拒否する。
+   */
+  reposition(transports: readonly TransportDefinition[]): {
+    readonly ok: boolean
+    readonly message: string | null
+  }
   /** 遠征に出発する（費用を払い、時間を進め、現地の拠点へ移る）。 */
   startExpedition(plan: ExpeditionPlan): TripActionResult
   /** 遠征を終えて home region へ帰る（時間が進む）。 */
@@ -331,6 +390,7 @@ const createInitialState = (): PersistedPlayerSlice & {
   readonly lastCatch: LastCatchSummary | null
   readonly skillAllocationError: SkillAllocationFailure | null
   readonly lastSearch: SearchOutcome | null
+  readonly searchPositionIndex: number
 } => ({
   hydrationStatus: 'idle',
   hydrationFailure: null,
@@ -348,6 +408,7 @@ const createInitialState = (): PersistedPlayerSlice & {
   lastCatch: null,
   skillAllocationError: null,
   lastSearch: null,
+  searchPositionIndex: 0,
 })
 
 /**
@@ -356,6 +417,14 @@ const createInitialState = (): PersistedPlayerSlice & {
  */
 const settleAfterAdvance = (finance: FinanceState, from: WorldTime, to: WorldTime): FinanceState =>
   settleFinance({ finance, from, to }).finance
+
+/** Phase 17B: Search Water のベイト活性表示（SEARCH_SIGN_LABELS は「反応」寄りの言い回しのため別に持つ）。 */
+const BAIT_ACTIVITY_LABELS: Readonly<Record<SearchSign, string>> = {
+  weak: '弱い',
+  moderate: '普通',
+  strong: '高い',
+  large: '非常に高い',
+}
 
 export const createPlayerStore = () =>
   create<PlayerStoreState>()((set, get) => ({
@@ -384,6 +453,7 @@ export const createPlayerStore = () =>
         lastCatch: null,
         skillAllocationError: null,
         lastSearch: null,
+        searchPositionIndex: 0,
       })
     },
 
@@ -543,8 +613,8 @@ export const createPlayerStore = () =>
       set({ progression: unlock.progression, skillAllocationError: null })
     },
 
-    evaluateSpot: (spot, transports) => {
-      const { transport, knowledge, expedition } = get()
+    evaluateSpot: (spot, transports, knownContactIds) => {
+      const { transport, knowledge, expedition, trade } = get()
 
       return evaluateAccess({
         spot,
@@ -553,10 +623,12 @@ export const createPlayerStore = () =>
         knowledge,
         permitsEnabled: true,
         permits: permitIdsForAccess(expedition),
+        contactTrust: trade.contactTrust,
+        ...(knownContactIds === undefined ? {} : { knownContactIds }),
       })
     },
 
-    evaluateTrip: (spot, travelOption, transports) => {
+    evaluateTrip: (spot, travelOption, transports, knownContactIds) => {
       const state = get()
       const access = evaluateAccess({
         spot,
@@ -565,6 +637,8 @@ export const createPlayerStore = () =>
         knowledge: state.knowledge,
         permitsEnabled: true,
         permits: permitIdsForAccess(state.expedition),
+        contactTrust: state.trade.contactTrust,
+        ...(knownContactIds === undefined ? {} : { knownContactIds }),
       })
       const cost = roundTripCostFor(travelOption)
 
@@ -576,12 +650,12 @@ export const createPlayerStore = () =>
       }
     },
 
-    travelToSpot: (spot, transports, transportId) => {
+    travelToSpot: (spot, transports, transportId, knownContactIds) => {
       if (get().hydrationStatus !== 'ready') {
         return { ok: false, reason: 'state', message: '読み込み中' }
       }
 
-      const { world, transport, knowledge, finance, expedition } = get()
+      const { world, transport, knowledge, finance, expedition, trade } = get()
 
       // Phase 8: 今いる地域の釣り場にしか行けない（Domain も leaveForSpot で強制する）。
       // 入口で先に見て、許可や費用より「遠征が必要」を優先して伝える。
@@ -612,6 +686,8 @@ export const createPlayerStore = () =>
         knowledge,
         permitsEnabled: true,
         permits: permitIdsForAccess(expedition),
+        contactTrust: trade.contactTrust,
+        ...(knownContactIds === undefined ? {} : { knownContactIds }),
       })
 
       if (!access.accessible) {
@@ -650,6 +726,8 @@ export const createPlayerStore = () =>
         transports,
         playerTransports: transport,
         permits: permitIdsForAccess(expedition),
+        contactTrust: trade.contactTrust,
+        ...(knownContactIds === undefined ? {} : { knownContactIds }),
         ...(transportId === undefined ? {} : { transportId }),
       })
 
@@ -676,6 +754,7 @@ export const createPlayerStore = () =>
         finance: settledFinance,
         // 別の釣り場へ移ったら Search Water の結果は無効になる。
         lastSearch: null,
+        searchPositionIndex: 0,
       })
 
       return { ok: true, message: null }
@@ -711,18 +790,36 @@ export const createPlayerStore = () =>
       return { ok: true, message: null }
     },
 
-    returnHome: (spot, transports) => {
+    returnHome: (spot, transports, rewards = [], knownContactIds) => {
       if (get().hydrationStatus !== 'ready') {
         return { ok: false, reason: 'state', message: '読み込み中' }
       }
 
-      const { world, transport, knowledge, finance, expedition } = get()
+      const { world, transport, knowledge, finance, expedition, trade } = get()
+
+      /*
+       * Phase 17C: Charter Trust はここで確定する（帰宅 = 釣行完了）。
+       * ボウズでも Base は入る。対象 Contact が無い Transport（徒歩・電車・
+       * レンタル一般など）では何も起きない（operatorContactId が無いため）。
+       */
+      const tripTransportId = world.trip?.transportId ?? null
+      const tripTransport =
+        tripTransportId === null
+          ? null
+          : (transports.find((entry) => entry.id === tripTransportId) ?? null)
+      const charterOutcome = applyCharterTripOutcome(trade, tripTransport, world.trip?.catches ?? 0)
+      const claim =
+        charterOutcome.contactId === null
+          ? { trade: charterOutcome.trade, newlyClaimed: [] as readonly ContactReward[] }
+          : claimEligibleRewards(charterOutcome.trade, charterOutcome.contactId, rewards)
+
       const left = leaveSpot({
         context: { world, knowledge },
         spot,
         transports,
         playerTransports: transport,
         permits: permitIdsForAccess(expedition),
+        ...(knownContactIds === undefined ? {} : { knownContactIds }),
       })
 
       if (!left.ok) {
@@ -735,13 +832,23 @@ export const createPlayerStore = () =>
         return { ok: false, reason: 'state', message: home.message }
       }
 
-      const settledFinance = settleAfterAdvance(finance, world.time, home.context.world.time)
+      let nextWorld = home.context.world
+
+      for (const reward of claim.newlyClaimed) {
+        if (reward.kind === 'discover_spot' && reward.targetId !== undefined) {
+          nextWorld = discoverSpotFromContact(nextWorld, reward.targetId as FishingSpotId)
+        }
+      }
+
+      const settledFinance = settleAfterAdvance(finance, world.time, nextWorld.time)
 
       set({
-        world: home.context.world,
+        world: nextWorld,
         knowledge: home.context.knowledge,
         finance: settledFinance,
+        trade: claim.trade,
         lastSearch: null,
+        searchPositionIndex: 0,
       })
 
       return { ok: true, message: null }
@@ -918,7 +1025,7 @@ export const createPlayerStore = () =>
         return { ok: false, message: '読み込み中' }
       }
 
-      const { world } = get()
+      const { world, searchPositionIndex } = get()
       const spot = input.spot
 
       if (world.phase !== 'AT_SPOT') {
@@ -935,7 +1042,11 @@ export const createPlayerStore = () =>
         spotId: String(spot.id),
         time: world.time,
         species: input.species,
-        hasFishFinder: input.hasFishFinder,
+        finder: input.finder,
+        depthZones: input.depthZones,
+        spotDepthRangeM: input.spotDepthRangeM,
+        knowledgeScore: input.knowledgeScore,
+        positionIndex: searchPositionIndex,
       })
 
       set({
@@ -944,10 +1055,86 @@ export const createPlayerStore = () =>
           sign: result.sign,
           speciesIds: result.speciesIds,
           at: world.time,
+          depthSignals: result.depthSignals,
+          bottomKnown: result.bottomKnown,
+          baitActivity: result.baitActivity,
+          knowledgeHint: result.knowledgeHint,
         },
       })
 
-      return { ok: true, message: result.label }
+      const depthText =
+        result.depthSignals === null || result.depthSignals.length === 0
+          ? ''
+          : ` / ${result.depthSignals
+              .map(
+                (signal) =>
+                  `${String(signal.rangeM.min)}〜${String(signal.rangeM.max)}m ${SEARCH_SIGN_LABELS[signal.strength]}`,
+              )
+              .join('、')}`
+      const bottomText =
+        result.bottomKnown === null
+          ? ''
+          : result.bottomKnown
+            ? ' / 海底の深さは掴めた'
+            : ' / 海底までは探知しきれない'
+
+      const baitText =
+        result.baitActivity === null
+          ? ''
+          : ` / ベイト活性: ${BAIT_ACTIVITY_LABELS[result.baitActivity]}`
+      const knowledgeText = result.knowledgeHint === null ? '' : ` / ${result.knowledgeHint}`
+
+      return {
+        ok: true,
+        message: `${result.label}${depthText}${bottomText}${baitText}${knowledgeText}`,
+      }
+    },
+
+    /**
+     * Reposition（Phase 17B）。
+     *
+     * 「今の位置での反応が薄いので少し移動する」を、時間コストありで表現する。
+     * 無料の reroll にしない（15〜30 分、決定論的に seed から決まる）。
+     * 位置を進めたら前回の Search Water 結果は無効にする（新しい場所の反応をまだ見ていない）。
+     */
+    reposition: (transports) => {
+      if (get().hydrationStatus !== 'ready') {
+        return { ok: false, message: '読み込み中' }
+      }
+
+      const { world, finance, searchPositionIndex } = get()
+
+      if (world.phase !== 'AT_SPOT' || world.currentSpotId === null) {
+        return { ok: false, message: '釣り場でだけ移動できる' }
+      }
+
+      const tripTransportId = world.trip?.transportId ?? null
+      const tripTransport =
+        tripTransportId === null
+          ? null
+          : (transports.find((entry) => entry.id === tripTransportId) ?? null)
+      const platform = resolveFishingPlatform(tripTransport)
+
+      if (!platform.canReposition) {
+        return { ok: false, message: '船に乗っていないと移動し直せない' }
+      }
+
+      const roll = new SeededRandomSource(
+        `reposition:${String(world.currentSpotId)}:${dateKeyOf(world.time)}:${String(searchPositionIndex)}`,
+      ).next()
+      const minutes = 15 + Math.round(roll * 15)
+      const nextTime = advanceMinutes(world.time, minutes)
+      const settledFinance = settleAfterAdvance(finance, world.time, nextTime)
+
+      set({
+        world: { ...world, time: nextTime },
+        finance: settledFinance,
+        searchPositionIndex: searchPositionIndex + 1,
+        // 新しい位置での反応はまだ見ていない。
+        lastSearch: null,
+      })
+
+      return { ok: true, message: `少し移動した（${String(minutes)}分経過）` }
     },
 
     /**

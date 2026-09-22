@@ -2,14 +2,21 @@
 
 ## Phase
 
-**Phase 14 — Retro Management-Sim UI / Visual Identity Redesign**
-**+ Phase 14.1 — iPhone UI Polish / Result Flow / Map Presentation**
+**Phase 17 — Boat & Offshore Expansion（17A〜17E）**
 
-状態: **完了**（branch `phase-14-retro-ui-redesign`、PR #16・未マージ）
+状態: **完了**（branch `phase-17-boat-offshore`、PR #19・未マージ、main へは
+まだ入っていない）
 
-Phase 13 / 13.1（Fish Trade, Contacts & Hidden Spots + レビュー修正）は main へ
-統合済みの前提で、その上に UI 層だけの再スキンを行った。Domain / State のルールは
-1 つも変更していない。詳細な決定事項は `docs/DECISIONS.md` の "Phase 14" を参照。
+Phase 16（World Expansion I、main へ統合済み、HEAD
+`12bb84f364bdebf886aae4ce8332971b892bc6fe`）の 14 Region / 229 Species / 140 Spot
+の上に、「沖」と「水深」を新しい Region を増やさずに足した。5 つの内部
+sub-phase（Offshore Core → Method/Fish Finder → Boat Economy/Charter/Captain →
+World Content → Balance/Regression/Docs）に分け、それぞれ `npm run check` の
+green を確認してからコミットした。詳細な決定事項は `docs/DECISIONS.md` の
+"Phase 17" を、実装の要点は末尾の "Phase 17（Boat & Offshore Expansion）" 節を
+参照。Save は v9 のまま（新しい永続 state は最後まで 1 つも増えていない）。
+
+過去の Phase（14 以前）の状態はこのファイルの下の各節を参照。
 
 ## 狙い
 
@@ -316,3 +323,41 @@ Save v9 / Phase 15 の lazy loading / Domain rule（FishingEngine / Trade / Acce
 - tests 95 files / 834、validate:content 1312 records
 - 未検証: 実ブラウザ / 実機での mobile viewport 目視（この環境ではブラウザ起動不可）。
   375 / 390 / 430 は DOM / CSS の静的チェックのみ
+
+
+## Phase 17（Boat & Offshore Expansion）
+
+Phase 16 の世界（新規 Region 追加なし）に「沖」「水深」を足した。
+実装は `docs/ARCHITECTURE.md` §16、決定事項は `docs/DECISIONS.md` "Phase 17" 参照。
+
+- **17A**: `src/domain/depth/` を新設（FishingPlatform / DepthCapability /
+  resolveDeployment / SeaState / MarineReadiness / fightDistance）。既存
+  Casting は無変更。zone の形（`castDistanceM` の有無）で cast 系 / depth 系を
+  振り分ける
+- **17B**: Method に `presentation`（cast/vertical/drift/troll、任意・後方互換）
+  を追加し、5 新規 Method（オフショアキャスティング / バーチカルジギング /
+  タイラバ / 泳がせ / トローリング）+ 対応タックルを投入。Fish Finder を
+  `detectionDepthM`/`accuracy` ベースの sonar 表現に書き換え、Reposition
+  （transient、Save 変更なし）を追加
+- **17C**: 汎用 `ContactDefinition`（captain/guide/local_fisher/rental_staff、
+  Buyer と同じ `ContactId` 空間）を Phase 15 pack pipeline に full 統合。
+  `Transport.operatorContactId`（任意）+ `applyCharterTripOutcome`
+  （ボウズでも Base Trust）で Charter 完了時の Captain Trust 加算を実装。
+  休眠していた `AccessRequirement.kind: 'relationship'` を実装
+- **17D**: Fish Finder 3 段階（basic/mid/advanced）、新規 offshore Spot 2 件
+  （Izu / Norway — 両地域とも従来 hidden offshore しか無かった）、新規
+  Hidden Offshore Spot 5 件（Tokyo/Izu/Norway/Hokkaido/Alaska、discover と
+  access の Trust しきい値を分離）、新規 Captain Contact 4 件 + region-specific
+  charter-boat Transport 4 件。新規 Species は 0（既存 229 のまま）
+- **17E**: `scripts/simulate-offshore.ts`（`npm run simulate:offshore`、check に
+  組み込み）を新設。Depth / Sonar / Marine Readiness / 5 Method 再生可能性 /
+  岸釣り回帰 / Offshore Core Loop / Captain Loop / Skunk Loop / Boat Economy を
+  実 Content で検証。Playwright（Chromium、この環境で起動可能）で
+  HOME→MAP→Sagami 沖→SPOT→FISHING→CONTACTS の一本通しを 390px で目視、
+  HOME→MAP は 375/390/430px で console error 0 件を確認
+- Save は **v9 のまま**。Charter Trust は既存 `TradeState.contactTrust` を再利用、
+  Contact の既知判定は Hidden Spot discovery と同じ派生方式
+- tests 890 / boot gzip 181.5 kB（予算 200 kB）
+- 残（Phase 17 の範囲外、将来）: giant-queenfish/queenfish の canonical ID 統合、
+  Phase 18（Big Game 本格改修）、Trolling 専用ブランド商品の追加（現状は既存
+  minnow ルアーを流用しており機能はしている）
