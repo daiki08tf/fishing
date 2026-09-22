@@ -40,27 +40,27 @@
   },
   "fishTable": [
     {
-      "speciesId": "alaska-chinook-salmon",
+      "speciesId": "chinook-salmon",
       "basePresence": 0.35
     },
     {
-      "speciesId": "alaska-sockeye-salmon",
+      "speciesId": "sockeye-salmon",
       "basePresence": 0.5
     },
     {
-      "speciesId": "alaska-coho-salmon",
+      "speciesId": "coho-salmon",
       "basePresence": 0.45
     },
     {
-      "speciesId": "alaska-pink-salmon",
+      "speciesId": "pink-salmon",
       "basePresence": 0.4
     },
     {
-      "speciesId": "alaska-chum-salmon",
+      "speciesId": "chum-salmon",
       "basePresence": 0.3
     },
     {
-      "speciesId": "alaska-dolly-varden",
+      "speciesId": "dolly-varden",
       "basePresence": 0.25
     }
   ],
@@ -79,5 +79,46 @@
         "minKnowledge": 60
       }
     ]
-  }
+  },
+  "fishingZones": [
+    {
+      "id": "bank-edge",
+      "name": "岸際",
+      "castDistanceM": {
+        "min": 0,
+        "max": 8
+      },
+      "depthRangeM": {
+        "min": 0.5,
+        "max": 2.5
+      },
+      "habitatTags": ["bank", "shallow"]
+    },
+    {
+      "id": "main-flow",
+      "name": "流芯",
+      "castDistanceM": {
+        "min": 8,
+        "max": 25
+      },
+      "depthRangeM": {
+        "min": 1.5,
+        "max": 5
+      },
+      "habitatTags": ["river", "current"]
+    },
+    {
+      "id": "far-run",
+      "name": "対岸寄りの流れ",
+      "castDistanceM": {
+        "min": 25,
+        "max": 45
+      },
+      "depthRangeM": {
+        "min": 2,
+        "max": 6
+      },
+      "habitatTags": ["current", "far-bank"]
+    }
+  ]
 }

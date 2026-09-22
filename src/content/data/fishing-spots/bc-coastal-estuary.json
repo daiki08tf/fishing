@@ -1,0 +1,129 @@
+{
+  "id": "bc-coastal-estuary",
+  "name": "BC Coastal Estuary（暫定）",
+  "regionId": "british-columbia",
+  "areaId": "bc-coast",
+  "environment": "estuary",
+  "access": [
+    {
+      "kind": "permit",
+      "permitId": "bc-fishing-license"
+    }
+  ],
+  "travelOptions": [
+    {
+      "id": "bc-estuary-walk",
+      "transportTypes": ["walk"],
+      "requiredCapabilities": ["reachable_on_foot"],
+      "features": [],
+      "baseMinutes": 30,
+      "distanceKm": 2.1,
+      "baseOneWayCost": 0
+    }
+  ],
+  "habitatTags": ["estuary", "tidal"],
+  "depth": {
+    "depthRangeM": {
+      "min": 1,
+      "max": 16
+    }
+  },
+  "fishingZones": [
+    {
+      "id": "shore",
+      "name": "Shoreline",
+      "castDistanceM": {
+        "min": 0,
+        "max": 15
+      },
+      "depthRangeM": {
+        "min": 1,
+        "max": 5
+      },
+      "habitatTags": ["shore", "structure"]
+    },
+    {
+      "id": "channel",
+      "name": "Channel",
+      "castDistanceM": {
+        "min": 15,
+        "max": 40
+      },
+      "depthRangeM": {
+        "min": 4,
+        "max": 14
+      },
+      "habitatTags": ["current", "open"]
+    },
+    {
+      "id": "drop",
+      "name": "Outer Drop",
+      "castDistanceM": {
+        "min": 40,
+        "max": 80
+      },
+      "depthRangeM": {
+        "min": 10,
+        "max": 30
+      },
+      "habitatTags": ["deep", "open"]
+    }
+  ],
+  "fishTable": [
+    {
+      "speciesId": "coho-salmon",
+      "basePresence": 0.38,
+      "zoneAffinity": {
+        "shore": 0.7,
+        "channel": 1.4,
+        "drop": 1
+      }
+    },
+    {
+      "speciesId": "pink-salmon",
+      "basePresence": 0.32,
+      "zoneAffinity": {
+        "shore": 0.6,
+        "channel": 1.3,
+        "drop": 1.1
+      }
+    },
+    {
+      "speciesId": "chum-salmon",
+      "basePresence": 0.28,
+      "zoneAffinity": {
+        "shore": 0.5,
+        "channel": 1.2,
+        "drop": 1.3
+      }
+    },
+    {
+      "speciesId": "coastal-cutthroat-trout",
+      "basePresence": 0.32,
+      "zoneAffinity": {
+        "shore": 1.3,
+        "channel": 1,
+        "drop": 0.4
+      }
+    }
+  ],
+  "dataStatus": "provisional",
+  "knowledgeConfig": {
+    "reveals": [
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "habitat",
+        "minKnowledge": 50
+      }
+    ]
+  },
+  "sourceRefs": [
+    {
+      "id": "phase12-provisional",
+      "title": "PROVISIONAL — gameplay-oriented spot layout; real access and regulations require verification"
+    }
+  ]
+}

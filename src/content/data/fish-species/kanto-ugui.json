@@ -1,5 +1,5 @@
 {
-  "id": "kanto-ugui",
+  "id": "ugui",
   "japaneseName": "ウグイ（暫定）",
   "scientificName": "Pseudaspius hakonensis",
   "waterTypes": ["fresh", "brackish"],
@@ -8,7 +8,7 @@
   "baits": ["worm", "dough"],
   "lureCategories": ["spoon", "minnow"],
   "fishingMethods": ["lure", "bait"],
-  "distribution": ["tokyo-area"],
+  "distribution": ["tokyo-area", "hokkaido"],
   "lengthModel": {
     "kind": "normal",
     "meanCm": 32,

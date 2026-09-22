@@ -2,7 +2,7 @@
   "id": "british-columbia",
   "countryId": "canada",
   "name": "ブリティッシュコロンビア",
-  "stage": "planned",
+  "stage": "playable",
   "dataStatus": "provisional",
   "base": {
     "id": "bc-base",
@@ -12,7 +12,15 @@
   "areas": [
     {
       "id": "bc-coast",
-      "name": "Coastal Rivers"
+      "name": "Coastal / Strait"
+    },
+    {
+      "id": "bc-river",
+      "name": "Major Rivers"
+    },
+    {
+      "id": "bc-lake",
+      "name": "Interior Lakes"
     }
   ],
   "climate": {

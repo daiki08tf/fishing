@@ -27,6 +27,8 @@ import type { WorldPhase, WorldState } from '../world/worldSession'
  * v6: Transport（Phase 7A）。所有・利用可能 Transport を World から独立して保存する。
  * v7: Expedition（Phase 8）。World に地域（currentRegionId）を足し、
  *     遠征（current / 訪問済み地域 / 許可）を独立ブロックで保存する。
+ * v8: Phase 12。魚種 ID を地域依存から世界共通の canonical ID へ移行する。
+ *     保存構造自体は v7 と同じで、Codex / Knowledge / repetition のキーだけを正規化する。
  */
 
 export const SAVE_SCHEMA_VERSION_V1 = 1 as const
@@ -36,8 +38,9 @@ export const SAVE_SCHEMA_VERSION_V4 = 4 as const
 export const SAVE_SCHEMA_VERSION_V5 = 5 as const
 export const SAVE_SCHEMA_VERSION_V6 = 6 as const
 export const SAVE_SCHEMA_VERSION_V7 = 7 as const
+export const SAVE_SCHEMA_VERSION_V8 = 8 as const
 
-export const CURRENT_SAVE_SCHEMA_VERSION = SAVE_SCHEMA_VERSION_V7
+export const CURRENT_SAVE_SCHEMA_VERSION = SAVE_SCHEMA_VERSION_V8
 
 export type SaveSchemaVersion = typeof CURRENT_SAVE_SCHEMA_VERSION
 
@@ -224,4 +227,14 @@ export type SaveGameV7 = {
   readonly loadout: Loadout
 }
 
-export type CurrentSave = SaveGameV7
+/**
+ * Phase 12 の現行 Save。
+ *
+ * v8 は「魚種 ID の canonical 化」を migration 境界で確定させるための version。
+ * フィールド追加は無く、v7 と同じブロック構造を維持する。
+ */
+export type SaveGameV8 = Omit<SaveGameV7, 'schemaVersion'> & {
+  readonly schemaVersion: typeof SAVE_SCHEMA_VERSION_V8
+}
+
+export type CurrentSave = SaveGameV8

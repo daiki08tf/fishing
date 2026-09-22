@@ -1,0 +1,129 @@
+{
+  "id": "qld-inshore-flat",
+  "name": "Queensland Inshore Flat（暫定）",
+  "regionId": "queensland",
+  "areaId": "qld-estuary",
+  "environment": "nearshore",
+  "access": [
+    {
+      "kind": "permit",
+      "permitId": "queensland-fishing-permit"
+    }
+  ],
+  "travelOptions": [
+    {
+      "id": "qld-flat-boat",
+      "transportTypes": ["rental_boat"],
+      "requiredCapabilities": ["boat_required"],
+      "features": ["boat_rental"],
+      "baseMinutes": 40,
+      "distanceKm": 10,
+      "baseOneWayCost": 0
+    }
+  ],
+  "habitatTags": ["flat", "sand"],
+  "depth": {
+    "depthRangeM": {
+      "min": 0.5,
+      "max": 12
+    }
+  },
+  "fishingZones": [
+    {
+      "id": "inside",
+      "name": "Inside Flat",
+      "castDistanceM": {
+        "min": 0,
+        "max": 15
+      },
+      "depthRangeM": {
+        "min": 0.5,
+        "max": 2.5
+      },
+      "habitatTags": ["flat", "shallow"]
+    },
+    {
+      "id": "edge",
+      "name": "Flat Edge",
+      "castDistanceM": {
+        "min": 15,
+        "max": 35
+      },
+      "depthRangeM": {
+        "min": 2,
+        "max": 6
+      },
+      "habitatTags": ["edge", "current"]
+    },
+    {
+      "id": "channel",
+      "name": "Outer Channel",
+      "castDistanceM": {
+        "min": 35,
+        "max": 65
+      },
+      "depthRangeM": {
+        "min": 5,
+        "max": 14
+      },
+      "habitatTags": ["channel", "open"]
+    }
+  ],
+  "fishTable": [
+    {
+      "speciesId": "permit",
+      "basePresence": 0.18,
+      "zoneAffinity": {
+        "inside": 1.2,
+        "edge": 1.5,
+        "channel": 0.8
+      }
+    },
+    {
+      "speciesId": "golden-trevally",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "inside": 0.8,
+        "edge": 1.4,
+        "channel": 1.2
+      }
+    },
+    {
+      "speciesId": "queenfish",
+      "basePresence": 0.28,
+      "zoneAffinity": {
+        "inside": 0.5,
+        "edge": 1.1,
+        "channel": 1.5
+      }
+    },
+    {
+      "speciesId": "giant-queenfish",
+      "basePresence": 0.14,
+      "zoneAffinity": {
+        "inside": 0.3,
+        "edge": 1,
+        "channel": 1.6
+      }
+    }
+  ],
+  "dataStatus": "provisional",
+  "knowledgeConfig": {
+    "reveals": [
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "habitat",
+        "minKnowledge": 50
+      }
+    ]
+  },
+  "sourceRefs": [
+    {
+      "id": "phase12-provisional",
+      "title": "PROVISIONAL — gameplay-oriented spot layout; real access and regulations require verification"
+    }
+  ]
+}

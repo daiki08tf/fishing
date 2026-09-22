@@ -1,0 +1,129 @@
+{
+  "id": "chiba-reservoir",
+  "name": "千葉 貯水池（暫定）",
+  "regionId": "tokyo-area",
+  "areaId": "chiba",
+  "environment": "lake",
+  "access": [
+    {
+      "kind": "capability",
+      "capability": "road_access"
+    }
+  ],
+  "travelOptions": [
+    {
+      "id": "reservoir-road",
+      "transportTypes": ["rental_car"],
+      "requiredCapabilities": ["road_access"],
+      "features": ["vehicle_rental"],
+      "baseMinutes": 100,
+      "distanceKm": 65,
+      "baseOneWayCost": 0
+    }
+  ],
+  "habitatTags": ["lake", "cover"],
+  "depth": {
+    "depthRangeM": {
+      "min": 1,
+      "max": 20
+    }
+  },
+  "fishingZones": [
+    {
+      "id": "shore",
+      "name": "岸際",
+      "castDistanceM": {
+        "min": 0,
+        "max": 12
+      },
+      "depthRangeM": {
+        "min": 0.5,
+        "max": 4
+      },
+      "habitatTags": ["bank", "shallow"]
+    },
+    {
+      "id": "break",
+      "name": "かけ上がり",
+      "castDistanceM": {
+        "min": 12,
+        "max": 35
+      },
+      "depthRangeM": {
+        "min": 3,
+        "max": 10
+      },
+      "habitatTags": ["break", "deep"]
+    },
+    {
+      "id": "open",
+      "name": "沖",
+      "castDistanceM": {
+        "min": 35,
+        "max": 65
+      },
+      "depthRangeM": {
+        "min": 8,
+        "max": 20
+      },
+      "habitatTags": ["open", "deep"]
+    }
+  ],
+  "fishTable": [
+    {
+      "speciesId": "largemouth-bass",
+      "basePresence": 0.42,
+      "zoneAffinity": {
+        "shore": 1.3,
+        "break": 1.2,
+        "open": 0.6
+      }
+    },
+    {
+      "speciesId": "bluegill",
+      "basePresence": 0.55,
+      "zoneAffinity": {
+        "shore": 1.5,
+        "break": 0.8,
+        "open": 0.3
+      }
+    },
+    {
+      "speciesId": "koi",
+      "basePresence": 0.25,
+      "zoneAffinity": {
+        "shore": 1.2,
+        "break": 1,
+        "open": 0.6
+      }
+    },
+    {
+      "speciesId": "wakasagi",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "shore": 0.4,
+        "break": 1,
+        "open": 1.5
+      }
+    }
+  ],
+  "dataStatus": "provisional",
+  "knowledgeConfig": {
+    "reveals": [
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "habitat",
+        "minKnowledge": 50
+      }
+    ]
+  },
+  "sourceRefs": [
+    {
+      "id": "phase12-provisional",
+      "title": "PROVISIONAL — gameplay-oriented spot layout; real access and regulations require verification"
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "id": "yelloweye-rockfish",
+  "japaneseName": "イエローアイロックフィッシュ（暫定）",
+  "scientificName": "Sebastes ruberrimus",
+  "waterTypes": ["salt"],
+  "distribution": ["british-columbia", "alaska"],
+  "habitats": ["reef", "deep"],
+  "depthRange": {
+    "min": 0,
+    "max": 45
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 55,
+    "dispersion": 0.18,
+    "minCm": 25,
+    "maxCm": 90
+  },
+  "weightModel": {
+    "lengthWeightA": 0.009,
+    "lengthWeightB": 3.08
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "fightProfile": {
+    "strength": 0.58,
+    "stamina": 0.72,
+    "speed": 0.38
+  },
+  "rarity": 2.1,
+  "sourceRefs": [
+    {
+      "id": "phase12-provisional",
+      "title": "PROVISIONAL — Phase 12 gameplay tuning; biological values require later verification"
+    }
+  ],
+  "methodAffinity": {
+    "lure": 1,
+    "light_lure": 1,
+    "bait": 1,
+    "bottom": 1
+  },
+  "offeringAffinity": {
+    "minnow": 1,
+    "soft_plastic": 1,
+    "worm": 1,
+    "mid": 1,
+    "small": 1
+  }
+}

@@ -1,8 +1,8 @@
 {
-  "id": "alaska-pacific-halibut",
+  "id": "pacific-halibut",
   "japaneseName": "オヒョウ（暫定）",
   "waterTypes": ["salt"],
-  "distribution": ["alaska"],
+  "distribution": ["alaska", "british-columbia"],
   "habitats": ["offshore", "deep"],
   "depthRange": {
     "min": 20,

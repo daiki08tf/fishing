@@ -35,11 +35,11 @@
   },
   "fishTable": [
     {
-      "speciesId": "kanto-ugui",
+      "speciesId": "ugui",
       "basePresence": 0.8
     },
     {
-      "speciesId": "kanto-nijimasu",
+      "speciesId": "rainbow-trout",
       "basePresence": 0.6
     }
   ],
@@ -54,5 +54,33 @@
         "minKnowledge": 40
       }
     ]
-  }
+  },
+  "fishingZones": [
+    {
+      "id": "near-bank",
+      "name": "岸際",
+      "castDistanceM": {
+        "min": 0,
+        "max": 8
+      },
+      "depthRangeM": {
+        "min": 0.5,
+        "max": 2.5
+      },
+      "habitatTags": ["bank", "shallow"]
+    },
+    {
+      "id": "pond-center",
+      "name": "池中央",
+      "castDistanceM": {
+        "min": 8,
+        "max": 25
+      },
+      "depthRangeM": {
+        "min": 1.5,
+        "max": 5
+      },
+      "habitatTags": ["open", "pond"]
+    }
+  ]
 }

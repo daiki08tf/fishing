@@ -1,5 +1,5 @@
 {
-  "id": "kanto-seabass",
+  "id": "seabass",
   "japaneseName": "スズキ（暫定）",
   "scientificName": "Lateolabrax japonicus",
   "waterTypes": ["salt", "brackish", "fresh"],
@@ -8,7 +8,7 @@
   "baits": ["live", "worm"],
   "lureCategories": ["minnow", "vibration"],
   "fishingMethods": ["lure", "light_lure"],
-  "distribution": ["tokyo-area"],
+  "distribution": ["tokyo-area", "hokkaido"],
   "depthRange": {
     "min": 8,
     "max": 40

@@ -40,7 +40,7 @@
   },
   "fishTable": [
     {
-      "speciesId": "kanto-maaji",
+      "speciesId": "maaji",
       "basePresence": 0.8,
       "zoneAffinity": {
         "bank-edge": 0.3,
@@ -49,7 +49,7 @@
       }
     },
     {
-      "speciesId": "kanto-shirogisu",
+      "speciesId": "shirogisu",
       "basePresence": 0.5,
       "zoneAffinity": {
         "bank-edge": 0.2,
@@ -58,7 +58,7 @@
       }
     },
     {
-      "speciesId": "kanto-ugui",
+      "speciesId": "ugui",
       "basePresence": 0.6,
       "zoneAffinity": {
         "bank-edge": 0.8,
@@ -67,7 +67,7 @@
       }
     },
     {
-      "speciesId": "kanto-kurodai",
+      "speciesId": "kurodai",
       "basePresence": 0.4,
       "zoneAffinity": {
         "bank-edge": 1.2,
@@ -76,7 +76,7 @@
       }
     },
     {
-      "speciesId": "kanto-saba",
+      "speciesId": "saba",
       "basePresence": 0.5,
       "zoneAffinity": {
         "bank-edge": 0.2,

@@ -1,0 +1,120 @@
+{
+  "id": "hokkaido-mountain-stream",
+  "name": "北海道 山岳渓流（暫定）",
+  "regionId": "hokkaido",
+  "areaId": "hokkaido-north",
+  "environment": "river",
+  "access": [
+    {
+      "kind": "capability",
+      "capability": "road_access"
+    }
+  ],
+  "travelOptions": [
+    {
+      "id": "north-stream-road",
+      "transportTypes": ["rental_car"],
+      "requiredCapabilities": ["road_access"],
+      "features": ["vehicle_rental"],
+      "baseMinutes": 90,
+      "distanceKm": 60,
+      "baseOneWayCost": 0
+    }
+  ],
+  "habitatTags": ["stream", "rock"],
+  "depth": {
+    "depthRangeM": {
+      "min": 0.3,
+      "max": 3
+    }
+  },
+  "fishingZones": [
+    {
+      "id": "edge",
+      "name": "岸際",
+      "castDistanceM": {
+        "min": 0,
+        "max": 8
+      },
+      "depthRangeM": {
+        "min": 0.4,
+        "max": 2
+      },
+      "habitatTags": ["bank", "shallow"]
+    },
+    {
+      "id": "flow",
+      "name": "流芯",
+      "castDistanceM": {
+        "min": 8,
+        "max": 24
+      },
+      "depthRangeM": {
+        "min": 1.2,
+        "max": 4
+      },
+      "habitatTags": ["river", "current"]
+    },
+    {
+      "id": "far",
+      "name": "対岸寄り",
+      "castDistanceM": {
+        "min": 24,
+        "max": 42
+      },
+      "depthRangeM": {
+        "min": 1,
+        "max": 5
+      },
+      "habitatTags": ["far-bank", "current"]
+    }
+  ],
+  "fishTable": [
+    {
+      "speciesId": "oshorokoma",
+      "basePresence": 0.45,
+      "zoneAffinity": {
+        "edge": 1.1,
+        "flow": 1.4,
+        "far": 0.7
+      }
+    },
+    {
+      "speciesId": "amemasu",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "edge": 0.7,
+        "flow": 1.4,
+        "far": 1
+      }
+    },
+    {
+      "speciesId": "iwana",
+      "basePresence": 0.25,
+      "zoneAffinity": {
+        "edge": 1.2,
+        "flow": 1.1,
+        "far": 0.6
+      }
+    }
+  ],
+  "dataStatus": "provisional",
+  "knowledgeConfig": {
+    "reveals": [
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "habitat",
+        "minKnowledge": 50
+      }
+    ]
+  },
+  "sourceRefs": [
+    {
+      "id": "phase12-provisional",
+      "title": "PROVISIONAL — gameplay-oriented spot layout; real access and regulations require verification"
+    }
+  ]
+}

@@ -39,15 +39,15 @@
   },
   "fishTable": [
     {
-      "speciesId": "alaska-pacific-halibut",
+      "speciesId": "pacific-halibut",
       "basePresence": 0.7
     },
     {
-      "speciesId": "alaska-chinook-salmon",
+      "speciesId": "chinook-salmon",
       "basePresence": 0.4
     },
     {
-      "speciesId": "alaska-coho-salmon",
+      "speciesId": "coho-salmon",
       "basePresence": 0.35
     }
   ],
@@ -62,5 +62,34 @@
         "minKnowledge": 50
       }
     ]
-  }
+  },
+  "fishingZones": [
+    {
+      "id": "surface",
+      "name": "表層",
+      "depthRangeM": {
+        "min": 0,
+        "max": 10
+      },
+      "habitatTags": ["open", "surface"]
+    },
+    {
+      "id": "mid-water",
+      "name": "中層",
+      "depthRangeM": {
+        "min": 10,
+        "max": 35
+      },
+      "habitatTags": ["open", "mid-water"]
+    },
+    {
+      "id": "bottom",
+      "name": "底・根周り",
+      "depthRangeM": {
+        "min": 35,
+        "max": 100
+      },
+      "habitatTags": ["deep", "bottom", "reef"]
+    }
+  ]
 }

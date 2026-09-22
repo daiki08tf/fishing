@@ -1,5 +1,5 @@
 {
-  "id": "kanto-buri",
+  "id": "buri",
   "japaneseName": "ブリ（暫定）",
   "scientificName": "Seriola quinqueradiata",
   "waterTypes": ["salt"],
@@ -8,7 +8,7 @@
   "baits": ["live", "cut"],
   "lureCategories": ["metal_jig", "plug"],
   "fishingMethods": ["lure", "bait"],
-  "distribution": ["tokyo-area"],
+  "distribution": ["tokyo-area", "hokkaido"],
   "depthRange": {
     "min": 30,
     "max": 120

@@ -35,7 +35,7 @@
   },
   "fishTable": [
     {
-      "speciesId": "kanto-koi",
+      "speciesId": "koi",
       "basePresence": 0.6,
       "zoneAffinity": {
         "bank-cover": 1.1,
@@ -44,7 +44,7 @@
       }
     },
     {
-      "speciesId": "kanto-namazu",
+      "speciesId": "namazu",
       "basePresence": 0.3,
       "zoneAffinity": {
         "bank-cover": 1.3,

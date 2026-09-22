@@ -1,0 +1,51 @@
+{
+  "id": "largemouth-bass",
+  "japaneseName": "ブラックバス（暫定）",
+  "scientificName": "Micropterus salmoides",
+  "waterTypes": ["fresh"],
+  "distribution": ["tokyo-area"],
+  "habitats": ["lake", "cover"],
+  "depthRange": {
+    "min": 0,
+    "max": 35
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 38,
+    "dispersion": 0.17,
+    "minCm": 15,
+    "maxCm": 70
+  },
+  "weightModel": {
+    "lengthWeightA": 0.0095,
+    "lengthWeightB": 3.05
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "fightProfile": {
+    "strength": 0.62,
+    "stamina": 0.65,
+    "speed": 0.58
+  },
+  "rarity": 1.5,
+  "sourceRefs": [
+    {
+      "id": "phase12-provisional",
+      "title": "PROVISIONAL — Phase 12 gameplay tuning; biological values require later verification"
+    }
+  ],
+  "methodAffinity": {
+    "lure": 1,
+    "light_lure": 1,
+    "bait": 1,
+    "bottom": 1
+  },
+  "offeringAffinity": {
+    "minnow": 1,
+    "soft_plastic": 1,
+    "worm": 1,
+    "mid": 1,
+    "small": 1
+  }
+}

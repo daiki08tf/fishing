@@ -1,0 +1,51 @@
+{
+  "id": "white-sturgeon",
+  "japaneseName": "ホワイトスタージョン（暫定）",
+  "scientificName": "Acipenser transmontanus",
+  "waterTypes": ["fresh", "brackish"],
+  "distribution": ["british-columbia"],
+  "habitats": ["river", "deep"],
+  "depthRange": {
+    "min": 0,
+    "max": 150
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 140,
+    "dispersion": 0.18,
+    "minCm": 50,
+    "maxCm": 300
+  },
+  "weightModel": {
+    "lengthWeightA": 0.009,
+    "lengthWeightB": 3.08
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "fightProfile": {
+    "strength": 0.95,
+    "stamina": 0.98,
+    "speed": 0.58
+  },
+  "rarity": 3,
+  "sourceRefs": [
+    {
+      "id": "phase12-provisional",
+      "title": "PROVISIONAL — Phase 12 gameplay tuning; biological values require later verification"
+    }
+  ],
+  "methodAffinity": {
+    "lure": 1,
+    "light_lure": 1,
+    "bait": 1,
+    "bottom": 1
+  },
+  "offeringAffinity": {
+    "minnow": 1,
+    "soft_plastic": 1,
+    "worm": 1,
+    "mid": 1,
+    "small": 1
+  }
+}

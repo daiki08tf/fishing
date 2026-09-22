@@ -40,7 +40,7 @@
   },
   "fishTable": [
     {
-      "speciesId": "kanto-maaji",
+      "speciesId": "maaji",
       "basePresence": 0.7,
       "zoneAffinity": {
         "margin": 0.2,
@@ -49,7 +49,7 @@
       }
     },
     {
-      "speciesId": "kanto-ugui",
+      "speciesId": "ugui",
       "basePresence": 0.5,
       "zoneAffinity": {
         "margin": 0.9,
@@ -58,7 +58,7 @@
       }
     },
     {
-      "speciesId": "kanto-haze",
+      "speciesId": "haze",
       "basePresence": 0.6,
       "zoneAffinity": {
         "margin": 1.4,
@@ -67,7 +67,7 @@
       }
     },
     {
-      "speciesId": "kanto-funa",
+      "speciesId": "funa",
       "basePresence": 0.6,
       "zoneAffinity": {
         "margin": 1.3,

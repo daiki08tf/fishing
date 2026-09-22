@@ -24,6 +24,7 @@ import {
   SAVE_SCHEMA_VERSION_V5,
   SAVE_SCHEMA_VERSION_V6,
   SAVE_SCHEMA_VERSION_V7,
+  SAVE_SCHEMA_VERSION_V8,
 } from '../../domain/save/SaveGame'
 import { WORLD_PHASES } from '../../domain/world/worldSession'
 
@@ -370,7 +371,7 @@ const expeditionStateSchema = z.strictObject({
   permits: z.array(z.string().min(1).transform(asPermitId)),
 })
 
-/** 現行 Save（Phase 8）。 */
+/** Phase 8 の Save（v7）。 */
 export const saveGameV7Schema = z.strictObject({
   schemaVersion: z.literal(SAVE_SCHEMA_VERSION_V7),
   createdAt: isoDateTimeSchema,
@@ -387,5 +388,10 @@ export const saveGameV7Schema = z.strictObject({
   loadout: loadoutSchema,
 })
 
+/** Phase 12 の現行 Save。構造は v7 と同じで、species ID の canonical 化を migration で保証する。 */
+export const saveGameV8Schema = saveGameV7Schema.extend({
+  schemaVersion: z.literal(SAVE_SCHEMA_VERSION_V8),
+})
+
 /** 現行 version の Save スキーマ。Migration 後の検証に使う。 */
-export const currentSaveSchema = saveGameV7Schema
+export const currentSaveSchema = saveGameV8Schema

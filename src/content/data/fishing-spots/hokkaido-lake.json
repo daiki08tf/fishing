@@ -31,11 +31,11 @@
   },
   "fishTable": [
     {
-      "speciesId": "hokkaido-ame-masu",
+      "speciesId": "amemasu",
       "basePresence": 0.45
     },
     {
-      "speciesId": "hokkaido-ito",
+      "speciesId": "ito",
       "basePresence": 0.5
     }
   ],
@@ -50,5 +50,46 @@
         "minKnowledge": 50
       }
     ]
-  }
+  },
+  "fishingZones": [
+    {
+      "id": "shoreline",
+      "name": "岸際",
+      "castDistanceM": {
+        "min": 0,
+        "max": 12
+      },
+      "depthRangeM": {
+        "min": 0.5,
+        "max": 4
+      },
+      "habitatTags": ["bank", "shallow"]
+    },
+    {
+      "id": "break",
+      "name": "かけ上がり",
+      "castDistanceM": {
+        "min": 12,
+        "max": 35
+      },
+      "depthRangeM": {
+        "min": 3,
+        "max": 10
+      },
+      "habitatTags": ["break", "deep"]
+    },
+    {
+      "id": "open-water",
+      "name": "沖のオープン",
+      "castDistanceM": {
+        "min": 35,
+        "max": 65
+      },
+      "depthRangeM": {
+        "min": 8,
+        "max": 25
+      },
+      "habitatTags": ["open", "deep"]
+    }
+  ]
 }

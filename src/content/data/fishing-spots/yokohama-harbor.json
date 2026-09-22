@@ -1,0 +1,124 @@
+{
+  "id": "yokohama-harbor",
+  "name": "横浜 港湾部（暫定）",
+  "regionId": "tokyo-area",
+  "areaId": "kanagawa",
+  "environment": "bay_shore",
+  "access": [],
+  "travelOptions": [
+    {
+      "id": "harbor-walk",
+      "transportTypes": ["walk"],
+      "requiredCapabilities": ["reachable_on_foot"],
+      "features": [],
+      "baseMinutes": 30,
+      "distanceKm": 2.2,
+      "baseOneWayCost": 0
+    }
+  ],
+  "habitatTags": ["pier", "harbor"],
+  "depth": {
+    "depthRangeM": {
+      "min": 2,
+      "max": 18
+    }
+  },
+  "fishingZones": [
+    {
+      "id": "near",
+      "name": "岸際",
+      "castDistanceM": {
+        "min": 0,
+        "max": 12
+      },
+      "depthRangeM": {
+        "min": 1,
+        "max": 4
+      },
+      "habitatTags": ["shore", "structure"]
+    },
+    {
+      "id": "mid",
+      "name": "中距離",
+      "castDistanceM": {
+        "min": 12,
+        "max": 35
+      },
+      "depthRangeM": {
+        "min": 3,
+        "max": 10
+      },
+      "habitatTags": ["open", "break"]
+    },
+    {
+      "id": "far",
+      "name": "沖側",
+      "castDistanceM": {
+        "min": 35,
+        "max": 70
+      },
+      "depthRangeM": {
+        "min": 8,
+        "max": 22
+      },
+      "habitatTags": ["open", "current"]
+    }
+  ],
+  "fishTable": [
+    {
+      "speciesId": "maaji",
+      "basePresence": 0.55,
+      "zoneAffinity": {
+        "near": 0.7,
+        "mid": 1.3,
+        "far": 1
+      }
+    },
+    {
+      "speciesId": "saba",
+      "basePresence": 0.45,
+      "zoneAffinity": {
+        "near": 0.4,
+        "mid": 1,
+        "far": 1.4
+      }
+    },
+    {
+      "speciesId": "mebaru",
+      "basePresence": 0.4,
+      "zoneAffinity": {
+        "near": 1.4,
+        "mid": 0.8,
+        "far": 0.3
+      }
+    },
+    {
+      "speciesId": "seabass",
+      "basePresence": 0.35,
+      "zoneAffinity": {
+        "near": 0.8,
+        "mid": 1.3,
+        "far": 1
+      }
+    }
+  ],
+  "dataStatus": "provisional",
+  "knowledgeConfig": {
+    "reveals": [
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "habitat",
+        "minKnowledge": 50
+      }
+    ]
+  },
+  "sourceRefs": [
+    {
+      "id": "phase12-provisional",
+      "title": "PROVISIONAL — gameplay-oriented spot layout; real access and regulations require verification"
+    }
+  ]
+}

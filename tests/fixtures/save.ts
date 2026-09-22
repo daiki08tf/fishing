@@ -19,6 +19,7 @@ import {
   SAVE_SCHEMA_VERSION_V5,
   SAVE_SCHEMA_VERSION_V6,
   SAVE_SCHEMA_VERSION_V7,
+  SAVE_SCHEMA_VERSION_V8,
   type LegacyWorldState,
   type SaveGameV2,
   type SaveGameV3,
@@ -26,6 +27,7 @@ import {
   type SaveGameV5,
   type SaveGameV6,
   type SaveGameV7,
+  type SaveGameV8,
 } from '../../src/domain/save/SaveGame'
 import { createStarterInventory, createStarterLoadout } from '../../src/domain/tackle/Loadout'
 import { createInitialWorld } from '../../src/domain/world/worldSession'
@@ -234,5 +236,15 @@ export const createValidSaveV7 = (): SaveGameV7 => {
     purchases: v6.purchases,
     inventory: v6.inventory,
     loadout: v6.loadout,
+  }
+}
+
+/** Phase 12 の現行 Save（schema v8）。構造は v7 と同じで species ID を canonical 化する。 */
+export const createValidSaveV8 = (): SaveGameV8 => {
+  const v7 = createValidSaveV7()
+
+  return {
+    ...v7,
+    schemaVersion: SAVE_SCHEMA_VERSION_V8,
   }
 }

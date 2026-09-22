@@ -1,8 +1,8 @@
 {
-  "id": "alaska-dolly-varden",
+  "id": "dolly-varden",
   "japaneseName": "ドリーバーデン（暫定）",
   "waterTypes": ["fresh", "brackish"],
-  "distribution": ["alaska"],
+  "distribution": ["alaska", "british-columbia"],
   "habitats": ["river", "gravel"],
   "depthRange": {
     "min": 1,

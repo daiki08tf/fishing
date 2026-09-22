@@ -1,0 +1,129 @@
+{
+  "id": "bc-rocky-reef",
+  "name": "BC Rocky Reef（暫定）",
+  "regionId": "british-columbia",
+  "areaId": "bc-coast",
+  "environment": "nearshore",
+  "access": [
+    {
+      "kind": "permit",
+      "permitId": "bc-fishing-license"
+    }
+  ],
+  "travelOptions": [
+    {
+      "id": "bc-reef-boat",
+      "transportTypes": ["rental_boat"],
+      "requiredCapabilities": ["boat_required"],
+      "features": ["boat_rental"],
+      "baseMinutes": 45,
+      "distanceKm": 12,
+      "baseOneWayCost": 0
+    }
+  ],
+  "habitatTags": ["reef", "rock"],
+  "depth": {
+    "depthRangeM": {
+      "min": 5,
+      "max": 45
+    }
+  },
+  "fishingZones": [
+    {
+      "id": "shore",
+      "name": "Shoreline",
+      "castDistanceM": {
+        "min": 0,
+        "max": 15
+      },
+      "depthRangeM": {
+        "min": 1,
+        "max": 5
+      },
+      "habitatTags": ["shore", "structure"]
+    },
+    {
+      "id": "channel",
+      "name": "Channel",
+      "castDistanceM": {
+        "min": 15,
+        "max": 40
+      },
+      "depthRangeM": {
+        "min": 4,
+        "max": 14
+      },
+      "habitatTags": ["current", "open"]
+    },
+    {
+      "id": "drop",
+      "name": "Outer Drop",
+      "castDistanceM": {
+        "min": 40,
+        "max": 80
+      },
+      "depthRangeM": {
+        "min": 10,
+        "max": 30
+      },
+      "habitatTags": ["deep", "open"]
+    }
+  ],
+  "fishTable": [
+    {
+      "speciesId": "lingcod",
+      "basePresence": 0.35,
+      "zoneAffinity": {
+        "shore": 0.5,
+        "channel": 1.1,
+        "drop": 1.5
+      }
+    },
+    {
+      "speciesId": "yelloweye-rockfish",
+      "basePresence": 0.22,
+      "zoneAffinity": {
+        "shore": 0.2,
+        "channel": 0.8,
+        "drop": 1.6
+      }
+    },
+    {
+      "speciesId": "quillback-rockfish",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "shore": 0.4,
+        "channel": 1,
+        "drop": 1.5
+      }
+    },
+    {
+      "speciesId": "cabezon",
+      "basePresence": 0.28,
+      "zoneAffinity": {
+        "shore": 1.2,
+        "channel": 1,
+        "drop": 0.6
+      }
+    }
+  ],
+  "dataStatus": "provisional",
+  "knowledgeConfig": {
+    "reveals": [
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "habitat",
+        "minKnowledge": 50
+      }
+    ]
+  },
+  "sourceRefs": [
+    {
+      "id": "phase12-provisional",
+      "title": "PROVISIONAL — gameplay-oriented spot layout; real access and regulations require verification"
+    }
+  ]
+}

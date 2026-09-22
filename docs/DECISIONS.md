@@ -246,3 +246,29 @@ Phase 0では、CI / lint / testで機械的に判定できる制約だけを定
 
 初期の Zone Content は荒川下流、多摩川下流、河口部、林道奥の貯水池ワンド、
 北海道の海岸、Alaska Coastal Bay に入れる。Phase 12 の魚種 / Spot 拡張はこの Zone 構造を使う。
+
+
+## Phase 12 — Regional World Expansion / Alpha Content
+
+決定:
+
+- FishSpecies は**世界で 1 魚種 1 ID**とする。地域名を species identity に含めない
+- 同じ魚種が複数地域にいる場合、Species 定義を複製せず `FishOccurrence` で地域差を表す
+- 旧 regional ID は Save v8 migration で canonical ID へ写す
+- migration 対象は Codex だけでなく fish Knowledge と repetition も含む
+- regional duplicate が同じ canonical ID に合流する場合:
+  - catchCount / repetition は加算
+  - Knowledge は最大値
+  - largest / heaviest / percentile は良い方
+  - Traits は union
+  - personalBest は percentile が高い個体
+- Alpha Content の目安を 80 前後の Species / 40〜50 Spot とし、Phase 12 は
+  **82 Species / 45 Spot / 5 playable Region** で着地する
+- playable Spot は原則 explicit Fishing Zone を持つ。fallback Zone は後方互換用に残す
+- British Columbia / Queensland も北海道 / Alaska と同じ Expedition / Access / Economy を使う
+- 国・地域別の分岐を FishingEngine / AccessEngine に追加しない
+- Phase 12 の新規 Species / Spot / Zone / distribution / access / expedition 数値は
+  **PROVISIONAL**。現実の生態・規制・釣行可否として verified と断定しない
+- Content 規模が増えたため `simulate:regional-content` を CI gate にする
+- 82 Species 程度では既存 eager Content loading を維持する。1000 Species 規模へ進む前に
+  bundle 計測を見て Region pack / lazy loading を別 Phase で判断する

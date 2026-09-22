@@ -1,0 +1,51 @@
+{
+  "id": "ainame",
+  "japaneseName": "アイナメ（暫定）",
+  "scientificName": "Hexagrammos otakii",
+  "waterTypes": ["salt"],
+  "distribution": ["tokyo-area", "hokkaido"],
+  "habitats": ["rock", "bottom"],
+  "depthRange": {
+    "min": 0,
+    "max": 30
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 36,
+    "dispersion": 0.16,
+    "minCm": 18,
+    "maxCm": 60
+  },
+  "weightModel": {
+    "lengthWeightA": 0.0095,
+    "lengthWeightB": 3.05
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "fightProfile": {
+    "strength": 0.56,
+    "stamina": 0.64,
+    "speed": 0.42
+  },
+  "rarity": 1.4,
+  "sourceRefs": [
+    {
+      "id": "phase12-provisional",
+      "title": "PROVISIONAL — Phase 12 gameplay tuning; biological values require later verification"
+    }
+  ],
+  "methodAffinity": {
+    "lure": 1,
+    "light_lure": 1,
+    "bait": 1,
+    "bottom": 1
+  },
+  "offeringAffinity": {
+    "minnow": 1,
+    "soft_plastic": 1,
+    "worm": 1,
+    "mid": 1,
+    "small": 1
+  }
+}

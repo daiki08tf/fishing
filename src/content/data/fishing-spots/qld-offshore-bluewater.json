@@ -1,0 +1,134 @@
+{
+  "id": "qld-offshore-bluewater",
+  "name": "Queensland Offshore Bluewater（暫定）",
+  "regionId": "queensland",
+  "areaId": "qld-offshore",
+  "environment": "offshore",
+  "access": [
+    {
+      "kind": "capability",
+      "capability": "boat_required"
+    },
+    {
+      "kind": "capability",
+      "capability": "offshore"
+    },
+    {
+      "kind": "permit",
+      "permitId": "queensland-fishing-permit"
+    }
+  ],
+  "travelOptions": [
+    {
+      "id": "qld-offshore-boat",
+      "transportTypes": ["rental_boat"],
+      "requiredCapabilities": ["boat_required", "offshore"],
+      "features": ["boat_rental", "marina"],
+      "baseMinutes": 95,
+      "distanceKm": 50,
+      "baseOneWayCost": 0
+    }
+  ],
+  "habitatTags": ["open", "bluewater"],
+  "depth": {
+    "depthRangeM": {
+      "min": 20,
+      "max": 200
+    }
+  },
+  "fishingZones": [
+    {
+      "id": "surface",
+      "name": "Surface",
+      "depthRangeM": {
+        "min": 0,
+        "max": 15
+      },
+      "habitatTags": ["surface", "open"]
+    },
+    {
+      "id": "mid",
+      "name": "Mid Water",
+      "depthRangeM": {
+        "min": 15,
+        "max": 60
+      },
+      "habitatTags": ["mid-water", "open"]
+    },
+    {
+      "id": "deep",
+      "name": "Deep Edge",
+      "depthRangeM": {
+        "min": 60,
+        "max": 180
+      },
+      "habitatTags": ["deep", "reef", "bottom"]
+    }
+  ],
+  "fishTable": [
+    {
+      "speciesId": "spanish-mackerel",
+      "basePresence": 0.28,
+      "zoneAffinity": {
+        "surface": 1.5,
+        "mid": 1.1,
+        "deep": 0.1
+      }
+    },
+    {
+      "speciesId": "longtail-tuna",
+      "basePresence": 0.24,
+      "zoneAffinity": {
+        "surface": 1.4,
+        "mid": 1.3,
+        "deep": 0.1
+      }
+    },
+    {
+      "speciesId": "cobia",
+      "basePresence": 0.18,
+      "zoneAffinity": {
+        "surface": 0.8,
+        "mid": 1.4,
+        "deep": 0.7
+      }
+    },
+    {
+      "speciesId": "giant-trevally",
+      "basePresence": 0.16,
+      "zoneAffinity": {
+        "surface": 1.1,
+        "mid": 1.3,
+        "deep": 0.4
+      }
+    },
+    {
+      "speciesId": "mahi-mahi",
+      "basePresence": 0.2,
+      "zoneAffinity": {
+        "surface": 1.5,
+        "mid": 1,
+        "deep": 0.1
+      }
+    }
+  ],
+  "dataStatus": "provisional",
+  "knowledgeConfig": {
+    "reveals": [
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "habitat",
+        "minKnowledge": 50
+      }
+    ]
+  },
+  "sourceRefs": [
+    {
+      "id": "phase12-provisional",
+      "title": "PROVISIONAL — gameplay-oriented spot layout; real access and regulations require verification"
+    }
+  ]
+}

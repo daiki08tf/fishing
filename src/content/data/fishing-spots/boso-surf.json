@@ -1,0 +1,129 @@
+{
+  "id": "boso-surf",
+  "name": "房総 サーフ（暫定）",
+  "regionId": "tokyo-area",
+  "areaId": "chiba",
+  "environment": "nearshore",
+  "access": [
+    {
+      "kind": "capability",
+      "capability": "road_access"
+    }
+  ],
+  "travelOptions": [
+    {
+      "id": "boso-road",
+      "transportTypes": ["rental_car"],
+      "requiredCapabilities": ["road_access"],
+      "features": ["vehicle_rental"],
+      "baseMinutes": 120,
+      "distanceKm": 85,
+      "baseOneWayCost": 0
+    }
+  ],
+  "habitatTags": ["surf", "sand"],
+  "depth": {
+    "depthRangeM": {
+      "min": 0,
+      "max": 18
+    }
+  },
+  "fishingZones": [
+    {
+      "id": "wash",
+      "name": "波打ち際",
+      "castDistanceM": {
+        "min": 0,
+        "max": 15
+      },
+      "depthRangeM": {
+        "min": 0,
+        "max": 3
+      },
+      "habitatTags": ["surf", "shallow"]
+    },
+    {
+      "id": "break",
+      "name": "第一ブレイク",
+      "castDistanceM": {
+        "min": 15,
+        "max": 40
+      },
+      "depthRangeM": {
+        "min": 2,
+        "max": 6
+      },
+      "habitatTags": ["break", "sand"]
+    },
+    {
+      "id": "outer",
+      "name": "沖のブレイク",
+      "castDistanceM": {
+        "min": 40,
+        "max": 85
+      },
+      "depthRangeM": {
+        "min": 5,
+        "max": 15
+      },
+      "habitatTags": ["open", "current"]
+    }
+  ],
+  "fishTable": [
+    {
+      "speciesId": "hirame",
+      "basePresence": 0.35,
+      "zoneAffinity": {
+        "wash": 0.4,
+        "break": 1.2,
+        "outer": 1.4
+      }
+    },
+    {
+      "speciesId": "magochi",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "wash": 0.5,
+        "break": 1.3,
+        "outer": 1
+      }
+    },
+    {
+      "speciesId": "buri",
+      "basePresence": 0.18,
+      "zoneAffinity": {
+        "wash": 0.1,
+        "break": 0.6,
+        "outer": 1.6
+      }
+    },
+    {
+      "speciesId": "hiramasa",
+      "basePresence": 0.1,
+      "zoneAffinity": {
+        "wash": 0.1,
+        "break": 0.5,
+        "outer": 1.7
+      }
+    }
+  ],
+  "dataStatus": "provisional",
+  "knowledgeConfig": {
+    "reveals": [
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "habitat",
+        "minKnowledge": 50
+      }
+    ]
+  },
+  "sourceRefs": [
+    {
+      "id": "phase12-provisional",
+      "title": "PROVISIONAL — gameplay-oriented spot layout; real access and regulations require verification"
+    }
+  ]
+}

@@ -7,8 +7,9 @@ import { assembleBuiltInContent, type BuiltInContent, type ContentSource } from 
  * **JSON を追加するだけで新しい魚種がゲームに登場する**。
  * カタログのコード変更も Fishing Engine の変更も要らない。
  *
- * ここに置く魚種・釣り場は**検証用のサンプル**であり、現実の魚や釣り場を
- * 表すものではない（名前もパラメータも暫定）。現実データは Phase 4 以降で投入する。
+ * runtime Content はプレイヤーが実際に遊ぶ魚種・釣り場である。
+ * Phase 12 時点では多くの生態値・分布・地形・アクセスを PROVISIONAL として扱い、
+ * 検証用の合成魚は tests/fixtures 側へ分離する。
  */
 
 const speciesModules = import.meta.glob<unknown>('../data/fish-species/*.json', {

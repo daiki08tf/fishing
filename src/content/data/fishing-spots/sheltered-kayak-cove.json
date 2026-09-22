@@ -31,11 +31,11 @@
   },
   "fishTable": [
     {
-      "speciesId": "kanto-seabass",
+      "speciesId": "seabass",
       "basePresence": 0.6
     },
     {
-      "speciesId": "kanto-kurodai",
+      "speciesId": "kurodai",
       "basePresence": 0.5
     }
   ],
@@ -50,5 +50,46 @@
         "minKnowledge": 40
       }
     ]
-  }
+  },
+  "fishingZones": [
+    {
+      "id": "shore",
+      "name": "岸寄り",
+      "castDistanceM": {
+        "min": 0,
+        "max": 15
+      },
+      "depthRangeM": {
+        "min": 1,
+        "max": 5
+      },
+      "habitatTags": ["shore", "shallow"]
+    },
+    {
+      "id": "reef-edge",
+      "name": "根・ウィード際",
+      "castDistanceM": {
+        "min": 15,
+        "max": 35
+      },
+      "depthRangeM": {
+        "min": 3,
+        "max": 10
+      },
+      "habitatTags": ["reef", "weed"]
+    },
+    {
+      "id": "outer",
+      "name": "沖側",
+      "castDistanceM": {
+        "min": 35,
+        "max": 60
+      },
+      "depthRangeM": {
+        "min": 6,
+        "max": 18
+      },
+      "habitatTags": ["open", "current"]
+    }
+  ]
 }

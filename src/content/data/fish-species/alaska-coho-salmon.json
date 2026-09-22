@@ -1,8 +1,8 @@
 {
-  "id": "alaska-coho-salmon",
+  "id": "coho-salmon",
   "japaneseName": "ギンザケ（暫定）",
   "waterTypes": ["fresh", "salt"],
-  "distribution": ["alaska"],
+  "distribution": ["alaska", "british-columbia"],
   "habitats": ["river", "bay"],
   "depthRange": {
     "min": 1,

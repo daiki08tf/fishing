@@ -1,8 +1,8 @@
 {
-  "id": "alaska-chum-salmon",
+  "id": "chum-salmon",
   "japaneseName": "シロザケ（暫定）",
   "waterTypes": ["fresh", "salt"],
-  "distribution": ["alaska"],
+  "distribution": ["alaska", "british-columbia"],
   "habitats": ["river", "gravel"],
   "depthRange": {
     "min": 1,

@@ -1,0 +1,129 @@
+{
+  "id": "qld-reef-edge",
+  "name": "Queensland Reef Edge（暫定）",
+  "regionId": "queensland",
+  "areaId": "reef",
+  "environment": "nearshore",
+  "access": [
+    {
+      "kind": "permit",
+      "permitId": "queensland-fishing-permit"
+    }
+  ],
+  "travelOptions": [
+    {
+      "id": "qld-reef-boat",
+      "transportTypes": ["rental_boat"],
+      "requiredCapabilities": ["boat_required"],
+      "features": ["boat_rental"],
+      "baseMinutes": 55,
+      "distanceKm": 18,
+      "baseOneWayCost": 0
+    }
+  ],
+  "habitatTags": ["reef", "coral"],
+  "depth": {
+    "depthRangeM": {
+      "min": 1,
+      "max": 40
+    }
+  },
+  "fishingZones": [
+    {
+      "id": "reef-flat",
+      "name": "Reef Flat",
+      "castDistanceM": {
+        "min": 0,
+        "max": 20
+      },
+      "depthRangeM": {
+        "min": 1,
+        "max": 5
+      },
+      "habitatTags": ["reef", "shallow"]
+    },
+    {
+      "id": "reef-edge",
+      "name": "Reef Edge",
+      "castDistanceM": {
+        "min": 20,
+        "max": 45
+      },
+      "depthRangeM": {
+        "min": 5,
+        "max": 18
+      },
+      "habitatTags": ["reef", "drop"]
+    },
+    {
+      "id": "blue-water",
+      "name": "Blue Water",
+      "castDistanceM": {
+        "min": 45,
+        "max": 85
+      },
+      "depthRangeM": {
+        "min": 15,
+        "max": 40
+      },
+      "habitatTags": ["open", "current"]
+    }
+  ],
+  "fishTable": [
+    {
+      "speciesId": "coral-trout",
+      "basePresence": 0.34,
+      "zoneAffinity": {
+        "reef-flat": 0.7,
+        "reef-edge": 1.5,
+        "blue-water": 0.8
+      }
+    },
+    {
+      "speciesId": "giant-trevally",
+      "basePresence": 0.2,
+      "zoneAffinity": {
+        "reef-flat": 0.5,
+        "reef-edge": 1.3,
+        "blue-water": 1.5
+      }
+    },
+    {
+      "speciesId": "bluefin-trevally",
+      "basePresence": 0.28,
+      "zoneAffinity": {
+        "reef-flat": 0.8,
+        "reef-edge": 1.3,
+        "blue-water": 1.2
+      }
+    },
+    {
+      "speciesId": "red-emperor",
+      "basePresence": 0.22,
+      "zoneAffinity": {
+        "reef-flat": 0.2,
+        "reef-edge": 1,
+        "blue-water": 1.5
+      }
+    }
+  ],
+  "dataStatus": "provisional",
+  "knowledgeConfig": {
+    "reveals": [
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "habitat",
+        "minKnowledge": 50
+      }
+    ]
+  },
+  "sourceRefs": [
+    {
+      "id": "phase12-provisional",
+      "title": "PROVISIONAL — gameplay-oriented spot layout; real access and regulations require verification"
+    }
+  ]
+}

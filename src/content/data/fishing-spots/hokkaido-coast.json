@@ -35,7 +35,7 @@
   },
   "fishTable": [
     {
-      "speciesId": "hokkaido-masu-salmon",
+      "speciesId": "masu-salmon",
       "basePresence": 0.35,
       "zoneAffinity": {
         "shore-wash": 0.5,
@@ -44,7 +44,7 @@
       }
     },
     {
-      "speciesId": "kanto-seabass",
+      "speciesId": "seabass",
       "basePresence": 0.5,
       "zoneAffinity": {
         "shore-wash": 0.8,
@@ -53,7 +53,7 @@
       }
     },
     {
-      "speciesId": "kanto-buri",
+      "speciesId": "buri",
       "basePresence": 0.3,
       "zoneAffinity": {
         "shore-wash": 0.2,

@@ -1,0 +1,51 @@
+{
+  "id": "quillback-rockfish",
+  "japaneseName": "クイルバックロックフィッシュ（暫定）",
+  "scientificName": "Sebastes maliger",
+  "waterTypes": ["salt"],
+  "distribution": ["british-columbia"],
+  "habitats": ["reef", "deep"],
+  "depthRange": {
+    "min": 0,
+    "max": 38
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 45,
+    "dispersion": 0.18,
+    "minCm": 20,
+    "maxCm": 75
+  },
+  "weightModel": {
+    "lengthWeightA": 0.009,
+    "lengthWeightB": 3.08
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "fightProfile": {
+    "strength": 0.52,
+    "stamina": 0.68,
+    "speed": 0.4
+  },
+  "rarity": 1.9,
+  "sourceRefs": [
+    {
+      "id": "phase12-provisional",
+      "title": "PROVISIONAL — Phase 12 gameplay tuning; biological values require later verification"
+    }
+  ],
+  "methodAffinity": {
+    "lure": 1,
+    "light_lure": 1,
+    "bait": 1,
+    "bottom": 1
+  },
+  "offeringAffinity": {
+    "minnow": 1,
+    "soft_plastic": 1,
+    "worm": 1,
+    "mid": 1,
+    "small": 1
+  }
+}

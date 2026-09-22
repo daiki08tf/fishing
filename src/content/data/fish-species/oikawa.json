@@ -1,0 +1,51 @@
+{
+  "id": "oikawa",
+  "japaneseName": "オイカワ（暫定）",
+  "scientificName": "Opsariichthys platypus",
+  "waterTypes": ["fresh"],
+  "distribution": ["tokyo-area"],
+  "habitats": ["river", "shallow"],
+  "depthRange": {
+    "min": 0,
+    "max": 10
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 13,
+    "dispersion": 0.17,
+    "minCm": 5,
+    "maxCm": 20
+  },
+  "weightModel": {
+    "lengthWeightA": 0.0095,
+    "lengthWeightB": 3.05
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "fightProfile": {
+    "strength": 0.18,
+    "stamina": 0.26,
+    "speed": 0.48
+  },
+  "rarity": 0.8,
+  "sourceRefs": [
+    {
+      "id": "phase12-provisional",
+      "title": "PROVISIONAL — Phase 12 gameplay tuning; biological values require later verification"
+    }
+  ],
+  "methodAffinity": {
+    "lure": 1,
+    "light_lure": 1,
+    "bait": 1,
+    "bottom": 1
+  },
+  "offeringAffinity": {
+    "minnow": 1,
+    "soft_plastic": 1,
+    "worm": 1,
+    "mid": 1,
+    "small": 1
+  }
+}

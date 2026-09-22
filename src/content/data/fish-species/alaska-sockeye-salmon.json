@@ -1,8 +1,8 @@
 {
-  "id": "alaska-sockeye-salmon",
+  "id": "sockeye-salmon",
   "japaneseName": "ベニザケ（暫定）",
   "waterTypes": ["fresh", "salt"],
-  "distribution": ["alaska"],
+  "distribution": ["alaska", "british-columbia"],
   "habitats": ["river", "lake"],
   "depthRange": {
     "min": 2,
