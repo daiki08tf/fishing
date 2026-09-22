@@ -1,14 +1,35 @@
 {
-  "id": "kanto-bora",
+  "id": "bora",
   "japaneseName": "ボラ（暫定）",
   "scientificName": "Mugil cephalus",
-  "waterTypes": ["salt", "brackish", "fresh"],
-  "habitats": ["estuary", "bay", "lake"],
-  "diet": ["algae", "detritus"],
-  "baits": ["dough", "worm"],
-  "lureCategories": ["small"],
-  "fishingMethods": ["bait", "light_lure"],
-  "distribution": ["tokyo-area"],
+  "waterTypes": [
+    "salt",
+    "brackish",
+    "fresh"
+  ],
+  "habitats": [
+    "estuary",
+    "bay",
+    "lake"
+  ],
+  "diet": [
+    "algae",
+    "detritus"
+  ],
+  "baits": [
+    "dough",
+    "worm"
+  ],
+  "lureCategories": [
+    "small"
+  ],
+  "fishingMethods": [
+    "bait",
+    "light_lure"
+  ],
+  "distribution": [
+    "tokyo-area"
+  ],
   "depthRange": {
     "min": 20,
     "max": 90
@@ -50,8 +71,14 @@
   },
   "rarity": 3,
   "environmentAffinity": {
-    "preferredSeasons": ["spring", "summer"],
-    "preferredTimeOfDay": ["dawn", "morning"],
+    "preferredSeasons": [
+      "spring",
+      "summer"
+    ],
+    "preferredTimeOfDay": [
+      "dawn",
+      "morning"
+    ],
     "weatherAffinity": {
       "clear": 1.05,
       "cloudy": 1.05,
