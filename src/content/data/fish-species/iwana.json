@@ -1,0 +1,46 @@
+{
+  "id": "iwana",
+  "japaneseName": "イワナ（暫定）",
+  "scientificName": "Salvelinus leucomaenis",
+  "waterTypes": [
+    "fresh"
+  ],
+  "distribution": [
+    "tokyo-area",
+    "hokkaido"
+  ],
+  "habitats": [
+    "stream",
+    "river"
+  ],
+  "depthRange": {
+    "min": 0,
+    "max": 28
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 24,
+    "dispersion": 0.17,
+    "minCm": 10,
+    "maxCm": 55
+  },
+  "weightModel": {
+    "lengthWeightA": 0.0095,
+    "lengthWeightB": 3.05
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "fightProfile": {
+    "strength": 0.5,
+    "stamina": 0.56,
+    "speed": 0.6
+  },
+  "rarity": 1.5,
+  "sourceRefs": [
+    {
+      "id": "phase12-provisional",
+      "title": "PROVISIONAL — Phase 12 gameplay tuning; biological values require later verification"
+    }
+  ]
+}
