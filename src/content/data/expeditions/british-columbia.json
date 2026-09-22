@@ -1,0 +1,39 @@
+{
+  "id": "british-columbia-expedition",
+  "regionId": "british-columbia",
+  "name": "ブリティッシュコロンビア遠征",
+  "dataStatus": "provisional",
+  "flight": {
+    "transportType": "international_flight",
+    "name": "国際線 東京→バンクーバー",
+    "oneWayCostYen": 95000,
+    "oneWayMinutes": 600
+  },
+  "nights": {
+    "default": 5,
+    "min": 3,
+    "max": 14
+  },
+  "lodgings": [
+    {
+      "id": "bc-budget-hotel",
+      "name": "Budget Hotel",
+      "nightlyCostYen": 11000
+    },
+    {
+      "id": "bc-riverside-lodge",
+      "name": "Riverside Lodge",
+      "nightlyCostYen": 19000
+    },
+    {
+      "id": "bc-fishing-lodge",
+      "name": "Fishing Lodge",
+      "nightlyCostYen": 32000
+    }
+  ],
+  "permit": {
+    "permitId": "bc-fishing-license",
+    "name": "BC Fishing Licence（暫定）",
+    "costYen": 9000
+  }
+}
