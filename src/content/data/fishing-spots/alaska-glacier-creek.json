@@ -14,8 +14,12 @@
   "travelOptions": [
     {
       "id": "creek-walk",
-      "transportTypes": ["walk"],
-      "requiredCapabilities": ["reachable_on_foot"],
+      "transportTypes": [
+        "walk"
+      ],
+      "requiredCapabilities": [
+        "reachable_on_foot"
+      ],
       "features": [],
       "baseMinutes": 55,
       "distanceKm": 4,
@@ -23,15 +27,24 @@
     },
     {
       "id": "creek-road",
-      "transportTypes": ["rental_car"],
-      "requiredCapabilities": ["road_access"],
-      "features": ["vehicle_rental"],
+      "transportTypes": [
+        "rental_car"
+      ],
+      "requiredCapabilities": [
+        "road_access"
+      ],
+      "features": [
+        "vehicle_rental"
+      ],
       "baseMinutes": 50,
       "distanceKm": 35,
       "baseOneWayCost": 0
     }
   ],
-  "habitatTags": ["cold", "gravel"],
+  "habitatTags": [
+    "cold",
+    "gravel"
+  ],
   "depth": {
     "depthRangeM": {
       "min": 1,
@@ -40,19 +53,19 @@
   },
   "fishTable": [
     {
-      "speciesId": "alaska-sockeye-salmon",
+      "speciesId": "sockeye-salmon",
       "basePresence": 0.5
     },
     {
-      "speciesId": "alaska-chum-salmon",
+      "speciesId": "chum-salmon",
       "basePresence": 0.4
     },
     {
-      "speciesId": "alaska-dolly-varden",
+      "speciesId": "dolly-varden",
       "basePresence": 0.4
     },
     {
-      "speciesId": "alaska-arctic-char",
+      "speciesId": "arctic-char",
       "basePresence": 0.3
     }
   ],
