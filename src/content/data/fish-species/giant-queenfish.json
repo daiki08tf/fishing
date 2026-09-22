@@ -1,0 +1,45 @@
+{
+  "id": "giant-queenfish",
+  "japaneseName": "オオクイーンフィッシュ（暫定）",
+  "scientificName": "Scomberoides commersonnianus",
+  "waterTypes": [
+    "salt"
+  ],
+  "distribution": [
+    "queensland"
+  ],
+  "habitats": [
+    "coast",
+    "open"
+  ],
+  "depthRange": {
+    "min": 0,
+    "max": 70
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 80,
+    "dispersion": 0.18,
+    "minCm": 35,
+    "maxCm": 140
+  },
+  "weightModel": {
+    "lengthWeightA": 0.009,
+    "lengthWeightB": 3.08
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "fightProfile": {
+    "strength": 0.84,
+    "stamina": 0.78,
+    "speed": 0.96
+  },
+  "rarity": 2.1,
+  "sourceRefs": [
+    {
+      "id": "phase12-provisional",
+      "title": "PROVISIONAL — Phase 12 gameplay tuning; biological values require later verification"
+    }
+  ]
+}
