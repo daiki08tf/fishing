@@ -125,7 +125,9 @@ export const HomeScreen = () => {
     <div className="fishing">
       <BiomeScene
         environment={summarySpot?.environment ?? 'bay_shore'}
-        title={current === null ? (currentRegion?.base.name ?? 'Tokyo Area Home') : current.baseName}
+        title={
+          current === null ? (currentRegion?.base.name ?? 'Tokyo Area Home') : current.baseName
+        }
         subtitle={
           current === null
             ? undefined

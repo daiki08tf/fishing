@@ -63,8 +63,7 @@
   --shadow-inset: inset 0 -2px 0 rgb(22 50 74 / 10%);
 
   /* --- Typography --- */
-  --font-body:
-    system-ui, -apple-system, 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+  --font-body: system-ui, -apple-system, 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
   --font-pixel: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
 
   /* --- z-index --- */

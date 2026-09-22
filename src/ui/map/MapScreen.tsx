@@ -221,50 +221,53 @@ export const MapScreen = () => {
 
                 {!inRegion || options.length === 0 ? null : (
                   <details className="disclosure">
-                    <summary className="disclosure__summary">移動手段を見る（{options.length}件）</summary>
+                    <summary className="disclosure__summary">
+                      移動手段を見る（{options.length}件）
+                    </summary>
                     <ul className="travel-options disclosure__body">
-                    {options.map((option) => {
-                      const optionId = String(option.transportId)
-                      const chosen = selected !== null && String(selected.transportId) === optionId
-                      const affordable = evaluateTrip(
-                        spot,
-                        option,
-                        content.value.transports,
-                      ).affordable
-                      const parts = describeTravelCostParts(option)
+                      {options.map((option) => {
+                        const optionId = String(option.transportId)
+                        const chosen =
+                          selected !== null && String(selected.transportId) === optionId
+                        const affordable = evaluateTrip(
+                          spot,
+                          option,
+                          content.value.transports,
+                        ).affordable
+                        const parts = describeTravelCostParts(option)
 
-                      return (
-                        <li
-                          className={`travel-option${chosen ? ' travel-option--selected' : ''}`}
-                          key={optionId}
-                        >
-                          <button
-                            className="travel-option__choice"
-                            type="button"
-                            aria-pressed={chosen}
-                            onClick={() => {
-                              setSelectedTransportIds((current) => ({
-                                ...current,
-                                [spotId]: optionId,
-                              }))
-                            }}
+                        return (
+                          <li
+                            className={`travel-option${chosen ? ' travel-option--selected' : ''}`}
+                            key={optionId}
                           >
-                            <span className="travel-option__name">
-                              {`${chosen ? '●' : '○'} ${option.transportName}`}
-                            </span>
-                            <span className="travel-option__meta">
-                              {`${formatDuration(option.minutes)} / ${describeTravelCost(option)}`}
-                            </span>
-                          </button>
-                          {parts.length === 0 ? null : (
-                            <span className="travel-option__parts">{parts.join(' + ')}</span>
-                          )}
-                          {affordable ? null : (
-                            <span className="travel-option__note">交通費が足りない</span>
-                          )}
-                        </li>
-                      )
-                    })}
+                            <button
+                              className="travel-option__choice"
+                              type="button"
+                              aria-pressed={chosen}
+                              onClick={() => {
+                                setSelectedTransportIds((current) => ({
+                                  ...current,
+                                  [spotId]: optionId,
+                                }))
+                              }}
+                            >
+                              <span className="travel-option__name">
+                                {`${chosen ? '●' : '○'} ${option.transportName}`}
+                              </span>
+                              <span className="travel-option__meta">
+                                {`${formatDuration(option.minutes)} / ${describeTravelCost(option)}`}
+                              </span>
+                            </button>
+                            {parts.length === 0 ? null : (
+                              <span className="travel-option__parts">{parts.join(' + ')}</span>
+                            )}
+                            {affordable ? null : (
+                              <span className="travel-option__note">交通費が足りない</span>
+                            )}
+                          </li>
+                        )
+                      })}
                     </ul>
                   </details>
                 )}

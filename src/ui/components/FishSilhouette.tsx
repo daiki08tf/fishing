@@ -66,9 +66,7 @@ export const FishSilhouette = ({
           stroke="var(--color-border)"
           strokeWidth={1.4}
         />
-        {unknown ? null : (
-          <circle cx="23" cy="14.5" r="1.3" fill="var(--palette-navy-deep)" />
-        )}
+        {unknown ? null : <circle cx="23" cy="14.5" r="1.3" fill="var(--palette-navy-deep)" />}
       </svg>
     </span>
   )

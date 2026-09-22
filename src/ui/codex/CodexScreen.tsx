@@ -48,7 +48,9 @@ export const CodexScreen = () => {
     .slice()
     .sort((left, right) => left.name.localeCompare(right.name))
 
-  const caughtCount = species.filter((entry) => codex.species[String(entry.id)] !== undefined).length
+  const caughtCount = species.filter(
+    (entry) => codex.species[String(entry.id)] !== undefined,
+  ).length
 
   const visible = species.filter((entry) => {
     const caught = codex.species[String(entry.id)] !== undefined
@@ -177,7 +179,9 @@ export const CodexScreen = () => {
                   <FishSilhouette speciesId={String(entry.id)} unknown={!caught} size={36} />
                   <span className="codex-tile__name">{caught ? entry.japaneseName : '？？？'}</span>
                   {caught ? (
-                    <span className="codex-tile__meta">{record.catchCount} 匹 / {record.largestLengthCm} cm</span>
+                    <span className="codex-tile__meta">
+                      {record.catchCount} 匹 / {record.largestLengthCm} cm
+                    </span>
                   ) : (
                     <span className="codex-tile__meta">
                       {region === undefined ? '未確認' : region.name}

@@ -21,10 +21,18 @@ const SCENES: Readonly<Record<string, Scene>> = {
   estuary: { sky: 'var(--palette-sand)', water: 'var(--palette-teal)', label: '汽水の河口' },
   bay_shore: { sky: 'var(--palette-sky)', water: 'var(--palette-ocean)', label: '海岸' },
   lake: { sky: 'var(--palette-sky)', water: 'var(--palette-leaf)', label: '湖' },
-  managed_pond: { sky: 'var(--palette-cream-deep)', water: 'var(--palette-teal)', label: '管理釣り場' },
+  managed_pond: {
+    sky: 'var(--palette-cream-deep)',
+    water: 'var(--palette-teal)',
+    label: '管理釣り場',
+  },
 }
 
-const DEFAULT_SCENE: Scene = { sky: 'var(--palette-sky)', water: 'var(--palette-ocean)', label: '釣り場' }
+const DEFAULT_SCENE: Scene = {
+  sky: 'var(--palette-sky)',
+  water: 'var(--palette-ocean)',
+  label: '釣り場',
+}
 
 export const BiomeScene = ({ environment, title, subtitle }: BiomeSceneProps) => {
   const scene = SCENES[environment] ?? DEFAULT_SCENE
@@ -32,7 +40,9 @@ export const BiomeScene = ({ environment, title, subtitle }: BiomeSceneProps) =>
   return (
     <div
       className="biome-scene"
-      style={{ background: `linear-gradient(180deg, ${scene.sky} 0%, ${scene.sky} 55%, ${scene.water} 55%)` }}
+      style={{
+        background: `linear-gradient(180deg, ${scene.sky} 0%, ${scene.sky} 55%, ${scene.water} 55%)`,
+      }}
     >
       <svg
         className="biome-scene__waves"
