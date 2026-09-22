@@ -14,8 +14,12 @@
   "travelOptions": [
     {
       "id": "rail-route",
-      "transportTypes": ["train"],
-      "requiredCapabilities": ["public_transport"],
+      "transportTypes": [
+        "train"
+      ],
+      "requiredCapabilities": [
+        "public_transport"
+      ],
       "features": [],
       "baseMinutes": 40,
       "distanceKm": 24,
@@ -23,15 +27,22 @@
     },
     {
       "id": "bus-route",
-      "transportTypes": ["bus"],
-      "requiredCapabilities": ["public_transport"],
+      "transportTypes": [
+        "bus"
+      ],
+      "requiredCapabilities": [
+        "public_transport"
+      ],
       "features": [],
       "baseMinutes": 55,
       "distanceKm": 24,
       "baseOneWayCost": 520
     }
   ],
-  "habitatTags": ["estuary", "shallow"],
+  "habitatTags": [
+    "estuary",
+    "shallow"
+  ],
   "depth": {
     "depthRangeM": {
       "min": 1,
@@ -40,7 +51,7 @@
   },
   "fishTable": [
     {
-      "speciesId": "kanto-shirogisu",
+      "speciesId": "shirogisu",
       "basePresence": 0.6,
       "zoneAffinity": {
         "margin": 0.4,
@@ -49,7 +60,7 @@
       }
     },
     {
-      "speciesId": "kanto-seabass",
+      "speciesId": "seabass",
       "basePresence": 0.5,
       "zoneAffinity": {
         "margin": 0.7,
@@ -58,7 +69,7 @@
       }
     },
     {
-      "speciesId": "kanto-funa",
+      "speciesId": "funa",
       "basePresence": 0.7,
       "zoneAffinity": {
         "margin": 1.2,
@@ -67,7 +78,7 @@
       }
     },
     {
-      "speciesId": "kanto-bora",
+      "speciesId": "bora",
       "basePresence": 0.2,
       "zoneAffinity": {
         "margin": 0.8,
@@ -104,7 +115,10 @@
         "min": 1,
         "max": 3
       },
-      "habitatTags": ["estuary", "shallow"]
+      "habitatTags": [
+        "estuary",
+        "shallow"
+      ]
     },
     {
       "id": "channel",
@@ -117,7 +131,10 @@
         "min": 2,
         "max": 7
       },
-      "habitatTags": ["estuary", "current"]
+      "habitatTags": [
+        "estuary",
+        "current"
+      ]
     },
     {
       "id": "outer-flow",
@@ -130,7 +147,10 @@
         "min": 4,
         "max": 10
       },
-      "habitatTags": ["open", "current"]
+      "habitatTags": [
+        "open",
+        "current"
+      ]
     }
   ]
 }
