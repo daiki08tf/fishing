@@ -1,0 +1,45 @@
+{
+  "id": "oshorokoma",
+  "japaneseName": "オショロコマ（暫定）",
+  "scientificName": "Salvelinus curilus",
+  "waterTypes": [
+    "fresh"
+  ],
+  "distribution": [
+    "hokkaido"
+  ],
+  "habitats": [
+    "stream",
+    "river"
+  ],
+  "depthRange": {
+    "min": 0,
+    "max": 20
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 22,
+    "dispersion": 0.18,
+    "minCm": 8,
+    "maxCm": 40
+  },
+  "weightModel": {
+    "lengthWeightA": 0.009,
+    "lengthWeightB": 3.08
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "fightProfile": {
+    "strength": 0.42,
+    "stamina": 0.5,
+    "speed": 0.56
+  },
+  "rarity": 1.5,
+  "sourceRefs": [
+    {
+      "id": "phase12-provisional",
+      "title": "PROVISIONAL — Phase 12 gameplay tuning; biological values require later verification"
+    }
+  ]
+}
