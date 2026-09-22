@@ -1,14 +1,34 @@
 {
-  "id": "kanto-buri",
+  "id": "buri",
   "japaneseName": "ブリ（暫定）",
   "scientificName": "Seriola quinqueradiata",
-  "waterTypes": ["salt"],
-  "habitats": ["offshore", "deep", "bay"],
-  "diet": ["small_fish", "squid"],
-  "baits": ["live", "cut"],
-  "lureCategories": ["metal_jig", "plug"],
-  "fishingMethods": ["lure", "bait"],
-  "distribution": ["tokyo-area"],
+  "waterTypes": [
+    "salt"
+  ],
+  "habitats": [
+    "offshore",
+    "deep",
+    "bay"
+  ],
+  "diet": [
+    "small_fish",
+    "squid"
+  ],
+  "baits": [
+    "live",
+    "cut"
+  ],
+  "lureCategories": [
+    "metal_jig",
+    "plug"
+  ],
+  "fishingMethods": [
+    "lure",
+    "bait"
+  ],
+  "distribution": [
+    "tokyo-area"
+  ],
   "depthRange": {
     "min": 30,
     "max": 120
