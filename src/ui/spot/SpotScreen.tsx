@@ -1,9 +1,14 @@
 import { useState } from 'react'
 import { knowledgeTierFor, revealedFields } from '../../domain/knowledge/spotKnowledge'
-import { resolveEnvironment, resolveFishingConditions } from '../../domain/environment'
+import {
+  WATER_FLOW_LABELS,
+  resolveEnvironment,
+  resolveFishingConditions,
+} from '../../domain/environment'
 import { NEUTRAL_FISHING_MODIFIERS } from '../../domain/fishing/PlayerFishingModifiers'
 import { bestFishFinderOf, resolveTackle } from '../../domain/tackle'
 import { fishingZonesForSpot } from '../../domain/casting'
+import { SEA_STATE_LABELS, resolveFishingPlatform, resolveSeaState } from '../../domain/depth'
 import { resolveBiteCompatibility } from '../../domain/tackle/biteCompatibility'
 import { formatWorldTime } from '../../domain/world'
 import { spotKnowledgeScore } from '../../domain/knowledge/spotKnowledge'
@@ -129,6 +134,15 @@ export const SpotScreen = () => {
     const species = content.value.speciesById[String(occurrence.speciesId)]
     return species === undefined ? [] : [species]
   })
+  /*
+   * Phase 17A: Fishing Platform は Save しない派生値。今回の釣行で使った
+   * Transport（world.trip.transportId）から derive するだけ（新しい state は増やさない）。
+   */
+  const tripTransportId = world.trip?.transportId ?? null
+  const tripTransport =
+    tripTransportId === null ? null : (content.value.transportById[String(tripTransportId)] ?? null)
+  const platform = resolveFishingPlatform(tripTransport)
+  const seaState = environment === null ? null : resolveSeaState(environment)
   const finder = bestFishFinderOf(inventory, content.value.gear)
   const searchSign =
     lastSearch !== null && lastSearch.spotId === String(spot.id) ? lastSearch.sign : null
@@ -186,6 +200,16 @@ export const SpotScreen = () => {
           {ENVIRONMENT_LABELS[spot.environment] ?? spot.environment}
           {spot.dataStatus === 'provisional' ? ' / 暫定データ（詳細は未検証）' : ''}
         </p>
+        {platform.platform === 'shore' ? null : (
+          <p className="fishing__legend">
+            乗船: {platform.transportName ?? '—'}
+            {spot.depth === undefined
+              ? ''
+              : ` / 水深 ${String(spot.depth.depthRangeM.min)}〜${String(spot.depth.depthRangeM.max)}m`}
+            {seaState === null ? '' : ` / 海況 ${SEA_STATE_LABELS[seaState]}`}
+            {environment === null ? '' : ` / 流れ ${WATER_FLOW_LABELS[environment.water.flow]}`}
+          </p>
+        )}
         <dl className="record">
           <div>
             <dt>知識</dt>
@@ -249,6 +273,9 @@ export const SpotScreen = () => {
                   {zone.castDistanceM === undefined
                     ? ''
                     : ` — ${String(zone.castDistanceM.min)}〜${String(zone.castDistanceM.max)}m`}
+                  {zone.depthRangeM === undefined
+                    ? ''
+                    : ` — 水深 ${String(zone.depthRangeM.min)}〜${String(zone.depthRangeM.max)}m`}
                 </li>
               ))}
             </ul>

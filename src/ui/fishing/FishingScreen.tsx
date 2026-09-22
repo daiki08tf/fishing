@@ -11,6 +11,7 @@ import {
 import { useEffect, useState } from 'react'
 import { suggestBattleCommand } from '../../domain/fishing/battle'
 import { castTargetStatus, type CastTargetStatus } from '../../domain/casting'
+import { depthTargetStatus, type DepthTargetStatus } from '../../domain/depth'
 import { FishingMeter } from './FishingMeter'
 import { WaterScene } from './WaterScene'
 import { ResultView } from './ResultView'
@@ -135,6 +136,13 @@ export const FIGHT_COMMANDS: readonly FishingCommand[] = [
 export const LANDING_COMMANDS: readonly FishingCommand[] = ['land', 'wait']
 export const PRE_FIGHT_COMMANDS: readonly FishingCommand[] = ['cast', 'hook']
 
+const DEPTH_STATUS_LABELS: Readonly<Record<DepthTargetStatus, string>> = {
+  comfortable: '余裕',
+  reachable: '届く',
+  marginal: 'ギリギリ',
+  unreachable: '届かない',
+}
+
 const CAST_STATUS_LABELS: Readonly<Record<CastTargetStatus, string>> = {
   comfortable: '余裕',
   reachable: '届く',
@@ -185,6 +193,9 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
     targetZoneId,
     castCapability,
     resolvedCast,
+    depthCapability,
+    resolvedDeployment,
+    marineReadiness,
     canCast,
     selectTargetZone,
     send,
@@ -313,9 +324,19 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
     </section>
   )
 
+  /*
+   * Phase 17A: castDistanceM を持つ Zone（岸から投げる）と、
+   * depthRangeM だけを持つ Zone（船の真下などを水深で狙う）を分けて出す。
+   * 既存の Spot は前者だけなので見た目は変わらない。
+   */
+  const castZones = fishingZones.filter((zone) => zone.castDistanceM !== undefined)
+  const depthZones = fishingZones.filter(
+    (zone) => zone.castDistanceM === undefined && zone.depthRangeM !== undefined,
+  )
+
   /* 釣りが終わったあとに「狙う場所」を出しても操作できないので出さない。 */
   const castPanel =
-    castCapability === null || finished ? null : (
+    castCapability === null || finished || castZones.length === 0 ? null : (
       <section className="panel">
         <h3 className="panel__subheading">狙う場所</h3>
         <p className="panel__body">
@@ -326,7 +347,7 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
           遠くへ投げるほど有利ではない。狙う水域によって出会いやすい魚が変わる。
         </p>
         <div className="controls">
-          {fishingZones.map((zone) => {
+          {castZones.map((zone) => {
             const status = castTargetStatus(zone, castCapability)
             const selected = zone.id === targetZoneId
 
@@ -360,6 +381,66 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
         )}
 
         {canCast ? null : <p className="notice">今のタックルでは選択中の水域まで届かない。</p>}
+      </section>
+    )
+
+  /*
+   * Phase 17A: castDistanceM を持たない Zone（船の真下など）は、水深で狙う。
+   * castPanel と同じ考え方（Zone を選ぶ・目押しはしない）を DepthCapability に置き換える。
+   */
+  const depthPanel =
+    depthCapability === null || finished || depthZones.length === 0 ? null : (
+      <section className="panel">
+        <h3 className="panel__subheading">狙う水深</h3>
+        <p className="panel__body">
+          コントロール可能水深 {depthCapability.comfortableDepthM}m / 最大水深{' '}
+          {depthCapability.maxDepthM}m / 操作性 {Math.round(depthCapability.control * 100)}%
+        </p>
+        <p className="fishing__legend">
+          深いほど有利ではない。狙う水深によって出会いやすい魚が変わる。
+        </p>
+        <div className="controls">
+          {depthZones.map((zone) => {
+            const status = depthTargetStatus(zone, depthCapability)
+            const selected = zone.id === targetZoneId
+
+            return (
+              <button
+                className={`control${selected ? ' control--accent' : ''}`}
+                key={zone.id}
+                type="button"
+                disabled={snapshot.phase !== 'IDLE' || status === 'unreachable'}
+                onClick={() => {
+                  selectTargetZone(zone.id)
+                }}
+              >
+                {zone.name} / {rangeLabel(zone.depthRangeM)} / {DEPTH_STATUS_LABELS[status]}
+              </button>
+            )
+          })}
+        </div>
+
+        {snapshot.phase === 'IDLE' ||
+        resolvedDeployment === null ||
+        !resolvedDeployment.reachable ? null : (
+          <p className="notice">
+            水深 {resolvedDeployment.actualDepthM}m へ到達 /{' '}
+            {fishingZones.find((zone) => zone.id === resolvedDeployment.landedZoneId)?.name ??
+              resolvedDeployment.landedZoneId}
+            {resolvedDeployment.quality === 'clean'
+              ? ''
+              : resolvedDeployment.quality === 'shallow'
+                ? '（狙いより浅い）'
+                : resolvedDeployment.quality === 'deep'
+                  ? '（狙いより深い）'
+                  : '（潮に流された）'}
+          </p>
+        )}
+
+        {canCast ? null : <p className="notice">今のタックルでは選択中の水深まで届かない。</p>}
+        {marineReadiness === null || marineReadiness.ok ? null : (
+          <p className="notice">{marineReadiness.reason}</p>
+        )}
       </section>
     )
 
@@ -745,6 +826,7 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
       {waterScene}
       {phasePanel}
       {castPanel}
+      {depthPanel}
       {fishPanel}
       {battlePanel}
       {actionPanel}
