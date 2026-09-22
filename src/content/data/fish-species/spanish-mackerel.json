@@ -1,0 +1,45 @@
+{
+  "id": "spanish-mackerel",
+  "japaneseName": "スパニッシュマッカレル（暫定）",
+  "scientificName": "Scomberomorus commerson",
+  "waterTypes": [
+    "salt"
+  ],
+  "distribution": [
+    "queensland"
+  ],
+  "habitats": [
+    "reef",
+    "open"
+  ],
+  "depthRange": {
+    "min": 0,
+    "max": 100
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 95,
+    "dispersion": 0.18,
+    "minCm": 45,
+    "maxCm": 200
+  },
+  "weightModel": {
+    "lengthWeightA": 0.009,
+    "lengthWeightB": 3.08
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "fightProfile": {
+    "strength": 0.9,
+    "stamina": 0.86,
+    "speed": 0.98
+  },
+  "rarity": 2.4,
+  "sourceRefs": [
+    {
+      "id": "phase12-provisional",
+      "title": "PROVISIONAL — Phase 12 gameplay tuning; biological values require later verification"
+    }
+  ]
+}
