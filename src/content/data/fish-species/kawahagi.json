@@ -1,0 +1,45 @@
+{
+  "id": "kawahagi",
+  "japaneseName": "カワハギ（暫定）",
+  "scientificName": "Stephanolepis cirrhifer",
+  "waterTypes": [
+    "salt"
+  ],
+  "distribution": [
+    "tokyo-area"
+  ],
+  "habitats": [
+    "reef",
+    "pier"
+  ],
+  "depthRange": {
+    "min": 0,
+    "max": 18
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 22,
+    "dispersion": 0.16,
+    "minCm": 10,
+    "maxCm": 35
+  },
+  "weightModel": {
+    "lengthWeightA": 0.0095,
+    "lengthWeightB": 3.05
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "fightProfile": {
+    "strength": 0.32,
+    "stamina": 0.44,
+    "speed": 0.42
+  },
+  "rarity": 1.2,
+  "sourceRefs": [
+    {
+      "id": "phase12-provisional",
+      "title": "PROVISIONAL — Phase 12 gameplay tuning; biological values require later verification"
+    }
+  ]
+}
