@@ -32,6 +32,7 @@
     "simulate:big-game": "tsx scripts/simulate-big-game.ts",
     "simulate:catchability": "tsx scripts/simulate-catchability.ts",
     "simulate:text-battle": "tsx scripts/simulate-text-battle.ts",
+    "simulate:regional-content": "tsx scripts/simulate-regional-content.ts",
     "check": "npm run typecheck && npm run lint && npm run format:check && npm run validate:content && npm run test:run && npm run build"
   },
   "dependencies": {
