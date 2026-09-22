@@ -7,10 +7,58 @@
 }
 
 .spot-card {
-  border: 1px solid var(--color-border);
-  border-radius: 0.75rem;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-lg);
   background-color: var(--color-surface);
-  padding: 0.75rem;
+  box-shadow: var(--shadow-panel);
+  padding: 0.85rem;
+}
+
+.spot-card--node {
+  position: relative;
+}
+
+.spot-card--rumor {
+  background-color: var(--color-surface-alt);
+  border-style: dashed;
+}
+
+.spot-card--locked {
+  opacity: 0.62;
+}
+
+/* 折りたたみ（行き方を見る ▼ / 移動手段の詳細）。static HTML には内容が残るので
+   サーバー描画のテスト文字列を壊さずに、見た目だけ畳める。 */
+.disclosure {
+  margin-top: 0.6rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface-alt);
+  padding: 0.5rem 0.65rem;
+}
+
+.disclosure__summary {
+  cursor: pointer;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--palette-ocean);
+  list-style: none;
+}
+
+.disclosure__summary::-webkit-details-marker {
+  display: none;
+}
+
+.disclosure__summary::after {
+  content: ' ▾';
+}
+
+.disclosure[open] .disclosure__summary::after {
+  content: ' ▴';
+}
+
+.disclosure__body {
+  margin-top: 0.5rem;
 }
 
 .spot-card__head {
@@ -84,7 +132,7 @@
 }
 
 .travel-option__note {
-  color: #f0c274;
+  color: var(--color-warn-text);
 }
 
 /* Phase 8: 遠征（EXPEDITION）画面。 */
@@ -109,7 +157,7 @@
   margin: 0.6rem 0 0;
   padding-left: 1.1rem;
   font-size: 0.8125rem;
-  color: #f0c274;
+  color: var(--color-warn-text);
 }
 
 /* Phase 6.5: 装備カタログが増えたための最小の絞り込み UI。 */

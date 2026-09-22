@@ -4,6 +4,7 @@ import { IndexedDbSaveRepository } from '../infrastructure/persistence/indexedDb
 import { useAppStore } from '../state/appStore'
 import { usePlayerStore } from '../state/playerStore'
 import { AppShell } from '../ui/AppShell'
+import '../ui/styles/tokens.css'
 import '../ui/styles/global.css'
 import { createPersistenceCoordinator } from './persistence/persistenceCoordinator'
 import { registerServiceWorker } from './registerServiceWorker'

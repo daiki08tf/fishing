@@ -11,7 +11,11 @@ import { ExpeditionScreen } from './expedition/ExpeditionScreen'
 import { FishBoxScreen } from './trade/FishBoxScreen'
 import { TradeScreen } from './trade/TradeScreen'
 import { ContactsScreen } from './contacts/ContactsScreen'
+import { CodexScreen } from './codex/CodexScreen'
+import { MenuScreen } from './menu/MenuScreen'
+import { BottomNav } from './nav/BottomNav'
 import './styles/world.css'
+import './components/components.css'
 
 /**
  * 画面の切り替えだけを行う。
@@ -94,7 +98,10 @@ export const AppShell = () => {
         {activeScreen === 'fishbox' ? <FishBoxScreen /> : null}
         {activeScreen === 'trade' ? <TradeScreen /> : null}
         {activeScreen === 'contacts' ? <ContactsScreen /> : null}
+        {activeScreen === 'codex' ? <CodexScreen /> : null}
+        {activeScreen === 'menu' ? <MenuScreen /> : null}
       </main>
+      <BottomNav />
     </div>
   )
 }

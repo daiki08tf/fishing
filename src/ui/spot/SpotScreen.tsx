@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { revealedFields } from '../../domain/knowledge/spotKnowledge'
+import { knowledgeTierFor, revealedFields } from '../../domain/knowledge/spotKnowledge'
 import { resolveEnvironment, resolveFishingConditions } from '../../domain/environment'
 import { NEUTRAL_FISHING_MODIFIERS } from '../../domain/fishing/PlayerFishingModifiers'
 import { bestFishFinderOf, resolveTackle } from '../../domain/tackle'
@@ -9,6 +9,7 @@ import { formatWorldTime } from '../../domain/world'
 import { spotKnowledgeScore } from '../../domain/knowledge/spotKnowledge'
 import { useAppStore } from '../../state/appStore'
 import { usePlayerStore } from '../../state/playerStore'
+import { BiomeScene } from '../components/BiomeScene'
 import { ContentErrorPanel } from '../world/ContentErrorPanel'
 import { useContentOrError } from '../world/useContentOrError'
 import { ConditionPanel } from '../world/ConditionPanel'
@@ -144,15 +145,18 @@ export const SpotScreen = () => {
     value >= 0.7 ? '高' : value >= 0.45 ? '普通' : '低'
   const fishingZones = fishingZonesForSpot(spot)
 
+  const knowledgeTier = knowledgeTierFor(score)
+
   return (
     <div className="fishing">
-      <header className="fishing__header">
-        <span className="fishing__seed">{formatWorldTime(world.time)}</span>
-      </header>
+      <BiomeScene
+        environment={spot.environment}
+        title={spot.name}
+        subtitle={`${formatWorldTime(world.time)} / 知識 ${Math.round(score)}%（${knowledgeTier.label}）`}
+      />
 
       <section className="panel">
         <p className="fishing__phase-code">SPOT</p>
-        <h2 className="panel__heading">{spot.name}</h2>
         <p className="panel__body">
           {ENVIRONMENT_LABELS[spot.environment] ?? spot.environment}
           {spot.dataStatus === 'provisional' ? ' / 暫定データ（詳細は未検証）' : ''}
@@ -167,53 +171,16 @@ export const SpotScreen = () => {
             <dd>{spot.fishTable.length} 種</dd>
           </div>
         </dl>
-      </section>
 
-      {tackle === null ? null : (
-        <section className="panel">
-          <h3 className="panel__subheading">今のタックル</h3>
-          <p className="panel__body">
-            {tackle.method.name} / 大型魚への余裕: {ratingWords(tackle.ratings.power)} / 遠投:{' '}
-            {ratingWords(tackle.ratings.distance)} / 繊細さ: {ratingWords(tackle.ratings.finesse)}
-          </p>
-          <p className="fishing__legend">思ったように釣れないときは、タックルを見直してみる。</p>
-        </section>
-      )}
-
-      <section className="panel">
-        <h3 className="panel__subheading">狙える水域</h3>
-        <ul className="log">
-          {fishingZones.map((zone) => (
-            <li key={zone.id}>
-              {zone.name}
-              {zone.castDistanceM === undefined
-                ? ''
-                : ` — ${String(zone.castDistanceM.min)}〜${String(zone.castDistanceM.max)}m`}
-            </li>
-          ))}
-        </ul>
-        <p className="fishing__legend">
-          釣り画面で狙う水域を選ぶ。遠投は魚種のロックではなく、届く水域を増やす。
-        </p>
-      </section>
-
-      {environment === null || conditions === null ? null : (
-        <ConditionPanel
-          time={world.time}
-          environment={environment}
-          conditions={conditions}
-          speciesNames={speciesNames}
-          searchSign={searchSign}
-        />
-      )}
-
-      <section className="panel">
-        <h3 className="panel__subheading">水を探る</h3>
-        <p className="panel__body">
-          {finder === null
-            ? 'Fish Finder は未所持（目視と勘で探る。所持すると反応が詳しくなる）'
-            : `Fish Finder: ${finder.name}（精度 ${finder.accuracy.toFixed(2)}）`}
-        </p>
+        <button
+          className="button button--primary"
+          type="button"
+          onClick={() => {
+            setActiveScreen('fishing')
+          }}
+        >
+          釣りを始める
+        </button>
         <button
           className="button"
           type="button"
@@ -231,55 +198,102 @@ export const SpotScreen = () => {
             setNotice(result.message)
           }}
         >
-          Search Water（水を探る）
+          水面を探る（Search Water）
         </button>
         {notice === null ? null : <p className="notice">{notice}</p>}
       </section>
 
-      <section className="panel">
-        <h3 className="panel__subheading">食いつき（今の仕掛け）</h3>
-        <p className="fishing__legend">
-          タックルクラスで釣れる魚は決まらない。食いつき・掛かり・ファイトの難しさが変わる。
-        </p>
-        <ul className="log">
-          {biteHints.map((entry) => (
-            <li key={entry.id}>
-              {entry.name}: {entry.labels.join(' / ')}
-            </li>
-          ))}
-        </ul>
-      </section>
+      {environment === null || conditions === null ? null : (
+        <ConditionPanel
+          time={world.time}
+          environment={environment}
+          conditions={conditions}
+          speciesNames={speciesNames}
+          searchSign={searchSign}
+        />
+      )}
 
       <section className="panel">
-        <h3 className="panel__subheading">分かっていること</h3>
-        {fields.length === 0 ? (
-          <p className="panel__body">まだ何も分かっていない。釣りをすると知識が増える。</p>
-        ) : (
-          <ul className="log">
-            {fields.map((field) => (
-              <li key={field}>{FIELD_LABELS[field] ?? field}</li>
-            ))}
-          </ul>
+        <details className="disclosure">
+          <summary className="disclosure__summary">狙える水域を見る</summary>
+          <div className="disclosure__body">
+            <ul className="log">
+              {fishingZones.map((zone) => (
+                <li key={zone.id}>
+                  {zone.name}
+                  {zone.castDistanceM === undefined
+                    ? ''
+                    : ` — ${String(zone.castDistanceM.min)}〜${String(zone.castDistanceM.max)}m`}
+                </li>
+              ))}
+            </ul>
+            <p className="fishing__legend">
+              釣り画面で狙う水域を選ぶ。遠投は魚種のロックではなく、届く水域を増やす。
+            </p>
+          </div>
+        </details>
+
+        {tackle === null ? null : (
+          <details className="disclosure">
+            <summary className="disclosure__summary">今のタックルを見る</summary>
+            <div className="disclosure__body">
+              <p className="panel__body">
+                {tackle.method.name} / 大型魚への余裕: {ratingWords(tackle.ratings.power)} / 遠投:{' '}
+                {ratingWords(tackle.ratings.distance)} / 繊細さ:{' '}
+                {ratingWords(tackle.ratings.finesse)}
+              </p>
+              <p className="fishing__legend">
+                思ったように釣れないときは、タックルを見直してみる。
+              </p>
+              <p className="fishing__legend">
+                {finder === null
+                  ? 'Fish Finder は未所持（目視と勘で探る。所持すると反応が詳しくなる）'
+                  : `Fish Finder: ${finder.name}（精度 ${finder.accuracy.toFixed(2)}）`}
+              </p>
+            </div>
+          </details>
         )}
 
-        {knownSpecies.length === 0 ? null : (
-          <p className="panel__body">
-            主な魚種: {knownSpecies.map((species) => species?.japaneseName).join('、')}
-          </p>
-        )}
+        <details className="disclosure">
+          <summary className="disclosure__summary">食いつき（今の仕掛け）を見る</summary>
+          <div className="disclosure__body">
+            <p className="fishing__legend">
+              タックルクラスで釣れる魚は決まらない。食いつき・掛かり・ファイトの難しさが変わる。
+            </p>
+            <ul className="log">
+              {biteHints.map((entry) => (
+                <li key={entry.id}>
+                  {entry.name}: {entry.labels.join(' / ')}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </details>
+
+        <details className="disclosure">
+          <summary className="disclosure__summary">分かっていることを見る</summary>
+          <div className="disclosure__body">
+            {fields.length === 0 ? (
+              <p className="panel__body">まだ何も分かっていない。釣りをすると知識が増える。</p>
+            ) : (
+              <ul className="log">
+                {fields.map((field) => (
+                  <li key={field}>{FIELD_LABELS[field] ?? field}</li>
+                ))}
+              </ul>
+            )}
+
+            {knownSpecies.length === 0 ? null : (
+              <p className="panel__body">
+                主な魚種: {knownSpecies.map((species) => species?.japaneseName).join('、')}
+              </p>
+            )}
+          </div>
+        </details>
       </section>
 
       <section className="panel">
         <h3 className="panel__subheading">行動</h3>
-        <button
-          className="button button--primary"
-          type="button"
-          onClick={() => {
-            setActiveScreen('fishing')
-          }}
-        >
-          釣りを始める
-        </button>
         <button
           className="button"
           type="button"

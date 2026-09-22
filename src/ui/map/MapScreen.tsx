@@ -14,8 +14,10 @@ import {
 import { NEUTRAL_FISHING_MODIFIERS } from '../../domain/fishing/PlayerFishingModifiers'
 import { useAppStore } from '../../state/appStore'
 import { usePlayerStore } from '../../state/playerStore'
+import { PixelIcon } from '../components/PixelIcon'
 import { ContentErrorPanel } from '../world/ContentErrorPanel'
 import { useContentOrError } from '../world/useContentOrError'
+import './map.css'
 
 /**
  * 釣り場の一覧（Phase 4 の Map）。
@@ -119,7 +121,7 @@ export const MapScreen = () => {
 
             return (
               <button
-                className={`button${active ? ' button--primary' : ' button--ghost'}`}
+                className={`tab${active ? ' tab--active' : ''}`}
                 key={String(candidate.id)}
                 type="button"
                 onClick={() => {
@@ -134,7 +136,7 @@ export const MapScreen = () => {
       </section>
 
       <section>
-        <ul className="spots">
+        <ul className="spots map-board">
           {regionSpots.map((spot) => {
             const spotId = String(spot.id)
             const access = evaluateSpot(spot, content.value.transports)
@@ -174,9 +176,21 @@ export const MapScreen = () => {
                   })
 
             return (
-              <li className="spot-card" key={spotId}>
+              <li
+                className={`spot-card spot-card--node${
+                  spot.visibility === 'hidden' ? ' spot-card--rumor' : ''
+                }${canGo ? '' : ' spot-card--locked'}`}
+                key={spotId}
+              >
                 <div className="spot-card__head">
-                  <h3 className="panel__subheading">{spot.name}</h3>
+                  <span className="spot-card__node-title">
+                    <PixelIcon
+                      name={spot.visibility === 'hidden' ? 'star' : 'drop'}
+                      size={18}
+                      className="spot-card__node-icon"
+                    />
+                    <h3 className="panel__subheading">{spot.name}</h3>
+                  </span>
                   <span className={`badge${access.accessible ? '' : ' badge--alert'}`}>
                     {!inRegion
                       ? '遠征が必要'
@@ -206,7 +220,9 @@ export const MapScreen = () => {
                 )}
 
                 {!inRegion || options.length === 0 ? null : (
-                  <ul className="travel-options">
+                  <details className="disclosure">
+                    <summary className="disclosure__summary">移動手段を見る（{options.length}件）</summary>
+                    <ul className="travel-options disclosure__body">
                     {options.map((option) => {
                       const optionId = String(option.transportId)
                       const chosen = selected !== null && String(selected.transportId) === optionId
@@ -249,7 +265,8 @@ export const MapScreen = () => {
                         </li>
                       )
                     })}
-                  </ul>
+                    </ul>
+                  </details>
                 )}
 
                 {canGo ? (

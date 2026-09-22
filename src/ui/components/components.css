@@ -1,0 +1,187 @@
+/* 共通の小さな部品（Phase 14）。FishSilhouette / EmptyState / StatMeter 等。 */
+
+.fish-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface-alt);
+  box-shadow: var(--shadow-inset);
+  padding: 4px;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  text-align: center;
+  padding: 1.5rem 1rem;
+  color: var(--color-text-muted);
+}
+
+.empty-state__icon {
+  color: var(--color-text-muted);
+  opacity: 0.7;
+}
+
+.empty-state__title {
+  margin: 0;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.empty-state__body {
+  margin: 0;
+  font-size: 0.8125rem;
+}
+
+/* BiomeScene: 小さな pixel landscape ヘッダー。 */
+.biome-scene {
+  position: relative;
+  overflow: hidden;
+  border: var(--border-width-thick) solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-panel);
+  min-height: 6.5rem;
+  padding: 0.85rem 1rem;
+  display: flex;
+  align-items: flex-end;
+}
+
+.biome-scene__waves {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 40%;
+}
+
+.biome-scene__label {
+  position: relative;
+  z-index: 1;
+}
+
+.biome-scene__eyebrow {
+  margin: 0;
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  color: var(--palette-navy-deep);
+  text-shadow: 0 1px 0 rgb(255 255 255 / 55%);
+}
+
+.biome-scene__title {
+  margin: 0.1rem 0 0;
+  font-size: 1.35rem;
+  color: var(--palette-navy-deep);
+  text-shadow: 0 1px 0 rgb(255 255 255 / 45%);
+}
+
+.biome-scene__subtitle {
+  margin: 0.15rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--palette-navy-deep);
+  opacity: 0.85;
+}
+
+/* StatMeter / TrustMeter: ラベル + 数値 + バー。 */
+.stat-meter {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.stat-meter__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.stat-meter__value {
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.stat-meter__track {
+  height: 0.6rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border);
+  background-color: color-mix(in srgb, var(--color-border) 8%, var(--color-surface));
+  overflow: hidden;
+}
+
+.stat-meter__fill {
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-accent);
+  transition: width var(--motion-normal) var(--motion-ease);
+}
+
+.stat-meter--trust .stat-meter__fill {
+  background-color: var(--palette-orange);
+}
+
+/* ResultBanner: LANDED 後の結果カード。 */
+.result-banner {
+  border: var(--border-width-thick) solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-pop);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  text-align: center;
+  animation: pop-in var(--motion-special) var(--motion-ease);
+}
+
+.result-banner--best {
+  border-color: var(--palette-sand);
+  background-color: color-mix(in srgb, var(--palette-sand) 10%, var(--color-surface));
+}
+
+.result-banner--trophy {
+  border-color: var(--palette-orange);
+  background-color: color-mix(in srgb, var(--palette-orange) 14%, var(--color-surface));
+}
+
+.result-banner__badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.35rem;
+  margin-top: 0.15rem;
+}
+
+.result-banner__name {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.result-banner__facts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem 0.9rem;
+  margin-top: 0.35rem;
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
+.result-banner__facts dt {
+  margin: 0;
+  font-size: 0.625rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.result-banner__facts dd {
+  margin: 0;
+  font-weight: 700;
+  color: var(--color-text);
+}

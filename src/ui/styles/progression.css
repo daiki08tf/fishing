@@ -40,7 +40,7 @@
   grid-column: 1;
   height: 0.4rem;
   border-radius: 999px;
-  background-color: rgb(255 255 255 / 8%);
+  background-color: color-mix(in srgb, var(--color-border) 10%, var(--color-surface));
   overflow: hidden;
 }
 
@@ -75,7 +75,7 @@
 
 .perk--ready {
   opacity: 1;
-  border-color: #e0a53f;
+  border-color: var(--palette-sand);
 }
 
 .perk--unlocked {
@@ -98,6 +98,6 @@
 }
 
 .notice--warn {
-  border-left-color: #e0574a;
-  background-color: rgb(224 87 74 / 12%);
+  border-left-color: var(--color-danger);
+  background-color: color-mix(in srgb, var(--color-danger) 12%, var(--color-surface));
 }
