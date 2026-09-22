@@ -34,5 +34,18 @@
       "id": "phase12-provisional",
       "title": "PROVISIONAL — Phase 12 gameplay tuning; biological values require later verification"
     }
-  ]
+  ],
+  "methodAffinity": {
+    "lure": 1,
+    "light_lure": 1,
+    "bait": 1,
+    "bottom": 1
+  },
+  "offeringAffinity": {
+    "minnow": 1,
+    "soft_plastic": 1,
+    "worm": 1,
+    "mid": 1,
+    "small": 1
+  }
 }
