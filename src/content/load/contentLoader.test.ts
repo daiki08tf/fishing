@@ -77,12 +77,12 @@ describe('loadContentDirectory', () => {
 
     // 件数は Content を増減するたびに変わる（検証の中身は validate:content が見る）。
     // 検証用 fixture（サンプル魚）は src/content/data には置かない。
-    expect(kinds.filter((kind) => kind === 'fish-species')).toHaveLength(26)
-    expect(kinds.filter((kind) => kind === 'fishing-spots')).toHaveLength(22)
+    expect(kinds.filter((kind) => kind === 'fish-species')).toHaveLength(82)
+    expect(kinds.filter((kind) => kind === 'fishing-spots')).toHaveLength(45)
     expect(kinds.filter((kind) => kind === 'transports')).toHaveLength(11)
     expect(kinds.filter((kind) => kind === 'countries')).toHaveLength(9)
     expect(kinds.filter((kind) => kind === 'regions')).toHaveLength(10)
-    expect(kinds.filter((kind) => kind === 'expeditions')).toHaveLength(2)
+    expect(kinds.filter((kind) => kind === 'expeditions')).toHaveLength(4)
     expect(kinds.filter((kind) => kind === 'gear')).toHaveLength(464)
     expect(kinds.filter((kind) => kind === 'methods')).toHaveLength(4)
     expect(kinds.filter((kind) => kind === 'brands')).toHaveLength(13)
