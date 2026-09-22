@@ -213,3 +213,21 @@ Content Architecture の整備。既存 Content（82 Species / 53 Spot / 5 playa
 
 pack 別: tackle 196.59 / species-detail 86.96 / region-tokyo-area 39.01 /
 world 12.47 / hokkaido 11.15 / alaska 8.80 / british-columbia 8.52 / queensland 6.23 kB。
+
+
+## Phase 15.1（True Lazy Loading / Content Scale Hardening）
+
+Phase 15 のレビュー指摘「chunk は分かれたが runtime では起動時に全部読む」を修正。
+Domain / Save v9 / gameplay rule は不変。
+
+- 起動 critical path = lightweight catalog + world + 今いる地域 + その地域の Species shard
+  （`bootPackKeys`）。Tackle は background preload、他地域と全 Species は起動で読まない
+- Species detail を **Region shard** に分割（tokyo-area 38 / hokkaido 13 / alaska 10 /
+  british-columbia 20 / queensland 16。重複定義なし・共有分は shared chunk）
+- Fish Box / Trade は保存された Species ID から必要 shard を追加 load（Save に pack 情報なし）
+- Expedition は mount 時には何も読まず、目的地の focus / 出発時にその地域だけ preload
+- Codex の名前検索は捕獲済み限定（未捕獲の存在を検索で漏らさない）。region / water filter は不変
+- 二次画面（Codex / Shop / Tackle / Expedition / Fish Box / Trade / Contacts / Menu /
+  Progression）を dynamic import 化して初期 chunk から外した
+- boot raw 925.44 → 604.95 kB / boot gzip 216.48 → 170.67 kB（-21.2%）/
+  initial chunk 512.00 kB、tests 91 files / 787

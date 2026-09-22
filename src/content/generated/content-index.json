@@ -9,7 +9,7 @@
     "contact-rewards": 12,
     "expeditions": 4,
     "species-trade-profiles": 82,
-    "packs": 8
+    "packs": 7
   },
   "species": [
     {
@@ -28,7 +28,8 @@
         "rock",
         "bottom"
       ],
-      "rarityBand": "common"
+      "rarityBand": "common",
+      "detailShard": "species:hokkaido"
     },
     {
       "id": "amemasu",
@@ -45,7 +46,8 @@
         "river",
         "lake"
       ],
-      "rarityBand": "common"
+      "rarityBand": "common",
+      "detailShard": "species:hokkaido"
     },
     {
       "id": "arctic-char",
@@ -61,7 +63,8 @@
         "lake",
         "river"
       ],
-      "rarityBand": "common"
+      "rarityBand": "common",
+      "detailShard": "species:alaska"
     },
     {
       "id": "ayu",
@@ -80,7 +83,8 @@
         "river",
         "current"
       ],
-      "rarityBand": "common"
+      "rarityBand": "common",
+      "detailShard": "species:tokyo-area"
     },
     {
       "id": "barramundi",
@@ -100,7 +104,8 @@
         "mangrove",
         "river"
       ],
-      "rarityBand": "uncommon"
+      "rarityBand": "uncommon",
+      "detailShard": "species:queensland"
     },
     {
       "id": "bluefin-trevally",
@@ -117,7 +122,8 @@
         "reef",
         "open"
       ],
-      "rarityBand": "uncommon"
+      "rarityBand": "uncommon",
+      "detailShard": "species:queensland"
     },
     {
       "id": "bluegill",
@@ -134,7 +140,8 @@
         "lake",
         "shallow"
       ],
-      "rarityBand": "common"
+      "rarityBand": "common",
+      "detailShard": "species:tokyo-area"
     },
     {
       "id": "bora",
@@ -154,7 +161,8 @@
         "bay",
         "lake"
       ],
-      "rarityBand": "rare"
+      "rarityBand": "rare",
+      "detailShard": "species:tokyo-area"
     },
     {
       "id": "bull-trout",
@@ -171,7 +179,8 @@
         "river",
         "lake"
       ],
-      "rarityBand": "uncommon"
+      "rarityBand": "uncommon",
+      "detailShard": "species:british-columbia"
     },
     {
       "id": "buri",
@@ -190,7 +199,8 @@
         "deep",
         "bay"
       ],
-      "rarityBand": "rare"
+      "rarityBand": "rare",
+      "detailShard": "species:hokkaido"
     },
     {
       "id": "cabezon",
@@ -207,7 +217,8 @@
         "reef",
         "bottom"
       ],
-      "rarityBand": "uncommon"
+      "rarityBand": "uncommon",
+      "detailShard": "species:british-columbia"
     },
     {
       "id": "chinook-salmon",
@@ -225,7 +236,8 @@
         "river",
         "deep"
       ],
-      "rarityBand": "rare"
+      "rarityBand": "rare",
+      "detailShard": "species:alaska"
     },
     {
       "id": "chum-salmon",
@@ -243,7 +255,8 @@
         "river",
         "gravel"
       ],
-      "rarityBand": "uncommon"
+      "rarityBand": "uncommon",
+      "detailShard": "species:alaska"
     },
     {
       "id": "coastal-cutthroat-trout",
@@ -261,7 +274,8 @@
         "river",
         "estuary"
       ],
-      "rarityBand": "uncommon"
+      "rarityBand": "uncommon",
+      "detailShard": "species:british-columbia"
     },
     {
       "id": "cobia",
@@ -278,7 +292,8 @@
         "open",
         "reef"
       ],
-      "rarityBand": "uncommon"
+      "rarityBand": "uncommon",
+      "detailShard": "species:queensland"
     },
     {
       "id": "coho-salmon",
@@ -296,7 +311,8 @@
         "river",
         "bay"
       ],
-      "rarityBand": "uncommon"
+      "rarityBand": "uncommon",
+      "detailShard": "species:alaska"
     },
     {
       "id": "coral-trout",
@@ -312,7 +328,8 @@
       "habitats": [
         "reef"
       ],
-      "rarityBand": "uncommon"
+      "rarityBand": "uncommon",
+      "detailShard": "species:queensland"
     },
     {
       "id": "dolly-varden",
@@ -330,7 +347,8 @@
         "river",
         "gravel"
       ],
-      "rarityBand": "common"
+      "rarityBand": "common",
+      "detailShard": "species:alaska"
     },
     {
       "id": "funa",
@@ -349,7 +367,8 @@
         "canal",
         "pond"
       ],
-      "rarityBand": "common"
+      "rarityBand": "common",
+      "detailShard": "species:tokyo-area"
     },
     {
       "id": "giant-herring",
@@ -367,7 +386,8 @@
         "estuary",
         "coast"
       ],
-      "rarityBand": "uncommon"
+      "rarityBand": "uncommon",
+      "detailShard": "species:queensland"
     },
     {
       "id": "giant-queenfish",
@@ -384,7 +404,8 @@
         "coast",
         "open"
       ],
-      "rarityBand": "uncommon"
+      "rarityBand": "uncommon",
+      "detailShard": "species:queensland"
     },
     {
       "id": "giant-trevally",
@@ -401,7 +422,8 @@
         "reef",
         "open"
       ],
-      "rarityBand": "uncommon"
+      "rarityBand": "uncommon",
+      "detailShard": "species:queensland"
     },
     {
       "id": "golden-trevally",
@@ -418,7 +440,8 @@
         "reef",
         "open"
       ],
-      "rarityBand": "uncommon"
+      "rarityBand": "uncommon",
+      "detailShard": "species:queensland"
     },
     {
       "id": "haze",
@@ -438,7 +461,8 @@
         "mud_bottom",
         "canal"
       ],
-      "rarityBand": "common"
+      "rarityBand": "common",
+      "detailShard": "species:tokyo-area"
     },
     {
       "id": "hiramasa",
@@ -456,7 +480,8 @@
         "open",
         "reef"
       ],
-      "rarityBand": "uncommon"
+      "rarityBand": "uncommon",
+      "detailShard": "species:tokyo-area"
     },
     {
       "id": "hirame",
@@ -474,7 +499,8 @@
         "sand",
         "bottom"
       ],
-      "rarityBand": "uncommon"
+      "rarityBand": "uncommon",
+      "detailShard": "species:hokkaido"
     },
     {
       "id": "hokke",
@@ -491,7 +517,8 @@
         "rock",
         "coast"
       ],
-      "rarityBand": "common"
+      "rarityBand": "common",
+      "detailShard": "species:hokkaido"
     },
     {
       "id": "isaki",
@@ -508,7 +535,8 @@
         "reef",
         "open"
       ],
-      "rarityBand": "common"
+      "rarityBand": "common",
+      "detailShard": "species:tokyo-area"
     },
     {
       "id": "ito",
@@ -526,7 +554,8 @@
         "river",
         "deep"
       ],
-      "rarityBand": "rare"
+      "rarityBand": "rare",
+      "detailShard": "species:hokkaido"
     },
     {
       "id": "iwana",
@@ -544,7 +573,8 @@
         "stream",
         "river"
       ],
-      "rarityBand": "common"
+      "rarityBand": "common",
+      "detailShard": "species:hokkaido"
     },
     {
       "id": "kajika",
@@ -562,7 +592,8 @@
         "stream",
         "bottom"
       ],
-      "rarityBand": "common"
+      "rarityBand": "common",
+      "detailShard": "species:tokyo-area"
     },
     {
       "id": "kamasu",
@@ -579,7 +610,8 @@
         "bay",
         "open"
       ],
-      "rarityBand": "common"
+      "rarityBand": "common",
+      "detailShard": "species:tokyo-area"
     },
     {
       "id": "kanpachi",
@@ -597,7 +629,8 @@
         "open",
         "reef"
       ],
-      "rarityBand": "uncommon"
+      "rarityBand": "uncommon",
+      "detailShard": "species:tokyo-area"
     },
     {
       "id": "kasago",
@@ -614,7 +647,8 @@
         "rock",
         "structure"
       ],
-      "rarityBand": "common"
+      "rarityBand": "common",
+      "detailShard": "species:tokyo-area"
     },
     {
       "id": "katsuo",
@@ -631,7 +665,8 @@
       "habitats": [
         "open"
       ],
-      "rarityBand": "uncommon"
+      "rarityBand": "uncommon",
+      "detailShard": "species:tokyo-area"
     },
     {
       "id": "kawahagi",
@@ -648,7 +683,8 @@
         "reef",
         "pier"
       ],
-      "rarityBand": "common"
+      "rarityBand": "common",
+      "detailShard": "species:tokyo-area"
     },
     {
       "id": "koi",
@@ -666,7 +702,8 @@
         "pond",
         "river"
       ],
-      "rarityBand": "rare"
+      "rarityBand": "rare",
+      "detailShard": "species:tokyo-area"
     },
     {
       "id": "kokanee",
@@ -683,7 +720,8 @@
         "lake",
         "open"
       ],
-      "rarityBand": "uncommon"
+      "rarityBand": "uncommon",
+      "detailShard": "species:british-columbia"
     },
     {
       "id": "konoshiro",
@@ -701,7 +739,8 @@
         "bay",
         "estuary"
       ],
-      "rarityBand": "common"
+      "rarityBand": "common",
+      "detailShard": "species:tokyo-area"
     },
     {
       "id": "kurodai",
@@ -720,7 +759,8 @@
         "structure",
         "estuary"
       ],
-      "rarityBand": "uncommon"
+      "rarityBand": "uncommon",
+      "detailShard": "species:tokyo-area"
     },
     {
       "id": "lake-trout",
@@ -736,7 +776,8 @@
         "lake",
         "deep"
       ],
-      "rarityBand": "uncommon"
+      "rarityBand": "uncommon",
+      "detailShard": "species:alaska"
     },
     {
       "id": "largemouth-bass",
@@ -753,7 +794,8 @@
         "lake",
         "cover"
       ],
-      "rarityBand": "common"
+      "rarityBand": "common",
+      "detailShard": "species:tokyo-area"
     },
     {
       "id": "lingcod",
@@ -770,7 +812,8 @@
         "reef",
         "bottom"
       ],
-      "rarityBand": "uncommon"
+      "rarityBand": "uncommon",
+      "detailShard": "species:british-columbia"
     },
     {
       "id": "longtail-tuna",
@@ -786,7 +829,8 @@
       "habitats": [
         "open"
       ],
-      "rarityBand": "uncommon"
+      "rarityBand": "uncommon",
+      "detailShard": "species:queensland"
     },
     {
       "id": "maaji",
@@ -805,7 +849,8 @@
         "pier",
         "estuary"
       ],
-      "rarityBand": "common"
+      "rarityBand": "common",
+      "detailShard": "species:tokyo-area"
     },
     {
       "id": "madai",
@@ -822,7 +867,8 @@
         "reef",
         "deep"
       ],
-      "rarityBand": "uncommon"
+      "rarityBand": "uncommon",
+      "detailShard": "species:tokyo-area"
     },
     {
       "id": "magochi",
@@ -839,7 +885,8 @@
         "sand",
         "estuary"
       ],
-      "rarityBand": "common"
+      "rarityBand": "common",
+      "detailShard": "species:tokyo-area"
     },
     {
       "id": "mahi-mahi",
@@ -857,7 +904,8 @@
         "surface",
         "open"
       ],
-      "rarityBand": "uncommon"
+      "rarityBand": "uncommon",
+      "detailShard": "species:queensland"
     },
     {
       "id": "mangrove-jack",
@@ -876,7 +924,8 @@
         "estuary",
         "structure"
       ],
-      "rarityBand": "uncommon"
+      "rarityBand": "uncommon",
+      "detailShard": "species:queensland"
     },
     {
       "id": "marbled-flounder",
@@ -895,7 +944,8 @@
         "sand",
         "bottom"
       ],
-      "rarityBand": "common"
+      "rarityBand": "common",
+      "detailShard": "species:hokkaido"
     },
     {
       "id": "masu-salmon",
@@ -912,7 +962,8 @@
         "river",
         "coast"
       ],
-      "rarityBand": "uncommon"
+      "rarityBand": "uncommon",
+      "detailShard": "species:hokkaido"
     },
     {
       "id": "mebaru",
@@ -929,7 +980,8 @@
         "rock",
         "pier"
       ],
-      "rarityBand": "common"
+      "rarityBand": "common",
+      "detailShard": "species:tokyo-area"
     },
     {
       "id": "mejina",
@@ -946,7 +998,8 @@
         "rock",
         "reef"
       ],
-      "rarityBand": "common"
+      "rarityBand": "common",
+      "detailShard": "species:tokyo-area"
     },
     {
       "id": "namazu",
@@ -964,7 +1017,8 @@
         "river",
         "deep"
       ],
-      "rarityBand": "rare"
+      "rarityBand": "rare",
+      "detailShard": "species:tokyo-area"
     },
     {
       "id": "northern-pikeminnow",
@@ -981,7 +1035,8 @@
         "river",
         "lake"
       ],
-      "rarityBand": "common"
+      "rarityBand": "common",
+      "detailShard": "species:british-columbia"
     },
     {
       "id": "oikawa",
@@ -998,7 +1053,8 @@
         "river",
         "shallow"
       ],
-      "rarityBand": "common"
+      "rarityBand": "common",
+      "detailShard": "species:tokyo-area"
     },
     {
       "id": "oshorokoma",
@@ -1015,7 +1071,8 @@
         "stream",
         "river"
       ],
-      "rarityBand": "common"
+      "rarityBand": "common",
+      "detailShard": "species:hokkaido"
     },
     {
       "id": "pacific-cod",
@@ -1034,7 +1091,8 @@
         "deep",
         "bottom"
       ],
-      "rarityBand": "uncommon"
+      "rarityBand": "uncommon",
+      "detailShard": "species:british-columbia"
     },
     {
       "id": "pacific-halibut",
@@ -1051,7 +1109,8 @@
         "offshore",
         "deep"
       ],
-      "rarityBand": "rare"
+      "rarityBand": "rare",
+      "detailShard": "species:alaska"
     },
     {
       "id": "permit",
@@ -1068,7 +1127,8 @@
         "flat",
         "reef"
       ],
-      "rarityBand": "uncommon"
+      "rarityBand": "uncommon",
+      "detailShard": "species:queensland"
     },
     {
       "id": "pink-salmon",
@@ -1086,7 +1146,8 @@
         "river",
         "bay"
       ],
-      "rarityBand": "uncommon"
+      "rarityBand": "uncommon",
+      "detailShard": "species:alaska"
     },
     {
       "id": "queenfish",
@@ -1103,7 +1164,8 @@
         "coast",
         "open"
       ],
-      "rarityBand": "uncommon"
+      "rarityBand": "uncommon",
+      "detailShard": "species:queensland"
     },
     {
       "id": "quillback-rockfish",
@@ -1120,7 +1182,8 @@
         "reef",
         "deep"
       ],
-      "rarityBand": "uncommon"
+      "rarityBand": "uncommon",
+      "detailShard": "species:british-columbia"
     },
     {
       "id": "rainbow-trout",
@@ -1139,7 +1202,8 @@
         "river",
         "lake"
       ],
-      "rarityBand": "common"
+      "rarityBand": "common",
+      "detailShard": "species:alaska"
     },
     {
       "id": "red-emperor",
@@ -1156,7 +1220,8 @@
         "reef",
         "deep"
       ],
-      "rarityBand": "uncommon"
+      "rarityBand": "uncommon",
+      "detailShard": "species:queensland"
     },
     {
       "id": "saba",
@@ -1175,7 +1240,8 @@
         "surf",
         "offshore"
       ],
-      "rarityBand": "uncommon"
+      "rarityBand": "uncommon",
+      "detailShard": "species:tokyo-area"
     },
     {
       "id": "sablefish",
@@ -1193,7 +1259,8 @@
         "deep",
         "bottom"
       ],
-      "rarityBand": "uncommon"
+      "rarityBand": "uncommon",
+      "detailShard": "species:british-columbia"
     },
     {
       "id": "sayori",
@@ -1211,7 +1278,8 @@
         "surface",
         "bay"
       ],
-      "rarityBand": "common"
+      "rarityBand": "common",
+      "detailShard": "species:tokyo-area"
     },
     {
       "id": "seabass",
@@ -1232,7 +1300,8 @@
         "river",
         "pier"
       ],
-      "rarityBand": "uncommon"
+      "rarityBand": "uncommon",
+      "detailShard": "species:hokkaido"
     },
     {
       "id": "shirogisu",
@@ -1251,7 +1320,8 @@
         "surf",
         "sandy_bottom"
       ],
-      "rarityBand": "common"
+      "rarityBand": "common",
+      "detailShard": "species:tokyo-area"
     },
     {
       "id": "smallmouth-bass",
@@ -1268,7 +1338,8 @@
         "river",
         "lake"
       ],
-      "rarityBand": "uncommon"
+      "rarityBand": "uncommon",
+      "detailShard": "species:british-columbia"
     },
     {
       "id": "sockeye-salmon",
@@ -1286,7 +1357,8 @@
         "river",
         "lake"
       ],
-      "rarityBand": "uncommon"
+      "rarityBand": "uncommon",
+      "detailShard": "species:alaska"
     },
     {
       "id": "spanish-mackerel",
@@ -1303,7 +1375,8 @@
         "reef",
         "open"
       ],
-      "rarityBand": "uncommon"
+      "rarityBand": "uncommon",
+      "detailShard": "species:queensland"
     },
     {
       "id": "steelhead",
@@ -1321,7 +1394,8 @@
         "river",
         "estuary"
       ],
-      "rarityBand": "uncommon"
+      "rarityBand": "uncommon",
+      "detailShard": "species:british-columbia"
     },
     {
       "id": "tachiuo",
@@ -1338,7 +1412,8 @@
         "open",
         "deep"
       ],
-      "rarityBand": "uncommon"
+      "rarityBand": "uncommon",
+      "detailShard": "species:tokyo-area"
     },
     {
       "id": "threadfin-salmon",
@@ -1356,7 +1431,8 @@
         "estuary",
         "sand"
       ],
-      "rarityBand": "uncommon"
+      "rarityBand": "uncommon",
+      "detailShard": "species:queensland"
     },
     {
       "id": "ugui",
@@ -1375,7 +1451,8 @@
         "river",
         "stream"
       ],
-      "rarityBand": "common"
+      "rarityBand": "common",
+      "detailShard": "species:hokkaido"
     },
     {
       "id": "unagi",
@@ -1393,7 +1470,8 @@
         "river",
         "estuary"
       ],
-      "rarityBand": "uncommon"
+      "rarityBand": "uncommon",
+      "detailShard": "species:tokyo-area"
     },
     {
       "id": "wakasagi",
@@ -1411,7 +1489,8 @@
         "lake",
         "open"
       ],
-      "rarityBand": "common"
+      "rarityBand": "common",
+      "detailShard": "species:tokyo-area"
     },
     {
       "id": "white-sturgeon",
@@ -1429,7 +1508,8 @@
         "river",
         "deep"
       ],
-      "rarityBand": "rare"
+      "rarityBand": "rare",
+      "detailShard": "species:british-columbia"
     },
     {
       "id": "yamame",
@@ -1447,7 +1527,8 @@
         "stream",
         "river"
       ],
-      "rarityBand": "common"
+      "rarityBand": "common",
+      "detailShard": "species:tokyo-area"
     },
     {
       "id": "yelloweye-rockfish",
@@ -1465,7 +1546,8 @@
         "reef",
         "deep"
       ],
-      "rarityBand": "uncommon"
+      "rarityBand": "uncommon",
+      "detailShard": "species:british-columbia"
     }
   ],
   "regions": [
@@ -1607,9 +1689,50 @@
       ]
     },
     {
-      "key": "species-detail",
-      "kind": "global",
-      "label": "Species detail",
+      "key": "species:alaska",
+      "kind": "species",
+      "label": "アラスカ species detail",
+      "regionId": "alaska",
+      "kinds": [
+        "fish-species",
+        "species-trade-profiles"
+      ]
+    },
+    {
+      "key": "species:british-columbia",
+      "kind": "species",
+      "label": "ブリティッシュコロンビア species detail",
+      "regionId": "british-columbia",
+      "kinds": [
+        "fish-species",
+        "species-trade-profiles"
+      ]
+    },
+    {
+      "key": "species:hokkaido",
+      "kind": "species",
+      "label": "北海道 species detail",
+      "regionId": "hokkaido",
+      "kinds": [
+        "fish-species",
+        "species-trade-profiles"
+      ]
+    },
+    {
+      "key": "species:queensland",
+      "kind": "species",
+      "label": "クイーンズランド species detail",
+      "regionId": "queensland",
+      "kinds": [
+        "fish-species",
+        "species-trade-profiles"
+      ]
+    },
+    {
+      "key": "species:tokyo-area",
+      "kind": "species",
+      "label": "東京近郊 species detail",
+      "regionId": "tokyo-area",
       "kinds": [
         "fish-species",
         "species-trade-profiles"
@@ -1638,5 +1761,223 @@
         "expeditions"
       ]
     }
-  ]
+  ],
+  "speciesShards": {
+    "species:alaska": [
+      "arctic-char",
+      "chinook-salmon",
+      "chum-salmon",
+      "coho-salmon",
+      "dolly-varden",
+      "lake-trout",
+      "pacific-halibut",
+      "pink-salmon",
+      "rainbow-trout",
+      "sockeye-salmon"
+    ],
+    "species:british-columbia": [
+      "bull-trout",
+      "cabezon",
+      "chinook-salmon",
+      "chum-salmon",
+      "coastal-cutthroat-trout",
+      "coho-salmon",
+      "kokanee",
+      "lingcod",
+      "northern-pikeminnow",
+      "pacific-cod",
+      "pacific-halibut",
+      "pink-salmon",
+      "quillback-rockfish",
+      "rainbow-trout",
+      "sablefish",
+      "smallmouth-bass",
+      "sockeye-salmon",
+      "steelhead",
+      "white-sturgeon",
+      "yelloweye-rockfish"
+    ],
+    "species:hokkaido": [
+      "ainame",
+      "amemasu",
+      "buri",
+      "hirame",
+      "hokke",
+      "ito",
+      "iwana",
+      "marbled-flounder",
+      "masu-salmon",
+      "oshorokoma",
+      "pacific-cod",
+      "seabass",
+      "ugui"
+    ],
+    "species:queensland": [
+      "barramundi",
+      "bluefin-trevally",
+      "cobia",
+      "coral-trout",
+      "giant-herring",
+      "giant-queenfish",
+      "giant-trevally",
+      "golden-trevally",
+      "longtail-tuna",
+      "mahi-mahi",
+      "mangrove-jack",
+      "permit",
+      "queenfish",
+      "red-emperor",
+      "spanish-mackerel",
+      "threadfin-salmon"
+    ],
+    "species:tokyo-area": [
+      "ayu",
+      "bluegill",
+      "bora",
+      "buri",
+      "funa",
+      "haze",
+      "hiramasa",
+      "hirame",
+      "isaki",
+      "iwana",
+      "kajika",
+      "kamasu",
+      "kanpachi",
+      "kasago",
+      "katsuo",
+      "kawahagi",
+      "koi",
+      "konoshiro",
+      "kurodai",
+      "largemouth-bass",
+      "maaji",
+      "madai",
+      "magochi",
+      "mahi-mahi",
+      "mebaru",
+      "mejina",
+      "namazu",
+      "oikawa",
+      "rainbow-trout",
+      "saba",
+      "sayori",
+      "seabass",
+      "shirogisu",
+      "tachiuo",
+      "ugui",
+      "unagi",
+      "wakasagi",
+      "yamame"
+    ]
+  },
+  "speciesFileShard": {
+    "alaska-arctic-char.json": "species:alaska",
+    "arctic-char.json": "species:alaska",
+    "alaska-chinook-salmon.json": "species:alaska",
+    "chinook-salmon.json": "species:alaska",
+    "alaska-chum-salmon.json": "species:alaska",
+    "chum-salmon.json": "species:alaska",
+    "alaska-coho-salmon.json": "species:alaska",
+    "coho-salmon.json": "species:alaska",
+    "alaska-dolly-varden.json": "species:alaska",
+    "dolly-varden.json": "species:alaska",
+    "alaska-lake-trout.json": "species:alaska",
+    "lake-trout.json": "species:alaska",
+    "alaska-pacific-halibut.json": "species:alaska",
+    "pacific-halibut.json": "species:alaska",
+    "alaska-pink-salmon.json": "species:alaska",
+    "pink-salmon.json": "species:alaska",
+    "alaska-rainbow-trout.json": "species:alaska",
+    "rainbow-trout.json": "species:alaska",
+    "alaska-sockeye-salmon.json": "species:alaska",
+    "sockeye-salmon.json": "species:alaska",
+    "bull-trout.json": "species:british-columbia",
+    "cabezon.json": "species:british-columbia",
+    "coastal-cutthroat-trout.json": "species:british-columbia",
+    "kokanee.json": "species:british-columbia",
+    "lingcod.json": "species:british-columbia",
+    "northern-pikeminnow.json": "species:british-columbia",
+    "pacific-cod.json": "species:british-columbia",
+    "quillback-rockfish.json": "species:british-columbia",
+    "sablefish.json": "species:british-columbia",
+    "smallmouth-bass.json": "species:british-columbia",
+    "steelhead.json": "species:british-columbia",
+    "white-sturgeon.json": "species:british-columbia",
+    "yelloweye-rockfish.json": "species:british-columbia",
+    "ainame.json": "species:hokkaido",
+    "hokkaido-ame-masu.json": "species:hokkaido",
+    "amemasu.json": "species:hokkaido",
+    "kanto-buri.json": "species:hokkaido",
+    "buri.json": "species:hokkaido",
+    "hirame.json": "species:hokkaido",
+    "hokke.json": "species:hokkaido",
+    "hokkaido-ito.json": "species:hokkaido",
+    "ito.json": "species:hokkaido",
+    "iwana.json": "species:hokkaido",
+    "marbled-flounder.json": "species:hokkaido",
+    "hokkaido-masu-salmon.json": "species:hokkaido",
+    "masu-salmon.json": "species:hokkaido",
+    "oshorokoma.json": "species:hokkaido",
+    "kanto-seabass.json": "species:hokkaido",
+    "seabass.json": "species:hokkaido",
+    "kanto-ugui.json": "species:hokkaido",
+    "ugui.json": "species:hokkaido",
+    "barramundi.json": "species:queensland",
+    "bluefin-trevally.json": "species:queensland",
+    "cobia.json": "species:queensland",
+    "coral-trout.json": "species:queensland",
+    "giant-herring.json": "species:queensland",
+    "giant-queenfish.json": "species:queensland",
+    "giant-trevally.json": "species:queensland",
+    "golden-trevally.json": "species:queensland",
+    "longtail-tuna.json": "species:queensland",
+    "mahi-mahi.json": "species:queensland",
+    "mangrove-jack.json": "species:queensland",
+    "permit.json": "species:queensland",
+    "queenfish.json": "species:queensland",
+    "red-emperor.json": "species:queensland",
+    "spanish-mackerel.json": "species:queensland",
+    "threadfin-salmon.json": "species:queensland",
+    "ayu.json": "species:tokyo-area",
+    "bluegill.json": "species:tokyo-area",
+    "kanto-bora.json": "species:tokyo-area",
+    "bora.json": "species:tokyo-area",
+    "kanto-funa.json": "species:tokyo-area",
+    "funa.json": "species:tokyo-area",
+    "kanto-haze.json": "species:tokyo-area",
+    "haze.json": "species:tokyo-area",
+    "hiramasa.json": "species:tokyo-area",
+    "isaki.json": "species:tokyo-area",
+    "kajika.json": "species:tokyo-area",
+    "kamasu.json": "species:tokyo-area",
+    "kanpachi.json": "species:tokyo-area",
+    "kasago.json": "species:tokyo-area",
+    "katsuo.json": "species:tokyo-area",
+    "kawahagi.json": "species:tokyo-area",
+    "kanto-koi.json": "species:tokyo-area",
+    "koi.json": "species:tokyo-area",
+    "konoshiro.json": "species:tokyo-area",
+    "kanto-kurodai.json": "species:tokyo-area",
+    "kurodai.json": "species:tokyo-area",
+    "largemouth-bass.json": "species:tokyo-area",
+    "kanto-maaji.json": "species:tokyo-area",
+    "maaji.json": "species:tokyo-area",
+    "madai.json": "species:tokyo-area",
+    "magochi.json": "species:tokyo-area",
+    "mebaru.json": "species:tokyo-area",
+    "mejina.json": "species:tokyo-area",
+    "kanto-namazu.json": "species:tokyo-area",
+    "namazu.json": "species:tokyo-area",
+    "oikawa.json": "species:tokyo-area",
+    "kanto-saba.json": "species:tokyo-area",
+    "saba.json": "species:tokyo-area",
+    "sayori.json": "species:tokyo-area",
+    "kanto-shirogisu.json": "species:tokyo-area",
+    "shirogisu.json": "species:tokyo-area",
+    "tachiuo.json": "species:tokyo-area",
+    "unagi.json": "species:tokyo-area",
+    "wakasagi.json": "species:tokyo-area",
+    "yamame.json": "species:tokyo-area"
+  }
 }

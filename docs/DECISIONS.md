@@ -554,3 +554,42 @@ Phase 15 は「ゲームルールの追加」ではなく、1000+ Species / 多�
   古いキャッシュから返すこともない
 - **Save は v9 のまま。** pack / chunk / module path を Save に保存しない
   （Save は SpeciesId / RegionId / SpotId / BuyerId 等の安定 ID のみ）
+
+## Phase 15.1 — True Lazy Loading（起動 critical path の削減）
+
+Phase 15 のレビューで「chunk は分かれたが runtime では起動時に全部読んでいた」問題を直した。
+Domain / Save v9 / gameplay rule は変更していない。
+
+決定:
+
+- **起動 critical path は「軽量カタログ + world + 今いる地域 + その地域の Species shard」だけ。**
+  AppShell が required にする pack は `bootPackKeys(regionId)` の 3 つで、tackle は
+  non-blocking の background preload、他地域と全 Species は起動では読まない
+- **Species detail は Region ごとの shard にする。** 1 つの global pack に 1000 Species を
+  入れて起動時に読む構造は禁止。各 shard は「その地域の釣り場に出る Species」だけを持ち、
+  同じ Species 定義は source 上コピーしない（同じ JSON を複数の shard module が参照し、
+  共有分は bundler が shared chunk にまとめる）。`detailShard` は各 Species の代表 shard
+  で、Fish Box の別地域の魚を読むときの入口になる
+- **Fish Box / Trade は保存された Species ID から必要な shard を追加で読む。**
+  Save には pack / shard 情報を書かない（Fish Box の魚が扱えなくなることを禁止）
+- **Tackle は HOME を block しない。** 起動では background preload だけ行い、
+  Tackle / Shop / Spot など本当に必要になる画面で gate する
+- **EXPEDITION は開いただけでは何も読まない。** 目的地カードの focus / 出発操作で、
+  その地域の pack だけを先読みする（全地域の一括 preload を廃止）
+- **Codex の名前検索は捕獲済みだけを対象にする。** 未捕獲 Species は名前 / 英語名 /
+  scientificName / id で検索しても 1 件も返さない（検索から存在を推測できない）。
+  Region / water filter の semantics は従来どおり
+- **二次的な画面は dynamic import にする。** Codex / Shop / Tackle / Expedition /
+  Fish Box / Trade / Contacts / Menu / Progression は初期 chunk に入れない
+  （HOME / MAP / SPOT / FISHING は最初の導線なので eager のまま）
+
+実測（production build）:
+
+| | Phase 14 | Phase 15.0（boot） | Phase 15.1（boot） |
+| --- | --- | --- | --- |
+| boot raw | 925.44 kB | 871.38 kB | **604.95 kB** |
+| boot gzip | 216.48 kB | 210.51 kB | **170.67 kB**（-21.2%） |
+| initial chunk | 925.44 kB | 536.35 kB | 512.00 kB |
+
+boot の内訳: index 512.00 / region-tokyo-area 39.01 / species-tokyo-area 31.26 /
+world 12.47 / 共有 Species chunk 8.21。Tokyo の起動で読む Species は 38 種（全 82 種ではない）。

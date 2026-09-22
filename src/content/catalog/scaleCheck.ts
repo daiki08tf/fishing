@@ -37,6 +37,8 @@ export type ContentScaleInput = {
   readonly ownership: Readonly<Record<string, string>>
   /** kind → Content ディレクトリに実在するファイル名（orphan 検出用）。 */
   readonly filesByKind: Readonly<Record<string, readonly string[]>>
+  /** Region shard（`species:<regionId>`）→ その shard が持つ Species detail。 */
+  readonly speciesShards: Readonly<Record<string, readonly string[]>>
   /** 生成済み pack module の key（packModules.ts の解決表）。 */
   readonly packModuleKeys: readonly string[]
 }
@@ -52,6 +54,8 @@ export const SPECIES_SUMMARY_KEYS: readonly string[] = [
   'regionIds',
   'habitats',
   'rarityBand',
+  // Phase 15.1: detail の置き場所（shard key）。生物学の詳細そのものではない。
+  'detailShard',
 ]
 
 /** 地域 prefix として禁止する語（canonical global Species ID を守る）。 */
@@ -222,6 +226,82 @@ export const validateContentScale = (input: ContentScaleInput): readonly Content
     }
   }
 
+  /*
+   * 5b. Species shard の割り当て（Phase 15.1）。
+   * 「その地域の釣り場に出る Species」だけを持ち、過不足が無いこと。
+   * これにより Tokyo を遊ぶときに全 Species detail を読む必要が無いことを保証する。
+   */
+  const speciesReferencedByRegion = (regionId: string): readonly string[] => {
+    const ids = new Set<string>()
+
+    for (const spot of input.spots) {
+      if (String(spot.regionId) !== regionId) {
+        continue
+      }
+
+      for (const occurrence of spot.fishTable) {
+        ids.add(String(occurrence.speciesId))
+      }
+    }
+
+    return [...ids].sort()
+  }
+
+  const speciesShardKeys = new Set(Object.keys(input.speciesShards))
+
+  for (const region of input.regions) {
+    if (region.stage !== 'playable') {
+      continue
+    }
+
+    const key = `species:${String(region.id)}`
+
+    if (!speciesShardKeys.has(key)) {
+      issues.push({
+        path: `species-shards/${key}`,
+        message: 'playable region has no species detail shard',
+      })
+      continue
+    }
+
+    const actual = [...(input.speciesShards[key] ?? [])].sort().join(',')
+    const expected = speciesReferencedByRegion(String(region.id)).join(',')
+
+    if (actual !== expected) {
+      issues.push({
+        path: `species-shards/${key}`,
+        message: 'species shard must contain exactly the species that region spots need',
+      })
+    }
+  }
+
+  const shardMembership = new Map<string, string[]>()
+  for (const [shard, ids] of Object.entries(input.speciesShards)) {
+    for (const id of ids) {
+      shardMembership.set(id, [...(shardMembership.get(id) ?? []), shard])
+    }
+  }
+
+  for (const species of input.species) {
+    const id = String(species.id)
+
+    if ((shardMembership.get(id) ?? []).length === 0) {
+      issues.push({
+        path: `species-shards/${id}`,
+        message: 'species detail is not part of any shard',
+      })
+    }
+
+    const summary = input.index.species.find((entry) => String(entry.id) === id)
+
+    if (summary !== undefined && !speciesShardKeys.has(summary.detailShard)) {
+      issues.push({
+        path: `content-index/species/${id}`,
+        message: `detailShard ${summary.detailShard} is not in the manifest`,
+      })
+    }
+  }
+
   // 6. pack の所有権（重複なし / orphan なし / 地域境界が正しい）。
   const ownedFiles = new Set<string>()
 
@@ -265,6 +345,24 @@ export const validateContentScale = (input: ContentScaleInput): readonly Content
           issues.push({
             path: key,
             message: `buyer must be owned by region:${regionId}, not ${owner}`,
+          })
+        }
+      }
+
+      if (kind === 'fish-species' || kind === 'species-trade-profiles') {
+        const speciesId = file.replace(/\.json$/, '')
+        const shard = input.index.species.find(
+          (entry) => String(entry.id) === speciesId,
+        )?.detailShard
+
+        if (
+          shard !== undefined &&
+          owner !== shard &&
+          !input.speciesShards[owner]?.includes(speciesId)
+        ) {
+          issues.push({
+            path: key,
+            message: `primary owner ${owner} must be a shard that contains ${speciesId}`,
           })
         }
       }

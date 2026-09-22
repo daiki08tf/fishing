@@ -11,6 +11,7 @@ import { NEUTRAL_FISHING_MODIFIERS } from '../../domain/fishing/PlayerFishingMod
 import { bestFishFinderOf, resolveTackle } from '../../domain/tackle'
 import { DAY_OF_WEEK_LABELS, dayOfWeekOf, formatWorldTime, isWeekend } from '../../domain/world'
 import { knowledgeTierFor, spotKnowledgeScore } from '../../domain/knowledge/spotKnowledge'
+import { contentRuntime } from '../../content/runtime/contentRuntime'
 import { useAppStore } from '../../state/appStore'
 import { usePlayerStore } from '../../state/playerStore'
 import { BiomeScene } from '../components/BiomeScene'
@@ -61,6 +62,7 @@ export const HomeScreen = () => {
   }
 
   const current = expedition.current
+
   /*
    * Phase 13.1: Map と同じ visibility / discovery 規則で数える。
    * 未発見の Hidden Spot を分母に含めると、存在しない釣り場の数が漏れる。
@@ -88,6 +90,10 @@ export const HomeScreen = () => {
           regionId: String(currentRegion.id),
           environment: summarySpot.environment,
         })
+  /*
+   * 釣況の計算には Species の環境嗜好（生物学）が要る。
+   * これは今いる地域の Species shard に含まれている（Phase 15.1 の起動 pack）。
+   */
   const summarySpecies =
     summarySpot === undefined
       ? []
@@ -115,13 +121,14 @@ export const HomeScreen = () => {
               : Math.round(spotKnowledgeScore(knowledge, String(summarySpot.id))),
         })
   const speciesNames = Object.fromEntries(
-    content.value.species.map((species) => [String(species.id), species.japaneseName]),
+    contentRuntime.index.species.map((summary) => [String(summary.id), summary.japaneseName]),
   )
+
   /*
    * 古い Save に、今の Content に無い魚種 id が残っていることがある
    * （Content の入れ替え・削除）。記録数は「今いる魚種」だけを数える。
    */
-  const knownSpeciesIds = new Set(content.value.species.map((species) => String(species.id)))
+  const knownSpeciesIds = new Set(contentRuntime.index.species.map((summary) => String(summary.id)))
   const trip = world.trip
   const monthlyFree = finance.salaryIncome - finance.simplifiedLivingCost
   const regionKnowledgeScore = knowledge.regions[String(world.currentRegionId)] ?? 0

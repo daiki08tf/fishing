@@ -13,10 +13,13 @@ import {
   type Loadout,
   type LoadoutSlot,
 } from '../../domain/tackle'
+import { GLOBAL_PACK_KEYS } from '../../content/runtime/contentRuntime'
 import { useAppStore } from '../../state/appStore'
 import { usePlayerStore } from '../../state/playerStore'
 import { gearFamilyOf, gearSpecsOf, gearTitleOf } from '../gear/gearDisplay'
 import { ContentErrorPanel } from '../world/ContentErrorPanel'
+import { ContentLoadingPanel } from '../content/ContentLoadingPanel'
+import { usePack } from '../content/contentRuntimeHooks'
 import { useContentOrError } from '../world/useContentOrError'
 
 /**
@@ -47,12 +50,23 @@ export const TackleScreen = () => {
   const content = useContentOrError()
   const setActiveScreen = useAppStore((state) => state.setActiveScreen)
   const loadout = usePlayerStore((state) => state.loadout)
+  const tacklePack = usePack(GLOBAL_PACK_KEYS.tackle)
   const inventory = usePlayerStore((state) => state.inventory)
   const equipGear = usePlayerStore((state) => state.equipGear)
   const setMethod = usePlayerStore((state) => state.setMethod)
   const worldPhase = usePlayerStore((state) => state.world.phase)
   const [message, setMessage] = useState<string | null>(null)
   const [brandId, setBrandId] = useState<string | 'all'>('all')
+
+  if (tacklePack.status !== 'ready') {
+    return (
+      <ContentLoadingPanel
+        message="道具の情報を読み込み中…"
+        error={tacklePack.error}
+        onRetry={tacklePack.retry}
+      />
+    )
+  }
 
   if (!content.ok) {
     return <ContentErrorPanel message={content.message} />

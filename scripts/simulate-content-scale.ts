@@ -77,6 +77,7 @@ export const buildSyntheticSummaries = (
       regionIds,
       habitats: ['synthetic'],
       rarityBand: index % 10 === 0 ? 'rare' : 'common',
+      detailShard: `species:${REGION_IDS[index % REGION_IDS.length] ?? 'tokyo-area'}`,
     })
   }
 
@@ -98,7 +99,18 @@ export const simulateContentScale = (): ContentScaleResult => {
     `production species=${String(content.species.length)} regions=${String(content.regions.length)} spots=${String(content.spots.length)}`,
   )
   lines.push(
-    `region packs=${String(index.packs.filter((pack) => pack.kind === 'region').length)} global packs=${String(index.packs.filter((pack) => pack.kind === 'global').length)} catalog entries=${String(index.species.length + index.regions.length)}`,
+    `region packs=${String(index.packs.filter((pack) => pack.kind === 'region').length)} species shards=${String(index.packs.filter((pack) => pack.kind === 'species').length)} global packs=${String(index.packs.filter((pack) => pack.kind === 'global').length)} catalog entries=${String(index.species.length + index.regions.length)}`,
+  )
+
+  const shards = index.speciesShards ?? {}
+  const tokyoShard = shards['species:tokyo-area'] ?? []
+  lines.push(
+    `species shards: ${Object.entries(shards)
+      .map(([key, ids]) => `${key.replace('species:', '')}=${String(ids.length)}`)
+      .join(' ')}`,
+  )
+  lines.push(
+    `startup (catalog + world + tokyo-area region + ${String(tokyoShard.length)} species) は全 ${String(index.species.length)} species detail を読まない`,
   )
 
   const scaleIssues = validateContentScale({
@@ -110,10 +122,13 @@ export const simulateContentScale = (): ContentScaleResult => {
     expeditions: content.expeditions,
     speciesTradeProfiles: content.speciesTradeProfiles,
     index,
-    // ownership は node / 検証専用の生成物（browser bundle には入らない）。
+    // ownership / shards は node / 検証専用の生成物（browser bundle には入らない）。
     ownership: JSON.parse(
       readFileSync(resolve(process.cwd(), 'src/content/generated/content-ownership.json'), 'utf8'),
     ) as Record<string, string>,
+    speciesShards: JSON.parse(
+      readFileSync(resolve(process.cwd(), 'src/content/generated/species-shards.json'), 'utf8'),
+    ) as Record<string, readonly string[]>,
     filesByKind: {},
     packModuleKeys: knownPackModuleKeys(),
   })
@@ -136,6 +151,14 @@ export const simulateContentScale = (): ContentScaleResult => {
       .every((region) => region.packKey !== null),
   )
   push('全 runtime Species に軽量 summary がある', index.species.length >= content.species.length)
+  push(
+    'Region shard は「その地域に必要な Species」だけを持つ',
+    Object.entries(shards).every(([, ids]) => ids.length > 0 && ids.length < index.species.length),
+  )
+  push(
+    'Tokyo の起動で読む Species は全 Species より少ない',
+    tokyoShard.length > 0 && tokyoShard.length < index.species.length,
+  )
   push(
     '軽量カタログに生物学の詳細が入っていない',
     scaleIssues.every((issue) => !issue.message.includes('lightweight')),

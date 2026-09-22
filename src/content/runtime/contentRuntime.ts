@@ -28,11 +28,26 @@ import contentIndex from '../generated/content-index.json'
 
 export const GLOBAL_PACK_KEYS = {
   world: 'world',
-  speciesDetail: 'species-detail',
   tackle: 'tackle',
 } as const
 
 export const regionPackKey = (regionId: string): string => `region:${regionId}`
+
+/**
+ * Phase 15.1: Species detail は Region ごとの shard に分かれている。
+ * 1000 Species 規模でも「その地域・その Fish Box に必要な分」だけを読む。
+ */
+export const speciesShardKey = (regionId: string): string => `species:${regionId}`
+
+/**
+ * 起動 critical path の pack key（Phase 15.1）。
+ * AppShell はこの 3 つだけを required にし、tackle / 他地域 / 全 Species は待たない。
+ */
+export const bootPackKeys = (regionId: string): readonly string[] => [
+  GLOBAL_PACK_KEYS.world,
+  regionPackKey(regionId),
+  speciesShardKey(regionId),
+]
 
 export type PackStatus = 'idle' | 'loading' | 'ready' | 'error'
 
@@ -53,17 +68,27 @@ export type ContentRuntime = {
   packError(key: string): string | null
   /** pack を（未ロードなら）読み込む。同じ key の同時呼び出しは同じ Promise を返す。 */
   ensurePack(key: string): Promise<void>
+  /** その地域を遊ぶのに必要な最小限（region pack + その地域の Species shard）。 */
   ensureRegion(regionId: string): Promise<void>
-  ensureSpeciesDetail(): Promise<void>
+  /** 指定 Species の detail（+ trade profile）を必要時に読む（Fish Box / Trade 用）。 */
+  ensureSpeciesDetail(speciesIds: readonly string[]): Promise<void>
   ensureTackle(): Promise<void>
   ensureWorld(): Promise<void>
   /** 失敗した pack をもう一度読む。 */
   retryPack(key: string): Promise<void>
-  /** 起動時に必要な pack（world + 指定 Region + species 詳細 + tackle）。 */
-  ensureInitialPacks(input: {
-    readonly regionId: string
-    readonly withTackle?: boolean
-  }): Promise<void>
+  /**
+   * 起動 critical path（Phase 15.1）: lightweight catalog は既に手元にあり、
+   * world（軽量な地域定義）+ 今いる地域 + その地域の Species shard だけを読む。
+   * tackle / 他地域 / 全 Species は起動では読まない。
+   */
+  ensureBootPacks(input: { readonly regionId: string }): Promise<void>
+  /** その Species の detail を持つ shard（未知なら null）。 */
+  speciesShardKeyOf(speciesId: string): string | null
+  /** Region shard の総数と、そこに入っている Species 数（scale 検証 / レポート用）。 */
+  speciesShardSummary(): readonly {
+    readonly key: string
+    readonly speciesIds: readonly string[]
+  }[]
   /** テスト用: 読み込み済みの束（bundle へは出さない）。 */
   loadedBuckets(): ContentBuckets
   /**
@@ -149,6 +174,10 @@ export const createContentRuntime = (
     }
   }
 
+  const shardBySpeciesId = new Map(
+    index.species.map((summary) => [String(summary.id), summary.detailShard]),
+  )
+
   const packOf = (key: string): ContentPackManifestEntry | null =>
     findGlobalPack(index, key) ?? index.packs.find((pack) => pack.key === key) ?? null
 
@@ -205,6 +234,16 @@ export const createContentRuntime = (
     await loadPack(pack)
   }
 
+  /** その地域を遊ぶのに必要な pack（region + その地域の Species shard）。 */
+  const ensureRegionPacks = async (regionId: string): Promise<void> => {
+    const pack = findPackForRegion(index, regionId)
+    const speciesKey = `species:${regionId}`
+    const speciesPack = index.packs.find((entry) => entry.key === speciesKey)
+    const keys = [pack?.key, speciesPack?.key].filter((key): key is string => key !== undefined)
+
+    await Promise.all(keys.map((key) => ensurePack(key)))
+  }
+
   return {
     index,
     getState: () => snapshot,
@@ -217,16 +256,20 @@ export const createContentRuntime = (
     packStatus: (key) => statuses[key] ?? 'idle',
     packError: (key) => errors[key] ?? null,
     ensurePack,
-    ensureRegion: async (regionId) => {
-      const pack = findPackForRegion(index, regionId)
+    ensureRegion: ensureRegionPacks,
+    ensureSpeciesDetail: async (speciesIds) => {
+      const keys = new Set<string>()
 
-      if (pack === null) {
-        return
+      for (const speciesId of speciesIds) {
+        const shard = shardBySpeciesId.get(String(speciesId))
+
+        if (shard !== null && shard !== undefined) {
+          keys.add(shard)
+        }
       }
 
-      await ensurePack(pack.key)
+      await Promise.all([...keys].map((key) => ensurePack(key)))
     },
-    ensureSpeciesDetail: () => ensurePack(GLOBAL_PACK_KEYS.speciesDetail),
     ensureTackle: () => ensurePack(GLOBAL_PACK_KEYS.tackle),
     ensureWorld: () => ensurePack(GLOBAL_PACK_KEYS.world),
     retryPack: async (key) => {
@@ -235,14 +278,15 @@ export const createContentRuntime = (
       emit()
       await ensurePack(key)
     },
-    ensureInitialPacks: async ({ regionId, withTackle = true }) => {
-      await Promise.all([
-        ensurePack(GLOBAL_PACK_KEYS.world),
-        ensurePack(GLOBAL_PACK_KEYS.speciesDetail),
-        ...(withTackle ? [ensurePack(GLOBAL_PACK_KEYS.tackle)] : []),
-        ensurePack(regionPackKey(regionId)),
-      ])
+    ensureBootPacks: async ({ regionId }) => {
+      await Promise.all([ensurePack(GLOBAL_PACK_KEYS.world), ensureRegionPacks(regionId)])
     },
+    speciesShardKeyOf: (speciesId) => shardBySpeciesId.get(String(speciesId)) ?? null,
+    speciesShardSummary: () =>
+      Object.entries(index.speciesShards ?? {}).map(([key, speciesIds]) => ({
+        key,
+        speciesIds,
+      })),
     loadedBuckets: () => buckets,
     hydrateFully: (next) => {
       buckets = next

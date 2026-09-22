@@ -1,9 +1,11 @@
+import { PACK_MODULE_IMPORTS } from '../generated/pack-registry'
+
 /**
- * 生成された Content Pack module の解決表（Phase 15）。
+ * 生成された Content Pack module の解決表（Phase 15 / 15.1）。
  *
- * pack 1 つ = dynamic import 1 つ。ここには **key と import 先だけ**が並ぶので、
+ * 対応表そのものも生成物（`src/content/generated/pack-registry.ts`）で、
+ * ここには lookup だけを置く。pack key → dynamic import の 1 段なので、
  * 初期 chunk は Content 件数に比例して増えない。
- * 実際のファイル一覧は各 pack module（`src/content/generated/packs/*`）が持つ。
  */
 
 export type GeneratedPackModule = {
@@ -12,19 +14,8 @@ export type GeneratedPackModule = {
 
 export type PackModuleImporter = () => Promise<GeneratedPackModule>
 
-const PACK_MODULES: Readonly<Record<string, PackModuleImporter>> = {
-  'region:alaska': () => import('../generated/packs/region-alaska'),
-  'region:british-columbia': () => import('../generated/packs/region-british-columbia'),
-  'region:hokkaido': () => import('../generated/packs/region-hokkaido'),
-  'region:queensland': () => import('../generated/packs/region-queensland'),
-  'region:tokyo-area': () => import('../generated/packs/region-tokyo-area'),
-  'species-detail': () => import('../generated/packs/species-detail'),
-  tackle: () => import('../generated/packs/tackle'),
-  world: () => import('../generated/packs/world'),
-}
-
 export const packModuleImporter = (key: string): PackModuleImporter | null =>
-  PACK_MODULES[key] ?? null
+  PACK_MODULE_IMPORTS[key] ?? null
 
 /** 生成物と解決表の整合検査に使う（テスト / validation）。 */
-export const knownPackModuleKeys = (): readonly string[] => Object.keys(PACK_MODULES).sort()
+export const knownPackModuleKeys = (): readonly string[] => Object.keys(PACK_MODULE_IMPORTS).sort()

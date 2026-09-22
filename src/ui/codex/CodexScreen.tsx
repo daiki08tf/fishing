@@ -23,6 +23,7 @@ import './codex.css'
  * - 一覧・検索・絞り込みは **SpeciesSummary（軽量カタログ）** だけで完結させる。
  *   full FishSpecies（生物学の詳細）は読まない（1000 種でも起動コストが増えない）。
  * - 検索は日本語名 / 英語名（Content にある場合）/ scientificName / id。
+ *   ただし **未捕獲の Species は検索対象にしない**（検索で存在を推測できない）。
  * - 1000 件を一度に DOM へ出さないため、60 件ずつ増やす。
  * - 未捕獲種の情報は今までどおり出さない（？？？）。新しい Knowledge ルールは作らない。
  */
@@ -75,6 +76,8 @@ export const CodexScreen = () => {
         regionId,
         waterType,
         caughtIds,
+        // 未捕獲の名前を検索で推測できないようにする（Codex semantics）。
+        searchScope: 'caught',
       }),
     [summaries, query, catchFilter, regionId, waterType, caughtIds],
   )

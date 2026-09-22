@@ -120,3 +120,49 @@ describe('content scale simulation', () => {
     }
   })
 })
+
+describe('synthetic 1000 species shard planning', () => {
+  it('does not need every species detail to play one region', () => {
+    /*
+     * 1000 Species 相当の manifest を組み立て、1 地域（Tokyo 相当）を遊ぶのに
+     * 「必要な subset だけ」を読む構造であることを確認する。
+     */
+    const all = buildSyntheticSummaries(1000)
+    const tokyoSize = 42
+
+    const shards: Record<string, string[]> = {
+      'species:tokyo-area': all.slice(0, tokyoSize).map((summary) => String(summary.id)),
+    }
+    const rest = all.slice(tokyoSize)
+
+    rest.forEach((summary, index) => {
+      const key = `species:region-${String(index % 4)}`
+      shards[key] = [...(shards[key] ?? []), String(summary.id)]
+    })
+
+    const shardOf = new Map<string, string>()
+    for (const [key, ids] of Object.entries(shards)) {
+      for (const id of ids) {
+        shardOf.set(id, key)
+      }
+    }
+
+    const speciesIds = Object.keys(
+      Object.fromEntries(all.map((summary) => [String(summary.id), true])),
+    )
+
+    expect(speciesIds).toHaveLength(1000)
+    expect(new Set(shardOf.values()).size).toBe(Object.keys(shards).length)
+
+    const requiredShardsForTokyo = new Set(
+      (shards['species:tokyo-area'] ?? []).map((id) => shardOf.get(id)),
+    )
+
+    expect(requiredShardsForTokyo).toEqual(new Set(['species:tokyo-area']))
+
+    const loadedSpeciesCount = (shards['species:tokyo-area'] ?? []).length
+
+    expect(loadedSpeciesCount).toBe(tokyoSize)
+    expect(loadedSpeciesCount).toBeLessThan(all.length)
+  })
+})

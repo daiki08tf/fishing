@@ -161,6 +161,10 @@ describe('content packs', () => {
   })
 
   it('passes the content scale validation for runtime content', () => {
+    const speciesShards = JSON.parse(
+      readFileSync(resolve(root, 'src/content/generated/species-shards.json'), 'utf8'),
+    ) as Record<string, readonly string[]>
+
     const issues = validateContentScale({
       species: content.species,
       spots: content.spots,
@@ -171,6 +175,7 @@ describe('content packs', () => {
       speciesTradeProfiles: content.speciesTradeProfiles,
       index,
       ownership,
+      speciesShards,
       filesByKind: {},
       packModuleKeys: knownPackModuleKeys(),
     })

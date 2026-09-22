@@ -37,6 +37,12 @@ export type SpeciesSummary = {
   readonly regionIds: readonly RegionId[]
   readonly habitats: readonly string[]
   readonly rarityBand: RarityBand
+  /**
+   * Phase 15.1: この Species の detail（生物学 + trade profile）を持つ shard の key。
+   * Region ごとの shard に分かれているので、Fish Box の別地域の魚も
+   * この key から必要分だけ読める。
+   */
+  readonly detailShard: string
 }
 
 /** Region の軽量サマリ。pack を持つかどうかもここで分かる。 */
@@ -53,7 +59,8 @@ export type RegionSummary = {
 /** Pack が内包する Content（kind → ファイル名の一覧）。 */
 export type ContentPackManifestEntry = {
   readonly key: string
-  readonly kind: 'region' | 'global'
+  /** region: その地域の Spot/Buyer/Reward / species: その地域の Species detail / global: 地域非依存。 */
+  readonly kind: 'region' | 'species' | 'global'
   readonly label: string
   readonly regionId?: RegionId
   /**
@@ -69,6 +76,12 @@ export type ContentIndex = {
   readonly species: readonly SpeciesSummary[]
   readonly regions: readonly RegionSummary[]
   readonly packs: readonly ContentPackManifestEntry[]
+  /**
+   * Phase 15.1: 各 Species shard（`species:<regionId>`）が持つ Species ID。
+   * 「その地域を遊ぶのに必要な Species だけを読む」ことを UI / 検証 / レポートから
+   * 確認するために置く（生物学の詳細そのものは含まない）。
+   */
+  readonly speciesShards?: Readonly<Record<string, readonly string[]>>
 }
 
 export const findPackForRegion = (

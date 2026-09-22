@@ -22,6 +22,14 @@ export type SpeciesQuery = {
   /** 捕獲済み Species の id（Codex State から渡す）。 */
   readonly caughtIds?: ReadonlySet<string>
   readonly category?: SpeciesSummary['category'] | 'all'
+  /**
+   * 名前検索の対象（Phase 15.1）。
+   *
+   * - 'caught': 捕獲済みだけを検索する。未捕獲の Species は「名前で検索して
+   *   1 件の ？？？ が出る」ことからも存在を推測できない（Codex の既定）。
+   * - 'all': 全件を検索する（data 検証・simulation 用）。
+   */
+  readonly searchScope?: 'all' | 'caught'
 }
 
 const matchesText = (summary: SpeciesSummary, terms: readonly string[]): boolean => {
@@ -44,8 +52,20 @@ export const filterSpeciesSummaries = (
   const catchFilter = query.catchFilter ?? 'all'
   const category = query.category ?? 'all'
   const waterType = query.waterType ?? 'all'
+  const searchScope = query.searchScope ?? 'all'
+  const hasQuery = terms.length > 0
 
   return summaries.filter((summary) => {
+    /*
+     * 未捕獲の Species は名前検索の対象にしない（存在を漏らさない）。
+     * 名前・地域・水域のフィルタは従来どおりで、検索だけが caught 限定になる。
+     */
+    if (hasQuery && searchScope === 'caught') {
+      if (!(query.caughtIds?.has(String(summary.id)) ?? false)) {
+        return false
+      }
+    }
+
     if (!matchesText(summary, terms)) {
       return false
     }

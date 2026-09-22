@@ -1,10 +1,22 @@
 # Handoff
 
-最終更新: Phase 15（Content Scale Foundation / 1000+ Species Architecture）完了
-（branch `phase-15-content-scale-foundation`）
+最終更新: Phase 15.1（True Lazy Loading / Content Scale Hardening）完了
+（branch `phase-15-content-scale-foundation`、PR #17）
 
 > 現在状態は Phase 15 → 14 → 13 → 12 → 11 → 10.2 → 10.1 → 10 の順で優先する。
 > 詳細は `.ai/current-task.md` と `docs/DECISIONS.md` も参照。
+
+## Phase 15.1（True Lazy Loading）
+
+- 起動 critical path は catalog + world + 今いる地域 + その地域の Species shard だけ
+  （`bootPackKeys`）。Tackle は background preload、他地域・全 Species は起動で読まない
+- Species detail は Region shard（tokyo-area 38 / hokkaido 13 / alaska 10 / bc 20 / qld 16）
+- Fish Box / Trade は保存 Species ID から必要 shard を追加 load（Save に pack 情報なし）
+- Expedition は mount で何も読まず、目的地 focus / 出発時にその地域だけ preload
+- Codex の名前検索は捕獲済み限定（未捕獲の存在を漏らさない）
+- 二次画面 9 つを dynamic import 化（HOME/MAP/SPOT/FISHING は eager）
+- boot raw 925.44 → 604.95 kB / boot gzip 216.48 → 170.67 kB（-21.2%）
+- tests: 91 files / 787
 
 ## Phase 15（Content Scale Foundation）
 

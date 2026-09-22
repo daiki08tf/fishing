@@ -7,12 +7,13 @@ import { fishingZonesForSpot } from '../../domain/casting'
 import { resolveBiteCompatibility } from '../../domain/tackle/biteCompatibility'
 import { formatWorldTime } from '../../domain/world'
 import { spotKnowledgeScore } from '../../domain/knowledge/spotKnowledge'
+import { GLOBAL_PACK_KEYS } from '../../content/runtime/contentRuntime'
 import { useAppStore } from '../../state/appStore'
 import { usePlayerStore } from '../../state/playerStore'
 import { BiomeScene } from '../components/BiomeScene'
 import { ContentErrorPanel } from '../world/ContentErrorPanel'
 import { ContentLoadingPanel } from '../content/ContentLoadingPanel'
-import { useRegionPack } from '../content/contentRuntimeHooks'
+import { usePack, useRegionPack } from '../content/contentRuntimeHooks'
 import { useContentOrError } from '../world/useContentOrError'
 import { ConditionPanel } from '../world/ConditionPanel'
 
@@ -44,6 +45,7 @@ export const SpotScreen = () => {
   const content = useContentOrError()
   const setActiveScreen = useAppStore((state) => state.setActiveScreen)
   const world = usePlayerStore((state) => state.world)
+  const tacklePack = usePack(GLOBAL_PACK_KEYS.tackle)
   const regionPack = useRegionPack(String(world.currentRegionId))
   const knowledge = usePlayerStore((state) => state.knowledge)
   const loadout = usePlayerStore((state) => state.loadout)
@@ -59,6 +61,16 @@ export const SpotScreen = () => {
         message="地域情報を読み込み中…"
         error={regionPack.error}
         onRetry={regionPack.retry}
+      />
+    )
+  }
+
+  if (tacklePack.status !== 'ready') {
+    return (
+      <ContentLoadingPanel
+        message="道具の情報を読み込み中…"
+        error={tacklePack.error}
+        onRetry={tacklePack.retry}
       />
     )
   }

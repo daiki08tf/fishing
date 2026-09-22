@@ -14,7 +14,16 @@ import { pathToFileURL } from 'node:url'
  * - 初期 JS が Phase 15 の目標（700 kB 以下）に入っている
  */
 
-const INITIAL_JS_LIMIT_BYTES = 700 * 1024
+const INITIAL_JS_LIMIT_BYTES = 700_000
+
+/**
+ * Phase 14（全 Content が 1 chunk）と Phase 15.0（起動時に全 species/tackle を読む）
+ * の実測値。boot bytes を比較するための基準として残す。
+ */
+export const PHASE_14_BASELINE = { raw: 925_440, gzip: 216_480 } as const
+export const PHASE_15_0_BOOT = { raw: 871_380, gzip: 210_510 } as const
+/** 起動 critical path の gzip を Phase 14 の 80% 以下にする（Phase 15.1 の目標）。 */
+const BOOT_GZIP_TARGET_RATIO = 0.8
 
 export type BundleReportEntry = {
   readonly name: string
@@ -40,7 +49,72 @@ const readEntry = (assetsDir: string, file: string): BundleReportEntry => {
   }
 }
 
-const kb = (bytes: number): string => `${(bytes / 1024).toFixed(2)} kB`
+// Vite の build 出力と同じ十進 kB で表示する。
+const kb = (bytes: number): string => `${(bytes / 1000).toFixed(2)} kB`
+
+/** chunk が静的に読み込む他 chunk（boot の実効 bytes を数えるため）。 */
+const staticImportsOf = (assetsDir: string, file: string): readonly string[] => {
+  const source = readFileSync(resolve(assetsDir, file), 'utf8')
+  const names = new Set<string>()
+
+  for (const match of source.matchAll(/from\s*"\.\/([A-Za-z0-9_-]+\.js)"/g)) {
+    if (match[1] !== undefined) {
+      names.add(match[1])
+    }
+  }
+
+  for (const match of source.matchAll(/import\s*"\.\/([A-Za-z0-9_-]+\.js)"/g)) {
+    if (match[1] !== undefined) {
+      names.add(match[1])
+    }
+  }
+
+  return [...names]
+}
+
+/** 起動時に必要な chunk（初期 + 初期 pack + それらが静的に読む chunk）。 */
+export const bootChunks = (
+  assetsDir: string,
+  files: readonly string[],
+  regionId: string,
+): readonly string[] => {
+  const boot = new Set<string>()
+  const queue: string[] = []
+
+  const indexFile = files.find((file) => file.startsWith('index-'))
+
+  if (indexFile !== undefined) {
+    boot.add(indexFile)
+  }
+
+  for (const file of files) {
+    if (
+      file.startsWith('world-') ||
+      file.startsWith(`region-${regionId}-`) ||
+      file.startsWith(`species-${regionId}-`)
+    ) {
+      boot.add(file)
+      queue.push(file)
+    }
+  }
+
+  while (queue.length > 0) {
+    const current = queue.pop()
+
+    if (current === undefined) {
+      continue
+    }
+
+    for (const imported of staticImportsOf(assetsDir, current)) {
+      if (!boot.has(imported) && files.includes(imported)) {
+        boot.add(imported)
+        queue.push(imported)
+      }
+    }
+  }
+
+  return [...boot]
+}
 
 export const analyzeContentScale = (distDir = 'dist'): BundleReport => {
   const lines: string[] = []
@@ -61,6 +135,10 @@ export const analyzeContentScale = (distDir = 'dist'): BundleReport => {
 
   const entries = files.map((file) => readEntry(assetsDir, file))
   const initial = entries.find((entry) => entry.name === 'index') ?? null
+  const bootFiles = bootChunks(assetsDir, files, 'tokyo-area')
+  const bootEntries = bootFiles.map((file) => readEntry(assetsDir, file))
+  const bootRaw = bootEntries.reduce((sum, entry) => sum + entry.bytes, 0)
+  const bootGzip = bootEntries.reduce((sum, entry) => sum + entry.gzipBytes, 0)
   const packs = entries
     .filter((entry) => entry.name !== 'index')
     .sort((left, right) => right.bytes - left.bytes)
@@ -81,9 +159,22 @@ export const analyzeContentScale = (distDir = 'dist'): BundleReport => {
     ok: packs.filter((entry) => entry.name.startsWith('region-')).length >= 5,
   })
   checks.push({
-    label: 'species detail / tackle are separate packs',
+    label: `boot gzip <= ${((PHASE_14_BASELINE.gzip * BOOT_GZIP_TARGET_RATIO) / 1000).toFixed(0)} kB（Phase 14 の 80%）`,
+    ok: bootGzip <= PHASE_14_BASELINE.gzip * BOOT_GZIP_TARGET_RATIO,
+  })
+  checks.push({
+    label: 'boot path does not include tackle / other regions',
+    ok: !bootFiles.some(
+      (file) =>
+        file.startsWith('tackle-') ||
+        file.startsWith('region-hokkaido-') ||
+        file.startsWith('species-hokkaido-'),
+    ),
+  })
+  checks.push({
+    label: 'species detail shards / tackle are separate packs',
     ok:
-      packs.some((entry) => entry.name === 'species-detail') &&
+      packs.some((entry) => entry.name.startsWith('species-')) &&
       packs.some((entry) => entry.name === 'tackle'),
   })
 
@@ -98,6 +189,16 @@ export const analyzeContentScale = (distDir = 'dist'): BundleReport => {
   }
 
   lines.push(`Total JS:          ${kb(total)}`)
+  lines.push('')
+  lines.push('--- boot critical path (catalog + world + current region + its species) ---')
+  lines.push(`Boot chunks (${String(bootEntries.length)}):`)
+  for (const entry of bootEntries.sort((left, right) => right.bytes - left.bytes)) {
+    lines.push(`  ${entry.name.padEnd(26)} ${kb(entry.bytes)} (gzip ${kb(entry.gzipBytes)})`)
+  }
+  lines.push(`Total boot raw:    ${kb(bootRaw)}（Phase 14 ${kb(PHASE_14_BASELINE.raw)}）`)
+  lines.push(
+    `Total boot gzip:   ${kb(bootGzip)}（Phase 14 ${kb(PHASE_14_BASELINE.gzip)} / Phase 15.0 ${kb(PHASE_15_0_BOOT.gzip)}）`,
+  )
   lines.push('')
 
   for (const check of checks) {

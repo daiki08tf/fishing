@@ -7,10 +7,13 @@ import {
   type GearItem,
 } from '../../domain/gear/Gear'
 import { SHOP_CATEGORY_LABELS } from '../../domain/shop'
+import { GLOBAL_PACK_KEYS } from '../../content/runtime/contentRuntime'
 import { useAppStore } from '../../state/appStore'
 import { usePlayerStore } from '../../state/playerStore'
 import { gearFamilyOf, gearSpecsOf } from '../gear/gearDisplay'
 import { ContentErrorPanel } from '../world/ContentErrorPanel'
+import { ContentLoadingPanel } from '../content/ContentLoadingPanel'
+import { usePack } from '../content/contentRuntimeHooks'
 import { useContentOrError } from '../world/useContentOrError'
 
 /**
@@ -35,6 +38,7 @@ export const ShopScreen = () => {
   const content = useContentOrError()
   const setActiveScreen = useAppStore((state) => state.setActiveScreen)
   const finance = usePlayerStore((state) => state.finance)
+  const tacklePack = usePack(GLOBAL_PACK_KEYS.tackle)
   const purchases = usePlayerStore((state) => state.purchases)
   const inventory = usePlayerStore((state) => state.inventory)
   const purchaseItem = usePlayerStore((state) => state.purchaseItem)
@@ -42,6 +46,16 @@ export const ShopScreen = () => {
   const [message, setMessage] = useState<string | null>(null)
   const [category, setCategory] = useState<CategoryFilter>('rod')
   const [brandId, setBrandId] = useState<BrandFilter>('all')
+
+  if (tacklePack.status !== 'ready') {
+    return (
+      <ContentLoadingPanel
+        message="道具の情報を読み込み中…"
+        error={tacklePack.error}
+        onRetry={tacklePack.retry}
+      />
+    )
+  }
 
   if (!content.ok) {
     return <ContentErrorPanel message={content.message} />

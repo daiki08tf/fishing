@@ -175,6 +175,9 @@ export const runValidateContent = (argv: readonly string[], cwd: string): Valida
       ownership: JSON.parse(
         readFileSync(resolve(cwd, 'src/content/generated/content-ownership.json'), 'utf8'),
       ) as Record<string, string>,
+      speciesShards: JSON.parse(
+        readFileSync(resolve(cwd, 'src/content/generated/species-shards.json'), 'utf8'),
+      ) as Record<string, readonly string[]>,
       packModuleKeys: knownPackModuleKeys(),
       cwd,
     })
@@ -203,6 +206,7 @@ export const runContentScaleValidation = (input: {
   readonly locations: readonly ContentLocation[]
   readonly index: ContentIndex
   readonly ownership: Readonly<Record<string, string>>
+  readonly speciesShards: Readonly<Record<string, readonly string[]>>
   readonly packModuleKeys: readonly string[]
   readonly cwd: string
 }): readonly { readonly path: string; readonly message: string }[] => {
@@ -229,6 +233,7 @@ export const runContentScaleValidation = (input: {
       speciesTradeProfiles: of<SpeciesTradeProfile>('species-trade-profiles'),
       index: input.index,
       ownership: input.ownership,
+      speciesShards: input.speciesShards,
       filesByKind,
       packModuleKeys: input.packModuleKeys,
     }),

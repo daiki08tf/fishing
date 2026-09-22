@@ -1,4 +1,4 @@
-import { mkdirSync, writeFileSync } from 'node:fs'
+import { mkdirSync, readdirSync, unlinkSync, writeFileSync } from 'node:fs'
 import { join, relative, resolve } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import type { BuyerDefinition } from '../src/domain/trade/Buyer'
@@ -109,6 +109,35 @@ export const buildContentIndex = (
   const packKeyOfRegion = (regionId: string): string | null =>
     playableRegionIds.has(regionId) ? `region:${regionId}` : null
 
+  /*
+   * Phase 15.1: Species detail は「その地域の釣り場に出る Species」だけを
+   * region ごとの shard として持つ（1000 Species を起動時に一括で読まない）。
+   * 同じ Species 定義を source 上でコピーしない（同じ JSON を複数の shard が参照する）。
+   */
+  const speciesByRegion = new Map<string, readonly string[]>()
+  for (const regionId of [...playableRegionIds].sort()) {
+    const ids = new Set<string>()
+    for (const spot of spots) {
+      if (String(spot.regionId) !== regionId) {
+        continue
+      }
+      for (const occurrence of spot.fishTable) {
+        ids.add(String(occurrence.speciesId))
+      }
+    }
+    speciesByRegion.set(regionId, [...ids].sort())
+  }
+
+  const shardOfSpecies = (speciesId: string): string => {
+    for (const [regionId, ids] of speciesByRegion) {
+      if (ids.includes(speciesId)) {
+        return `species:${regionId}`
+      }
+    }
+
+    return 'species:shared'
+  }
+
   const regionSummaries: readonly RegionSummary[] = byId(regions).map((region) => ({
     id: region.id,
     name: region.name,
@@ -127,6 +156,7 @@ export const buildContentIndex = (
     regionIds: entry.distribution.map((region) => asRegionId(String(region))),
     habitats: entry.habitats,
     rarityBand: rarityBandOf(entry.rarity),
+    detailShard: shardOfSpecies(String(entry.id)),
   }))
 
   /*
@@ -179,19 +209,36 @@ export const buildContentIndex = (
       }
     })
 
-  const globalPacks: readonly PackWithOwnership[] = [
-    {
-      key: 'species-detail',
-      kind: 'global',
-      label: 'Species detail',
+  const speciesFileShard: Record<string, string> = {}
+  for (const ids of speciesByRegion.values()) {
+    for (const id of ids) {
+      const shard = shardOfSpecies(id)
+      for (const file of fileOf('fish-species', id)) {
+        speciesFileShard[file] ??= shard
+      }
+      for (const file of fileOf('species-trade-profiles', id, 'speciesId')) {
+        speciesFileShard[file] ??= shard
+      }
+    }
+  }
+
+  const speciesPacks: readonly PackWithOwnership[] = [...speciesByRegion]
+    .filter(([, ids]) => ids.length > 0)
+    .map(([regionId, ids]) => ({
+      key: `species:${regionId}`,
+      kind: 'species' as const,
+      label: `${regions.find((entry) => String(entry.id) === regionId)?.name ?? regionId} species detail`,
+      regionId: asRegionId(regionId),
       kinds: ['fish-species', 'species-trade-profiles'],
       ownership: {
-        'fish-species': species.flatMap((entry) => fileOf('fish-species', String(entry.id))),
-        'species-trade-profiles': tradeProfiles.flatMap((entry) =>
-          fileOf('species-trade-profiles', String(entry.speciesId), 'speciesId'),
+        'fish-species': ids.flatMap((id) => fileOf('fish-species', id)),
+        'species-trade-profiles': ids.flatMap((id) =>
+          fileOf('species-trade-profiles', id, 'speciesId'),
         ),
       },
-    },
+    }))
+
+  const globalPacks: readonly PackWithOwnership[] = [
     {
       key: 'tackle',
       kind: 'global',
@@ -235,15 +282,58 @@ export const buildContentIndex = (
     },
     species: speciesSummaries,
     regions: regionSummaries,
-    packs: [...regionPacks, ...globalPacks],
-  }
+    packs: [...regionPacks, ...speciesPacks, ...globalPacks],
+    speciesShards: Object.fromEntries(
+      [...speciesByRegion].map(([regionId, ids]) => [`species:${regionId}`, ids]),
+    ),
+    speciesFileShard,
+  } as ContentIndexWithNodeData
+}
+
+/** node / 検証 / テスト専用の追加データ（browser index からは落とす）。 */
+type ContentIndexWithNodeData = ContentIndex & {
+  readonly speciesShards?: Readonly<Record<string, readonly string[]>>
+  readonly speciesFileShard?: Readonly<Record<string, string>>
 }
 
 /** node / 検証 / テスト専用: どのファイルがどの pack に属するか。 */
+/**
+ * primary owner（1 ファイル = 1 主 owner）を返す。
+ *
+ * Species / trade profile は複数の region shard から参照され得るため、
+ * `species.detailShard` が指す shard を代表（primary）とし、
+ * shard 間の共有は species-shards.json（node / 検証用）で表現する。
+ */
 export const buildOwnership = (index: ContentIndex): Readonly<Record<string, string>> => {
   const ownership: Record<string, string> = {}
+  const node = index as ContentIndexWithNodeData
+
+  /*
+   * Species / trade profile の primary owner は `speciesFileShard`（生成時に
+   * id から解決したもの）を使う。ファイル名と Species id は一致しないことがある
+   * （kanto-maaji.json / maaji）ので、名前からは推測しない。
+   */
+  for (const pack of index.packs as readonly PackWithOwnership[]) {
+    if (pack.kind !== 'species') {
+      continue
+    }
+
+    for (const [kind, files] of Object.entries(pack.ownership ?? {})) {
+      for (const file of files) {
+        const primary = node.speciesFileShard?.[file]
+
+        if (primary === pack.key) {
+          ownership[`${kind}/${file}`] = pack.key
+        }
+      }
+    }
+  }
 
   for (const pack of index.packs as readonly PackWithOwnership[]) {
+    if (pack.kind === 'species') {
+      continue
+    }
+
     for (const [kind, files] of Object.entries(pack.ownership ?? {})) {
       for (const file of files) {
         ownership[`${kind}/${file}`] = pack.key
@@ -253,6 +343,12 @@ export const buildOwnership = (index: ContentIndex): Readonly<Record<string, str
 
   return ownership
 }
+
+/** どの Region shard がどの Species detail を持つか（node / 検証用）。 */
+export const buildSpeciesShards = (
+  index: ContentIndex,
+): Readonly<Record<string, readonly string[]>> =>
+  (index as ContentIndexWithNodeData).speciesShards ?? {}
 
 /**
  * browser 用の pack module を 1 つ書き出す（pack 1 つ = 1 chunk）。
@@ -301,6 +397,29 @@ const packModuleSource = (pack: PackWithOwnership): string => {
 
 const packModuleFileName = (key: string): string => `${key.replace(':', '-')}.ts`
 
+/** pack key → dynamic import の対応表（手で維持しない）。 */
+const registrySource = (index: ContentIndex): string =>
+  [
+    '/*',
+    ' * AUTO-GENERATED by scripts/build-content-index.ts（Phase 15）。',
+    ' * pack key → dynamic import。ここには key と import 先だけを置く（初期 chunk を増やさない）。',
+    ' */',
+    '',
+    'export type GeneratedPackModule = {',
+    '  readonly load: () => Promise<Readonly<Record<string, readonly unknown[]>>>',
+    '}',
+    '',
+    'export const PACK_MODULE_IMPORTS: Readonly<',
+    '  Record<string, () => Promise<GeneratedPackModule>>',
+    '> = {',
+    ...index.packs.map(
+      (pack) =>
+        `  ${JSON.stringify(pack.key)}: () => import('./packs/${packModuleFileName(pack.key).replace(/\.ts$/, '')}'),`,
+    ),
+    '}',
+    '',
+  ].join('\n')
+
 export const serializeContentIndex = (index: ContentIndex): string =>
   `${JSON.stringify(index, null, 2)}\n`
 
@@ -317,6 +436,8 @@ export const browserContentIndex = (index: ContentIndex): ContentIndex => ({
 })
 
 export const DEFAULT_OWNERSHIP_PATH = 'src/content/generated/content-ownership.json'
+export const DEFAULT_SHARDS_PATH = 'src/content/generated/species-shards.json'
+export const DEFAULT_REGISTRY_PATH = 'src/content/generated/pack-registry.ts'
 export const DEFAULT_PACK_DIR = 'src/content/generated/packs'
 
 export const runBuildContentIndex = (
@@ -331,9 +452,25 @@ export const runBuildContentIndex = (
     resolve(cwd, DEFAULT_OWNERSHIP_PATH),
     `${JSON.stringify(buildOwnership(index), null, 2)}\n`,
   )
+  writeFileSync(
+    resolve(cwd, DEFAULT_SHARDS_PATH),
+    `${JSON.stringify(buildSpeciesShards(index), null, 2)}\n`,
+  )
+  writeFileSync(resolve(cwd, DEFAULT_REGISTRY_PATH), registrySource(index))
 
   const packDir = resolve(cwd, DEFAULT_PACK_DIR)
   mkdirSync(packDir, { recursive: true })
+
+  const expected = new Set(
+    (index.packs as readonly PackWithOwnership[]).map((pack) => packModuleFileName(pack.key)),
+  )
+
+  // 古い pack module を残さない（pack の分割を変えたときに stale な chunk を作らない）。
+  for (const file of readdirSync(packDir)) {
+    if (file.endsWith('.ts') && !expected.has(file)) {
+      unlinkSync(join(packDir, file))
+    }
+  }
 
   for (const pack of index.packs as readonly PackWithOwnership[]) {
     writeFileSync(join(packDir, packModuleFileName(pack.key)), packModuleSource(pack))

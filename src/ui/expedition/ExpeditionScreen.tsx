@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { formatYen } from '../../domain/economy'
 import { planExpedition, remainingExpeditionDays } from '../../domain/expedition'
 import { formatDuration } from '../../domain/world'
@@ -32,17 +32,13 @@ export const ExpeditionScreen = () => {
   const regionPack = useRegionPack(String(world.currentRegionId))
 
   /*
-   * Phase 15: 遠征先の Content Pack を先に読み込んでおく。
-   * 出発してから待たされないようにするだけで、ゲームルール（費用・日数・許可）は変えない。
-   * 失敗しても出発時に再度 ensureRegion される（Expedition 自体はブロックしない）。
+   * Phase 15.1: EXPEDITION を開いただけでは、どの地域の Content も読まない。
+   * 目的地のカードを触った / 出発する時に、その地域の pack だけを先読みする
+   * （ensureRegion は region pack + その地域の Species shard のみ）。
    */
-  useEffect(() => {
-    for (const pack of contentRuntime.index.packs) {
-      if (pack.kind === 'region') {
-        void contentRuntime.ensurePack(pack.key).catch(() => undefined)
-      }
-    }
-  }, [])
+  const preloadRegion = (regionId: string): void => {
+    void contentRuntime.ensureRegion(String(regionId)).catch(() => undefined)
+  }
 
   if (regionPack.status !== 'ready') {
     return (
@@ -177,7 +173,16 @@ export const ExpeditionScreen = () => {
             const selectedLodgingId = plan.lodging.id
 
             return (
-              <li className="spot-card" key={String(definition.id)}>
+              <li
+                className="spot-card"
+                key={String(definition.id)}
+                onFocusCapture={() => {
+                  preloadRegion(String(definition.regionId))
+                }}
+                onPointerEnter={() => {
+                  preloadRegion(String(definition.regionId))
+                }}
+              >
                 <div className="spot-card__head">
                   <h3 className="panel__subheading">{plan.name}</h3>
                   <span className={`badge${affordable ? '' : ' badge--alert'}`}>
@@ -281,6 +286,10 @@ export const ExpeditionScreen = () => {
                     className="control"
                     type="button"
                     onClick={() => {
+                      // 出発前に目的地の Content を先読み（移動後の待ち時間を減らす）。
+                      void contentRuntime
+                        .ensureRegion(String(definition.regionId))
+                        .catch(() => undefined)
                       const result = startExpedition(plan)
 
                       if (result.ok) {
