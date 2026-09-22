@@ -1,0 +1,9 @@
+{
+  "speciesId": "surgeonfish",
+  "tradeStatus": "tradable",
+  "tradeTags": ["delicate", "local_favorite"],
+  "baseYenPerKg": 550,
+  "minimumUnitValueYen": 100,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

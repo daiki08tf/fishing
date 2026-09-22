@@ -8,57 +8,97 @@ import m0 from '../../data/fish-species/atlantic-cod.json'
 import m1 from '../../data/fish-species/atlantic-halibut.json'
 import m2 from '../../data/fish-species/atlantic-herring.json'
 import m3 from '../../data/fish-species/atlantic-mackerel.json'
-import m4 from '../../data/fish-species/atlantic-salmon.json'
-import m5 from '../../data/fish-species/bull-trout.json'
-import m6 from '../../data/fish-species/coalfish.json'
-import m7 from '../../data/fish-species/european-flounder.json'
-import m8 from '../../data/fish-species/haddock.json'
-import m9 from '../../data/fish-species/iwana.json'
-import m10 from '../../data/fish-species/turbot.json'
-import m11 from '../../data/fish-species/wolffish.json'
-import m12 from '../../data/fish-species/yamame.json'
-import m13 from '../../data/species-trade-profiles/atlantic-cod.json'
-import m14 from '../../data/species-trade-profiles/atlantic-halibut.json'
-import m15 from '../../data/species-trade-profiles/atlantic-herring.json'
-import m16 from '../../data/species-trade-profiles/atlantic-mackerel.json'
-import m17 from '../../data/species-trade-profiles/atlantic-salmon.json'
-import m18 from '../../data/species-trade-profiles/bull-trout.json'
-import m19 from '../../data/species-trade-profiles/coalfish.json'
-import m20 from '../../data/species-trade-profiles/european-flounder.json'
-import m21 from '../../data/species-trade-profiles/haddock.json'
-import m22 from '../../data/species-trade-profiles/iwana.json'
-import m23 from '../../data/species-trade-profiles/turbot.json'
-import m24 from '../../data/species-trade-profiles/wolffish.json'
-import m25 from '../../data/species-trade-profiles/yamame.json'
+import m4 from '../../data/fish-species/atlantic-redfish.json'
+import m5 from '../../data/fish-species/atlantic-salmon.json'
+import m6 from '../../data/fish-species/bull-trout.json'
+import m7 from '../../data/fish-species/capelin.json'
+import m8 from '../../data/fish-species/coalfish.json'
+import m9 from '../../data/fish-species/common-dab.json'
+import m10 from '../../data/fish-species/common-ling.json'
+import m11 from '../../data/fish-species/european-flounder.json'
+import m12 from '../../data/fish-species/european-hake.json'
+import m13 from '../../data/fish-species/european-perch.json'
+import m14 from '../../data/fish-species/european-plaice.json'
+import m15 from '../../data/fish-species/haddock.json'
+import m16 from '../../data/fish-species/iwana.json'
+import m17 from '../../data/fish-species/lumpfish.json'
+import m18 from '../../data/fish-species/turbot.json'
+import m19 from '../../data/fish-species/tusk.json'
+import m20 from '../../data/fish-species/whiting.json'
+import m21 from '../../data/fish-species/wolffish.json'
+import m22 from '../../data/fish-species/yamame.json'
+import m23 from '../../data/species-trade-profiles/atlantic-cod.json'
+import m24 from '../../data/species-trade-profiles/atlantic-halibut.json'
+import m25 from '../../data/species-trade-profiles/atlantic-herring.json'
+import m26 from '../../data/species-trade-profiles/atlantic-mackerel.json'
+import m27 from '../../data/species-trade-profiles/atlantic-redfish.json'
+import m28 from '../../data/species-trade-profiles/atlantic-salmon.json'
+import m29 from '../../data/species-trade-profiles/bull-trout.json'
+import m30 from '../../data/species-trade-profiles/capelin.json'
+import m31 from '../../data/species-trade-profiles/coalfish.json'
+import m32 from '../../data/species-trade-profiles/common-dab.json'
+import m33 from '../../data/species-trade-profiles/common-ling.json'
+import m34 from '../../data/species-trade-profiles/european-flounder.json'
+import m35 from '../../data/species-trade-profiles/european-hake.json'
+import m36 from '../../data/species-trade-profiles/european-perch.json'
+import m37 from '../../data/species-trade-profiles/european-plaice.json'
+import m38 from '../../data/species-trade-profiles/haddock.json'
+import m39 from '../../data/species-trade-profiles/iwana.json'
+import m40 from '../../data/species-trade-profiles/lumpfish.json'
+import m41 from '../../data/species-trade-profiles/turbot.json'
+import m42 from '../../data/species-trade-profiles/tusk.json'
+import m43 from '../../data/species-trade-profiles/whiting.json'
+import m44 from '../../data/species-trade-profiles/wolffish.json'
+import m45 from '../../data/species-trade-profiles/yamame.json'
 
 export const m0Name = "atlantic-cod.json"
 export const m1Name = "atlantic-halibut.json"
 export const m2Name = "atlantic-herring.json"
 export const m3Name = "atlantic-mackerel.json"
-export const m4Name = "atlantic-salmon.json"
-export const m5Name = "bull-trout.json"
-export const m6Name = "coalfish.json"
-export const m7Name = "european-flounder.json"
-export const m8Name = "haddock.json"
-export const m9Name = "iwana.json"
-export const m10Name = "turbot.json"
-export const m11Name = "wolffish.json"
-export const m12Name = "yamame.json"
-export const m13Name = "atlantic-cod.json"
-export const m14Name = "atlantic-halibut.json"
-export const m15Name = "atlantic-herring.json"
-export const m16Name = "atlantic-mackerel.json"
-export const m17Name = "atlantic-salmon.json"
-export const m18Name = "bull-trout.json"
-export const m19Name = "coalfish.json"
-export const m20Name = "european-flounder.json"
-export const m21Name = "haddock.json"
-export const m22Name = "iwana.json"
-export const m23Name = "turbot.json"
-export const m24Name = "wolffish.json"
-export const m25Name = "yamame.json"
+export const m4Name = "atlantic-redfish.json"
+export const m5Name = "atlantic-salmon.json"
+export const m6Name = "bull-trout.json"
+export const m7Name = "capelin.json"
+export const m8Name = "coalfish.json"
+export const m9Name = "common-dab.json"
+export const m10Name = "common-ling.json"
+export const m11Name = "european-flounder.json"
+export const m12Name = "european-hake.json"
+export const m13Name = "european-perch.json"
+export const m14Name = "european-plaice.json"
+export const m15Name = "haddock.json"
+export const m16Name = "iwana.json"
+export const m17Name = "lumpfish.json"
+export const m18Name = "turbot.json"
+export const m19Name = "tusk.json"
+export const m20Name = "whiting.json"
+export const m21Name = "wolffish.json"
+export const m22Name = "yamame.json"
+export const m23Name = "atlantic-cod.json"
+export const m24Name = "atlantic-halibut.json"
+export const m25Name = "atlantic-herring.json"
+export const m26Name = "atlantic-mackerel.json"
+export const m27Name = "atlantic-redfish.json"
+export const m28Name = "atlantic-salmon.json"
+export const m29Name = "bull-trout.json"
+export const m30Name = "capelin.json"
+export const m31Name = "coalfish.json"
+export const m32Name = "common-dab.json"
+export const m33Name = "common-ling.json"
+export const m34Name = "european-flounder.json"
+export const m35Name = "european-hake.json"
+export const m36Name = "european-perch.json"
+export const m37Name = "european-plaice.json"
+export const m38Name = "haddock.json"
+export const m39Name = "iwana.json"
+export const m40Name = "lumpfish.json"
+export const m41Name = "turbot.json"
+export const m42Name = "tusk.json"
+export const m43Name = "whiting.json"
+export const m44Name = "wolffish.json"
+export const m45Name = "yamame.json"
 
 export const load = async (): Promise<Readonly<Record<string, readonly unknown[]>>> => ({
-    "fish-species": [m0, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12],
-    "species-trade-profiles": [m13, m14, m15, m16, m17, m18, m19, m20, m21, m22, m23, m24, m25],
+    "fish-species": [m0, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15, m16, m17, m18, m19, m20, m21, m22],
+    "species-trade-profiles": [m23, m24, m25, m26, m27, m28, m29, m30, m31, m32, m33, m34, m35, m36, m37, m38, m39, m40, m41, m42, m43, m44, m45],
 })

@@ -1,0 +1,28 @@
+{
+  "id": "norway-fjord-restaurant",
+  "name": "ノルウェー フィヨルドの食堂",
+  "buyerType": "izakaya",
+  "regionId": "norway-fjords",
+  "description": "フィヨルド沿いの食堂。型の良い魚と状態を評価する。PROVISIONAL — gameplay tuning。",
+  "pricingProfile": {
+    "baseMultiplier": 1.1,
+    "qualitySensitivity": 1.2,
+    "sizeSensitivity": 1.3,
+    "freshnessSensitivity": 0.6,
+    "volumeBonusPerExtraCatch": 0,
+    "maxVolumeBonus": 0
+  },
+  "trustProfile": {
+    "perTransactionBase": 2,
+    "qualityWeight": 6,
+    "maxPerTransaction": 6
+  },
+  "preferences": {
+    "preferredTags": ["large_fish", "premium", "delicate"],
+    "neutralTags": ["white_fish", "local_favorite", "oily", "everyday"],
+    "preferredTagMultiplier": 1.18,
+    "neutralTagMultiplier": 1,
+    "otherTagMultiplier": 0.85,
+    "localSourceMultiplier": 1.08
+  }
+}

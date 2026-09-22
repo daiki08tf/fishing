@@ -1,0 +1,9 @@
+{
+  "speciesId": "atlantic-redfish",
+  "tradeStatus": "tradable",
+  "tradeTags": ["white_fish", "everyday"],
+  "baseYenPerKg": 950,
+  "minimumUnitValueYen": 170,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

@@ -14,72 +14,76 @@ import m6 from '../../data/fish-species/hiramasa.json'
 import m7 from '../../data/fish-species/hirame.json'
 import m8 from '../../data/fish-species/isaki.json'
 import m9 from '../../data/fish-species/iwana.json'
-import m10 from '../../data/fish-species/kajika.json'
-import m11 from '../../data/fish-species/kamasu.json'
-import m12 from '../../data/fish-species/kanpachi.json'
-import m13 from '../../data/fish-species/kasago.json'
-import m14 from '../../data/fish-species/katsuo.json'
-import m15 from '../../data/fish-species/kawahagi.json'
-import m16 from '../../data/fish-species/kanto-koi.json'
-import m17 from '../../data/fish-species/konoshiro.json'
-import m18 from '../../data/fish-species/kanto-kurodai.json'
-import m19 from '../../data/fish-species/largemouth-bass.json'
-import m20 from '../../data/fish-species/kanto-maaji.json'
-import m21 from '../../data/fish-species/madai.json'
-import m22 from '../../data/fish-species/magochi.json'
-import m23 from '../../data/fish-species/mahi-mahi.json'
-import m24 from '../../data/fish-species/mebaru.json'
-import m25 from '../../data/fish-species/mejina.json'
-import m26 from '../../data/fish-species/kanto-namazu.json'
-import m27 from '../../data/fish-species/oikawa.json'
-import m28 from '../../data/fish-species/alaska-rainbow-trout.json'
-import m29 from '../../data/fish-species/kanto-saba.json'
-import m30 from '../../data/fish-species/sayori.json'
-import m31 from '../../data/fish-species/kanto-seabass.json'
-import m32 from '../../data/fish-species/kanto-shirogisu.json'
-import m33 from '../../data/fish-species/tachiuo.json'
-import m34 from '../../data/fish-species/kanto-ugui.json'
-import m35 from '../../data/fish-species/unagi.json'
-import m36 from '../../data/fish-species/wakasagi.json'
-import m37 from '../../data/fish-species/yamame.json'
-import m38 from '../../data/species-trade-profiles/ayu.json'
-import m39 from '../../data/species-trade-profiles/bluegill.json'
-import m40 from '../../data/species-trade-profiles/bora.json'
-import m41 from '../../data/species-trade-profiles/buri.json'
-import m42 from '../../data/species-trade-profiles/funa.json'
-import m43 from '../../data/species-trade-profiles/haze.json'
-import m44 from '../../data/species-trade-profiles/hiramasa.json'
-import m45 from '../../data/species-trade-profiles/hirame.json'
-import m46 from '../../data/species-trade-profiles/isaki.json'
-import m47 from '../../data/species-trade-profiles/iwana.json'
-import m48 from '../../data/species-trade-profiles/kajika.json'
-import m49 from '../../data/species-trade-profiles/kamasu.json'
-import m50 from '../../data/species-trade-profiles/kanpachi.json'
-import m51 from '../../data/species-trade-profiles/kasago.json'
-import m52 from '../../data/species-trade-profiles/katsuo.json'
-import m53 from '../../data/species-trade-profiles/kawahagi.json'
-import m54 from '../../data/species-trade-profiles/koi.json'
-import m55 from '../../data/species-trade-profiles/konoshiro.json'
-import m56 from '../../data/species-trade-profiles/kurodai.json'
-import m57 from '../../data/species-trade-profiles/largemouth-bass.json'
-import m58 from '../../data/species-trade-profiles/maaji.json'
-import m59 from '../../data/species-trade-profiles/madai.json'
-import m60 from '../../data/species-trade-profiles/magochi.json'
-import m61 from '../../data/species-trade-profiles/mahi-mahi.json'
-import m62 from '../../data/species-trade-profiles/mebaru.json'
-import m63 from '../../data/species-trade-profiles/mejina.json'
-import m64 from '../../data/species-trade-profiles/namazu.json'
-import m65 from '../../data/species-trade-profiles/oikawa.json'
-import m66 from '../../data/species-trade-profiles/rainbow-trout.json'
-import m67 from '../../data/species-trade-profiles/saba.json'
-import m68 from '../../data/species-trade-profiles/sayori.json'
-import m69 from '../../data/species-trade-profiles/seabass.json'
-import m70 from '../../data/species-trade-profiles/shirogisu.json'
-import m71 from '../../data/species-trade-profiles/tachiuo.json'
-import m72 from '../../data/species-trade-profiles/ugui.json'
-import m73 from '../../data/species-trade-profiles/unagi.json'
-import m74 from '../../data/species-trade-profiles/wakasagi.json'
-import m75 from '../../data/species-trade-profiles/yamame.json'
+import m10 from '../../data/fish-species/japanese-anchovy.json'
+import m11 from '../../data/fish-species/kajika.json'
+import m12 from '../../data/fish-species/kamasu.json'
+import m13 from '../../data/fish-species/kanpachi.json'
+import m14 from '../../data/fish-species/kasago.json'
+import m15 from '../../data/fish-species/katsuo.json'
+import m16 from '../../data/fish-species/kawahagi.json'
+import m17 from '../../data/fish-species/kanto-koi.json'
+import m18 from '../../data/fish-species/konoshiro.json'
+import m19 from '../../data/fish-species/kanto-kurodai.json'
+import m20 from '../../data/fish-species/largemouth-bass.json'
+import m21 from '../../data/fish-species/kanto-maaji.json'
+import m22 from '../../data/fish-species/madai.json'
+import m23 from '../../data/fish-species/magochi.json'
+import m24 from '../../data/fish-species/mahi-mahi.json'
+import m25 from '../../data/fish-species/mebaru.json'
+import m26 from '../../data/fish-species/mejina.json'
+import m27 from '../../data/fish-species/kanto-namazu.json'
+import m28 from '../../data/fish-species/oikawa.json'
+import m29 from '../../data/fish-species/alaska-rainbow-trout.json'
+import m30 from '../../data/fish-species/kanto-saba.json'
+import m31 from '../../data/fish-species/sappa.json'
+import m32 from '../../data/fish-species/sayori.json'
+import m33 from '../../data/fish-species/kanto-seabass.json'
+import m34 from '../../data/fish-species/kanto-shirogisu.json'
+import m35 from '../../data/fish-species/tachiuo.json'
+import m36 from '../../data/fish-species/kanto-ugui.json'
+import m37 from '../../data/fish-species/unagi.json'
+import m38 from '../../data/fish-species/wakasagi.json'
+import m39 from '../../data/fish-species/yamame.json'
+import m40 from '../../data/species-trade-profiles/ayu.json'
+import m41 from '../../data/species-trade-profiles/bluegill.json'
+import m42 from '../../data/species-trade-profiles/bora.json'
+import m43 from '../../data/species-trade-profiles/buri.json'
+import m44 from '../../data/species-trade-profiles/funa.json'
+import m45 from '../../data/species-trade-profiles/haze.json'
+import m46 from '../../data/species-trade-profiles/hiramasa.json'
+import m47 from '../../data/species-trade-profiles/hirame.json'
+import m48 from '../../data/species-trade-profiles/isaki.json'
+import m49 from '../../data/species-trade-profiles/iwana.json'
+import m50 from '../../data/species-trade-profiles/japanese-anchovy.json'
+import m51 from '../../data/species-trade-profiles/kajika.json'
+import m52 from '../../data/species-trade-profiles/kamasu.json'
+import m53 from '../../data/species-trade-profiles/kanpachi.json'
+import m54 from '../../data/species-trade-profiles/kasago.json'
+import m55 from '../../data/species-trade-profiles/katsuo.json'
+import m56 from '../../data/species-trade-profiles/kawahagi.json'
+import m57 from '../../data/species-trade-profiles/koi.json'
+import m58 from '../../data/species-trade-profiles/konoshiro.json'
+import m59 from '../../data/species-trade-profiles/kurodai.json'
+import m60 from '../../data/species-trade-profiles/largemouth-bass.json'
+import m61 from '../../data/species-trade-profiles/maaji.json'
+import m62 from '../../data/species-trade-profiles/madai.json'
+import m63 from '../../data/species-trade-profiles/magochi.json'
+import m64 from '../../data/species-trade-profiles/mahi-mahi.json'
+import m65 from '../../data/species-trade-profiles/mebaru.json'
+import m66 from '../../data/species-trade-profiles/mejina.json'
+import m67 from '../../data/species-trade-profiles/namazu.json'
+import m68 from '../../data/species-trade-profiles/oikawa.json'
+import m69 from '../../data/species-trade-profiles/rainbow-trout.json'
+import m70 from '../../data/species-trade-profiles/saba.json'
+import m71 from '../../data/species-trade-profiles/sappa.json'
+import m72 from '../../data/species-trade-profiles/sayori.json'
+import m73 from '../../data/species-trade-profiles/seabass.json'
+import m74 from '../../data/species-trade-profiles/shirogisu.json'
+import m75 from '../../data/species-trade-profiles/tachiuo.json'
+import m76 from '../../data/species-trade-profiles/ugui.json'
+import m77 from '../../data/species-trade-profiles/unagi.json'
+import m78 from '../../data/species-trade-profiles/wakasagi.json'
+import m79 from '../../data/species-trade-profiles/yamame.json'
 
 export const m0Name = "ayu.json"
 export const m1Name = "bluegill.json"
@@ -91,74 +95,78 @@ export const m6Name = "hiramasa.json"
 export const m7Name = "hirame.json"
 export const m8Name = "isaki.json"
 export const m9Name = "iwana.json"
-export const m10Name = "kajika.json"
-export const m11Name = "kamasu.json"
-export const m12Name = "kanpachi.json"
-export const m13Name = "kasago.json"
-export const m14Name = "katsuo.json"
-export const m15Name = "kawahagi.json"
-export const m16Name = "kanto-koi.json"
-export const m17Name = "konoshiro.json"
-export const m18Name = "kanto-kurodai.json"
-export const m19Name = "largemouth-bass.json"
-export const m20Name = "kanto-maaji.json"
-export const m21Name = "madai.json"
-export const m22Name = "magochi.json"
-export const m23Name = "mahi-mahi.json"
-export const m24Name = "mebaru.json"
-export const m25Name = "mejina.json"
-export const m26Name = "kanto-namazu.json"
-export const m27Name = "oikawa.json"
-export const m28Name = "alaska-rainbow-trout.json"
-export const m29Name = "kanto-saba.json"
-export const m30Name = "sayori.json"
-export const m31Name = "kanto-seabass.json"
-export const m32Name = "kanto-shirogisu.json"
-export const m33Name = "tachiuo.json"
-export const m34Name = "kanto-ugui.json"
-export const m35Name = "unagi.json"
-export const m36Name = "wakasagi.json"
-export const m37Name = "yamame.json"
-export const m38Name = "ayu.json"
-export const m39Name = "bluegill.json"
-export const m40Name = "bora.json"
-export const m41Name = "buri.json"
-export const m42Name = "funa.json"
-export const m43Name = "haze.json"
-export const m44Name = "hiramasa.json"
-export const m45Name = "hirame.json"
-export const m46Name = "isaki.json"
-export const m47Name = "iwana.json"
-export const m48Name = "kajika.json"
-export const m49Name = "kamasu.json"
-export const m50Name = "kanpachi.json"
-export const m51Name = "kasago.json"
-export const m52Name = "katsuo.json"
-export const m53Name = "kawahagi.json"
-export const m54Name = "koi.json"
-export const m55Name = "konoshiro.json"
-export const m56Name = "kurodai.json"
-export const m57Name = "largemouth-bass.json"
-export const m58Name = "maaji.json"
-export const m59Name = "madai.json"
-export const m60Name = "magochi.json"
-export const m61Name = "mahi-mahi.json"
-export const m62Name = "mebaru.json"
-export const m63Name = "mejina.json"
-export const m64Name = "namazu.json"
-export const m65Name = "oikawa.json"
-export const m66Name = "rainbow-trout.json"
-export const m67Name = "saba.json"
-export const m68Name = "sayori.json"
-export const m69Name = "seabass.json"
-export const m70Name = "shirogisu.json"
-export const m71Name = "tachiuo.json"
-export const m72Name = "ugui.json"
-export const m73Name = "unagi.json"
-export const m74Name = "wakasagi.json"
-export const m75Name = "yamame.json"
+export const m10Name = "japanese-anchovy.json"
+export const m11Name = "kajika.json"
+export const m12Name = "kamasu.json"
+export const m13Name = "kanpachi.json"
+export const m14Name = "kasago.json"
+export const m15Name = "katsuo.json"
+export const m16Name = "kawahagi.json"
+export const m17Name = "kanto-koi.json"
+export const m18Name = "konoshiro.json"
+export const m19Name = "kanto-kurodai.json"
+export const m20Name = "largemouth-bass.json"
+export const m21Name = "kanto-maaji.json"
+export const m22Name = "madai.json"
+export const m23Name = "magochi.json"
+export const m24Name = "mahi-mahi.json"
+export const m25Name = "mebaru.json"
+export const m26Name = "mejina.json"
+export const m27Name = "kanto-namazu.json"
+export const m28Name = "oikawa.json"
+export const m29Name = "alaska-rainbow-trout.json"
+export const m30Name = "kanto-saba.json"
+export const m31Name = "sappa.json"
+export const m32Name = "sayori.json"
+export const m33Name = "kanto-seabass.json"
+export const m34Name = "kanto-shirogisu.json"
+export const m35Name = "tachiuo.json"
+export const m36Name = "kanto-ugui.json"
+export const m37Name = "unagi.json"
+export const m38Name = "wakasagi.json"
+export const m39Name = "yamame.json"
+export const m40Name = "ayu.json"
+export const m41Name = "bluegill.json"
+export const m42Name = "bora.json"
+export const m43Name = "buri.json"
+export const m44Name = "funa.json"
+export const m45Name = "haze.json"
+export const m46Name = "hiramasa.json"
+export const m47Name = "hirame.json"
+export const m48Name = "isaki.json"
+export const m49Name = "iwana.json"
+export const m50Name = "japanese-anchovy.json"
+export const m51Name = "kajika.json"
+export const m52Name = "kamasu.json"
+export const m53Name = "kanpachi.json"
+export const m54Name = "kasago.json"
+export const m55Name = "katsuo.json"
+export const m56Name = "kawahagi.json"
+export const m57Name = "koi.json"
+export const m58Name = "konoshiro.json"
+export const m59Name = "kurodai.json"
+export const m60Name = "largemouth-bass.json"
+export const m61Name = "maaji.json"
+export const m62Name = "madai.json"
+export const m63Name = "magochi.json"
+export const m64Name = "mahi-mahi.json"
+export const m65Name = "mebaru.json"
+export const m66Name = "mejina.json"
+export const m67Name = "namazu.json"
+export const m68Name = "oikawa.json"
+export const m69Name = "rainbow-trout.json"
+export const m70Name = "saba.json"
+export const m71Name = "sappa.json"
+export const m72Name = "sayori.json"
+export const m73Name = "seabass.json"
+export const m74Name = "shirogisu.json"
+export const m75Name = "tachiuo.json"
+export const m76Name = "ugui.json"
+export const m77Name = "unagi.json"
+export const m78Name = "wakasagi.json"
+export const m79Name = "yamame.json"
 
 export const load = async (): Promise<Readonly<Record<string, readonly unknown[]>>> => ({
-    "fish-species": [m0, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15, m16, m17, m18, m19, m20, m21, m22, m23, m24, m25, m26, m27, m28, m29, m30, m31, m32, m33, m34, m35, m36, m37],
-    "species-trade-profiles": [m38, m39, m40, m41, m42, m43, m44, m45, m46, m47, m48, m49, m50, m51, m52, m53, m54, m55, m56, m57, m58, m59, m60, m61, m62, m63, m64, m65, m66, m67, m68, m69, m70, m71, m72, m73, m74, m75],
+    "fish-species": [m0, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15, m16, m17, m18, m19, m20, m21, m22, m23, m24, m25, m26, m27, m28, m29, m30, m31, m32, m33, m34, m35, m36, m37, m38, m39],
+    "species-trade-profiles": [m40, m41, m42, m43, m44, m45, m46, m47, m48, m49, m50, m51, m52, m53, m54, m55, m56, m57, m58, m59, m60, m61, m62, m63, m64, m65, m66, m67, m68, m69, m70, m71, m72, m73, m74, m75, m76, m77, m78, m79],
 })

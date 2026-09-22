@@ -1,10 +1,23 @@
 # Handoff
 
-最終更新: Phase 16（World Expansion I — Part 1）完了
-（branch `phase-16-world-expansion-i`）
+最終更新: Phase 16 Part 2（World Expansion I — depth / progression / world UX）完了
+（branch `phase-16-world-expansion-i`、PR #18）
 
 > 現在状態は Phase 15 → 14 → 13 → 12 → 11 → 10.2 → 10.1 → 10 の順で優先する。
 > 詳細は `.ai/current-task.md` と `docs/DECISIONS.md` も参照。
+
+## Phase 16 Part 2（depth / progression / world UX）
+
+- species 144 → 212 / spot 99 → 140 / buyer 12 → 24 / reward 30 → 66
+- Region ごとに 3 段階の Trust チェーン（intel → intel → discover_spot、閾値は地域別）
+- `simulate:world-expansion`: trust balance（1 回で全解禁しない / 5〜15 回で discovery）、
+  expedition cost curve（国内 < 国際、Izu 最安、Amazon 最高、自由資金 6 か月以内）、
+  region occurrence diversity（目標下限比）を追加
+- MAP の Region 選択を「国 → 地域」の折りたたみセレクタへ
+- 既存 Region の薄い Spot に外道を一部追加（残りは warning）
+- tests 93 files / 813、validate:content 1278 records、Initial 565.98 kB / boot 674.25 kB（gzip 191.74）
+- 残課題（Part 2b）: 5〜6 国際 Region の occurrence diversity 下限、
+  legacy Spot の外道、giant-queenfish/queenfish の ID 統合（専用 migration Phase）
 
 ## Phase 16（World Expansion I — Part 1）
 

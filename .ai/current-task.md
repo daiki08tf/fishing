@@ -266,3 +266,18 @@ Phase 15 の Pack / lazy loading 基盤の上に世界を拡張した。今回�
 - boot: initial 541.83 kB / boot 644.70 kB（gzip 187.21 kB、Phase 14 比 raw -30% / gzip -13.5%）。
   catalog が Species 数に比例するため analyzer は比率ではなく 200 kB 予算 + 内訳レポートに変更
 - tests 92 files / 802、validate:content 1053 records
+
+
+## Phase 16 Part 2（World Expansion I — depth / progression / world UX）
+
+- species 144 → **212**（+68。Part 2 は bycatch / 地域性の追加に限定し、既存 Species の再利用も実施）
+- spot 99 → **140**（+41。各 Phase 16 Region が 9〜10 Spot、hidden 2〜4）
+- buyer 12 → **24**、contact reward 30 → **66**
+  （Region ごとに 3 段階チェーン × 2 本。閾値は Region ごとに変更）
+- 既存 Region の薄い Spot に外道を追加（Queensland 2 か所）／残りは warning レポート
+- `simulate:world-expansion` に trust balance / expedition economy / region diversity を追加
+- MAP の Region 選択を「国 → 地域」の折りたたみセレクタへ（14 Region で横帯にしない）
+- 新規の scientificName 重複は禁止（既知の giant-queenfish/queenfish は warning のまま）
+- tests 93 files / 813、validate:content 1278 records、boot gzip 191.74 kB
+- 残: Region occurrence target のうち 5 国際 Region（Amazon/Baja/NZ/Norway/Okinawa/Thailand）が
+  まだ下限未満（Part 2b 候補）。legacy Spot の外道も一部未対応（warning で可視化）

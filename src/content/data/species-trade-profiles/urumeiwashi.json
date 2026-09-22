@@ -1,0 +1,9 @@
+{
+  "speciesId": "urumeiwashi",
+  "tradeStatus": "tradable",
+  "tradeTags": ["everyday", "oily"],
+  "baseYenPerKg": 420,
+  "minimumUnitValueYen": 80,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 0.85
+}

@@ -1,0 +1,9 @@
+{
+  "speciesId": "chidai",
+  "tradeStatus": "tradable",
+  "tradeTags": ["everyday", "oily"],
+  "baseYenPerKg": 550,
+  "minimumUnitValueYen": 100,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

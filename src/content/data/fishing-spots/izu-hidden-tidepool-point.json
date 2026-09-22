@@ -1,0 +1,120 @@
+{
+  "id": "izu-hidden-tidepool-point",
+  "name": "伊豆 潮だまりの磯（要情報・暫定）",
+  "regionId": "izu-peninsula",
+  "areaId": "izu-south",
+  "environment": "bay_shore",
+  "dataStatus": "provisional",
+  "visibility": "hidden",
+  "access": [
+    {
+      "kind": "capability",
+      "capability": "rough_road"
+    },
+    {
+      "kind": "knowledge",
+      "minimum": 20
+    }
+  ],
+  "travelOptions": [
+    {
+      "id": "suv-1",
+      "transportTypes": ["suv"],
+      "requiredCapabilities": ["rough_road"],
+      "features": [],
+      "baseMinutes": 60,
+      "distanceKm": 26,
+      "baseOneWayCost": 0
+    }
+  ],
+  "habitatTags": ["bay", "pier"],
+  "fishingZones": [
+    {
+      "id": "shoreline",
+      "name": "岸壁際",
+      "castDistanceM": {
+        "min": 0,
+        "max": 10
+      },
+      "habitatTags": ["bay", "pier"]
+    },
+    {
+      "id": "open",
+      "name": "沖目",
+      "castDistanceM": {
+        "min": 15,
+        "max": 45
+      },
+      "habitatTags": ["bay", "pier"]
+    }
+  ],
+  "fishTable": [
+    {
+      "speciesId": "surgeonfish",
+      "basePresence": 0.4,
+      "zoneAffinity": {
+        "shoreline": 1.3,
+        "open": 0.85
+      }
+    },
+    {
+      "speciesId": "aigo",
+      "basePresence": 0.45,
+      "zoneAffinity": {
+        "shoreline": 1.3,
+        "open": 0.85
+      }
+    },
+    {
+      "speciesId": "budai",
+      "basePresence": 0.35,
+      "zoneAffinity": {
+        "shoreline": 1.3,
+        "open": 0.85
+      }
+    },
+    {
+      "speciesId": "kijihata",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "shoreline": 1.3,
+        "open": 0.85
+      }
+    },
+    {
+      "speciesId": "ishidai",
+      "basePresence": 0.25,
+      "zoneAffinity": {
+        "shoreline": 0.85,
+        "open": 1.3
+      }
+    },
+    {
+      "speciesId": "kasago",
+      "basePresence": 0.4,
+      "zoneAffinity": {
+        "shoreline": 0.85,
+        "open": 1.3
+      }
+    }
+  ],
+  "knowledgeConfig": {
+    "reveals": [
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "time_pattern",
+        "minKnowledge": 40
+      }
+    ]
+  },
+  "regulations": [],
+  "sourceRefs": [
+    {
+      "id": "phase16-provisional",
+      "title": "PROVISIONAL — Phase 16 gameplay content; 実在の釣り場・立入可否の主張ではない"
+    }
+  ]
+}

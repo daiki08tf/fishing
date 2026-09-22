@@ -1,0 +1,9 @@
+{
+  "speciesId": "lebranche-mullet",
+  "tradeStatus": "tradable",
+  "tradeTags": ["local_favorite", "everyday"],
+  "baseYenPerKg": 830,
+  "minimumUnitValueYen": 150,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

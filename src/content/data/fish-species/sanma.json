@@ -1,0 +1,108 @@
+{
+  "id": "sanma",
+  "japaneseName": "サンマ（暫定）",
+  "scientificName": "Cololabis saira",
+  "waterTypes": ["salt"],
+  "habitats": ["open_water", "nearshore"],
+  "diet": ["plankton"],
+  "baits": ["cut"],
+  "lureCategories": ["metal_jig", "spoon"],
+  "fishingMethods": ["light_lure", "lure"],
+  "distribution": ["tohoku-pacific", "hokuriku-japan-sea", "hokkaido"],
+  "depthRange": {
+    "min": 0,
+    "max": 60
+  },
+  "temperatureRange": {
+    "min": 8,
+    "max": 20
+  },
+  "seasonality": {
+    "months": [9, 10, 11, 12]
+  },
+  "timeActivity": {
+    "periods": ["dawn", "morning", "evening"]
+  },
+  "tidePreference": {
+    "preference": "rising"
+  },
+  "currentPreference": {
+    "preference": "moderate"
+  },
+  "methodAffinity": {
+    "lure": 1.1,
+    "light_lure": 1.05,
+    "bait": 1,
+    "bottom": 0.85
+  },
+  "offeringAffinity": {
+    "minnow": 1.1,
+    "jig": 1.1,
+    "spoon": 1.05,
+    "stickbait": 1.05,
+    "cut": 1.05
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 28,
+    "dispersion": 0.12,
+    "minCm": 16,
+    "maxCm": 40
+  },
+  "weightModel": {
+    "lengthWeightA": 0.0045,
+    "lengthWeightB": 3.1
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "traitConfiguration": {
+    "trophyPercentileThreshold": 1,
+    "strongRunnerChance": 0.055999999999999994
+  },
+  "fightProfile": {
+    "strength": 0.45,
+    "stamina": 0.5,
+    "speed": 0.7
+  },
+  "rarity": 1.6,
+  "environmentAffinity": {
+    "preferredSeasons": ["autumn"],
+    "preferredTimeOfDay": ["dawn", "morning", "evening"],
+    "weatherAffinity": {
+      "clear": 1,
+      "cloudy": 1.05,
+      "light_rain": 1,
+      "rain": 0.95,
+      "windy": 0.9
+    },
+    "tideAffinity": {
+      "low": 0.9,
+      "rising": 1.15,
+      "high": 1.05,
+      "falling": 1
+    },
+    "flowAffinity": {
+      "none": 1,
+      "slow": 1,
+      "moderate": 1.1,
+      "strong": 1
+    },
+    "preferredTemperatureC": {
+      "min": 8,
+      "max": 20
+    }
+  },
+  "feedingProfile": {
+    "preferredOfferingRatio": 0.16,
+    "largeOfferingPenaltyStart": 0.28,
+    "maxOfferingRatio": 0.4,
+    "mouthSizeFactor": 1
+  },
+  "sourceRefs": [
+    {
+      "id": "phase16-provisional",
+      "title": "PROVISIONAL — Phase 16 gameplay tuning; 実在の生態・漁業規制の主張ではない"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "speciesId": "siamese-mud-carp",
+  "tradeStatus": "tradable",
+  "tradeTags": ["local_favorite", "everyday"],
+  "baseYenPerKg": 450,
+  "minimumUnitValueYen": 80,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 0.85
+}

@@ -105,6 +105,24 @@
         "channel": 1.1,
         "mouth": 1.5
       }
+    },
+    {
+      "speciesId": "australian-bass",
+      "basePresence": 0.35,
+      "zoneAffinity": {
+        "mangrove-edge": 0.85,
+        "channel": 0.85,
+        "mouth": 1.25
+      }
+    },
+    {
+      "speciesId": "australian-catfish",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "mangrove-edge": 0.85,
+        "channel": 0.85,
+        "mouth": 1.25
+      }
     }
   ],
   "dataStatus": "provisional",

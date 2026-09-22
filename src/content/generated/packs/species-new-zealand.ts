@@ -5,48 +5,88 @@
  */
 
 import m0 from '../../data/fish-species/australasian-snapper.json'
-import m1 from '../../data/fish-species/bull-trout.json'
-import m2 from '../../data/fish-species/alaska-chinook-salmon.json'
-import m3 from '../../data/fish-species/kahawai.json'
-import m4 from '../../data/fish-species/longfin-eel.json'
-import m5 from '../../data/fish-species/alaska-rainbow-trout.json'
-import m6 from '../../data/fish-species/red-gurnard.json'
-import m7 from '../../data/fish-species/silver-trevally.json'
-import m8 from '../../data/fish-species/tarakihi.json'
-import m9 from '../../data/fish-species/yellow-eyed-mullet.json'
-import m10 from '../../data/species-trade-profiles/australasian-snapper.json'
-import m11 from '../../data/species-trade-profiles/bull-trout.json'
-import m12 from '../../data/species-trade-profiles/chinook-salmon.json'
-import m13 from '../../data/species-trade-profiles/kahawai.json'
-import m14 from '../../data/species-trade-profiles/longfin-eel.json'
-import m15 from '../../data/species-trade-profiles/rainbow-trout.json'
-import m16 from '../../data/species-trade-profiles/red-gurnard.json'
-import m17 from '../../data/species-trade-profiles/silver-trevally.json'
-import m18 from '../../data/species-trade-profiles/tarakihi.json'
-import m19 from '../../data/species-trade-profiles/yellow-eyed-mullet.json'
+import m1 from '../../data/fish-species/barracouta.json'
+import m2 from '../../data/fish-species/blue-moki.json'
+import m3 from '../../data/fish-species/bull-trout.json'
+import m4 from '../../data/fish-species/alaska-chinook-salmon.json'
+import m5 from '../../data/fish-species/common-sole.json'
+import m6 from '../../data/fish-species/european-perch.json'
+import m7 from '../../data/fish-species/hiramasa.json'
+import m8 from '../../data/fish-species/jack-mackerel.json'
+import m9 from '../../data/fish-species/kahawai.json'
+import m10 from '../../data/fish-species/leatherjacket.json'
+import m11 from '../../data/fish-species/longfin-eel.json'
+import m12 from '../../data/fish-species/pigfish.json'
+import m13 from '../../data/fish-species/alaska-rainbow-trout.json'
+import m14 from '../../data/fish-species/red-gurnard.json'
+import m15 from '../../data/fish-species/sand-flounder.json'
+import m16 from '../../data/fish-species/silver-trevally.json'
+import m17 from '../../data/fish-species/silver-warehou.json'
+import m18 from '../../data/fish-species/tarakihi.json'
+import m19 from '../../data/fish-species/yellow-eyed-mullet.json'
+import m20 from '../../data/species-trade-profiles/australasian-snapper.json'
+import m21 from '../../data/species-trade-profiles/barracouta.json'
+import m22 from '../../data/species-trade-profiles/blue-moki.json'
+import m23 from '../../data/species-trade-profiles/bull-trout.json'
+import m24 from '../../data/species-trade-profiles/chinook-salmon.json'
+import m25 from '../../data/species-trade-profiles/common-sole.json'
+import m26 from '../../data/species-trade-profiles/european-perch.json'
+import m27 from '../../data/species-trade-profiles/hiramasa.json'
+import m28 from '../../data/species-trade-profiles/jack-mackerel.json'
+import m29 from '../../data/species-trade-profiles/kahawai.json'
+import m30 from '../../data/species-trade-profiles/leatherjacket.json'
+import m31 from '../../data/species-trade-profiles/longfin-eel.json'
+import m32 from '../../data/species-trade-profiles/pigfish.json'
+import m33 from '../../data/species-trade-profiles/rainbow-trout.json'
+import m34 from '../../data/species-trade-profiles/red-gurnard.json'
+import m35 from '../../data/species-trade-profiles/sand-flounder.json'
+import m36 from '../../data/species-trade-profiles/silver-trevally.json'
+import m37 from '../../data/species-trade-profiles/silver-warehou.json'
+import m38 from '../../data/species-trade-profiles/tarakihi.json'
+import m39 from '../../data/species-trade-profiles/yellow-eyed-mullet.json'
 
 export const m0Name = "australasian-snapper.json"
-export const m1Name = "bull-trout.json"
-export const m2Name = "alaska-chinook-salmon.json"
-export const m3Name = "kahawai.json"
-export const m4Name = "longfin-eel.json"
-export const m5Name = "alaska-rainbow-trout.json"
-export const m6Name = "red-gurnard.json"
-export const m7Name = "silver-trevally.json"
-export const m8Name = "tarakihi.json"
-export const m9Name = "yellow-eyed-mullet.json"
-export const m10Name = "australasian-snapper.json"
-export const m11Name = "bull-trout.json"
-export const m12Name = "chinook-salmon.json"
-export const m13Name = "kahawai.json"
-export const m14Name = "longfin-eel.json"
-export const m15Name = "rainbow-trout.json"
-export const m16Name = "red-gurnard.json"
-export const m17Name = "silver-trevally.json"
+export const m1Name = "barracouta.json"
+export const m2Name = "blue-moki.json"
+export const m3Name = "bull-trout.json"
+export const m4Name = "alaska-chinook-salmon.json"
+export const m5Name = "common-sole.json"
+export const m6Name = "european-perch.json"
+export const m7Name = "hiramasa.json"
+export const m8Name = "jack-mackerel.json"
+export const m9Name = "kahawai.json"
+export const m10Name = "leatherjacket.json"
+export const m11Name = "longfin-eel.json"
+export const m12Name = "pigfish.json"
+export const m13Name = "alaska-rainbow-trout.json"
+export const m14Name = "red-gurnard.json"
+export const m15Name = "sand-flounder.json"
+export const m16Name = "silver-trevally.json"
+export const m17Name = "silver-warehou.json"
 export const m18Name = "tarakihi.json"
 export const m19Name = "yellow-eyed-mullet.json"
+export const m20Name = "australasian-snapper.json"
+export const m21Name = "barracouta.json"
+export const m22Name = "blue-moki.json"
+export const m23Name = "bull-trout.json"
+export const m24Name = "chinook-salmon.json"
+export const m25Name = "common-sole.json"
+export const m26Name = "european-perch.json"
+export const m27Name = "hiramasa.json"
+export const m28Name = "jack-mackerel.json"
+export const m29Name = "kahawai.json"
+export const m30Name = "leatherjacket.json"
+export const m31Name = "longfin-eel.json"
+export const m32Name = "pigfish.json"
+export const m33Name = "rainbow-trout.json"
+export const m34Name = "red-gurnard.json"
+export const m35Name = "sand-flounder.json"
+export const m36Name = "silver-trevally.json"
+export const m37Name = "silver-warehou.json"
+export const m38Name = "tarakihi.json"
+export const m39Name = "yellow-eyed-mullet.json"
 
 export const load = async (): Promise<Readonly<Record<string, readonly unknown[]>>> => ({
-    "fish-species": [m0, m1, m2, m3, m4, m5, m6, m7, m8, m9],
-    "species-trade-profiles": [m10, m11, m12, m13, m14, m15, m16, m17, m18, m19],
+    "fish-species": [m0, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15, m16, m17, m18, m19],
+    "species-trade-profiles": [m20, m21, m22, m23, m24, m25, m26, m27, m28, m29, m30, m31, m32, m33, m34, m35, m36, m37, m38, m39],
 })

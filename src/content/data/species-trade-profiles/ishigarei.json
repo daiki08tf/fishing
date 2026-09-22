@@ -1,0 +1,9 @@
+{
+  "speciesId": "ishigarei",
+  "tradeStatus": "tradable",
+  "tradeTags": ["white_fish", "everyday"],
+  "baseYenPerKg": 730,
+  "minimumUnitValueYen": 130,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

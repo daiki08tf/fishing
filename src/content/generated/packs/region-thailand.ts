@@ -4,26 +4,48 @@
  * ここに並ぶ JSON は、この module 自身の chunk にまとめて入る（初期 chunk を増やさない）。
  */
 
-import m0 from '../../data/fishing-spots/thailand-central-reservoir.json'
-import m1 from '../../data/fishing-spots/thailand-central-river.json'
-import m2 from '../../data/fishing-spots/thailand-gulf-shore.json'
-import m3 from '../../data/fishing-spots/thailand-hidden-floodplain-lagoon.json'
-import m4 from '../../data/fishing-spots/thailand-peninsula-mangrove.json'
-import m5 from '../../data/buyers/thailand-river-market.json'
-import m6 from '../../data/contact-rewards/thailand-river-market-rumor-hidden.json'
-import m7 from '../../data/contact-rewards/thailand-river-market-spot-hidden.json'
+import m0 from '../../data/fishing-spots/thailand-central-canal.json'
+import m1 from '../../data/fishing-spots/thailand-central-lake.json'
+import m2 from '../../data/fishing-spots/thailand-central-reservoir.json'
+import m3 from '../../data/fishing-spots/thailand-central-river.json'
+import m4 from '../../data/fishing-spots/thailand-gulf-reef.json'
+import m5 from '../../data/fishing-spots/thailand-gulf-shore.json'
+import m6 from '../../data/fishing-spots/thailand-hidden-floodplain-lagoon.json'
+import m7 from '../../data/fishing-spots/thailand-hidden-jungle-pool.json'
+import m8 from '../../data/fishing-spots/thailand-peninsula-estuary.json'
+import m9 from '../../data/fishing-spots/thailand-peninsula-mangrove.json'
+import m10 from '../../data/buyers/thailand-floating-market.json'
+import m11 from '../../data/buyers/thailand-river-market.json'
+import m12 from '../../data/buyers/thailand-riverside-restaurant.json'
+import m13 from '../../data/contact-rewards/thailand-floating-market-intel-8.json'
+import m14 from '../../data/contact-rewards/thailand-floating-market-rumor-17.json'
+import m15 from '../../data/contact-rewards/thailand-river-market-intel-17.json'
+import m16 from '../../data/contact-rewards/thailand-river-market-rumor-8.json'
+import m17 from '../../data/contact-rewards/thailand-riverside-restaurant-spot-17.json'
+import m18 from '../../data/contact-rewards/thailand-riverside-restaurant-spot-8.json'
 
-export const m0Name = "thailand-central-reservoir.json"
-export const m1Name = "thailand-central-river.json"
-export const m2Name = "thailand-gulf-shore.json"
-export const m3Name = "thailand-hidden-floodplain-lagoon.json"
-export const m4Name = "thailand-peninsula-mangrove.json"
-export const m5Name = "thailand-river-market.json"
-export const m6Name = "thailand-river-market-rumor-hidden.json"
-export const m7Name = "thailand-river-market-spot-hidden.json"
+export const m0Name = "thailand-central-canal.json"
+export const m1Name = "thailand-central-lake.json"
+export const m2Name = "thailand-central-reservoir.json"
+export const m3Name = "thailand-central-river.json"
+export const m4Name = "thailand-gulf-reef.json"
+export const m5Name = "thailand-gulf-shore.json"
+export const m6Name = "thailand-hidden-floodplain-lagoon.json"
+export const m7Name = "thailand-hidden-jungle-pool.json"
+export const m8Name = "thailand-peninsula-estuary.json"
+export const m9Name = "thailand-peninsula-mangrove.json"
+export const m10Name = "thailand-floating-market.json"
+export const m11Name = "thailand-river-market.json"
+export const m12Name = "thailand-riverside-restaurant.json"
+export const m13Name = "thailand-floating-market-intel-8.json"
+export const m14Name = "thailand-floating-market-rumor-17.json"
+export const m15Name = "thailand-river-market-intel-17.json"
+export const m16Name = "thailand-river-market-rumor-8.json"
+export const m17Name = "thailand-riverside-restaurant-spot-17.json"
+export const m18Name = "thailand-riverside-restaurant-spot-8.json"
 
 export const load = async (): Promise<Readonly<Record<string, readonly unknown[]>>> => ({
-    "fishing-spots": [m0, m1, m2, m3, m4],
-    "buyers": [m5],
-    "contact-rewards": [m6, m7],
+    "fishing-spots": [m0, m1, m2, m3, m4, m5, m6, m7, m8, m9],
+    "buyers": [m10, m11, m12],
+    "contact-rewards": [m13, m14, m15, m16, m17, m18],
 })

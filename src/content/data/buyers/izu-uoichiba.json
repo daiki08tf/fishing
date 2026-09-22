@@ -1,0 +1,28 @@
+{
+  "id": "izu-uoichiba",
+  "name": "伊豆 魚市場の目利き",
+  "buyerType": "market",
+  "regionId": "izu-peninsula",
+  "description": "伊豆の魚市場で目利きをする仲買。型と状態を見る。PROVISIONAL — gameplay tuning。",
+  "pricingProfile": {
+    "baseMultiplier": 1.1,
+    "qualitySensitivity": 1.2,
+    "sizeSensitivity": 1.2,
+    "freshnessSensitivity": 0.55,
+    "volumeBonusPerExtraCatch": 0,
+    "maxVolumeBonus": 0
+  },
+  "trustProfile": {
+    "perTransactionBase": 2,
+    "qualityWeight": 6,
+    "maxPerTransaction": 6
+  },
+  "preferences": {
+    "preferredTags": ["premium", "large_fish", "delicate"],
+    "neutralTags": ["white_fish", "local_favorite", "everyday", "oily"],
+    "preferredTagMultiplier": 1.22,
+    "neutralTagMultiplier": 1,
+    "otherTagMultiplier": 0.82,
+    "localSourceMultiplier": 1.06
+  }
+}

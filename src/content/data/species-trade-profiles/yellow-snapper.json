@@ -1,0 +1,9 @@
+{
+  "speciesId": "yellow-snapper",
+  "tradeStatus": "tradable",
+  "tradeTags": ["delicate", "local_favorite"],
+  "baseYenPerKg": 1140,
+  "minimumUnitValueYen": 210,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

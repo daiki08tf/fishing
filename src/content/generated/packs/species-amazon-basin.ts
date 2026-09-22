@@ -6,51 +6,95 @@
 
 import m0 from '../../data/fish-species/arapaima.json'
 import m1 from '../../data/fish-species/bicuda.json'
-import m2 from '../../data/fish-species/matrinxa.json'
-import m3 from '../../data/fish-species/pacu.json'
-import m4 from '../../data/fish-species/payara.json'
-import m5 from '../../data/fish-species/peacock-bass.json'
-import m6 from '../../data/fish-species/red-bellied-piranha.json'
-import m7 from '../../data/fish-species/redtail-catfish.json'
-import m8 from '../../data/fish-species/silver-arowana.json'
-import m9 from '../../data/fish-species/tambaqui.json'
-import m10 from '../../data/fish-species/tiger-shovelnose-catfish.json'
-import m11 from '../../data/species-trade-profiles/arapaima.json'
-import m12 from '../../data/species-trade-profiles/bicuda.json'
-import m13 from '../../data/species-trade-profiles/matrinxa.json'
-import m14 from '../../data/species-trade-profiles/pacu.json'
-import m15 from '../../data/species-trade-profiles/payara.json'
-import m16 from '../../data/species-trade-profiles/peacock-bass.json'
-import m17 from '../../data/species-trade-profiles/red-bellied-piranha.json'
-import m18 from '../../data/species-trade-profiles/redtail-catfish.json'
-import m19 from '../../data/species-trade-profiles/silver-arowana.json'
-import m20 from '../../data/species-trade-profiles/tambaqui.json'
-import m21 from '../../data/species-trade-profiles/tiger-shovelnose-catfish.json'
+import m2 from '../../data/fish-species/black-piranha.json'
+import m3 from '../../data/fish-species/curimata.json'
+import m4 from '../../data/fish-species/electric-eel.json'
+import m5 from '../../data/fish-species/jatuarana.json'
+import m6 from '../../data/fish-species/jau-catfish.json'
+import m7 from '../../data/fish-species/lebranche-mullet.json'
+import m8 from '../../data/fish-species/matrinxa.json'
+import m9 from '../../data/fish-species/oscar.json'
+import m10 from '../../data/fish-species/pacu.json'
+import m11 from '../../data/fish-species/payara.json'
+import m12 from '../../data/fish-species/peacock-bass.json'
+import m13 from '../../data/fish-species/piraiba-catfish.json'
+import m14 from '../../data/fish-species/piraputanga.json'
+import m15 from '../../data/fish-species/red-bellied-piranha.json'
+import m16 from '../../data/fish-species/redtail-catfish.json'
+import m17 from '../../data/fish-species/silver-arowana.json'
+import m18 from '../../data/fish-species/silver-dollar.json'
+import m19 from '../../data/fish-species/tambaqui.json'
+import m20 from '../../data/fish-species/tiger-shovelnose-catfish.json'
+import m21 from '../../data/fish-species/traira.json'
+import m22 from '../../data/species-trade-profiles/arapaima.json'
+import m23 from '../../data/species-trade-profiles/bicuda.json'
+import m24 from '../../data/species-trade-profiles/black-piranha.json'
+import m25 from '../../data/species-trade-profiles/curimata.json'
+import m26 from '../../data/species-trade-profiles/electric-eel.json'
+import m27 from '../../data/species-trade-profiles/jatuarana.json'
+import m28 from '../../data/species-trade-profiles/jau-catfish.json'
+import m29 from '../../data/species-trade-profiles/lebranche-mullet.json'
+import m30 from '../../data/species-trade-profiles/matrinxa.json'
+import m31 from '../../data/species-trade-profiles/oscar.json'
+import m32 from '../../data/species-trade-profiles/pacu.json'
+import m33 from '../../data/species-trade-profiles/payara.json'
+import m34 from '../../data/species-trade-profiles/peacock-bass.json'
+import m35 from '../../data/species-trade-profiles/piraiba-catfish.json'
+import m36 from '../../data/species-trade-profiles/piraputanga.json'
+import m37 from '../../data/species-trade-profiles/red-bellied-piranha.json'
+import m38 from '../../data/species-trade-profiles/redtail-catfish.json'
+import m39 from '../../data/species-trade-profiles/silver-arowana.json'
+import m40 from '../../data/species-trade-profiles/silver-dollar.json'
+import m41 from '../../data/species-trade-profiles/tambaqui.json'
+import m42 from '../../data/species-trade-profiles/tiger-shovelnose-catfish.json'
+import m43 from '../../data/species-trade-profiles/traira.json'
 
 export const m0Name = "arapaima.json"
 export const m1Name = "bicuda.json"
-export const m2Name = "matrinxa.json"
-export const m3Name = "pacu.json"
-export const m4Name = "payara.json"
-export const m5Name = "peacock-bass.json"
-export const m6Name = "red-bellied-piranha.json"
-export const m7Name = "redtail-catfish.json"
-export const m8Name = "silver-arowana.json"
-export const m9Name = "tambaqui.json"
-export const m10Name = "tiger-shovelnose-catfish.json"
-export const m11Name = "arapaima.json"
-export const m12Name = "bicuda.json"
-export const m13Name = "matrinxa.json"
-export const m14Name = "pacu.json"
-export const m15Name = "payara.json"
-export const m16Name = "peacock-bass.json"
-export const m17Name = "red-bellied-piranha.json"
-export const m18Name = "redtail-catfish.json"
-export const m19Name = "silver-arowana.json"
-export const m20Name = "tambaqui.json"
-export const m21Name = "tiger-shovelnose-catfish.json"
+export const m2Name = "black-piranha.json"
+export const m3Name = "curimata.json"
+export const m4Name = "electric-eel.json"
+export const m5Name = "jatuarana.json"
+export const m6Name = "jau-catfish.json"
+export const m7Name = "lebranche-mullet.json"
+export const m8Name = "matrinxa.json"
+export const m9Name = "oscar.json"
+export const m10Name = "pacu.json"
+export const m11Name = "payara.json"
+export const m12Name = "peacock-bass.json"
+export const m13Name = "piraiba-catfish.json"
+export const m14Name = "piraputanga.json"
+export const m15Name = "red-bellied-piranha.json"
+export const m16Name = "redtail-catfish.json"
+export const m17Name = "silver-arowana.json"
+export const m18Name = "silver-dollar.json"
+export const m19Name = "tambaqui.json"
+export const m20Name = "tiger-shovelnose-catfish.json"
+export const m21Name = "traira.json"
+export const m22Name = "arapaima.json"
+export const m23Name = "bicuda.json"
+export const m24Name = "black-piranha.json"
+export const m25Name = "curimata.json"
+export const m26Name = "electric-eel.json"
+export const m27Name = "jatuarana.json"
+export const m28Name = "jau-catfish.json"
+export const m29Name = "lebranche-mullet.json"
+export const m30Name = "matrinxa.json"
+export const m31Name = "oscar.json"
+export const m32Name = "pacu.json"
+export const m33Name = "payara.json"
+export const m34Name = "peacock-bass.json"
+export const m35Name = "piraiba-catfish.json"
+export const m36Name = "piraputanga.json"
+export const m37Name = "red-bellied-piranha.json"
+export const m38Name = "redtail-catfish.json"
+export const m39Name = "silver-arowana.json"
+export const m40Name = "silver-dollar.json"
+export const m41Name = "tambaqui.json"
+export const m42Name = "tiger-shovelnose-catfish.json"
+export const m43Name = "traira.json"
 
 export const load = async (): Promise<Readonly<Record<string, readonly unknown[]>>> => ({
-    "fish-species": [m0, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10],
-    "species-trade-profiles": [m11, m12, m13, m14, m15, m16, m17, m18, m19, m20, m21],
+    "fish-species": [m0, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15, m16, m17, m18, m19, m20, m21],
+    "species-trade-profiles": [m22, m23, m24, m25, m26, m27, m28, m29, m30, m31, m32, m33, m34, m35, m36, m37, m38, m39, m40, m41, m42, m43],
 })

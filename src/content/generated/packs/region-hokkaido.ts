@@ -10,9 +10,10 @@ import m2 from '../../data/fishing-spots/hokkaido-hidden-tributary.json'
 import m3 from '../../data/fishing-spots/hokkaido-lake.json'
 import m4 from '../../data/fishing-spots/hokkaido-mountain-stream.json'
 import m5 from '../../data/fishing-spots/hokkaido-offshore.json'
-import m6 from '../../data/fishing-spots/hokkaido-port.json'
-import m7 from '../../data/fishing-spots/hokkaido-river.json'
-import m8 from '../../data/fishing-spots/hokkaido-surf.json'
+import m6 from '../../data/fishing-spots/hokkaido-port-channel.json'
+import m7 from '../../data/fishing-spots/hokkaido-port.json'
+import m8 from '../../data/fishing-spots/hokkaido-river.json'
+import m9 from '../../data/fishing-spots/hokkaido-surf.json'
 
 export const m0Name = "hokkaido-coast.json"
 export const m1Name = "hokkaido-hidden-rocky-coast.json"
@@ -20,12 +21,13 @@ export const m2Name = "hokkaido-hidden-tributary.json"
 export const m3Name = "hokkaido-lake.json"
 export const m4Name = "hokkaido-mountain-stream.json"
 export const m5Name = "hokkaido-offshore.json"
-export const m6Name = "hokkaido-port.json"
-export const m7Name = "hokkaido-river.json"
-export const m8Name = "hokkaido-surf.json"
+export const m6Name = "hokkaido-port-channel.json"
+export const m7Name = "hokkaido-port.json"
+export const m8Name = "hokkaido-river.json"
+export const m9Name = "hokkaido-surf.json"
 
 export const load = async (): Promise<Readonly<Record<string, readonly unknown[]>>> => ({
-    "fishing-spots": [m0, m1, m2, m3, m4, m5, m6, m7, m8],
+    "fishing-spots": [m0, m1, m2, m3, m4, m5, m6, m7, m8, m9],
     "buyers": [],
     "contact-rewards": [],
 })

@@ -1,8 +1,0 @@
-{
-  "id": "norway-fiskemottak-spot-hidden",
-  "contactId": "norway-fiskemottak",
-  "minTrust": 35,
-  "kind": "discover_spot",
-  "message": "漁協の知り合いが教えてくれた入り江の場所。",
-  "targetId": "norway-hidden-fjord-deep"
-}

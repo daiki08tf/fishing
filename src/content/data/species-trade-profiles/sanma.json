@@ -1,0 +1,9 @@
+{
+  "speciesId": "sanma",
+  "tradeStatus": "tradable",
+  "tradeTags": ["everyday", "oily"],
+  "baseYenPerKg": 590,
+  "minimumUnitValueYen": 110,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

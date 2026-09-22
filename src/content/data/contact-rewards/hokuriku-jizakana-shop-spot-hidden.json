@@ -1,8 +1,0 @@
-{
-  "id": "hokuriku-jizakana-shop-spot-hidden",
-  "contactId": "hokuriku-jizakana-shop",
-  "minTrust": 35,
-  "kind": "discover_spot",
-  "message": "店の常連が教えてくれた沖の根の場所。",
-  "targetId": "hokuriku-hidden-deep-ridge"
-}

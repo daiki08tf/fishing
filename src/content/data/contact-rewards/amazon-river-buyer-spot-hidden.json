@@ -1,8 +1,0 @@
-{
-  "id": "amazon-river-buyer-spot-hidden",
-  "contactId": "amazon-river-buyer",
-  "minTrust": 35,
-  "kind": "discover_spot",
-  "message": "買取商が教えてくれた支流の場所。",
-  "targetId": "amazon-hidden-blackwater-branch"
-}

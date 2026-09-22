@@ -1,0 +1,28 @@
+{
+  "id": "baja-surf-market",
+  "name": "バハ サーフの魚屋",
+  "buyerType": "wholesaler",
+  "regionId": "baja-california",
+  "description": "サーフ沿いの魚屋。まとまった水揚げを広く扱う。PROVISIONAL — gameplay tuning。",
+  "pricingProfile": {
+    "baseMultiplier": 0.98,
+    "qualitySensitivity": 0.8,
+    "sizeSensitivity": 0.9,
+    "freshnessSensitivity": 0.45,
+    "volumeBonusPerExtraCatch": 0.02,
+    "maxVolumeBonus": 0.14
+  },
+  "trustProfile": {
+    "perTransactionBase": 3,
+    "qualityWeight": 2,
+    "maxPerTransaction": 5
+  },
+  "preferences": {
+    "preferredTags": ["everyday", "bulk", "white_fish"],
+    "neutralTags": ["large_fish", "oily", "premium", "local_favorite"],
+    "preferredTagMultiplier": 1.1,
+    "neutralTagMultiplier": 1,
+    "otherTagMultiplier": 0.93,
+    "localSourceMultiplier": 1.05
+  }
+}

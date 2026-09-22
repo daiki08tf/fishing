@@ -1,0 +1,28 @@
+{
+  "id": "amazon-city-fish-market",
+  "name": "アマゾン 都市の魚市場",
+  "buyerType": "market",
+  "regionId": "amazon-basin",
+  "description": "川沿いの都市にある魚市場。大型魚の需要が高い。PROVISIONAL — gameplay tuning。",
+  "pricingProfile": {
+    "baseMultiplier": 1.08,
+    "qualitySensitivity": 1,
+    "sizeSensitivity": 1.45,
+    "freshnessSensitivity": 0.5,
+    "volumeBonusPerExtraCatch": 0,
+    "maxVolumeBonus": 0
+  },
+  "trustProfile": {
+    "perTransactionBase": 1,
+    "qualityWeight": 7,
+    "maxPerTransaction": 7
+  },
+  "preferences": {
+    "preferredTags": ["large_fish", "premium", "game_fish"],
+    "neutralTags": ["white_fish", "local_favorite", "everyday", "delicate"],
+    "preferredTagMultiplier": 1.22,
+    "neutralTagMultiplier": 1,
+    "otherTagMultiplier": 0.83,
+    "localSourceMultiplier": 1.06
+  }
+}

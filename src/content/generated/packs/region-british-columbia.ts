@@ -10,6 +10,7 @@ import m2 from '../../data/fishing-spots/bc-interior-lake.json'
 import m3 from '../../data/fishing-spots/bc-offshore-bank.json'
 import m4 from '../../data/fishing-spots/bc-rocky-reef.json'
 import m5 from '../../data/fishing-spots/bc-salmon-river.json'
+import m6 from '../../data/fishing-spots/bc-tidal-flat.json'
 
 export const m0Name = "bc-coastal-estuary.json"
 export const m1Name = "bc-hidden-secluded-estuary.json"
@@ -17,9 +18,10 @@ export const m2Name = "bc-interior-lake.json"
 export const m3Name = "bc-offshore-bank.json"
 export const m4Name = "bc-rocky-reef.json"
 export const m5Name = "bc-salmon-river.json"
+export const m6Name = "bc-tidal-flat.json"
 
 export const load = async (): Promise<Readonly<Record<string, readonly unknown[]>>> => ({
-    "fishing-spots": [m0, m1, m2, m3, m4, m5],
+    "fishing-spots": [m0, m1, m2, m3, m4, m5, m6],
     "buyers": [],
     "contact-rewards": [],
 })

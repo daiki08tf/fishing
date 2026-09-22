@@ -1,0 +1,9 @@
+{
+  "speciesId": "sappa",
+  "tradeStatus": "tradable",
+  "tradeTags": ["everyday", "oily"],
+  "baseYenPerKg": 390,
+  "minimumUnitValueYen": 80,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 0.85
+}

@@ -666,3 +666,35 @@ Codex scale 基盤を、実際の大規模コンテンツで使う最初の Phas
 expedition 4 → **13** / buyer 3 → **12** / contact reward 12 → **30**。
 boot は catalog が Species 数に比例するため 170.62 → 187.21 kB gzip
 （Phase 14 比 -13.5%、raw は 644.70 / 925.44 = -30%）。
+
+### Phase 16 Part 2 — World Expansion I: depth / progression / world UX
+
+Part 1 の世界骨格の上に、深さ・進行・World UX を積んだ。新しい Phase ではなく、
+同じ Phase 16 の続きである（Save v9 / Domain rule は不変）。
+
+決定:
+
+- **Content scale は目標範囲に収める。** Species 212（200〜230）、Spot 140（130〜150）、
+  Buyer 24（20〜28）、playable Region 14（変更なし）。数字のための水増しはせず、
+  各 Region の bycatch / 地域性を厚くする追加に限定した
+- **Region ごとの 3 段階チェーン。** 各 Phase 16 Region に
+  「漠然とした噂（intel）→ より具体的な intel → discover_spot」を用意し、
+  **閾値は Region ごとに変える**（例: Amazon 12/24/40、Okinawa 18/32/52、
+  Thailand 13/25/43）。3 段階は Region 内の別 Buyer に分散し、人脈を広げる動機にする
+- **Trust balance は simulation で確認する。** 平均 quality の売却あたり Trust から
+  「最初の報酬まで 2〜5 回」「Hidden Spot まで 5〜15 回」を
+  `simulate:world-expansion` が検査する（1 回で全部解禁しない / 何十回も要さない）
+- **Expedition の cost curve を検査する。** 国内 < 国際、Izu が最安、Amazon が最高、
+  どの旅も自由資金の 6 か月分以内（実在の旅行価格の主張ではなく PROVISIONAL）
+- **Discovery と Access は分離したまま。** discover_spot 報酬は「知る」だけを与え、
+  travel は既存 AccessEngine（transport / permit / knowledge / cost）が判定する。
+  Hidden Spot の半分以上は capability などの access 条件を持つ
+- **Region selector を横一列のタブから「国 → 地域」の折りたたみに変える。**
+  14 Region でも破綻せず、現在地は「いま ここ」、選択中は強調表示。
+  MAP board / 詳細リストの構造は変えない
+- **legacy Spot の外道を部分的に補う。** 2〜3 Species しかない既存 Spot のうち、
+  設計上自然なものへ共通外道を 1〜2 種足した。残りは warning として報告し、
+  Part 2b の作業対象にする（管理釣り場などの例外はそのまま）
+- **giant-queenfish / queenfish は統合しない。** 同一 scientificName を持つ既知の
+  canonical ID 問題として warning を維持し、Save/Codex/Trade を跨ぐ専用 migration
+  Phase に送る。新規の重複は Hard check で禁止する

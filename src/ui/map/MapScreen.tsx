@@ -117,6 +117,18 @@ export const MapScreen: FC<MapScreenProps> = ({ initialSelectedSpotId }) => {
         left.countryId.localeCompare(right.countryId) || left.name.localeCompare(right.name),
     )
   const region = content.value.regionById[regionId]
+  /* 国ごとにまとめた Region 一覧（Region が増えても縦に伸びるだけ）。 */
+  const countryGroups = [...new Set(regions.map((entry) => String(entry.countryId)))]
+    .sort((left, right) => {
+      const leftName = content.value.countryById[left]?.name ?? left
+      const rightName = content.value.countryById[right]?.name ?? right
+      return leftName.localeCompare(rightName)
+    })
+    .map((countryId) => ({
+      countryId,
+      countryName: content.value.countryById[countryId]?.name ?? countryId,
+      regions: regions.filter((entry) => String(entry.countryId) === countryId),
+    }))
   // Phase 13: Hidden Spot は discover 前（world.discoveredSpotIds に無い）は Map に出さない。
   const regionSpots = content.value.spots.filter(
     (spot) =>
@@ -213,26 +225,48 @@ export const MapScreen: FC<MapScreenProps> = ({ initialSelectedSpotId }) => {
             ? ''
             : `（今は ${content.value.regionById[currentRegionId]?.name ?? currentRegionId} にいる）`}
         </p>
-        <div className="tabs">
-          {regions.map((candidate) => {
-            const country = content.value.countryById[String(candidate.countryId)]
-            const active = String(candidate.id) === regionId
+        {/*
+         * Phase 16 Part 2: Region が 14 になったため、横一列のタブをやめて
+         * 「国 → 地域」の折りたたみセレクタにする（多数 Region でも破綻しない）。
+         */}
+        <details className="disclosure region-selector">
+          <summary className="disclosure__summary">
+            地域をえらぶ（{region?.name ?? regionId}）
+          </summary>
+          <div className="disclosure__body region-selector__body">
+            {countryGroups.map((group) => (
+              <div className="region-selector__group" key={group.countryId}>
+                <p className="region-selector__country">{group.countryName}</p>
+                <ul className="region-selector__list">
+                  {group.regions.map((candidate) => {
+                    const candidateId = String(candidate.id)
+                    const active = candidateId === regionId
+                    const isHome = candidateId === currentRegionId
 
-            return (
-              <button
-                className={`tab${active ? ' tab--active' : ''}`}
-                key={String(candidate.id)}
-                type="button"
-                onClick={() => {
-                  setSelectedRegionId(String(candidate.id))
-                  setSelectedSpotId(null)
-                }}
-              >
-                {country === undefined ? candidate.name : `${country.name} / ${candidate.name}`}
-              </button>
-            )
-          })}
-        </div>
+                    return (
+                      <li key={candidateId}>
+                        <button
+                          className={`region-selector__item${
+                            active ? ' region-selector__item--active' : ''
+                          }`}
+                          type="button"
+                          aria-pressed={active}
+                          onClick={() => {
+                            setSelectedRegionId(candidateId)
+                            setSelectedSpotId(null)
+                          }}
+                        >
+                          <span className="region-selector__name">{candidate.name}</span>
+                          {isHome ? <span className="region-selector__tag">いま ここ</span> : null}
+                        </button>
+                      </li>
+                    )
+                  })}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </details>
       </section>
 
       <section className="panel map-panel">

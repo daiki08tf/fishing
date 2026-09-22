@@ -1,0 +1,9 @@
+{
+  "speciesId": "capelin",
+  "tradeStatus": "tradable",
+  "tradeTags": ["everyday", "oily"],
+  "baseYenPerKg": 450,
+  "minimumUnitValueYen": 80,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 0.85
+}

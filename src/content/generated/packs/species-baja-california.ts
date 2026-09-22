@@ -5,48 +5,80 @@
  */
 
 import m0 from '../../data/fish-species/bonefish.json'
-import m1 from '../../data/fish-species/california-halibut.json'
-import m2 from '../../data/fish-species/california-yellowtail.json'
-import m3 from '../../data/fish-species/golden-trevally.json'
-import m4 from '../../data/fish-species/gulf-corvina.json'
-import m5 from '../../data/fish-species/leopard-grouper.json'
-import m6 from '../../data/fish-species/mahi-mahi.json'
-import m7 from '../../data/fish-species/roosterfish.json'
-import m8 from '../../data/fish-species/sierra-mackerel.json'
-import m9 from '../../data/fish-species/spotted-bay-bass.json'
-import m10 from '../../data/species-trade-profiles/bonefish.json'
-import m11 from '../../data/species-trade-profiles/california-halibut.json'
-import m12 from '../../data/species-trade-profiles/california-yellowtail.json'
-import m13 from '../../data/species-trade-profiles/golden-trevally.json'
-import m14 from '../../data/species-trade-profiles/gulf-corvina.json'
-import m15 from '../../data/species-trade-profiles/leopard-grouper.json'
-import m16 from '../../data/species-trade-profiles/mahi-mahi.json'
-import m17 from '../../data/species-trade-profiles/roosterfish.json'
-import m18 from '../../data/species-trade-profiles/sierra-mackerel.json'
-import m19 from '../../data/species-trade-profiles/spotted-bay-bass.json'
+import m1 from '../../data/fish-species/california-corbina.json'
+import m2 from '../../data/fish-species/california-halibut.json'
+import m3 from '../../data/fish-species/california-yellowtail.json'
+import m4 from '../../data/fish-species/finescale-triggerfish.json'
+import m5 from '../../data/fish-species/golden-trevally.json'
+import m6 from '../../data/fish-species/gulf-corvina.json'
+import m7 from '../../data/fish-species/halfmoon.json'
+import m8 from '../../data/fish-species/leopard-grouper.json'
+import m9 from '../../data/fish-species/mahi-mahi.json'
+import m10 from '../../data/fish-species/mangrove-jack.json'
+import m11 from '../../data/fish-species/opaleye.json'
+import m12 from '../../data/fish-species/pacific-crevalle.json'
+import m13 from '../../data/fish-species/roosterfish.json'
+import m14 from '../../data/fish-species/sierra-mackerel.json'
+import m15 from '../../data/fish-species/spotted-bay-bass.json'
+import m16 from '../../data/fish-species/white-seabass.json'
+import m17 from '../../data/fish-species/yellow-snapper.json'
+import m18 from '../../data/species-trade-profiles/bonefish.json'
+import m19 from '../../data/species-trade-profiles/california-corbina.json'
+import m20 from '../../data/species-trade-profiles/california-halibut.json'
+import m21 from '../../data/species-trade-profiles/california-yellowtail.json'
+import m22 from '../../data/species-trade-profiles/finescale-triggerfish.json'
+import m23 from '../../data/species-trade-profiles/golden-trevally.json'
+import m24 from '../../data/species-trade-profiles/gulf-corvina.json'
+import m25 from '../../data/species-trade-profiles/halfmoon.json'
+import m26 from '../../data/species-trade-profiles/leopard-grouper.json'
+import m27 from '../../data/species-trade-profiles/mahi-mahi.json'
+import m28 from '../../data/species-trade-profiles/mangrove-jack.json'
+import m29 from '../../data/species-trade-profiles/opaleye.json'
+import m30 from '../../data/species-trade-profiles/pacific-crevalle.json'
+import m31 from '../../data/species-trade-profiles/roosterfish.json'
+import m32 from '../../data/species-trade-profiles/sierra-mackerel.json'
+import m33 from '../../data/species-trade-profiles/spotted-bay-bass.json'
+import m34 from '../../data/species-trade-profiles/white-seabass.json'
+import m35 from '../../data/species-trade-profiles/yellow-snapper.json'
 
 export const m0Name = "bonefish.json"
-export const m1Name = "california-halibut.json"
-export const m2Name = "california-yellowtail.json"
-export const m3Name = "golden-trevally.json"
-export const m4Name = "gulf-corvina.json"
-export const m5Name = "leopard-grouper.json"
-export const m6Name = "mahi-mahi.json"
-export const m7Name = "roosterfish.json"
-export const m8Name = "sierra-mackerel.json"
-export const m9Name = "spotted-bay-bass.json"
-export const m10Name = "bonefish.json"
-export const m11Name = "california-halibut.json"
-export const m12Name = "california-yellowtail.json"
-export const m13Name = "golden-trevally.json"
-export const m14Name = "gulf-corvina.json"
-export const m15Name = "leopard-grouper.json"
-export const m16Name = "mahi-mahi.json"
-export const m17Name = "roosterfish.json"
-export const m18Name = "sierra-mackerel.json"
-export const m19Name = "spotted-bay-bass.json"
+export const m1Name = "california-corbina.json"
+export const m2Name = "california-halibut.json"
+export const m3Name = "california-yellowtail.json"
+export const m4Name = "finescale-triggerfish.json"
+export const m5Name = "golden-trevally.json"
+export const m6Name = "gulf-corvina.json"
+export const m7Name = "halfmoon.json"
+export const m8Name = "leopard-grouper.json"
+export const m9Name = "mahi-mahi.json"
+export const m10Name = "mangrove-jack.json"
+export const m11Name = "opaleye.json"
+export const m12Name = "pacific-crevalle.json"
+export const m13Name = "roosterfish.json"
+export const m14Name = "sierra-mackerel.json"
+export const m15Name = "spotted-bay-bass.json"
+export const m16Name = "white-seabass.json"
+export const m17Name = "yellow-snapper.json"
+export const m18Name = "bonefish.json"
+export const m19Name = "california-corbina.json"
+export const m20Name = "california-halibut.json"
+export const m21Name = "california-yellowtail.json"
+export const m22Name = "finescale-triggerfish.json"
+export const m23Name = "golden-trevally.json"
+export const m24Name = "gulf-corvina.json"
+export const m25Name = "halfmoon.json"
+export const m26Name = "leopard-grouper.json"
+export const m27Name = "mahi-mahi.json"
+export const m28Name = "mangrove-jack.json"
+export const m29Name = "opaleye.json"
+export const m30Name = "pacific-crevalle.json"
+export const m31Name = "roosterfish.json"
+export const m32Name = "sierra-mackerel.json"
+export const m33Name = "spotted-bay-bass.json"
+export const m34Name = "white-seabass.json"
+export const m35Name = "yellow-snapper.json"
 
 export const load = async (): Promise<Readonly<Record<string, readonly unknown[]>>> => ({
-    "fish-species": [m0, m1, m2, m3, m4, m5, m6, m7, m8, m9],
-    "species-trade-profiles": [m10, m11, m12, m13, m14, m15, m16, m17, m18, m19],
+    "fish-species": [m0, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15, m16, m17],
+    "species-trade-profiles": [m18, m19, m20, m21, m22, m23, m24, m25, m26, m27, m28, m29, m30, m31, m32, m33, m34, m35],
 })

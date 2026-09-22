@@ -1,0 +1,9 @@
+{
+  "speciesId": "hamafuefuki",
+  "tradeStatus": "tradable",
+  "tradeTags": ["delicate", "local_favorite", "white_fish", "everyday"],
+  "baseYenPerKg": 1070,
+  "minimumUnitValueYen": 190,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

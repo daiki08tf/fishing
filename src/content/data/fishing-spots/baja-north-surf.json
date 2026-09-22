@@ -1,0 +1,102 @@
+{
+  "id": "baja-north-surf",
+  "name": "バハ 北 サーフ（暫定）",
+  "regionId": "baja-california",
+  "areaId": "baja-north",
+  "environment": "nearshore",
+  "dataStatus": "provisional",
+  "access": [],
+  "travelOptions": [
+    {
+      "id": "walk-1",
+      "transportTypes": ["walk"],
+      "requiredCapabilities": ["reachable_on_foot"],
+      "features": [],
+      "baseMinutes": 30,
+      "distanceKm": 3,
+      "baseOneWayCost": 0
+    }
+  ],
+  "habitatTags": ["open_water", "surf"],
+  "fishingZones": [
+    {
+      "id": "near",
+      "name": "近距離",
+      "castDistanceM": {
+        "min": 0,
+        "max": 25
+      },
+      "habitatTags": ["open_water", "surf"]
+    },
+    {
+      "id": "far",
+      "name": "遠投",
+      "castDistanceM": {
+        "min": 25,
+        "max": 70
+      },
+      "habitatTags": ["open_water", "surf"]
+    }
+  ],
+  "fishTable": [
+    {
+      "speciesId": "california-corbina",
+      "basePresence": 0.4,
+      "zoneAffinity": {
+        "near": 0.85,
+        "far": 1.3
+      }
+    },
+    {
+      "speciesId": "california-halibut",
+      "basePresence": 0.4,
+      "zoneAffinity": {
+        "near": 0.85,
+        "far": 1.3
+      }
+    },
+    {
+      "speciesId": "opaleye",
+      "basePresence": 0.4,
+      "zoneAffinity": {
+        "near": 1.3,
+        "far": 0.85
+      }
+    },
+    {
+      "speciesId": "spotted-bay-bass",
+      "basePresence": 0.35,
+      "zoneAffinity": {
+        "near": 1.3,
+        "far": 0.85
+      }
+    },
+    {
+      "speciesId": "sierra-mackerel",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "near": 1.3,
+        "far": 0.85
+      }
+    }
+  ],
+  "knowledgeConfig": {
+    "reveals": [
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "time_pattern",
+        "minKnowledge": 40
+      }
+    ]
+  },
+  "regulations": [],
+  "sourceRefs": [
+    {
+      "id": "phase16-provisional",
+      "title": "PROVISIONAL — Phase 16 gameplay content; 実在の釣り場・立入可否の主張ではない"
+    }
+  ]
+}

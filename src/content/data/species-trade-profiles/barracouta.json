@@ -1,0 +1,9 @@
+{
+  "speciesId": "barracouta",
+  "tradeStatus": "tradable",
+  "tradeTags": ["everyday", "oily"],
+  "baseYenPerKg": 1010,
+  "minimumUnitValueYen": 180,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1.3
+}

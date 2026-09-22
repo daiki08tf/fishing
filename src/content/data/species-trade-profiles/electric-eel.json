@@ -1,0 +1,9 @@
+{
+  "speciesId": "electric-eel",
+  "tradeStatus": "tradable",
+  "tradeTags": ["premium", "large_fish", "local_favorite", "everyday"],
+  "baseYenPerKg": 1760,
+  "minimumUnitValueYen": 320,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1.3
+}

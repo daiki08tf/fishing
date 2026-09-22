@@ -2,7 +2,15 @@
   "id": "rainbow-trout",
   "japaneseName": "レインボートラウト（暫定）",
   "waterTypes": ["fresh"],
-  "distribution": ["alaska", "british-columbia", "hokkaido", "new-zealand", "tokyo-area"],
+  "distribution": [
+    "alaska",
+    "british-columbia",
+    "hokkaido",
+    "hokuriku-japan-sea",
+    "new-zealand",
+    "tohoku-pacific",
+    "tokyo-area"
+  ],
   "habitats": ["river", "lake"],
   "depthRange": {
     "min": 1,

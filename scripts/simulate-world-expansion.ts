@@ -1,5 +1,6 @@
 import { pathToFileURL } from 'node:url'
 import { loadContentFromDirectory } from '../src/content/load/nodeContent'
+import { DEFAULT_ECONOMY_TUNING } from '../src/domain/economy'
 import { DEFAULT_WORLD_TUNING } from '../src/domain/world/WorldTuning'
 import type { FishingSpot } from '../src/domain/world/FishingSpot'
 
@@ -308,6 +309,166 @@ export const simulateWorldExpansion = (): WorldExpansionResult => {
   lines.push('')
   for (const check of checks) {
     lines.push(`  ${check.ok ? 'PASS' : 'FAIL'} ${check.label}`)
+  }
+
+  /*
+   * 7. Trust chain balance（Phase 16 Part 2 / item 16）。
+   * 「1 回の売却で全部解禁」「何十回売っても何も起きない」の両方を避ける。
+   * 平均 quality 0.5 の売却で見積もる（PROVISIONAL）。
+   */
+  const trustRows = playableRegions.flatMap((region) => {
+    const regionId = String(region.id)
+    const buyers = content.buyers.filter((buyer) => String(buyer.regionId) === regionId)
+    const rewards = content.contactRewards.filter((reward) =>
+      buyers.some((buyer) => String(buyer.id) === String(reward.contactId)),
+    )
+    const gain =
+      buyers.length === 0
+        ? 0
+        : Math.max(
+            ...buyers.map((buyer) =>
+              Math.min(
+                buyer.trustProfile.maxPerTransaction,
+                Math.round(
+                  buyer.trustProfile.perTransactionBase + buyer.trustProfile.qualityWeight * 0.5,
+                ),
+              ),
+            ),
+          )
+    const first = rewards
+      .filter((reward) => reward.kind === 'intel')
+      .map((reward) => reward.minTrust)
+      .sort((left, right) => left - right)[0]
+    const discovery = rewards
+      .filter((reward) => reward.kind === 'discover_spot')
+      .map((reward) => reward.minTrust)
+      .sort((left, right) => left - right)[0]
+
+    return gain <= 0 || first === undefined || discovery === undefined
+      ? []
+      : [
+          {
+            regionId,
+            buyers: buyers.length,
+            gainPerSale: gain,
+            firstRewardTrust: first,
+            discoveryTrust: discovery,
+            salesToFirst: Math.ceil(first / gain),
+            salesToDiscovery: Math.ceil(discovery / gain),
+          },
+        ]
+  })
+
+  lines.push('')
+  lines.push('--- trust chain balance (PROVISIONAL, avg quality 0.5 sale) ---')
+  for (const row of trustRows) {
+    lines.push(
+      `  ${row.regionId.padEnd(22)} buyers=${String(row.buyers)} trust/sale≈${String(row.gainPerSale)} first=${String(row.firstRewardTrust)}(≈${String(row.salesToFirst)} sales) discovery=${String(row.discoveryTrust)}(≈${String(row.salesToDiscovery)} sales)`,
+    )
+  }
+
+  push(
+    'no Region unlocks its hidden spot from a single sale',
+    trustRows.every((row) => row.salesToDiscovery >= 2),
+  )
+  push(
+    'no Region needs more than 10 sales for its first reward',
+    trustRows.every((row) => row.salesToFirst <= 10),
+  )
+
+  for (const row of trustRows) {
+    if (row.salesToDiscovery > 15) {
+      warnings.push(`${row.regionId}: hidden discovery needs ${String(row.salesToDiscovery)} sales`)
+    }
+  }
+
+  /*
+   * 8. Expedition economy（item 18/19）。total = 往復航空券 + 既定泊の宿 + 許可。
+   * 現実の旅行価格ではなく PROVISIONAL なゲーム調整値。
+   */
+  const freeCash = DEFAULT_ECONOMY_TUNING.monthlySalary - DEFAULT_ECONOMY_TUNING.monthlyLivingCost
+  const expeditionRows = content.expeditions
+    .map((expedition) => {
+      const lodging = expedition.lodgings[Math.floor((expedition.lodgings.length - 1) / 2)]
+      const total =
+        expedition.flight.oneWayCostYen * 2 +
+        (lodging?.nightlyCostYen ?? 0) * expedition.nights.default +
+        (expedition.permit?.costYen ?? 0)
+
+      return {
+        regionId: String(expedition.regionId),
+        flightType: expedition.flight.transportType,
+        nights: expedition.nights.default,
+        total,
+        monthsOfFreeCash: total / freeCash,
+      }
+    })
+    .sort((left, right) => left.total - right.total)
+
+  lines.push('')
+  lines.push('--- expedition economy (PROVISIONAL; return flight + default nights + permit) ---')
+  for (const row of expeditionRows) {
+    lines.push(
+      `  ${row.regionId.padEnd(22)} ${row.flightType.padEnd(20)} nights=${String(row.nights)} total=¥${String(row.total)}（自由資金 ${row.monthsOfFreeCash.toFixed(2)} か月分）`,
+    )
+  }
+
+  const domestic = expeditionRows.filter((row) => row.flightType === 'domestic_flight')
+  const international = expeditionRows.filter((row) => row.flightType === 'international_flight')
+  const mostExpensiveDomestic = Math.max(...domestic.map((row) => row.total), 0)
+  const cheapestInternational = Math.min(
+    ...international.map((row) => row.total),
+    Number.MAX_SAFE_INTEGER,
+  )
+
+  push(
+    'domestic trips are cheaper than the cheapest international trip',
+    international.length === 0 || mostExpensiveDomestic < cheapestInternational,
+  )
+  push('Izu is the cheapest trip', expeditionRows[0]?.regionId === 'izu-peninsula')
+  push(
+    'Amazon is the most expensive trip',
+    expeditionRows[expeditionRows.length - 1]?.regionId === 'amazon-basin',
+  )
+  push(
+    'no trip costs more than 6 months of free cash',
+    expeditionRows.every((row) => row.monthsOfFreeCash <= 6),
+  )
+
+  /*
+   * 9. Region occurrence diversity（item 4）に対する参考レポート。
+   * 目標下限を下回る Region は warning（Part 2b の作業対象）として報告する。
+   */
+  const REGION_SPECIES_TARGETS: Readonly<Record<string, number>> = {
+    'izu-peninsula': 22,
+    'tohoku-pacific': 22,
+    'hokuriku-japan-sea': 22,
+    okinawa: 30,
+    'norway-fjords': 25,
+    'new-zealand': 25,
+    'baja-california': 25,
+    thailand: 30,
+    'amazon-basin': 30,
+  }
+
+  lines.push('')
+  lines.push('--- region occurrence diversity (target = item 4 range minimum) ---')
+  for (const row of regionRows) {
+    const target = REGION_SPECIES_TARGETS[row.regionId]
+
+    lines.push(
+      `  ${row.regionId.padEnd(22)} species=${String(row.species).padStart(3)}${
+        target === undefined
+          ? ''
+          : ` target>=${String(target)}${row.species < target ? '  ← below' : '  ok'}`
+      }`,
+    )
+
+    if (target !== undefined && row.species < target) {
+      warnings.push(
+        `${row.regionId}: ${String(row.species)} species is below the Phase 16 target ${String(target)} (Part 2b)`,
+      )
+    }
   }
 
   lines.push('', allOk ? 'OK: world expansion is healthy' : 'FAILED: world expansion has problems')

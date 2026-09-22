@@ -1,0 +1,94 @@
+{
+  "id": "nz-lake-inlet",
+  "name": "NZ 湖の入り江（暫定）",
+  "regionId": "new-zealand",
+  "areaId": "nz-lakes",
+  "environment": "lake",
+  "dataStatus": "provisional",
+  "access": [],
+  "travelOptions": [
+    {
+      "id": "walk-1",
+      "transportTypes": ["walk"],
+      "requiredCapabilities": ["reachable_on_foot"],
+      "features": [],
+      "baseMinutes": 25,
+      "distanceKm": 2,
+      "baseOneWayCost": 0
+    }
+  ],
+  "habitatTags": ["lake", "still"],
+  "fishingZones": [
+    {
+      "id": "shore",
+      "name": "岸際",
+      "castDistanceM": {
+        "min": 0,
+        "max": 15
+      },
+      "habitatTags": ["lake", "still"]
+    },
+    {
+      "id": "offshore",
+      "name": "沖",
+      "castDistanceM": {
+        "min": 20,
+        "max": 60
+      },
+      "habitatTags": ["lake", "still"]
+    }
+  ],
+  "fishTable": [
+    {
+      "speciesId": "rainbow-trout",
+      "basePresence": 0.45,
+      "zoneAffinity": {
+        "shore": 1.3,
+        "offshore": 0.85
+      }
+    },
+    {
+      "speciesId": "european-perch",
+      "basePresence": 0.4,
+      "zoneAffinity": {
+        "shore": 1.3,
+        "offshore": 0.85
+      }
+    },
+    {
+      "speciesId": "bull-trout",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "shore": 1.3,
+        "offshore": 0.85
+      }
+    },
+    {
+      "speciesId": "longfin-eel",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "shore": 0.85,
+        "offshore": 1.3
+      }
+    }
+  ],
+  "knowledgeConfig": {
+    "reveals": [
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "time_pattern",
+        "minKnowledge": 40
+      }
+    ]
+  },
+  "regulations": [],
+  "sourceRefs": [
+    {
+      "id": "phase16-provisional",
+      "title": "PROVISIONAL — Phase 16 gameplay content; 実在の釣り場・立入可否の主張ではない"
+    }
+  ]
+}

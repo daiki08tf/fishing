@@ -8,7 +8,7 @@
   "baits": ["cut", "worm"],
   "lureCategories": ["soft_plastic", "jig"],
   "fishingMethods": ["bottom", "lure"],
-  "distribution": ["tohoku-pacific", "hokuriku-japan-sea"],
+  "distribution": ["hokkaido", "hokuriku-japan-sea", "tohoku-pacific"],
   "depthRange": {
     "min": 3,
     "max": 50

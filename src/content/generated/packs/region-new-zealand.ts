@@ -4,26 +4,44 @@
  * ここに並ぶ JSON は、この module 自身の chunk にまとめて入る（初期 chunk を増やさない）。
  */
 
-import m0 from '../../data/fishing-spots/nz-hidden-wild-river-bend.json'
-import m1 from '../../data/fishing-spots/nz-lake-trout-shore.json'
-import m2 from '../../data/fishing-spots/nz-south-coast-rocks.json'
-import m3 from '../../data/fishing-spots/nz-south-estuary.json'
-import m4 from '../../data/fishing-spots/nz-south-surf.json'
-import m5 from '../../data/buyers/nz-harbor-fish-market.json'
-import m6 from '../../data/contact-rewards/nz-harbor-fish-market-rumor-hidden.json'
-import m7 from '../../data/contact-rewards/nz-harbor-fish-market-spot-hidden.json'
+import m0 from '../../data/fishing-spots/nz-hidden-fiord-head.json'
+import m1 from '../../data/fishing-spots/nz-hidden-wild-river-bend.json'
+import m2 from '../../data/fishing-spots/nz-lake-inlet.json'
+import m3 from '../../data/fishing-spots/nz-lake-trout-shore.json'
+import m4 from '../../data/fishing-spots/nz-lakes-river-mouth.json'
+import m5 from '../../data/fishing-spots/nz-south-coast-rocks.json'
+import m6 from '../../data/fishing-spots/nz-south-estuary.json'
+import m7 from '../../data/fishing-spots/nz-south-reef-flat.json'
+import m8 from '../../data/fishing-spots/nz-south-surf.json'
+import m9 from '../../data/buyers/nz-harbor-fish-market.json'
+import m10 from '../../data/buyers/nz-harbor-kitchen.json'
+import m11 from '../../data/contact-rewards/nz-harbor-fish-market-intel-15.json'
+import m12 from '../../data/contact-rewards/nz-harbor-fish-market-rumor-6.json'
+import m13 from '../../data/contact-rewards/nz-harbor-fish-market-spot-15.json'
+import m14 from '../../data/contact-rewards/nz-harbor-kitchen-intel-6.json'
+import m15 from '../../data/contact-rewards/nz-harbor-kitchen-rumor-15.json'
+import m16 from '../../data/contact-rewards/nz-harbor-kitchen-spot-6.json'
 
-export const m0Name = "nz-hidden-wild-river-bend.json"
-export const m1Name = "nz-lake-trout-shore.json"
-export const m2Name = "nz-south-coast-rocks.json"
-export const m3Name = "nz-south-estuary.json"
-export const m4Name = "nz-south-surf.json"
-export const m5Name = "nz-harbor-fish-market.json"
-export const m6Name = "nz-harbor-fish-market-rumor-hidden.json"
-export const m7Name = "nz-harbor-fish-market-spot-hidden.json"
+export const m0Name = "nz-hidden-fiord-head.json"
+export const m1Name = "nz-hidden-wild-river-bend.json"
+export const m2Name = "nz-lake-inlet.json"
+export const m3Name = "nz-lake-trout-shore.json"
+export const m4Name = "nz-lakes-river-mouth.json"
+export const m5Name = "nz-south-coast-rocks.json"
+export const m6Name = "nz-south-estuary.json"
+export const m7Name = "nz-south-reef-flat.json"
+export const m8Name = "nz-south-surf.json"
+export const m9Name = "nz-harbor-fish-market.json"
+export const m10Name = "nz-harbor-kitchen.json"
+export const m11Name = "nz-harbor-fish-market-intel-15.json"
+export const m12Name = "nz-harbor-fish-market-rumor-6.json"
+export const m13Name = "nz-harbor-fish-market-spot-15.json"
+export const m14Name = "nz-harbor-kitchen-intel-6.json"
+export const m15Name = "nz-harbor-kitchen-rumor-15.json"
+export const m16Name = "nz-harbor-kitchen-spot-6.json"
 
 export const load = async (): Promise<Readonly<Record<string, readonly unknown[]>>> => ({
-    "fishing-spots": [m0, m1, m2, m3, m4],
-    "buyers": [m5],
-    "contact-rewards": [m6, m7],
+    "fishing-spots": [m0, m1, m2, m3, m4, m5, m6, m7, m8],
+    "buyers": [m9, m10],
+    "contact-rewards": [m11, m12, m13, m14, m15, m16],
 })

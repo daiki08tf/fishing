@@ -8,7 +8,7 @@
   "baits": ["dough", "worm"],
   "lureCategories": ["small"],
   "fishingMethods": ["bait", "light_lure"],
-  "distribution": ["hokuriku-japan-sea", "tokyo-area"],
+  "distribution": ["hokuriku-japan-sea", "tohoku-pacific", "tokyo-area"],
   "lengthModel": {
     "kind": "normal",
     "meanCm": 22,

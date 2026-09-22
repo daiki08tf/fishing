@@ -1,0 +1,9 @@
+{
+  "speciesId": "finescale-triggerfish",
+  "tradeStatus": "tradable",
+  "tradeTags": ["delicate", "local_favorite"],
+  "baseYenPerKg": 730,
+  "minimumUnitValueYen": 130,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

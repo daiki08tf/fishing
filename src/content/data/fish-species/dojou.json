@@ -1,0 +1,108 @@
+{
+  "id": "dojou",
+  "japaneseName": "ドジョウ（暫定）",
+  "scientificName": "Misgurnus anguillicaudatus",
+  "waterTypes": ["fresh"],
+  "habitats": ["river", "canal", "bottom"],
+  "diet": ["insect", "detritus"],
+  "baits": ["worm", "dough"],
+  "lureCategories": ["soft_plastic"],
+  "fishingMethods": ["bottom", "bait"],
+  "distribution": ["tohoku-pacific", "hokuriku-japan-sea", "tokyo-area"],
+  "depthRange": {
+    "min": 0,
+    "max": 5
+  },
+  "temperatureRange": {
+    "min": 10,
+    "max": 26
+  },
+  "seasonality": {
+    "months": [4, 5, 6, 7, 8, 9, 10]
+  },
+  "timeActivity": {
+    "periods": ["dawn", "day", "evening"]
+  },
+  "tidePreference": {
+    "preference": "rising"
+  },
+  "currentPreference": {
+    "preference": "moderate"
+  },
+  "methodAffinity": {
+    "bottom": 1.2,
+    "bait": 1.1,
+    "lure": 0.95,
+    "light_lure": 0.9
+  },
+  "offeringAffinity": {
+    "cut": 1.15,
+    "jig": 1.05,
+    "soft_plastic": 1,
+    "worm": 1.05,
+    "live": 1.1
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 14,
+    "dispersion": 0.11,
+    "minCm": 8,
+    "maxCm": 22
+  },
+  "weightModel": {
+    "lengthWeightA": 0.0035,
+    "lengthWeightB": 3.1
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "traitConfiguration": {
+    "trophyPercentileThreshold": 1,
+    "strongRunnerChance": 0.024
+  },
+  "fightProfile": {
+    "strength": 0.3,
+    "stamina": 0.4,
+    "speed": 0.3
+  },
+  "rarity": 1.1,
+  "environmentAffinity": {
+    "preferredSeasons": ["summer", "autumn"],
+    "preferredTimeOfDay": ["dawn", "daytime", "evening"],
+    "weatherAffinity": {
+      "clear": 1,
+      "cloudy": 1.05,
+      "light_rain": 1,
+      "rain": 0.95,
+      "windy": 0.9
+    },
+    "tideAffinity": {
+      "low": 1,
+      "rising": 1.05,
+      "high": 1.1,
+      "falling": 1
+    },
+    "flowAffinity": {
+      "none": 1,
+      "slow": 1.05,
+      "moderate": 1.05,
+      "strong": 0.95
+    },
+    "preferredTemperatureC": {
+      "min": 10,
+      "max": 26
+    }
+  },
+  "feedingProfile": {
+    "preferredOfferingRatio": 0.14,
+    "largeOfferingPenaltyStart": 0.26,
+    "maxOfferingRatio": 0.4,
+    "mouthSizeFactor": 1.05
+  },
+  "sourceRefs": [
+    {
+      "id": "phase16-provisional",
+      "title": "PROVISIONAL — Phase 16 gameplay tuning; 実在の生態・漁業規制の主張ではない"
+    }
+  ]
+}

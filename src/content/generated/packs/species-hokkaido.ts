@@ -11,25 +11,33 @@ import m3 from '../../data/fish-species/hirame.json'
 import m4 from '../../data/fish-species/hokke.json'
 import m5 from '../../data/fish-species/hokkaido-ito.json'
 import m6 from '../../data/fish-species/iwana.json'
-import m7 from '../../data/fish-species/marbled-flounder.json'
-import m8 from '../../data/fish-species/hokkaido-masu-salmon.json'
-import m9 from '../../data/fish-species/oshorokoma.json'
-import m10 from '../../data/fish-species/pacific-cod.json'
-import m11 from '../../data/fish-species/kanto-seabass.json'
-import m12 from '../../data/fish-species/kanto-ugui.json'
-import m13 from '../../data/species-trade-profiles/ainame.json'
-import m14 from '../../data/species-trade-profiles/amemasu.json'
-import m15 from '../../data/species-trade-profiles/buri.json'
-import m16 from '../../data/species-trade-profiles/hirame.json'
-import m17 from '../../data/species-trade-profiles/hokke.json'
-import m18 from '../../data/species-trade-profiles/ito.json'
-import m19 from '../../data/species-trade-profiles/iwana.json'
-import m20 from '../../data/species-trade-profiles/marbled-flounder.json'
-import m21 from '../../data/species-trade-profiles/masu-salmon.json'
-import m22 from '../../data/species-trade-profiles/oshorokoma.json'
-import m23 from '../../data/species-trade-profiles/pacific-cod.json'
-import m24 from '../../data/species-trade-profiles/seabass.json'
-import m25 from '../../data/species-trade-profiles/ugui.json'
+import m7 from '../../data/fish-species/kurosoi.json'
+import m8 from '../../data/fish-species/marbled-flounder.json'
+import m9 from '../../data/fish-species/hokkaido-masu-salmon.json'
+import m10 from '../../data/fish-species/nishin.json'
+import m11 from '../../data/fish-species/oshorokoma.json'
+import m12 from '../../data/fish-species/pacific-cod.json'
+import m13 from '../../data/fish-species/kanto-saba.json'
+import m14 from '../../data/fish-species/sanma.json'
+import m15 from '../../data/fish-species/kanto-seabass.json'
+import m16 from '../../data/fish-species/kanto-ugui.json'
+import m17 from '../../data/species-trade-profiles/ainame.json'
+import m18 from '../../data/species-trade-profiles/amemasu.json'
+import m19 from '../../data/species-trade-profiles/buri.json'
+import m20 from '../../data/species-trade-profiles/hirame.json'
+import m21 from '../../data/species-trade-profiles/hokke.json'
+import m22 from '../../data/species-trade-profiles/ito.json'
+import m23 from '../../data/species-trade-profiles/iwana.json'
+import m24 from '../../data/species-trade-profiles/kurosoi.json'
+import m25 from '../../data/species-trade-profiles/marbled-flounder.json'
+import m26 from '../../data/species-trade-profiles/masu-salmon.json'
+import m27 from '../../data/species-trade-profiles/nishin.json'
+import m28 from '../../data/species-trade-profiles/oshorokoma.json'
+import m29 from '../../data/species-trade-profiles/pacific-cod.json'
+import m30 from '../../data/species-trade-profiles/saba.json'
+import m31 from '../../data/species-trade-profiles/sanma.json'
+import m32 from '../../data/species-trade-profiles/seabass.json'
+import m33 from '../../data/species-trade-profiles/ugui.json'
 
 export const m0Name = "ainame.json"
 export const m1Name = "hokkaido-ame-masu.json"
@@ -38,27 +46,35 @@ export const m3Name = "hirame.json"
 export const m4Name = "hokke.json"
 export const m5Name = "hokkaido-ito.json"
 export const m6Name = "iwana.json"
-export const m7Name = "marbled-flounder.json"
-export const m8Name = "hokkaido-masu-salmon.json"
-export const m9Name = "oshorokoma.json"
-export const m10Name = "pacific-cod.json"
-export const m11Name = "kanto-seabass.json"
-export const m12Name = "kanto-ugui.json"
-export const m13Name = "ainame.json"
-export const m14Name = "amemasu.json"
-export const m15Name = "buri.json"
-export const m16Name = "hirame.json"
-export const m17Name = "hokke.json"
-export const m18Name = "ito.json"
-export const m19Name = "iwana.json"
-export const m20Name = "marbled-flounder.json"
-export const m21Name = "masu-salmon.json"
-export const m22Name = "oshorokoma.json"
-export const m23Name = "pacific-cod.json"
-export const m24Name = "seabass.json"
-export const m25Name = "ugui.json"
+export const m7Name = "kurosoi.json"
+export const m8Name = "marbled-flounder.json"
+export const m9Name = "hokkaido-masu-salmon.json"
+export const m10Name = "nishin.json"
+export const m11Name = "oshorokoma.json"
+export const m12Name = "pacific-cod.json"
+export const m13Name = "kanto-saba.json"
+export const m14Name = "sanma.json"
+export const m15Name = "kanto-seabass.json"
+export const m16Name = "kanto-ugui.json"
+export const m17Name = "ainame.json"
+export const m18Name = "amemasu.json"
+export const m19Name = "buri.json"
+export const m20Name = "hirame.json"
+export const m21Name = "hokke.json"
+export const m22Name = "ito.json"
+export const m23Name = "iwana.json"
+export const m24Name = "kurosoi.json"
+export const m25Name = "marbled-flounder.json"
+export const m26Name = "masu-salmon.json"
+export const m27Name = "nishin.json"
+export const m28Name = "oshorokoma.json"
+export const m29Name = "pacific-cod.json"
+export const m30Name = "saba.json"
+export const m31Name = "sanma.json"
+export const m32Name = "seabass.json"
+export const m33Name = "ugui.json"
 
 export const load = async (): Promise<Readonly<Record<string, readonly unknown[]>>> => ({
-    "fish-species": [m0, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12],
-    "species-trade-profiles": [m13, m14, m15, m16, m17, m18, m19, m20, m21, m22, m23, m24, m25],
+    "fish-species": [m0, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15, m16],
+    "species-trade-profiles": [m17, m18, m19, m20, m21, m22, m23, m24, m25, m26, m27, m28, m29, m30, m31, m32, m33],
 })

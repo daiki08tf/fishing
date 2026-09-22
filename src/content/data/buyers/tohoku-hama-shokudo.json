@@ -1,0 +1,28 @@
+{
+  "id": "tohoku-hama-shokudo",
+  "name": "東北 浜の食堂",
+  "buyerType": "izakaya",
+  "regionId": "tohoku-pacific",
+  "description": "浜の食堂。鮮度の良い魚を少量から買い取る。PROVISIONAL — gameplay tuning。",
+  "pricingProfile": {
+    "baseMultiplier": 1.02,
+    "qualitySensitivity": 1.35,
+    "sizeSensitivity": 0.45,
+    "freshnessSensitivity": 0.65,
+    "volumeBonusPerExtraCatch": 0,
+    "maxVolumeBonus": 0
+  },
+  "trustProfile": {
+    "perTransactionBase": 2,
+    "qualityWeight": 6,
+    "maxPerTransaction": 6
+  },
+  "preferences": {
+    "preferredTags": ["delicate", "white_fish", "small_table_fish", "local_favorite"],
+    "neutralTags": ["premium", "oily", "everyday"],
+    "preferredTagMultiplier": 1.16,
+    "neutralTagMultiplier": 1,
+    "otherTagMultiplier": 0.86,
+    "localSourceMultiplier": 1.1
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "speciesId": "silver-warehou",
+  "tradeStatus": "tradable",
+  "tradeTags": ["everyday", "oily"],
+  "baseYenPerKg": 890,
+  "minimumUnitValueYen": 160,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}
