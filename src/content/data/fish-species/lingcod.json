@@ -1,0 +1,45 @@
+{
+  "id": "lingcod",
+  "japaneseName": "リングコッド（暫定）",
+  "scientificName": "Ophiodon elongatus",
+  "waterTypes": [
+    "salt"
+  ],
+  "distribution": [
+    "british-columbia"
+  ],
+  "habitats": [
+    "reef",
+    "bottom"
+  ],
+  "depthRange": {
+    "min": 0,
+    "max": 75
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 75,
+    "dispersion": 0.18,
+    "minCm": 30,
+    "maxCm": 150
+  },
+  "weightModel": {
+    "lengthWeightA": 0.009,
+    "lengthWeightB": 3.08
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "fightProfile": {
+    "strength": 0.78,
+    "stamina": 0.84,
+    "speed": 0.5
+  },
+  "rarity": 2.1,
+  "sourceRefs": [
+    {
+      "id": "phase12-provisional",
+      "title": "PROVISIONAL — Phase 12 gameplay tuning; biological values require later verification"
+    }
+  ]
+}
