@@ -1,0 +1,138 @@
+{
+  "id": "hokkaido-surf",
+  "name": "北海道 サーフ（暫定）",
+  "regionId": "hokkaido",
+  "areaId": "hokkaido-east",
+  "environment": "nearshore",
+  "access": [
+    {
+      "kind": "capability",
+      "capability": "road_access"
+    }
+  ],
+  "travelOptions": [
+    {
+      "id": "east-surf-road",
+      "transportTypes": [
+        "rental_car"
+      ],
+      "requiredCapabilities": [
+        "road_access"
+      ],
+      "features": [
+        "vehicle_rental"
+      ],
+      "baseMinutes": 80,
+      "distanceKm": 55,
+      "baseOneWayCost": 0
+    }
+  ],
+  "habitatTags": [
+    "surf",
+    "sand"
+  ],
+  "depth": {
+    "depthRangeM": {
+      "min": 0,
+      "max": 18
+    }
+  },
+  "fishingZones": [
+    {
+      "id": "wash",
+      "name": "波打ち際",
+      "castDistanceM": {
+        "min": 0,
+        "max": 18
+      },
+      "depthRangeM": {
+        "min": 0,
+        "max": 4
+      },
+      "habitatTags": [
+        "surf",
+        "shallow"
+      ]
+    },
+    {
+      "id": "break",
+      "name": "ブレイク",
+      "castDistanceM": {
+        "min": 18,
+        "max": 45
+      },
+      "depthRangeM": {
+        "min": 3,
+        "max": 10
+      },
+      "habitatTags": [
+        "sand",
+        "break"
+      ]
+    },
+    {
+      "id": "outer",
+      "name": "沖",
+      "castDistanceM": {
+        "min": 45,
+        "max": 85
+      },
+      "depthRangeM": {
+        "min": 8,
+        "max": 22
+      },
+      "habitatTags": [
+        "open",
+        "current"
+      ]
+    }
+  ],
+  "fishTable": [
+    {
+      "speciesId": "masu-salmon",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "wash": 0.5,
+        "break": 1.2,
+        "outer": 1.4
+      }
+    },
+    {
+      "speciesId": "hirame",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "wash": 0.5,
+        "break": 1.2,
+        "outer": 1.3
+      }
+    },
+    {
+      "speciesId": "marbled-flounder",
+      "basePresence": 0.35,
+      "zoneAffinity": {
+        "wash": 0.8,
+        "break": 1.3,
+        "outer": 1
+      }
+    }
+  ],
+  "dataStatus": "provisional",
+  "knowledgeConfig": {
+    "reveals": [
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "habitat",
+        "minKnowledge": 50
+      }
+    ]
+  },
+  "sourceRefs": [
+    {
+      "id": "phase12-provisional",
+      "title": "PROVISIONAL — gameplay-oriented spot layout; real access and regulations require verification"
+    }
+  ]
+}
