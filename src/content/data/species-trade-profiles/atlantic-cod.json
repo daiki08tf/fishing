@@ -1,0 +1,9 @@
+{
+  "speciesId": "atlantic-cod",
+  "tradeStatus": "tradable",
+  "tradeTags": ["white_fish", "everyday"],
+  "baseYenPerKg": 1140,
+  "minimumUnitValueYen": 210,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1.3
+}

@@ -1,0 +1,107 @@
+{
+  "id": "bonefish",
+  "japaneseName": "ボーンフィッシュ（暫定）",
+  "scientificName": "Albula vulpes",
+  "waterTypes": ["salt", "brackish"],
+  "habitats": ["flats", "lagoon", "shallow"],
+  "diet": ["crustacean", "worm"],
+  "baits": ["shrimp", "worm"],
+  "lureCategories": ["soft_plastic", "minnow"],
+  "fishingMethods": ["light_lure", "bait"],
+  "distribution": ["baja-california"],
+  "depthRange": {
+    "min": 0,
+    "max": 15
+  },
+  "temperatureRange": {
+    "min": 20,
+    "max": 30
+  },
+  "seasonality": {
+    "months": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+  },
+  "timeActivity": {
+    "periods": ["dawn", "morning"]
+  },
+  "tidePreference": {
+    "preference": "rising"
+  },
+  "currentPreference": {
+    "preference": "moderate"
+  },
+  "methodAffinity": {
+    "light_lure": 1.15,
+    "bait": 1.1,
+    "lure": 1.05,
+    "bottom": 0.95
+  },
+  "offeringAffinity": {
+    "soft_plastic": 1.15,
+    "shrimp": 1.15,
+    "minnow": 1.1,
+    "worm": 1.05
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 45,
+    "dispersion": 0.13,
+    "minCm": 25,
+    "maxCm": 80
+  },
+  "weightModel": {
+    "lengthWeightA": 0.0105,
+    "lengthWeightB": 3.05
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "traitConfiguration": {
+    "trophyPercentileThreshold": 1,
+    "strongRunnerChance": 0.07200000000000001
+  },
+  "fightProfile": {
+    "strength": 0.6,
+    "stamina": 0.7,
+    "speed": 0.9
+  },
+  "rarity": 2.7,
+  "environmentAffinity": {
+    "preferredSeasons": ["spring", "summer", "autumn"],
+    "preferredTimeOfDay": ["dawn", "morning"],
+    "weatherAffinity": {
+      "clear": 1,
+      "cloudy": 1.05,
+      "light_rain": 1,
+      "rain": 0.95,
+      "windy": 0.9
+    },
+    "tideAffinity": {
+      "low": 0.85,
+      "rising": 1.2,
+      "high": 1.15,
+      "falling": 1
+    },
+    "flowAffinity": {
+      "none": 1,
+      "slow": 1.1,
+      "moderate": 1.05,
+      "strong": 0.85
+    },
+    "preferredTemperatureC": {
+      "min": 20,
+      "max": 30
+    }
+  },
+  "feedingProfile": {
+    "preferredOfferingRatio": 0.15,
+    "largeOfferingPenaltyStart": 0.27,
+    "maxOfferingRatio": 0.4,
+    "mouthSizeFactor": 0.95
+  },
+  "sourceRefs": [
+    {
+      "id": "phase16-provisional",
+      "title": "PROVISIONAL — Phase 16 gameplay tuning; 実在の生態・漁業規制の主張ではない"
+    }
+  ]
+}

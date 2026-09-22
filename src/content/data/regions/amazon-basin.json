@@ -1,18 +1,26 @@
 {
-  "id": "amazonas",
+  "id": "amazon-basin",
   "countryId": "brazil",
-  "name": "アマゾナス",
-  "stage": "planned",
+  "name": "アマゾン流域",
+  "stage": "playable",
   "dataStatus": "provisional",
   "base": {
-    "id": "amazonas-base",
+    "id": "amazon-base",
     "name": "Amazon Fishing Base",
-    "areaId": "amazon-river"
+    "areaId": "amazon-main"
   },
   "areas": [
     {
-      "id": "amazon-river",
-      "name": "Amazon River"
+      "id": "amazon-main",
+      "name": "Main River"
+    },
+    {
+      "id": "amazon-tributary",
+      "name": "Tributary"
+    },
+    {
+      "id": "amazon-floodplain",
+      "name": "Floodplain"
     }
   ],
   "climate": {

@@ -1,0 +1,108 @@
+{
+  "id": "sawara",
+  "japaneseName": "サワラ（暫定）",
+  "scientificName": "Scomberomorus niphonius",
+  "waterTypes": ["salt"],
+  "habitats": ["nearshore", "open_water"],
+  "diet": ["small_fish"],
+  "baits": ["cut", "live"],
+  "lureCategories": ["jig", "minnow"],
+  "fishingMethods": ["lure", "light_lure"],
+  "distribution": ["hokuriku-japan-sea", "izu-peninsula", "tohoku-pacific"],
+  "depthRange": {
+    "min": 2,
+    "max": 40
+  },
+  "temperatureRange": {
+    "min": 12,
+    "max": 24
+  },
+  "seasonality": {
+    "months": [9, 10, 11, 12, 1, 2, 3]
+  },
+  "timeActivity": {
+    "periods": ["dawn", "morning", "evening"]
+  },
+  "tidePreference": {
+    "preference": "rising"
+  },
+  "currentPreference": {
+    "preference": "moderate"
+  },
+  "methodAffinity": {
+    "lure": 1.1,
+    "light_lure": 1.05,
+    "bait": 1,
+    "bottom": 0.85
+  },
+  "offeringAffinity": {
+    "minnow": 1.1,
+    "jig": 1.1,
+    "spoon": 1.05,
+    "stickbait": 1.05,
+    "cut": 1.05
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 55,
+    "dispersion": 0.14,
+    "minCm": 30,
+    "maxCm": 95
+  },
+  "weightModel": {
+    "lengthWeightA": 0.0065,
+    "lengthWeightB": 3
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "traitConfiguration": {
+    "trophyPercentileThreshold": 1,
+    "strongRunnerChance": 0.07200000000000001
+  },
+  "fightProfile": {
+    "strength": 0.75,
+    "stamina": 0.6,
+    "speed": 0.9
+  },
+  "rarity": 2.6,
+  "environmentAffinity": {
+    "preferredSeasons": ["autumn", "winter"],
+    "preferredTimeOfDay": ["dawn", "morning", "evening"],
+    "weatherAffinity": {
+      "clear": 1,
+      "cloudy": 1.05,
+      "light_rain": 1,
+      "rain": 0.95,
+      "windy": 0.9
+    },
+    "tideAffinity": {
+      "low": 0.9,
+      "rising": 1.15,
+      "high": 1.05,
+      "falling": 1
+    },
+    "flowAffinity": {
+      "none": 1,
+      "slow": 1,
+      "moderate": 1.1,
+      "strong": 1
+    },
+    "preferredTemperatureC": {
+      "min": 12,
+      "max": 24
+    }
+  },
+  "feedingProfile": {
+    "preferredOfferingRatio": 0.16,
+    "largeOfferingPenaltyStart": 0.28,
+    "maxOfferingRatio": 0.4,
+    "mouthSizeFactor": 1
+  },
+  "sourceRefs": [
+    {
+      "id": "phase16-provisional",
+      "title": "PROVISIONAL — Phase 16 gameplay tuning; 実在の生態・漁業規制の主張ではない"
+    }
+  ]
+}

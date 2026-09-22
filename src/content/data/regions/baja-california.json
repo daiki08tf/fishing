@@ -2,17 +2,25 @@
   "id": "baja-california",
   "countryId": "mexico",
   "name": "バハ・カリフォルニア",
-  "stage": "planned",
+  "stage": "playable",
   "dataStatus": "provisional",
   "base": {
     "id": "baja-base",
     "name": "Baja Fishing Base",
-    "areaId": "baja-coast"
+    "areaId": "baja-central"
   },
   "areas": [
     {
-      "id": "baja-coast",
-      "name": "Coastal / Offshore"
+      "id": "baja-north",
+      "name": "North Pacific Coast"
+    },
+    {
+      "id": "baja-central",
+      "name": "Central Coast"
+    },
+    {
+      "id": "baja-south",
+      "name": "South / Gulf Side"
     }
   ],
   "climate": {

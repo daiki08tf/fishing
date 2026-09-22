@@ -1,0 +1,8 @@
+{
+  "id": "nz-harbor-fish-market-spot-hidden",
+  "contactId": "nz-harbor-fish-market",
+  "minTrust": 35,
+  "kind": "discover_spot",
+  "message": "市場の顔なじみが教えてくれた川曲がりの場所。",
+  "targetId": "nz-hidden-wild-river-bend"
+}

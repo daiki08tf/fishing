@@ -1,0 +1,8 @@
+{
+  "id": "tohoku-hama-market-spot-hidden",
+  "contactId": "tohoku-hama-market",
+  "minTrust": 35,
+  "kind": "discover_spot",
+  "message": "浜の仲買が教えてくれた冷涼な沢の場所。",
+  "targetId": "tohoku-hidden-cold-creek"
+}

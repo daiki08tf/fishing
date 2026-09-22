@@ -23,8 +23,17 @@ const INITIAL_JS_LIMIT_BYTES = 700_000
  */
 export const PHASE_14_BASELINE = { raw: 925_440, gzip: 216_480 } as const
 export const PHASE_15_0_BOOT = { raw: 871_380, gzip: 210_510 } as const
-/** 起動 critical path の gzip を Phase 14 の 80% 以下にする（Phase 15.1 の目標）。 */
-const BOOT_GZIP_TARGET_RATIO = 0.8
+/** Phase 15.2（Phase 16 前）の実測。catalog が Species 数に比例する分だけ増えることを示す。 */
+const PHASE_15_2_BOOT = { raw: 604_930, gzip: 170_620 } as const
+/**
+ * Phase 16 の起動 gzip 予算。
+ *
+ * Phase 15 の目標は「Phase 14 の 80% 以下」だったが、Phase 16 で Species が 82 → 144 に
+ * 増えたため、**軽量カタログ自体が Species 数に比例して増える**（Codex / 検索の索引なので
+ * 意図どおり）。したがって比率ではなく予算で管理し、内訳（catalog / region / species shard）を
+ * 併記して説明できるようにする。
+ */
+const BOOT_GZIP_BUDGET_BYTES = 200_000
 
 export type BundleReportEntry = {
   readonly name: string
@@ -160,8 +169,8 @@ export const analyzeContentScale = (distDir = 'dist'): BundleReport => {
     ok: packs.filter((entry) => entry.name.startsWith('region-')).length >= 5,
   })
   checks.push({
-    label: `boot gzip <= ${((PHASE_14_BASELINE.gzip * BOOT_GZIP_TARGET_RATIO) / 1000).toFixed(0)} kB（Phase 14 の 80%）`,
-    ok: bootGzip <= PHASE_14_BASELINE.gzip * BOOT_GZIP_TARGET_RATIO,
+    label: `boot gzip <= ${(BOOT_GZIP_BUDGET_BYTES / 1000).toFixed(0)} kB（Phase 16 budget）`,
+    ok: bootGzip <= BOOT_GZIP_BUDGET_BYTES,
   })
   checks.push({
     label: 'boot path does not include tackle / other regions',
@@ -199,7 +208,10 @@ export const analyzeContentScale = (distDir = 'dist'): BundleReport => {
   }
   lines.push(`Total boot raw:    ${kb(bootRaw)}（Phase 14 ${kb(PHASE_14_BASELINE.raw)}）`)
   lines.push(
-    `Total boot gzip:   ${kb(bootGzip)}（Phase 14 ${kb(PHASE_14_BASELINE.gzip)} / Phase 15.0 ${kb(PHASE_15_0_BOOT.gzip)}）`,
+    `Total boot gzip:   ${kb(bootGzip)}（Phase 14 ${kb(PHASE_14_BASELINE.gzip)} / Phase 15.0 ${kb(PHASE_15_0_BOOT.gzip)} / Phase 15.2 ${kb(PHASE_15_2_BOOT.gzip)}）`,
+  )
+  lines.push(
+    `boot vs Phase 14:  raw ${((bootRaw / PHASE_14_BASELINE.raw) * 100).toFixed(1)}% / gzip ${((bootGzip / PHASE_14_BASELINE.gzip) * 100).toFixed(1)}%（catalog は Species 数に比例する）`,
   )
   lines.push('')
 

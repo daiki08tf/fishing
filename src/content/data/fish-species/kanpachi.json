@@ -3,7 +3,7 @@
   "japaneseName": "カンパチ（暫定）",
   "scientificName": "Seriola dumerili",
   "waterTypes": ["salt"],
-  "distribution": ["tokyo-area", "queensland"],
+  "distribution": ["izu-peninsula", "queensland", "tokyo-area"],
   "habitats": ["open", "reef"],
   "depthRange": {
     "min": 0,

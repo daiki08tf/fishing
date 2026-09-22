@@ -3,7 +3,7 @@
   "japaneseName": "ニホンウナギ（暫定）",
   "scientificName": "Anguilla japonica",
   "waterTypes": ["fresh", "brackish"],
-  "distribution": ["tokyo-area"],
+  "distribution": ["hokuriku-japan-sea", "izu-peninsula", "tohoku-pacific", "tokyo-area"],
   "habitats": ["river", "estuary"],
   "depthRange": {
     "min": 0,

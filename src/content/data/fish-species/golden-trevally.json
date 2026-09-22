@@ -3,7 +3,7 @@
   "japaneseName": "ゴールデントレバリー（暫定）",
   "scientificName": "Gnathanodon speciosus",
   "waterTypes": ["salt"],
-  "distribution": ["queensland"],
+  "distribution": ["baja-california", "okinawa", "queensland"],
   "habitats": ["reef", "open"],
   "depthRange": {
     "min": 0,

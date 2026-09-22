@@ -3,7 +3,7 @@
   "japaneseName": "オオクイーンフィッシュ（暫定）",
   "scientificName": "Scomberoides commersonnianus",
   "waterTypes": ["salt"],
-  "distribution": ["queensland"],
+  "distribution": ["okinawa", "queensland"],
   "habitats": ["coast", "open"],
   "depthRange": {
     "min": 0,

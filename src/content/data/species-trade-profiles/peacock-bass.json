@@ -1,0 +1,9 @@
+{
+  "speciesId": "peacock-bass",
+  "tradeStatus": "tradable",
+  "tradeTags": ["premium", "game_fish", "local_favorite", "everyday"],
+  "baseYenPerKg": 1350,
+  "minimumUnitValueYen": 240,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

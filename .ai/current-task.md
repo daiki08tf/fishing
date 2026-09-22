@@ -248,3 +248,21 @@ Phase 15.1 の「tackle が AppShell mount 直後に background fetch される�
 - boot raw 604.93 kB / boot gzip 170.62 kB（Phase 14 比 -21.2%）/
   initial chunk 511.99 kB / tackle chunk 201.31 kB（boot 非含有）
 - tests 91 files / 791
+
+
+## Phase 16（World Expansion I — Part 1）
+
+Phase 15 の Pack / lazy loading 基盤の上に世界を拡張した。今回は **Part 1**
+（世界の骨格 + 9 地域の representative content）。目標 200〜230 Species /
+130〜150 Spot へは Part 2 で積み増す。
+
+- 14 playable region（既存 planned 4 を要求 id へ統合 + 日本 4 地域 + 国際 5 地域）
+- species 82 → 144（新規 62。canonical global ID、既存 Species の distribution を拡張して再利用）
+- spot 53 → 99（新規 46。地域ごとに 3 種類以上の environment、public 4 + hidden 1 程度）
+- expedition 4 → 13、buyer 3 → 12、contact reward 12 → 30（rumor 15 / discover 35）
+- wild spot は外道込み 4 species 以上・1 種支配 75% 未満を検査
+  （`simulate:world-expansion` を新設し `npm run check` へ追加）
+- scientificName 重複は report（既知の 1 組のみ。ID 統合は Phase 17 候補）
+- boot: initial 541.83 kB / boot 644.70 kB（gzip 187.21 kB、Phase 14 比 raw -30% / gzip -13.5%）。
+  catalog が Species 数に比例するため analyzer は比率ではなく 200 kB 予算 + 内訳レポートに変更
+- tests 92 files / 802、validate:content 1053 records

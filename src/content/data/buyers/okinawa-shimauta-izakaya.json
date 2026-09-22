@@ -1,0 +1,28 @@
+{
+  "id": "okinawa-shimauta-izakaya",
+  "name": "沖縄 島唄の居酒屋",
+  "buyerType": "izakaya",
+  "regionId": "okinawa",
+  "description": "港町の小さな居酒屋。鮮度の良い礁魚を好む。PROVISIONAL — gameplay tuning。",
+  "pricingProfile": {
+    "baseMultiplier": 1.05,
+    "qualitySensitivity": 1.35,
+    "sizeSensitivity": 0.4,
+    "freshnessSensitivity": 0.65,
+    "volumeBonusPerExtraCatch": 0,
+    "maxVolumeBonus": 0
+  },
+  "trustProfile": {
+    "perTransactionBase": 2,
+    "qualityWeight": 6,
+    "maxPerTransaction": 6
+  },
+  "preferences": {
+    "preferredTags": ["delicate", "small_table_fish", "local_favorite", "white_fish"],
+    "neutralTags": ["premium", "oily", "everyday"],
+    "preferredTagMultiplier": 1.18,
+    "neutralTagMultiplier": 1,
+    "otherTagMultiplier": 0.86,
+    "localSourceMultiplier": 1.1
+  }
+}

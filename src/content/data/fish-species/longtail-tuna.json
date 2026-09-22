@@ -3,7 +3,7 @@
   "japaneseName": "ロングテールツナ（暫定）",
   "scientificName": "Thunnus tonggol",
   "waterTypes": ["salt"],
-  "distribution": ["queensland"],
+  "distribution": ["okinawa", "queensland"],
   "habitats": ["open"],
   "depthRange": {
     "min": 0,

@@ -1,0 +1,8 @@
+{
+  "id": "izu-harbor-coop-spot-hidden",
+  "contactId": "izu-harbor-coop",
+  "minTrust": 35,
+  "kind": "discover_spot",
+  "message": "港の常連が教えてくれた沖の根の場所。",
+  "targetId": "izu-hidden-outer-reef"
+}

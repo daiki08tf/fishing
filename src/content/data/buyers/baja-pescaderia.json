@@ -1,0 +1,28 @@
+{
+  "id": "baja-pescaderia",
+  "name": "バハ 鮮魚店",
+  "buyerType": "market",
+  "regionId": "baja-california",
+  "description": "海岸町の鮮魚店。温かい海の魚を広く扱う。PROVISIONAL — gameplay tuning。",
+  "pricingProfile": {
+    "baseMultiplier": 1.08,
+    "qualitySensitivity": 1,
+    "sizeSensitivity": 1.3,
+    "freshnessSensitivity": 0.55,
+    "volumeBonusPerExtraCatch": 0,
+    "maxVolumeBonus": 0
+  },
+  "trustProfile": {
+    "perTransactionBase": 1,
+    "qualityWeight": 7,
+    "maxPerTransaction": 7
+  },
+  "preferences": {
+    "preferredTags": ["premium", "large_fish", "game_fish"],
+    "neutralTags": ["white_fish", "delicate", "oily", "local_favorite", "everyday"],
+    "preferredTagMultiplier": 1.18,
+    "neutralTagMultiplier": 1,
+    "otherTagMultiplier": 0.85,
+    "localSourceMultiplier": 1.06
+  }
+}

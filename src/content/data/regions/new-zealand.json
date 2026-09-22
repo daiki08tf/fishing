@@ -1,18 +1,26 @@
 {
-  "id": "southland",
+  "id": "new-zealand",
   "countryId": "new-zealand",
-  "name": "サウスランド",
-  "stage": "planned",
+  "name": "ニュージーランド",
+  "stage": "playable",
   "dataStatus": "provisional",
   "base": {
-    "id": "southland-base",
-    "name": "Southland Fishing Base",
-    "areaId": "fiord"
+    "id": "nz-base",
+    "name": "New Zealand Base",
+    "areaId": "nz-south"
   },
   "areas": [
     {
-      "id": "fiord",
-      "name": "Fiord / River"
+      "id": "nz-south",
+      "name": "South Island"
+    },
+    {
+      "id": "nz-lakes",
+      "name": "Lakes"
+    },
+    {
+      "id": "nz-coast",
+      "name": "Coast"
     }
   ],
   "climate": {

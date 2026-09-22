@@ -1,0 +1,108 @@
+{
+  "id": "nishin",
+  "japaneseName": "ニシン（暫定）",
+  "scientificName": "Clupea pallasii",
+  "waterTypes": ["salt", "brackish"],
+  "habitats": ["nearshore", "open_water"],
+  "diet": ["plankton", "small_fish"],
+  "baits": ["cut"],
+  "lureCategories": ["jig", "spoon"],
+  "fishingMethods": ["bait", "light_lure"],
+  "distribution": ["tohoku-pacific", "hokuriku-japan-sea"],
+  "depthRange": {
+    "min": 0,
+    "max": 40
+  },
+  "temperatureRange": {
+    "min": 4,
+    "max": 16
+  },
+  "seasonality": {
+    "months": [2, 3, 4, 5]
+  },
+  "timeActivity": {
+    "periods": ["dawn", "morning", "evening"]
+  },
+  "tidePreference": {
+    "preference": "rising"
+  },
+  "currentPreference": {
+    "preference": "moderate"
+  },
+  "methodAffinity": {
+    "lure": 1.1,
+    "light_lure": 1.05,
+    "bait": 1,
+    "bottom": 0.85
+  },
+  "offeringAffinity": {
+    "minnow": 1.1,
+    "jig": 1.1,
+    "spoon": 1.05,
+    "stickbait": 1.05,
+    "cut": 1.05
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 26,
+    "dispersion": 0.1,
+    "minCm": 15,
+    "maxCm": 40
+  },
+  "weightModel": {
+    "lengthWeightA": 0.0068,
+    "lengthWeightB": 3.1
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "traitConfiguration": {
+    "trophyPercentileThreshold": 1,
+    "strongRunnerChance": 0.032
+  },
+  "fightProfile": {
+    "strength": 0.35,
+    "stamina": 0.45,
+    "speed": 0.4
+  },
+  "rarity": 1.3,
+  "environmentAffinity": {
+    "preferredSeasons": ["spring"],
+    "preferredTimeOfDay": ["dawn", "morning", "evening"],
+    "weatherAffinity": {
+      "clear": 1,
+      "cloudy": 1.05,
+      "light_rain": 1,
+      "rain": 0.95,
+      "windy": 0.9
+    },
+    "tideAffinity": {
+      "low": 0.9,
+      "rising": 1.15,
+      "high": 1.05,
+      "falling": 1
+    },
+    "flowAffinity": {
+      "none": 1,
+      "slow": 1,
+      "moderate": 1.1,
+      "strong": 1
+    },
+    "preferredTemperatureC": {
+      "min": 4,
+      "max": 16
+    }
+  },
+  "feedingProfile": {
+    "preferredOfferingRatio": 0.16,
+    "largeOfferingPenaltyStart": 0.28,
+    "maxOfferingRatio": 0.4,
+    "mouthSizeFactor": 1
+  },
+  "sourceRefs": [
+    {
+      "id": "phase16-provisional",
+      "title": "PROVISIONAL — Phase 16 gameplay tuning; 実在の生態・漁業規制の主張ではない"
+    }
+  ]
+}

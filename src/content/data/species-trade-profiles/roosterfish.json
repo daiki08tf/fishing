@@ -1,0 +1,9 @@
+{
+  "speciesId": "roosterfish",
+  "tradeStatus": "tradable",
+  "tradeTags": ["premium", "large_fish", "game_fish"],
+  "baseYenPerKg": 1760,
+  "minimumUnitValueYen": 320,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1.3
+}

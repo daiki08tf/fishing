@@ -1,0 +1,8 @@
+{
+  "id": "baja-pescaderia-spot-hidden",
+  "contactId": "baja-pescaderia",
+  "minTrust": 35,
+  "kind": "discover_spot",
+  "message": "店の常連が教えてくれた入り江の場所。",
+  "targetId": "baja-hidden-sierra-cove"
+}

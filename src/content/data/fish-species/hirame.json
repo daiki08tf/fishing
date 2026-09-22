@@ -3,7 +3,7 @@
   "japaneseName": "ヒラメ（暫定）",
   "scientificName": "Paralichthys olivaceus",
   "waterTypes": ["salt"],
-  "distribution": ["tokyo-area", "hokkaido"],
+  "distribution": ["hokkaido", "izu-peninsula", "tohoku-pacific", "tokyo-area"],
   "habitats": ["sand", "bottom"],
   "depthRange": {
     "min": 0,

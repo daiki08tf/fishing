@@ -3,7 +3,7 @@
   "japaneseName": "カジカ（暫定）",
   "scientificName": "Cottus pollux",
   "waterTypes": ["fresh"],
-  "distribution": ["tokyo-area", "hokkaido"],
+  "distribution": ["hokkaido", "tohoku-pacific", "tokyo-area"],
   "habitats": ["stream", "bottom"],
   "depthRange": {
     "min": 0,

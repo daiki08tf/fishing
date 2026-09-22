@@ -3,7 +3,7 @@
   "japaneseName": "シイラ（暫定）",
   "scientificName": "Coryphaena hippurus",
   "waterTypes": ["salt"],
-  "distribution": ["tokyo-area", "queensland"],
+  "distribution": ["baja-california", "queensland", "tokyo-area"],
   "habitats": ["surface", "open"],
   "depthRange": {
     "min": 0,

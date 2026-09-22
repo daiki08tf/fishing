@@ -1,0 +1,28 @@
+{
+  "id": "amazon-river-buyer",
+  "name": "アマゾン 川の買取商",
+  "buyerType": "wholesaler",
+  "regionId": "amazon-basin",
+  "description": "川沿いの買取商。大型淡水魚を扱う。PROVISIONAL — gameplay tuning。",
+  "pricingProfile": {
+    "baseMultiplier": 1,
+    "qualitySensitivity": 0.7,
+    "sizeSensitivity": 1.2,
+    "freshnessSensitivity": 0.5,
+    "volumeBonusPerExtraCatch": 0.015,
+    "maxVolumeBonus": 0.12
+  },
+  "trustProfile": {
+    "perTransactionBase": 3,
+    "qualityWeight": 3,
+    "maxPerTransaction": 5
+  },
+  "preferences": {
+    "preferredTags": ["large_fish", "game_fish", "local_favorite"],
+    "neutralTags": ["premium", "white_fish", "everyday"],
+    "preferredTagMultiplier": 1.15,
+    "neutralTagMultiplier": 1,
+    "otherTagMultiplier": 0.9,
+    "localSourceMultiplier": 1.08
+  }
+}

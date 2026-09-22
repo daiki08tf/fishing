@@ -1,0 +1,9 @@
+{
+  "speciesId": "yellow-eyed-mullet",
+  "tradeStatus": "tradable",
+  "tradeTags": ["local_favorite", "everyday"],
+  "baseYenPerKg": 480,
+  "minimumUnitValueYen": 90,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

@@ -90,9 +90,14 @@ export const simulateTradeNetwork = (): TradeSimulationResult => {
       candidate.fishTable.length > 0,
   )
   const buyers = content.buyers
-  const izakaya = buyers.find((entry) => entry.buyerType === 'izakaya')
-  const wholesaler = buyers.find((entry) => entry.buyerType === 'wholesaler')
-  const market = buyers.find((entry) => entry.buyerType === 'market')
+  /*
+   * Phase 16 で地域ごとの Buyer が増えたので、baseline は必ず Tokyo の Buyer を使う
+   * （Buyer の地域と現在地域が一致しないと Domain が売却を拒否するため）。
+   */
+  const tokyoBuyers = buyers.filter((entry) => String(entry.regionId) === 'tokyo-area')
+  const izakaya = tokyoBuyers.find((entry) => entry.buyerType === 'izakaya')
+  const wholesaler = tokyoBuyers.find((entry) => entry.buyerType === 'wholesaler')
+  const market = tokyoBuyers.find((entry) => entry.buyerType === 'market')
 
   if (
     spot === undefined ||

@@ -1,0 +1,8 @@
+{
+  "id": "thailand-river-market-spot-hidden",
+  "contactId": "thailand-river-market",
+  "minTrust": 35,
+  "kind": "discover_spot",
+  "message": "市場の知り合いが教えてくれた潟の場所。",
+  "targetId": "thailand-hidden-floodplain-lagoon"
+}

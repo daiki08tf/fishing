@@ -3,7 +3,7 @@
   "japaneseName": "バラマンディ（暫定）",
   "scientificName": "Lates calcarifer",
   "waterTypes": ["fresh", "brackish", "salt"],
-  "distribution": ["queensland"],
+  "distribution": ["queensland", "thailand"],
   "habitats": ["estuary", "mangrove", "river"],
   "depthRange": {
     "min": 0,

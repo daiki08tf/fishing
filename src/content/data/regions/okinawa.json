@@ -1,0 +1,39 @@
+{
+  "id": "okinawa",
+  "countryId": "japan",
+  "name": "沖縄",
+  "stage": "playable",
+  "dataStatus": "provisional",
+  "base": {
+    "id": "okinawa-base",
+    "name": "沖縄 ベース",
+    "areaId": "okinawa-main"
+  },
+  "areas": [
+    {
+      "id": "okinawa-main",
+      "name": "本島"
+    },
+    {
+      "id": "okinawa-outer",
+      "name": "離島"
+    },
+    {
+      "id": "okinawa-mangrove",
+      "name": "マングローブ"
+    }
+  ],
+  "climate": {
+    "annualMeanWaterC": 26,
+    "seasonalSwingC": 6,
+    "weatherWeights": {
+      "clear": 34,
+      "cloudy": 30,
+      "light_rain": 16,
+      "rain": 14,
+      "windy": 6
+    },
+    "tidePhaseOffset": 0.1,
+    "tideRange": "large"
+  }
+}

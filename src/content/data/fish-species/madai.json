@@ -3,7 +3,7 @@
   "japaneseName": "マダイ（暫定）",
   "scientificName": "Pagrus major",
   "waterTypes": ["salt"],
-  "distribution": ["tokyo-area"],
+  "distribution": ["izu-peninsula", "tokyo-area"],
   "habitats": ["reef", "deep"],
   "depthRange": {
     "min": 0,

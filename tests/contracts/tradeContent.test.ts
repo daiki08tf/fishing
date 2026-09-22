@@ -50,7 +50,7 @@ describe('runtime trade content', () => {
     )
 
     expect(missing).toEqual([])
-    expect(content.speciesTradeProfiles).toHaveLength(82)
+    expect(content.speciesTradeProfiles).toHaveLength(144)
   })
 
   it('gives every tradable profile at least one known tradeTag', () => {
@@ -64,7 +64,7 @@ describe('runtime trade content', () => {
 
     expect(untagged).toEqual([])
     expect(unknown).toEqual([])
-    // 全 82 species に妥当な tradeTags が入っている。
+    // 全 runtime species に妥当な tradeTags が入っている。
     expect(content.speciesTradeProfiles.every((profile) => profile.tradeTags.length > 0)).toBe(true)
   })
 

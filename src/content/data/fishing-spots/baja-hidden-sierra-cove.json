@@ -1,0 +1,108 @@
+{
+  "id": "baja-hidden-sierra-cove",
+  "name": "バハ 隠れた入り江（要情報・暫定）",
+  "regionId": "baja-california",
+  "areaId": "baja-south",
+  "environment": "nearshore",
+  "dataStatus": "provisional",
+  "visibility": "hidden",
+  "access": [
+    {
+      "kind": "knowledge",
+      "minimum": 20
+    }
+  ],
+  "travelOptions": [
+    {
+      "id": "rental_boat-1",
+      "transportTypes": ["rental_boat"],
+      "requiredCapabilities": ["boat_required"],
+      "features": [],
+      "baseMinutes": 60,
+      "distanceKm": 16,
+      "baseOneWayCost": 12000
+    }
+  ],
+  "habitatTags": ["open_water", "surf"],
+  "fishingZones": [
+    {
+      "id": "near",
+      "name": "近距離",
+      "castDistanceM": {
+        "min": 0,
+        "max": 25
+      },
+      "habitatTags": ["open_water", "surf"]
+    },
+    {
+      "id": "far",
+      "name": "遠投",
+      "castDistanceM": {
+        "min": 25,
+        "max": 70
+      },
+      "habitatTags": ["open_water", "surf"]
+    }
+  ],
+  "fishTable": [
+    {
+      "speciesId": "roosterfish",
+      "basePresence": 0.4,
+      "zoneAffinity": {
+        "near": 1.3,
+        "far": 0.85
+      }
+    },
+    {
+      "speciesId": "california-yellowtail",
+      "basePresence": 0.4,
+      "zoneAffinity": {
+        "near": 1.3,
+        "far": 0.85
+      }
+    },
+    {
+      "speciesId": "leopard-grouper",
+      "basePresence": 0.35,
+      "zoneAffinity": {
+        "near": 1.3,
+        "far": 0.85
+      }
+    },
+    {
+      "speciesId": "sierra-mackerel",
+      "basePresence": 0.35,
+      "zoneAffinity": {
+        "near": 1.3,
+        "far": 0.85
+      }
+    },
+    {
+      "speciesId": "california-halibut",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "near": 0.85,
+        "far": 1.3
+      }
+    }
+  ],
+  "knowledgeConfig": {
+    "reveals": [
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "time_pattern",
+        "minKnowledge": 40
+      }
+    ]
+  },
+  "regulations": [],
+  "sourceRefs": [
+    {
+      "id": "phase16-provisional",
+      "title": "PROVISIONAL — Phase 16 gameplay content; 実在の釣り場・立入可否の主張ではない"
+    }
+  ]
+}

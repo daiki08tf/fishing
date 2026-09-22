@@ -1,0 +1,108 @@
+{
+  "id": "peacock-bass",
+  "japaneseName": "ピーコックバス（暫定）",
+  "scientificName": "Cichla ocellaris",
+  "waterTypes": ["fresh"],
+  "habitats": ["lake", "river", "floodplain"],
+  "diet": ["small_fish"],
+  "baits": ["live", "cut"],
+  "lureCategories": ["minnow", "topwater", "soft_plastic"],
+  "fishingMethods": ["lure"],
+  "distribution": ["amazon-basin"],
+  "depthRange": {
+    "min": 0,
+    "max": 10
+  },
+  "temperatureRange": {
+    "min": 24,
+    "max": 32
+  },
+  "seasonality": {
+    "months": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+  },
+  "timeActivity": {
+    "periods": ["dawn", "morning", "evening"]
+  },
+  "tidePreference": {
+    "preference": "rising"
+  },
+  "currentPreference": {
+    "preference": "moderate"
+  },
+  "methodAffinity": {
+    "lure": 1.15,
+    "bait": 1.1,
+    "light_lure": 0.95,
+    "bottom": 1.05
+  },
+  "offeringAffinity": {
+    "minnow": 1.15,
+    "soft_plastic": 1.15,
+    "topwater": 1.1,
+    "dough": 1.05,
+    "cut": 1.05
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 45,
+    "dispersion": 0.15,
+    "minCm": 20,
+    "maxCm": 75
+  },
+  "weightModel": {
+    "lengthWeightA": 0.0125,
+    "lengthWeightB": 3.05
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "traitConfiguration": {
+    "trophyPercentileThreshold": 1,
+    "strongRunnerChance": 0.064
+  },
+  "fightProfile": {
+    "strength": 0.8,
+    "stamina": 0.75,
+    "speed": 0.8
+  },
+  "rarity": 2.9,
+  "environmentAffinity": {
+    "preferredSeasons": ["summer", "autumn"],
+    "preferredTimeOfDay": ["dawn", "morning", "evening"],
+    "weatherAffinity": {
+      "clear": 1,
+      "cloudy": 1.05,
+      "light_rain": 1,
+      "rain": 0.95,
+      "windy": 0.9
+    },
+    "tideAffinity": {
+      "low": 1,
+      "rising": 1,
+      "high": 1,
+      "falling": 1
+    },
+    "flowAffinity": {
+      "none": 1,
+      "slow": 1.1,
+      "moderate": 1.05,
+      "strong": 0.95
+    },
+    "preferredTemperatureC": {
+      "min": 24,
+      "max": 32
+    }
+  },
+  "feedingProfile": {
+    "preferredOfferingRatio": 0.18,
+    "largeOfferingPenaltyStart": 0.3,
+    "maxOfferingRatio": 0.44,
+    "mouthSizeFactor": 1.15
+  },
+  "sourceRefs": [
+    {
+      "id": "phase16-provisional",
+      "title": "PROVISIONAL — Phase 16 gameplay tuning; 実在の生態・漁業規制の主張ではない"
+    }
+  ]
+}

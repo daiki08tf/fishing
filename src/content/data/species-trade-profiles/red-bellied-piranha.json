@@ -1,0 +1,9 @@
+{
+  "speciesId": "red-bellied-piranha",
+  "tradeStatus": "tradable",
+  "tradeTags": ["local_favorite", "everyday"],
+  "baseYenPerKg": 590,
+  "minimumUnitValueYen": 110,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 0.85
+}

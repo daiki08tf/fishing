@@ -1,0 +1,120 @@
+{
+  "id": "okinawa-hidden-blue-cove",
+  "name": "沖縄 隠れた入り江（要情報・暫定）",
+  "regionId": "okinawa",
+  "areaId": "okinawa-outer",
+  "environment": "nearshore",
+  "dataStatus": "provisional",
+  "visibility": "hidden",
+  "access": [
+    {
+      "kind": "capability",
+      "capability": "kayak_launch"
+    },
+    {
+      "kind": "knowledge",
+      "minimum": 20
+    }
+  ],
+  "travelOptions": [
+    {
+      "id": "kayak-1",
+      "transportTypes": ["kayak"],
+      "requiredCapabilities": ["kayak_launch"],
+      "features": [],
+      "baseMinutes": 45,
+      "distanceKm": 8,
+      "baseOneWayCost": 0
+    }
+  ],
+  "habitatTags": ["open_water", "surf"],
+  "fishingZones": [
+    {
+      "id": "near",
+      "name": "近距離",
+      "castDistanceM": {
+        "min": 0,
+        "max": 25
+      },
+      "habitatTags": ["open_water", "surf"]
+    },
+    {
+      "id": "far",
+      "name": "遠投",
+      "castDistanceM": {
+        "min": 25,
+        "max": 70
+      },
+      "habitatTags": ["open_water", "surf"]
+    }
+  ],
+  "fishTable": [
+    {
+      "speciesId": "akahata",
+      "basePresence": 0.4,
+      "zoneAffinity": {
+        "near": 1.3,
+        "far": 0.85
+      }
+    },
+    {
+      "speciesId": "kijihata",
+      "basePresence": 0.35,
+      "zoneAffinity": {
+        "near": 1.3,
+        "far": 0.85
+      }
+    },
+    {
+      "speciesId": "golden-trevally",
+      "basePresence": 0.35,
+      "zoneAffinity": {
+        "near": 1.3,
+        "far": 0.85
+      }
+    },
+    {
+      "speciesId": "red-emperor",
+      "basePresence": 0.35,
+      "zoneAffinity": {
+        "near": 1.3,
+        "far": 0.85
+      }
+    },
+    {
+      "speciesId": "coral-trout",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "near": 1.3,
+        "far": 0.85
+      }
+    },
+    {
+      "speciesId": "longtail-tuna",
+      "basePresence": 0.2,
+      "zoneAffinity": {
+        "near": 1.3,
+        "far": 0.85
+      }
+    }
+  ],
+  "knowledgeConfig": {
+    "reveals": [
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "time_pattern",
+        "minKnowledge": 40
+      }
+    ]
+  },
+  "regulations": [],
+  "sourceRefs": [
+    {
+      "id": "phase16-provisional",
+      "title": "PROVISIONAL — Phase 16 gameplay content; 実在の釣り場・立入可否の主張ではない"
+    }
+  ]
+}

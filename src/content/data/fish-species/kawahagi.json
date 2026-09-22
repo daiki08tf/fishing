@@ -3,7 +3,7 @@
   "japaneseName": "カワハギ（暫定）",
   "scientificName": "Stephanolepis cirrhifer",
   "waterTypes": ["salt"],
-  "distribution": ["tokyo-area"],
+  "distribution": ["izu-peninsula", "tokyo-area"],
   "habitats": ["reef", "pier"],
   "depthRange": {
     "min": 0,

@@ -1,0 +1,9 @@
+{
+  "speciesId": "arapaima",
+  "tradeStatus": "tradable",
+  "tradeTags": ["premium", "large_fish", "local_favorite", "everyday"],
+  "baseYenPerKg": 2550,
+  "minimumUnitValueYen": 460,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1.3
+}

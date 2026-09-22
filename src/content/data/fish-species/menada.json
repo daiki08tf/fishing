@@ -1,0 +1,108 @@
+{
+  "id": "menada",
+  "japaneseName": "メナダ（暫定）",
+  "scientificName": "Planiliza haematocheila",
+  "waterTypes": ["brackish", "fresh", "salt"],
+  "habitats": ["estuary", "lagoon", "bottom"],
+  "diet": ["algae", "detritus"],
+  "baits": ["dough", "worm"],
+  "lureCategories": ["soft_plastic"],
+  "fishingMethods": ["bait"],
+  "distribution": ["hokuriku-japan-sea", "izu-peninsula", "okinawa", "tohoku-pacific"],
+  "depthRange": {
+    "min": 0,
+    "max": 15
+  },
+  "temperatureRange": {
+    "min": 14,
+    "max": 28
+  },
+  "seasonality": {
+    "months": [6, 7, 8, 9, 10, 11]
+  },
+  "timeActivity": {
+    "periods": ["dawn", "day", "evening"]
+  },
+  "tidePreference": {
+    "preference": "rising"
+  },
+  "currentPreference": {
+    "preference": "moderate"
+  },
+  "methodAffinity": {
+    "bottom": 1.2,
+    "bait": 1.1,
+    "lure": 0.95,
+    "light_lure": 0.9
+  },
+  "offeringAffinity": {
+    "cut": 1.15,
+    "jig": 1.05,
+    "soft_plastic": 1,
+    "worm": 1.05,
+    "live": 1.1
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 30,
+    "dispersion": 0.12,
+    "minCm": 15,
+    "maxCm": 55
+  },
+  "weightModel": {
+    "lengthWeightA": 0.011,
+    "lengthWeightB": 3.05
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "traitConfiguration": {
+    "trophyPercentileThreshold": 1,
+    "strongRunnerChance": 0.04
+  },
+  "fightProfile": {
+    "strength": 0.5,
+    "stamina": 0.55,
+    "speed": 0.5
+  },
+  "rarity": 1.2,
+  "environmentAffinity": {
+    "preferredSeasons": ["summer", "autumn"],
+    "preferredTimeOfDay": ["dawn", "daytime", "evening"],
+    "weatherAffinity": {
+      "clear": 1,
+      "cloudy": 1.05,
+      "light_rain": 1,
+      "rain": 0.95,
+      "windy": 0.9
+    },
+    "tideAffinity": {
+      "low": 1,
+      "rising": 1.05,
+      "high": 1.1,
+      "falling": 1
+    },
+    "flowAffinity": {
+      "none": 1,
+      "slow": 1.05,
+      "moderate": 1.05,
+      "strong": 0.95
+    },
+    "preferredTemperatureC": {
+      "min": 14,
+      "max": 28
+    }
+  },
+  "feedingProfile": {
+    "preferredOfferingRatio": 0.14,
+    "largeOfferingPenaltyStart": 0.26,
+    "maxOfferingRatio": 0.4,
+    "mouthSizeFactor": 1.05
+  },
+  "sourceRefs": [
+    {
+      "id": "phase16-provisional",
+      "title": "PROVISIONAL — Phase 16 gameplay tuning; 実在の生態・漁業規制の主張ではない"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "speciesId": "australasian-snapper",
+  "tradeStatus": "tradable",
+  "tradeTags": ["delicate", "local_favorite", "white_fish", "everyday"],
+  "baseYenPerKg": 1010,
+  "minimumUnitValueYen": 180,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

@@ -1,0 +1,9 @@
+{
+  "speciesId": "menada",
+  "tradeStatus": "tradable",
+  "tradeTags": ["local_favorite", "everyday", "white_fish"],
+  "baseYenPerKg": 450,
+  "minimumUnitValueYen": 80,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1
+}

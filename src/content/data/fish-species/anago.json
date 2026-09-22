@@ -1,0 +1,106 @@
+{
+  "id": "anago",
+  "japaneseName": "マアナゴ（暫定）",
+  "scientificName": "Conger myriaster",
+  "waterTypes": ["salt"],
+  "habitats": ["sand", "bottom", "structure"],
+  "diet": ["small_fish", "crustacean"],
+  "baits": ["cut", "worm"],
+  "lureCategories": ["soft_plastic"],
+  "fishingMethods": ["bottom", "bait"],
+  "distribution": ["izu-peninsula", "tohoku-pacific"],
+  "depthRange": {
+    "min": 5,
+    "max": 80
+  },
+  "temperatureRange": {
+    "min": 10,
+    "max": 22
+  },
+  "seasonality": {
+    "months": [5, 6, 7, 8, 9, 10, 11]
+  },
+  "timeActivity": {
+    "periods": ["night", "evening", "dawn"]
+  },
+  "tidePreference": {
+    "preference": "rising"
+  },
+  "currentPreference": {
+    "preference": "moderate"
+  },
+  "methodAffinity": {
+    "bottom": 1.2,
+    "bait": 1.2,
+    "lure": 0.9,
+    "light_lure": 0.85
+  },
+  "offeringAffinity": {
+    "cut": 1.15,
+    "worm": 1.15,
+    "soft_plastic": 0.95
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 45,
+    "dispersion": 0.12,
+    "minCm": 25,
+    "maxCm": 90
+  },
+  "weightModel": {
+    "lengthWeightA": 0.0012,
+    "lengthWeightB": 3.2
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "traitConfiguration": {
+    "trophyPercentileThreshold": 1,
+    "strongRunnerChance": 0.024
+  },
+  "fightProfile": {
+    "strength": 0.4,
+    "stamina": 0.5,
+    "speed": 0.3
+  },
+  "rarity": 1.6,
+  "environmentAffinity": {
+    "preferredSeasons": ["summer", "autumn"],
+    "preferredTimeOfDay": ["night", "evening", "dawn"],
+    "weatherAffinity": {
+      "clear": 1,
+      "cloudy": 1.05,
+      "light_rain": 1,
+      "rain": 0.95,
+      "windy": 0.9
+    },
+    "tideAffinity": {
+      "low": 1,
+      "rising": 1.1,
+      "high": 1.05,
+      "falling": 1
+    },
+    "flowAffinity": {
+      "none": 1,
+      "slow": 1.1,
+      "moderate": 1,
+      "strong": 0.9
+    },
+    "preferredTemperatureC": {
+      "min": 10,
+      "max": 22
+    }
+  },
+  "feedingProfile": {
+    "preferredOfferingRatio": 0.12,
+    "largeOfferingPenaltyStart": 0.24,
+    "maxOfferingRatio": 0.36,
+    "mouthSizeFactor": 1.1
+  },
+  "sourceRefs": [
+    {
+      "id": "phase16-provisional",
+      "title": "PROVISIONAL — Phase 16 gameplay tuning; 実在の生態・漁業規制の主張ではない"
+    }
+  ]
+}

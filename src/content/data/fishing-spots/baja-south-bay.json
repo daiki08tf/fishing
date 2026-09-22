@@ -1,0 +1,111 @@
+{
+  "id": "baja-south-bay",
+  "name": "バハ 南 湾内（暫定）",
+  "regionId": "baja-california",
+  "areaId": "baja-south",
+  "environment": "bay_shore",
+  "dataStatus": "provisional",
+  "access": [],
+  "travelOptions": [
+    {
+      "id": "walk-1",
+      "transportTypes": ["walk"],
+      "requiredCapabilities": ["reachable_on_foot"],
+      "features": [],
+      "baseMinutes": 20,
+      "distanceKm": 2,
+      "baseOneWayCost": 0
+    },
+    {
+      "id": "rental_boat-2",
+      "transportTypes": ["rental_boat"],
+      "requiredCapabilities": ["boat_required"],
+      "features": [],
+      "baseMinutes": 45,
+      "distanceKm": 10,
+      "baseOneWayCost": 9000
+    }
+  ],
+  "habitatTags": ["bay", "pier"],
+  "fishingZones": [
+    {
+      "id": "shoreline",
+      "name": "岸壁際",
+      "castDistanceM": {
+        "min": 0,
+        "max": 10
+      },
+      "habitatTags": ["bay", "pier"]
+    },
+    {
+      "id": "open",
+      "name": "沖目",
+      "castDistanceM": {
+        "min": 15,
+        "max": 45
+      },
+      "habitatTags": ["bay", "pier"]
+    }
+  ],
+  "fishTable": [
+    {
+      "speciesId": "california-yellowtail",
+      "basePresence": 0.35,
+      "zoneAffinity": {
+        "shoreline": 1.3,
+        "open": 0.85
+      }
+    },
+    {
+      "speciesId": "leopard-grouper",
+      "basePresence": 0.35,
+      "zoneAffinity": {
+        "shoreline": 1.3,
+        "open": 0.85
+      }
+    },
+    {
+      "speciesId": "gulf-corvina",
+      "basePresence": 0.35,
+      "zoneAffinity": {
+        "shoreline": 0.85,
+        "open": 1.3
+      }
+    },
+    {
+      "speciesId": "mahi-mahi",
+      "basePresence": 0.2,
+      "zoneAffinity": {
+        "shoreline": 1.3,
+        "open": 0.85
+      }
+    },
+    {
+      "speciesId": "golden-trevally",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "shoreline": 1.3,
+        "open": 0.85
+      }
+    }
+  ],
+  "knowledgeConfig": {
+    "reveals": [
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "time_pattern",
+        "minKnowledge": 40
+      }
+    ]
+  },
+  "regulations": [],
+  "sourceRefs": [
+    {
+      "id": "phase16-provisional",
+      "title": "PROVISIONAL — Phase 16 gameplay content; 実在の釣り場・立入可否の主張ではない"
+    }
+  ]
+}

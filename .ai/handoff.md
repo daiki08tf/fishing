@@ -1,10 +1,23 @@
 # Handoff
 
-最終更新: Phase 15.2（Startup Network Final Hardening）完了
-（branch `phase-15-content-scale-foundation`、PR #17）
+最終更新: Phase 16（World Expansion I — Part 1）完了
+（branch `phase-16-world-expansion-i`）
 
 > 現在状態は Phase 15 → 14 → 13 → 12 → 11 → 10.2 → 10.1 → 10 の順で優先する。
 > 詳細は `.ai/current-task.md` と `docs/DECISIONS.md` も参照。
+
+## Phase 16（World Expansion I — Part 1）
+
+- 14 playable region / 144 species / 99 spot / 13 expedition / 12 buyer / 30 reward
+- 新規 Species 62（canonical global ID。既存 Species は distribution を拡張して再利用）
+- 新規 Spot 46（地域ごとに 3+ environment、public 4 + hidden 1 程度、外道込み 4+ species）
+- 各地域に Buyer + rumor(Trust15) + discover_spot(Trust35) の Hidden Spot を用意
+- `simulate:world-expansion` を追加（spot 構成 / hidden discovery / region 配線 /
+  species identity / scientificName 重複レポート）し `npm run check` へ組み込み
+- boot: initial 541.83 kB / boot 644.70 kB（gzip 187.21）。analyzer は 200 kB 予算 + 内訳
+- tests 92 files / 802、validate:content 1053 records
+- Part 2 候補: Species +60〜90 / Spot +30〜50（目標 200〜230 / 130〜150）、
+  giant-queenfish と queenfish の ID 統合、既存 Spot の外道拡充
 
 ## Phase 15.2（Startup Network Final Hardening）
 

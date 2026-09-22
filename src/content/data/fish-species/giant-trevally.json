@@ -3,7 +3,7 @@
   "japaneseName": "ジャイアントトレバリー（暫定）",
   "scientificName": "Caranx ignobilis",
   "waterTypes": ["salt"],
-  "distribution": ["queensland"],
+  "distribution": ["okinawa", "queensland"],
   "habitats": ["reef", "open"],
   "depthRange": {
     "min": 0,

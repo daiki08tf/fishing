@@ -624,3 +624,45 @@ Phase 15.1 のレビューで「tackle は required ではないが AppShell mou
 
 実測: boot raw 604.93 kB / boot gzip 170.62 kB（Phase 14 比 -21.2%、Phase 15.1 と同じ水準を
 immediate network set でも維持）。tackle chunk は 201.31 kB（gzip 32.05）で **boot に含まれない**。
+
+## Phase 16 — World Expansion I（Japan + International）
+
+Phase 15 の Content Pack / Region lazy loading / Species shard / 軽量カタログ /
+Codex scale 基盤を、実際の大規模コンテンツで使う最初の Phase。
+**今回は Part 1**（世界の骨格 + 9 地域の representative content）であり、
+目標の 200〜230 Species / 130〜150 Spot へは Part 2 で積み増す。
+
+決定:
+
+- **世界は 14 playable Region**（Tokyo / Hokkaido / Alaska / British Columbia /
+  Queensland + Izu Peninsula / Tohoku Pacific / Hokuriku Japan Sea / Okinawa /
+  Norway Fjords / New Zealand / Baja California / Thailand / Amazon Basin）。
+  既存の planned region は Phase 16 の要求 id へ統合した
+  （nordland→norway-fjords / southland→new-zealand /
+  gulf-of-thailand→thailand / amazonas→amazon-basin。planned は Save に載らないため移行不要）
+- **Species ID は今後も canonical global。** regional prefix は禁止で、
+  同じ生物に 2 つの ID を作らない。Region 差は occurrence / presence / seasonality /
+  temperature / size / zone affinity / habitat / timing で表現する
+- **Spot は架空 / 一般化 / 複合**（実在の秘密ポイントや正確な座標を扱わない）。
+  各 Phase 16 地域は public 4 + hidden 1（Amazon は 6）で、
+  Region ごとに 3 種類以上の environment を持つ
+- **外道を普通に混ぜる。** Phase 16 の野生 Spot は 4 Species 以上、
+  1 種が encounter weight の 75% を超えないことを `simulate:world-expansion` が検査する
+  （managed pond / 既存 Phase の Spot は警告に留める）
+- **Discovery と Access は分離したまま。** 各地域に 1 つ以上の Hidden Spot を置き、
+  必ず discover_spot 報酬（Trust 35）から発見できる。噂（intel, Trust 15）は
+  Spot 名や正確な場所を明かさない
+- **Trust / Rumor / Buyer も地域ごとに用意。** 9 地域に Buyer を 1 つずつ追加し、
+  既存の tag affinity / local source bonus / region enforcement をそのまま使う
+- **PROVISIONAL を維持。** 追加した分布・季節・サイズ・価格・fight tuning は
+  gameplay PROVISIONAL であり、sourceRefs にその旨を明記する。
+  実在の漁業規制・保護区・立入可否の主張はしない
+- **scientificName 重複は report（warning）。** 既存 Content に 1 組
+  （`giant-queenfish` / `queenfish` = Scomberoides commersonnianus）があり、
+  ID 統合は Save / Codex / Trade を跨ぐ作業のため、Phase 16 では検出と報告に留め、
+  新規重複を作らないことを Hard check にする
+
+実測（Part 1）: species 82 → **144** / playable region 5 → **14** / spot 53 → **99** /
+expedition 4 → **13** / buyer 3 → **12** / contact reward 12 → **30**。
+boot は catalog が Species 数に比例するため 170.62 → 187.21 kB gzip
+（Phase 14 比 -13.5%、raw は 644.70 / 925.44 = -30%）。

@@ -1,0 +1,108 @@
+{
+  "id": "california-yellowtail",
+  "japaneseName": "カリフォルニアヒラマサ（暫定）",
+  "scientificName": "Seriola dorsalis",
+  "waterTypes": ["salt"],
+  "habitats": ["nearshore", "structure", "open_water"],
+  "diet": ["small_fish", "squid"],
+  "baits": ["live", "cut"],
+  "lureCategories": ["jig", "stickbait"],
+  "fishingMethods": ["lure"],
+  "distribution": ["baja-california"],
+  "depthRange": {
+    "min": 0,
+    "max": 80
+  },
+  "temperatureRange": {
+    "min": 14,
+    "max": 24
+  },
+  "seasonality": {
+    "months": [3, 4, 5, 6, 7, 8, 9, 10, 11]
+  },
+  "timeActivity": {
+    "periods": ["dawn", "morning", "evening"]
+  },
+  "tidePreference": {
+    "preference": "rising"
+  },
+  "currentPreference": {
+    "preference": "moderate"
+  },
+  "methodAffinity": {
+    "lure": 1.1,
+    "light_lure": 1.05,
+    "bait": 1,
+    "bottom": 0.85
+  },
+  "offeringAffinity": {
+    "minnow": 1.1,
+    "jig": 1.1,
+    "spoon": 1.05,
+    "stickbait": 1.05,
+    "cut": 1.05
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 80,
+    "dispersion": 0.17,
+    "minCm": 45,
+    "maxCm": 140
+  },
+  "weightModel": {
+    "lengthWeightA": 0.0085,
+    "lengthWeightB": 3.05
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "traitConfiguration": {
+    "trophyPercentileThreshold": 1,
+    "strongRunnerChance": 0.068
+  },
+  "fightProfile": {
+    "strength": 0.85,
+    "stamina": 0.8,
+    "speed": 0.85
+  },
+  "rarity": 3,
+  "environmentAffinity": {
+    "preferredSeasons": ["spring", "summer", "autumn"],
+    "preferredTimeOfDay": ["dawn", "morning", "evening"],
+    "weatherAffinity": {
+      "clear": 1,
+      "cloudy": 1.05,
+      "light_rain": 1,
+      "rain": 0.95,
+      "windy": 0.9
+    },
+    "tideAffinity": {
+      "low": 0.9,
+      "rising": 1.15,
+      "high": 1.05,
+      "falling": 1
+    },
+    "flowAffinity": {
+      "none": 1,
+      "slow": 1,
+      "moderate": 1.1,
+      "strong": 1
+    },
+    "preferredTemperatureC": {
+      "min": 14,
+      "max": 24
+    }
+  },
+  "feedingProfile": {
+    "preferredOfferingRatio": 0.16,
+    "largeOfferingPenaltyStart": 0.28,
+    "maxOfferingRatio": 0.4,
+    "mouthSizeFactor": 1
+  },
+  "sourceRefs": [
+    {
+      "id": "phase16-provisional",
+      "title": "PROVISIONAL — Phase 16 gameplay tuning; 実在の生態・漁業規制の主張ではない"
+    }
+  ]
+}

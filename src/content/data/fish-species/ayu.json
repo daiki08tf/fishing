@@ -3,7 +3,7 @@
   "japaneseName": "アユ（暫定）",
   "scientificName": "Plecoglossus altivelis",
   "waterTypes": ["fresh", "brackish"],
-  "distribution": ["tokyo-area", "hokkaido"],
+  "distribution": ["hokkaido", "hokuriku-japan-sea", "tohoku-pacific", "tokyo-area"],
   "habitats": ["river", "current"],
   "depthRange": {
     "min": 0,

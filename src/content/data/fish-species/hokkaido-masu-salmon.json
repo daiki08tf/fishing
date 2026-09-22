@@ -2,7 +2,7 @@
   "id": "masu-salmon",
   "japaneseName": "サクラマス（暫定）",
   "waterTypes": ["fresh", "salt"],
-  "distribution": ["hokkaido"],
+  "distribution": ["hokkaido", "hokuriku-japan-sea", "tohoku-pacific"],
   "habitats": ["river", "coast"],
   "depthRange": {
     "min": 1,

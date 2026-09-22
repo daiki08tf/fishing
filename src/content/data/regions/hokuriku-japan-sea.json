@@ -1,0 +1,39 @@
+{
+  "id": "hokuriku-japan-sea",
+  "countryId": "japan",
+  "name": "北陸・日本海",
+  "stage": "playable",
+  "dataStatus": "provisional",
+  "base": {
+    "id": "hokuriku-base",
+    "name": "北陸 ベース",
+    "areaId": "hokuriku-central"
+  },
+  "areas": [
+    {
+      "id": "hokuriku-north",
+      "name": "新潟"
+    },
+    {
+      "id": "hokuriku-central",
+      "name": "富山・石川"
+    },
+    {
+      "id": "hokuriku-south",
+      "name": "福井"
+    }
+  ],
+  "climate": {
+    "annualMeanWaterC": 16,
+    "seasonalSwingC": 11,
+    "weatherWeights": {
+      "clear": 20,
+      "cloudy": 36,
+      "light_rain": 18,
+      "rain": 16,
+      "windy": 10
+    },
+    "tidePhaseOffset": 0.45,
+    "tideRange": "small"
+  }
+}

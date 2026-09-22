@@ -1,0 +1,9 @@
+{
+  "speciesId": "giant-snakehead",
+  "tradeStatus": "tradable",
+  "tradeTags": ["premium", "large_fish", "local_favorite", "everyday"],
+  "baseYenPerKg": 1350,
+  "minimumUnitValueYen": 240,
+  "qualitySensitivity": 1,
+  "sizeSensitivity": 1.3
+}

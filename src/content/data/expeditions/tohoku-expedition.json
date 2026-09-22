@@ -1,0 +1,29 @@
+{
+  "id": "tohoku-expedition",
+  "regionId": "tohoku-pacific",
+  "name": "東北遠征",
+  "dataStatus": "provisional",
+  "flight": {
+    "transportType": "domestic_flight",
+    "name": "国内線 東京→東北",
+    "oneWayCostYen": 18000,
+    "oneWayMinutes": 120
+  },
+  "nights": {
+    "default": 3,
+    "min": 2,
+    "max": 7
+  },
+  "lodgings": [
+    {
+      "id": "tohoku-business-hotel",
+      "name": "Business Hotel",
+      "nightlyCostYen": 7500
+    },
+    {
+      "id": "tohoku-hama-lodge",
+      "name": "Hama Lodge",
+      "nightlyCostYen": 13000
+    }
+  ]
+}
