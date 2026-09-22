@@ -78,7 +78,7 @@ describe('fish box cards', () => {
     expect(html).toContain('0.400 kg')
     expect(html).toContain('上位 30%')
     expect(html).toContain('% 鮮度')
-    expect(html).toContain('推定売却額: 最大')
+    expect(html).toContain('推定売却額 最大')
 
     // 詳細（<details>）の中は閉じていてもマークアップ上は存在する。
     expect(html).toContain('詳しく見る')

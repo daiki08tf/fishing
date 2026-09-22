@@ -102,10 +102,10 @@ export const FishBoxScreen = () => {
                   )
             const valueLine =
               profile === undefined || profile.tradeStatus !== 'tradable'
-                ? '取引不可（PROVISIONAL）'
+                ? 'この魚は取引できない'
                 : localBuyers.length === 0
                   ? '今いる地域に買取先が無い'
-                  : `推定売却額: 最大 ${formatYen(bestValue)}（買取先により変動）`
+                  : `推定売却額 最大 ${formatYen(bestValue)}`
 
             return (
               <li className="fish-card" key={String(entry.catchId)}>

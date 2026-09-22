@@ -29,12 +29,6 @@ export const ResultBanner = (props: ResultBannerProps) => {
       <FishSilhouette speciesId={props.speciesId} size={56} />
       <h3 className="result-banner__name">{props.speciesName}</h3>
 
-      <div className="result-banner__badges">
-        {props.firstCatch ? <span className="badge badge--success">NEW SPECIES</span> : null}
-        {props.personalBest ? <span className="badge badge--alert">NEW RECORD</span> : null}
-        {isTrophy ? <span className="badge badge--alert pixel-text">TROPHY</span> : null}
-      </div>
-
       <dl className="result-banner__facts">
         <div>
           <dt>長さ</dt>
@@ -53,6 +47,12 @@ export const ResultBanner = (props: ResultBannerProps) => {
           <dd>{props.rarityLabel}</dd>
         </div>
       </dl>
+
+      <div className="result-banner__badges">
+        {props.firstCatch ? <span className="badge badge--success">NEW SPECIES</span> : null}
+        {props.personalBest ? <span className="badge badge--alert">NEW RECORD</span> : null}
+        {isTrophy ? <span className="badge badge--alert pixel-text">TROPHY</span> : null}
+      </div>
 
       {props.traits.length === 0 ? null : (
         <ul className="traits">

@@ -42,3 +42,22 @@
 .quote-compare {
   margin-top: 0.5rem;
 }
+
+/* Phase 14.1: 買取先の好みタグ（Content の tradeTags 語彙から作る短いチップ）。 */
+.buyer-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin: 0.35rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.buyer-chip {
+  border: 1px solid color-mix(in srgb, var(--color-border) 45%, transparent);
+  border-radius: var(--radius-pill);
+  padding: 0.05rem 0.45rem;
+  font-size: 0.6875rem;
+  color: var(--color-text-muted);
+  background-color: var(--color-surface-alt);
+}

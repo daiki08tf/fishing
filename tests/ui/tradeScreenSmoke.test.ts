@@ -100,7 +100,7 @@ describe('trade screen buyer filtering', () => {
     currentRegionId = 'tokyo-area'
     const html = render(createElement(FishBoxScreen), [keptMaaji])
 
-    expect(html).toContain('推定売却額: 最大')
+    expect(html).toContain('推定売却額 最大')
     expect(html).not.toContain('今いる地域に買取先が無い')
   })
 })

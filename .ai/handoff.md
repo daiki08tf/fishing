@@ -1,10 +1,43 @@
 # Handoff
 
-最終更新: Phase 14（Retro Management-Sim UI / Visual Identity Redesign）完了
-（branch `phase-14-retro-ui-redesign`、PR 作成予定・未マージ）
+最終更新: Phase 14.1（iPhone UI Polish / Result Flow / Map Presentation）完了
+（branch `phase-14-retro-ui-redesign`、PR #16・未マージ）
 
 > 現在状態は Phase 14 → 13 → 12 → 11 → 10.2 → 10.1 → 10 の順で優先する。
 > 詳細は `.ai/current-task.md` と `docs/DECISIONS.md` も参照。
+
+## Phase 14.1（iPhone UI Polish）
+
+Phase 14 の iPhone 実機相当レビューで見つかった UI 問題を同じ branch / PR で修正した。
+Domain / Save schema は変更していない（UI の条件分岐と CSS のみ）。
+
+- **Catch Result を最優先** — `src/ui/fishing/ResultView.tsx` を LANDED の
+  DOM 最上位に置く（header → 釣れた！ → 魚 / サイズ / NEW バッジ →
+  Keep / Release → XP）。CSS の position で持ち上げない。判定は
+  `src/ui/fishing/resultFlow.ts`（`isFishingFinished` / `isFightUiVisible` /
+  `isResultFirstPhase`）に集約
+- **終了後のファイト UI を出さない** — LANDED / HOOK_MISSED / HOOK_ESCAPE /
+  LINE_BREAK では Fish stamina / Tension / Hook hold / Distance / Drag /
+  行動ログ / ファイトコマンド / AUTO / 狙う場所を描画しない
+- **画面遷移の scroll reset** — `src/ui/nav/scrollReset.ts` を AppShell で 1 回だけ
+  install。top-level screen が変わったときだけ `scrollTo(0, 0)`（釣り中の phase
+  遷移では発火しない）。各画面では呼ばない
+- **MAP を地図ボード化** — `src/ui/map/spotPlacement.ts` が `environment` から
+  「上流・湖 / 川・運河・河口 / 海・磯 / 沖」の帯へ決定的に配置（Spot ID 分岐なし・
+  Content 順に依存しない）。ノード選択 → 直下に summary → 詳細カード一覧。
+  未発見 Hidden Spot はノードも詳細も出さない（Phase 13 の規則は不変）
+- **文章量の削減** — `src/ui/trade/buyerPresentation.ts` が pricingProfile /
+  preferences から 1〜2 行の役割文と好みタグを作る。Content の長文 `description`
+  （PROVISIONAL の注記を含む）は画面に出さない。HOME は家計の内訳を `<details>` へ、
+  天気を CTA 直後へ
+- **WaterScene** — 水面の泡と LANDED の水しぶき（CSS animation のみ）
+- tests: 86 files / 748 tests（resultFlow 9 / scrollReset 5 / mapBoard 8 /
+  gameFacingCopy 11 を追加）。bundle: JS 925.44 kB（gzip 216.48 kB）/
+  CSS 26.44 kB（gzip 5.20 kB）
+- 実ブラウザ検証は sandbox 制約で不可（Chrome headless が起動しない）。
+  jsdom + React DOM の実イベントで HOME → MAP → SPOT → FISHING → LANDED →
+  Keep → Fish Box → TRADE → CONTACTS → CODEX を通しで確認済み。
+  375/390/430px の実測レイアウトとスクリーンショットは未取得
 
 ## Phase 14（Retro Management-Sim UI / Visual Identity Redesign）
 

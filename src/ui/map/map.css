@@ -17,3 +17,163 @@
 .spot-card--rumor .spot-card__node-icon {
   color: var(--palette-orange);
 }
+
+/* ------------------------------------------------------------------
+ * Phase 14.1: 釣り場マップ（地図ボード）
+ *
+ * Spot カードが縦に並ぶだけ、という印象を弱めるための表示。
+ * 実座標ではなく「上流 → 川 → 海 → 沖」の帯で位置関係を見せる。
+ * 390px 幅で横スクロールが出ないよう、ノードは flex-wrap で折り返す。
+ * ------------------------------------------------------------------ */
+
+.map-panel {
+  gap: 0.5rem;
+}
+
+.map-board {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.map-board__band {
+  position: relative;
+  padding: 0.4rem 0.5rem 0.5rem;
+  border: 1px dashed color-mix(in srgb, var(--color-border) 32%, transparent);
+  border-radius: var(--radius-md);
+}
+
+.map-board__band--inland {
+  background-color: color-mix(in srgb, var(--palette-leaf) 12%, transparent);
+}
+
+.map-board__band--waterway {
+  background-color: color-mix(in srgb, var(--palette-sky) 16%, transparent);
+}
+
+.map-board__band--coast {
+  background-color: color-mix(in srgb, var(--palette-ocean) 14%, transparent);
+}
+
+.map-board__band--offshore {
+  background-color: color-mix(in srgb, var(--palette-navy) 12%, transparent);
+}
+
+.map-board__band-label {
+  margin: 0 0 0.3rem;
+  font-size: 0.625rem;
+  letter-spacing: 0.12em;
+  color: var(--color-text-muted);
+}
+
+.map-board__nodes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.map-node {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  max-width: 100%;
+  padding: 0.2rem 0.55rem;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  font-size: 0.75rem;
+  box-shadow: var(--shadow-panel);
+  cursor: pointer;
+}
+
+.map-node__label {
+  max-width: 7rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.map-node__icon {
+  flex: none;
+  color: var(--palette-ocean);
+}
+
+.map-node--locked {
+  border-style: dashed;
+  opacity: 0.62;
+}
+
+.map-node--cost {
+  border-color: var(--palette-sand);
+}
+
+.map-node--far {
+  opacity: 0.45;
+}
+
+.map-node--rumor {
+  border-color: var(--palette-orange);
+}
+
+.map-node--rumor .map-node__icon {
+  color: var(--palette-orange);
+}
+
+.map-node--selected {
+  background-color: color-mix(in srgb, var(--palette-orange) 18%, var(--color-surface));
+  box-shadow: var(--shadow-pop);
+}
+
+.map-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.8rem;
+  margin: 0.15rem 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.6875rem;
+  color: var(--color-text-muted);
+}
+
+.map-legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.map-node__marker {
+  font-size: 0.75rem;
+  line-height: 1;
+}
+
+.map-node__marker--ok {
+  color: var(--palette-teal);
+}
+
+.map-node__marker--locked {
+  color: var(--color-text-muted);
+}
+
+.map-node__marker--rumor {
+  color: var(--palette-orange);
+}
+
+.panel--node-summary {
+  border-color: var(--palette-teal);
+  gap: 0.4rem;
+}
+
+.panel__subheading--section {
+  margin: 0 0 0.5rem;
+  padding: 0 0.25rem;
+}
+
+.spot-card--selected {
+  border-color: var(--palette-orange);
+  box-shadow: var(--shadow-pop);
+}

@@ -142,9 +142,8 @@ export const HomeScreen = () => {
           {isWeekend(world.time) ? '（休日）' : ''}
         </h2>
         <p className="fishing__legend">
-          Angler Lv {progression.anglerLevel} / 今月の自由資金 {formatYen(monthlyFree)}（給与{' '}
-          {formatYen(finance.salaryIncome)} − 生活費 {formatYen(finance.simplifiedLivingCost)}）
-          {current === null ? '' : ' / 遠征費は出発時に支払い済み'}
+          Lv <span className="pixel-number">{progression.anglerLevel}</span> ・ 今月の自由資金{' '}
+          <span className="pixel-number">{formatYen(monthlyFree)}</span>
         </p>
 
         <button
@@ -169,6 +168,15 @@ export const HomeScreen = () => {
         {notice === null ? null : <p className="notice">{notice}</p>}
       </section>
 
+      {environment === null || conditions === null ? null : (
+        <ConditionPanel
+          time={world.time}
+          environment={environment}
+          conditions={conditions}
+          speciesNames={speciesNames}
+        />
+      )}
+
       {rumorCount === 0 ? null : (
         <section className="panel panel--rumor">
           <p className="fishing__phase-code">CONTACT</p>
@@ -185,15 +193,6 @@ export const HomeScreen = () => {
             人脈で確認する
           </button>
         </section>
-      )}
-
-      {environment === null || conditions === null ? null : (
-        <ConditionPanel
-          time={world.time}
-          environment={environment}
-          conditions={conditions}
-          speciesNames={speciesNames}
-        />
       )}
 
       {trip === null ? null : (
@@ -233,6 +232,28 @@ export const HomeScreen = () => {
 
       <section className="panel">
         <h3 className="panel__subheading">この地域について</h3>
+        <details className="disclosure">
+          <summary className="disclosure__summary">くわしい家計</summary>
+          <div className="disclosure__body">
+            <dl className="record">
+              <div>
+                <dt>給与（月）</dt>
+                <dd>{formatYen(finance.salaryIncome)}</dd>
+              </div>
+              <div>
+                <dt>生活費（月）</dt>
+                <dd>{formatYen(finance.simplifiedLivingCost)}</dd>
+              </div>
+              <div>
+                <dt>自由資金（月）</dt>
+                <dd>{formatYen(monthlyFree)}</dd>
+              </div>
+            </dl>
+            {current === null ? null : (
+              <p className="fishing__legend">遠征費は出発時に支払い済み。</p>
+            )}
+          </div>
+        </details>
         <dl className="record">
           <div>
             <dt>所持金</dt>

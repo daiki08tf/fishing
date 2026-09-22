@@ -8,13 +8,8 @@ import { EmptyState } from '../components/EmptyState'
 import { StatMeter } from '../components/StatMeter'
 import { ContentErrorPanel } from '../world/ContentErrorPanel'
 import { useContentOrError } from '../world/useContentOrError'
+import { buyerPreferenceChips, buyerRoleLabel, describeBuyerRole } from './buyerPresentation'
 import './trade.css'
-
-const BUYER_TYPE_LABELS: Readonly<Record<string, string>> = {
-  izakaya: '居酒屋',
-  wholesaler: '卸',
-  market: '市場',
-}
 
 /**
  * TRADE（Phase 13 / Phase 14 で Buyer カード表示に再構成）。
@@ -29,8 +24,9 @@ const BUYER_TYPE_LABELS: Readonly<Record<string, string>> = {
  * - Trust 表示は計算値ではなく実際に入った差分（actualTrustGain）を使う。
  *
  * Phase 14:
- * - Buyer は具体的な ID で分岐しない。名前・タイプ・description・Trust はすべて
- *   Content（BuyerDefinition）からそのまま出すだけ（好みの短文は description をそのまま使う）。
+ * - Buyer は具体的な ID で分岐しない。名前・タイプ・Trust は Content からそのまま出し、
+ *   短い役割文と好みのタグは BuyerDefinition の数値 / preferences から組み立てる
+ *   （Phase 14.1: 長文 description は画面に出さない）。
  * - 魚を選んだあとは、同じ `quoteSale` を今いる地域の Buyer 分だけ呼び、査定の比較を出す。
  */
 export const TradeScreen = () => {
@@ -148,9 +144,7 @@ export const TradeScreen = () => {
                   >
                     <div className="buyer-card__head">
                       <h3 className="panel__subheading">{candidate.name}</h3>
-                      <span className="badge">
-                        {BUYER_TYPE_LABELS[candidate.buyerType] ?? candidate.buyerType}
-                      </span>
+                      <span className="badge">{buyerRoleLabel(candidate)}</span>
                     </div>
                     <StatMeter
                       label="Trust"
@@ -158,7 +152,14 @@ export const TradeScreen = () => {
                       max={100}
                       tone="trust"
                     />
-                    <p className="buyer-card__desc">{candidate.description}</p>
+                    <p className="buyer-card__desc">{describeBuyerRole(candidate)}</p>
+                    <ul className="buyer-card__tags">
+                      {buyerPreferenceChips(candidate).map((chip) => (
+                        <li className="buyer-chip" key={chip}>
+                          {chip}
+                        </li>
+                      ))}
+                    </ul>
                   </button>
                 </li>
               )

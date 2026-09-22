@@ -14,8 +14,16 @@ import { ContactsScreen } from './contacts/ContactsScreen'
 import { CodexScreen } from './codex/CodexScreen'
 import { MenuScreen } from './menu/MenuScreen'
 import { BottomNav } from './nav/BottomNav'
+import { installScreenScrollReset } from './nav/scrollReset'
 import './styles/world.css'
 import './components/components.css'
+
+/*
+ * Phase 14.1: top-level screen が変わったら scroll を先頭へ戻す。
+ * 購読はアプリで 1 箇所だけ（このファイル）に置き、各画面では呼ばない。
+ * 釣り中の phase 遷移は screen が変わらないため影響しない。
+ */
+installScreenScrollReset(useAppStore)
 
 /**
  * 画面の切り替えだけを行う。

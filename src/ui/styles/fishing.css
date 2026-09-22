@@ -380,9 +380,138 @@
 
 .water-scene--landed .water-scene__fish {
   transform: translateY(-10px) scale(1.15);
+  animation: bob 1.6s ease-in-out infinite;
+}
+
+/* Phase 14.1: 水面の泡。結果や演出の邪魔をしない小さな飾り。 */
+.water-scene__bubbles {
+  position: absolute;
+  right: 0.7rem;
+  bottom: 0.5rem;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  gap: 0.25rem;
+}
+
+.water-scene__bubble {
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background-color: color-mix(in srgb, var(--palette-cream) 65%, transparent);
+  animation: bubble-rise 2.8s ease-in-out infinite;
+}
+
+.water-scene__bubble:nth-child(2) {
+  width: 3px;
+  height: 3px;
+  animation-delay: 0.7s;
+}
+
+.water-scene__bubble:nth-child(3) {
+  width: 4px;
+  height: 4px;
+  animation-delay: 1.4s;
+}
+
+@keyframes bubble-rise {
+  0% {
+    transform: translateY(4px);
+    opacity: 0;
+  }
+
+  40% {
+    opacity: 0.85;
+  }
+
+  100% {
+    transform: translateY(-18px);
+    opacity: 0;
+  }
+}
+
+/* 釣り上げた瞬間だけ、小さな水しぶきを 1 回だけ出す。 */
+.water-scene--landed .water-scene__ripple,
+.water-scene--landed::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  border: 2px solid color-mix(in srgb, var(--palette-cream) 70%, transparent);
+  transform: translate(-50%, -50%);
+  animation: ripple 0.9s ease-out 1;
 }
 
 .water-scene--failed .water-scene__fish {
   transform: translateY(-18px) scale(0.7);
   opacity: 0.35;
+}
+
+/* ------------------------------------------------------------------
+ * Phase 14.1: LANDED の Catch Result
+ *
+ * 「釣った瞬間に、釣果が最初に目に入る」ことを最優先にする。
+ * DOM 順は ResultView が保証し、ここでは 1 枚のカードとして
+ * 短い高さに収めること（390x844 の初期 viewport）だけを担う。
+ * ------------------------------------------------------------------ */
+
+.panel--result {
+  border-color: var(--palette-orange);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--palette-sand) 20%, var(--color-surface)) 0%,
+    var(--color-surface) 62%
+  );
+  box-shadow: var(--shadow-pop);
+}
+
+.result-view {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.result-view__eyebrow {
+  margin: 0;
+  text-align: center;
+  font-size: 0.9375rem;
+  letter-spacing: 0.18em;
+  color: var(--palette-orange);
+  text-shadow: 1px 1px 0 rgb(255 255 255 / 60%);
+  animation: pop-in var(--motion-special) var(--motion-ease);
+}
+
+/* 結果カードの中では ResultBanner 自体の枠を外す（カードの入れ子をやめる）。 */
+.result-view .result-banner {
+  border: none;
+  box-shadow: none;
+  background-color: transparent;
+  padding: 0;
+  gap: 0.3rem;
+}
+
+.result-view__actions {
+  margin-top: 0.1rem;
+}
+
+.result-view__status {
+  margin: 0;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.result-view__done {
+  color: var(--palette-teal);
+  font-weight: 700;
+}
+
+.result-view__xp {
+  margin: 0;
+  text-align: center;
+  font-size: 0.8125rem;
+  color: var(--color-text);
 }

@@ -101,6 +101,13 @@ export const WaterScene = ({ phase, behaviour, hasFish }: WaterSceneProps) => {
         <span className="water-scene__ripple" aria-hidden="true" />
       )}
 
+      {/* Phase 14.1: 水面の小さな揺らぎと泡（CSS animation だけ / 重い演出はしない）。 */}
+      <span className="water-scene__bubbles" aria-hidden="true">
+        <span className="water-scene__bubble" />
+        <span className="water-scene__bubble" />
+        <span className="water-scene__bubble" />
+      </span>
+
       <p className="water-scene__label pixel-text">{STATE_LABELS[sceneKey] ?? sceneKey}</p>
     </div>
   )

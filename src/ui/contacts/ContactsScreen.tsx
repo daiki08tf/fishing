@@ -5,6 +5,7 @@ import { PixelIcon } from '../components/PixelIcon'
 import { StatMeter } from '../components/StatMeter'
 import { ContentErrorPanel } from '../world/ContentErrorPanel'
 import { useContentOrError } from '../world/useContentOrError'
+import { buyerPreferenceChips, buyerRoleLabel, describeBuyerRole } from '../trade/buyerPresentation'
 import './contacts.css'
 
 const REWARD_KIND_LABELS: Readonly<Record<string, string>> = {
@@ -13,17 +14,14 @@ const REWARD_KIND_LABELS: Readonly<Record<string, string>> = {
   introduce_contact: '紹介',
 }
 
-const BUYER_TYPE_LABELS: Readonly<Record<string, string>> = {
-  izakaya: '居酒屋',
-  wholesaler: '卸',
-  market: '市場',
-}
-
 /**
  * CONTACTS（Phase 13 / Phase 14 で RPG 風の人脈カードに再構成）。
  *
  * Trust・既知の噂・解禁済みの報酬を見せる。売却そのものは TRADE 画面で行う。
  * まだ解禁していない報酬は内容を明かさず「？？？」に留める。
+ *
+ * Phase 14.1: プレイヤー向けの画面なので、Content の長文 description
+ * （PROVISIONAL の注記を含む）は出さない。役割と好みのタグだけを見せる。
  */
 export const ContactsScreen = () => {
   const content = useContentOrError()
@@ -75,9 +73,7 @@ export const ContactsScreen = () => {
                 <PixelIcon name="person" size={28} className="contact-card__portrait" />
                 <div className="contact-card__title">
                   <h3 className="panel__subheading">{buyer.name}</h3>
-                  <p className="contact-card__role">
-                    {BUYER_TYPE_LABELS[buyer.buyerType] ?? buyer.buyerType}
-                  </p>
+                  <p className="contact-card__role">{buyerRoleLabel(buyer)}</p>
                 </div>
               </div>
 
@@ -89,7 +85,14 @@ export const ContactsScreen = () => {
                 valueText={`${String(trust)} / 100`}
               />
 
-              <p className="contact-card__desc">{buyer.description}</p>
+              <p className="contact-card__desc">{describeBuyerRole(buyer)}</p>
+              <ul className="buyer-card__tags">
+                {buyerPreferenceChips(buyer).map((chip) => (
+                  <li className="buyer-chip" key={chip}>
+                    {chip}
+                  </li>
+                ))}
+              </ul>
 
               {claimed.length === 0 ? null : (
                 <ul className="log">

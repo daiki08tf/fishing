@@ -467,3 +467,44 @@ Phase 13 / 13.1 の Core Loop（Domain / State）は一切変更しない。
   追加しない。** Region Pack / 遅延ロードのアーキテクチャ変更、料理・水槽・
   マルチプレイ、実地図 API、大量スプライト制作、著作権のあるビジュアル資産の
   流用も対象外とする（Phase 15 以降の候補）
+
+## Phase 14.1 — iPhone UI polish（結果導線 / 画面遷移 / 地図 / 文章）
+
+Phase 14 の iPhone 実機相当レビューで見つかった UI の問題を、同じ branch / 同じ PR で直した。
+新しいゲーム機能・Domain ルールは追加していない（Save schema も変更なし）。
+
+決定:
+
+- **LANDED の Catch Result は DOM 順として最上位に置く。** 結果カードを CSS の
+  `position` で持ち上げるのではなく、`ResultView`（魚・サイズ・NEW バッジ・
+  Keep / Release）を header の直後に描画する。390x844 の初期 viewport に
+  「魚・長さ・重さ・NEW・持ち帰る・リリース」が入ることを目標にする。
+  ResultBanner の内部も「魚 → サイズ → バッジ」の順に読み替えた（
+  サイズの方が先に知りたい情報であるため）
+- **釣りが終わった phase ではファイト UI を出さない。** `isTerminalPhase` を
+  そのまま使い、LANDED / HOOK_MISSED / HOOK_ESCAPE / LINE_BREAK では
+  Fish stamina / Tension / Hook hold / Distance / Drag / 行動ログ / ファイト
+  コマンド / AUTO / 狙う場所を描画しない。「操作できない戦闘 UI が結果を
+  押し下げる」状態をなくす（Domain の状態は変えず、UI の条件分岐だけ）
+- **画面遷移の scroll reset は 1 箇所に集約する。** `src/ui/nav/scrollReset.ts` が
+  `appStore` を購読し、top-level screen が変わったときだけ `window.scrollTo(0, 0)`
+  する（AppShell から 1 回だけ install）。各画面では呼ばない。釣り中の phase 遷移は
+  screen が変わらないので reset しない
+- **MAP は「地図ボード → 詳細」の 2 段にする。** 実座標は使わず、Content の
+  `environment`（river / lake / managed_pond / canal / estuary / bay_shore /
+  nearshore / offshore）から「上流・湖 / 川・運河・河口 / 海・磯 / 沖」の帯へ
+  決定的に割り当てる。Spot ID や Content の並び順では分岐せず、帯の中は名前順に
+  並べる（同じ集合なら同じ配置）。ノードは flex-wrap で折り返し、390px 幅で
+  横スクロールを出さない。未発見の Hidden Spot はノードも詳細も出さず、
+  「情報で見つけた場所」は★として区別する（Rumor と exact location を混同しない）。
+  従来のカード一覧は「釣り場の詳細」として下に残す
+- **買取先の紹介文は Content の長文 `description` を画面に出さない。**
+  Phase 14 では `description` をそのまま出していたが、そこには
+  「PROVISIONAL — gameplay tuning」のような開発向けの語が含まれる。
+  Phase 14.1 では `BuyerDefinition` の pricingProfile / preferences から
+  **1〜2 行の役割文と好みタグ**を UI 側で組み立てる（魚種 ID・Buyer ID では分岐しない）。
+  長文 description と PROVISIONAL の事実は Content / docs / validation に残す
+- **HOME の上部は「地域 → 日時 → 天気 → Primary CTA → 噂 → 前回の釣行」を優先する。**
+  家計の内訳（給与・生活費）のような補足は `<details>` にたたむ
+- Phase 14.1 で追加した依存は無い（jsdom / Playwright などの実行時依存は足していない）。
+  新しい画像アセットも追加していない（装飾は CSS と既存 SVG のみ）

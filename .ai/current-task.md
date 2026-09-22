@@ -3,8 +3,9 @@
 ## Phase
 
 **Phase 14 — Retro Management-Sim UI / Visual Identity Redesign**
+**+ Phase 14.1 — iPhone UI Polish / Result Flow / Map Presentation**
 
-状態: **完了**（branch `phase-14-retro-ui-redesign`、PR 作成予定・未マージ）
+状態: **完了**（branch `phase-14-retro-ui-redesign`、PR #16・未マージ）
 
 Phase 13 / 13.1（Fish Trade, Contacts & Hidden Spots + レビュー修正）は main へ
 統合済みの前提で、その上に UI 層だけの再スキンを行った。Domain / State のルールは
@@ -122,3 +123,47 @@ Transport / Expedition / Economy / Codex / Knowledge / Regional Content —
   が出る（error ではない。Phase 13 以前からの既知パターンを踏襲）
 
 詳細は `docs/ROADMAP.md`、判断は `docs/DECISIONS.md` を参照する。
+
+
+## Phase 14.1（iPhone UI polish）
+
+Phase 14 の iPhone 実機相当レビューで見つかった UI の問題を同じ branch / PR で修正した。
+新しいゲーム機能・Domain ルール・Save schema の変更は無い（UI の条件分岐と CSS のみ）。
+
+### 直したもの
+
+- **Catch Result を最優先に。** `ResultView`（魚・長さ・重さ・NEW / NEW RECORD /
+  TROPHY・Keep / Release）を LANDED の DOM 最上位に置く。CSS の position では
+  持ち上げず、構造として先に出す。ResultBanner の内部も「魚 → サイズ → バッジ」へ
+- **終了後のファイト UI を削除。** LANDED / HOOK_MISSED / HOOK_ESCAPE / LINE_BREAK では
+  Fish stamina / Tension / Hook hold / Distance / Drag / 行動ログ / ファイトコマンド /
+  AUTO / 狙う場所を描画しない（`isFightUiVisible`）
+- **画面遷移の scroll reset。** `src/ui/nav/scrollReset.ts` を AppShell で 1 回だけ
+  install し、top-level screen が変わったときだけ `scrollTo(0, 0)`。釣り中の phase 遷移
+  では発火しない
+- **MAP を地図ボード化。** `environment` から「上流・湖 / 川・運河・河口 / 海・磯 / 沖」の
+  帯へ決定的に配置（Spot ID 分岐なし・Content 順に依存しない）。ノードを押すと
+  ボード直下に summary が出て、そのまま移動できる。詳細カード一覧は下に残す。
+  未発見 Hidden Spot はノードも詳細も出さない（規則は不変）
+- **文章量の削減。** TRADE / CONTACTS の買取先紹介を、pricingProfile / preferences から
+  組み立てた 1〜2 行の役割文 + 好みタグに変更（Content の長文 description と
+  PROVISIONAL の注記は画面に出さない）。HOME は家計の内訳を `<details>` へたたみ、
+  天気を CTA の直後へ移動
+- **WaterScene の軽い装飾。** 水面の泡と LANDED の小さな水しぶき（CSS animation のみ）
+
+### 検証
+
+- `npm run check` PASS（typecheck / lint / format / validate:content /
+  simulate:regional-content / simulate:trade-network / tests / build）
+- tests: **86 files / 748 tests**（Phase 14 時点 82 files / 715 tests。
+  resultFlow 9 / scrollReset 5 / mapBoard 8 / gameFacingCopy 11 を追加）
+- bundle: JS 925.44 kB（gzip 216.48 kB）/ CSS 26.44 kB（gzip 5.20 kB）
+  （Phase 14 baseline: JS 916.60 kB / CSS 22.04 kB。新規ライブラリ無し）
+- jsdom + React DOM の実イベントで手動ループを通し確認（一時テスト / 非 commit）:
+  HOME → MAP（ボード → ノード選択 → summary）→ Spot → Fishing → LANDED
+  （結果が最上位・戦闘 UI なし）→ Keep → Fish Box → TRADE（preview = 実額）→
+  CONTACTS（PROVISIONAL 無し）→ CODEX。移動のたびに scrollTo(0,0) が呼ばれることも確認
+- 実ブラウザ（Chrome headless）は sandbox 制約で起動できないため、
+  375x812 / 390x844 / 430x932 の実測レイアウトとスクリーンショットは未取得。
+  CSS の固定幅（300px 以上）0 件・`min-width` は 0 のみ・`overflow-x` 指定なしを
+  静的に確認した
