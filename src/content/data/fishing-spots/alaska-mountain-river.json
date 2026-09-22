@@ -18,15 +18,24 @@
   "travelOptions": [
     {
       "id": "mountain-road",
-      "transportTypes": ["rental_car"],
-      "requiredCapabilities": ["road_access"],
-      "features": ["vehicle_rental"],
+      "transportTypes": [
+        "rental_car"
+      ],
+      "requiredCapabilities": [
+        "road_access"
+      ],
+      "features": [
+        "vehicle_rental"
+      ],
       "baseMinutes": 95,
       "distanceKm": 60,
       "baseOneWayCost": 0
     }
   ],
-  "habitatTags": ["river", "cold"],
+  "habitatTags": [
+    "river",
+    "cold"
+  ],
   "depth": {
     "depthRangeM": {
       "min": 1,
@@ -35,23 +44,23 @@
   },
   "fishTable": [
     {
-      "speciesId": "alaska-rainbow-trout",
+      "speciesId": "rainbow-trout",
       "basePresence": 0.6
     },
     {
-      "speciesId": "alaska-dolly-varden",
+      "speciesId": "dolly-varden",
       "basePresence": 0.5
     },
     {
-      "speciesId": "alaska-arctic-char",
+      "speciesId": "arctic-char",
       "basePresence": 0.4
     },
     {
-      "speciesId": "alaska-sockeye-salmon",
+      "speciesId": "sockeye-salmon",
       "basePresence": 0.3
     },
     {
-      "speciesId": "alaska-lake-trout",
+      "speciesId": "lake-trout",
       "basePresence": 0.2
     }
   ],
