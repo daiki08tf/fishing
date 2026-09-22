@@ -40,6 +40,9 @@ jobs:
       - name: Validate content
         run: npm run validate:content
 
+      - name: Regional content audit
+        run: npm run simulate:regional-content
+
       - name: Test
         run: npm run test:run
 
