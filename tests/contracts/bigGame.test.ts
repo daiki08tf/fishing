@@ -117,7 +117,7 @@ const lightLoadout = (): Loadout => ({
 
 describe('big game balance', () => {
   it('raises the tension limit with leader strength and reel drag', () => {
-    const species = content.speciesById['alaska-chinook-salmon']
+    const species = content.speciesById['chinook-salmon']
     expect(species).toBeDefined()
 
     const base = heavyLoadout()
@@ -181,7 +181,7 @@ describe('big game balance', () => {
   })
 
   it('makes larger individuals pull harder and last longer', () => {
-    const species = content.speciesById['alaska-chinook-salmon']!
+    const species = content.speciesById['chinook-salmon']!
     const random = new SeededRandomSource('big-game-size')
     const traitModifiers = {
       powerMultiplier: 1,
@@ -194,7 +194,7 @@ describe('big game balance', () => {
       species,
       individual: individual({
         id: 'median',
-        speciesId: 'alaska-chinook-salmon',
+        speciesId: 'chinook-salmon',
         lengthCm: 85,
         weightKg: 8,
       }),
@@ -205,7 +205,7 @@ describe('big game balance', () => {
       species,
       individual: individual({
         id: 'trophy',
-        speciesId: 'alaska-chinook-salmon',
+        speciesId: 'chinook-salmon',
         lengthCm: 120,
         weightKg: 24,
       }),
@@ -219,7 +219,7 @@ describe('big game balance', () => {
   })
 
   it('lands large fish more reliably with heavy tackle, but not universally', () => {
-    const species = content.speciesById['alaska-chinook-salmon']!
+    const species = content.speciesById['chinook-salmon']!
     const attempts = 80
     const landedCount = (loadout: Loadout): number => {
       const tackle = resolveTackle({
