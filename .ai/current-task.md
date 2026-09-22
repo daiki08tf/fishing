@@ -4,7 +4,7 @@
 
 **Phase 12 — Regional World Expansion / Alpha Content**
 
-状態: **実装完了・最終 CI 確認中**
+状態: **完了**
 
 Phase 11 の Fishing Zone 基盤上で、魚種・Spot・Playable Region を Alpha 規模まで拡張した。
 新しい釣りシステムを作るのではなく、既存の Encounter / Catchability / Casting /
@@ -39,6 +39,19 @@ Text Battle / Expedition を Content で広げることを優先した。
   - Spot の Region と Species distribution が矛盾しない
   - regional prefix の Species ID が残っていない
 - Content reference validation に zoneAffinity → FishingZone の参照検査を追加
+
+## Phase 12 検証
+
+- CI: typecheck / lint / format / validate / regional audit / test / build 全 PASS
+- `validate:content`: 738 records
+- `simulate:regional-content`: PASS
+  - species=82
+  - spots=45
+  - playableRegions=5
+  - explicitZones=45
+- tests: **71 files / 624 tests**
+- production bundle: JS 845.44 kB（gzip 198.91 kB）/ CSS 7.13 kB（gzip 1.86 kB）
+- Vite 500 kB warning は既知。1000 Species 規模へ進む前に Region pack / lazy load を検討する
 
 ## 次
 
