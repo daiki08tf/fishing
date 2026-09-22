@@ -1,7 +1,11 @@
 import { pathToFileURL } from 'node:url'
 import { loadContentFromDirectory } from '../src/content/load/nodeContent'
 import { evaluateAccess } from '../src/domain/access/accessEngine'
-import type { PlayerTransportState, TransportDefinition } from '../src/domain/access/Transport'
+import {
+  createInitialTransportState,
+  type PlayerTransportState,
+  type TransportDefinition,
+} from '../src/domain/access/Transport'
 import {
   DEFAULT_DEPTH_TUNING,
   depthToFightDistanceM,
@@ -17,7 +21,7 @@ import type { EnvironmentSnapshot } from '../src/domain/environment'
 import { searchWater } from '../src/domain/environment/fishFinder'
 import { FishingEngine, isTerminalPhase } from '../src/domain/fishing'
 import type { GearItem, LineDefinition, ReelDefinition } from '../src/domain/gear/Gear'
-import { asFishingSpotId, asGearId } from '../src/domain/ids'
+import { asFishingSpotId, asGearId, asTransportId } from '../src/domain/ids'
 import { emptyKnowledgeState } from '../src/domain/knowledge/KnowledgeState'
 import type { FishingMethod } from '../src/domain/method/FishingMethod'
 import { methodAcceptsOffering, methodSupportsPlatform } from '../src/domain/method/FishingMethod'
@@ -27,6 +31,7 @@ import {
   claimEligibleRewards,
   createInitialTradeState,
   isContactKnown,
+  knownContactIdsOf,
   trustOf,
 } from '../src/domain/trade'
 import { SeededRandomSource } from '../src/domain/rng/SeededRandomSource'
@@ -34,9 +39,12 @@ import type { Loadout } from '../src/domain/tackle/Loadout'
 import { resolveTackle } from '../src/domain/tackle/resolveTackle'
 import type { FishingSpot } from '../src/domain/world/FishingSpot'
 import {
+  arriveAtSpot,
   createInitialWorld,
   discoverSpotFromContact,
   isSpotKnown,
+  leaveForSpot,
+  leaveSpot,
 } from '../src/domain/world/worldSession'
 import { runFishingToTerminal } from './simulate-fishing'
 
@@ -693,6 +701,12 @@ export const checkOffshoreCoreLoop = (): readonly OffshoreCheck[] => {
     platform.platform === 'offshore_boat',
   )
 
+  /*
+   * Phase 17 Final Fix: これは capability の解決だけを見る、単発の isolated test
+   * （「boat capability さえあれば access できるか」）。fullTransportState でよい
+   * — Charter の実際の利用可否（operatorContactId → knownContactIds）を証明する
+   * 役目は checkCaptainLoop 側（本物の初期 Transport state から通す）が持つ。
+   */
   const offshoreSpot = spot('sagami-bay-offshore')
   const access = evaluateAccess({
     spot: offshoreSpot,
@@ -717,6 +731,7 @@ export const checkCaptainLoop = (): readonly OffshoreCheck[] => {
   const buyer = content.buyers.find((entry) => String(entry.id) === 'fish-wholesaler')
   const captain = content.contacts.find((entry) => String(entry.id) === 'captain-taro')
   const boat = transport('charter-boat')
+  const offshoreSpot = spot('sagami-bay-offshore')
   const hiddenSpot = content.spots.find(
     (entry) => String(entry.id) === 'sagami-hidden-current-edge',
   )
@@ -726,10 +741,29 @@ export const checkCaptainLoop = (): readonly OffshoreCheck[] => {
     return checks
   }
 
+  /*
+   * Phase 17 Final Fix: これは「本物の Save 形状」で通す。fullTransportState は
+   * 全 Transport を渡してしまい、operatorContactId 付き Charter が本当に選べるか
+   * を検査しないまま PASS してしまう（実際に見つかったバグ）。
+   */
+  const playerTransports = createInitialTransportState(asTransportId)
+
   push(
     checks,
     'Captain は初期状態では未紹介（isContactKnown=false）',
     !isContactKnown(captain, content.contactRewards, []),
+  )
+  push(
+    checks,
+    '紹介前は charter-boat が travelOptions に出ない（本物の初期 Transport state）',
+    !evaluateAccess({
+      spot: offshoreSpot,
+      transports: content.transports,
+      playerTransports,
+      knowledge: emptyKnowledgeState(),
+      permitsEnabled: true,
+      knownContactIds: [],
+    }).travelOptions.some((option) => String(option.transportId) === String(boat.id)),
   )
 
   // Buyer の Trust が閾値に達し、introduce_contact を claim する。
@@ -748,6 +782,72 @@ export const checkCaptainLoop = (): readonly OffshoreCheck[] => {
     'claim 後は isContactKnown が true になる（新しい永続 state は使わない）',
     isContactKnown(captain, content.contactRewards, trade.claimedRewardIds),
   )
+
+  const knownContactIds = knownContactIdsOf(
+    content.buyers,
+    content.contacts,
+    content.contactRewards,
+    trade.claimedRewardIds,
+  )
+
+  push(
+    checks,
+    '紹介後は charter-boat が travelOptions に出る（derive された availability）',
+    evaluateAccess({
+      spot: offshoreSpot,
+      transports: content.transports,
+      playerTransports,
+      knowledge: emptyKnowledgeState(),
+      permitsEnabled: true,
+      knownContactIds,
+    }).travelOptions.some((option) => String(option.transportId) === String(boat.id)),
+  )
+  push(
+    checks,
+    '一般の rental-boat は今回の変更の影響を受けない（operatorContactId が無いため常に選べる）',
+    evaluateAccess({
+      spot: offshoreSpot,
+      transports: content.transports,
+      playerTransports,
+      knowledge: emptyKnowledgeState(),
+      permitsEnabled: true,
+      knownContactIds: [],
+    }).travelOptions.some((option) => String(option.transportId) === 'rental-boat'),
+  )
+
+  // 実際に charter で出発 → 到着 → 帰宅（往路と同じ Charter で帰れることも確認する）。
+  const world0 = createInitialWorld()
+  const knowledge0 = emptyKnowledgeState()
+  const left = leaveForSpot({
+    context: { world: world0, knowledge: knowledge0 },
+    spot: offshoreSpot,
+    transports: content.transports,
+    playerTransports,
+    transportId: boat.id,
+    knownContactIds,
+  })
+
+  push(checks, '紹介後は実際に charter で出発できる（leaveForSpot）', left.ok)
+
+  if (left.ok) {
+    const arrived = arriveAtSpot({ context: left.context, spot: offshoreSpot })
+    push(checks, '出発した charter で Spot に到着できる（arriveAtSpot）', arrived.ok)
+
+    if (arrived.ok) {
+      const returned = leaveSpot({
+        context: arrived.context,
+        spot: offshoreSpot,
+        transports: content.transports,
+        playerTransports,
+        knownContactIds,
+      })
+      push(
+        checks,
+        '往路と同じ charter で帰宅できる（leaveSpot、outbound transport を引き継ぐ）',
+        returned.ok,
+      )
+    }
+  }
 
   // チャーター釣行を複数回完了する（ボウズを含む）。Trust が積み上がる。
   let discoveredWorld = createInitialWorld()
@@ -781,19 +881,19 @@ export const checkCaptainLoop = (): readonly OffshoreCheck[] => {
   const lowTrustAccess = evaluateAccess({
     spot: hiddenSpot,
     transports: content.transports,
-    playerTransports: fullTransportState(content.transports),
+    playerTransports,
     knowledge: { ...emptyKnowledgeState(), spots: { [String(hiddenSpot.id)]: 100 } },
     permitsEnabled: true,
-    permits: [],
+    knownContactIds,
     contactTrust: { [String(captain.id)]: 0 },
   })
   const highTrustAccess = evaluateAccess({
     spot: hiddenSpot,
     transports: content.transports,
-    playerTransports: fullTransportState(content.transports),
+    playerTransports,
     knowledge: { ...emptyKnowledgeState(), spots: { [String(hiddenSpot.id)]: 100 } },
     permitsEnabled: true,
-    permits: [],
+    knownContactIds,
     contactTrust: { [String(captain.id)]: trustOf(trade, captain.id) },
   })
 
@@ -803,6 +903,33 @@ export const checkCaptainLoop = (): readonly OffshoreCheck[] => {
     !lowTrustAccess.accessible,
   )
   push(checks, '十分な Trust が積み上がると Access できる', highTrustAccess.accessible)
+
+  if (highTrustAccess.accessible) {
+    const outboundHidden = leaveForSpot({
+      context: { world: discoveredWorld, knowledge: knowledge0 },
+      spot: hiddenSpot,
+      transports: content.transports,
+      playerTransports,
+      transportId: boat.id,
+      knownContactIds,
+      contactTrust: { [String(captain.id)]: trustOf(trade, captain.id) },
+    })
+    push(checks, 'Access を満たした Hidden Spot へも charter で出発できる', outboundHidden.ok)
+
+    if (outboundHidden.ok) {
+      const arrivedHidden = arriveAtSpot({ context: outboundHidden.context, spot: hiddenSpot })
+      if (arrivedHidden.ok) {
+        const returnedHidden = leaveSpot({
+          context: arrivedHidden.context,
+          spot: hiddenSpot,
+          transports: content.transports,
+          playerTransports,
+          knownContactIds,
+        })
+        push(checks, 'Hidden Spot からも同じ charter で帰宅できる', returnedHidden.ok)
+      }
+    }
+  }
 
   return checks
 }

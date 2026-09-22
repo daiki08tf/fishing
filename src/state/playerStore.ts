@@ -89,6 +89,7 @@ import {
   sleepUntilMorning,
   type WorldTime,
 } from '../domain/world/WorldTime'
+import { resolveFishingPlatform } from '../domain/depth'
 import { SeededRandomSource } from '../domain/rng/SeededRandomSource'
 import type { FishingSpot } from '../domain/world/FishingSpot'
 import { DEFAULT_WORLD_TUNING } from '../domain/world/WorldTuning'
@@ -285,18 +286,30 @@ export type PlayerStoreState = PersistedPlayerSlice & {
   resetSkills(): void
 
   /** Spot のアクセス判定（状態は変えない）。 */
-  evaluateSpot(spot: FishingSpot, transports: readonly TransportDefinition[]): AccessEvaluation
+  evaluateSpot(
+    spot: FishingSpot,
+    transports: readonly TransportDefinition[],
+    knownContactIds?: ReadonlySet<string> | readonly string[],
+  ): AccessEvaluation
   /** 釣行前の判定（行けるか / 費用が足りるか）。 */
   evaluateTrip(
     spot: FishingSpot,
     travelOption: ResolvedTravelOption,
     transports: readonly TransportDefinition[],
+    knownContactIds?: ReadonlySet<string> | readonly string[],
   ): TripReadiness
-  /** 自宅を出て Spot へ移動する（時間が進む）。 */
+  /**
+   * 自宅を出て Spot へ移動する（時間が進む）。
+   * `knownContactIds`（Phase 17 Final Fix）は `operatorContactId` を持つ Charter
+   * Transport の利用可否を derive するための、知っている Contact の集合
+   * （Buyer は常に含む・汎用 Contact は `isContactKnown` 由来。UI が
+   * `knownContactIdsOf` で組み立てて渡す。省略時は Charter を一切使えない）。
+   */
   travelToSpot(
     spot: FishingSpot,
     transports: readonly TransportDefinition[],
     transportId?: TransportId,
+    knownContactIds?: ReadonlySet<string> | readonly string[],
   ): TripActionResult
   /** 釣り 1 回分の結果を世界へ反映する（時間と Knowledge が進む）。 */
   recordAttempt(input: RecordAttemptInput): TripActionResult
@@ -304,11 +317,14 @@ export type PlayerStoreState = PersistedPlayerSlice & {
    * Spot を出て自宅へ戻る（帰路の時間が進む）。
    * Charter で来ていれば（Transport に operatorContactId があれば）、
    * ボウズでも Base Trust が Captain / Guide へ入る（Phase 17C）。
+   * `knownContactIds`（Phase 17 Final Fix）は往路と同じ Charter で
+   * 帰れるようにするために渡す。
    */
   returnHome(
     spot: FishingSpot,
     transports: readonly TransportDefinition[],
     rewards?: readonly ContactReward[],
+    knownContactIds?: ReadonlySet<string> | readonly string[],
   ): TripActionResult
   /** 商品を買う。買えると移動手段が増えることがある。 */
   purchaseItem(item: ShopItem): { readonly ok: boolean; readonly message: string | null }
@@ -332,8 +348,15 @@ export type PlayerStoreState = PersistedPlayerSlice & {
    * Reposition（Phase 17B）。船 / カヤックで少し移動し、探索位置を進める。
    * 無料の reroll にはしない（ゲーム内時間 15〜30 分を消費する）。
    * 移動後は前回の Search Water 結果を無効にする。
+   *
+   * Phase 17 Final Fix: UI の非表示だけを防壁にしない。今回の釣行の Transport
+   * （`world.trip.transportId`）から Platform を derive し、船に乗っていない
+   * （`FishingPlatform.canReposition === false`）ときは Domain の入口で拒否する。
    */
-  reposition(): { readonly ok: boolean; readonly message: string | null }
+  reposition(transports: readonly TransportDefinition[]): {
+    readonly ok: boolean
+    readonly message: string | null
+  }
   /** 遠征に出発する（費用を払い、時間を進め、現地の拠点へ移る）。 */
   startExpedition(plan: ExpeditionPlan): TripActionResult
   /** 遠征を終えて home region へ帰る（時間が進む）。 */
@@ -590,7 +613,7 @@ export const createPlayerStore = () =>
       set({ progression: unlock.progression, skillAllocationError: null })
     },
 
-    evaluateSpot: (spot, transports) => {
+    evaluateSpot: (spot, transports, knownContactIds) => {
       const { transport, knowledge, expedition, trade } = get()
 
       return evaluateAccess({
@@ -601,10 +624,11 @@ export const createPlayerStore = () =>
         permitsEnabled: true,
         permits: permitIdsForAccess(expedition),
         contactTrust: trade.contactTrust,
+        ...(knownContactIds === undefined ? {} : { knownContactIds }),
       })
     },
 
-    evaluateTrip: (spot, travelOption, transports) => {
+    evaluateTrip: (spot, travelOption, transports, knownContactIds) => {
       const state = get()
       const access = evaluateAccess({
         spot,
@@ -614,6 +638,7 @@ export const createPlayerStore = () =>
         permitsEnabled: true,
         permits: permitIdsForAccess(state.expedition),
         contactTrust: state.trade.contactTrust,
+        ...(knownContactIds === undefined ? {} : { knownContactIds }),
       })
       const cost = roundTripCostFor(travelOption)
 
@@ -625,7 +650,7 @@ export const createPlayerStore = () =>
       }
     },
 
-    travelToSpot: (spot, transports, transportId) => {
+    travelToSpot: (spot, transports, transportId, knownContactIds) => {
       if (get().hydrationStatus !== 'ready') {
         return { ok: false, reason: 'state', message: '読み込み中' }
       }
@@ -662,6 +687,7 @@ export const createPlayerStore = () =>
         permitsEnabled: true,
         permits: permitIdsForAccess(expedition),
         contactTrust: trade.contactTrust,
+        ...(knownContactIds === undefined ? {} : { knownContactIds }),
       })
 
       if (!access.accessible) {
@@ -701,6 +727,7 @@ export const createPlayerStore = () =>
         playerTransports: transport,
         permits: permitIdsForAccess(expedition),
         contactTrust: trade.contactTrust,
+        ...(knownContactIds === undefined ? {} : { knownContactIds }),
         ...(transportId === undefined ? {} : { transportId }),
       })
 
@@ -763,7 +790,7 @@ export const createPlayerStore = () =>
       return { ok: true, message: null }
     },
 
-    returnHome: (spot, transports, rewards = []) => {
+    returnHome: (spot, transports, rewards = [], knownContactIds) => {
       if (get().hydrationStatus !== 'ready') {
         return { ok: false, reason: 'state', message: '読み込み中' }
       }
@@ -792,6 +819,7 @@ export const createPlayerStore = () =>
         transports,
         playerTransports: transport,
         permits: permitIdsForAccess(expedition),
+        ...(knownContactIds === undefined ? {} : { knownContactIds }),
       })
 
       if (!left.ok) {
@@ -1069,7 +1097,7 @@ export const createPlayerStore = () =>
      * 無料の reroll にしない（15〜30 分、決定論的に seed から決まる）。
      * 位置を進めたら前回の Search Water 結果は無効にする（新しい場所の反応をまだ見ていない）。
      */
-    reposition: () => {
+    reposition: (transports) => {
       if (get().hydrationStatus !== 'ready') {
         return { ok: false, message: '読み込み中' }
       }
@@ -1078,6 +1106,17 @@ export const createPlayerStore = () =>
 
       if (world.phase !== 'AT_SPOT' || world.currentSpotId === null) {
         return { ok: false, message: '釣り場でだけ移動できる' }
+      }
+
+      const tripTransportId = world.trip?.transportId ?? null
+      const tripTransport =
+        tripTransportId === null
+          ? null
+          : (transports.find((entry) => entry.id === tripTransportId) ?? null)
+      const platform = resolveFishingPlatform(tripTransport)
+
+      if (!platform.canReposition) {
+        return { ok: false, message: '船に乗っていないと移動し直せない' }
       }
 
       const roll = new SeededRandomSource(

@@ -10,6 +10,7 @@ import { bestFishFinderOf, resolveTackle } from '../../domain/tackle'
 import { fishingZonesForSpot } from '../../domain/casting'
 import { SEA_STATE_LABELS, resolveFishingPlatform, resolveSeaState } from '../../domain/depth'
 import { resolveBiteCompatibility } from '../../domain/tackle/biteCompatibility'
+import { knownContactIdsOf } from '../../domain/trade'
 import { formatWorldTime } from '../../domain/world'
 import { spotKnowledgeScore } from '../../domain/knowledge/spotKnowledge'
 import { GLOBAL_PACK_KEYS } from '../../content/runtime/contentRuntime'
@@ -53,6 +54,7 @@ export const SpotScreen = () => {
   const tacklePack = usePack(GLOBAL_PACK_KEYS.tackle)
   const regionPack = useRegionPack(String(world.currentRegionId))
   const knowledge = usePlayerStore((state) => state.knowledge)
+  const trade = usePlayerStore((state) => state.trade)
   const loadout = usePlayerStore((state) => state.loadout)
   const inventory = usePlayerStore((state) => state.inventory)
   const lastSearch = usePlayerStore((state) => state.lastSearch)
@@ -106,6 +108,13 @@ export const SpotScreen = () => {
       </section>
     )
   }
+
+  const knownContactIds = knownContactIdsOf(
+    content.value.buyers,
+    content.value.contacts,
+    content.value.contactRewards,
+    trade.claimedRewardIds,
+  )
 
   const score = spotKnowledgeScore(knowledge, String(spot.id))
   const fields = revealedFields(spot, score)
@@ -263,7 +272,7 @@ export const SpotScreen = () => {
             className="button"
             type="button"
             onClick={() => {
-              const result = reposition()
+              const result = reposition(content.value.transports)
               setNotice(result.message)
             }}
           >
@@ -380,7 +389,12 @@ export const SpotScreen = () => {
           className="button"
           type="button"
           onClick={() => {
-            const result = returnHome(spot, content.value.transports, content.value.contactRewards)
+            const result = returnHome(
+              spot,
+              content.value.transports,
+              content.value.contactRewards,
+              knownContactIds,
+            )
 
             if (result.ok) {
               setActiveScreen('home')

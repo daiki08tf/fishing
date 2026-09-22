@@ -385,9 +385,11 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
 
         {canCast ? null : (
           <p className="notice">
-            {methodPlatformOk
-              ? '今のタックルでは選択中の水域まで届かない。'
-              : `今の釣法（${PRESENTATION_LABELS[presentationMode]}）は今の乗船状態では使えない。`}
+            {marineReadiness !== null && !marineReadiness.ok
+              ? marineReadiness.reason
+              : methodPlatformOk
+                ? '今のタックルでは選択中の水域まで届かない。'
+                : `今の釣法（${PRESENTATION_LABELS[presentationMode]}）は今の乗船状態では使えない。`}
           </p>
         )}
       </section>
@@ -448,13 +450,12 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
 
         {canCast ? null : (
           <p className="notice">
-            {methodPlatformOk
-              ? '今のタックルでは選択中の水深まで届かない。'
-              : `今の釣法（${PRESENTATION_LABELS[presentationMode]}）は今の乗船状態では使えない。`}
+            {marineReadiness !== null && !marineReadiness.ok
+              ? marineReadiness.reason
+              : methodPlatformOk
+                ? '今のタックルでは選択中の水深まで届かない。'
+                : `今の釣法（${PRESENTATION_LABELS[presentationMode]}）は今の乗船状態では使えない。`}
           </p>
-        )}
-        {marineReadiness === null || marineReadiness.ok ? null : (
-          <p className="notice">{marineReadiness.reason}</p>
         )}
       </section>
     )

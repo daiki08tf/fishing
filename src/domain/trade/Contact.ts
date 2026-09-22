@@ -1,4 +1,5 @@
 import type { ContactId, ContactRewardId, RegionId } from '../ids'
+import type { BuyerDefinition } from './Buyer'
 import type { ContactReward } from './ContactReward'
 
 /**
@@ -54,4 +55,30 @@ export const isContactKnown = (
       String(reward.targetId) === String(contact.id) &&
       claimedRewardIds.includes(reward.id),
   )
+}
+
+/**
+ * プレイヤーが「知っている」Contact の ID 集合（Phase 17 Final Fix）。
+ *
+ * `AccessEngine`（`AccessEvaluationInput.knownContactIds`）が Charter Transport
+ * （`operatorContactId` あり）の利用可否を判定するための入力を、ここで一度だけ
+ * 組み立てる。Buyer は Trade 画面に常に出る既存の買取先なので常に「知っている」
+ * 扱いにする。汎用 Contact は既存の `isContactKnown` と同じ規則。
+ * 新しい永続 state は増やさない（`initiallyKnown` + 既存 claimedRewardIds から derive）。
+ */
+export const knownContactIdsOf = (
+  buyers: readonly BuyerDefinition[],
+  contacts: readonly ContactDefinition[],
+  contactRewards: readonly ContactReward[],
+  claimedRewardIds: readonly ContactRewardId[],
+): ReadonlySet<string> => {
+  const known = new Set<string>(buyers.map((buyer) => String(buyer.id)))
+
+  for (const contact of contacts) {
+    if (isContactKnown(contact, contactRewards, claimedRewardIds)) {
+      known.add(String(contact.id))
+    }
+  }
+
+  return known
 }

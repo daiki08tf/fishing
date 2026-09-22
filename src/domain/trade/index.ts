@@ -6,7 +6,7 @@ export { DEFAULT_STORAGE_MODIFIER, FRESHNESS_FLOOR, resolveFreshness } from './F
 export { BUYER_TYPES } from './Buyer'
 export type { BuyerDefinition, BuyerPricingProfile, BuyerTrustProfile, BuyerType } from './Buyer'
 
-export { CONTACT_DATA_STATUSES, CONTACT_TYPES, isContactKnown } from './Contact'
+export { CONTACT_DATA_STATUSES, CONTACT_TYPES, isContactKnown, knownContactIdsOf } from './Contact'
 export type { ContactDataStatus, ContactDefinition, ContactType } from './Contact'
 
 export { TRADE_STATUSES } from './SpeciesTradeProfile'

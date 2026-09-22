@@ -52,6 +52,7 @@ import { spotKnowledgeScore } from '../../domain/knowledge/spotKnowledge'
 import { NEUTRAL_FISHING_MODIFIERS } from '../../domain/fishing/PlayerFishingModifiers'
 import { usePlayerStore } from '../../state/playerStore'
 import { useContentOrError } from '../world/useContentOrError'
+import { resolveCanCast } from './canCast'
 
 /**
  * 釣行 1 回分のセッション。
@@ -573,9 +574,13 @@ export const useFishingSession = (): FishingSession => {
   const presentationMode: PresentationMode =
     tackle === null ? 'cast' : presentationOf(tackle.method).mode
 
-  const canCast =
-    methodPlatformOk &&
-    (isDepthTargetZone ? resolvedDeployment?.reachable === true : resolvedCast?.reachable === true)
+  const canCast = resolveCanCast({
+    methodPlatformOk,
+    marineReadiness,
+    isDepthTargetZone,
+    resolvedCast,
+    resolvedDeployment,
+  })
 
   const send = useCallback(
     (command: FishingCommand) => {

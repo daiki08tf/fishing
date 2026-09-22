@@ -11,6 +11,7 @@ import { NEUTRAL_FISHING_MODIFIERS } from '../../domain/fishing/PlayerFishingMod
 import { bestFishFinderOf, resolveTackle } from '../../domain/tackle'
 import { DAY_OF_WEEK_LABELS, dayOfWeekOf, formatWorldTime, isWeekend } from '../../domain/world'
 import { knowledgeTierFor, spotKnowledgeScore } from '../../domain/knowledge/spotKnowledge'
+import { knownContactIdsOf } from '../../domain/trade'
 import { contentRuntime } from '../../content/runtime/contentRuntime'
 import { useAppStore } from '../../state/appStore'
 import { usePlayerStore } from '../../state/playerStore'
@@ -73,8 +74,14 @@ export const HomeScreen = () => {
   const localSpots = visibleSpots.filter(
     (spot) => String(spot.regionId) === String(world.currentRegionId),
   )
+  const knownContactIds = knownContactIdsOf(
+    content.value.buyers,
+    content.value.contacts,
+    content.value.contactRewards,
+    trade.claimedRewardIds,
+  )
   const accessible = localSpots.filter(
-    (spot) => evaluateSpot(spot, content.value.transports).accessible,
+    (spot) => evaluateSpot(spot, content.value.transports, knownContactIds).accessible,
   )
   const discoveredSpots = visibleSpots.filter((spot) => world.discoveredSpotIds.includes(spot.id))
   const currentRegion = content.value.regionById[String(world.currentRegionId)]

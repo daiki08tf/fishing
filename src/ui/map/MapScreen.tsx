@@ -14,6 +14,7 @@ import {
 import { NEUTRAL_FISHING_MODIFIERS } from '../../domain/fishing/PlayerFishingModifiers'
 import type { FishingSpot } from '../../domain/world/FishingSpot'
 import type { TransportId } from '../../domain/ids'
+import { knownContactIdsOf } from '../../domain/trade'
 import { useAppStore } from '../../state/appStore'
 import { usePlayerStore } from '../../state/playerStore'
 import { PixelIcon } from '../components/PixelIcon'
@@ -59,6 +60,7 @@ export const MapScreen: FC<MapScreenProps> = ({ initialSelectedSpotId }) => {
   const setActiveScreen = useAppStore((state) => state.setActiveScreen)
   const world = usePlayerStore((state) => state.world)
   const knowledge = usePlayerStore((state) => state.knowledge)
+  const trade = usePlayerStore((state) => state.trade)
   const evaluateSpot = usePlayerStore((state) => state.evaluateSpot)
   const evaluateTrip = usePlayerStore((state) => state.evaluateTrip)
   const travelToSpot = usePlayerStore((state) => state.travelToSpot)
@@ -136,6 +138,12 @@ export const MapScreen: FC<MapScreenProps> = ({ initialSelectedSpotId }) => {
       (spot.visibility !== 'hidden' || world.discoveredSpotIds.includes(spot.id)),
   )
   const inRegion = regionId === currentRegionId
+  const knownContactIds = knownContactIdsOf(
+    content.value.buyers,
+    content.value.contacts,
+    content.value.contactRewards,
+    trade.claimedRewardIds,
+  )
 
   /*
    * 各 Spot の派生値（access / 移動手段 / 費用 / 知識 / 釣況）は 1 回だけ解決し、
@@ -143,13 +151,15 @@ export const MapScreen: FC<MapScreenProps> = ({ initialSelectedSpotId }) => {
    */
   const spotRows = regionSpots.map((spot) => {
     const spotId = String(spot.id)
-    const access = evaluateSpot(spot, content.value.transports)
+    const access = evaluateSpot(spot, content.value.transports, knownContactIds)
     const options = access.travelOptions
     const selected =
       options.find((option) => String(option.transportId) === selectedTransportIds[spotId]) ??
       defaultTravelOption(options)
     const readiness =
-      selected === null ? null : evaluateTrip(spot, selected, content.value.transports)
+      selected === null
+        ? null
+        : evaluateTrip(spot, selected, content.value.transports, knownContactIds)
     const score = spotKnowledgeScore(knowledge, spotId)
     const discovered = world.discoveredSpotIds.includes(spot.id)
     const area =
@@ -195,7 +205,7 @@ export const MapScreen: FC<MapScreenProps> = ({ initialSelectedSpotId }) => {
   const rowById = new Map(spotRows.map((row) => [row.spotId, row]))
   const selectedRow = spotRows.find((row) => row.spotId === selectedSpotId) ?? null
   const goToSpot = (spot: FishingSpot, transportId: TransportId | undefined): void => {
-    const result = travelToSpot(spot, content.value.transports, transportId)
+    const result = travelToSpot(spot, content.value.transports, transportId, knownContactIds)
 
     if (result.ok) {
       setActiveScreen('spot')
@@ -473,6 +483,7 @@ export const MapScreen: FC<MapScreenProps> = ({ initialSelectedSpotId }) => {
                         row.spot,
                         option,
                         content.value.transports,
+                        knownContactIds,
                       ).affordable
                       const parts = describeTravelCostParts(option)
 

@@ -374,4 +374,106 @@ describe('access engine', () => {
     expect(aboveThreshold.accessible).toBe(true)
     expect(aboveThreshold.blockedReasons).toEqual([])
   })
+
+  describe('charter Transport availability via known Contacts (Phase 17 Final Fix)', () => {
+    const offshoreSpot = createTestSpot({
+      access: [
+        { kind: 'capability', capability: 'boat_required' },
+        { kind: 'capability', capability: 'offshore' },
+      ],
+      travelOptions: [
+        {
+          id: 'charter-route',
+          transportTypes: ['charter_boat'],
+          requiredCapabilities: ['boat_required', 'offshore'],
+          features: ['boat_rental', 'marina'],
+          baseMinutes: 60,
+          distanceKm: 30,
+          baseOneWayCost: 0,
+        },
+      ],
+    })
+
+    it('never makes a charter Transport available through availableTransportIds/purchase — a normal Save cannot grant it directly', () => {
+      // A player who somehow "owns" the charter id without knowing the Contact still
+      // cannot use it: charter availability is derived from knownContactIds only,
+      // not from availableTransportIds/ownedTransportIds for this Transport.
+      const evaluation = evaluateAccess({ ...base, spot: offshoreSpot })
+
+      expect(
+        evaluation.travelOptions.some((option) => String(option.transportId) === 'charter-boat'),
+      ).toBe(false)
+    })
+
+    it('keeps a charter Transport unusable when knownContactIds is empty or omitted', () => {
+      const omitted = evaluateAccess({ ...base, spot: offshoreSpot })
+      const empty = evaluateAccess({ ...base, spot: offshoreSpot, knownContactIds: [] })
+
+      expect(omitted.accessible).toBe(false)
+      expect(empty.accessible).toBe(false)
+      expect(
+        omitted.travelOptions.some((option) => String(option.transportId) === 'charter-boat'),
+      ).toBe(false)
+    })
+
+    it('makes the charter Transport usable once its operatorContactId is in knownContactIds', () => {
+      const evaluation = evaluateAccess({
+        ...base,
+        spot: offshoreSpot,
+        knownContactIds: ['test-captain'],
+      })
+
+      expect(evaluation.accessible).toBe(true)
+      expect(
+        evaluation.travelOptions.some((option) => String(option.transportId) === 'charter-boat'),
+      ).toBe(true)
+    })
+
+    it('accepts knownContactIds as either a Set or a plain array, with the same result', () => {
+      const withArray = evaluateAccess({
+        ...base,
+        spot: offshoreSpot,
+        knownContactIds: ['test-captain'],
+      })
+      const withSet = evaluateAccess({
+        ...base,
+        spot: offshoreSpot,
+        knownContactIds: new Set(['test-captain']),
+      })
+
+      expect(withSet.accessible).toBe(withArray.accessible)
+      expect(withSet.travelOptions).toEqual(withArray.travelOptions)
+    })
+
+    it('leaves ordinary rental Transports (no operatorContactId) unaffected by knownContactIds', () => {
+      const rentalBoatSpot = createTestSpot({
+        access: [
+          { kind: 'capability', capability: 'boat_required' },
+          { kind: 'capability', capability: 'offshore' },
+        ],
+        travelOptions: [
+          {
+            id: 'rental-route',
+            transportTypes: ['rental_boat'],
+            requiredCapabilities: ['boat_required', 'offshore'],
+            features: ['boat_rental', 'marina'],
+            baseMinutes: 60,
+            distanceKm: 30,
+            baseOneWayCost: 0,
+          },
+        ],
+      })
+
+      const withoutKnownContacts = evaluateAccess({ ...base, spot: rentalBoatSpot })
+      const withKnownContacts = evaluateAccess({
+        ...base,
+        spot: rentalBoatSpot,
+        knownContactIds: ['test-captain'],
+      })
+
+      expect(withoutKnownContacts.accessible).toBe(true)
+      expect(withKnownContacts.accessible).toBe(true)
+      expect(withKnownContacts.travelOptions).toEqual(withoutKnownContacts.travelOptions)
+    })
+  })
 })
