@@ -28,6 +28,15 @@
       "baseMinutes": 150,
       "distanceKm": 60,
       "baseOneWayCost": 0
+    },
+    {
+      "id": "alaska-offshore-charter",
+      "transportTypes": ["charter_boat"],
+      "requiredCapabilities": ["boat_required", "offshore"],
+      "features": ["boat_rental", "marina"],
+      "baseMinutes": 130,
+      "distanceKm": 60,
+      "baseOneWayCost": 0
     }
   ],
   "habitatTags": ["offshore", "deep"],

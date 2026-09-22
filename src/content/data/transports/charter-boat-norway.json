@@ -1,0 +1,17 @@
+{
+  "id": "charter-boat-norway",
+  "name": "フィヨルド チャーター船",
+  "transportType": "charter_boat",
+  "ownershipModel": "rental",
+  "rentalCost": 58000,
+  "travelCostModel": { "kind": "per_km", "yenPerKm": 42, "minimumOneWayCost": 2200 },
+  "travelTimeModifier": 0.4,
+  "maxRangeKm": 100,
+  "cargo": { "gearUnits": 12, "maxWeightKg": 260 },
+  "capabilities": ["boat_required", "offshore", "island_access"],
+  "requiredRouteFeatures": ["boat_rental", "marina"],
+  "launchCapability": "marina",
+  "boatCapability": "offshore",
+  "passengerCapacity": 6,
+  "operatorContactId": "captain-erik"
+}

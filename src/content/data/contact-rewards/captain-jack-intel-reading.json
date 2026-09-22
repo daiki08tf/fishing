@@ -1,0 +1,7 @@
+{
+  "id": "captain-jack-intel-reading",
+  "contactId": "captain-jack",
+  "minTrust": 10,
+  "kind": "intel",
+  "message": "Captain Jack が、海底谷の探し方と潮のタイミングを教えてくれた。"
+}

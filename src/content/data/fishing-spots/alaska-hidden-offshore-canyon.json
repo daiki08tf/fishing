@@ -1,0 +1,117 @@
+{
+  "id": "alaska-hidden-offshore-canyon",
+  "name": "アラスカ 沖の海底谷（要人脈・暫定）",
+  "regionId": "alaska",
+  "areaId": "coastal",
+  "environment": "offshore",
+  "visibility": "hidden",
+  "dataStatus": "provisional",
+  "access": [
+    {
+      "kind": "capability",
+      "capability": "boat_required"
+    },
+    {
+      "kind": "capability",
+      "capability": "offshore"
+    },
+    {
+      "kind": "relationship",
+      "targetId": "captain-jack",
+      "minimum": 34
+    }
+  ],
+  "travelOptions": [
+    {
+      "id": "alaska-offshore-canyon-charter",
+      "transportTypes": ["charter_boat"],
+      "requiredCapabilities": ["boat_required", "offshore"],
+      "features": ["boat_rental", "marina"],
+      "baseMinutes": 80,
+      "distanceKm": 36,
+      "baseOneWayCost": 0
+    }
+  ],
+  "habitatTags": ["offshore", "deep"],
+  "current": {
+    "preference": "strong"
+  },
+  "depth": {
+    "depthRangeM": {
+      "min": 30,
+      "max": 210
+    }
+  },
+  "fishingZones": [
+    {
+      "id": "mid",
+      "name": "中層",
+      "depthRangeM": {
+        "min": 30,
+        "max": 90
+      },
+      "habitatTags": ["mid-water", "open"]
+    },
+    {
+      "id": "canyon",
+      "name": "海底谷",
+      "depthRangeM": {
+        "min": 90,
+        "max": 210
+      },
+      "habitatTags": ["bottom", "deep"]
+    }
+  ],
+  "fishTable": [
+    {
+      "speciesId": "pacific-halibut",
+      "basePresence": 0.28,
+      "zoneAffinity": {
+        "mid": 0.3,
+        "canyon": 1.6
+      }
+    },
+    {
+      "speciesId": "walleye-pollock",
+      "basePresence": 0.24,
+      "zoneAffinity": {
+        "mid": 1.4,
+        "canyon": 0.6
+      }
+    },
+    {
+      "speciesId": "black-rockfish",
+      "basePresence": 0.22,
+      "zoneAffinity": {
+        "mid": 0.8,
+        "canyon": 1.2
+      }
+    },
+    {
+      "speciesId": "pacific-cod",
+      "basePresence": 0.26,
+      "zoneAffinity": {
+        "mid": 0.6,
+        "canyon": 1.4
+      }
+    }
+  ],
+  "knowledgeConfig": {
+    "reveals": [
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "habitat",
+        "minKnowledge": 50
+      }
+    ]
+  },
+  "sourceRefs": [
+    {
+      "id": "phase17-provisional",
+      "title": "PROVISIONAL — fictional/generalized secret spot; not a real location"
+    }
+  ]
+}

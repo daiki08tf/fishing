@@ -1,0 +1,13 @@
+{
+  "id": "mid-fish-finder",
+  "name": "ミッドレンジ魚探",
+  "price": 58000,
+  "category": "electronics",
+  "brandId": "deep-scan",
+  "seriesId": "deep-scan-finder-mid",
+  "series": "FINDER MID",
+  "kind": "fish_finder",
+  "detectionDepthM": 150,
+  "accuracy": 0.75,
+  "weightG": 750
+}

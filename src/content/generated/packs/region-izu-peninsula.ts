@@ -7,42 +7,54 @@
 import m0 from '../../data/fishing-spots/izu-east-harbor-wall.json'
 import m1 from '../../data/fishing-spots/izu-east-port-channel.json'
 import m2 from '../../data/fishing-spots/izu-estuary-mouth.json'
-import m3 from '../../data/fishing-spots/izu-hidden-outer-reef.json'
-import m4 from '../../data/fishing-spots/izu-hidden-tidepool-point.json'
-import m5 from '../../data/fishing-spots/izu-south-outer-shore.json'
-import m6 from '../../data/fishing-spots/izu-south-surf.json'
-import m7 from '../../data/fishing-spots/izu-west-rocky-point.json'
-import m8 from '../../data/fishing-spots/izu-west-surf.json'
-import m9 from '../../data/buyers/izu-harbor-coop.json'
-import m10 from '../../data/buyers/izu-uoichiba.json'
-import m11 from '../../data/contact-rewards/izu-harbor-coop-intel-10.json'
-import m12 from '../../data/contact-rewards/izu-harbor-coop-rumor-1.json'
-import m13 from '../../data/contact-rewards/izu-harbor-coop-spot-10.json'
-import m14 from '../../data/contact-rewards/izu-uoichiba-intel-1.json'
-import m15 from '../../data/contact-rewards/izu-uoichiba-rumor-10.json'
-import m16 from '../../data/contact-rewards/izu-uoichiba-spot-1.json'
+import m3 from '../../data/fishing-spots/izu-hidden-current-pinnacle.json'
+import m4 from '../../data/fishing-spots/izu-hidden-outer-reef.json'
+import m5 from '../../data/fishing-spots/izu-hidden-tidepool-point.json'
+import m6 from '../../data/fishing-spots/izu-offshore-grounds.json'
+import m7 from '../../data/fishing-spots/izu-south-outer-shore.json'
+import m8 from '../../data/fishing-spots/izu-south-surf.json'
+import m9 from '../../data/fishing-spots/izu-west-rocky-point.json'
+import m10 from '../../data/fishing-spots/izu-west-surf.json'
+import m11 from '../../data/buyers/izu-harbor-coop.json'
+import m12 from '../../data/buyers/izu-uoichiba.json'
+import m13 from '../../data/contacts/captain-ryo.json'
+import m14 from '../../data/contact-rewards/captain-ryo-intel-reading.json'
+import m15 from '../../data/contact-rewards/captain-ryo-spot-current-pinnacle.json'
+import m16 from '../../data/contact-rewards/izu-harbor-coop-intel-10.json'
+import m17 from '../../data/contact-rewards/izu-harbor-coop-rumor-1.json'
+import m18 from '../../data/contact-rewards/izu-harbor-coop-spot-10.json'
+import m19 from '../../data/contact-rewards/izu-uoichiba-intel-1.json'
+import m20 from '../../data/contact-rewards/izu-uoichiba-introduces-captain-ryo.json'
+import m21 from '../../data/contact-rewards/izu-uoichiba-rumor-10.json'
+import m22 from '../../data/contact-rewards/izu-uoichiba-spot-1.json'
 
 export const m0Name = "izu-east-harbor-wall.json"
 export const m1Name = "izu-east-port-channel.json"
 export const m2Name = "izu-estuary-mouth.json"
-export const m3Name = "izu-hidden-outer-reef.json"
-export const m4Name = "izu-hidden-tidepool-point.json"
-export const m5Name = "izu-south-outer-shore.json"
-export const m6Name = "izu-south-surf.json"
-export const m7Name = "izu-west-rocky-point.json"
-export const m8Name = "izu-west-surf.json"
-export const m9Name = "izu-harbor-coop.json"
-export const m10Name = "izu-uoichiba.json"
-export const m11Name = "izu-harbor-coop-intel-10.json"
-export const m12Name = "izu-harbor-coop-rumor-1.json"
-export const m13Name = "izu-harbor-coop-spot-10.json"
-export const m14Name = "izu-uoichiba-intel-1.json"
-export const m15Name = "izu-uoichiba-rumor-10.json"
-export const m16Name = "izu-uoichiba-spot-1.json"
+export const m3Name = "izu-hidden-current-pinnacle.json"
+export const m4Name = "izu-hidden-outer-reef.json"
+export const m5Name = "izu-hidden-tidepool-point.json"
+export const m6Name = "izu-offshore-grounds.json"
+export const m7Name = "izu-south-outer-shore.json"
+export const m8Name = "izu-south-surf.json"
+export const m9Name = "izu-west-rocky-point.json"
+export const m10Name = "izu-west-surf.json"
+export const m11Name = "izu-harbor-coop.json"
+export const m12Name = "izu-uoichiba.json"
+export const m13Name = "captain-ryo.json"
+export const m14Name = "captain-ryo-intel-reading.json"
+export const m15Name = "captain-ryo-spot-current-pinnacle.json"
+export const m16Name = "izu-harbor-coop-intel-10.json"
+export const m17Name = "izu-harbor-coop-rumor-1.json"
+export const m18Name = "izu-harbor-coop-spot-10.json"
+export const m19Name = "izu-uoichiba-intel-1.json"
+export const m20Name = "izu-uoichiba-introduces-captain-ryo.json"
+export const m21Name = "izu-uoichiba-rumor-10.json"
+export const m22Name = "izu-uoichiba-spot-1.json"
 
 export const load = async (): Promise<Readonly<Record<string, readonly unknown[]>>> => ({
-    "fishing-spots": [m0, m1, m2, m3, m4, m5, m6, m7, m8],
-    "buyers": [m9, m10],
-    "contacts": [],
-    "contact-rewards": [m11, m12, m13, m14, m15, m16],
+    "fishing-spots": [m0, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10],
+    "buyers": [m11, m12],
+    "contacts": [m13],
+    "contact-rewards": [m14, m15, m16, m17, m18, m19, m20, m21, m22],
 })

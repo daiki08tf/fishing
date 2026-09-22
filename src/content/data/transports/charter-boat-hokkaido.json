@@ -1,0 +1,17 @@
+{
+  "id": "charter-boat-hokkaido",
+  "name": "北海道 チャーター船",
+  "transportType": "charter_boat",
+  "ownershipModel": "rental",
+  "rentalCost": 47000,
+  "travelCostModel": { "kind": "per_km", "yenPerKm": 40, "minimumOneWayCost": 2000 },
+  "travelTimeModifier": 0.4,
+  "maxRangeKm": 90,
+  "cargo": { "gearUnits": 12, "maxWeightKg": 250 },
+  "capabilities": ["boat_required", "offshore", "island_access"],
+  "requiredRouteFeatures": ["boat_rental", "marina"],
+  "launchCapability": "marina",
+  "boatCapability": "offshore",
+  "passengerCapacity": 6,
+  "operatorContactId": "captain-daisuke"
+}

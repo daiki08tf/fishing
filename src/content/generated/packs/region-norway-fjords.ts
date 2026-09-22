@@ -7,42 +7,54 @@
 import m0 from '../../data/fishing-spots/norway-fjord-harbor.json'
 import m1 from '../../data/fishing-spots/norway-fjord-inner-shore.json'
 import m2 from '../../data/fishing-spots/norway-fjord-lake.json'
-import m3 from '../../data/fishing-spots/norway-fjord-shore.json'
-import m4 from '../../data/fishing-spots/norway-hidden-fjord-arm.json'
-import m5 from '../../data/fishing-spots/norway-hidden-fjord-deep.json'
-import m6 from '../../data/fishing-spots/norway-inland-river.json'
-import m7 from '../../data/fishing-spots/norway-outer-coast-rocks.json'
-import m8 from '../../data/fishing-spots/norway-outer-skerries.json'
-import m9 from '../../data/buyers/norway-fiskemottak.json'
-import m10 from '../../data/buyers/norway-fjord-restaurant.json'
-import m11 from '../../data/contact-rewards/norway-fiskemottak-intel-14.json'
-import m12 from '../../data/contact-rewards/norway-fiskemottak-rumor-5.json'
-import m13 from '../../data/contact-rewards/norway-fiskemottak-spot-14.json'
-import m14 from '../../data/contact-rewards/norway-fjord-restaurant-intel-5.json'
-import m15 from '../../data/contact-rewards/norway-fjord-restaurant-rumor-14.json'
-import m16 from '../../data/contact-rewards/norway-fjord-restaurant-spot-5.json'
+import m3 from '../../data/fishing-spots/norway-fjord-mouth-offshore.json'
+import m4 from '../../data/fishing-spots/norway-fjord-shore.json'
+import m5 from '../../data/fishing-spots/norway-hidden-fjord-arm.json'
+import m6 from '../../data/fishing-spots/norway-hidden-fjord-deep.json'
+import m7 from '../../data/fishing-spots/norway-hidden-offshore-shelf.json'
+import m8 from '../../data/fishing-spots/norway-inland-river.json'
+import m9 from '../../data/fishing-spots/norway-outer-coast-rocks.json'
+import m10 from '../../data/fishing-spots/norway-outer-skerries.json'
+import m11 from '../../data/buyers/norway-fiskemottak.json'
+import m12 from '../../data/buyers/norway-fjord-restaurant.json'
+import m13 from '../../data/contacts/captain-erik.json'
+import m14 from '../../data/contact-rewards/captain-erik-intel-reading.json'
+import m15 from '../../data/contact-rewards/captain-erik-spot-offshore-shelf.json'
+import m16 from '../../data/contact-rewards/norway-fiskemottak-intel-14.json'
+import m17 from '../../data/contact-rewards/norway-fiskemottak-introduces-captain-erik.json'
+import m18 from '../../data/contact-rewards/norway-fiskemottak-rumor-5.json'
+import m19 from '../../data/contact-rewards/norway-fiskemottak-spot-14.json'
+import m20 from '../../data/contact-rewards/norway-fjord-restaurant-intel-5.json'
+import m21 from '../../data/contact-rewards/norway-fjord-restaurant-rumor-14.json'
+import m22 from '../../data/contact-rewards/norway-fjord-restaurant-spot-5.json'
 
 export const m0Name = "norway-fjord-harbor.json"
 export const m1Name = "norway-fjord-inner-shore.json"
 export const m2Name = "norway-fjord-lake.json"
-export const m3Name = "norway-fjord-shore.json"
-export const m4Name = "norway-hidden-fjord-arm.json"
-export const m5Name = "norway-hidden-fjord-deep.json"
-export const m6Name = "norway-inland-river.json"
-export const m7Name = "norway-outer-coast-rocks.json"
-export const m8Name = "norway-outer-skerries.json"
-export const m9Name = "norway-fiskemottak.json"
-export const m10Name = "norway-fjord-restaurant.json"
-export const m11Name = "norway-fiskemottak-intel-14.json"
-export const m12Name = "norway-fiskemottak-rumor-5.json"
-export const m13Name = "norway-fiskemottak-spot-14.json"
-export const m14Name = "norway-fjord-restaurant-intel-5.json"
-export const m15Name = "norway-fjord-restaurant-rumor-14.json"
-export const m16Name = "norway-fjord-restaurant-spot-5.json"
+export const m3Name = "norway-fjord-mouth-offshore.json"
+export const m4Name = "norway-fjord-shore.json"
+export const m5Name = "norway-hidden-fjord-arm.json"
+export const m6Name = "norway-hidden-fjord-deep.json"
+export const m7Name = "norway-hidden-offshore-shelf.json"
+export const m8Name = "norway-inland-river.json"
+export const m9Name = "norway-outer-coast-rocks.json"
+export const m10Name = "norway-outer-skerries.json"
+export const m11Name = "norway-fiskemottak.json"
+export const m12Name = "norway-fjord-restaurant.json"
+export const m13Name = "captain-erik.json"
+export const m14Name = "captain-erik-intel-reading.json"
+export const m15Name = "captain-erik-spot-offshore-shelf.json"
+export const m16Name = "norway-fiskemottak-intel-14.json"
+export const m17Name = "norway-fiskemottak-introduces-captain-erik.json"
+export const m18Name = "norway-fiskemottak-rumor-5.json"
+export const m19Name = "norway-fiskemottak-spot-14.json"
+export const m20Name = "norway-fjord-restaurant-intel-5.json"
+export const m21Name = "norway-fjord-restaurant-rumor-14.json"
+export const m22Name = "norway-fjord-restaurant-spot-5.json"
 
 export const load = async (): Promise<Readonly<Record<string, readonly unknown[]>>> => ({
-    "fishing-spots": [m0, m1, m2, m3, m4, m5, m6, m7, m8],
-    "buyers": [m9, m10],
-    "contacts": [],
-    "contact-rewards": [m11, m12, m13, m14, m15, m16],
+    "fishing-spots": [m0, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10],
+    "buyers": [m11, m12],
+    "contacts": [m13],
+    "contact-rewards": [m14, m15, m16, m17, m18, m19, m20, m21, m22],
 })

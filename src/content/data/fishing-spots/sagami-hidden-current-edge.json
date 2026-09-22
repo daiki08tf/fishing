@@ -1,9 +1,11 @@
 {
-  "id": "hokkaido-offshore",
-  "name": "北海道 沖（暫定）",
-  "regionId": "hokkaido",
-  "areaId": "hokkaido-west",
+  "id": "sagami-hidden-current-edge",
+  "name": "相模湾 潮目の際（要人脈・暫定）",
+  "regionId": "tokyo-area",
+  "areaId": "kanagawa",
   "environment": "offshore",
+  "visibility": "hidden",
+  "dataStatus": "provisional",
   "access": [
     {
       "kind": "capability",
@@ -12,33 +14,32 @@
     {
       "kind": "capability",
       "capability": "offshore"
+    },
+    {
+      "kind": "relationship",
+      "targetId": "captain-taro",
+      "minimum": 40
     }
   ],
   "travelOptions": [
     {
-      "id": "hokkaido-offshore-boat",
-      "transportTypes": ["rental_boat"],
-      "requiredCapabilities": ["boat_required", "offshore"],
-      "features": ["boat_rental", "marina"],
-      "baseMinutes": 75,
-      "distanceKm": 32,
-      "baseOneWayCost": 0
-    },
-    {
-      "id": "hokkaido-offshore-charter",
+      "id": "sagami-current-edge-charter",
       "transportTypes": ["charter_boat"],
       "requiredCapabilities": ["boat_required", "offshore"],
       "features": ["boat_rental", "marina"],
-      "baseMinutes": 65,
-      "distanceKm": 32,
+      "baseMinutes": 60,
+      "distanceKm": 30,
       "baseOneWayCost": 0
     }
   ],
-  "habitatTags": ["open", "deep"],
+  "habitatTags": ["offshore", "deep"],
+  "current": {
+    "preference": "strong"
+  },
   "depth": {
     "depthRangeM": {
-      "min": 15,
-      "max": 120
+      "min": 20,
+      "max": 110
     }
   },
   "fishingZones": [
@@ -47,7 +48,7 @@
       "name": "表層",
       "depthRangeM": {
         "min": 0,
-        "max": 12
+        "max": 18
       },
       "habitatTags": ["surface", "open"]
     },
@@ -55,8 +56,8 @@
       "id": "mid",
       "name": "中層",
       "depthRangeM": {
-        "min": 12,
-        "max": 45
+        "min": 18,
+        "max": 55
       },
       "habitatTags": ["mid-water", "open"]
     },
@@ -64,51 +65,50 @@
       "id": "bottom",
       "name": "底",
       "depthRangeM": {
-        "min": 45,
-        "max": 120
+        "min": 55,
+        "max": 110
       },
       "habitatTags": ["bottom", "deep"]
     }
   ],
   "fishTable": [
     {
-      "speciesId": "hokke",
-      "basePresence": 0.35,
+      "speciesId": "katsuo",
+      "basePresence": 0.26,
       "zoneAffinity": {
-        "surface": 0.3,
-        "mid": 1.1,
-        "bottom": 1.4
+        "surface": 1.6,
+        "mid": 0.7,
+        "bottom": 0.1
       }
     },
     {
-      "speciesId": "pacific-cod",
+      "speciesId": "mahi-mahi",
+      "basePresence": 0.24,
+      "zoneAffinity": {
+        "surface": 1.5,
+        "mid": 0.7,
+        "bottom": 0.1
+      }
+    },
+    {
+      "speciesId": "kanpachi",
       "basePresence": 0.3,
       "zoneAffinity": {
-        "surface": 0.1,
-        "mid": 0.7,
-        "bottom": 1.6
+        "surface": 0.5,
+        "mid": 1.5,
+        "bottom": 0.7
       }
     },
     {
-      "speciesId": "buri",
-      "basePresence": 0.22,
-      "zoneAffinity": {
-        "surface": 1.3,
-        "mid": 1.2,
-        "bottom": 0.3
-      }
-    },
-    {
-      "speciesId": "hirame",
-      "basePresence": 0.2,
+      "speciesId": "madai",
+      "basePresence": 0.28,
       "zoneAffinity": {
         "surface": 0.1,
-        "mid": 0.5,
+        "mid": 0.8,
         "bottom": 1.5
       }
     }
   ],
-  "dataStatus": "provisional",
   "knowledgeConfig": {
     "reveals": [
       {
@@ -123,8 +123,8 @@
   },
   "sourceRefs": [
     {
-      "id": "phase12-provisional",
-      "title": "PROVISIONAL — gameplay-oriented spot layout; real access and regulations require verification"
+      "id": "phase17-provisional",
+      "title": "PROVISIONAL — fictional/generalized secret spot; not a real location"
     }
   ]
 }

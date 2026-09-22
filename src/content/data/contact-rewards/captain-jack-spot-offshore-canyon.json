@@ -1,0 +1,8 @@
+{
+  "id": "captain-jack-spot-offshore-canyon",
+  "contactId": "captain-jack",
+  "minTrust": 26,
+  "kind": "discover_spot",
+  "message": "Captain Jack が「まだ誰も連れて行っていない海底谷がある」と、場所を教えてくれた。",
+  "targetId": "alaska-hidden-offshore-canyon"
+}

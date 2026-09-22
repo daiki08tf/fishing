@@ -1,0 +1,117 @@
+{
+  "id": "izu-hidden-current-pinnacle",
+  "name": "伊豆 沖の根（要人脈・暫定）",
+  "regionId": "izu-peninsula",
+  "areaId": "izu-west",
+  "environment": "offshore",
+  "visibility": "hidden",
+  "dataStatus": "provisional",
+  "access": [
+    {
+      "kind": "capability",
+      "capability": "boat_required"
+    },
+    {
+      "kind": "capability",
+      "capability": "offshore"
+    },
+    {
+      "kind": "relationship",
+      "targetId": "captain-ryo",
+      "minimum": 34
+    }
+  ],
+  "travelOptions": [
+    {
+      "id": "izu-current-pinnacle-charter",
+      "transportTypes": ["charter_boat"],
+      "requiredCapabilities": ["boat_required", "offshore"],
+      "features": ["boat_rental", "marina"],
+      "baseMinutes": 55,
+      "distanceKm": 24,
+      "baseOneWayCost": 0
+    }
+  ],
+  "habitatTags": ["offshore", "deep"],
+  "current": {
+    "preference": "strong"
+  },
+  "depth": {
+    "depthRangeM": {
+      "min": 15,
+      "max": 70
+    }
+  },
+  "fishingZones": [
+    {
+      "id": "mid",
+      "name": "中層",
+      "depthRangeM": {
+        "min": 15,
+        "max": 40
+      },
+      "habitatTags": ["mid-water", "open"]
+    },
+    {
+      "id": "pinnacle",
+      "name": "根の周り",
+      "depthRangeM": {
+        "min": 40,
+        "max": 70
+      },
+      "habitatTags": ["structure", "deep"]
+    }
+  ],
+  "fishTable": [
+    {
+      "speciesId": "kanpachi",
+      "basePresence": 0.32,
+      "zoneAffinity": {
+        "mid": 1.3,
+        "pinnacle": 1.3
+      }
+    },
+    {
+      "speciesId": "hiramasa",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "mid": 1.3,
+        "pinnacle": 1.2
+      }
+    },
+    {
+      "speciesId": "buri",
+      "basePresence": 0.24,
+      "zoneAffinity": {
+        "mid": 1.4,
+        "pinnacle": 0.9
+      }
+    },
+    {
+      "speciesId": "madai",
+      "basePresence": 0.26,
+      "zoneAffinity": {
+        "mid": 0.7,
+        "pinnacle": 1.5
+      }
+    }
+  ],
+  "knowledgeConfig": {
+    "reveals": [
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "habitat",
+        "minKnowledge": 50
+      }
+    ]
+  },
+  "sourceRefs": [
+    {
+      "id": "phase17-provisional",
+      "title": "PROVISIONAL — fictional/generalized secret spot; not a real location"
+    }
+  ]
+}

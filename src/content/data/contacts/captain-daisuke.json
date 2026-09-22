@@ -1,0 +1,9 @@
+{
+  "id": "captain-daisuke",
+  "regionId": "hokkaido",
+  "name": "ダイスケ船長",
+  "type": "captain",
+  "role": "港で顔なじみのチャーター船長。沖の瀬をいくつも知っている。",
+  "initiallyKnown": true,
+  "dataStatus": "provisional"
+}

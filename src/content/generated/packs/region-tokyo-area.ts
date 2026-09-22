@@ -16,41 +16,43 @@ import m8 from '../../data/fishing-spots/managed-freshwater.json'
 import m9 from '../../data/fishing-spots/miura-rocky-shore.json'
 import m10 from '../../data/fishing-spots/offshore-bank-provisional.json'
 import m11 from '../../data/fishing-spots/sagami-bay-offshore.json'
-import m12 from '../../data/fishing-spots/saitama-middle-river.json'
-import m13 from '../../data/fishing-spots/sheltered-kayak-cove.json'
-import m14 from '../../data/fishing-spots/shonan-surf.json'
-import m15 from '../../data/fishing-spots/suburban-cycle-river.json'
-import m16 from '../../data/fishing-spots/suburban-road-lake.json'
-import m17 from '../../data/fishing-spots/tama-river-lower.json'
-import m18 from '../../data/fishing-spots/tokyo-bay-shore.json'
-import m19 from '../../data/fishing-spots/tokyo-bay-tideland.json'
-import m20 from '../../data/fishing-spots/tokyo-breakwater.json'
-import m21 from '../../data/fishing-spots/tokyo-hidden-canal-wall.json'
-import m22 from '../../data/fishing-spots/tokyo-hidden-estuary.json'
-import m23 from '../../data/fishing-spots/tokyo-hidden-mountain-pocket.json'
-import m24 from '../../data/fishing-spots/tokyo-hidden-rocky-cove.json'
-import m25 from '../../data/fishing-spots/tokyo-urban-canal.json'
-import m26 from '../../data/fishing-spots/upstream-lake.json'
-import m27 from '../../data/fishing-spots/yokohama-harbor.json'
-import m28 from '../../data/buyers/fish-wholesaler.json'
-import m29 from '../../data/buyers/local-izakaya.json'
-import m30 from '../../data/buyers/market-broker.json'
-import m31 from '../../data/contacts/captain-taro.json'
-import m32 from '../../data/contact-rewards/captain-taro-intel-reading.json'
-import m33 from '../../data/contact-rewards/captain-taro-rumor-hidden-grounds.json'
-import m34 from '../../data/contact-rewards/fish-wholesaler-introduces-captain-taro.json'
-import m35 from '../../data/contact-rewards/izakaya-rumor-canal.json'
-import m36 from '../../data/contact-rewards/izakaya-rumor-estuary.json'
-import m37 from '../../data/contact-rewards/izakaya-spot-canal.json'
-import m38 from '../../data/contact-rewards/izakaya-spot-estuary.json'
-import m39 from '../../data/contact-rewards/market-rumor-hokkaido-tributary.json'
-import m40 from '../../data/contact-rewards/market-spot-bc-estuary.json'
-import m41 from '../../data/contact-rewards/market-spot-hokkaido-tributary.json'
-import m42 from '../../data/contact-rewards/market-spot-mountain-pocket.json'
-import m43 from '../../data/contact-rewards/wholesaler-rumor-hokkaido-coast.json'
-import m44 from '../../data/contact-rewards/wholesaler-spot-alaska-branch.json'
-import m45 from '../../data/contact-rewards/wholesaler-spot-cove.json'
-import m46 from '../../data/contact-rewards/wholesaler-spot-hokkaido-coast.json'
+import m12 from '../../data/fishing-spots/sagami-hidden-current-edge.json'
+import m13 from '../../data/fishing-spots/saitama-middle-river.json'
+import m14 from '../../data/fishing-spots/sheltered-kayak-cove.json'
+import m15 from '../../data/fishing-spots/shonan-surf.json'
+import m16 from '../../data/fishing-spots/suburban-cycle-river.json'
+import m17 from '../../data/fishing-spots/suburban-road-lake.json'
+import m18 from '../../data/fishing-spots/tama-river-lower.json'
+import m19 from '../../data/fishing-spots/tokyo-bay-shore.json'
+import m20 from '../../data/fishing-spots/tokyo-bay-tideland.json'
+import m21 from '../../data/fishing-spots/tokyo-breakwater.json'
+import m22 from '../../data/fishing-spots/tokyo-hidden-canal-wall.json'
+import m23 from '../../data/fishing-spots/tokyo-hidden-estuary.json'
+import m24 from '../../data/fishing-spots/tokyo-hidden-mountain-pocket.json'
+import m25 from '../../data/fishing-spots/tokyo-hidden-rocky-cove.json'
+import m26 from '../../data/fishing-spots/tokyo-urban-canal.json'
+import m27 from '../../data/fishing-spots/upstream-lake.json'
+import m28 from '../../data/fishing-spots/yokohama-harbor.json'
+import m29 from '../../data/buyers/fish-wholesaler.json'
+import m30 from '../../data/buyers/local-izakaya.json'
+import m31 from '../../data/buyers/market-broker.json'
+import m32 from '../../data/contacts/captain-taro.json'
+import m33 from '../../data/contact-rewards/captain-taro-intel-reading.json'
+import m34 from '../../data/contact-rewards/captain-taro-rumor-hidden-grounds.json'
+import m35 from '../../data/contact-rewards/captain-taro-spot-current-edge.json'
+import m36 from '../../data/contact-rewards/fish-wholesaler-introduces-captain-taro.json'
+import m37 from '../../data/contact-rewards/izakaya-rumor-canal.json'
+import m38 from '../../data/contact-rewards/izakaya-rumor-estuary.json'
+import m39 from '../../data/contact-rewards/izakaya-spot-canal.json'
+import m40 from '../../data/contact-rewards/izakaya-spot-estuary.json'
+import m41 from '../../data/contact-rewards/market-rumor-hokkaido-tributary.json'
+import m42 from '../../data/contact-rewards/market-spot-bc-estuary.json'
+import m43 from '../../data/contact-rewards/market-spot-hokkaido-tributary.json'
+import m44 from '../../data/contact-rewards/market-spot-mountain-pocket.json'
+import m45 from '../../data/contact-rewards/wholesaler-rumor-hokkaido-coast.json'
+import m46 from '../../data/contact-rewards/wholesaler-spot-alaska-branch.json'
+import m47 from '../../data/contact-rewards/wholesaler-spot-cove.json'
+import m48 from '../../data/contact-rewards/wholesaler-spot-hokkaido-coast.json'
 
 export const m0Name = "arakawa-lower.json"
 export const m1Name = "bay-offshore-flat.json"
@@ -64,45 +66,47 @@ export const m8Name = "managed-freshwater.json"
 export const m9Name = "miura-rocky-shore.json"
 export const m10Name = "offshore-bank-provisional.json"
 export const m11Name = "sagami-bay-offshore.json"
-export const m12Name = "saitama-middle-river.json"
-export const m13Name = "sheltered-kayak-cove.json"
-export const m14Name = "shonan-surf.json"
-export const m15Name = "suburban-cycle-river.json"
-export const m16Name = "suburban-road-lake.json"
-export const m17Name = "tama-river-lower.json"
-export const m18Name = "tokyo-bay-shore.json"
-export const m19Name = "tokyo-bay-tideland.json"
-export const m20Name = "tokyo-breakwater.json"
-export const m21Name = "tokyo-hidden-canal-wall.json"
-export const m22Name = "tokyo-hidden-estuary.json"
-export const m23Name = "tokyo-hidden-mountain-pocket.json"
-export const m24Name = "tokyo-hidden-rocky-cove.json"
-export const m25Name = "tokyo-urban-canal.json"
-export const m26Name = "upstream-lake.json"
-export const m27Name = "yokohama-harbor.json"
-export const m28Name = "fish-wholesaler.json"
-export const m29Name = "local-izakaya.json"
-export const m30Name = "market-broker.json"
-export const m31Name = "captain-taro.json"
-export const m32Name = "captain-taro-intel-reading.json"
-export const m33Name = "captain-taro-rumor-hidden-grounds.json"
-export const m34Name = "fish-wholesaler-introduces-captain-taro.json"
-export const m35Name = "izakaya-rumor-canal.json"
-export const m36Name = "izakaya-rumor-estuary.json"
-export const m37Name = "izakaya-spot-canal.json"
-export const m38Name = "izakaya-spot-estuary.json"
-export const m39Name = "market-rumor-hokkaido-tributary.json"
-export const m40Name = "market-spot-bc-estuary.json"
-export const m41Name = "market-spot-hokkaido-tributary.json"
-export const m42Name = "market-spot-mountain-pocket.json"
-export const m43Name = "wholesaler-rumor-hokkaido-coast.json"
-export const m44Name = "wholesaler-spot-alaska-branch.json"
-export const m45Name = "wholesaler-spot-cove.json"
-export const m46Name = "wholesaler-spot-hokkaido-coast.json"
+export const m12Name = "sagami-hidden-current-edge.json"
+export const m13Name = "saitama-middle-river.json"
+export const m14Name = "sheltered-kayak-cove.json"
+export const m15Name = "shonan-surf.json"
+export const m16Name = "suburban-cycle-river.json"
+export const m17Name = "suburban-road-lake.json"
+export const m18Name = "tama-river-lower.json"
+export const m19Name = "tokyo-bay-shore.json"
+export const m20Name = "tokyo-bay-tideland.json"
+export const m21Name = "tokyo-breakwater.json"
+export const m22Name = "tokyo-hidden-canal-wall.json"
+export const m23Name = "tokyo-hidden-estuary.json"
+export const m24Name = "tokyo-hidden-mountain-pocket.json"
+export const m25Name = "tokyo-hidden-rocky-cove.json"
+export const m26Name = "tokyo-urban-canal.json"
+export const m27Name = "upstream-lake.json"
+export const m28Name = "yokohama-harbor.json"
+export const m29Name = "fish-wholesaler.json"
+export const m30Name = "local-izakaya.json"
+export const m31Name = "market-broker.json"
+export const m32Name = "captain-taro.json"
+export const m33Name = "captain-taro-intel-reading.json"
+export const m34Name = "captain-taro-rumor-hidden-grounds.json"
+export const m35Name = "captain-taro-spot-current-edge.json"
+export const m36Name = "fish-wholesaler-introduces-captain-taro.json"
+export const m37Name = "izakaya-rumor-canal.json"
+export const m38Name = "izakaya-rumor-estuary.json"
+export const m39Name = "izakaya-spot-canal.json"
+export const m40Name = "izakaya-spot-estuary.json"
+export const m41Name = "market-rumor-hokkaido-tributary.json"
+export const m42Name = "market-spot-bc-estuary.json"
+export const m43Name = "market-spot-hokkaido-tributary.json"
+export const m44Name = "market-spot-mountain-pocket.json"
+export const m45Name = "wholesaler-rumor-hokkaido-coast.json"
+export const m46Name = "wholesaler-spot-alaska-branch.json"
+export const m47Name = "wholesaler-spot-cove.json"
+export const m48Name = "wholesaler-spot-hokkaido-coast.json"
 
 export const load = async (): Promise<Readonly<Record<string, readonly unknown[]>>> => ({
-    "fishing-spots": [m0, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15, m16, m17, m18, m19, m20, m21, m22, m23, m24, m25, m26, m27],
-    "buyers": [m28, m29, m30],
-    "contacts": [m31],
-    "contact-rewards": [m32, m33, m34, m35, m36, m37, m38, m39, m40, m41, m42, m43, m44, m45, m46],
+    "fishing-spots": [m0, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15, m16, m17, m18, m19, m20, m21, m22, m23, m24, m25, m26, m27, m28],
+    "buyers": [m29, m30, m31],
+    "contacts": [m32],
+    "contact-rewards": [m33, m34, m35, m36, m37, m38, m39, m40, m41, m42, m43, m44, m45, m46, m47, m48],
 })

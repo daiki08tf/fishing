@@ -1,0 +1,13 @@
+{
+  "id": "advanced-fish-finder",
+  "name": "アドバンスド魚探",
+  "price": 135000,
+  "category": "electronics",
+  "brandId": "deep-scan",
+  "seriesId": "deep-scan-finder-pro",
+  "series": "FINDER PRO",
+  "kind": "fish_finder",
+  "detectionDepthM": 250,
+  "accuracy": 0.9,
+  "weightG": 600
+}
