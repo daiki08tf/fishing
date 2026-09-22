@@ -1,0 +1,45 @@
+{
+  "id": "magochi",
+  "japaneseName": "マゴチ（暫定）",
+  "waterTypes": [
+    "salt",
+    "brackish"
+  ],
+  "distribution": [
+    "tokyo-area"
+  ],
+  "habitats": [
+    "sand",
+    "estuary"
+  ],
+  "depthRange": {
+    "min": 0,
+    "max": 38
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 42,
+    "dispersion": 0.16,
+    "minCm": 18,
+    "maxCm": 75
+  },
+  "weightModel": {
+    "lengthWeightA": 0.0095,
+    "lengthWeightB": 3.05
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "fightProfile": {
+    "strength": 0.58,
+    "stamina": 0.62,
+    "speed": 0.5
+  },
+  "rarity": 1.4,
+  "sourceRefs": [
+    {
+      "id": "phase12-provisional",
+      "title": "PROVISIONAL — Phase 12 gameplay tuning; biological values require later verification"
+    }
+  ]
+}
