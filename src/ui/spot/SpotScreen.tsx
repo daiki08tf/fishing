@@ -57,6 +57,7 @@ export const SpotScreen = () => {
   const inventory = usePlayerStore((state) => state.inventory)
   const lastSearch = usePlayerStore((state) => state.lastSearch)
   const searchWater = usePlayerStore((state) => state.searchWater)
+  const reposition = usePlayerStore((state) => state.reposition)
   const returnHome = usePlayerStore((state) => state.returnHome)
   const [notice, setNotice] = useState<string | null>(null)
 
@@ -242,13 +243,33 @@ export const SpotScreen = () => {
               spot,
               species: spotSpecies,
               environment,
-              hasFishFinder: finder !== null,
+              finder:
+                finder === null
+                  ? null
+                  : { detectionDepthM: finder.detectionDepthM, accuracy: finder.accuracy },
+              depthZones: fishingZones.filter(
+                (zone) => zone.castDistanceM === undefined && zone.depthRangeM !== undefined,
+              ),
+              spotDepthRangeM: spot.depth?.depthRangeM,
+              knowledgeScore: score,
             })
             setNotice(result.message)
           }}
         >
           水面を探る（Search Water）
         </button>
+        {!platform.canReposition ? null : (
+          <button
+            className="button"
+            type="button"
+            onClick={() => {
+              const result = reposition()
+              setNotice(result.message)
+            }}
+          >
+            少し移動して探り直す（Reposition）
+          </button>
+        )}
         {notice === null ? null : <p className="notice">{notice}</p>}
       </section>
 

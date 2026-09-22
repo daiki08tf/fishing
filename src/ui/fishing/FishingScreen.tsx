@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react'
 import { suggestBattleCommand } from '../../domain/fishing/battle'
 import { castTargetStatus, type CastTargetStatus } from '../../domain/casting'
 import { depthTargetStatus, type DepthTargetStatus } from '../../domain/depth'
+import { PRESENTATION_LABELS } from '../../domain/method/FishingMethod'
 import { FishingMeter } from './FishingMeter'
 import { WaterScene } from './WaterScene'
 import { ResultView } from './ResultView'
@@ -196,6 +197,8 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
     depthCapability,
     resolvedDeployment,
     marineReadiness,
+    methodPlatformOk,
+    presentationMode,
     canCast,
     selectTargetZone,
     send,
@@ -380,7 +383,13 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
           </p>
         )}
 
-        {canCast ? null : <p className="notice">今のタックルでは選択中の水域まで届かない。</p>}
+        {canCast ? null : (
+          <p className="notice">
+            {methodPlatformOk
+              ? '今のタックルでは選択中の水域まで届かない。'
+              : `今の釣法（${PRESENTATION_LABELS[presentationMode]}）は今の乗船状態では使えない。`}
+          </p>
+        )}
       </section>
     )
 
@@ -437,7 +446,13 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
           </p>
         )}
 
-        {canCast ? null : <p className="notice">今のタックルでは選択中の水深まで届かない。</p>}
+        {canCast ? null : (
+          <p className="notice">
+            {methodPlatformOk
+              ? '今のタックルでは選択中の水深まで届かない。'
+              : `今の釣法（${PRESENTATION_LABELS[presentationMode]}）は今の乗船状態では使えない。`}
+          </p>
+        )}
         {marineReadiness === null || marineReadiness.ok ? null : (
           <p className="notice">{marineReadiness.reason}</p>
         )}
@@ -685,6 +700,9 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
   const actionPanel = finished ? null : (
     <section className="panel">
       <h3 className="panel__subheading">操作</h3>
+      {snapshot.phase !== 'IDLE' ? null : (
+        <p className="fishing__legend">CAST（{PRESENTATION_LABELS[presentationMode]}）</p>
+      )}
       <div className="controls">
         {PRE_FIGHT_COMMANDS.map((command) => (
           <button

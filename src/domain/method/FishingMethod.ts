@@ -11,6 +11,34 @@
 export const REQUIRED_OFFERING_KINDS = ['lure', 'bait', 'either'] as const
 export type RequiredOfferingKind = (typeof REQUIRED_OFFERING_KINDS)[number]
 
+/**
+ * 提示方式（Phase 17B）。
+ *
+ * どう仕掛けを出すか、の分類。FishingEngine の状態機械は増やさない
+ * （CAST コマンド・phase はそのまま。ラベルだけ presentation で変える）。
+ */
+export const PRESENTATION_MODES = ['cast', 'vertical', 'drift', 'troll'] as const
+export type PresentationMode = (typeof PRESENTATION_MODES)[number]
+
+export const PRESENTATION_LABELS: Readonly<Record<PresentationMode, string>> = {
+  cast: '投げる',
+  vertical: '落とす',
+  drift: '流す',
+  troll: '曳き始める',
+}
+
+export type MethodPresentation = {
+  readonly mode: PresentationMode
+  /**
+   * 物理的に成立する Platform（'shore' | 'kayak' | 'nearshore_boat' | 'offshore_boat'）。
+   * 空配列なら制限なし。FishingMethod は Depth Domain の型を知らない
+   * （open string のタグとして持つ。既存の offeringTags / habitatTags と同じ考え方）。
+   */
+  readonly supportedPlatforms: readonly string[]
+}
+
+export const DEFAULT_PRESENTATION: MethodPresentation = { mode: 'cast', supportedPlatforms: [] }
+
 export type FishingMethod = {
   readonly id: string
   readonly name: string
@@ -19,6 +47,17 @@ export type FishingMethod = {
   readonly requiresOffering: RequiredOfferingKind
   /** 使える offering のタグ（lureType / baitType）。空なら制限なし。 */
   readonly offeringTags: readonly string[]
+  /** 省略時は cast・Platform 制限なし（既存 Content は挙動が変わらない）。 */
+  readonly presentation?: MethodPresentation
+}
+
+export const presentationOf = (method: FishingMethod): MethodPresentation =>
+  method.presentation ?? DEFAULT_PRESENTATION
+
+/** 今の Platform でこの釣法が物理的に成立するか。Method ID / Platform ID の分岐ではない。 */
+export const methodSupportsPlatform = (method: FishingMethod, platform: string): boolean => {
+  const supported = presentationOf(method).supportedPlatforms
+  return supported.length === 0 || supported.includes(platform)
 }
 
 export const methodById = (

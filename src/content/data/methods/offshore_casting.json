@@ -1,0 +1,11 @@
+{
+  "id": "offshore_casting",
+  "name": "オフショアキャスティング",
+  "description": "船から表層〜中層のルアーを投げて引く。青物などの回遊魚を広く探る。",
+  "requiresOffering": "lure",
+  "offeringTags": ["popper", "stickbait", "jig", "minnow"],
+  "presentation": {
+    "mode": "cast",
+    "supportedPlatforms": []
+  }
+}

@@ -29,6 +29,7 @@ import {
   depthToFightDistanceM,
   resolveDepthCapability,
   resolveDeployment,
+  resolveDriftStrength,
   resolveFishingPlatform,
   resolveMarineReadiness,
   resolveSeaState,
@@ -39,6 +40,11 @@ import {
   type SeaState,
 } from '../../domain/depth'
 import type { FishingSpot, FishingZone } from '../../domain/world/FishingSpot'
+import {
+  methodSupportsPlatform,
+  presentationOf,
+  type PresentationMode,
+} from '../../domain/method/FishingMethod'
 import { SeededRandomSource } from '../../domain/rng/SeededRandomSource'
 import { resolveBiteCompatibility } from '../../domain/tackle/biteCompatibility'
 import type { FishSpecies } from '../../domain/fish/FishSpecies'
@@ -89,6 +95,10 @@ export type FishingSession = {
   readonly seaState: SeaState | null
   readonly marineReadiness: MarineReadinessResult | null
   readonly canCast: boolean
+  /** Phase 17B: 今の釣法がこの Platform で使えないときだけ false。 */
+  readonly methodPlatformOk: boolean
+  /** Phase 17B: 今の釣法の提示方式（投げる/落とす/流す/曳き始める のどれか）。 */
+  readonly presentationMode: PresentationMode
   readonly selectTargetZone: (zoneId: string) => void
   readonly send: (command: FishingCommand) => void
   /** 新しい seed でやり直す。seed を渡すと同じ経過を再挑戦できる。 */
@@ -290,6 +300,7 @@ export const useFishingSession = (): FishingSession => {
       random: new SeededRandomSource(
         `${session.seed}:depth:${String(spot.id)}:${activeTargetZoneId}`,
       ),
+      drift: resolveDriftStrength(spot.current),
     })
   }, [depthCapability, activeTargetZoneId, fishingZones, session.seed, spot])
 
@@ -552,9 +563,19 @@ export const useFishingSession = (): FishingSession => {
     }
   }, [isRunning, session, encountersKey, resolveSessionEnd])
 
-  const canCast = isDepthTargetZone
-    ? resolvedDeployment?.reachable === true
-    : resolvedCast?.reachable === true
+  /*
+   * Phase 17B: 今の釣法がこの Platform で物理的に成立するか
+   * （例: トローリングは船が動いていないと成立しない）。Method ID / Platform ID の
+   * 分岐ではなく、Content の presentation.supportedPlatforms から判定する。
+   */
+  const methodPlatformOk =
+    tackle === null || methodSupportsPlatform(tackle.method, platform.platform)
+  const presentationMode: PresentationMode =
+    tackle === null ? 'cast' : presentationOf(tackle.method).mode
+
+  const canCast =
+    methodPlatformOk &&
+    (isDepthTargetZone ? resolvedDeployment?.reachable === true : resolvedCast?.reachable === true)
 
   const send = useCallback(
     (command: FishingCommand) => {
@@ -612,6 +633,8 @@ export const useFishingSession = (): FishingSession => {
     seaState,
     marineReadiness,
     canCast,
+    methodPlatformOk,
+    presentationMode,
     selectTargetZone,
     send,
     restart,

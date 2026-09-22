@@ -116,6 +116,8 @@ export const LURE_TYPES = [
   'popper',
   'stickbait',
   'egi',
+  /** タイラバ（Phase 17B: オフショアの鯛用ワーム付きヘッド）。 */
+  'tai_rubber',
 ] as const
 export type LureType = (typeof LURE_TYPES)[number]
 

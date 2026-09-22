@@ -80,6 +80,45 @@ describe('resolveDeployment', () => {
     expect(result.targetZoneId).toBe(zones[0]?.id)
   })
 
+  it('marks a miss as drifted (not shallow/deep) when there is meaningful current (Phase 17B)', () => {
+    // 表層（0〜10m）は幅が狭く、fast drift の spread（±約10m）で高確率に隣接 Zone へ逸れる。
+    const qualities = Array.from({ length: 30 }, (_, index) => {
+      const result = resolveDeployment({
+        zones,
+        targetZoneId: 'surface',
+        capability,
+        random: new SeededRandomSource(`drift-test-${String(index)}`),
+        drift: 'fast',
+      })
+
+      return result.reachable ? result.quality : null
+    })
+
+    expect(qualities).toContain('drifted')
+    expect(qualities).not.toContain('shallow')
+    expect(qualities).not.toContain('deep')
+  })
+
+  it('a stronger drift widens the spread of actual depths (Phase 17B)', () => {
+    const depthsFor = (drift: 'slow' | 'fast'): readonly number[] =>
+      Array.from({ length: 20 }, (_, index) => {
+        const result = resolveDeployment({
+          zones,
+          targetZoneId: 'mid',
+          capability,
+          random: new SeededRandomSource(`spread-${drift}-${String(index)}`),
+          drift,
+        })
+
+        return result.reachable ? result.actualDepthM : 0
+      })
+
+    const spreadOf = (values: readonly number[]): number =>
+      Math.max(...values) - Math.min(...values)
+
+    expect(spreadOf(depthsFor('fast'))).toBeGreaterThan(spreadOf(depthsFor('slow')))
+  })
+
   it('never produces a negative actual depth', () => {
     for (const seed of ['a', 'b', 'c', 'd', 'e']) {
       const result = resolveDeployment({

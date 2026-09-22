@@ -1,0 +1,18 @@
+{
+  "id": "major-crest-tairubber-40",
+  "name": "Tairubber 40",
+  "price": 1800,
+  "category": "lure",
+  "brandId": "major-crest",
+  "lureType": "tai_rubber",
+  "weightG": 40,
+  "lengthMm": 130,
+  "depthRangeM": {
+    "min": 10,
+    "max": 40
+  },
+  "retrieveStyle": "steady_fall_and_wind",
+  "action": "flutter",
+  "visualProfile": "natural",
+  "targetProfile": ["bottom", "mid"]
+}

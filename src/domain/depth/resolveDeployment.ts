@@ -1,6 +1,7 @@
 import type { RandomSource } from '../rng/RandomSource'
 import type { FishingZone } from '../world/FishingSpot'
 import { depthTargetStatus, type DepthCapability, type DepthTargetStatus } from './DepthCapability'
+import type { DriftStrength } from './Drift'
 
 export type DeploymentQuality = 'clean' | 'shallow' | 'deep' | 'drifted'
 
@@ -78,15 +79,19 @@ const landedZoneFor = (
  * 狙う Zone を選び、DepthCapability と精度から実際の到達水深が決まる。
  * ギリギリの Zone は浅め／深めに逸れることがある。
  *
- * `quality: 'drifted'` は Phase 17B の Current/Drift 実装まで発生しない
- * （後で型を壊さないよう先に用意しておく）。
+ * `drift`（Phase 17B, `resolveDriftStrength` で既存の Spot.current から derive）が
+ * 'slow' 以外で、かつ Zone を外れたときは `quality: 'drifted'` にする
+ * （狙いが甘かったのではなく、潮に流された、という区別）。
  */
 export const resolveDeployment = (input: {
   readonly zones: readonly FishingZone[]
   readonly targetZoneId: string
   readonly capability: DepthCapability
   readonly random: RandomSource
+  /** 省略時は 'slow'（潮の影響なし）。 */
+  readonly drift?: DriftStrength
 }): ResolvedDeployment => {
+  const drift = input.drift ?? 'slow'
   const target = input.zones.find((zone) => zone.id === input.targetZoneId) ?? input.zones[0]
 
   if (target === undefined) {
@@ -119,13 +124,20 @@ export const resolveDeployment = (input: {
     (desiredDepth - input.capability.comfortableDepthM) /
       Math.max(1, input.capability.maxDepthM - input.capability.comfortableDepthM),
   )
-  const spreadM = 1 + 6 * (1 - input.capability.control) + 5 * beyondComfort
+  const driftSpreadBonusM = drift === 'fast' ? 7 : drift === 'moderate' ? 3 : 0
+  const spreadM = 1 + 6 * (1 - input.capability.control) + 5 * beyondComfort + driftSpreadBonusM
   const randomErrorM = (input.random.next() - 0.5) * 2 * spreadM
   const actualDepthM = round1(clamp(desiredDepth + randomErrorM, 0, input.capability.maxDepthM))
   const landed = landedZoneFor(input.zones, target, actualDepthM)
 
-  const quality: DeploymentQuality =
-    landed.id === target.id ? 'clean' : actualDepthM < range.min ? 'shallow' : 'deep'
+  const missed = landed.id !== target.id
+  const quality: DeploymentQuality = !missed
+    ? 'clean'
+    : drift !== 'slow'
+      ? 'drifted'
+      : actualDepthM < range.min
+        ? 'shallow'
+        : 'deep'
 
   return {
     reachable: true,

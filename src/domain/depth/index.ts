@@ -7,6 +7,9 @@ export type { DepthCapability, DepthTargetStatus, DepthTuning } from './DepthCap
 export { resolveDeployment } from './resolveDeployment'
 export type { DeploymentQuality, ResolvedDeployment } from './resolveDeployment'
 
+export { DRIFT_STRENGTHS, DRIFT_STRENGTH_LABELS, resolveDriftStrength } from './Drift'
+export type { DriftStrength } from './Drift'
+
 export { SEA_STATES, SEA_STATE_LABELS, resolveSeaState } from './SeaState'
 export type { SeaState } from './SeaState'
 
