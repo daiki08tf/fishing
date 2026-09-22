@@ -1,0 +1,145 @@
+{
+  "id": "saitama-middle-river",
+  "name": "埼玉 中流河川（暫定）",
+  "regionId": "tokyo-area",
+  "areaId": "saitama",
+  "environment": "river",
+  "access": [
+    {
+      "kind": "capability",
+      "capability": "public_transport"
+    }
+  ],
+  "travelOptions": [
+    {
+      "id": "saitama-rail",
+      "transportTypes": [
+        "train"
+      ],
+      "requiredCapabilities": [
+        "public_transport"
+      ],
+      "features": [],
+      "baseMinutes": 70,
+      "distanceKm": 42,
+      "baseOneWayCost": 650
+    }
+  ],
+  "habitatTags": [
+    "river",
+    "gravel"
+  ],
+  "depth": {
+    "depthRangeM": {
+      "min": 0.5,
+      "max": 5
+    }
+  },
+  "fishingZones": [
+    {
+      "id": "edge",
+      "name": "岸際",
+      "castDistanceM": {
+        "min": 0,
+        "max": 8
+      },
+      "depthRangeM": {
+        "min": 0.5,
+        "max": 2
+      },
+      "habitatTags": [
+        "bank",
+        "shallow"
+      ]
+    },
+    {
+      "id": "flow",
+      "name": "流芯",
+      "castDistanceM": {
+        "min": 8,
+        "max": 24
+      },
+      "depthRangeM": {
+        "min": 1.5,
+        "max": 4
+      },
+      "habitatTags": [
+        "river",
+        "current"
+      ]
+    },
+    {
+      "id": "far",
+      "name": "対岸寄り",
+      "castDistanceM": {
+        "min": 24,
+        "max": 45
+      },
+      "depthRangeM": {
+        "min": 1,
+        "max": 5
+      },
+      "habitatTags": [
+        "far-bank",
+        "current"
+      ]
+    }
+  ],
+  "fishTable": [
+    {
+      "speciesId": "ugui",
+      "basePresence": 0.55,
+      "zoneAffinity": {
+        "edge": 0.9,
+        "flow": 1.4,
+        "far": 0.8
+      }
+    },
+    {
+      "speciesId": "oikawa",
+      "basePresence": 0.6,
+      "zoneAffinity": {
+        "edge": 1.1,
+        "flow": 1.3,
+        "far": 0.5
+      }
+    },
+    {
+      "speciesId": "ayu",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "edge": 0.5,
+        "flow": 1.5,
+        "far": 1
+      }
+    },
+    {
+      "speciesId": "namazu",
+      "basePresence": 0.18,
+      "zoneAffinity": {
+        "edge": 1.4,
+        "flow": 0.7,
+        "far": 0.5
+      }
+    }
+  ],
+  "dataStatus": "provisional",
+  "knowledgeConfig": {
+    "reveals": [
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "habitat",
+        "minKnowledge": 50
+      }
+    ]
+  },
+  "sourceRefs": [
+    {
+      "id": "phase12-provisional",
+      "title": "PROVISIONAL — gameplay-oriented spot layout; real access and regulations require verification"
+    }
+  ]
+}
