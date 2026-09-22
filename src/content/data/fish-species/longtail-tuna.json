@@ -1,0 +1,44 @@
+{
+  "id": "longtail-tuna",
+  "japaneseName": "ロングテールツナ（暫定）",
+  "scientificName": "Thunnus tonggol",
+  "waterTypes": [
+    "salt"
+  ],
+  "distribution": [
+    "queensland"
+  ],
+  "habitats": [
+    "open"
+  ],
+  "depthRange": {
+    "min": 0,
+    "max": 75
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 85,
+    "dispersion": 0.18,
+    "minCm": 40,
+    "maxCm": 150
+  },
+  "weightModel": {
+    "lengthWeightA": 0.009,
+    "lengthWeightB": 3.08
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "fightProfile": {
+    "strength": 0.92,
+    "stamina": 0.94,
+    "speed": 0.98
+  },
+  "rarity": 2.4,
+  "sourceRefs": [
+    {
+      "id": "phase12-provisional",
+      "title": "PROVISIONAL — Phase 12 gameplay tuning; biological values require later verification"
+    }
+  ]
+}
