@@ -70,5 +70,71 @@
         "minKnowledge": 60
       }
     ]
-  }
+  },
+  "fishingZones": [
+    {
+      "id": "foot",
+      "name": "足元",
+      "castDistanceM": {
+        "min": 0,
+        "max": 10
+      },
+      "depthRangeM": {
+        "min": 1,
+        "max": 4
+      },
+      "habitatTags": [
+        "structure",
+        "shallow"
+      ]
+    },
+    {
+      "id": "harbor",
+      "name": "湾内",
+      "castDistanceM": {
+        "min": 10,
+        "max": 30
+      },
+      "depthRangeM": {
+        "min": 2,
+        "max": 8
+      },
+      "habitatTags": [
+        "bay",
+        "open"
+      ]
+    },
+    {
+      "id": "channel",
+      "name": "船道",
+      "castDistanceM": {
+        "min": 30,
+        "max": 55
+      },
+      "depthRangeM": {
+        "min": 5,
+        "max": 15
+      },
+      "habitatTags": [
+        "channel",
+        "current"
+      ]
+    },
+    {
+      "id": "outer",
+      "name": "沖の潮目",
+      "castDistanceM": {
+        "min": 55,
+        "max": 85
+      },
+      "depthRangeM": {
+        "min": 8,
+        "max": 20
+      },
+      "habitatTags": [
+        "open",
+        "current"
+      ]
+    }
+  ]
 }
