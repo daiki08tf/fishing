@@ -1,9 +1,28 @@
 # Handoff
 
-最終更新: Phase 11（Casting Distance & Fishing Zones）完了
+最終更新: Phase 12（Regional World Expansion / Alpha Content）実装完了・最終 CI 確認中
 
-> 以下の古い Phase 節は履歴として残している。現在状態は
-> Phase 11 / 10.2 / 10.1 / 10 と `.ai/current-task.md` を優先する。
+> 現在状態は Phase 12 → 11 → 10.2 → 10.1 → 10 の順で優先する。
+> 詳細は `.ai/current-task.md` と `docs/DECISIONS.md` も参照。
+
+## Phase 12（Regional World Expansion / Alpha Content）
+
+- branch: `phase-12-regional-world-expansion`
+- PR #13: Phase 12
+- PR #12: stacked merge の結果 main に届かなかった Phase 10.2 + 11 を main へ統合する PR
+- merge 順は **#12 → #13**
+- runtime Content:
+  - FishSpecies 82
+  - FishingSpot 45
+  - playable Region 5
+  - explicit Fishing Zone 45 / 45
+- British Columbia / Queensland を playable 化し、Expedition を追加
+- Species ID は世界共通 canonical ID。地域 prefix を Species identity に使わない
+- Save schema v8。v7 の Codex / fish Knowledge / repetition を canonical species ID へ migration
+- Phase 12 の新規生態・分布・Spot・アクセス値はすべて PROVISIONAL
+- `simulate:regional-content` を CI と `npm run check` に追加
+- Phase 13 候補: Catch Economy（売却 / 持ち帰り / リリース）
+- Visual Redesign は Content / Economy が安定した後の別 Phase
 
 ## Phase 11（Casting Distance & Fishing Zones）
 
