@@ -14,8 +14,12 @@
   "travelOptions": [
     {
       "id": "rail-route",
-      "transportTypes": ["train"],
-      "requiredCapabilities": ["public_transport"],
+      "transportTypes": [
+        "train"
+      ],
+      "requiredCapabilities": [
+        "public_transport"
+      ],
       "features": [],
       "baseMinutes": 32,
       "distanceKm": 18,
@@ -23,15 +27,22 @@
     },
     {
       "id": "bus-route",
-      "transportTypes": ["bus"],
-      "requiredCapabilities": ["public_transport"],
+      "transportTypes": [
+        "bus"
+      ],
+      "requiredCapabilities": [
+        "public_transport"
+      ],
       "features": [],
       "baseMinutes": 45,
       "distanceKm": 18,
       "baseOneWayCost": 520
     }
   ],
-  "habitatTags": ["shallow", "river"],
+  "habitatTags": [
+    "shallow",
+    "river"
+  ],
   "depth": {
     "depthRangeM": {
       "min": 1,
@@ -40,7 +51,7 @@
   },
   "fishTable": [
     {
-      "speciesId": "kanto-maaji",
+      "speciesId": "maaji",
       "basePresence": 0.8,
       "zoneAffinity": {
         "bank-edge": 0.3,
@@ -49,7 +60,7 @@
       }
     },
     {
-      "speciesId": "kanto-shirogisu",
+      "speciesId": "shirogisu",
       "basePresence": 0.5,
       "zoneAffinity": {
         "bank-edge": 0.2,
@@ -58,7 +69,7 @@
       }
     },
     {
-      "speciesId": "kanto-ugui",
+      "speciesId": "ugui",
       "basePresence": 0.6,
       "zoneAffinity": {
         "bank-edge": 0.8,
@@ -67,7 +78,7 @@
       }
     },
     {
-      "speciesId": "kanto-kurodai",
+      "speciesId": "kurodai",
       "basePresence": 0.4,
       "zoneAffinity": {
         "bank-edge": 1.2,
@@ -76,7 +87,7 @@
       }
     },
     {
-      "speciesId": "kanto-saba",
+      "speciesId": "saba",
       "basePresence": 0.5,
       "zoneAffinity": {
         "bank-edge": 0.2,
@@ -117,7 +128,10 @@
         "min": 1,
         "max": 2.5
       },
-      "habitatTags": ["shallow", "structure"]
+      "habitatTags": [
+        "shallow",
+        "structure"
+      ]
     },
     {
       "id": "channel",
@@ -130,7 +144,10 @@
         "min": 2,
         "max": 4.5
       },
-      "habitatTags": ["river", "current"]
+      "habitatTags": [
+        "river",
+        "current"
+      ]
     },
     {
       "id": "far-channel",
@@ -143,7 +160,10 @@
         "min": 3,
         "max": 6
       },
-      "habitatTags": ["current", "deep"]
+      "habitatTags": [
+        "current",
+        "deep"
+      ]
     }
   ]
 }
