@@ -18,15 +18,26 @@
   "travelOptions": [
     {
       "id": "marina-offshore-route",
-      "transportTypes": ["rental_boat", "owned_boat"],
-      "requiredCapabilities": ["boat_required", "offshore"],
-      "features": ["boat_rental", "marina"],
+      "transportTypes": [
+        "rental_boat",
+        "owned_boat"
+      ],
+      "requiredCapabilities": [
+        "boat_required",
+        "offshore"
+      ],
+      "features": [
+        "boat_rental",
+        "marina"
+      ],
       "baseMinutes": 120,
       "distanceKm": 35,
       "baseOneWayCost": 0
     }
   ],
-  "habitatTags": ["deep"],
+  "habitatTags": [
+    "deep"
+  ],
   "depth": {
     "depthRangeM": {
       "min": 20,
@@ -35,11 +46,11 @@
   },
   "fishTable": [
     {
-      "speciesId": "kanto-bora",
+      "speciesId": "bora",
       "basePresence": 0.5
     },
     {
-      "speciesId": "kanto-buri",
+      "speciesId": "buri",
       "basePresence": 0.5
     }
   ],
