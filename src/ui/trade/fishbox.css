@@ -1,0 +1,38 @@
+.fish-card-list {
+  display: grid;
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fish-card {
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-panel);
+  padding: 0.75rem;
+}
+
+.fish-card__head {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.fish-card__title {
+  flex: 1;
+  min-width: 0;
+}
+
+.fish-card__facts {
+  margin: 0.15rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
+.fish-card__value {
+  margin: 0.5rem 0 0;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}

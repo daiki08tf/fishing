@@ -380,3 +380,131 @@ Phase 13 の独立レビューで見つかった不備を、同じ branch / 同�
   帰宅 → 地域内の買取先へ売却、を 100 釣行以上回し、attempt / landed / kept /
   gross / travel cost / net / median / p90 / max / 月換算を出す。
   現実の収入推定ではなく gameplay balance simulation である
+
+## Phase 14 — Retro Management-Sim UI / Visual Identity Redesign
+
+Phase 13 / 13.1 の Core Loop（Domain / State）は一切変更しない。
+このフェーズは UI 層だけの再スキンである。
+
+決定:
+
+- **ゲームルールは 1 つも変えない。** FishingEngine / Text Battle / Casting Zone /
+  Catchability / Save v9 / Fish Box / Trade / Trust / Contacts / Hidden Spot /
+  Discovery・Access の分離 / Transport / Expedition / Economy / Codex / Knowledge
+  / Regional Content は Phase 13.1 の実装のまま。Domain 層のコードは 1 行も
+  変更していない（変更したのは `src/ui/` と `src/app/main.tsx` の import だけ）
+- **狙う比率は「モダンなモバイル操作性 70% / レトロゲーム感 30%」。** 全画面を
+  8bit 風のドット絵にはしない。本文テキストは読みやすい日本語システムフォントの
+  まま、数値表示・見出し・HIT / NEW RECORD / トロフィーなど「ゲームらしい瞬間」
+  だけに `--font-pixel` を使う（`src/ui/styles/tokens.css` の
+  `.pixel-text` / `.pixel-heading` / `.pixel-number`）
+- **デザイントークンを 1 か所に集約する。** `src/ui/styles/tokens.css` を新設し、
+  色・spacing・radius・border・shadow・typography・z-index・motion duration を
+  CSS custom property として定義する。既存 4 つの CSS ファイルはすべて同じ
+  `--color-*` 変数名を参照していたため、`global.css` の旧 `:root` 色定義を
+  `tokens.css` に一本化するだけで、Phase 14 でまだ触れていない画面
+  （Shop / Tackle / Expedition / Progression）にも新しい配色が自動的に伝播する。
+  画面ごとに再配色を手作業でやり直す必要がない
+- **魚のアートは画像アセットを増やさずに作る。** 著作権のあるゲーム素材・
+  スクレイピング画像・外部ホットリンクは一切使わない。手書きの inline SVG
+  シルエット 1 種類を、魚種 ID から決定論的にハッシュした色チップで塗り分ける
+  だけにする（`FishSilhouette` / `fishChipColor`）。図鑑が 82 種から将来 1000 種
+  に増えても、画像アセットも DOM の複雑さも増えない
+- **Biome の見た目は Region ID の巨大 switch にしない。** `BiomeScene` は
+  既存の content-driven な `Spot.environment` 文字列（canal / river / estuary /
+  bay_shore / lake / managed_pond の 6 種類、すでに Phase 9 の Environment
+  Domain が使っている語彙）だけをキーにする。未知の environment には安全な
+  デフォルトへフォールバックする
+- **ナビゲーションはスマホ下部固定の 5 項目に統一する。** ホーム / マップ /
+  魚かご / 図鑑 / メニュー。Trade は Fish Box 配下、Contacts は Menu 配下に
+  格納する（画面遷移そのものは既存のまま。BottomNav は `setActiveScreen` を
+  呼ぶだけの薄い層）。釣行中（fishing 画面）は Bottom Nav を隠す
+  （画面が狭いモバイルでファイト中の操作面積を優先する）
+- **MAP を最優先で作り直す。** 長い 1 行リストではなく、Region タブ + ノード風
+  Spot Card にする。Public Spot と発見済み Hidden Spot は見た目のアイコンを
+  変える（drop / star）。移動手段の詳細は `<details>` へ折りたたむが、
+  「行く」ボタン自体は常に見える一等地に置く
+- **`<details>` / `<summary>` で「折りたたみ」と「exact-text スモークテスト」を
+  両立させる。** `renderToStaticMarkup`（サーバー描画）は `open` 属性の有無に
+  関わらず `<details>` の中身を静的 HTML に含める。これを利用し、
+  Map の移動手段・Spot の水域/タックル/食いつき/分かっていること・Fish Box の
+  詳細を視覚的には畳みつつ、既存の exact-text テスト（`mapScreenSmoke.test.ts`
+  等）を 1 文字も変えずに通す
+- **LANDED の結果は独立した ResultBanner にする。** 魚名・サイズ・状態・珍しさ・
+  NEW SPECIES / NEW RECORD / TROPHY バッジを 1 枚のカードにまとめ、
+  ファイト中から続く「魚」パネルの数値表と重複させない（LANDED のときだけ
+  重複ブロックを非表示にする）。判定（`firstCatch` / `personalBest` /
+  `traits.includes('trophy')`）は既存 Store（`lastCatch` / `codex`）が
+  Phase 13 で既に出している値をそのまま使い、新しい判定ロジックは作らない
+- **HIT 演出は 100〜300ms を目安にする。** `--motion-fast`（120ms）/
+  `--motion-normal`（200ms）/ `--motion-special`（350ms）の 3 段階を用意し、
+  BITE の瞬間の画面演出は `--motion-normal`（200ms）を使う。NEW RECORD /
+  Trophy / LANDED の背景遷移のようなより大きな演出だけ `--motion-special` を使う。
+  `prefers-reduced-motion: reduce` では全アニメーションを実質即時にする
+  （`tokens.css` の `*{animation-duration:0.001ms!important;…}`）
+- **釣り画面の水面ビジュアルは phase / behaviour からだけ決める。** `WaterScene`
+  の `sceneKeyOf` は Domain のイベント名やコマンド名では分岐せず、既存の
+  `FishingPhase` と `BattleBehaviour`（Phase 10 で既に定義済みの 8 種の generic
+  behaviour）だけから見た目の状態キーを合成する。新しい Domain の状態は増やさない
+- **Buyer / Contact の「短い好み文」は既存 `description` フィールドをそのまま
+  使う。** Buyer カードの説明文を作るために魚種タグ→日本語ラベルの新しい変換表を
+  作らない。すでに Content（`buyers/*.json`）にある自然文の `description` を
+  そのまま表示するだけにし、「具体的な Buyer ID / Species ID で UI を分岐しない」
+  という Phase 13.1 の方針をそのまま UI にも適用する
+- **Trade の査定比較は既存 `quoteSale` を今いる地域の Buyer 分だけ呼ぶ。**
+  比較のための新しい Domain 関数は作らず、Phase 13.1 で導入した
+  「プレビューと実売却で同じ関数を通す」という不変条件をそのまま比較表示にも使う。
+  他地域の Buyer は比較にも出さない（持ち込めない Buyer を見せて期待させない）
+- **Codex は 82 種・将来 1000 種を見越して 1 種 1 小さなタイルにする。**
+  仮想化（windowing）は Phase 15 の対象とし、Phase 14 では作らない。
+  未捕獲種は種名を「？？？」にし、捕獲済みの既存 `CodexState`（catchCount /
+  largestLengthCm）だけを出す。新しい Knowledge / Codex ルールは作らない
+- **未解禁の Contact 報酬は「？？？」に留める。** `next reward` の内容は開示せず、
+  解禁に必要な Trust 閾値だけを見せる（Phase 13 の仕様を維持）。
+  `introduce_contact` は Phase 13.1 同様、Content からは禁止されたままにする
+  （実装されていない機能を UI で仄めかさない）
+- **Phase 14 では新しい釣りルール・経済ルール・地域・魚種・ボート深度機構は
+  追加しない。** Region Pack / 遅延ロードのアーキテクチャ変更、料理・水槽・
+  マルチプレイ、実地図 API、大量スプライト制作、著作権のあるビジュアル資産の
+  流用も対象外とする（Phase 15 以降の候補）
+
+## Phase 14.1 — iPhone UI polish（結果導線 / 画面遷移 / 地図 / 文章）
+
+Phase 14 の iPhone 実機相当レビューで見つかった UI の問題を、同じ branch / 同じ PR で直した。
+新しいゲーム機能・Domain ルールは追加していない（Save schema も変更なし）。
+
+決定:
+
+- **LANDED の Catch Result は DOM 順として最上位に置く。** 結果カードを CSS の
+  `position` で持ち上げるのではなく、`ResultView`（魚・サイズ・NEW バッジ・
+  Keep / Release）を header の直後に描画する。390x844 の初期 viewport に
+  「魚・長さ・重さ・NEW・持ち帰る・リリース」が入ることを目標にする。
+  ResultBanner の内部も「魚 → サイズ → バッジ」の順に読み替えた（
+  サイズの方が先に知りたい情報であるため）
+- **釣りが終わった phase ではファイト UI を出さない。** `isTerminalPhase` を
+  そのまま使い、LANDED / HOOK_MISSED / HOOK_ESCAPE / LINE_BREAK では
+  Fish stamina / Tension / Hook hold / Distance / Drag / 行動ログ / ファイト
+  コマンド / AUTO / 狙う場所を描画しない。「操作できない戦闘 UI が結果を
+  押し下げる」状態をなくす（Domain の状態は変えず、UI の条件分岐だけ）
+- **画面遷移の scroll reset は 1 箇所に集約する。** `src/ui/nav/scrollReset.ts` が
+  `appStore` を購読し、top-level screen が変わったときだけ `window.scrollTo(0, 0)`
+  する（AppShell から 1 回だけ install）。各画面では呼ばない。釣り中の phase 遷移は
+  screen が変わらないので reset しない
+- **MAP は「地図ボード → 詳細」の 2 段にする。** 実座標は使わず、Content の
+  `environment`（river / lake / managed_pond / canal / estuary / bay_shore /
+  nearshore / offshore）から「上流・湖 / 川・運河・河口 / 海・磯 / 沖」の帯へ
+  決定的に割り当てる。Spot ID や Content の並び順では分岐せず、帯の中は名前順に
+  並べる（同じ集合なら同じ配置）。ノードは flex-wrap で折り返し、390px 幅で
+  横スクロールを出さない。未発見の Hidden Spot はノードも詳細も出さず、
+  「情報で見つけた場所」は★として区別する（Rumor と exact location を混同しない）。
+  従来のカード一覧は「釣り場の詳細」として下に残す
+- **買取先の紹介文は Content の長文 `description` を画面に出さない。**
+  Phase 14 では `description` をそのまま出していたが、そこには
+  「PROVISIONAL — gameplay tuning」のような開発向けの語が含まれる。
+  Phase 14.1 では `BuyerDefinition` の pricingProfile / preferences から
+  **1〜2 行の役割文と好みタグ**を UI 側で組み立てる（魚種 ID・Buyer ID では分岐しない）。
+  長文 description と PROVISIONAL の事実は Content / docs / validation に残す
+- **HOME の上部は「地域 → 日時 → 天気 → Primary CTA → 噂 → 前回の釣行」を優先する。**
+  家計の内訳（給与・生活費）のような補足は `<details>` にたたむ
+- Phase 14.1 で追加した依存は無い（jsdom / Playwright などの実行時依存は足していない）。
+  新しい画像アセットも追加していない（装飾は CSS と既存 SVG のみ）

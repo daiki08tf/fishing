@@ -1,0 +1,176 @@
+/**
+ * Design tokens（Phase 14 — Retro Management-Sim UI）。
+ *
+ * 「現代スマホUI」+「レトロな管理/育成ゲームのゲーム感」。
+ * 明るく親しみやすい配色、ゲームらしいくっきりした枠・影、ただし可読性は落とさない。
+ *
+ * 既存の4 CSSファイル（global / world / fishing / progression）は
+ * すべて同じ --color-* 変数名を参照している。ここで値を差し替えるだけで
+ * アプリ全体の見た目が変わる（クラス名・DOM構造は変えない＝既存テストを壊さない）。
+ */
+
+:root {
+  color-scheme: light;
+
+  /* --- Palette --- */
+  --palette-cream: #fdf6e8;
+  --palette-cream-deep: #f6e9cd;
+  --palette-white: #ffffff;
+  --palette-navy: #16324a;
+  --palette-navy-deep: #0f2436;
+  --palette-ocean: #1c6e8c;
+  --palette-teal: #1f9e93;
+  --palette-sky: #6fc3e4;
+  --palette-sand: #f0c274;
+  --palette-leaf: #4caf6d;
+  --palette-orange: #ec8f4c;
+  --palette-coral: #e0574a;
+
+  /* --- Semantic colors (既存 4 ファイルが参照する変数名) --- */
+  --color-background: var(--palette-cream);
+  --color-surface: var(--palette-white);
+  --color-surface-alt: #eaf6f5;
+  --color-border: var(--palette-navy);
+  --color-text: var(--palette-navy-deep);
+  --color-text-muted: #5c7686;
+  --color-accent: var(--palette-teal);
+
+  --color-warn: var(--palette-sand);
+  --color-warn-text: #8a5a12;
+  --color-danger: var(--palette-coral);
+  --color-success: var(--palette-leaf);
+
+  /* --- Spacing --- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+
+  /* --- Radius --- */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.85rem;
+  --radius-lg: 1.25rem;
+  --radius-pill: 999px;
+
+  /* --- Border / shadow（フラットなオフセット影＝ゲームらしいくっきり感） --- */
+  --border-width: 2px;
+  --border-width-thick: 3px;
+  --shadow-panel: 3px 3px 0 rgb(22 50 74 / 12%);
+  --shadow-pop: 4px 4px 0 rgb(22 50 74 / 18%);
+  --shadow-inset: inset 0 -2px 0 rgb(22 50 74 / 10%);
+
+  /* --- Typography --- */
+  --font-body: system-ui, -apple-system, 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+  --font-pixel: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+
+  /* --- z-index --- */
+  --z-nav: 40;
+  --z-modal: 50;
+  --z-toast: 60;
+
+  /* --- Motion --- */
+  --motion-fast: 120ms;
+  --motion-normal: 200ms;
+  --motion-special: 350ms;
+  --motion-ease: cubic-bezier(0.2, 0.7, 0.3, 1);
+
+  /* Bottom nav の高さ（safe-area 込みで main の下 padding を計算するために使う）。 */
+  --bottom-nav-height: 4.25rem;
+}
+
+/**
+ * ゲーム的な数値・見出し表示だけに使う（本文には使わない）。
+ * 実際の pixel font は同梱しない（bundle / CDN 依存を避ける）。
+ * 等幅 + 太字 + 字間 + ハードシャドウで「ブロックっぽさ」を出す。
+ */
+.pixel-text {
+  font-family: var(--font-pixel);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.pixel-heading {
+  font-family: var(--font-pixel);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-shadow: 1px 1px 0 rgb(22 50 74 / 18%);
+}
+
+.pixel-number {
+  font-family: var(--font-pixel);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Motion keyframes --- */
+@keyframes pop-in {
+  from {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes flash-accent {
+  0% {
+    background-color: color-mix(in srgb, var(--palette-sand) 55%, transparent);
+  }
+
+  100% {
+    background-color: transparent;
+  }
+}
+
+@keyframes shake-x {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-3px);
+  }
+
+  75% {
+    transform: translateX(3px);
+  }
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.55;
+  }
+
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -4,7 +4,6 @@ import { PERK_DEFINITIONS } from '../../domain/progression'
 import { CONDITION_SUMMARY_LABELS, TIDE_LABELS, WEATHER_LABELS } from '../../domain/environment'
 import {
   ALLOWED_COMMANDS,
-  isTerminalPhase,
   type FishingCommand,
   type FishingEvent,
   type FishingPhase,
@@ -13,16 +12,25 @@ import { useEffect, useState } from 'react'
 import { suggestBattleCommand } from '../../domain/fishing/battle'
 import { castTargetStatus, type CastTargetStatus } from '../../domain/casting'
 import { FishingMeter } from './FishingMeter'
+import { WaterScene } from './WaterScene'
+import { ResultView } from './ResultView'
+import { isFightUiVisible, isFishingFinished, isResultFirstPhase } from './resultFlow'
 import { useFishingSession } from './useFishingSession'
 import { usePlayerStore } from '../../state/playerStore'
 import { useAppStore } from '../../state/appStore'
 import '../styles/fishing.css'
 
 /**
- * 釣り画面（Phase 2 版）。
+ * 釣り画面（Phase 2 版 / Phase 14.1 で結果優先レイアウトに再構成）。
  *
  * このコンポーネントが行うのは「コマンドを送る」「状態を描く」だけである。
  * 個体生成・Trait 抽選・記録の更新は Domain 側にある。
+ *
+ * Phase 14.1:
+ * - LANDED では **DOM 順として** Catch Result（魚・サイズ・NEW バッジ・Keep/Release）を
+ *   最上位に置く（CSS で position をいじって誤魔化さない）。
+ * - 釣りが終わった phase では、操作できないファイト UI（stamina / tension / drag /
+ *   hook hold / 行動ログ / ファイトコマンド / AUTO）を出さない。
  */
 
 const PHASE_LABELS: Readonly<Record<FishingPhase, string>> = {
@@ -102,7 +110,7 @@ const EVENT_LABELS: Readonly<Record<FishingEvent, string>> = {
   SESSION_RESET: '仕切り直し',
 }
 
-const ACTION_LABELS: Readonly<Record<FishingCommand, string>> = {
+export const ACTION_LABELS: Readonly<Record<FishingCommand, string>> = {
   cast: 'CAST',
   hook: 'HOOK',
   reel: '巻く',
@@ -116,7 +124,7 @@ const ACTION_LABELS: Readonly<Record<FishingCommand, string>> = {
   reset: 'RESET',
 }
 
-const FIGHT_COMMANDS: readonly FishingCommand[] = [
+export const FIGHT_COMMANDS: readonly FishingCommand[] = [
   'reel',
   'power_reel',
   'hold',
@@ -124,8 +132,8 @@ const FIGHT_COMMANDS: readonly FishingCommand[] = [
   'loosen_drag',
   'tighten_drag',
 ]
-const LANDING_COMMANDS: readonly FishingCommand[] = ['land', 'wait']
-const PRE_FIGHT_COMMANDS: readonly FishingCommand[] = ['cast', 'hook']
+export const LANDING_COMMANDS: readonly FishingCommand[] = ['land', 'wait']
+export const PRE_FIGHT_COMMANDS: readonly FishingCommand[] = ['cast', 'hook']
 
 const CAST_STATUS_LABELS: Readonly<Record<CastTargetStatus, string>> = {
   comfortable: '余裕',
@@ -246,261 +254,332 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
   const fish = snapshot.fish
   const tensionRatio = snapshot.tension / snapshot.maxTension
   const tensionDanger = tensionRatio >= 0.9
-  const finished = isTerminalPhase(snapshot.phase)
+  const finished = isFishingFinished(snapshot.phase)
+  const fightUiVisible = isFightUiVisible(snapshot.phase)
+  const resultFirst = isResultFirstPhase(snapshot.phase) && fish !== null
   const allowed = ALLOWED_COMMANDS[snapshot.phase]
   const record = fish === null ? undefined : codex.species[String(fish.individual.speciesId)]
+  const catchId = fish === null ? null : String(fish.individual.id)
+  const disposed = catchId !== null && disposedCatchIds.includes(catchId)
+  const levelsGained = lastCatch?.levelsGained ?? []
+  const levelUpTo =
+    levelsGained.length === 0 ? null : (levelsGained[levelsGained.length - 1] ?? null)
+  const disposeCatch = (): void => {
+    if (catchId === null) {
+      return
+    }
 
-  return (
-    <div className="fishing">
-      <header className="fishing__header">
-        <button className="button button--ghost" type="button" onClick={onExit}>
-          ← 戻る
-        </button>
-        <button
-          className="button button--ghost"
-          type="button"
-          onClick={() => {
-            setActiveScreen('progression')
-          }}
-        >
-          成長 Lv{progression.anglerLevel} / SP {progression.skillPoints}
-        </button>
-        {/* 通常プレイの画面には seed や内部 state 名を出さない（開発情報は表示しない）。 */}
-        <span className="fishing__seed">{spotName ?? '釣り場未選択'}</span>
-      </header>
+    setDisposedCatchIds((current) => (current.includes(catchId) ? current : [...current, catchId]))
+  }
 
-      <section className="panel">
-        <h2 className="panel__heading">{PHASE_LABELS[snapshot.phase]}</h2>
-        {environment === null || conditions === null ? null : (
-          <p className="fishing__legend">
-            {WEATHER_LABELS[environment.weather]} /{' '}
-            {environment.tide === null ? '潮なし' : TIDE_LABELS[environment.tide]} / 水温{' '}
-            {environment.water.temperatureC}℃ / 釣況 {CONDITION_SUMMARY_LABELS[conditions.summary]}
-          </p>
-        )}
-        <p className="panel__body">{PHASE_HINTS[snapshot.phase]}</p>
-      </section>
+  const header = (
+    <header className="fishing__header">
+      <button className="button button--ghost" type="button" onClick={onExit}>
+        ← 戻る
+      </button>
+      <button
+        className="button button--ghost"
+        type="button"
+        onClick={() => {
+          setActiveScreen('progression')
+        }}
+      >
+        成長 Lv{progression.anglerLevel} / SP {progression.skillPoints}
+      </button>
+      {/* 通常プレイの画面には seed や内部 state 名を出さない（開発情報は表示しない）。 */}
+      <span className="fishing__seed">{spotName ?? '釣り場未選択'}</span>
+    </header>
+  )
 
-      {castCapability === null ? null : (
-        <section className="panel">
-          <h3 className="panel__subheading">狙う場所</h3>
-          <p className="panel__body">
-            快適距離 {castCapability.comfortableDistanceM}m / 最大距離 {castCapability.maxDistanceM}
-            m / 精度 {Math.round(castCapability.precision * 100)}%
-          </p>
-          <p className="fishing__legend">
-            遠くへ投げるほど有利ではない。狙う水域によって出会いやすい魚が変わる。
-          </p>
-          <div className="controls">
-            {fishingZones.map((zone) => {
-              const status = castTargetStatus(zone, castCapability)
-              const selected = zone.id === targetZoneId
+  const waterScene = (
+    <WaterScene
+      phase={snapshot.phase}
+      behaviour={snapshot.battle?.behaviour ?? null}
+      hasFish={fish !== null}
+    />
+  )
 
-              return (
-                <button
-                  className={`control${selected ? ' control--accent' : ''}`}
-                  key={zone.id}
-                  type="button"
-                  disabled={snapshot.phase !== 'IDLE' || status === 'unreachable'}
-                  onClick={() => {
-                    selectTargetZone(zone.id)
-                  }}
-                >
-                  {zone.name} / {rangeLabel(zone.castDistanceM)} / {CAST_STATUS_LABELS[status]}
-                </button>
-              )
-            })}
-          </div>
-
-          {snapshot.phase === 'IDLE' || resolvedCast === null || !resolvedCast.reachable ? null : (
-            <p className="notice">
-              {resolvedCast.actualDistanceM}m先へ着水 /{' '}
-              {fishingZones.find((zone) => zone.id === resolvedCast.landedZoneId)?.name ??
-                resolvedCast.landedZoneId}
-              {resolvedCast.quality === 'clean'
-                ? ''
-                : resolvedCast.quality === 'short'
-                  ? '（狙いより手前）'
-                  : '（狙いより奥）'}
-            </p>
-          )}
-
-          {canCast ? null : <p className="notice">今のタックルでは選択中の水域まで届かない。</p>}
-        </section>
-      )}
-
-      <section className="panel">
-        {fish === null ? (
-          <>
-            <h3 className="panel__subheading">魚</h3>
-            <p className="panel__body">まだ姿は見えていない</p>
-          </>
-        ) : (
-          <>
-            <div className="fish__head">
-              <h3 className="panel__subheading">{fish.speciesName}</h3>
-              {/*
-                Phase 10: ファイト中は Battle 側の行動（走り / 突進 / 休み …）が
-                今の魚の状態である。battle が無いときは従来の表示。
-              */}
-              {snapshot.battle === null ? (
-                <span className={`badge${fish.behavior === 'run' ? ' badge--alert' : ''}`}>
-                  {BEHAVIOR_LABELS[fish.behavior]}
-                </span>
-              ) : (
-                <span
-                  className={`badge${
-                    snapshot.battle.behaviour === 'run' ||
-                    snapshot.battle.behaviour === 'surge' ||
-                    snapshot.battle.behaviour === 'second_run'
-                      ? ' badge--alert'
-                      : ''
-                  }`}
-                >
-                  {snapshot.battle.behaviourLabel}
-                </span>
-              )}
-            </div>
-
-            <dl className="fish__facts">
-              <div>
-                <dt>Length</dt>
-                <dd>{fish.individual.lengthCm} cm</dd>
-              </div>
-              <div>
-                <dt>Weight</dt>
-                <dd>{fish.individual.weightKg.toFixed(3)} kg</dd>
-              </div>
-              <div>
-                <dt>Condition</dt>
-                <dd>
-                  {CONDITION_LABELS[fish.conditionBand]}（{fish.individual.condition.toFixed(2)}）
-                </dd>
-              </div>
-              <div>
-                <dt>Rarity</dt>
-                <dd>
-                  {rarityLabel(fish.individual.percentile ?? 0)}（
-                  {(fish.individual.percentile ?? 0).toFixed(2)}）
-                </dd>
-              </div>
-            </dl>
-
-            {fish.individual.traits.length === 0 ? (
-              <p className="panel__body">Trait なし</p>
-            ) : (
-              <ul className="traits">
-                {fish.individual.traits.map((trait) => (
-                  <li className="trait" key={trait} title={TRAIT_HINTS[trait]}>
-                    {TRAIT_LABELS[trait]}
-                  </li>
-                ))}
-              </ul>
-            )}
-
-            <FishingMeter
-              label="Fish stamina"
-              value={fish.stamina}
-              max={fish.staminaMax}
-              tone="stamina"
-              valueText={`${Math.round((fish.stamina / fish.staminaMax) * 100)}%`}
-            />
-          </>
-        )}
-
-        <FishingMeter
-          label="Tension"
-          value={snapshot.tension}
-          max={snapshot.maxTension}
-          tone="tension"
-          optimal={snapshot.optimalTension}
-          danger={tensionDanger}
-          valueText={`${Math.round(tensionRatio * 100)}%`}
-        />
+  const phasePanel = (
+    <section className="panel">
+      <h2 className="panel__heading">{PHASE_LABELS[snapshot.phase]}</h2>
+      {environment === null || conditions === null ? null : (
         <p className="fishing__legend">
-          帯の明るい部分が「効率よく寄せられるテンション」。上げすぎると切れ、緩めすぎるとフックが外れる。
+          {WEATHER_LABELS[environment.weather]} /{' '}
+          {environment.tide === null ? '潮なし' : TIDE_LABELS[environment.tide]} / 水温{' '}
+          {environment.water.temperatureC}℃ / 釣況 {CONDITION_SUMMARY_LABELS[conditions.summary]}
         </p>
-      </section>
+      )}
+      <p className="panel__body">{PHASE_HINTS[snapshot.phase]}</p>
+    </section>
+  )
 
-      {snapshot.battle === null ? null : (
-        <section className="panel">
-          <p className="fishing__phase-code">魚の様子: {snapshot.battle.behaviourLabel}</p>
-          <h3 className="panel__subheading">
-            {snapshot.phase === 'LANDING' ? '取り込みの体勢' : 'ファイト'}
-          </h3>
+  /* 釣りが終わったあとに「狙う場所」を出しても操作できないので出さない。 */
+  const castPanel =
+    castCapability === null || finished ? null : (
+      <section className="panel">
+        <h3 className="panel__subheading">狙う場所</h3>
+        <p className="panel__body">
+          快適距離 {castCapability.comfortableDistanceM}m / 最大距離 {castCapability.maxDistanceM}m
+          / 精度 {Math.round(castCapability.precision * 100)}%
+        </p>
+        <p className="fishing__legend">
+          遠くへ投げるほど有利ではない。狙う水域によって出会いやすい魚が変わる。
+        </p>
+        <div className="controls">
+          {fishingZones.map((zone) => {
+            const status = castTargetStatus(zone, castCapability)
+            const selected = zone.id === targetZoneId
 
-          <FishingMeter
-            label="Hook hold"
-            value={snapshot.battle.hookHold}
-            max={1}
-            tone="stamina"
-            valueText={`${Math.round(snapshot.battle.hookHold * 100)}%`}
-          />
-          <dl className="record">
-            <div>
-              <dt>Distance</dt>
-              <dd>{snapshot.battle.distanceM} m</dd>
-            </div>
-            <div>
-              <dt>Drag</dt>
-              <dd>
-                {snapshot.battle.drag <= 0.35
-                  ? 'Loose'
-                  : snapshot.battle.drag >= 0.7
-                    ? 'Tight'
-                    : 'Normal'}{' '}
-                ({Math.round(snapshot.battle.drag * 100)}%)
-              </dd>
-            </div>
-            <div>
-              <dt>Step</dt>
-              <dd>{snapshot.battle.step}</dd>
-            </div>
-          </dl>
-
-          <ul className="log">
-            {snapshot.battle.log.slice(-8).map((line, index) => (
-              <li key={`${String(index)}-${line}`}>{line}</li>
-            ))}
-          </ul>
-
-          <div className="controls">
-            {(snapshot.phase === 'LANDING' ? LANDING_COMMANDS : FIGHT_COMMANDS).map((command) => (
+            return (
               <button
-                className={`control${command === 'land' ? ' control--accent' : ''}`}
-                key={command}
+                className={`control${selected ? ' control--accent' : ''}`}
+                key={zone.id}
                 type="button"
-                disabled={!allowed.includes(command) || (command === 'cast' && !canCast)}
+                disabled={snapshot.phase !== 'IDLE' || status === 'unreachable'}
                 onClick={() => {
-                  send(command)
+                  selectTargetZone(zone.id)
                 }}
               >
-                {ACTION_LABELS[command]}
+                {zone.name} / {rangeLabel(zone.castDistanceM)} / {CAST_STATUS_LABELS[status]}
               </button>
-            ))}
-          </div>
+            )
+          })}
+        </div>
 
-          <button
-            className="control"
-            type="button"
-            onClick={() => {
-              setAuto((current) => !current)
-            }}
+        {snapshot.phase === 'IDLE' || resolvedCast === null || !resolvedCast.reachable ? null : (
+          <p className="notice">
+            {resolvedCast.actualDistanceM}m先へ着水 /{' '}
+            {fishingZones.find((zone) => zone.id === resolvedCast.landedZoneId)?.name ??
+              resolvedCast.landedZoneId}
+            {resolvedCast.quality === 'clean'
+              ? ''
+              : resolvedCast.quality === 'short'
+                ? '（狙いより手前）'
+                : '（狙いより奥）'}
+          </p>
+        )}
+
+        {canCast ? null : <p className="notice">今のタックルでは選択中の水域まで届かない。</p>}
+      </section>
+    )
+
+  /*
+   * Catch Result（Phase 14.1）: LANDED のときだけ、DOM の最上位に置く。
+   * Keep / Release もこのカードの中に入れて、初期 viewport から落ちないようにする。
+   */
+  const resultPanel =
+    fish === null || !isResultFirstPhase(snapshot.phase) ? null : (
+      <ResultView
+        result={{
+          speciesId: String(fish.individual.speciesId),
+          speciesName: fish.speciesName,
+          lengthCm: fish.individual.lengthCm,
+          weightKg: fish.individual.weightKg,
+          conditionLabel: CONDITION_LABELS[fish.conditionBand],
+          rarityLabel: rarityLabel(fish.individual.percentile ?? 0),
+          traits: fish.individual.traits,
+          traitLabels: TRAIT_LABELS,
+          firstCatch: lastCatch?.firstCatch ?? false,
+          personalBest: lastCatch?.personalBest ?? false,
+          xpGained: lastCatch?.xpGained ?? null,
+          levelUpTo,
+          skillPointsGained: lastCatch?.skillPointsGained ?? 0,
+          catchCount: record?.catchCount ?? null,
+        }}
+        disposed={disposed}
+        onKeep={() => {
+          if (spot === undefined) {
+            return
+          }
+
+          keepCatch(fish.individual, spot)
+          disposeCatch()
+        }}
+        onRelease={disposeCatch}
+      />
+    )
+
+  const retryPanel = finished ? (
+    <section className="panel">
+      <h3 className="panel__subheading">次の一手</h3>
+      <div className="controls controls--result">
+        <button
+          className="control control--accent"
+          type="button"
+          onClick={() => {
+            restart()
+          }}
+        >
+          もう一度釣る
+        </button>
+        <button
+          className="control"
+          type="button"
+          onClick={() => {
+            restart(seed)
+          }}
+        >
+          同じ展開でもう一度
+        </button>
+      </div>
+    </section>
+  ) : null
+
+  /* 釣りが終わったあとは、魚の状態もテンションも「今の状態」ではないので出さない。 */
+  const fishPanel = finished ? null : fish === null ? (
+    <section className="panel">
+      <h3 className="panel__subheading">魚</h3>
+      <p className="panel__body">まだ姿は見えていない</p>
+
+      <FishingMeter
+        label="Tension"
+        value={snapshot.tension}
+        max={snapshot.maxTension}
+        tone="tension"
+        optimal={snapshot.optimalTension}
+        danger={tensionDanger}
+        valueText={`${Math.round(tensionRatio * 100)}%`}
+      />
+      <p className="fishing__legend">
+        帯の明るい部分が「効率よく寄せられるテンション」。上げすぎると切れ、緩めすぎるとフックが外れる。
+      </p>
+    </section>
+  ) : (
+    <section className="panel">
+      <div className="fish__head">
+        <h3 className="panel__subheading">{fish.speciesName}</h3>
+        {/*
+          Phase 10: ファイト中は Battle 側の行動（走り / 突進 / 休み …）が
+          今の魚の状態である。battle が無いときは従来の表示。
+        */}
+        {snapshot.battle === null ? (
+          <span className={`badge${fish.behavior === 'run' ? ' badge--alert' : ''}`}>
+            {BEHAVIOR_LABELS[fish.behavior]}
+          </span>
+        ) : (
+          <span
+            className={`badge${
+              snapshot.battle.behaviour === 'run' ||
+              snapshot.battle.behaviour === 'surge' ||
+              snapshot.battle.behaviour === 'second_run'
+                ? ' badge--alert'
+                : ''
+            }`}
           >
-            AUTO（おまかせ）: {auto ? 'ON' : 'OFF'}
-          </button>
-        </section>
+            {snapshot.battle.behaviourLabel}
+          </span>
+        )}
+      </div>
+
+      <dl className="fish__facts">
+        <div>
+          <dt>Length</dt>
+          <dd>{fish.individual.lengthCm} cm</dd>
+        </div>
+        <div>
+          <dt>Weight</dt>
+          <dd>{fish.individual.weightKg.toFixed(3)} kg</dd>
+        </div>
+        <div>
+          <dt>Condition</dt>
+          <dd>
+            {CONDITION_LABELS[fish.conditionBand]}（{fish.individual.condition.toFixed(2)}）
+          </dd>
+        </div>
+        <div>
+          <dt>Rarity</dt>
+          <dd>
+            {rarityLabel(fish.individual.percentile ?? 0)}（
+            {(fish.individual.percentile ?? 0).toFixed(2)}）
+          </dd>
+        </div>
+      </dl>
+
+      {fish.individual.traits.length === 0 ? (
+        <p className="panel__body">Trait なし</p>
+      ) : (
+        <ul className="traits">
+          {fish.individual.traits.map((trait) => (
+            <li className="trait" key={trait} title={TRAIT_HINTS[trait]}>
+              {TRAIT_LABELS[trait]}
+            </li>
+          ))}
+        </ul>
       )}
 
+      <FishingMeter
+        label="Fish stamina"
+        value={fish.stamina}
+        max={fish.staminaMax}
+        tone="stamina"
+        valueText={`${Math.round((fish.stamina / fish.staminaMax) * 100)}%`}
+      />
+
+      <FishingMeter
+        label="Tension"
+        value={snapshot.tension}
+        max={snapshot.maxTension}
+        tone="tension"
+        optimal={snapshot.optimalTension}
+        danger={tensionDanger}
+        valueText={`${Math.round(tensionRatio * 100)}%`}
+      />
+      <p className="fishing__legend">
+        帯の明るい部分が「効率よく寄せられるテンション」。上げすぎると切れ、緩めすぎるとフックが外れる。
+      </p>
+    </section>
+  )
+
+  const battlePanel =
+    !fightUiVisible || snapshot.battle === null ? null : (
       <section className="panel">
-        <h3 className="panel__subheading">操作</h3>
+        <p className="fishing__phase-code">魚の様子: {snapshot.battle.behaviourLabel}</p>
+        <h3 className="panel__subheading">
+          {snapshot.phase === 'LANDING' ? '取り込みの体勢' : 'ファイト'}
+        </h3>
+
+        <FishingMeter
+          label="Hook hold"
+          value={snapshot.battle.hookHold}
+          max={1}
+          tone="stamina"
+          valueText={`${Math.round(snapshot.battle.hookHold * 100)}%`}
+        />
+        <dl className="record">
+          <div>
+            <dt>Distance</dt>
+            <dd>{snapshot.battle.distanceM} m</dd>
+          </div>
+          <div>
+            <dt>Drag</dt>
+            <dd>
+              {snapshot.battle.drag <= 0.35
+                ? 'Loose'
+                : snapshot.battle.drag >= 0.7
+                  ? 'Tight'
+                  : 'Normal'}{' '}
+              ({Math.round(snapshot.battle.drag * 100)}%)
+            </dd>
+          </div>
+          <div>
+            <dt>Step</dt>
+            <dd>{snapshot.battle.step}</dd>
+          </div>
+        </dl>
+
+        <ul className="log">
+          {snapshot.battle.log.slice(-8).map((line, index) => (
+            <li key={`${String(index)}-${line}`}>{line}</li>
+          ))}
+        </ul>
+
         <div className="controls">
-          {PRE_FIGHT_COMMANDS.map((command) => (
+          {(snapshot.phase === 'LANDING' ? LANDING_COMMANDS : FIGHT_COMMANDS).map((command) => (
             <button
-              className={`control${command === 'hook' ? ' control--accent' : ''}`}
+              className={`control${command === 'land' ? ' control--accent' : ''}`}
               key={command}
               type="button"
-              disabled={!allowed.includes(command)}
+              disabled={!allowed.includes(command) || (command === 'cast' && !canCast)}
               onClick={() => {
                 send(command)
               }}
@@ -510,158 +589,168 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
           ))}
         </div>
 
-        {snapshot.phase === 'LANDED' && fish !== null && spot !== undefined
-          ? (() => {
-              const catchId = String(fish.individual.id)
-              const disposed = disposedCatchIds.includes(catchId)
-
-              return (
-                <div className="controls controls--result">
-                  <button
-                    className="control control--accent"
-                    type="button"
-                    disabled={disposed}
-                    onClick={() => {
-                      keepCatch(fish.individual, spot)
-                      setDisposedCatchIds((current) => [...current, catchId])
-                    }}
-                  >
-                    持ち帰る（Fish Box へ）
-                  </button>
-                  <button
-                    className="control"
-                    type="button"
-                    disabled={disposed}
-                    onClick={() => {
-                      setDisposedCatchIds((current) => [...current, catchId])
-                    }}
-                  >
-                    リリース
-                  </button>
-                  {disposed ? <p className="fishing__legend">決定済み</p> : null}
-                </div>
-              )
-            })()
-          : null}
-
-        {finished ? (
-          <div className="controls controls--result">
-            <button
-              className="control"
-              type="button"
-              onClick={() => {
-                restart()
-              }}
-            >
-              もう一度釣る
-            </button>
-            <button
-              className="control"
-              type="button"
-              onClick={() => {
-                restart(seed)
-              }}
-            >
-              同じ展開でもう一度
-            </button>
-          </div>
-        ) : null}
+        <button
+          className="control"
+          type="button"
+          onClick={() => {
+            setAuto((current) => !current)
+          }}
+        >
+          AUTO（おまかせ）: {auto ? 'ON' : 'OFF'}
+        </button>
       </section>
+    )
 
-      <section className="panel">
-        <h3 className="panel__subheading">釣果と記録</h3>
+  const actionPanel = finished ? null : (
+    <section className="panel">
+      <h3 className="panel__subheading">操作</h3>
+      <div className="controls">
+        {PRE_FIGHT_COMMANDS.map((command) => (
+          <button
+            className={`control${command === 'hook' ? ' control--accent' : ''}`}
+            key={command}
+            type="button"
+            disabled={!allowed.includes(command)}
+            onClick={() => {
+              send(command)
+            }}
+          >
+            {ACTION_LABELS[command]}
+          </button>
+        ))}
+      </div>
+    </section>
+  )
 
-        {lastCatch === null ? null : (
-          <div className="notice">
-            <p className="notice__eyebrow">直近の釣果</p>
-            <p className="notice__title">
-              {lastCatch.speciesName} — +{lastCatch.xpGained} XP
-            </p>
-            <ul className="log">
-              <li>
-                サイズ帯 {lastCatch.sizeBand}（Base {lastCatch.baseXp} XP）
-              </li>
-              {lastCatch.decayMultiplier === 1 ? null : (
-                <li>反復減衰 ×{lastCatch.decayMultiplier.toFixed(2)}</li>
-              )}
-              {lastCatch.factors.map((factor) => (
-                <li key={factor.label}>
-                  {factor.label} +{factor.value} XP
-                </li>
-              ))}
-            </ul>
-            <p className="notice__tags">
-              {lastCatch.firstCatch ? <span className="badge badge--alert">初記録</span> : null}
-              {lastCatch.personalBest ? (
-                <span className="badge badge--alert">自己記録更新</span>
-              ) : null}
-              {lastCatch.unlockedPerks.length > 0 ? (
-                <span className="badge badge--alert">
-                  Perk:{' '}
-                  {lastCatch.unlockedPerks.map((perk) => PERK_DEFINITIONS[perk].name).join(', ')}
-                </span>
-              ) : null}
-            </p>
-            {lastCatch.levelsGained.length === 0 ? null : (
-              <p className="notice__level">
-                LEVEL UP → Lv{lastCatch.levelsGained[lastCatch.levelsGained.length - 1]}（Skill
-                Point +{lastCatch.skillPointsGained}）
-              </p>
-            )}
-          </div>
-        )}
+  const recordPanel = (
+    <section className="panel">
+      <h3 className="panel__subheading">釣果と記録</h3>
 
-        {fish === null ? (
-          <p className="panel__body">魚が掛かると、この魚種の記録が出る。</p>
-        ) : record === undefined ? (
-          <p className="panel__body">{fish.speciesName} の記録はまだない。</p>
-        ) : (
-          <>
-            <p className="notice__eyebrow">{fish.speciesName} の記録</p>
-            <dl className="record">
-              <div>
-                <dt>Catch</dt>
-                <dd>{record.catchCount} 匹</dd>
-              </div>
-              <div>
-                <dt>Largest</dt>
-                <dd>{record.largestLengthCm} cm</dd>
-              </div>
-              <div>
-                <dt>Heaviest</dt>
-                <dd>{record.heaviestWeightKg.toFixed(3)} kg</dd>
-              </div>
-              <div>
-                <dt>Best</dt>
-                <dd>
-                  {record.personalBest.lengthCm} cm / {rarityLabel(record.bestPercentile)}
-                </dd>
-              </div>
-              <div>
-                <dt>Traits</dt>
-                <dd>
-                  {record.caughtTraits.length === 0
-                    ? '—'
-                    : record.caughtTraits.map((trait) => TRAIT_LABELS[trait]).join(', ')}
-                </dd>
-              </div>
-            </dl>
-          </>
-        )}
-      </section>
-
-      <section className="panel">
-        <h3 className="panel__subheading">ログ</h3>
-        {snapshot.lastEvents.length === 0 ? (
-          <p className="panel__body">—</p>
-        ) : (
+      {lastCatch === null ? null : (
+        <div className="notice">
+          <p className="notice__eyebrow">直近の釣果</p>
+          <p className="notice__title">
+            {lastCatch.speciesName} — +{lastCatch.xpGained} XP
+          </p>
           <ul className="log">
-            {snapshot.lastEvents.map((event) => (
-              <li key={event}>{EVENT_LABELS[event]}</li>
+            <li>
+              サイズ帯 {lastCatch.sizeBand}（Base {lastCatch.baseXp} XP）
+            </li>
+            {lastCatch.decayMultiplier === 1 ? null : (
+              <li>反復減衰 ×{lastCatch.decayMultiplier.toFixed(2)}</li>
+            )}
+            {lastCatch.factors.map((factor) => (
+              <li key={factor.label}>
+                {factor.label} +{factor.value} XP
+              </li>
             ))}
           </ul>
-        )}
-      </section>
+          <p className="notice__tags">
+            {lastCatch.firstCatch ? <span className="badge badge--alert">初記録</span> : null}
+            {lastCatch.personalBest ? (
+              <span className="badge badge--alert">自己記録更新</span>
+            ) : null}
+            {lastCatch.unlockedPerks.length > 0 ? (
+              <span className="badge badge--alert">
+                Perk:{' '}
+                {lastCatch.unlockedPerks.map((perk) => PERK_DEFINITIONS[perk].name).join(', ')}
+              </span>
+            ) : null}
+          </p>
+          {lastCatch.levelsGained.length === 0 ? null : (
+            <p className="notice__level">
+              LEVEL UP → Lv{lastCatch.levelsGained[lastCatch.levelsGained.length - 1]}（Skill Point
+              +{lastCatch.skillPointsGained}）
+            </p>
+          )}
+        </div>
+      )}
+
+      {fish === null ? (
+        <p className="panel__body">魚が掛かると、この魚種の記録が出る。</p>
+      ) : record === undefined ? (
+        <p className="panel__body">{fish.speciesName} の記録はまだない。</p>
+      ) : (
+        <>
+          <p className="notice__eyebrow">{fish.speciesName} の記録</p>
+          <dl className="record">
+            <div>
+              <dt>Catch</dt>
+              <dd>{record.catchCount} 匹</dd>
+            </div>
+            <div>
+              <dt>Largest</dt>
+              <dd>{record.largestLengthCm} cm</dd>
+            </div>
+            <div>
+              <dt>Heaviest</dt>
+              <dd>{record.heaviestWeightKg.toFixed(3)} kg</dd>
+            </div>
+            <div>
+              <dt>Best</dt>
+              <dd>
+                {record.personalBest.lengthCm} cm / {rarityLabel(record.bestPercentile)}
+              </dd>
+            </div>
+            <div>
+              <dt>Traits</dt>
+              <dd>
+                {record.caughtTraits.length === 0
+                  ? '—'
+                  : record.caughtTraits.map((trait) => TRAIT_LABELS[trait]).join(', ')}
+              </dd>
+            </div>
+          </dl>
+        </>
+      )}
+    </section>
+  )
+
+  const logPanel = (
+    <section className="panel">
+      <h3 className="panel__subheading">ログ</h3>
+      {snapshot.lastEvents.length === 0 ? (
+        <p className="panel__body">—</p>
+      ) : (
+        <ul className="log">
+          {snapshot.lastEvents.map((event) => (
+            <li key={event}>{EVENT_LABELS[event]}</li>
+          ))}
+        </ul>
+      )}
+    </section>
+  )
+
+  /*
+   * LANDED: 結果 → Keep / Release → 次の一手 → 補足（XP / 記録 / ログ / 水面）の順。
+   * ファイト UI は出さない（操作できない戦闘 UI を結果の上に残さない）。
+   */
+  if (resultFirst) {
+    return (
+      <div className="fishing fishing--result">
+        {header}
+        {resultPanel}
+        {retryPanel}
+        {recordPanel}
+        {logPanel}
+        {waterScene}
+        {phasePanel}
+      </div>
+    )
+  }
+
+  return (
+    <div className="fishing">
+      {header}
+      {waterScene}
+      {phasePanel}
+      {castPanel}
+      {fishPanel}
+      {battlePanel}
+      {actionPanel}
+      {retryPanel}
+      {recordPanel}
+      {logPanel}
     </div>
   )
 }

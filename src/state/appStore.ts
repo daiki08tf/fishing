@@ -26,6 +26,8 @@ export const APP_SCREENS = [
   'fishbox',
   'trade',
   'contacts',
+  'codex',
+  'menu',
 ] as const
 export type AppScreen = (typeof APP_SCREENS)[number]
 

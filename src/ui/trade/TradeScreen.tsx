@@ -4,17 +4,15 @@ import { formatYen } from '../../domain/economy'
 import { asFishIndividualId } from '../../domain/ids'
 import { useAppStore } from '../../state/appStore'
 import { usePlayerStore } from '../../state/playerStore'
+import { EmptyState } from '../components/EmptyState'
+import { StatMeter } from '../components/StatMeter'
 import { ContentErrorPanel } from '../world/ContentErrorPanel'
 import { useContentOrError } from '../world/useContentOrError'
-
-const BUYER_TYPE_LABELS: Readonly<Record<string, string>> = {
-  izakaya: '居酒屋',
-  wholesaler: '卸',
-  market: '市場',
-}
+import { buyerPreferenceChips, buyerRoleLabel, describeBuyerRole } from './buyerPresentation'
+import './trade.css'
 
 /**
- * TRADE（Phase 13）。
+ * TRADE（Phase 13 / Phase 14 で Buyer カード表示に再構成）。
  *
  * Fish Box から売る魚を選び、1 つの買取先へまとめて売る。
  * 価格・Trust 上昇は deterministic（domain/trade/sellCatches）。
@@ -24,6 +22,12 @@ const BUYER_TYPE_LABELS: Readonly<Record<string, string>> = {
  *   Domain 側（sellCatches）でも同じ規則で拒否するので、UI は防壁ではない。
  * - プレビューは実際の売却と **同じ `quoteSale`** を呼ぶ（volume bonus 込みで一致する）。
  * - Trust 表示は計算値ではなく実際に入った差分（actualTrustGain）を使う。
+ *
+ * Phase 14:
+ * - Buyer は具体的な ID で分岐しない。名前・タイプ・Trust は Content からそのまま出し、
+ *   短い役割文と好みのタグは BuyerDefinition の数値 / preferences から組み立てる
+ *   （Phase 14.1: 長文 description は画面に出さない）。
+ * - 魚を選んだあとは、同じ `quoteSale` を今いる地域の Buyer 分だけ呼び、査定の比較を出す。
  */
 export const TradeScreen = () => {
   const content = useContentOrError()
@@ -78,6 +82,22 @@ export const TradeScreen = () => {
   const previewTotal = preview?.totalValueYen ?? 0
   const previewExcluded = preview?.excluded ?? []
 
+  // 今いる地域の Buyer だけで査定を比較する（他地域の Buyer は持ち込めないので比較にも出さない）。
+  const buyerComparisons =
+    selectedCatchIds.length === 0
+      ? []
+      : localBuyers.map((candidate) => ({
+          id: String(candidate.id),
+          name: candidate.name,
+          totalValueYen: quoteSale({
+            fishBox: trade.fishBox,
+            catchIds: selectedCatchIds.map(asFishIndividualId),
+            buyer: candidate,
+            tradeProfileBySpeciesId: speciesTradeProfileBySpeciesId,
+            now: world.time,
+          }).totalValueYen,
+        }))
+
   const toggleCatch = (catchId: string): void => {
     setSelectedCatchIds((current) =>
       current.includes(catchId) ? current.filter((id) => id !== catchId) : [...current, catchId],
@@ -102,36 +122,49 @@ export const TradeScreen = () => {
         <p className="fishing__phase-code">TRADE</p>
         <h2 className="panel__heading">買取先へ売る</h2>
         {localBuyers.length === 0 ? (
-          <p className="panel__body">
-            この地域に買取先が無い。釣った魚は今いる地域の店・卸・市場にしか持ち込めない。
-            （自宅のある地域へ戻るか、遠征先で買取先を探す）
-          </p>
+          <EmptyState
+            icon="coin"
+            title="この地域に買取先が無い"
+            body="釣った魚は今いる地域の店・卸・市場にしか持ち込めない。（自宅のある地域へ戻るか、遠征先で買取先を探す）"
+          />
         ) : (
-          <div className="tabs">
+          <ul className="buyer-card-list">
             {localBuyers.map((candidate) => {
               const active = String(candidate.id) === String(buyer?.id)
 
               return (
-                <button
-                  className={`button${active ? ' button--primary' : ' button--ghost'}`}
-                  key={String(candidate.id)}
-                  type="button"
-                  onClick={() => {
-                    setSelectedBuyerId(String(candidate.id))
-                  }}
-                >
-                  {candidate.name}（{BUYER_TYPE_LABELS[candidate.buyerType] ?? candidate.buyerType}
-                  ）
-                </button>
+                <li key={String(candidate.id)}>
+                  <button
+                    className={`buyer-card${active ? ' buyer-card--active' : ''}`}
+                    type="button"
+                    aria-pressed={active}
+                    onClick={() => {
+                      setSelectedBuyerId(String(candidate.id))
+                    }}
+                  >
+                    <div className="buyer-card__head">
+                      <h3 className="panel__subheading">{candidate.name}</h3>
+                      <span className="badge">{buyerRoleLabel(candidate)}</span>
+                    </div>
+                    <StatMeter
+                      label="Trust"
+                      value={trustOf(trade, candidate.id)}
+                      max={100}
+                      tone="trust"
+                    />
+                    <p className="buyer-card__desc">{describeBuyerRole(candidate)}</p>
+                    <ul className="buyer-card__tags">
+                      {buyerPreferenceChips(candidate).map((chip) => (
+                        <li className="buyer-chip" key={chip}>
+                          {chip}
+                        </li>
+                      ))}
+                    </ul>
+                  </button>
+                </li>
               )
             })}
-          </div>
-        )}
-        {buyer === undefined ? null : (
-          <>
-            <p className="panel__body">{buyer.description}</p>
-            <p className="fishing__legend">Trust {Math.round(trustOf(trade, buyer.id))} / 100</p>
-          </>
+          </ul>
         )}
       </section>
 
@@ -198,6 +231,21 @@ export const TradeScreen = () => {
               取引できない魚を {previewExcluded.length} 匹除外した（合計額には入らない）。
             </p>
           )}
+
+          {buyerComparisons.length <= 1 ? null : (
+            <div className="quote-compare">
+              <p className="fishing__legend">今いる地域の買取先で比べる:</p>
+              <ul className="log">
+                {buyerComparisons.map((entry) => (
+                  <li key={entry.id}>
+                    {entry.name}: {formatYen(entry.totalValueYen)}
+                    {entry.id === String(buyer.id) ? '（選択中）' : ''}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
           <button
             className="control control--accent"
             type="button"

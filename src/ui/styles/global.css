@@ -1,19 +1,11 @@
+/**
+ * Phase 14: 色・形・影は src/ui/styles/tokens.css の design tokens を使う。
+ * ここではベースの layout / 既存クラス（.panel / .button 等）だけを定義する
+ * （クラス名は変えない＝既存 smoke test を壊さない）。
+ */
+
 :root {
-  color-scheme: dark;
-
-  --color-background: #08252f;
-  --color-surface: #0e3440;
-  --color-border: #1d5260;
-  --color-text: #e9f2f0;
-  --color-text-muted: #93b3b6;
-  --color-accent: #2fb6a8;
-
-  font-family:
-    system-ui,
-    -apple-system,
-    'Hiragino Kaku Gothic ProN',
-    'Noto Sans JP',
-    sans-serif;
+  font-family: var(--font-body);
   line-height: 1.6;
 }
 
@@ -30,20 +22,26 @@ html {
 body {
   margin: 0;
   background-color: var(--color-background);
+  background-image: radial-gradient(
+    circle at top,
+    color-mix(in srgb, var(--palette-sky) 14%, transparent),
+    transparent 60%
+  );
   color: var(--color-text);
 }
 
 .app-shell {
   min-height: 100dvh;
-  padding: calc(env(safe-area-inset-top) + 1.5rem) 1.25rem calc(env(safe-area-inset-bottom) + 2rem);
+  padding: calc(env(safe-area-inset-top) + 1.5rem) 1rem
+    calc(env(safe-area-inset-bottom) + var(--bottom-nav-height) + 1.5rem);
 }
 
 .app-shell__main {
-  max-width: 40rem;
+  max-width: 32rem;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
 .app-shell__eyebrow {
@@ -66,15 +64,17 @@ body {
 }
 
 .panel {
-  border: 1px solid var(--color-border);
-  border-radius: 0.75rem;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-lg);
   background-color: var(--color-surface);
-  padding: 1.25rem;
+  box-shadow: var(--shadow-panel);
+  padding: 1.1rem;
 }
 
 .panel__heading {
   margin: 0;
   font-size: 1.125rem;
+  color: var(--color-text);
 }
 
 .panel__body {
@@ -108,26 +108,31 @@ body {
 }
 
 .button {
-  margin-top: 1.25rem;
+  margin-top: 0.85rem;
   width: 100%;
   min-height: 2.75rem;
-  border: 1px solid var(--color-accent);
-  border-radius: 0.5rem;
-  background-color: transparent;
-  color: var(--color-accent);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+  color: var(--color-text);
   font: inherit;
+  font-weight: 600;
+  box-shadow: var(--shadow-panel);
   cursor: pointer;
+  transition:
+    transform var(--motion-fast) var(--motion-ease),
+    box-shadow var(--motion-fast) var(--motion-ease);
 }
 
 .button:active {
-  background-color: rgb(47 182 168 / 12%);
+  transform: translate(2px, 2px);
+  box-shadow: none;
 }
 
 .button--primary {
-  border-color: var(--color-accent);
-  background-color: rgb(47 182 168 / 14%);
-  color: var(--color-accent);
-  font-weight: 600;
+  border-color: var(--color-border);
+  background-color: var(--color-accent);
+  color: var(--palette-white);
 }
 
 .boundary-list {

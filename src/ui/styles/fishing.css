@@ -8,7 +8,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 0.75rem;
+  flex-wrap: wrap;
 }
 
 .fishing__seed {
@@ -22,6 +23,8 @@
   font-size: 0.75rem;
   letter-spacing: 0.14em;
   color: var(--color-accent);
+  font-family: var(--font-pixel);
+  font-weight: 700;
 }
 
 .panel__subheading {
@@ -42,17 +45,26 @@
 }
 
 .badge {
-  border: 1px solid var(--color-border);
-  border-radius: 999px;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-pill);
   padding: 0.15rem 0.6rem;
+  background-color: var(--color-surface);
   font-size: 0.75rem;
+  font-weight: 600;
   color: var(--color-text-muted);
   white-space: nowrap;
 }
 
 .badge--alert {
-  border-color: #e0a53f;
-  color: #f0c274;
+  border-color: var(--palette-orange);
+  background-color: color-mix(in srgb, var(--palette-orange) 16%, var(--color-surface));
+  color: var(--color-warn-text);
+}
+
+.badge--success {
+  border-color: var(--color-success);
+  background-color: color-mix(in srgb, var(--color-success) 18%, var(--color-surface));
+  color: #1f5c39;
 }
 
 .fishing__legend {
@@ -75,9 +87,10 @@
 .meter__track {
   position: relative;
   margin-top: 0.35rem;
-  height: 0.75rem;
-  border-radius: 999px;
-  background-color: rgb(255 255 255 / 8%);
+  height: 0.85rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border);
+  background-color: color-mix(in srgb, var(--color-border) 8%, var(--color-surface));
   overflow: hidden;
 }
 
@@ -85,7 +98,7 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  background-color: rgb(47 182 168 / 22%);
+  background-color: color-mix(in srgb, var(--color-accent) 28%, transparent);
 }
 
 .meter__fill {
@@ -93,23 +106,23 @@
   top: 0;
   bottom: 0;
   left: 0;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background-color: var(--color-accent);
   transition: width 90ms linear;
 }
 
 .meter--tension .meter__fill {
-  background-color: #6fb8e8;
+  background-color: var(--palette-sky);
 }
 
 .meter--danger .meter__fill {
-  background-color: #e0574a;
+  background-color: var(--color-danger);
 }
 
 .controls {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0.75rem;
+  gap: 0.6rem;
   margin-top: 0.75rem;
 }
 
@@ -119,29 +132,38 @@
 
 .control {
   min-height: 3.5rem;
-  border: 1px solid var(--color-border);
-  border-radius: 0.75rem;
-  background-color: rgb(255 255 255 / 4%);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
   color: var(--color-text);
   font: inherit;
+  font-weight: 600;
   font-size: 1rem;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.03em;
+  box-shadow: var(--shadow-panel);
   touch-action: manipulation;
   cursor: pointer;
+  transition:
+    transform var(--motion-fast) var(--motion-ease),
+    box-shadow var(--motion-fast) var(--motion-ease);
 }
 
 .control:disabled {
-  opacity: 0.35;
+  opacity: 0.4;
+  box-shadow: none;
   cursor: default;
 }
 
 .control:not(:disabled):active {
-  background-color: rgb(47 182 168 / 18%);
+  transform: translate(2px, 2px);
+  box-shadow: none;
+  background-color: color-mix(in srgb, var(--color-accent) 14%, var(--color-surface));
 }
 
 .control--accent {
   border-color: var(--color-accent);
-  color: var(--color-accent);
+  background-color: color-mix(in srgb, var(--color-accent) 14%, var(--color-surface));
+  color: var(--palette-navy-deep);
 }
 
 .button--ghost {
@@ -149,6 +171,8 @@
   width: auto;
   min-height: 2.5rem;
   padding: 0 0.9rem;
+  background-color: transparent;
+  box-shadow: none;
   border-color: var(--color-border);
   color: var(--color-text-muted);
 }
@@ -180,6 +204,7 @@
 .fish__facts dd,
 .record dd {
   margin: 0.1rem 0 0;
+  font-weight: 600;
 }
 
 .traits {
@@ -192,24 +217,29 @@
 }
 
 .trait {
-  border: 1px solid #e0a53f;
-  border-radius: 999px;
+  border: 1px solid var(--palette-orange);
+  border-radius: var(--radius-pill);
+  background-color: color-mix(in srgb, var(--palette-orange) 14%, var(--color-surface));
   padding: 0.12rem 0.55rem;
   font-size: 0.75rem;
-  color: #f0c274;
+  font-weight: 600;
+  color: var(--color-warn-text);
 }
 
 .notice {
   margin: 0.5rem 0 0;
-  border-left: 3px solid var(--color-accent);
-  padding: 0.4rem 0.6rem;
-  background-color: rgb(47 182 168 / 10%);
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--color-accent);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.65rem;
+  background-color: color-mix(in srgb, var(--color-accent) 8%, var(--color-surface));
   font-size: 0.8125rem;
 }
 
 .notice__title {
   margin: 0;
   font-size: 0.875rem;
+  font-weight: 600;
 }
 
 /* 「直近の釣果」「この魚種の記録」など、何のまとまりかを示す小さな見出し。 */
@@ -218,6 +248,7 @@
   font-size: 0.6875rem;
   letter-spacing: 0.08em;
   color: var(--color-accent);
+  font-weight: 700;
 }
 
 .notice__tags {
@@ -229,6 +260,258 @@
 
 .notice__level {
   margin: 0.5rem 0 0;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--color-accent);
+}
+
+/* WaterScene（Phase 14）: 釣り画面の水面ビジュアル。演出のみ、判定には関与しない。 */
+.water-scene {
+  position: relative;
+  overflow: hidden;
+  height: 6.5rem;
+  border: var(--border-width-thick) solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-panel);
+  background: linear-gradient(
+    180deg,
+    var(--palette-sky) 0%,
+    var(--palette-sky) 60%,
+    var(--palette-ocean) 60%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.water-scene__surface {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 46%;
+}
+
+.water-scene__surface path {
+  fill: var(--palette-teal);
+  opacity: 0.6;
+}
+
+.water-scene__fish {
+  position: relative;
+  z-index: 1;
+  width: 40px;
+  height: 40px;
+  transition: transform var(--motion-normal) var(--motion-ease);
+}
+
+.water-scene__ripple {
+  position: relative;
+  z-index: 1;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  border: 2px solid color-mix(in srgb, var(--palette-cream) 70%, transparent);
+}
+
+.water-scene__label {
+  position: absolute;
+  left: 0.6rem;
+  bottom: 0.4rem;
+  z-index: 2;
+  margin: 0;
+  font-size: 0.6875rem;
+  color: var(--palette-navy-deep);
+  text-shadow: 0 1px 0 rgb(255 255 255 / 45%);
+}
+
+.water-scene--wait .water-scene__ripple {
+  animation: ripple 2.2s ease-out infinite;
+}
+
+/* HIT の瞬間だけの短い演出（目安 100–300ms）。NEW RECORD 等の --motion-special とは分ける。 */
+.water-scene--bite {
+  animation: flash-accent var(--motion-normal) var(--motion-ease);
+}
+
+.water-scene--bite .water-scene__fish,
+.water-scene--hooked .water-scene__fish {
+  animation: bob 0.5s ease-in-out infinite;
+}
+
+.water-scene--run .water-scene__fish,
+.water-scene--second_run .water-scene__fish {
+  transform: translateX(14px) scaleX(-1);
+}
+
+.water-scene--surge .water-scene__fish {
+  animation: shake-x 0.3s ease-in-out infinite;
+}
+
+.water-scene--head_shake .water-scene__fish {
+  animation: shake-x 0.22s ease-in-out infinite;
+}
+
+.water-scene--dive .water-scene__fish {
+  transform: translateY(14px) scale(0.9);
+}
+
+.water-scene--come_toward .water-scene__fish {
+  transform: scale(1.25);
+}
+
+.water-scene--rest .water-scene__fish {
+  opacity: 0.7;
+}
+
+.water-scene--landing .water-scene__fish {
+  transform: translateY(-6px) scale(1.05);
+}
+
+.water-scene--landed {
+  background: linear-gradient(
+    180deg,
+    var(--palette-sky) 0%,
+    var(--palette-sky) 60%,
+    var(--color-success) 60%
+  );
+  animation: pop-in var(--motion-special) var(--motion-ease);
+}
+
+.water-scene--landed .water-scene__fish {
+  transform: translateY(-10px) scale(1.15);
+  animation: bob 1.6s ease-in-out infinite;
+}
+
+/* Phase 14.1: 水面の泡。結果や演出の邪魔をしない小さな飾り。 */
+.water-scene__bubbles {
+  position: absolute;
+  right: 0.7rem;
+  bottom: 0.5rem;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  gap: 0.25rem;
+}
+
+.water-scene__bubble {
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background-color: color-mix(in srgb, var(--palette-cream) 65%, transparent);
+  animation: bubble-rise 2.8s ease-in-out infinite;
+}
+
+.water-scene__bubble:nth-child(2) {
+  width: 3px;
+  height: 3px;
+  animation-delay: 0.7s;
+}
+
+.water-scene__bubble:nth-child(3) {
+  width: 4px;
+  height: 4px;
+  animation-delay: 1.4s;
+}
+
+@keyframes bubble-rise {
+  0% {
+    transform: translateY(4px);
+    opacity: 0;
+  }
+
+  40% {
+    opacity: 0.85;
+  }
+
+  100% {
+    transform: translateY(-18px);
+    opacity: 0;
+  }
+}
+
+/* 釣り上げた瞬間だけ、小さな水しぶきを 1 回だけ出す。 */
+.water-scene--landed .water-scene__ripple,
+.water-scene--landed::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  border: 2px solid color-mix(in srgb, var(--palette-cream) 70%, transparent);
+  transform: translate(-50%, -50%);
+  animation: ripple 0.9s ease-out 1;
+}
+
+.water-scene--failed .water-scene__fish {
+  transform: translateY(-18px) scale(0.7);
+  opacity: 0.35;
+}
+
+/* ------------------------------------------------------------------
+ * Phase 14.1: LANDED の Catch Result
+ *
+ * 「釣った瞬間に、釣果が最初に目に入る」ことを最優先にする。
+ * DOM 順は ResultView が保証し、ここでは 1 枚のカードとして
+ * 短い高さに収めること（390x844 の初期 viewport）だけを担う。
+ * ------------------------------------------------------------------ */
+
+.panel--result {
+  border-color: var(--palette-orange);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--palette-sand) 20%, var(--color-surface)) 0%,
+    var(--color-surface) 62%
+  );
+  box-shadow: var(--shadow-pop);
+}
+
+.result-view {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.result-view__eyebrow {
+  margin: 0;
+  text-align: center;
+  font-size: 0.9375rem;
+  letter-spacing: 0.18em;
+  color: var(--palette-orange);
+  text-shadow: 1px 1px 0 rgb(255 255 255 / 60%);
+  animation: pop-in var(--motion-special) var(--motion-ease);
+}
+
+/* 結果カードの中では ResultBanner 自体の枠を外す（カードの入れ子をやめる）。 */
+.result-view .result-banner {
+  border: none;
+  box-shadow: none;
+  background-color: transparent;
+  padding: 0;
+  gap: 0.3rem;
+}
+
+.result-view__actions {
+  margin-top: 0.1rem;
+}
+
+.result-view__status {
+  margin: 0;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.result-view__done {
+  color: var(--palette-teal);
+  font-weight: 700;
+}
+
+.result-view__xp {
+  margin: 0;
+  text-align: center;
+  font-size: 0.8125rem;
+  color: var(--color-text);
 }

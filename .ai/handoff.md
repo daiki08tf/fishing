@@ -1,9 +1,108 @@
 # Handoff
 
-最終更新: Phase 13.1（Phase 13 のレビュー修正）完了（PR #15、未マージ）
+最終更新: Phase 14.1（iPhone UI Polish / Result Flow / Map Presentation）完了
+（branch `phase-14-retro-ui-redesign`、PR #16・未マージ）
 
-> 現在状態は Phase 13 → 12 → 11 → 10.2 → 10.1 → 10 の順で優先する。
+> 現在状態は Phase 14 → 13 → 12 → 11 → 10.2 → 10.1 → 10 の順で優先する。
 > 詳細は `.ai/current-task.md` と `docs/DECISIONS.md` も参照。
+
+## Phase 14.1（iPhone UI Polish）
+
+Phase 14 の iPhone 実機相当レビューで見つかった UI 問題を同じ branch / PR で修正した。
+Domain / Save schema は変更していない（UI の条件分岐と CSS のみ）。
+
+- **Catch Result を最優先** — `src/ui/fishing/ResultView.tsx` を LANDED の
+  DOM 最上位に置く（header → 釣れた！ → 魚 / サイズ / NEW バッジ →
+  Keep / Release → XP）。CSS の position で持ち上げない。判定は
+  `src/ui/fishing/resultFlow.ts`（`isFishingFinished` / `isFightUiVisible` /
+  `isResultFirstPhase`）に集約
+- **終了後のファイト UI を出さない** — LANDED / HOOK_MISSED / HOOK_ESCAPE /
+  LINE_BREAK では Fish stamina / Tension / Hook hold / Distance / Drag /
+  行動ログ / ファイトコマンド / AUTO / 狙う場所を描画しない
+- **画面遷移の scroll reset** — `src/ui/nav/scrollReset.ts` を AppShell で 1 回だけ
+  install。top-level screen が変わったときだけ `scrollTo(0, 0)`（釣り中の phase
+  遷移では発火しない）。各画面では呼ばない
+- **MAP を地図ボード化** — `src/ui/map/spotPlacement.ts` が `environment` から
+  「上流・湖 / 川・運河・河口 / 海・磯 / 沖」の帯へ決定的に配置（Spot ID 分岐なし・
+  Content 順に依存しない）。ノード選択 → 直下に summary → 詳細カード一覧。
+  未発見 Hidden Spot はノードも詳細も出さない（Phase 13 の規則は不変）
+- **文章量の削減** — `src/ui/trade/buyerPresentation.ts` が pricingProfile /
+  preferences から 1〜2 行の役割文と好みタグを作る。Content の長文 `description`
+  （PROVISIONAL の注記を含む）は画面に出さない。HOME は家計の内訳を `<details>` へ、
+  天気を CTA 直後へ
+- **WaterScene** — 水面の泡と LANDED の水しぶき（CSS animation のみ）
+- tests: 86 files / 748 tests（resultFlow 9 / scrollReset 5 / mapBoard 8 /
+  gameFacingCopy 11 を追加）。bundle: JS 925.44 kB（gzip 216.48 kB）/
+  CSS 26.44 kB（gzip 5.20 kB）
+- 実ブラウザ検証は sandbox 制約で不可（Chrome headless が起動しない）。
+  jsdom + React DOM の実イベントで HOME → MAP → SPOT → FISHING → LANDED →
+  Keep → Fish Box → TRADE → CONTACTS → CODEX を通しで確認済み。
+  375/390/430px の実測レイアウトとスクリーンショットは未取得
+
+## Phase 14（Retro Management-Sim UI / Visual Identity Redesign）
+
+- branch: `phase-14-retro-ui-redesign`（base: main、Phase 13 / 13.1 は main に
+  merge 済みの前提）
+- PR: "Phase 14: retro fishing UI redesign"（作成予定・未マージ）
+- **UI 層だけの再スキン。Domain / State のゲームルールは 1 行も変更していない**
+  （FishingEngine / Text Battle / Casting Zone / Catchability / Save v9 /
+  Fish Box / Trade / Trust / Contacts / Hidden Spot / Discovery・Access 分離 /
+  Transport / Expedition / Economy / Codex / Knowledge / Regional Content は
+  すべて Phase 13.1 のまま）。変更したのは `src/ui/` と `src/app/main.tsx` の
+  import 1 行のみ
+- 目標比率: モダンなモバイル操作性 70% / レトロゲーム感 30%
+- **Design tokens** — `src/ui/styles/tokens.css`（新規）に色・spacing・radius・
+  border・shadow・typography・z-index・motion duration を集約。既存 CSS が
+  すべて同じ `--color-*` 変数名を参照していたため、`global.css` の旧色定義を
+  ここへ一本化するだけで Phase 14 で未着手の画面（Shop/Tackle/Expedition/
+  Progression）にも新配色が自動的に伝播した
+- **新規共通コンポーネント** — `PixelIcon`（13 種の手書き inline SVG）、
+  `FishSilhouette`（魚種 ID からの決定論的シルエット。画像アセット不要）、
+  `BiomeScene`（`Spot.environment` ベース。Region ID 巨大 switch は作らない）、
+  `StatMeter`、`EmptyState`、`ResultBanner`（LANDED 結果カード）、
+  `BottomNav`（下部固定 5 タブ: ホーム/マップ/魚かご/図鑑/メニュー）
+- **`<details>`/`<summary>` で折りたたみと exact-text テストを両立** —
+  `renderToStaticMarkup` は `open` の有無に関わらず中身を静的 HTML に含めるため、
+  視覚的な折りたたみと既存 UI smoke test（`mapScreenSmoke.test.ts` 等）の
+  文字列アサーションを両立できた
+- **MAP を最優先で再構成** — Region タブ + ノード風 Spot Card（Public/発見済み
+  Hidden をアイコンで区別）。移動手段詳細は折りたたみ、「〜で行く」ボタンは
+  常時表示
+- **FISHING** — `WaterScene`（phase/behaviour から合成する CSS/SVG 水面。
+  Domain のイベント名では分岐しない）を追加。LANDED では `ResultBanner` を
+  独立表示し、重複する数値表ブロックは隠す（Polish で追加修正）。
+  HIT 演出は `--motion-normal`（200ms、spec の 100〜300ms 目安内）
+- **FISH BOX / TRADE / CONTACTS** — Fish Card / Buyer Card / Contact Card へ
+  再構成。Buyer の短い好み文は既存 `description` フィールドをそのまま使う
+  （魚種タグ→ラベルの新しい変換表は作らない）。Trade は選択中の魚に対して
+  今いる地域の Buyer 全員分の査定比較を既存 `quoteSale` で表示
+- **CODEX**（新規画面） — 82 種 Grid。未捕獲は「？？？」。仮想化は Phase 15 送り
+- **既存 UI smoke test はすべて無変更で PASS**（`Local Izakaya` / `Fish
+  Wholesaler` / `Market Broker` / `この地域に買取先が無い` / `今いる地域に
+  買取先が無い` / `推定売却額: 最大` / Hidden Spot 非表示 / Rumor と Exact
+  Discovery の区別、など）
+- 新規テスト 5 files / 28 tests（BottomNav routing、Codex 捕獲済/未捕獲、
+  Fish Box カードの折りたたみ、Fishing のコマンド可否と Domain
+  `ALLOWED_COMMANDS` の突合、全 13 画面の render smoke）
+- 最終 CI: typecheck / lint / format / validate:content /
+  simulate:regional-content / simulate:trade-network / test / build 全 PASS
+- `validate:content`: 843 records（Phase 13.1 から変更なし。Content には触れていない）
+- tests: **82 files / 715 tests**（Phase 13 時点 77 files / 687 tests から
+  +5 files / +28 tests）
+- bundle: JS 916.60 kB（gzip 214.07 kB）/ CSS 22.04 kB（gzip 4.51 kB）
+  （Phase 13 時点: JS 899.99 kB / gzip 209.18 kB、CSS 7.13 kB / gzip 1.86 kB。
+  新しいライブラリは追加していない。増分は新規コンポーネント・CSS 分）
+- Playwright + Chromium（`/opt/pw-browsers/chromium`、テスト実行後は
+  devDependency として残していない）で実ブラウザの通し確認:
+  HOME → MAP → SPOT → FISHING（CAST → HOOK → AUTO でファイト）→ HIT →
+  LANDED（ResultBanner）→ Keep → 帰宅 → FISH BOX → TRADE（Buyer Card・
+  査定比較）→ CONTACTS → CODEX まで PASS。375×812 / 390×844 / 430×932 の
+  3 viewport で横スクロール無しを確認。Shop/Tackle/Expedition/Progression
+  （未着手画面）も tokens.css のカスケードで新配色を継承していることを目視確認
+- 既知のギャップ: Codex の仮想化未実装（82 種では実害なし、Phase 15 送り） /
+  PWA manifest の theme-color は新 palette に未追従 / 自動スクリーンショット
+  回帰は CI 未組み込み（今回は手動実行のみ）
+- 次候補: Phase 15（Codex 仮想化・Region Pack・PWA テーマ追従）
 
 ## Phase 13（Fish Trade, Contacts & Hidden Spots）
 

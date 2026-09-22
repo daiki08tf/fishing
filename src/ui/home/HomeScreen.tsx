@@ -10,17 +10,19 @@ import {
 import { NEUTRAL_FISHING_MODIFIERS } from '../../domain/fishing/PlayerFishingModifiers'
 import { bestFishFinderOf, resolveTackle } from '../../domain/tackle'
 import { DAY_OF_WEEK_LABELS, dayOfWeekOf, formatWorldTime, isWeekend } from '../../domain/world'
-import { spotKnowledgeScore } from '../../domain/knowledge/spotKnowledge'
-import { clearDevelopmentSave } from '../../app/persistence/developmentReset'
+import { knowledgeTierFor, spotKnowledgeScore } from '../../domain/knowledge/spotKnowledge'
 import { useAppStore } from '../../state/appStore'
 import { usePlayerStore } from '../../state/playerStore'
+import { BiomeScene } from '../components/BiomeScene'
 import { ContentErrorPanel } from '../world/ContentErrorPanel'
 import { useContentOrError } from '../world/useContentOrError'
 import { ConditionPanel } from '../world/ConditionPanel'
+import './home.css'
 
 /**
  * 自宅。釣行の起点。
  *
+ * dashboard ではなく「今日どこへ釣りに行くか」を考える画面にする（Phase 14）。
  * 会社員という設定は世界観として残しているが、仕事は攻略対象ではない。
  * ここに出るのは「毎月の自由資金」だけで、勤務時間や有給は扱わない。
  */
@@ -109,52 +111,40 @@ export const HomeScreen = () => {
   const knownSpeciesIds = new Set(content.value.species.map((species) => String(species.id)))
   const trip = world.trip
   const monthlyFree = finance.salaryIncome - finance.simplifiedLivingCost
+  const regionKnowledgeScore = knowledge.regions[String(world.currentRegionId)] ?? 0
+  const regionKnowledgeTier = knowledgeTierFor(regionKnowledgeScore)
+
+  /*
+   * Phase 14: HOME に「新しい噂 / Contact 情報」のティーザーを出す。
+   * Trust の中身や正確な Spot は出さない（TRADE / CONTACTS で見る）。件数だけ見せる。
+   * 未発見の Hidden Spot 数は漏らさない（噂の件数と Hidden Spot の総数は別物）。
+   */
+  const rumorCount = trade.knownRumorIds.length
 
   return (
     <div className="fishing">
+      <BiomeScene
+        environment={summarySpot?.environment ?? 'bay_shore'}
+        title={
+          current === null ? (currentRegion?.base.name ?? 'Tokyo Area Home') : current.baseName
+        }
+        subtitle={
+          current === null
+            ? undefined
+            : `${current.regionName} / 遠征中（残り ${String(remainingExpeditionDays(current, world.time))} 日）`
+        }
+      />
+
       <section className="panel">
-        <p className="app-shell__eyebrow">
-          {current === null
-            ? (currentRegion?.base.name ?? 'Tokyo Area Home')
-            : `${current.regionName} / ${current.baseName}`}
-        </p>
-        <h2 className="panel__heading">{formatWorldTime(world.time)}</h2>
-        <p className="panel__body">
+        <p className="app-shell__eyebrow">{formatWorldTime(world.time)}</p>
+        <h2 className="panel__heading">
           {DAY_OF_WEEK_LABELS[dayOfWeekOf(world.time)]}曜日
-          {isWeekend(world.time) ? '（休日）' : ''} / Angler Lv {progression.anglerLevel}
-          {current === null
-            ? ''
-            : ` / 遠征中（残り ${String(remainingExpeditionDays(current, world.time))} 日）`}
-        </p>
+          {isWeekend(world.time) ? '（休日）' : ''}
+        </h2>
         <p className="fishing__legend">
-          今月の自由資金 {formatYen(monthlyFree)}（給与 {formatYen(finance.salaryIncome)} − 生活費{' '}
-          {formatYen(finance.simplifiedLivingCost)}）
-          {current === null ? '' : ' / 遠征費は出発時に支払い済み'}
+          Lv <span className="pixel-number">{progression.anglerLevel}</span> ・ 今月の自由資金{' '}
+          <span className="pixel-number">{formatYen(monthlyFree)}</span>
         </p>
-        <dl className="record">
-          <div>
-            <dt>所持金</dt>
-            <dd>{formatYen(finance.cash)}</dd>
-          </div>
-          <div>
-            <dt>行ける釣り場</dt>
-            <dd>
-              {accessible.length} / {localSpots.length}（{currentRegion?.name ?? 'この地域'}）
-            </dd>
-          </div>
-          <div>
-            <dt>記録した魚種</dt>
-            <dd>{recordedSpeciesCount(codex, knownSpeciesIds)} 種</dd>
-          </div>
-          <div>
-            <dt>発見した釣り場</dt>
-            <dd>{discoveredSpots.length} 箇所</dd>
-          </div>
-          <div>
-            <dt>地域の知識</dt>
-            <dd>{Math.round(knowledge.regions[String(world.currentRegionId)] ?? 0)}%</dd>
-          </div>
-        </dl>
 
         <button
           className="button button--primary"
@@ -174,93 +164,9 @@ export const HomeScreen = () => {
         >
           {current === null ? '遠征・旅行（EXPEDITION）' : '遠征の状況（EXPEDITION）'}
         </button>
-        <button
-          className="button"
-          type="button"
-          onClick={() => {
-            setActiveScreen('tackle')
-          }}
-        >
-          タックルを組む
-        </button>
-        <button
-          className="button"
-          type="button"
-          onClick={() => {
-            setActiveScreen('shop')
-          }}
-        >
-          店に行く
-        </button>
-        <button
-          className="button"
-          type="button"
-          onClick={() => {
-            setActiveScreen('progression')
-          }}
-        >
-          成長を見る
-        </button>
-        <button
-          className="button"
-          type="button"
-          onClick={() => {
-            setActiveScreen('fishbox')
-          }}
-        >
-          Fish Box（{trade.fishBox.length}）
-        </button>
-        <button
-          className="button"
-          type="button"
-          onClick={() => {
-            setActiveScreen('contacts')
-          }}
-        >
-          人脈（CONTACTS）
-        </button>
-        <button
-          className="button"
-          type="button"
-          onClick={() => {
-            const result = sleep()
-            setNotice(result.message)
-          }}
-        >
-          翌朝まで休む
-        </button>
 
         {notice === null ? null : <p className="notice">{notice}</p>}
       </section>
-
-      {/*
-        開発用（`npm run dev` / `vite dev` のみ）。production build では出ない。
-        プレイテストで最初から遊び直すための手段を 1 つだけ置く。
-      */}
-      {import.meta.env.DEV ? (
-        <section className="panel">
-          <h3 className="panel__subheading">開発用</h3>
-          <p className="panel__body">
-            保存（Codex / 成長 / 所持金 / 釣り場）を初期化して、最初からやり直す。
-          </p>
-          <button
-            className="button"
-            type="button"
-            onClick={() => {
-              void (async () => {
-                if (!window.confirm('保存データを初期化して、最初からやり直しますか？')) {
-                  return
-                }
-
-                await clearDevelopmentSave()
-                window.location.reload()
-              })()
-            }}
-          >
-            セーブデータを初期化
-          </button>
-        </section>
-      ) : null}
 
       {environment === null || conditions === null ? null : (
         <ConditionPanel
@@ -269,6 +175,24 @@ export const HomeScreen = () => {
           conditions={conditions}
           speciesNames={speciesNames}
         />
+      )}
+
+      {rumorCount === 0 ? null : (
+        <section className="panel panel--rumor">
+          <p className="fishing__phase-code">CONTACT</p>
+          <p className="panel__body">
+            人脈から <span className="pixel-number">{rumorCount}</span> 件の噂を聞いている。
+          </p>
+          <button
+            className="button"
+            type="button"
+            onClick={() => {
+              setActiveScreen('contacts')
+            }}
+          >
+            人脈で確認する
+          </button>
+        </section>
       )}
 
       {trip === null ? null : (
@@ -305,6 +229,116 @@ export const HomeScreen = () => {
           )}
         </section>
       )}
+
+      <section className="panel">
+        <h3 className="panel__subheading">この地域について</h3>
+        <details className="disclosure">
+          <summary className="disclosure__summary">くわしい家計</summary>
+          <div className="disclosure__body">
+            <dl className="record">
+              <div>
+                <dt>給与（月）</dt>
+                <dd>{formatYen(finance.salaryIncome)}</dd>
+              </div>
+              <div>
+                <dt>生活費（月）</dt>
+                <dd>{formatYen(finance.simplifiedLivingCost)}</dd>
+              </div>
+              <div>
+                <dt>自由資金（月）</dt>
+                <dd>{formatYen(monthlyFree)}</dd>
+              </div>
+            </dl>
+            {current === null ? null : (
+              <p className="fishing__legend">遠征費は出発時に支払い済み。</p>
+            )}
+          </div>
+        </details>
+        <dl className="record">
+          <div>
+            <dt>所持金</dt>
+            <dd>{formatYen(finance.cash)}</dd>
+          </div>
+          <div>
+            <dt>行ける釣り場</dt>
+            <dd>
+              {accessible.length} / {localSpots.length}（{currentRegion?.name ?? 'この地域'}）
+            </dd>
+          </div>
+          <div>
+            <dt>記録した魚種</dt>
+            <dd>{recordedSpeciesCount(codex, knownSpeciesIds)} 種</dd>
+          </div>
+          <div>
+            <dt>発見した釣り場</dt>
+            <dd>{discoveredSpots.length} 箇所</dd>
+          </div>
+        </dl>
+        <p className="fishing__legend">
+          地域の知識 {Math.round(regionKnowledgeScore)}% — {regionKnowledgeTier.label}
+        </p>
+      </section>
+
+      <section className="panel">
+        <h3 className="panel__subheading">もっと見る</h3>
+        <div className="home-quick-links">
+          <button
+            className="button"
+            type="button"
+            onClick={() => {
+              setActiveScreen('tackle')
+            }}
+          >
+            タックルを組む
+          </button>
+          <button
+            className="button"
+            type="button"
+            onClick={() => {
+              setActiveScreen('shop')
+            }}
+          >
+            店に行く
+          </button>
+          <button
+            className="button"
+            type="button"
+            onClick={() => {
+              setActiveScreen('progression')
+            }}
+          >
+            成長を見る
+          </button>
+          <button
+            className="button"
+            type="button"
+            onClick={() => {
+              setActiveScreen('fishbox')
+            }}
+          >
+            Fish Box（{trade.fishBox.length}）
+          </button>
+          <button
+            className="button"
+            type="button"
+            onClick={() => {
+              setActiveScreen('contacts')
+            }}
+          >
+            人脈（CONTACTS）
+          </button>
+          <button
+            className="button"
+            type="button"
+            onClick={() => {
+              const result = sleep()
+              setNotice(result.message)
+            }}
+          >
+            翌朝まで休む
+          </button>
+        </div>
+      </section>
     </div>
   )
 }

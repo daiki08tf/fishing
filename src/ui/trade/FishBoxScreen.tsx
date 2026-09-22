@@ -1,16 +1,31 @@
+import type { FishTrait } from '../../domain/fish/FishTrait'
 import { calcSaleValueYen, resolveFreshness } from '../../domain/trade'
+import { formatYen } from '../../domain/economy'
 import { formatWorldTime } from '../../domain/world'
 import { useAppStore } from '../../state/appStore'
 import { usePlayerStore } from '../../state/playerStore'
+import { EmptyState } from '../components/EmptyState'
+import { FishSilhouette } from '../components/FishSilhouette'
 import { ContentErrorPanel } from '../world/ContentErrorPanel'
 import { useContentOrError } from '../world/useContentOrError'
+import './fishbox.css'
 
 /**
- * Fish Box（Phase 13）。
+ * Fish Box（Phase 13 / Phase 14 でカード表示に再構成）。
  *
  * 持ち帰った魚の一覧。表示専用で、売却は TRADE 画面で行う。
  * 「推定売却額」は今いる全 Buyer のうち最も高い査定を暫定表示する（実際の額は TRADE で確定する）。
  */
+
+const TRAIT_LABELS: Readonly<Record<FishTrait, string>> = {
+  trophy: 'Trophy',
+  old: 'Old',
+  strong_runner: 'Strong Runner',
+  heavy: 'Heavy',
+  scarred: 'Scarred',
+  aggressive: 'Aggressive',
+}
+
 export const FishBoxScreen = () => {
   const content = useContentOrError()
   const setActiveScreen = useAppStore((state) => state.setActiveScreen)
@@ -46,8 +61,8 @@ export const FishBoxScreen = () => {
 
       <section className="panel">
         <p className="fishing__phase-code">FISH BOX</p>
-        <h2 className="panel__heading">持ち帰った魚</h2>
-        <p className="panel__body">{trade.fishBox.length} 匹。売却は「買取先へ売る」から行う。</p>
+        <h2 className="panel__heading">持ち帰った魚（{trade.fishBox.length}）</h2>
+        <p className="panel__body">売却は「買取先へ売る」から行う。</p>
         <button
           className="button button--primary"
           type="button"
@@ -61,51 +76,87 @@ export const FishBoxScreen = () => {
 
       {trade.fishBox.length === 0 ? (
         <section className="panel">
-          <p className="panel__body">Fish Box は空。釣った魚を「持ち帰る」と、ここに入る。</p>
+          <EmptyState
+            icon="creel"
+            title="Fish Box は空"
+            body="釣った魚を「持ち帰る」と、ここに入る。"
+          />
         </section>
       ) : (
-        <section>
-          <ul className="spots">
-            {trade.fishBox.map((entry) => {
-              const species = speciesById[String(entry.speciesId)]
-              const profile = speciesTradeProfileBySpeciesId[String(entry.speciesId)]
-              const freshness = resolveFreshness(entry.caughtAt, world.time)
-              const bestValue =
-                profile === undefined
-                  ? 0
-                  : Math.max(
-                      0,
-                      ...localBuyers.map((buyer) =>
-                        calcSaleValueYen(entry, buyer, profile, freshness),
-                      ),
-                    )
+        <ul className="fish-card-list">
+          {trade.fishBox.map((entry) => {
+            const species = speciesById[String(entry.speciesId)]
+            const spot = content.value.spots.find(
+              (candidate) => String(candidate.id) === String(entry.sourceSpotId),
+            )
+            const profile = speciesTradeProfileBySpeciesId[String(entry.speciesId)]
+            const freshness = resolveFreshness(entry.caughtAt, world.time)
+            const bestValue =
+              profile === undefined
+                ? 0
+                : Math.max(
+                    0,
+                    ...localBuyers.map((buyer) =>
+                      calcSaleValueYen(entry, buyer, profile, freshness),
+                    ),
+                  )
+            const valueLine =
+              profile === undefined || profile.tradeStatus !== 'tradable'
+                ? 'この魚は取引できない'
+                : localBuyers.length === 0
+                  ? '今いる地域に買取先が無い'
+                  : `推定売却額 最大 ${formatYen(bestValue)}`
 
-              return (
-                <li className="spot-card" key={String(entry.catchId)}>
-                  <div className="spot-card__head">
+            return (
+              <li className="fish-card" key={String(entry.catchId)}>
+                <div className="fish-card__head">
+                  <FishSilhouette speciesId={String(entry.speciesId)} size={40} />
+                  <div className="fish-card__title">
                     <h3 className="panel__subheading">
                       {species?.japaneseName ?? String(entry.speciesId)}
                     </h3>
-                    <span className="badge">{Math.round(freshness * 100)}% 鮮度</span>
+                    <p className="fish-card__facts">
+                      {entry.lengthCm} cm / {entry.weightKg.toFixed(3)} kg / 上位{' '}
+                      {Math.round(100 - entry.percentile)}%
+                    </p>
                   </div>
-                  <p className="spot-card__meta">
-                    {entry.lengthCm} cm / {entry.weightKg.toFixed(3)} kg / コンディション{' '}
-                    {Math.round(entry.condition * 100)}% / 上位 {Math.round(100 - entry.percentile)}
-                    %
-                  </p>
-                  <p className="spot-card__meta">釣った日時: {formatWorldTime(entry.caughtAt)}</p>
-                  <p className="spot-card__meta">
-                    {profile === undefined || profile.tradeStatus !== 'tradable'
-                      ? '取引不可（PROVISIONAL）'
-                      : localBuyers.length === 0
-                        ? '今いる地域に買取先が無い'
-                        : `推定売却額: 最大 ¥${bestValue.toLocaleString('ja-JP')}（買取先により変動）`}
-                  </p>
-                </li>
-              )
-            })}
-          </ul>
-        </section>
+                  <span className="badge">{Math.round(freshness * 100)}% 鮮度</span>
+                </div>
+
+                <p className="fish-card__value">{valueLine}</p>
+
+                <details className="disclosure">
+                  <summary className="disclosure__summary">詳しく見る</summary>
+                  <div className="disclosure__body">
+                    <dl className="record">
+                      <div>
+                        <dt>釣った場所</dt>
+                        <dd>{spot?.name ?? String(entry.sourceSpotId)}</dd>
+                      </div>
+                      <div>
+                        <dt>釣った日時</dt>
+                        <dd>{formatWorldTime(entry.caughtAt)}</dd>
+                      </div>
+                      <div>
+                        <dt>コンディション</dt>
+                        <dd>{Math.round(entry.condition * 100)}%</dd>
+                      </div>
+                    </dl>
+                    {entry.traits.length === 0 ? null : (
+                      <ul className="traits">
+                        {entry.traits.map((trait) => (
+                          <li className="trait" key={trait}>
+                            {TRAIT_LABELS[trait]}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                </details>
+              </li>
+            )
+          })}
+        </ul>
       )}
     </div>
   )

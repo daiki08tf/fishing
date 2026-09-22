@@ -1,8 +1,12 @@
 import { trustOf } from '../../domain/trade'
 import { useAppStore } from '../../state/appStore'
 import { usePlayerStore } from '../../state/playerStore'
+import { PixelIcon } from '../components/PixelIcon'
+import { StatMeter } from '../components/StatMeter'
 import { ContentErrorPanel } from '../world/ContentErrorPanel'
 import { useContentOrError } from '../world/useContentOrError'
+import { buyerPreferenceChips, buyerRoleLabel, describeBuyerRole } from '../trade/buyerPresentation'
+import './contacts.css'
 
 const REWARD_KIND_LABELS: Readonly<Record<string, string>> = {
   intel: '噂',
@@ -11,9 +15,13 @@ const REWARD_KIND_LABELS: Readonly<Record<string, string>> = {
 }
 
 /**
- * CONTACTS（Phase 13）。
+ * CONTACTS（Phase 13 / Phase 14 で RPG 風の人脈カードに再構成）。
  *
  * Trust・既知の噂・解禁済みの報酬を見せる。売却そのものは TRADE 画面で行う。
+ * まだ解禁していない報酬は内容を明かさず「？？？」に留める。
+ *
+ * Phase 14.1: プレイヤー向けの画面なので、Content の長文 description
+ * （PROVISIONAL の注記を含む）は出さない。役割と好みのタグだけを見せる。
  */
 export const ContactsScreen = () => {
   const content = useContentOrError()
@@ -48,44 +56,63 @@ export const ContactsScreen = () => {
         </p>
       </section>
 
-      <section>
-        <ul className="spots">
-          {buyers.map((buyer) => {
-            const trust = Math.round(trustOf(trade, buyer.id))
-            const rewards = contactRewards.filter(
-              (reward) => String(reward.contactId) === String(buyer.id),
-            )
-            const claimed = rewards.filter((reward) => trade.claimedRewardIds.includes(reward.id))
-            const nextReward = rewards
-              .filter((reward) => !trade.claimedRewardIds.includes(reward.id))
-              .sort((left, right) => left.minTrust - right.minTrust)[0]
+      <ul className="contact-card-list">
+        {buyers.map((buyer) => {
+          const trust = Math.round(trustOf(trade, buyer.id))
+          const rewards = contactRewards.filter(
+            (reward) => String(reward.contactId) === String(buyer.id),
+          )
+          const claimed = rewards.filter((reward) => trade.claimedRewardIds.includes(reward.id))
+          const nextReward = rewards
+            .filter((reward) => !trade.claimedRewardIds.includes(reward.id))
+            .sort((left, right) => left.minTrust - right.minTrust)[0]
 
-            return (
-              <li className="spot-card" key={String(buyer.id)}>
-                <div className="spot-card__head">
+          return (
+            <li className="contact-card" key={String(buyer.id)}>
+              <div className="contact-card__head">
+                <PixelIcon name="person" size={28} className="contact-card__portrait" />
+                <div className="contact-card__title">
                   <h3 className="panel__subheading">{buyer.name}</h3>
-                  <span className="badge">Trust {trust} / 100</span>
+                  <p className="contact-card__role">{buyerRoleLabel(buyer)}</p>
                 </div>
-                <p className="spot-card__meta">{buyer.description}</p>
+              </div>
 
-                {claimed.length === 0 ? null : (
-                  <ul className="log">
-                    {claimed.map((reward) => (
-                      <li key={String(reward.id)}>
-                        [{REWARD_KIND_LABELS[reward.kind] ?? reward.kind}] {reward.message}
-                      </li>
-                    ))}
-                  </ul>
-                )}
+              <StatMeter
+                label="Trust"
+                value={trust}
+                max={100}
+                tone="trust"
+                valueText={`${String(trust)} / 100`}
+              />
 
-                {nextReward === undefined ? null : (
-                  <p className="spot-card__meta">次の情報: Trust {nextReward.minTrust} で解禁</p>
-                )}
-              </li>
-            )
-          })}
-        </ul>
-      </section>
+              <p className="contact-card__desc">{describeBuyerRole(buyer)}</p>
+              <ul className="buyer-card__tags">
+                {buyerPreferenceChips(buyer).map((chip) => (
+                  <li className="buyer-chip" key={chip}>
+                    {chip}
+                  </li>
+                ))}
+              </ul>
+
+              {claimed.length === 0 ? null : (
+                <ul className="log">
+                  {claimed.map((reward) => (
+                    <li key={String(reward.id)}>
+                      [{REWARD_KIND_LABELS[reward.kind] ?? reward.kind}] {reward.message}
+                    </li>
+                  ))}
+                </ul>
+              )}
+
+              {nextReward === undefined ? null : (
+                <p className="contact-card__locked">
+                  次の情報: ？？？（Trust {nextReward.minTrust} で解禁）
+                </p>
+              )}
+            </li>
+          )
+        })}
+      </ul>
     </div>
   )
 }

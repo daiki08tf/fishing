@@ -1,0 +1,14 @@
+.home-quick-links {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+
+.home-quick-links .button {
+  margin-top: 0;
+}
+
+.panel--rumor {
+  border-color: var(--palette-sand);
+  background-color: color-mix(in srgb, var(--palette-sand) 12%, var(--color-surface));
+}

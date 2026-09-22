@@ -1,0 +1,53 @@
+.contact-card-list {
+  display: grid;
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.contact-card {
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-panel);
+  padding: 0.75rem;
+}
+
+.contact-card__head {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.contact-card__portrait {
+  flex: none;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background-color: var(--color-surface-alt);
+  padding: 5px;
+  color: var(--palette-navy);
+}
+
+.contact-card__title {
+  min-width: 0;
+}
+
+.contact-card__role {
+  margin: 0.1rem 0 0;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.contact-card__desc {
+  margin: 0.5rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
+.contact-card__locked {
+  margin: 0.5rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  font-style: italic;
+}
