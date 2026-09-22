@@ -1,0 +1,46 @@
+{
+  "id": "kajika",
+  "japaneseName": "カジカ（暫定）",
+  "scientificName": "Cottus pollux",
+  "waterTypes": [
+    "fresh"
+  ],
+  "distribution": [
+    "tokyo-area",
+    "hokkaido"
+  ],
+  "habitats": [
+    "stream",
+    "bottom"
+  ],
+  "depthRange": {
+    "min": 0,
+    "max": 13
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 15,
+    "dispersion": 0.18,
+    "minCm": 6,
+    "maxCm": 25
+  },
+  "weightModel": {
+    "lengthWeightA": 0.009,
+    "lengthWeightB": 3.08
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "fightProfile": {
+    "strength": 0.22,
+    "stamina": 0.32,
+    "speed": 0.34
+  },
+  "rarity": 1.2,
+  "sourceRefs": [
+    {
+      "id": "phase12-provisional",
+      "title": "PROVISIONAL — Phase 12 gameplay tuning; biological values require later verification"
+    }
+  ]
+}
