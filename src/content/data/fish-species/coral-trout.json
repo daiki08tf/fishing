@@ -1,0 +1,44 @@
+{
+  "id": "coral-trout",
+  "japaneseName": "コーラルトラウト（暫定）",
+  "scientificName": "Plectropomus leopardus",
+  "waterTypes": [
+    "salt"
+  ],
+  "distribution": [
+    "queensland"
+  ],
+  "habitats": [
+    "reef"
+  ],
+  "depthRange": {
+    "min": 0,
+    "max": 50
+  },
+  "lengthModel": {
+    "kind": "lognormal",
+    "medianCm": 55,
+    "dispersion": 0.18,
+    "minCm": 25,
+    "maxCm": 100
+  },
+  "weightModel": {
+    "lengthWeightA": 0.009,
+    "lengthWeightB": 3.08
+  },
+  "conditionModel": {
+    "variability": 0.5
+  },
+  "fightProfile": {
+    "strength": 0.72,
+    "stamina": 0.76,
+    "speed": 0.62
+  },
+  "rarity": 2,
+  "sourceRefs": [
+    {
+      "id": "phase12-provisional",
+      "title": "PROVISIONAL — Phase 12 gameplay tuning; biological values require later verification"
+    }
+  ]
+}
