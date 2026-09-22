@@ -6,6 +6,6 @@
   "offeringTags": ["popper", "stickbait", "jig", "minnow"],
   "presentation": {
     "mode": "cast",
-    "supportedPlatforms": []
+    "supportedPlatforms": ["kayak", "nearshore_boat", "offshore_boat"]
   }
 }

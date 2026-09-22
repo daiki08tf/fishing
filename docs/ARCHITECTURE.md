@@ -422,4 +422,51 @@ PCではマウス/キーボードにも対応する。
 - ガチャ
 - 1000魚種の手入力
 - 全国Spotの完全再現
+
+## 16. Depth / Offshore（Phase 17）
+
+`src/domain/depth/` は「沖」と「水深」を既存の世界へ足すための Domain で、
+Casting Domain（`src/domain/casting/`）と対になる形で作った。Casting 自体は
+1 行も変えていない — Zone が `castDistanceM` を持つか `depthRangeM` のみかで
+呼び出し側（`useFishingSession.ts`）が振り分ける。
+
+- **FishingPlatform**（`FishingPlatform.ts`）— `world.trip.transportId` +
+  `TransportDefinition` から `shore | kayak | nearshore_boat | offshore_boat`
+  を毎回 derive する。Save には保存しない
+- **DepthCapability**（`DepthCapability.ts`）— `CastCapability` の水深版。
+  Gear スペック + Platform から `comfortableDepthM` / `maxDepthM` / `control` を
+  解決する。ブランドボーナス無し、Species 分岐無し
+- **resolveDeployment**（`resolveDeployment.ts`）— `resolveCast` の水深版。
+  Drift（`Drift.ts`、既存 `Spot.current` から derive）が付くと `quality: 'drifted'`
+  が出る
+- **SeaState / MarineReadiness**（`SeaState.ts` / `MarineReadiness.ts`）—
+  AccessEngine（物理的・制度的に行けるか）とは別の「今日の海況は妥当か」という軸。
+  Transport-ID では分岐しない
+- **fightDistance.ts** — 実際の水深を `FishingEngine.initialFightDistanceM`
+  （既存の cast-distance と同じ単位）へ sqrt 圧縮する
+
+Method の提示方式（`src/domain/method/FishingMethod.ts` の `presentation`
+フィールド）は `cast | vertical | drift | troll` の 4 種類で、FishingEngine の
+state machine（CAST / HOOK / FIGHT / …）は増えていない。UI ラベルと
+Platform 互換性チェック（`methodSupportsPlatform`）だけを持つ。
+
+Charter / Captain（`src/domain/trade/Contact.ts` / `charterTrust.ts`）は
+Buyer と同じ `ContactId` 空間・同じ `TradeState.contactTrust` を使う。
+`TransportDefinition.operatorContactId`（任意）が唯一の新しい結び付けで、
+Transport-ID による分岐ではなく「このフィールドがあるか」だけを見る。
+Captain 専用の Trust state・予約システムは作っていない。
+
+`AccessRequirement.kind: 'relationship'`（`accessEngine.ts`）は Phase 13 から
+型としては存在したが常に satisfied 扱いだった休眠 kind で、Phase 17C で
+`AccessEvaluationInput.contactTrust`（`Readonly<Record<string, number>>`、
+trade domain の型を import しない）を実際に見るよう実装した。Hidden Offshore
+Spot の一部はこれを使い、discover（低い Trust）と access（やや高い Trust）を
+意図的に分けている。
+
+新しい検証は `scripts/simulate-offshore.ts`（`npm run simulate:offshore`、
+`npm run check` に組み込み済み）が持つ: 深場タックルの到達水深、Fish Finder の
+検知深度/精度、Marine Readiness、5 Method の再生可能性（offering 適合・Platform
+互換・実際に FishingEngine を最後まで回す）、岸釣り回帰、Offshore Core Loop、
+Captain Loop（紹介→Charter→Trust→報酬→discover→access の分離）、Skunk Loop、
+Boat Economy のトレードオフ。
 - 高精度な流体シミュレーション

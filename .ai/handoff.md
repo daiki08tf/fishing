@@ -1,10 +1,57 @@
 # Handoff
 
-最終更新: Phase 16 Part 2b（Final World Hardening）完了
-（branch `phase-16-world-expansion-i`、PR #18）
+最終更新: Phase 17（Boat & Offshore Expansion, 17A〜17E）完了
+（branch `phase-17-boat-offshore`、PR #19・未マージ。main へはまだ入っていない）
 
-> 現在状態は Phase 15 → 14 → 13 → 12 → 11 → 10.2 → 10.1 → 10 の順で優先する。
+> 現在状態は Phase 17 → 16 → 15 → 14 → 13 → 12 → 11 → 10.2 → 10.1 → 10 の順で優先する。
 > 詳細は `.ai/current-task.md` と `docs/DECISIONS.md` も参照。
+
+## Phase 17（Boat & Offshore Expansion, 17A〜17E）
+
+Phase 16 の main HEAD（`12bb84f364bdebf886aae4ce8332971b892bc6fe`）から分岐。
+新規 Region は追加せず、「沖」「水深」を既存 14 Region の上に足した。
+1 ブランチ・1 PR のまま、5 つの内部 sub-phase ごとに commit + `npm run check` green。
+
+- **17A（`23bd09c`）**: `src/domain/depth/`（FishingPlatform /
+  DepthCapability / resolveDeployment / SeaState / MarineReadiness /
+  fightDistance）。既存 `src/domain/casting/` は無変更、zone の形
+  （`castDistanceM` の有無）だけで分岐
+- **17B（`62ca8a4`）**: Method `presentation`（任意・後方互換）+ 5 新規 Method
+  （offshore_casting / vertical_jigging / tai_rubber / live_bait_drift /
+  trolling）。Fish Finder を `detectionDepthM`/`accuracy` ベースへ書き換え。
+  Reposition（transient、15〜30 分消費、Save 変更なし）
+- **17C（`4fc2fed`）**: 汎用 `ContactDefinition`（Buyer と同じ `ContactId`
+  空間）を Phase 15 pack pipeline に full 統合。`Transport.operatorContactId` +
+  `applyCharterTripOutcome`（ボウズでも Base Trust）。休眠していた
+  `AccessRequirement.kind: 'relationship'` を実装（既存 Content は未使用だった
+  ため安全）。small-owned-boat / charter-boat（Tokyo, captain-taro）を追加
+- **17D（`b571b5f`）**: Fish Finder 3 段階（basic/mid/advanced）。新規
+  non-hidden offshore Spot 2 件（Izu / Norway — 従来 hidden offshore しか
+  無かった地域の穴埋め）。新規 Hidden Offshore Spot 5 件（discover の Trust <
+  access の relationship Trust、という 2 段階）。新規 Captain 4 件
+  （Izu=紹介制, Norway=紹介制, Hokkaido=initiallyKnown, Alaska=initiallyKnown
+  — Buyer が無い地域は紹介チェーンを使えないため）+ region-specific
+  charter-boat Transport 4 件。新規 Species 0
+- **17E**: `scripts/simulate-offshore.ts`（`npm run simulate:offshore`、
+  `npm run check` 組み込み済み）。Depth simulation（light/medium/heavy jig ×
+  drift）、Sonar simulation（basic/mid/advanced finder）、Marine Readiness、
+  5 Method の再生可能性（offering 適合・Platform 互換・実 FishingEngine 走行）、
+  岸釣り回帰、Offshore Core Loop、Captain Loop（紹介→charter→Trust→discover→
+  access の分離を実証）、Skunk Loop、Boat Economy。Playwright（Chromium、
+  この環境で起動可）で HOME→MAP→Sagami 沖 charter→SPOT（乗船/水深/海況/流れ・
+  Search Water・Reposition）→FISHING（狙う水深パネル）→CONTACTS（未紹介
+  Captain の非表示）を 390px で目視、console error 0 件
+- **Save は v9 のまま**。新しい永続 state は最後まで 1 つも増えていない
+  （Charter Trust = 既存 `contactTrust`、Contact 既知判定 = 既存の派生パターン）
+- tests 890（17E で +いくつか、`simulate:offshore` は別枠）/ boot gzip 181.5 kB
+  （予算 200 kB、Phase 16 baseline 181.06 kB からほぼ横ばい）
+- 次にやるとしたら（Phase 17 の範囲外）: giant-queenfish/queenfish の
+  canonical ID 統合、Phase 18（Big Game 本格改修 — GT/大型カジキ級の長時間
+  ファイト）、Trolling 専用ブランド商品（現状は既存 minnow ルアーを流用して
+  おり機能上は問題ない）、より多くの Region への Captain/Guide 追加
+  （Queensland / Okinawa / BC など、Buyer が既にいる地域から）
+- **PR #19 は意図的に未マージ**。ミッション仕様の指示により、レビューのため
+  main へは統合しない
 
 ## Phase 16 Part 2b（Final World Hardening）
 

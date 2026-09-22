@@ -733,3 +733,80 @@ Save v9 / Phase 15 lazy loading / Domain rule は不変。
 
 実測（Part 2b）: Initial 572.15 kB（gzip 161.21）/ Tokyo boot 686.33 kB（gzip 195.76、
 予算 200 kB / Phase 14 baseline 216.48 kB）/ tests 95 files / 834。
+
+## Phase 17 — Boat & Offshore Expansion
+
+「沖」と「水深」を既存の世界（14 Region / 229 Species / 140+ Spot）の上に足す。
+新しい Region は追加しない。5 つの内部 sub-phase（17A〜17E）で進めたが、
+ブランチ / PR は 1 つのまま（squash も rebase もしない）。
+
+決定:
+
+- **FishingPlatform は Save に保存しない。** `world.trip.transportId` +
+  `TransportDefinition.boatCapability` / `transportType` から毎回 derive する
+  （`shore | kayak | nearshore_boat | offshore_boat`）。Transport-ID / Region-ID
+  では分岐しない
+- **Depth は既存の `FishingZone.depthRangeM` をそのまま使う。** 新しい
+  「DepthZone」コンテンツ種別は作らない。`DepthCapability` / `resolveDeployment` は
+  既存の `CastCapability` / `resolveCast`（Casting Domain）を意図的に写した形にし、
+  `Casting.ts` 自体は 1 行も変えていない。Zone の形（`castDistanceM` の有無）だけで
+  cast 系と depth 系を振り分ける
+- **Method presentation は状態機械を増やさない。** `cast | vertical | drift | troll`
+  は UI ラベルと Platform 互換性だけを持つ任意フィールドで、既存 4 Method は
+  省略時 `cast`・無制限（100% 後方互換）。CAST / HOOK / FIGHT という内部 phase 名は
+  変えない。深場の Fight 距離は `depthToFightDistanceM`（sqrt 圧縮）で
+  既存の cast-distance 単位へ落とす
+- **Fish Finder は本物の `detectionDepthM` / `accuracy` を返す。** 「持っていれば
+  強い反応」という boolean をやめ、探知深度を超えた Zone は見えない・海底も
+  「不明」のままにする。Knowledge の解釈（`knowledgeTierFor`）と Fish Finder の
+  物理観測は分離し、未捕獲 Species の実名は自動では明かさない
+- **Reposition は transient。** 15〜30 分の game time を消費する deterministic
+  seeded search で、`searchPositionIndex` は既存の `lastSearch` と同じ寿命
+  （Spot を出る / 帰宅 / hydration でリセット）。Save には入れない
+- **Buyer と汎用 Contact（Captain/Guide/Local Fisher/Rental Staff）は同じ
+  `ContactId` 空間を共有する。** 新しい `contacts` Content 種別を Phase 15 の
+  pack pipeline（schema → assembleContent → mergeContent → references →
+  contentRuntime → build-content-index）へ full に載せた。`isContactKnown()` は
+  Hidden Spot discovery と同じ「派生する、保存しない」方針を踏襲する
+  （`initiallyKnown` または claim 済み `introduce_contact` から判定）
+- **Charter は新しい世界 state を増やさない。** `TransportDefinition` に任意の
+  `operatorContactId` を足しただけで、Booking システムやカレンダーは作らない。
+  Charter 完了（帰宅）時に `applyCharterTripOutcome` が Base Trust
+  （**ボウズでも入る**）+ 小さく頭打ちの釣果ボーナスを `TradeState.contactTrust`
+  へ足し、既存の `claimEligibleRewards` で報酬を確定する。Captain Trust 専用の
+  state は作らない
+- **休眠していた `AccessRequirement.kind: 'relationship'` を実装した。**
+  既存 Content はどれも使っていなかったため、安全に「常に満たす」から
+  「`contactTrust[targetId] >= minimum` を実際に見る」へ変更した。Hidden Offshore
+  Spot の一部は discover_spot の Trust より高い relationship Trust を access 条件にし、
+  「知っている」と「連れて行ってもらえる」を意図的に分けた（Discovery ≠ Access）
+- **Boat 進行の抜けていた段を埋めた。** kayak（¥160,000, nearshore）→
+  small owned boat（¥1,600,000, nearshore, ramp launch, 新規）→
+  rental-boat（¥28,000/trip, offshore）/ charter-boat（¥42,000〜65,000/trip,
+  offshore, Captain 紐付き, 新規）→ owned-boat（¥4,800,000, offshore）。
+  すべて PROVISIONAL な gameplay 数値であり、実際の相場の主張ではない
+- **Hidden Offshore Spot は 5 → 10 に増やした。** Tokyo（既存 Captain の続き）/
+  Izu / Norway / Hokkaido / Alaska に 1 つずつ、Captain の discover_spot
+  （低い Trust）→ access の relationship 要件（やや高い Trust）という 2 段階にした。
+  すべて fictional / generalized。実在の座標は使わない
+- **Species は増やさない。** 新しい Spot はすべて、その Region の既存 fish table に
+  ある global Species ID だけを再利用する（229 のまま）
+- **Fish Finder は 3 段階にした。** basic（80m/0.6, 既存）/ mid（150m/0.75, 新規）/
+  advanced（250m/0.9, 新規）。効果は検知深度と精度だけで、bite 率のボーナスにはしない
+- **`simulate:offshore` を追加し `npm run check` に組み込んだ。** Depth /
+  Sonar / Marine Readiness / 5 Method の再生可能性 / 岸釣り回帰 / Offshore Core
+  Loop / Captain Loop / Skunk Loop / Boat Economy を実 Content 上で検証する
+  （`simulate-trade-network.ts` と同じ PASS/FAIL 形式）
+- **Save は v9 のまま。** Charter Trust は既存 `TradeState.contactTrust` を再利用し、
+  Contact の既知判定は Hidden Spot discovery と同じ派生方式にした。永続化が
+  必要な新しい state は最後まで 1 つも出てこなかった
+- **Phase 18（Big Game）境界は越えない。** 大型種は既存 Text Battle のままにし、
+  専用の巨大魚 fight system・fighting chair・harness は作らない
+
+実測: 890 tests（`simulate:offshore` 追加分含む）/ boot gzip 181.5 kB
+（予算 200 kB、Phase 16 baseline 181.06 kB から実質横ばい）。実機ブラウザでの
+目視は Playwright（Chromium）で実施した: HOME→MAP は 375 / 390 / 430px の 3 段階、
+MAP→相模湾 沖（レンタルボート）→SPOT（乗船/水深/海況/流れの行・狙える水域・
+Search Water・Reposition）→FISHING（狙う水深パネルと CAST の提示ラベル）→
+CONTACTS（未紹介の Captain が隠れていること）までの一本通しは 390px で確認した。
+console error は 0 件。
