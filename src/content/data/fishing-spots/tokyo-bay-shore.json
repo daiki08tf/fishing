@@ -14,15 +14,22 @@
   "travelOptions": [
     {
       "id": "rail-route",
-      "transportTypes": ["train"],
-      "requiredCapabilities": ["public_transport"],
+      "transportTypes": [
+        "train"
+      ],
+      "requiredCapabilities": [
+        "public_transport"
+      ],
       "features": [],
       "baseMinutes": 45,
       "distanceKm": 28,
       "baseOneWayCost": 420
     }
   ],
-  "habitatTags": ["pier", "shallow"],
+  "habitatTags": [
+    "pier",
+    "shallow"
+  ],
   "depth": {
     "depthRangeM": {
       "min": 2,
@@ -31,19 +38,19 @@
   },
   "fishTable": [
     {
-      "speciesId": "kanto-maaji",
+      "speciesId": "maaji",
       "basePresence": 0.6
     },
     {
-      "speciesId": "kanto-seabass",
+      "speciesId": "seabass",
       "basePresence": 0.4
     },
     {
-      "speciesId": "kanto-kurodai",
+      "speciesId": "kurodai",
       "basePresence": 0.5
     },
     {
-      "speciesId": "kanto-saba",
+      "speciesId": "saba",
       "basePresence": 0.5
     }
   ],
