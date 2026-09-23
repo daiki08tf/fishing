@@ -12,6 +12,8 @@ import type { Range } from '../primitives'
 import type { RandomSource } from '../rng/RandomSource'
 import { SeededRandomSource } from '../rng/SeededRandomSource'
 import { createFightingFish } from './createFightingFish'
+import { fightDistanceSizeIndex } from './fishMassIndex'
+import type { FightCapability } from './FightCapability'
 import type { FishBehavior } from './FishBehavior'
 import type { FightingFishState } from './FightingFish'
 import { DEFAULT_BATTLE_TUNING, type BattleTuning } from './BattleTuning'
@@ -138,6 +140,12 @@ export type FishingEngineOptions = {
    */
   readonly initialFightDistanceM?: number
   /**
+   * Phase 18A: 解決済みのタックル戦闘能力（Tackle 側で導出）。
+   * Engine は Gear を知らず、この値だけを受け取る。
+   * 省略時は Phase 17 と同じ挙動（weak-link による margin なし）。
+   */
+  readonly fightCapability?: FightCapability
+  /**
    * Phase 10: その Spot の Knowledge（0〜100）。
    * 予兆（telegraph）の文章の精度にだけ使う（結果は変えない）。
    */
@@ -198,6 +206,7 @@ export class FishingEngine {
   private readonly battleTuning: BattleTuning
   private readonly knowledgeScore: number
   private readonly initialFightDistanceM: number | undefined
+  private readonly fightCapability: FightCapability | undefined
   private events: FishingEvent[] = []
 
   constructor(options: FishingEngineOptions) {
@@ -211,6 +220,7 @@ export class FishingEngine {
     this.battleTuning = options.battleTuning ?? DEFAULT_BATTLE_TUNING
     this.knowledgeScore = options.knowledgeScore ?? 0
     this.initialFightDistanceM = options.initialFightDistanceM
+    this.fightCapability = options.fightCapability
   }
 
   // ---------------------------------------------------------------- commands
@@ -373,9 +383,20 @@ export class FishingEngine {
     )
   }
 
-  /** 耐えられるテンションの上限（ライン・ロッド・針で変わる）。 */
+  /**
+   * 耐えられるテンションの上限（ライン・ロッド・針で変わる）。
+   *
+   * Phase 18A: タックルの最弱点（weak link）がラインより明確に弱いとき、
+   * 実効の上限を下げる（弱いリーダー / 小さすぎるフックは余裕を削る）。
+   * 強度の権威そのものは既存の maxTensionMultiplier のまま。
+   */
   effectiveMaxTension(): number {
-    return Math.max(0.1, this.tuning.maxTension * this.playerModifiers.maxTensionMultiplier)
+    const margin = this.fightCapability?.tensionMarginMultiplier ?? 1
+
+    return Math.max(
+      0.1,
+      this.tuning.maxTension * this.playerModifiers.maxTensionMultiplier * margin,
+    )
   }
 
   /** 糸が緩んでからフックが外れるまでの tick 数（針の保持力で変わる）。 */
@@ -571,9 +592,14 @@ export class FishingEngine {
 
     const profile = state.fish.battleProfile
     const maxTension = this.effectiveMaxTension()
+    /*
+     * Phase 18A: 大型魚のファイト距離は knee 以降 log で圧縮する
+     * （150kg の魚が 150m の単調な距離にならないようにする）。
+     */
     const sizeDistanceM =
       this.battleTuning.initialDistanceBaseM +
-      this.battleTuning.initialDistancePerSizeM * profile.sizeFactor
+      this.battleTuning.initialDistancePerSizeM *
+        fightDistanceSizeIndex(profile.sizeFactor, this.battleTuning)
     const castDistanceM =
       (this.initialFightDistanceM ?? 0) *
       (this.battleTuning.castDistanceToFightDistanceMultiplier ?? 0.35)

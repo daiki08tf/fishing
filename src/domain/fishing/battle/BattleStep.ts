@@ -299,7 +299,8 @@ export const stepBattle = (input: {
     behaviourModifiers.pull *
     (0.6 + 0.4 * pullMultiplier) *
     // 小さい魚はラインを引けない（小型魚のファイトを長くも危険にもしない）。
-    clamp(0.35 * profile.sizeFactor, 0.25, 1.0)
+    // Phase 18A: 上限は tuning で持ち、大型魚は 1.0 を超えて強く引ける。
+    clamp(0.35 * profile.sizeFactor, 0.25, tuning.fishPullSizeScaleMax)
 
   if (pullTension > 0) {
     tension = Math.min(numbers.maxTension, tension + pullTension)

@@ -38,6 +38,27 @@ export type {
   FishingTickResult,
 } from './FishingEngine'
 
+export { fishMassIndex, fightDistanceSizeIndex } from './fishMassIndex'
+
+export {
+  DEFAULT_FIGHT_CAPABILITY_TUNING,
+  resolveFightCapability,
+  WEAK_LINK_COMPONENTS,
+  WEAK_LINK_LABELS,
+} from './FightCapability'
+export type { FightCapability, FightCapabilityTuning, WeakLinkComponent } from './FightCapability'
+
+export { resolveFightDemand } from './FightDemand'
+export type { FightDemand } from './FightDemand'
+
+export {
+  DEFAULT_FIGHT_CHALLENGE_BANDS,
+  FIGHT_CHALLENGE_LABELS,
+  FIGHT_CHALLENGES,
+  resolveFightChallenge,
+} from './fightChallenge'
+export type { FightChallenge, FightChallengeBands } from './fightChallenge'
+
 export {
   ADDITIVE_MODIFIER_KEYS,
   FISHING_MODIFIER_KEYS,

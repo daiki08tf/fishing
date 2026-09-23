@@ -3,6 +3,8 @@ import type { EncounterCandidate } from '../../domain/encounter/encounterEngine'
 import {
   FishingEngine,
   isTerminalPhase,
+  resolveFightCapability,
+  type FightCapability,
   type FishingCommand,
   type FishingSnapshot,
 } from '../../domain/fishing'
@@ -95,6 +97,8 @@ export type FishingSession = {
   readonly resolvedDeployment: ResolvedDeployment | null
   readonly seaState: SeaState | null
   readonly marineReadiness: MarineReadinessResult | null
+  /** Phase 18A: 今のタックルの戦闘能力（派生値・Save しない）。 */
+  readonly fightCapability: FightCapability | null
   readonly canCast: boolean
   /** Phase 17B: 今の釣法がこの Platform で使えないときだけ false。 */
   readonly methodPlatformOk: boolean
@@ -184,6 +188,16 @@ export const useFishingSession = (): FishingSession => {
 
     return resolveGearForLoadout(loadout, content.value.gear)
   }, [content, loadout])
+
+  /*
+   * Phase 18A: タックルの戦闘能力（ライン容量 / ドラグ / weak link など）。
+   * Save しない派生値。Engine へはこの解決済み DTO だけを渡す
+   * （Engine は Gear を知らない）。
+   */
+  const fightCapability = useMemo<FightCapability | null>(
+    () => (castingGear === null ? null : resolveFightCapability(castingGear)),
+    [castingGear],
+  )
 
   /*
    * Phase 17A: Fishing Platform は Save しない派生値。
@@ -451,6 +465,7 @@ export const useFishingSession = (): FishingSession => {
     encounterProfile,
     knowledgeScore: spotKnowledgeScore(knowledge, spot === undefined ? '' : String(spot.id)),
     initialFightDistanceM,
+    fightCapability,
   })
   sessionInputsRef.current = {
     encounters,
@@ -458,6 +473,7 @@ export const useFishingSession = (): FishingSession => {
     encounterProfile,
     knowledgeScore: spotKnowledgeScore(knowledge, spot === undefined ? '' : String(spot.id)),
     initialFightDistanceM,
+    fightCapability,
   }
 
   // セッション開始（Spot・seed が変わったとき）。釣行中は作り直さない。
@@ -482,6 +498,7 @@ export const useFishingSession = (): FishingSession => {
       ...(inputs.encounterProfile === undefined
         ? {}
         : { encounterProfile: inputs.encounterProfile }),
+      ...(inputs.fightCapability === null ? {} : { fightCapability: inputs.fightCapability }),
     })
 
     engineRef.current = engine
@@ -637,6 +654,7 @@ export const useFishingSession = (): FishingSession => {
     resolvedDeployment,
     seaState,
     marineReadiness,
+    fightCapability,
     canCast,
     methodPlatformOk,
     presentationMode,

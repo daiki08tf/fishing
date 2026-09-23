@@ -21,6 +21,8 @@ export {
 } from './compatibility'
 export type { CompatibilityIssue, CompatibilityLevel, CompatibilityReport } from './compatibility'
 
+export { resolveEffectiveLineCapacityM } from './lineCapacity'
+
 export { composeFishingModifiers, resolveTackle } from './resolveTackle'
 export type { EncounterProfile, ResolvedFishingSetup, TackleRatings } from './resolveTackle'
 

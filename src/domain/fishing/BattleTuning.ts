@@ -20,6 +20,17 @@ export type BattleTuning = {
   readonly sizeFactorReferenceKg: number
   readonly sizeFactorMin: number
   readonly sizeFactorMax: number
+  /**
+   * Phase 18A: knee（referenceKg × sizeFactorMax kg）を超える魚の
+   * ファイト距離を圧縮する係数。距離 = max + log1p((sf-max)/max) × この値。
+   */
+  readonly bigGameDistanceLogFactor: number
+  /**
+   * Phase 18A: 魚の引きがテンションを押し上げるサイズ項の上限。
+   * Phase 17 までは実質 1.0 固定（中型魚で飽和）だった。大型魚は 1.0 を超えて
+   * より強く引ける（ただし線形ではなく頭打ち）。
+   */
+  readonly fishPullSizeScaleMax: number
 
   /** 「寄せ切った」と見なす距離（m）。ここで LANDING に移る。 */
   readonly landingDistanceM: number
@@ -89,6 +100,8 @@ export const DEFAULT_BATTLE_TUNING: BattleTuning = {
   sizeFactorReferenceKg: 2.5,
   sizeFactorMin: 0.3,
   sizeFactorMax: 5,
+  bigGameDistanceLogFactor: 5,
+  fishPullSizeScaleMax: 1.35,
 
   landingDistanceM: 6,
 

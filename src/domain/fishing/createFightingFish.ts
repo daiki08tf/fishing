@@ -4,6 +4,7 @@ import type { TraitModifiers } from '../fish/fishTraits'
 import { lengthModelMedian } from '../fish/lengthModel'
 import { estimateStandardWeightKg } from '../fish/weightModel'
 import { resolveFishBattleProfile } from './battle/FishBattleProfile'
+import { resolveFightDemand } from './FightDemand'
 import type { RandomSource } from '../rng/RandomSource'
 import type { FightingFish } from './FightingFish'
 import { DEFAULT_FISHING_TUNING, type FishingTuning } from './FishingTuning'
@@ -86,6 +87,16 @@ export const createFightingFish = (options: CreateFightingFishOptions): Fighting
     tuning.bigFishPullMax,
   )
   const enduranceMultiplier = clamp(1 + tuning.bigFishEnduranceStrength * (sizeRatio - 1), 0.8, 2.2)
+  const battleProfile = resolveFishBattleProfile({
+    strength: species.fightProfile.strength,
+    stamina: species.fightProfile.stamina,
+    speed: species.fightProfile.speed,
+    traitModifiers,
+    weightKg: individual.weightKg,
+    pullMultiplier,
+    enduranceMultiplier,
+    ...(options.battleTuning === undefined ? {} : { tuning: options.battleTuning }),
+  })
 
   return {
     individual,
@@ -95,14 +106,13 @@ export const createFightingFish = (options: CreateFightingFishOptions): Fighting
     staminaMax,
     pullMultiplier,
     enduranceMultiplier,
-    battleProfile: resolveFishBattleProfile({
-      strength: species.fightProfile.strength,
-      stamina: species.fightProfile.stamina,
-      speed: species.fightProfile.speed,
-      traitModifiers,
+    battleProfile,
+    fightDemand: resolveFightDemand({
       weightKg: individual.weightKg,
-      pullMultiplier,
-      enduranceMultiplier,
+      power,
+      speed,
+      staminaMax,
+      battleProfile,
       ...(options.battleTuning === undefined ? {} : { tuning: options.battleTuning }),
     }),
     modifiers: traitModifiers,
