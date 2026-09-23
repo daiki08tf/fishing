@@ -162,19 +162,21 @@ export const failureExplanation = (input: {
       return {
         title: '負荷に耐えきれずライン系統が破断した',
         detail: 'テンションを上げすぎた。走っている魚は送る・ドラグを緩める。',
+        /*
+         * weakLink は「タックル上の最弱点」であり、実際に切れた部位を
+         * domain が証明するわけではない — 断定せず弱点として示す。
+         */
         state:
-          input.weakLink === null
-            ? null
-            : `弱点だった${WEAK_LINK_LABELS[input.weakLink]}が限界に達した`,
+          input.weakLink === null ? null : `タックル上の弱点: ${WEAK_LINK_LABELS[input.weakLink]}`,
       }
     case 'HOOK_ESCAPE':
       return {
-        title: 'テンションまたはフック保持を失い、魚が外れた',
-        detail: '糸を緩めすぎた。ラインを送ったあとは早めにテンションを戻す。',
+        title: 'フックが外れた',
+        detail: 'テンションの乱れやフック保持の低下で、魚が外れた。',
         state:
           input.hookHold === null
             ? null
-            : `最後のフック保持 ${String(Math.round(input.hookHold * 100))}%`,
+            : `終了時のフック保持 ${String(Math.round(input.hookHold * 100))}%`,
       }
     default:
       return null

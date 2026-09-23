@@ -118,7 +118,7 @@ describe('fightPresentation', () => {
       expect(result?.state).toBe('スプール容量 45m を出し尽くした')
     })
 
-    it('names the weak link for LINE_BREAK when known', () => {
+    it('shows the weak link as a tackle weak point, not the proven break site', () => {
       const result = failureExplanation({
         phase: 'LINE_BREAK',
         weakLink: 'leader',
@@ -126,7 +126,7 @@ describe('fightPresentation', () => {
         hookHold: 0.8,
       })
       expect(result?.title).toBe('負荷に耐えきれずライン系統が破断した')
-      expect(result?.state).toBe('弱点だったリーダーが限界に達した')
+      expect(result?.state).toBe('タックル上の弱点: リーダー')
     })
 
     it('explains HOOK_ESCAPE without claiming an unproven cause', () => {
@@ -136,8 +136,9 @@ describe('fightPresentation', () => {
         lineCapacityM: null,
         hookHold: 0.12,
       })
-      expect(result?.title).toBe('テンションまたはフック保持を失い、魚が外れた')
-      expect(result?.state).toBe('最後のフック保持 12%')
+      expect(result?.title).toBe('フックが外れた')
+      expect(result?.detail).toBe('テンションの乱れやフック保持の低下で、魚が外れた。')
+      expect(result?.state).toBe('終了時のフック保持 12%')
     })
 
     it('omits state when the battle values are unavailable', () => {

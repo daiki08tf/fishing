@@ -73,7 +73,7 @@ const PHASE_HINTS: Readonly<Record<FishingPhase, string>> = {
   LANDING: '暴れているなら待つ。落ち着いたら取り込む',
   LANDED: '釣り上げた',
   HOOK_MISSED: 'アワセが遅れた。もう一度キャストする',
-  HOOK_ESCAPE: '糸を緩めすぎた。もう一度キャストする',
+  HOOK_ESCAPE: 'フックが外れた。テンションの乱れや保持の低下に注意して、もう一度キャストする',
   LINE_BREAK: 'テンションを上げすぎた。もう一度キャストする',
   SPOOLED: 'ライン容量が足りなかった。走りを早めに止めるか容量の大きいリールを',
 }
@@ -115,7 +115,7 @@ const EVENT_LABELS: Readonly<Record<FishingEvent, string>> = {
   NO_BITE: 'アタリがなかった',
   HOOK_SET: 'アワセが決まった',
   HOOK_MISSED: 'アワセが遅れた',
-  HOOK_ESCAPE: '糸が緩んでフックが外れた',
+  HOOK_ESCAPE: 'フックが外れた',
   LINE_BREAK: 'テンションが上がりすぎて切れた',
   SPOOLED: 'ラインを出し尽くされた',
   RUN_STARTED: '魚が走った',
