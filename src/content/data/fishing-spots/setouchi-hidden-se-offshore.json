@@ -1,0 +1,141 @@
+{
+  "id": "setouchi-hidden-se-offshore",
+  "name": "瀬戸内 沖の瀬（要人脈・暫定）",
+  "regionId": "setouchi",
+  "areaId": "setouchi-straits",
+  "environment": "offshore",
+  "visibility": "hidden",
+  "access": [
+    {
+      "kind": "capability",
+      "capability": "boat_required"
+    },
+    {
+      "kind": "capability",
+      "capability": "offshore"
+    },
+    {
+      "kind": "relationship",
+      "targetId": "captain-setouchi",
+      "minimum": 15
+    }
+  ],
+  "travelOptions": [
+    {
+      "id": "se-offshore-charter",
+      "transportTypes": ["charter_boat"],
+      "requiredCapabilities": ["boat_required", "offshore"],
+      "features": ["boat_rental", "marina"],
+      "baseMinutes": 50,
+      "distanceKm": 20,
+      "baseOneWayCost": 0
+    }
+  ],
+  "habitatTags": ["offshore", "deep", "reef", "tide_race"],
+  "current": {
+    "preference": "strong"
+  },
+  "depth": {
+    "depthRangeM": {
+      "min": 15,
+      "max": 70
+    }
+  },
+  "fishingZones": [
+    {
+      "id": "mid",
+      "name": "中層",
+      "depthRangeM": {
+        "min": 15,
+        "max": 40
+      },
+      "habitatTags": ["mid-water", "open", "current"]
+    },
+    {
+      "id": "se-base",
+      "name": "瀬の根周り",
+      "depthRangeM": {
+        "min": 35,
+        "max": 70
+      },
+      "habitatTags": ["reef", "deep", "current"]
+    }
+  ],
+  "fishTable": [
+    {
+      "speciesId": "madai",
+      "basePresence": 0.4,
+      "zoneAffinity": {
+        "mid": 1.1,
+        "se-base": 1.3
+      }
+    },
+    {
+      "speciesId": "ishidai",
+      "basePresence": 0.22,
+      "zoneAffinity": {
+        "mid": 0.4,
+        "se-base": 1.5
+      }
+    },
+    {
+      "speciesId": "kijihata",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "mid": 0.7,
+        "se-base": 1.3
+      }
+    },
+    {
+      "speciesId": "kanpachi",
+      "basePresence": 0.12,
+      "zoneAffinity": {
+        "mid": 1.4,
+        "se-base": 0.8
+      }
+    },
+    {
+      "speciesId": "hiramasa",
+      "basePresence": 0.08,
+      "zoneAffinity": {
+        "mid": 1.5,
+        "se-base": 0.5
+      }
+    },
+    {
+      "speciesId": "nodoguro",
+      "basePresence": 0.1,
+      "zoneAffinity": {
+        "mid": 0.3,
+        "se-base": 1.4
+      }
+    }
+  ],
+  "dataStatus": "provisional",
+  "knowledgeConfig": {
+    "reveals": [
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "depth",
+        "minKnowledge": 40
+      },
+      {
+        "field": "habitat",
+        "minKnowledge": 60
+      },
+      {
+        "field": "season_pattern",
+        "minKnowledge": 75
+      }
+    ]
+  },
+  "sourceRefs": [
+    {
+      "id": "phase19b-provisional",
+      "title": "PROVISIONAL — gameplay-oriented spot layout; real access and regulations require verification"
+    }
+  ]
+}
