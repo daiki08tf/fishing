@@ -121,6 +121,16 @@ export const TEST_TRANSPORTS: readonly TransportDefinition[] = [
     boatCapability: 'nearshore',
   }),
   definition({
+    id: asTransportId('island-ferry'),
+    name: '島行きフェリー',
+    transportType: 'ferry',
+    ownershipModel: 'always_available',
+    travelCostModel: { kind: 'route_fare' },
+    maxRangeKm: 300,
+    capabilities: ['public_transport', 'island_access'],
+    passengerCapacity: 1,
+  }),
+  definition({
     id: asTransportId('rental-boat'),
     name: 'レンタルボート',
     transportType: 'rental_boat',

@@ -1,0 +1,15 @@
+{
+  "id": "island-ferry",
+  "name": "島行きフェリー",
+  "transportType": "ferry",
+  "ownershipModel": "always_available",
+  "travelCostModel": { "kind": "route_fare" },
+  "travelTimeModifier": 1,
+  "maxRangeKm": 300,
+  "cargo": { "gearUnits": 6, "maxWeightKg": 60 },
+  "capabilities": ["public_transport", "island_access"],
+  "requiredRouteFeatures": [],
+  "launchCapability": "none",
+  "boatCapability": "none",
+  "passengerCapacity": 1
+}

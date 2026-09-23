@@ -119,6 +119,60 @@ describe('world session', () => {
     }
   })
 
+  // Phase 19A: access.season はゲーム内 month（WorldTime）で gate する（往路のみ）。
+  it('allows a seasonal spot during an included month', () => {
+    const seasonalSpot = createTestSpot({
+      access: [
+        { kind: 'capability', capability: 'reachable_on_foot' },
+        { kind: 'season', months: [5] },
+      ],
+    })
+    const result = leaveForSpot({ context: home(), spot: seasonalSpot, ...transportContext })
+
+    expect(result.ok).toBe(true)
+  })
+
+  it('blocks a seasonal spot outside its months (in-game month, not real-world date)', () => {
+    const seasonalSpot = createTestSpot({
+      access: [
+        { kind: 'capability', capability: 'reachable_on_foot' },
+        { kind: 'season', months: [6, 7] },
+      ],
+    })
+    const result = leaveForSpot({ context: home(), spot: seasonalSpot, ...transportContext })
+
+    expect(result.ok).toBe(false)
+    if (!result.ok) {
+      expect(result.reason).toBe('inaccessible')
+      expect(result.message).toContain('季節外')
+    }
+  })
+
+  it('never blocks the return trip by season (no month boundary trap)', () => {
+    const seasonalSpot = createTestSpot({
+      access: [
+        { kind: 'capability', capability: 'reachable_on_foot' },
+        { kind: 'season', months: [5] },
+      ],
+    })
+    const atSpot = travelTo(home(), seasonalSpot)
+
+    // 滞在中に月が変わっても（月末跨ぎ）帰路は season を再評価しない。
+    const afterMonthEnd: WorldContext = {
+      ...atSpot,
+      world: {
+        ...atSpot.world,
+        time: { year: 2026, month: 6, day: 1, hour: 0, minute: 10 },
+      },
+    }
+    const back = leaveSpot({ context: afterMonthEnd, spot: seasonalSpot, ...transportContext })
+
+    expect(back.ok).toBe(true)
+    if (back.ok) {
+      expect(back.context.world.phase).toBe('RETURNING_HOME')
+    }
+  })
+
   it('refuses to travel to an inaccessible spot', () => {
     const carOnly = createTestSpot({
       id: 'car-only-spot' as never,
