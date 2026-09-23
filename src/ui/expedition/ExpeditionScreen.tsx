@@ -1,7 +1,17 @@
 import { useState } from 'react'
 import { formatYen } from '../../domain/economy'
+import { hasBigGameExperience } from '../../domain/codex'
 import { planExpedition, remainingExpeditionDays } from '../../domain/expedition'
+import {
+  FIGHT_CHALLENGE_LABELS,
+  resolveFightCapability,
+  resolveFightReadiness,
+} from '../../domain/fishing'
+import { resolveGearForLoadout } from '../../domain/tackle'
 import { formatDuration } from '../../domain/world'
+import type { GearItem } from '../../domain/gear/Gear'
+import type { CodexState } from '../../domain/codex'
+import type { Loadout } from '../../domain/tackle'
 import { DEFAULT_WORLD_TUNING } from '../../domain/world/WorldTuning'
 import { useAppStore } from '../../state/appStore'
 import { usePlayerStore } from '../../state/playerStore'
@@ -24,6 +34,8 @@ export const ExpeditionScreen = () => {
   const world = usePlayerStore((state) => state.world)
   const finance = usePlayerStore((state) => state.finance)
   const expedition = usePlayerStore((state) => state.expedition)
+  const codex = usePlayerStore((state) => state.codex)
+  const loadout = usePlayerStore((state) => state.loadout)
   const startExpedition = usePlayerStore((state) => state.startExpedition)
   const endExpedition = usePlayerStore((state) => state.endExpedition)
   const [notice, setNotice] = useState<string | null>(null)
@@ -77,6 +89,7 @@ export const ExpeditionScreen = () => {
             支払い済み {formatYen(current.totalCostYen)}（航空券・宿泊・許可を含む）
           </p>
           <p className="panel__body">この地域の釣り場 {nearby.length} 箇所</p>
+          <ExpeditionReadiness codex={codex} loadout={loadout} gear={content.value.gear} />
           <button
             className="button button--primary"
             type="button"
@@ -347,5 +360,36 @@ export const ExpeditionScreen = () => {
 
       {notice === null ? null : <p className="notice">{notice}</p>}
     </div>
+  )
+}
+
+/**
+ * Phase 18C: 遠征中の Big Game 備え表示。
+ * 汎用の reference demand に対する見通しだけを出す。
+ * 大型魚の経験が浅い間は見通しを隠す（Knowledge masking）。
+ */
+const ExpeditionReadiness = (props: {
+  readonly codex: CodexState
+  readonly loadout: Loadout
+  readonly gear: readonly GearItem[]
+}) => {
+  const castingGear = resolveGearForLoadout(props.loadout, props.gear)
+  if (castingGear === null) {
+    return null
+  }
+
+  const readiness = resolveFightReadiness({
+    capability: resolveFightCapability(castingGear),
+    revealExpectation: hasBigGameExperience(props.codex),
+  })
+
+  return (
+    <p className="fishing__legend">
+      大型魚への備え:{' '}
+      {readiness.masked || readiness.challenge === null
+        ? '不明（大型魚の経験が浅い）'
+        : FIGHT_CHALLENGE_LABELS[readiness.challenge]}
+      {' — TACKLE で詳細を確認できる'}
+    </p>
   )
 }

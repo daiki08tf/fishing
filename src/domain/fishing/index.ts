@@ -62,6 +62,15 @@ export type { FightChallenge, FightChallengeBands } from './fightChallenge'
 export { MAX_ABRASION_RISK, resolveAbrasionRisk } from './abrasion'
 export { FIGHT_STAGE_LABELS, FIGHT_STAGES, resolveFightStage } from './fightStage'
 export type { FightStage } from './fightStage'
+export {
+  BIG_GAME_REFERENCE_DEMAND_KG,
+  READINESS_ASPECT_LABELS,
+  READINESS_ASPECTS,
+  READINESS_MARK_SYMBOLS,
+  READINESS_MARKS,
+  resolveFightReadiness,
+} from './fightReadiness'
+export type { FightReadiness, ReadinessAspect, ReadinessMark } from './fightReadiness'
 
 export {
   ADDITIVE_MODIFIER_KEYS,

@@ -7,12 +7,22 @@ import {
   SLOT_CATEGORIES,
   evaluateCompatibility,
   ownedGearInCategory,
+  resolveGearForLoadout,
   resolveTackle,
   slotGearId,
   withSlot,
   type Loadout,
   type LoadoutSlot,
 } from '../../domain/tackle'
+import {
+  FIGHT_CHALLENGE_LABELS,
+  READINESS_ASPECT_LABELS,
+  READINESS_ASPECTS,
+  READINESS_MARK_SYMBOLS,
+  resolveFightCapability,
+  resolveFightReadiness,
+} from '../../domain/fishing'
+import { hasBigGameExperience } from '../../domain/codex'
 import { GLOBAL_PACK_KEYS } from '../../content/runtime/contentRuntime'
 import { useAppStore } from '../../state/appStore'
 import { usePlayerStore } from '../../state/playerStore'
@@ -50,6 +60,7 @@ export const TackleScreen = () => {
   const content = useContentOrError()
   const setActiveScreen = useAppStore((state) => state.setActiveScreen)
   const loadout = usePlayerStore((state) => state.loadout)
+  const codex = usePlayerStore((state) => state.codex)
   const tacklePack = usePack(GLOBAL_PACK_KEYS.tackle)
   const inventory = usePlayerStore((state) => state.inventory)
   const equipGear = usePlayerStore((state) => state.equipGear)
@@ -78,6 +89,17 @@ export const TackleScreen = () => {
   const report = method === undefined ? null : evaluateCompatibility({ loadout, gear, method })
   const setup = resolveTackle({ loadout, gear, methods })
   const familyOf = (item: GearItem) => gearFamilyOf(item, brands, gearSeries)
+
+  // Phase 18C: Big Game への備え。汎用の reference demand に対する readiness。
+  // 大型魚の経験が浅いうちはチャレンジ帯（見通し）を隠す（Knowledge masking）。
+  const castingGear = resolveGearForLoadout(loadout, gear)
+  const readiness =
+    castingGear === null
+      ? null
+      : resolveFightReadiness({
+          capability: resolveFightCapability(castingGear),
+          revealExpectation: hasBigGameExperience(codex),
+        })
 
   const ownedIds = new Set(inventory.ownedGearIds.map((id) => String(id)))
   const ownedBrandIds = new Set(
@@ -168,6 +190,36 @@ export const TackleScreen = () => {
               </div>
             </dl>
           )}
+        </section>
+      )}
+
+      {readiness === null ? null : (
+        <section className="panel">
+          <p className="fishing__phase-code">BIG GAME READINESS</p>
+          <h3 className="panel__subheading">大型魚への備え</h3>
+          <dl className="record">
+            {READINESS_ASPECTS.map((aspect) => (
+              <div key={aspect}>
+                <dt>{READINESS_ASPECT_LABELS[aspect]}</dt>
+                <dd>
+                  {READINESS_MARK_SYMBOLS[readiness.marks[aspect]]} {readiness.details[aspect]}
+                </dd>
+              </div>
+            ))}
+            <div>
+              <dt>見通し</dt>
+              <dd>
+                {readiness.masked || readiness.challenge === null
+                  ? '不明（大型魚の経験が浅い）'
+                  : FIGHT_CHALLENGE_LABELS[readiness.challenge]}
+              </dd>
+            </div>
+          </dl>
+          <ul className="log">
+            {readiness.notes.map((note) => (
+              <li key={note}>{note}</li>
+            ))}
+          </ul>
         </section>
       )}
 
