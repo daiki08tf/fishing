@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   BIG_GAME_RECORD_MIN_PERCENTILE,
   BIG_GAME_RECORD_MIN_WEIGHT_KG,
+  BIG_GAME_RECORD_PERCENTILE_WEIGHT_FLOOR_KG,
   bigGameRecords,
   hasBigGameExperience,
 } from './bigGameRecords'
@@ -53,10 +54,26 @@ describe('bigGameRecords', () => {
     expect(hasBigGameExperience(state([record('gt', 42.3, 99.2)]))).toBe(true)
   })
 
-  it('includes species over the percentile threshold even when lighter', () => {
-    const records = bigGameRecords(state([record('rare-small', 12, 95)]))
+  it('includes species over the percentile threshold when still meaningfully heavy', () => {
+    const records = bigGameRecords(
+      state([record('rare-small', BIG_GAME_RECORD_PERCENTILE_WEIGHT_FLOOR_KG + 2, 95)]),
+    )
 
     expect(records).toHaveLength(1)
+  })
+
+  it('excludes a small trophy fish even at a top percentile', () => {
+    const tiny = state([record('tiny-trophy', 3, 99)])
+
+    expect(bigGameRecords(tiny)).toHaveLength(0)
+    expect(hasBigGameExperience(tiny)).toBe(false)
+  })
+
+  it('excludes percentile catches just under the weight floor', () => {
+    const near = state([record('near-miss', BIG_GAME_RECORD_PERCENTILE_WEIGHT_FLOOR_KG - 0.5, 95)])
+
+    expect(bigGameRecords(near)).toHaveLength(0)
+    expect(hasBigGameExperience(near)).toBe(false)
   })
 
   it('excludes ordinary catches', () => {

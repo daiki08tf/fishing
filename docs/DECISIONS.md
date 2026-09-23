@@ -838,11 +838,18 @@ console error は 0 件。
   汎用 reference demand（36kg 級）または concrete demand に対して出す。
   大型魚の経験（Codex の PB 由来）が無い間はチャレンジ帯を隠す
   （Knowledge masking）。TACKLE パネルと遠征中パネルに出す。
-- **Big Game Records は Codex から derive。** >=20kg or >=90 percentile。
+- **Big Game Records は Codex から derive。** >=20kg or
+  （>=10kg and >=90 percentile）。percentile は「その種の中では大きい」
+  意味なので、小型種のトロフィー単体では Big Game experience にしない。
   未捕獲 Species は出さない（Codex の非開示ルールと同じ）。
 - **Big Game spots は既存の hidden spot + discover_spot 機構。** Captain の
   高 Trust（55）で深場/潮目、Buyer の Trust（40）で磯の大物ポイント。
   新しい永続 state は無し（Save v9 のまま）。
 - **`simulate:big-game` を `npm run check` に組み込んだ。** Light/Balanced/
   Heavy/Monster/Spool × Chinook/Halibut/GT/Arapaima/小型魚の着地率・
-  ラインブレイク・SPOOLED・tick 数を実 Content で検証する。
+  ラインブレイク・SPOOLED を実 Content で検証する。各セットアップは
+  `resolveGearForLoadout` + `resolveFightCapability` で実の
+  FightCapability をエンジンに渡す（容量・weak link・retrievePower・
+  rodControl・PUMP・自然な SPOOLED リスクが効く）。ファイト長は
+  `totalTicks` ではなく `battle.step`（プレイヤー決定数）で測り、
+  hooked ファイトの avg/p50/p90 を報告する。

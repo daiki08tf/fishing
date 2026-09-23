@@ -5,6 +5,7 @@ export type { CatchRecordOutcome } from './fishRecordService'
 export {
   BIG_GAME_RECORD_MIN_PERCENTILE,
   BIG_GAME_RECORD_MIN_WEIGHT_KG,
+  BIG_GAME_RECORD_PERCENTILE_WEIGHT_FLOOR_KG,
   bigGameRecords,
   hasBigGameExperience,
   isBigGameRecord,

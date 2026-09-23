@@ -41,6 +41,8 @@ type Outcome = 'no_bite' | 'hook_missed' | 'hook_escape' | 'line_break' | 'spool
 type FightRecord = {
   readonly outcome: Outcome
   readonly ticks: number
+  /** FIGHTING 中のプレイヤー決定数（1 コマンド = 1 step）。 */
+  readonly battleSteps: number
   readonly lengthCm: number
 }
 
@@ -59,9 +61,23 @@ type Stats = {
   readonly hookMissed: number
   readonly noBite: number
   readonly avgTicks: number
+  /** hooked ファイトのみのバトル決定数（平均 / p50 / p90）。 */
+  readonly avgBattleSteps: number
+  readonly p50BattleSteps: number
+  readonly p90BattleSteps: number
   readonly avgLengthCm: number
   readonly landedRateOfHooked: number
   readonly landedPerCast: number
+}
+
+const percentileOf = (sorted: readonly number[], ratio: number): number => {
+  if (sorted.length === 0) {
+    return 0
+  }
+
+  const index = Math.min(sorted.length - 1, Math.max(0, Math.round((sorted.length - 1) * ratio)))
+
+  return sorted[index] as number
 }
 
 const percentile = <T>(items: readonly T[], ratio: number, value: (item: T) => number): T => {
@@ -201,11 +217,18 @@ export const simulateBigGame = (): BigGameResult => {
         methods: content.methods,
         species,
       })
+      const castingGear = resolveGearForLoadout(setup.loadout, content.gear)
 
-      if (tackle === null) {
+      if (tackle === null || castingGear === null) {
         throw new Error(`could not resolve tackle for ${setup.label}`)
       }
 
+      /*
+       * Phase 18: 実 Content の FightCapability をエンジンに渡す。
+       * 容量 / weak link / tensionMarginMultiplier / retrievePower /
+       * rodControl / PUMP 効果 / 自然な SPOOLED リスクがファイトに効く。
+       */
+      const fightCapability = resolveFightCapability(castingGear)
       const modifiers = composeFishingModifiers(skill, tackle.playerModifiers)
       const records: FightRecord[] = []
 
@@ -217,6 +240,7 @@ export const simulateBigGame = (): BigGameResult => {
           playerModifiers: modifiers,
           // バイト（Encounter）も装備の影響を受ける（ラインの太さ・offering の相性）。
           encounterProfile: tackle.encounterProfile,
+          fightCapability,
         })
         runFishingToTerminal(engine, 'balanced')
 
@@ -238,6 +262,7 @@ export const simulateBigGame = (): BigGameResult => {
         records.push({
           outcome,
           ticks: snapshot.totalTicks,
+          battleSteps: snapshot.battle?.step ?? 0,
           lengthCm: individual?.lengthCm ?? 0,
         })
       }
@@ -250,6 +275,11 @@ export const simulateBigGame = (): BigGameResult => {
       const hookMissed = records.filter((record) => record.outcome === 'hook_missed').length
       const noBite = records.filter((record) => record.outcome === 'no_bite').length
       const landedRecords = records.filter((record) => record.outcome === 'landed')
+      // バトル長は「掛かったファイト」だけで見る（no_bite のキャスト待ちは含めない）。
+      const hookedSteps = records
+        .filter((record) => record.outcome !== 'no_bite')
+        .map((record) => record.battleSteps)
+        .sort((left, right) => left - right)
 
       result[setup.label] = {
         label: setup.label,
@@ -264,6 +294,14 @@ export const simulateBigGame = (): BigGameResult => {
           records.length === 0
             ? 0
             : Math.round(records.reduce((sum, record) => sum + record.ticks, 0) / records.length),
+        avgBattleSteps:
+          hookedSteps.length === 0
+            ? 0
+            : Math.round(
+                (hookedSteps.reduce((sum, step) => sum + step, 0) / hookedSteps.length) * 10,
+              ) / 10,
+        p50BattleSteps: percentileOf(hookedSteps, 0.5),
+        p90BattleSteps: percentileOf(hookedSteps, 0.9),
         avgLengthCm:
           landedRecords.length === 0
             ? 0
@@ -291,7 +329,7 @@ export const simulateBigGame = (): BigGameResult => {
   const report = (title: string, stats: Readonly<Record<string, Stats>>): void => {
     lines.push('', `=== ${title} ===`)
     lines.push(
-      'setup     hook  landed  lineBreak  spooled  escape  missed  noBite  land%(hook)  land/cast  avgTicks  avgLen',
+      'setup     hook  landed  lineBreak  spooled  escape  missed  noBite  land%(hook)  land/cast  avgStep  p50  p90  avgLen',
     )
 
     for (const setup of SETUP_LABELS) {
@@ -307,7 +345,9 @@ export const simulateBigGame = (): BigGameResult => {
           `${String(entry.hookEscape).padStart(7)} ${String(entry.hookMissed).padStart(7)} ` +
           `${String(entry.noBite).padStart(7)} ` +
           `${(entry.landedRateOfHooked * 100).toFixed(1).padStart(11)}% ` +
-          `${(entry.landedPerCast * 100).toFixed(1).padStart(9)}% ${String(entry.avgTicks).padStart(9)} ` +
+          `${(entry.landedPerCast * 100).toFixed(1).padStart(9)}% ` +
+          `${entry.avgBattleSteps.toFixed(1).padStart(8)} ` +
+          `${String(entry.p50BattleSteps).padStart(4)} ${String(entry.p90BattleSteps).padStart(4)} ` +
           `${String(entry.avgLengthCm).padStart(7)}`,
       )
     }
@@ -399,9 +439,31 @@ export const simulateBigGame = (): BigGameResult => {
   const lightT = trevally['Light'] as Stats
   const monsterT = trevally['Monster'] as Stats
   const lightA = arapaima['Light'] as Stats
+  const heavyA = arapaima['Heavy'] as Stats
   const monsterA = arapaima['Monster'] as Stats
   const lightS = small['Light'] as Stats
   const heavyS = small['Heavy'] as Stats
+
+  /*
+   * 実 Content の容量が効いているか: 人工的な容量絞り込みではなく、
+   * 通常セットアップ（Light〜Monster）で自然に発生した SPOOLED を報告する。
+   * 'Spool' セットアップ（最小容量リール）は実 Content だが意図的に
+   * 容量を絞った構成なので、別集計にする。
+   */
+  const STANDARD_SETUP_LABELS = ['Light', 'Balanced', 'Heavy', 'Monster'] as const
+  const allStats = [chinook, halibut, trevally, arapaima, small]
+  const countSpooled = (labels: readonly string[]): number =>
+    allStats.reduce(
+      (sum, stats) =>
+        sum + labels.reduce((inner, setup) => inner + (stats[setup]?.spooled ?? 0), 0),
+      0,
+    )
+  const naturalSpooled = countSpooled(STANDARD_SETUP_LABELS)
+  const spoolSetupSpooled = countSpooled(['Spool'])
+  lines.push(
+    '',
+    `実 Content の自然な SPOOLED（標準セットアップ合計）: ${String(naturalSpooled)} / 最小容量セットアップ: ${String(spoolSetupSpooled)}`,
+  )
 
   const checks: BigGameCheck[] = [
     {
@@ -455,6 +517,22 @@ export const simulateBigGame = (): BigGameResult => {
     {
       label: '0% / 100% に張り付かない（Light でも大型を獲れる余地がある）',
       ok: lightC.landed > 0 && heavyC.landed < ATTEMPTS,
+    },
+    {
+      label: '小型魚のバトルは短い（avg <= 10 / p90 <= 10 プレイヤー決定）',
+      ok: lightS.avgBattleSteps <= 10 && lightS.p90BattleSteps <= 10,
+    },
+    {
+      label: 'Big Game は通常魚より明確に長い（Heavy avg >= 15 決定）',
+      ok: heavyH.avgBattleSteps >= 15 && heavyA.avgBattleSteps >= 15,
+    },
+    {
+      label: 'Big Game も際限なく伸びない（Heavy p90 <= 120 決定）',
+      ok: heavyH.p90BattleSteps <= 120 && heavyA.p90BattleSteps <= 120,
+    },
+    {
+      label: '実 Content のライン容量が意味を持つ（自然な SPOOLED が発生する）',
+      ok: naturalSpooled > 0,
     },
   ]
 

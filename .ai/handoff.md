@@ -1235,3 +1235,10 @@ Phase 6 から持ち越した調整（プレイテスト前提）:
 - Browser smoke (Playwright 390px): HOME/TACKLE(readiness masked)/CODEX, 0 console errors
 - check green: 965 tests, all sims, boot gzip 174.5kB
 - PHASE 18 COMPLETE locally. Push/PR pending GitHub auth (gh auth login -h github.com needed)
+
+## Phase 18 review fixes (PR #20)
+- simulate:big-game now passes real FightCapability (resolveGearForLoadout + resolveFightCapability) per setup
+- Fight length measured via battle.step (player decisions): avg/p50/p90 over hooked fights
+- Natural SPOOLED occurs with real content (140 across standard setups; 588 on min-capacity setup)
+- bigGameRecords: percentile path now requires >=10kg floor (small trophy no longer unlocks Big Game experience)
+- check green: 967 tests, all sims
