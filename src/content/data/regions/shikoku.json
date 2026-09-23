@@ -1,0 +1,39 @@
+{
+  "id": "shikoku",
+  "countryId": "japan",
+  "name": "四国",
+  "stage": "planned",
+  "dataStatus": "provisional",
+  "base": {
+    "id": "shikoku-base",
+    "name": "四国 ベース",
+    "areaId": "shikoku-uwakai"
+  },
+  "areas": [
+    {
+      "id": "shikoku-uwakai",
+      "name": "宇和内海"
+    },
+    {
+      "id": "shikoku-capes",
+      "name": "岬磯"
+    },
+    {
+      "id": "shikoku-rivers",
+      "name": "清流河川"
+    }
+  ],
+  "climate": {
+    "annualMeanWaterC": 20,
+    "seasonalSwingC": 8,
+    "weatherWeights": {
+      "clear": 34,
+      "cloudy": 28,
+      "light_rain": 12,
+      "rain": 14,
+      "windy": 12
+    },
+    "tidePhaseOffset": 0.45,
+    "tideRange": "moderate"
+  }
+}

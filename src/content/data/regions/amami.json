@@ -1,0 +1,39 @@
+{
+  "id": "amami",
+  "countryId": "japan",
+  "name": "奄美",
+  "stage": "planned",
+  "dataStatus": "provisional",
+  "base": {
+    "id": "amami-base",
+    "name": "奄美 ベース",
+    "areaId": "amami-north"
+  },
+  "areas": [
+    {
+      "id": "amami-north",
+      "name": "奄美北部"
+    },
+    {
+      "id": "amami-south",
+      "name": "奄美南部"
+    },
+    {
+      "id": "amami-outer",
+      "name": "沖磯・離島"
+    }
+  ],
+  "climate": {
+    "annualMeanWaterC": 24,
+    "seasonalSwingC": 6,
+    "weatherWeights": {
+      "clear": 30,
+      "cloudy": 30,
+      "light_rain": 14,
+      "rain": 14,
+      "windy": 12
+    },
+    "tidePhaseOffset": 0.2,
+    "tideRange": "moderate"
+  }
+}

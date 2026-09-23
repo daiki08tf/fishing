@@ -1,0 +1,39 @@
+{
+  "id": "izu-islands",
+  "countryId": "japan",
+  "name": "伊豆諸島",
+  "stage": "planned",
+  "dataStatus": "provisional",
+  "base": {
+    "id": "izu-isles-base",
+    "name": "伊豆諸島 ベース",
+    "areaId": "izu-oshima"
+  },
+  "areas": [
+    {
+      "id": "izu-oshima",
+      "name": "大島"
+    },
+    {
+      "id": "izu-south-isles",
+      "name": "八丈・三宅"
+    },
+    {
+      "id": "izu-isle-offshore",
+      "name": "島の沖"
+    }
+  ],
+  "climate": {
+    "annualMeanWaterC": 21,
+    "seasonalSwingC": 7,
+    "weatherWeights": {
+      "clear": 30,
+      "cloudy": 30,
+      "light_rain": 12,
+      "rain": 12,
+      "windy": 16
+    },
+    "tidePhaseOffset": 0.25,
+    "tideRange": "moderate"
+  }
+}

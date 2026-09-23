@@ -5,116 +5,144 @@
  */
 
 import m0 from '../../data/regions/alaska.json'
-import m1 from '../../data/regions/amazon-basin.json'
-import m2 from '../../data/regions/baja-california.json'
-import m3 from '../../data/regions/british-columbia.json'
-import m4 from '../../data/regions/hokkaido.json'
-import m5 from '../../data/regions/hokuriku-japan-sea.json'
-import m6 from '../../data/regions/izu-peninsula.json'
-import m7 from '../../data/regions/new-zealand.json'
-import m8 from '../../data/regions/norway-fjords.json'
-import m9 from '../../data/regions/okinawa.json'
-import m10 from '../../data/regions/queensland.json'
-import m11 from '../../data/regions/thailand.json'
-import m12 from '../../data/regions/tohoku-pacific.json'
-import m13 from '../../data/regions/tokyo-area.json'
-import m14 from '../../data/countries/australia.json'
-import m15 from '../../data/countries/brazil.json'
-import m16 from '../../data/countries/canada.json'
-import m17 from '../../data/countries/japan.json'
-import m18 from '../../data/countries/mexico.json'
-import m19 from '../../data/countries/new-zealand.json'
-import m20 from '../../data/countries/norway.json'
-import m21 from '../../data/countries/thailand.json'
-import m22 from '../../data/countries/united-states.json'
-import m23 from '../../data/transports/bus.json'
-import m24 from '../../data/transports/charter-boat-alaska.json'
-import m25 from '../../data/transports/charter-boat-hokkaido.json'
-import m26 from '../../data/transports/charter-boat-izu.json'
-import m27 from '../../data/transports/charter-boat-norway.json'
-import m28 from '../../data/transports/charter-boat.json'
-import m29 from '../../data/transports/city-bicycle.json'
-import m30 from '../../data/transports/four-wheel-drive-suv.json'
-import m31 from '../../data/transports/owned-boat.json'
-import m32 from '../../data/transports/recreational-kayak.json'
-import m33 from '../../data/transports/rental-boat.json'
-import m34 from '../../data/transports/rental-car.json'
-import m35 from '../../data/transports/small-owned-boat.json'
-import m36 from '../../data/transports/standard-motorcycle.json'
-import m37 from '../../data/transports/train.json'
-import m38 from '../../data/transports/used-compact-car.json'
-import m39 from '../../data/transports/walk.json'
-import m40 from '../../data/expeditions/alaska.json'
-import m41 from '../../data/expeditions/amazon-expedition.json'
-import m42 from '../../data/expeditions/baja-expedition.json'
-import m43 from '../../data/expeditions/british-columbia.json'
-import m44 from '../../data/expeditions/hokkaido.json'
-import m45 from '../../data/expeditions/hokuriku-expedition.json'
-import m46 from '../../data/expeditions/izu-expedition.json'
-import m47 from '../../data/expeditions/norway-expedition.json'
-import m48 from '../../data/expeditions/nz-expedition.json'
-import m49 from '../../data/expeditions/okinawa-expedition.json'
-import m50 from '../../data/expeditions/queensland.json'
-import m51 from '../../data/expeditions/thailand-expedition.json'
-import m52 from '../../data/expeditions/tohoku-expedition.json'
+import m1 from '../../data/regions/amami.json'
+import m2 from '../../data/regions/amazon-basin.json'
+import m3 from '../../data/regions/baja-california.json'
+import m4 from '../../data/regions/british-columbia.json'
+import m5 from '../../data/regions/goto-iki.json'
+import m6 from '../../data/regions/hokkaido.json'
+import m7 from '../../data/regions/hokuriku-japan-sea.json'
+import m8 from '../../data/regions/izu-islands.json'
+import m9 from '../../data/regions/izu-peninsula.json'
+import m10 from '../../data/regions/kii-peninsula.json'
+import m11 from '../../data/regions/kyushu-north.json'
+import m12 from '../../data/regions/kyushu-south.json'
+import m13 from '../../data/regions/new-zealand.json'
+import m14 from '../../data/regions/norway-fjords.json'
+import m15 from '../../data/regions/ogasawara.json'
+import m16 from '../../data/regions/oki-islands.json'
+import m17 from '../../data/regions/okinawa.json'
+import m18 from '../../data/regions/queensland.json'
+import m19 from '../../data/regions/sakishima.json'
+import m20 from '../../data/regions/sanin.json'
+import m21 from '../../data/regions/setouchi.json'
+import m22 from '../../data/regions/shikoku.json'
+import m23 from '../../data/regions/thailand.json'
+import m24 from '../../data/regions/tohoku-pacific.json'
+import m25 from '../../data/regions/tokyo-area.json'
+import m26 from '../../data/regions/tsushima.json'
+import m27 from '../../data/countries/australia.json'
+import m28 from '../../data/countries/brazil.json'
+import m29 from '../../data/countries/canada.json'
+import m30 from '../../data/countries/japan.json'
+import m31 from '../../data/countries/mexico.json'
+import m32 from '../../data/countries/new-zealand.json'
+import m33 from '../../data/countries/norway.json'
+import m34 from '../../data/countries/thailand.json'
+import m35 from '../../data/countries/united-states.json'
+import m36 from '../../data/transports/bus.json'
+import m37 from '../../data/transports/charter-boat-alaska.json'
+import m38 from '../../data/transports/charter-boat-hokkaido.json'
+import m39 from '../../data/transports/charter-boat-izu.json'
+import m40 from '../../data/transports/charter-boat-norway.json'
+import m41 from '../../data/transports/charter-boat.json'
+import m42 from '../../data/transports/city-bicycle.json'
+import m43 from '../../data/transports/four-wheel-drive-suv.json'
+import m44 from '../../data/transports/island-ferry.json'
+import m45 from '../../data/transports/owned-boat.json'
+import m46 from '../../data/transports/recreational-kayak.json'
+import m47 from '../../data/transports/rental-boat.json'
+import m48 from '../../data/transports/rental-car.json'
+import m49 from '../../data/transports/small-owned-boat.json'
+import m50 from '../../data/transports/standard-motorcycle.json'
+import m51 from '../../data/transports/train.json'
+import m52 from '../../data/transports/used-compact-car.json'
+import m53 from '../../data/transports/walk.json'
+import m54 from '../../data/expeditions/alaska.json'
+import m55 from '../../data/expeditions/amazon-expedition.json'
+import m56 from '../../data/expeditions/baja-expedition.json'
+import m57 from '../../data/expeditions/british-columbia.json'
+import m58 from '../../data/expeditions/hokkaido.json'
+import m59 from '../../data/expeditions/hokuriku-expedition.json'
+import m60 from '../../data/expeditions/izu-expedition.json'
+import m61 from '../../data/expeditions/norway-expedition.json'
+import m62 from '../../data/expeditions/nz-expedition.json'
+import m63 from '../../data/expeditions/okinawa-expedition.json'
+import m64 from '../../data/expeditions/queensland.json'
+import m65 from '../../data/expeditions/thailand-expedition.json'
+import m66 from '../../data/expeditions/tohoku-expedition.json'
 
 export const m0Name = "alaska.json"
-export const m1Name = "amazon-basin.json"
-export const m2Name = "baja-california.json"
-export const m3Name = "british-columbia.json"
-export const m4Name = "hokkaido.json"
-export const m5Name = "hokuriku-japan-sea.json"
-export const m6Name = "izu-peninsula.json"
-export const m7Name = "new-zealand.json"
-export const m8Name = "norway-fjords.json"
-export const m9Name = "okinawa.json"
-export const m10Name = "queensland.json"
-export const m11Name = "thailand.json"
-export const m12Name = "tohoku-pacific.json"
-export const m13Name = "tokyo-area.json"
-export const m14Name = "australia.json"
-export const m15Name = "brazil.json"
-export const m16Name = "canada.json"
-export const m17Name = "japan.json"
-export const m18Name = "mexico.json"
-export const m19Name = "new-zealand.json"
-export const m20Name = "norway.json"
-export const m21Name = "thailand.json"
-export const m22Name = "united-states.json"
-export const m23Name = "bus.json"
-export const m24Name = "charter-boat-alaska.json"
-export const m25Name = "charter-boat-hokkaido.json"
-export const m26Name = "charter-boat-izu.json"
-export const m27Name = "charter-boat-norway.json"
-export const m28Name = "charter-boat.json"
-export const m29Name = "city-bicycle.json"
-export const m30Name = "four-wheel-drive-suv.json"
-export const m31Name = "owned-boat.json"
-export const m32Name = "recreational-kayak.json"
-export const m33Name = "rental-boat.json"
-export const m34Name = "rental-car.json"
-export const m35Name = "small-owned-boat.json"
-export const m36Name = "standard-motorcycle.json"
-export const m37Name = "train.json"
-export const m38Name = "used-compact-car.json"
-export const m39Name = "walk.json"
-export const m40Name = "alaska.json"
-export const m41Name = "amazon-expedition.json"
-export const m42Name = "baja-expedition.json"
-export const m43Name = "british-columbia.json"
-export const m44Name = "hokkaido.json"
-export const m45Name = "hokuriku-expedition.json"
-export const m46Name = "izu-expedition.json"
-export const m47Name = "norway-expedition.json"
-export const m48Name = "nz-expedition.json"
-export const m49Name = "okinawa-expedition.json"
-export const m50Name = "queensland.json"
-export const m51Name = "thailand-expedition.json"
-export const m52Name = "tohoku-expedition.json"
+export const m1Name = "amami.json"
+export const m2Name = "amazon-basin.json"
+export const m3Name = "baja-california.json"
+export const m4Name = "british-columbia.json"
+export const m5Name = "goto-iki.json"
+export const m6Name = "hokkaido.json"
+export const m7Name = "hokuriku-japan-sea.json"
+export const m8Name = "izu-islands.json"
+export const m9Name = "izu-peninsula.json"
+export const m10Name = "kii-peninsula.json"
+export const m11Name = "kyushu-north.json"
+export const m12Name = "kyushu-south.json"
+export const m13Name = "new-zealand.json"
+export const m14Name = "norway-fjords.json"
+export const m15Name = "ogasawara.json"
+export const m16Name = "oki-islands.json"
+export const m17Name = "okinawa.json"
+export const m18Name = "queensland.json"
+export const m19Name = "sakishima.json"
+export const m20Name = "sanin.json"
+export const m21Name = "setouchi.json"
+export const m22Name = "shikoku.json"
+export const m23Name = "thailand.json"
+export const m24Name = "tohoku-pacific.json"
+export const m25Name = "tokyo-area.json"
+export const m26Name = "tsushima.json"
+export const m27Name = "australia.json"
+export const m28Name = "brazil.json"
+export const m29Name = "canada.json"
+export const m30Name = "japan.json"
+export const m31Name = "mexico.json"
+export const m32Name = "new-zealand.json"
+export const m33Name = "norway.json"
+export const m34Name = "thailand.json"
+export const m35Name = "united-states.json"
+export const m36Name = "bus.json"
+export const m37Name = "charter-boat-alaska.json"
+export const m38Name = "charter-boat-hokkaido.json"
+export const m39Name = "charter-boat-izu.json"
+export const m40Name = "charter-boat-norway.json"
+export const m41Name = "charter-boat.json"
+export const m42Name = "city-bicycle.json"
+export const m43Name = "four-wheel-drive-suv.json"
+export const m44Name = "island-ferry.json"
+export const m45Name = "owned-boat.json"
+export const m46Name = "recreational-kayak.json"
+export const m47Name = "rental-boat.json"
+export const m48Name = "rental-car.json"
+export const m49Name = "small-owned-boat.json"
+export const m50Name = "standard-motorcycle.json"
+export const m51Name = "train.json"
+export const m52Name = "used-compact-car.json"
+export const m53Name = "walk.json"
+export const m54Name = "alaska.json"
+export const m55Name = "amazon-expedition.json"
+export const m56Name = "baja-expedition.json"
+export const m57Name = "british-columbia.json"
+export const m58Name = "hokkaido.json"
+export const m59Name = "hokuriku-expedition.json"
+export const m60Name = "izu-expedition.json"
+export const m61Name = "norway-expedition.json"
+export const m62Name = "nz-expedition.json"
+export const m63Name = "okinawa-expedition.json"
+export const m64Name = "queensland.json"
+export const m65Name = "thailand-expedition.json"
+export const m66Name = "tohoku-expedition.json"
 
 export const load = async (): Promise<Readonly<Record<string, readonly unknown[]>>> => ({
-    "regions": [m0, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13],
-    "countries": [m14, m15, m16, m17, m18, m19, m20, m21, m22],
-    "transports": [m23, m24, m25, m26, m27, m28, m29, m30, m31, m32, m33, m34, m35, m36, m37, m38, m39],
-    "expeditions": [m40, m41, m42, m43, m44, m45, m46, m47, m48, m49, m50, m51, m52],
+    "regions": [m0, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15, m16, m17, m18, m19, m20, m21, m22, m23, m24, m25, m26],
+    "countries": [m27, m28, m29, m30, m31, m32, m33, m34, m35],
+    "transports": [m36, m37, m38, m39, m40, m41, m42, m43, m44, m45, m46, m47, m48, m49, m50, m51, m52, m53],
+    "expeditions": [m54, m55, m56, m57, m58, m59, m60, m61, m62, m63, m64, m65, m66],
 })

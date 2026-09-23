@@ -1,0 +1,39 @@
+{
+  "id": "kii-peninsula",
+  "countryId": "japan",
+  "name": "紀伊半島",
+  "stage": "planned",
+  "dataStatus": "provisional",
+  "base": {
+    "id": "kii-base",
+    "name": "紀伊 ベース",
+    "areaId": "kii-nanki"
+  },
+  "areas": [
+    {
+      "id": "kii-ise",
+      "name": "伊勢・志摩"
+    },
+    {
+      "id": "kii-nanki",
+      "name": "南紀黒潮磯"
+    },
+    {
+      "id": "kii-inland",
+      "name": "内陸渓流"
+    }
+  ],
+  "climate": {
+    "annualMeanWaterC": 21,
+    "seasonalSwingC": 8,
+    "weatherWeights": {
+      "clear": 32,
+      "cloudy": 28,
+      "light_rain": 14,
+      "rain": 14,
+      "windy": 12
+    },
+    "tidePhaseOffset": 0.35,
+    "tideRange": "moderate"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "id": "tsushima",
+  "countryId": "japan",
+  "name": "対馬",
+  "stage": "planned",
+  "dataStatus": "provisional",
+  "base": {
+    "id": "tsushima-base",
+    "name": "対馬 ベース",
+    "areaId": "tsushima-north"
+  },
+  "areas": [
+    {
+      "id": "tsushima-north",
+      "name": "上対馬"
+    },
+    {
+      "id": "tsushima-south",
+      "name": "下対馬・浅茅湾"
+    },
+    {
+      "id": "tsushima-offshore",
+      "name": "対馬海流の沖"
+    }
+  ],
+  "climate": {
+    "annualMeanWaterC": 19,
+    "seasonalSwingC": 9,
+    "weatherWeights": {
+      "clear": 26,
+      "cloudy": 30,
+      "light_rain": 12,
+      "rain": 16,
+      "windy": 16
+    },
+    "tidePhaseOffset": 0.6,
+    "tideRange": "moderate"
+  }
+}

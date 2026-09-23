@@ -1,0 +1,39 @@
+{
+  "id": "ogasawara",
+  "countryId": "japan",
+  "name": "小笠原",
+  "stage": "planned",
+  "dataStatus": "provisional",
+  "base": {
+    "id": "ogasawara-base",
+    "name": "小笠原 ベース",
+    "areaId": "ogasawara-chichijima"
+  },
+  "areas": [
+    {
+      "id": "ogasawara-chichijima",
+      "name": "父島"
+    },
+    {
+      "id": "ogasawara-rocks",
+      "name": "父島の磯"
+    },
+    {
+      "id": "ogasawara-open-sea",
+      "name": "外洋"
+    }
+  ],
+  "climate": {
+    "annualMeanWaterC": 26,
+    "seasonalSwingC": 4,
+    "weatherWeights": {
+      "clear": 34,
+      "cloudy": 30,
+      "light_rain": 14,
+      "rain": 10,
+      "windy": 12
+    },
+    "tidePhaseOffset": 0.3,
+    "tideRange": "moderate"
+  }
+}

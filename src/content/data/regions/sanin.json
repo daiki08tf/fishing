@@ -1,0 +1,39 @@
+{
+  "id": "sanin",
+  "countryId": "japan",
+  "name": "山陰",
+  "stage": "planned",
+  "dataStatus": "provisional",
+  "base": {
+    "id": "sanin-base",
+    "name": "山陰 ベース",
+    "areaId": "sanin-east"
+  },
+  "areas": [
+    {
+      "id": "sanin-east",
+      "name": "東部磯・港"
+    },
+    {
+      "id": "sanin-west",
+      "name": "西部日本海"
+    },
+    {
+      "id": "sanin-winter",
+      "name": "冬の日本海"
+    }
+  ],
+  "climate": {
+    "annualMeanWaterC": 16,
+    "seasonalSwingC": 10,
+    "weatherWeights": {
+      "clear": 24,
+      "cloudy": 28,
+      "light_rain": 12,
+      "rain": 16,
+      "windy": 20
+    },
+    "tidePhaseOffset": 0.6,
+    "tideRange": "small"
+  }
+}

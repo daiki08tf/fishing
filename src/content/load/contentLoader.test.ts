@@ -79,9 +79,10 @@ describe('loadContentDirectory', () => {
     // 検証用 fixture（サンプル魚）は src/content/data には置かない。
     expect(kinds.filter((kind) => kind === 'fish-species')).toHaveLength(229)
     expect(kinds.filter((kind) => kind === 'fishing-spots')).toHaveLength(150)
-    expect(kinds.filter((kind) => kind === 'transports')).toHaveLength(17)
+    expect(kinds.filter((kind) => kind === 'transports')).toHaveLength(18)
     expect(kinds.filter((kind) => kind === 'countries')).toHaveLength(9)
-    expect(kinds.filter((kind) => kind === 'regions')).toHaveLength(14)
+    // Phase 19A: 14 playable + 13 planned Japan skeleton
+    expect(kinds.filter((kind) => kind === 'regions')).toHaveLength(27)
     expect(kinds.filter((kind) => kind === 'expeditions')).toHaveLength(13)
     expect(kinds.filter((kind) => kind === 'gear')).toHaveLength(473)
     expect(kinds.filter((kind) => kind === 'methods')).toHaveLength(9)

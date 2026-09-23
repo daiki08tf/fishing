@@ -1,0 +1,39 @@
+{
+  "id": "kyushu-south",
+  "countryId": "japan",
+  "name": "九州南部",
+  "stage": "planned",
+  "dataStatus": "provisional",
+  "base": {
+    "id": "kyushu-south-base",
+    "name": "九州南部 ベース",
+    "areaId": "kyushu-kinko"
+  },
+  "areas": [
+    {
+      "id": "kyushu-kinko",
+      "name": "錦江湾"
+    },
+    {
+      "id": "kyushu-nichinan",
+      "name": "日南海岸"
+    },
+    {
+      "id": "kyushu-satsuma",
+      "name": "薩摩外洋"
+    }
+  ],
+  "climate": {
+    "annualMeanWaterC": 22,
+    "seasonalSwingC": 7,
+    "weatherWeights": {
+      "clear": 34,
+      "cloudy": 28,
+      "light_rain": 12,
+      "rain": 14,
+      "windy": 12
+    },
+    "tidePhaseOffset": 0.5,
+    "tideRange": "moderate"
+  }
+}
