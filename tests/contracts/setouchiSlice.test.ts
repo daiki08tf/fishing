@@ -536,30 +536,100 @@ describe('Setouchi progression loop (Trust -> intel -> Discovery -> Captain -> C
     )
     expect(knownContactIds.has('captain-setouchi')).toBe(true)
 
-    // 7. Charter 航海 → Captain Trust → Trust 20 で沖の瀬を発見。
-    let discoveredOffshore = false
-    for (let trip = 0; trip < 15 && !discoveredOffshore; trip += 1) {
-      const outcome = applyCharterTripOutcome(trade, charter, trip % 2 === 0 ? 0 : 2)
+    /*
+     * 7. Captain Trust は「実釣行」でのみ上がる（playerStore.returnHome と同じ経路）:
+     *    leaveForSpot(charter) → arriveAtSpot → leaveSpot → arriveHome →
+     *    実際に使った trip transport の operatorContactId へ Trust 加算。
+     *    釣行先は、発見済みの channel-edge（船長が水道へ船を出す）。
+     */
+    const captainTrustMap = () => ({
+      'captain-setouchi': trustOf(trade, captain.id),
+    })
+    const runCharterTrip = (spot: typeof channelEdge) => {
+      const left = leaveForSpot({
+        context: { world, knowledge },
+        spot,
+        transports: content.transports,
+        playerTransports,
+        transportId: charter.id,
+        knownContactIds,
+        contactTrust: captainTrustMap(),
+      })
+      expect(left.ok, `charter to ${String(spot.id)}`).toBe(true)
+      if (!left.ok) throw new Error('charter leaveForSpot failed')
+      expect(left.context.world.trip?.transportId).toBe(charter.id)
+
+      const arrived = arriveAtSpot({ context: left.context, spot })
+      expect(arrived.ok).toBe(true)
+      if (!arrived.ok) throw new Error('charter arriveAtSpot failed')
+
+      // playerStore.returnHome と同じ: 帰宅時に trip の transport から Trust を確定する。
+      const tripTransport =
+        content.transports.find((entry) => entry.id === arrived.context.world.trip?.transportId) ??
+        null
+      const catches = arrived.context.world.trip?.catches ?? 0
+
+      const leaving = leaveSpot({
+        context: arrived.context,
+        spot,
+        transports: content.transports,
+        playerTransports,
+        knownContactIds,
+      })
+      expect(leaving.ok).toBe(true)
+      if (!leaving.ok) throw new Error('charter leaveSpot failed')
+
+      const home = arriveHome({ context: leaving.context })
+      expect(home.ok).toBe(true)
+      if (!home.ok) throw new Error('arriveHome failed')
+      world = home.context.world
+
+      const outcome = applyCharterTripOutcome(trade, tripTransport, catches)
+      expect(outcome.contactId).toBe(captain.id)
+      expect(outcome.trustGain).toBeGreaterThan(0)
       trade = outcome.trade
+
       const claim = claimEligibleRewards(trade, captain.id, content.contactRewards)
       trade = claim.trade
       for (const reward of claim.newlyClaimed) {
         if (reward.kind === 'discover_spot' && String(reward.targetId) === String(offshore.id)) {
           world = discoverSpotFromContact(world, offshore.id)
-          discoveredOffshore = true
         }
       }
     }
-    expect(discoveredOffshore).toBe(true)
+
+    // Captain Trust 0 → 15 まで channel-edge への Charter 釣行を繰り返す（ボウズでも Base は入る）。
+    for (let trip = 0; trip < 10 && trustOf(trade, captain.id) < 15; trip += 1) {
+      runCharterTrip(channelEdge)
+    }
+    expect(trustOf(trade, captain.id)).toBeGreaterThanOrEqual(15)
+
+    // Trust 15 で沖の瀬を発見（「場所を知る」）。
     expect(isSpotKnown(world, offshore)).toBe(true)
 
-    // 8. 沖の瀬へ Charter で出られる（relationship Trust も確保）。
-    while (trustOf(trade, captain.id) < 15) {
-      const outcome = applyCharterTripOutcome(trade, charter, 1)
-      trade = outcome.trade
+    // 知っていても Trust 20 未満では連れて行ってもらえない（「行ける」の分離）。
+    const knownButLowTrust = evaluateAccess({
+      spot: offshore,
+      transports: content.transports,
+      playerTransports,
+      knowledge,
+      permitsEnabled: true,
+      knownContactIds,
+      contactTrust: captainTrustMap(),
+    })
+    if (trustOf(trade, captain.id) < 20) {
+      expect(knownButLowTrust.accessible).toBe(false)
+      expect(knownButLowTrust.blockedReasons.some((reason) => reason.kind === 'relationship')).toBe(
+        true,
+      )
     }
 
-    const captainTrust = { 'captain-setouchi': trustOf(trade, captain.id) }
+    // 8. Trust 20 まで釣行を続け、沖の瀬へ実際に Charter で出る。
+    for (let trip = 0; trip < 10 && trustOf(trade, captain.id) < 20; trip += 1) {
+      runCharterTrip(channelEdge)
+    }
+    expect(trustOf(trade, captain.id)).toBeGreaterThanOrEqual(20)
+
     const toOffshore = leaveForSpot({
       context: { world, knowledge },
       spot: offshore,
@@ -567,7 +637,7 @@ describe('Setouchi progression loop (Trust -> intel -> Discovery -> Captain -> C
       playerTransports,
       transportId: charter.id,
       knownContactIds,
-      contactTrust: captainTrust,
+      contactTrust: captainTrustMap(),
     })
     expect(toOffshore.ok).toBe(true)
     if (!toOffshore.ok) return
@@ -585,6 +655,29 @@ describe('Setouchi progression loop (Trust -> intel -> Discovery -> Captain -> C
       knownContactIds,
     })
     expect(offshoreBack.ok).toBe(true)
+  })
+
+  it('gates the channel-edge charter route behind the Captain introduction', () => {
+    const playerTransports = createInitialTransportState(asTransportId)
+    const channelEdge = spotById('setouchi-hidden-channel-edge')
+
+    const optionTypes = (knownContactIds: string[]) =>
+      evaluateAccess({
+        spot: channelEdge,
+        transports: content.transports,
+        playerTransports,
+        knowledge: emptyKnowledgeState(),
+        permitsEnabled: true,
+        knownContactIds,
+      }).travelOptions.map((option) => option.transportType)
+
+    // 紹介前: ferry のみ。
+    expect(optionTypes([])).toEqual(['ferry'])
+
+    // 紹介後: ferry + charter_boat の複数 route。
+    expect(optionTypes(['captain-setouchi'])).toEqual(
+      expect.arrayContaining(['ferry', 'charter_boat']),
+    )
   })
 
   it('keeps the offshore spot unreachable before the Captain is known', () => {

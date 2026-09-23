@@ -8,10 +8,6 @@
   "access": [
     {
       "kind": "capability",
-      "capability": "public_transport"
-    },
-    {
-      "kind": "capability",
       "capability": "island_access"
     }
   ],
@@ -24,6 +20,15 @@
       "baseMinutes": 45,
       "distanceKm": 18,
       "baseOneWayCost": 1400
+    },
+    {
+      "id": "channel-edge-charter",
+      "transportTypes": ["charter_boat"],
+      "requiredCapabilities": ["boat_required", "island_access"],
+      "features": ["boat_rental", "marina"],
+      "baseMinutes": 25,
+      "distanceKm": 18,
+      "baseOneWayCost": 0
     }
   ],
   "habitatTags": ["rock", "current", "tide_race"],

@@ -17,7 +17,7 @@
     {
       "kind": "relationship",
       "targetId": "captain-setouchi",
-      "minimum": 15
+      "minimum": 20
     }
   ],
   "travelOptions": [

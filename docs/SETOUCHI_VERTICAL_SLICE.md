@@ -95,7 +95,7 @@ Trust が上るのは次の 2 経路のみ:
 | `setouchi-harbor-front` | urban | `bay_shore` | walk/train (`public_transport`) | public | 港湾ライトゲーム。潮に鈍い魚中心、いつでも釣れる |
 | `setouchi-tetrapod-bank` | urban | `bay_shore` | walk | public | 堤防・テトラ帯。クロダイ系・カマス・根魚。夕夜が効く |
 | `setouchi-island-shore` | islands | `nearshore` | **ferry route** (`transportTypes:['ferry']`, `requiredCapabilities:['island_access','public_transport']`, ~35min, ¥1,200) | public | ferry 初体験。磯のメジナ・イサキ |
-| `setouchi-hidden-channel-edge` | straits | `nearshore` | ferry + walk（island_access） | **hidden** | **潮を読む Spot**。潮相性の強い魚に fishTable を集中。`current:{preference:'strong'}` で Drift 圧力 |
+| `setouchi-hidden-channel-edge` | straits | `nearshore` | ferry + **charter**（island_access） | **hidden** | **潮を読む Spot**。潮相性の強い魚に fishTable を集中。`current:{preference:'strong'}` で Drift 圧力。Captain 紹介後は charter でも行ける（Captain Trust の実上昇経路） |
 | `setouchi-hidden-se-offshore` | straits | `offshore` | **charter route** (`['charter_boat']`, `['boat_required','offshore']`, marina) | **hidden** | 沖の瀬。マダイ・イシダイ・カンパチ。Charter + Drift の集大成 |
 
 ※ `rental-boat` は初期 available なため、hidden-offshore の route を `charter_boat` 限定にすることで「地元 Captain との接続が必須」の構造を守る。rental-boat 用の陸〜沖ルートは置かない（19B の島嶼部では boat rental の運用 context を作らない）。
@@ -236,8 +236,14 @@ setouchi-island-market (Buyer, islands)      … Trust chain の起点（魚屋�
 captain-setouchi (Contact: captain, initiallyKnown:false)
         │ charter 利用 → Trust（charterTrust）
         ├─ intel @10         「沖の瀬の見極め」
-        └─ discover_spot @20 → setouchi-hidden-se-offshore
+        ├─ discover_spot @15 → setouchi-hidden-se-offshore（場所を知る）
+        └─ access relationship @20 → hidden-se-offshore へ出船可（連れて行ってもらえる）
 ```
+
+※ Final review で判明した循環依存の修正: Captain Trust の唯一の上昇経路は charter 釣行のため、
+紹介時点で既に発見済みの channel-edge に `charter_boat` route を持たせ、
+「知っている水道を船長と船から攻める」導線で Trust を稼ぐ。沖の瀬は
+discover_spot@15（知る）と spot access relationship@20（行ける）を分離。
 
 ### Trust chain 数値監査（Gate）
 
@@ -251,7 +257,8 @@ island-market の trustProfile を `base:2 / qualityWeight:6 / max:6`（izu-uoic
 | discover_spot channel-edge | 15 | 同上 | ~4 | **3〜5 売却** | hidden 水道 Spot |
 | introduce_contact captain | 30 | 同上 | ~4 | **6〜9 売却**（数日の釣行で自然到達） | charter 利用可能化 |
 | captain intel | 10 | charter 利用 | 4〜6 | 2 航海 | lore |
-| captain discover_spot offshore | 20 | 同上 | 4〜6 | **3〜4 航海** | hidden 沖の瀬 |
+| captain discover_spot offshore | 15 | 同上 | 4〜6 | **3〜4 航海** | hidden 沖の瀬（場所を知る） |
+| captain relationship（access） | 20 | 同上 | 4〜6 | **4〜5 航海** | 沖の瀬へ実際に出船可 |
 
 「魚1匹で全開放」でも「数十時間の売却地獄」でもない — 数日の遠征で自然に段階が進む設定。数値は実装時に微調整可（Vertical Slice 成立確認レベル）。
 
@@ -316,9 +323,10 @@ island-market の trustProfile を `base:2 / qualityWeight:6 / max:6`（izu-uoic
 | 6 | hidden-channel-edge が Map に出る | reward claim | `discoverSpotFromContact` → `discoveredSpotIds` | visibility 解禁 | 潮読み Spot 到達 |
 | 7 | 上げ潮に channel-edge へ | 時間調整（釣行・移動・sleep） | `resolveFishingConditions` | — | 潮依存魚の Encounter 上昇を体感 |
 | 8 | market Trust 30 で captain 紹介 | reward claim | `introduce_contact` → `isContactKnown` | knownContactIds に captain 追加 | charter-boat-setouchi が route option に出る |
-| 9 | charter で沖へ | known captain + cash | `evaluateAccess`（`operatorContactId` + `serviceRegionIds`） | trip=charter | 沖釣り・charterTrust |
-| 10 | 3〜4 航海で Trust 20 | — | `applyCharterTripOutcome` | captain Trust+ | discover_spot@20 → hidden-se-offshore |
-| 11 | hidden-se-offshore へ | discover + charter | 同上 | — | slice 到達点 |
+| 9 | 発見済み channel-edge へ charter | known captain + cash | `evaluateAccess`（`operatorContactId` + `serviceRegionIds`） | trip=charter | 船からの水道攻め・charterTrust |
+| 10 | 3〜4 航海で Trust 15 | — | `applyCharterTripOutcome`（returnHome） | captain Trust+ | discover_spot@15 → hidden-se-offshore を知る |
+| 11 | さらに航海して Trust 20 | — | 同上 | captain Trust+ | relationship@20 → 出船可 |
+| 12 | hidden-se-offshore へ charter | discover + Trust 20 + charter | 同上 | — | slice 到達点 |
 
 **design gap なし** — 全 step が既存 runtime authority で成立する（唯一の新規コードは step 4 の `always_available` semantics）。
 
