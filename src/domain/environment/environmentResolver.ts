@@ -147,6 +147,9 @@ const windOf = (weather: Weather): WindLevel =>
  *
  * 雨 → 流れ ↑・濁り ↑、強風 → 風 ↑・濁り ↑ 程度の分かりやすい関係だけを持つ。
  * 物理シミュレーションはしない。
+ *
+ * `tideFlowStep`（Phase 19C）: 潮位連動の水道 Spot 用の流れ補正。
+ * baseFlow + tideStep + rainStep を合算して最後に 1 回 clamp する。
  */
 export const waterConditionFor = (input: {
   readonly time: WorldTime
@@ -154,6 +157,7 @@ export const waterConditionFor = (input: {
   readonly regionId: string
   readonly environment: string
   readonly weather: Weather
+  readonly tideFlowStep?: number
 }): EnvironmentSnapshot['water'] => {
   const kind = waterKindOf(input.environment)
   const random = new SeededRandomSource(
@@ -185,7 +189,8 @@ export const waterConditionFor = (input: {
     clamp(baseClarityOf(input.environment) - rainPenalty - windPenalty, 0.15, 0.95),
   )
   // 雨のときだけ流れが一段強くなる（小雨では変わらない）。
-  const flowSteps = input.weather === 'rain' ? 1 : 0
+  // Phase 19C: 潮位連動 Spot は tideStep を同じ合成点に足す（net-sum で 1 回 clamp）。
+  const flowSteps = (input.weather === 'rain' ? 1 : 0) + (input.tideFlowStep ?? 0)
   const flow = flowStep(baseFlowOf(input.environment), flowSteps)
 
   return { kind, temperatureC, clarity, flow, wind: windOf(input.weather) }
@@ -198,15 +203,30 @@ export const waterConditionFor = (input: {
  * @param input.climate 地域の気候プロファイル（Content）
  * @param input.regionId 地域 ID（seed に使う）
  * @param input.environment Spot の environment（淡水 / 汽水 / 海水の判定）
+ * @param input.tideDrivenFlow Spot の `tideDrivenFlow`（Phase 19C）。
+ *   Spot を知る呼び出し側だけが渡す。true のとき潮位が流れを一段上下させる:
+ *   rising / falling = 動く潮で +1、high / low = 潮止まり寄りで -1。
  */
 export const resolveEnvironment = (input: {
   readonly time: WorldTime
   readonly climate: ClimateProfile
   readonly regionId: string
   readonly environment: string
+  readonly tideDrivenFlow?: boolean
 }): EnvironmentSnapshot => {
   const weather = weatherFor(input)
-  const water = waterConditionFor({ ...input, weather })
+  const tide = tideFor({
+    time: input.time,
+    climate: input.climate,
+    kind: waterKindOf(input.environment),
+  })
+  const tideFlowStep =
+    input.tideDrivenFlow === true && tide !== null
+      ? tide === 'rising' || tide === 'falling'
+        ? 1
+        : -1
+      : 0
+  const water = waterConditionFor({ ...input, weather, tideFlowStep })
 
   return {
     date: dateKeyOf(input.time),
@@ -214,7 +234,7 @@ export const resolveEnvironment = (input: {
     season: seasonOf(input.time.month, input.climate.hemisphere),
     timeOfDay: timeOfDayOf(input.time),
     weather,
-    tide: tideFor({ time: input.time, climate: input.climate, kind: water.kind }),
+    tide,
     water,
   }
 }

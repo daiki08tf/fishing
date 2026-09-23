@@ -65,6 +65,9 @@ export const fishingSpotSchema = z.strictObject({
   depth: depthProfileSchema.optional(),
   current: currentProfileSchema.optional(),
 
+  /** Phase 19C: 潮位に潮流が連動する Spot（水道・瀬）。省略時 false。 */
+  tideDrivenFlow: z.boolean().optional(),
+
   /** Phase 11: 未設定なら runtime が fallback Zone を 1 つ作る。 */
   fishingZones: z.array(fishingZoneSchema).min(1).optional(),
 

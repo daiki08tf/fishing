@@ -236,6 +236,7 @@ export const useFishingSession = (): FishingSession => {
       climate: region.climate,
       regionId: String(region.id),
       environment: spot.environment,
+      tideDrivenFlow: spot.tideDrivenFlow,
     })
   }, [content, spot, world.time])
 
