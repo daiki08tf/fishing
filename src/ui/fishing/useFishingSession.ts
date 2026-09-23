@@ -77,6 +77,26 @@ const SESSION_END_EVENTS: readonly FishingEvent[] = [
   'NO_BITE',
 ]
 
+/**
+ * Phase 19D: 釣果に実際に効いた着水 Zone の single authority。
+ * 「狙った Zone（activeTargetZoneId）」ではなく resolveCast / resolveDeployment が
+ * 返した**実着水 Zone**を使う（Encounter 重み・根ズレ・Catch Result が同じ値を見る）。
+ * ドリフト等で selected ≠ landed になった場合も landed 側が返る。
+ */
+export const actualLandedZoneId = (input: {
+  readonly isDepthTargetZone: boolean
+  readonly resolvedDeployment: ResolvedDeployment | null
+  readonly resolvedCast: ResolvedCast | null
+  readonly activeTargetZoneId: string | null
+}): string | null =>
+  input.isDepthTargetZone
+    ? input.resolvedDeployment !== null && input.resolvedDeployment.reachable
+      ? input.resolvedDeployment.landedZoneId
+      : input.activeTargetZoneId
+    : input.resolvedCast !== null && input.resolvedCast.reachable
+      ? input.resolvedCast.landedZoneId
+      : input.activeTargetZoneId
+
 export type FishingSession = {
   readonly contentError: string | null
   readonly snapshot: FishingSnapshot | null
@@ -324,18 +344,12 @@ export const useFishingSession = (): FishingSession => {
     })
   }, [depthCapability, activeTargetZoneId, fishingZones, session.seed, spot])
 
-  /*
-   * Phase 19D: 釣果に実際に効いた着水 Zone の single authority。
-   * 「狙った Zone」ではなく resolveCast / resolveDeployment が返した
-   * **実着水 Zone** を使う（Encounter 重み・根ズレ・Catch Result が同じ値を見る）。
-   */
-  const landedZoneId = isDepthTargetZone
-    ? resolvedDeployment !== null && resolvedDeployment.reachable
-      ? resolvedDeployment.landedZoneId
-      : activeTargetZoneId
-    : resolvedCast !== null && resolvedCast.reachable
-      ? resolvedCast.landedZoneId
-      : activeTargetZoneId
+  const landedZoneId = actualLandedZoneId({
+    isDepthTargetZone,
+    resolvedDeployment,
+    resolvedCast,
+    activeTargetZoneId,
+  })
   const landedZoneName = fishingZones.find((zone) => zone.id === landedZoneId)?.name ?? null
 
   const seaState = useMemo<SeaState | null>(
