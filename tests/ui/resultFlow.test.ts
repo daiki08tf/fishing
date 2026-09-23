@@ -188,6 +188,60 @@ describe('ResultView', () => {
     expect(html).toContain('0.450 kg')
     expect(html).toContain('+120 XP')
   })
+
+  const baseResult = {
+    speciesId: 'sawara',
+    speciesName: 'サワラ',
+    lengthCm: 70,
+    weightKg: 4.2,
+    conditionLabel: '良好',
+    rarityLabel: '上位 12%',
+    traits: [],
+    traitLabels: {
+      trophy: 'Trophy',
+      old: 'Old',
+      strong_runner: 'Strong Runner',
+      heavy: 'Heavy',
+      scarred: 'Scarred',
+      aggressive: 'Aggressive',
+    },
+    firstCatch: false,
+    personalBest: false,
+    xpGained: 80,
+    levelUpTo: null,
+    skillPointsGained: 0,
+    catchCount: 1,
+  }
+
+  it('shows the actual landed zone name as observed context (Phase 19D)', () => {
+    const withZone = renderToStaticMarkup(
+      createElement(ResultView, {
+        result: { ...baseResult, landedZoneName: '水道本流' },
+        disposed: false,
+        onKeep: () => undefined,
+        onRelease: () => undefined,
+      }),
+    )
+    expect(withZone).toContain('水道本流で釣れた')
+    // 観測事実のみ — 「潮だから釣れた」のような因果断定は出さない。
+    expect(withZone).not.toContain('潮が良かった')
+  })
+
+  it('falls back to the plain result when no zone was landed', () => {
+    for (const landedZoneName of [null, undefined]) {
+      const html = renderToStaticMarkup(
+        createElement(ResultView, {
+          result: { ...baseResult, landedZoneName },
+          disposed: false,
+          onKeep: () => undefined,
+          onRelease: () => undefined,
+        }),
+      )
+      expect(html).toContain('釣れた！')
+      expect(html).not.toContain('で釣れた</p>')
+      expect(html).not.toContain('undefined')
+    }
+  })
 })
 
 describe('FishingScreen LANDED layout', () => {
@@ -210,6 +264,23 @@ describe('FishingScreen LANDED layout', () => {
     expect(html.indexOf('マアジ')).toBeGreaterThan(resultIndex)
     expect(html.indexOf('32 cm')).toBeGreaterThan(resultIndex)
     expect(html.indexOf('リリース')).toBeGreaterThan(resultIndex)
+  })
+
+  it('passes the actual landed zone name into the catch result', () => {
+    holder.session = {
+      ...sessionFor('LANDED'),
+      fishingZones: [{ id: 'seam', name: '潮目' }],
+      landedZoneName: '潮目',
+    }
+    const html = renderToStaticMarkup(createElement(FishingScreen, { onExit: () => undefined }))
+    expect(html).toContain('潮目で釣れた')
+  })
+
+  it('omits the zone line when the session has no landed zone', () => {
+    holder.session = { ...sessionFor('LANDED'), landedZoneName: null }
+    const html = renderToStaticMarkup(createElement(FishingScreen, { onExit: () => undefined }))
+    expect(html).toContain('釣れた！')
+    expect(html).not.toContain('で釣れた</p>')
   })
 
   it('removes the finished battle UI so it cannot cover the result', () => {
