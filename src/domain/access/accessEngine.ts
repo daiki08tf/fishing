@@ -174,7 +174,13 @@ const isTransportAvailable = (
   state: PlayerTransportState,
   knownContactIds: ReadonlySet<string>,
 ): boolean => {
-  const baseAvailable = state.availableTransportIds.includes(definition.id)
+  /*
+   * Phase 19B: `always_available`（公共交通インフラ）は player state を要求しない。
+   * Save に残らず、新旧 Save で同一に利用できる（ferry handoff の解決）。
+   */
+  const baseAvailable =
+    definition.ownershipModel === 'always_available' ||
+    state.availableTransportIds.includes(definition.id)
 
   if (!baseAvailable && !isCharterAvailableViaContact(definition, knownContactIds)) {
     return false
@@ -343,6 +349,7 @@ const isTransportInPlayerScope = (
   state: PlayerTransportState,
   knownContactIds: ReadonlySet<string>,
 ): boolean =>
+  definition.ownershipModel === 'always_available' ||
   state.availableTransportIds.includes(definition.id) ||
   state.ownedTransportIds.includes(definition.id) ||
   isCharterAvailableViaContact(definition, knownContactIds)

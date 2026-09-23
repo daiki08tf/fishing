@@ -477,9 +477,91 @@ describe('access engine', () => {
     })
   })
 
-  describe('ferry Transport (Phase 19A)', () => {
+  describe('ferry Transport (Phase 19A/19B)', () => {
+    /*
+     * Phase 19B: `always_available` は availableTransportIds を要求しない。
+     * 旧 Save（island-ferry が list に入っていない）でも ferry route は使える。
+     */
     const withFerry = createTestTransportState({
-      available: ['walk', 'train', 'bus', 'rental-car', 'rental-boat', 'island-ferry'],
+      available: ['walk', 'train', 'bus', 'rental-car', 'rental-boat'],
+    })
+
+    it('makes island-ferry usable even when absent from availableTransportIds (old saves)', () => {
+      const islandPortSpot = createTestSpot({
+        access: [{ kind: 'capability', capability: 'island_access' }],
+        travelOptions: [
+          {
+            id: 'ferry-route',
+            transportTypes: ['ferry'],
+            requiredCapabilities: ['island_access'],
+            features: [],
+            baseMinutes: 120,
+            distanceKm: 40,
+            baseOneWayCost: 2_400,
+          },
+        ],
+      })
+
+      const evaluation = evaluateAccess({
+        ...base,
+        spot: islandPortSpot,
+        playerTransports: createTestTransportState({ available: [] }),
+      })
+
+      expect(evaluation.accessible).toBe(true)
+      expect(evaluation.travelOptions[0]).toMatchObject({
+        transportId: 'island-ferry',
+        transportType: 'ferry',
+      })
+    })
+
+    it('keeps walk/train/bus available without list entries (always_available regression)', () => {
+      const walkSpot = createTestSpot({
+        travelOptions: [
+          {
+            id: 'walk-route',
+            transportTypes: ['walk'],
+            requiredCapabilities: ['reachable_on_foot'],
+            features: [],
+            baseMinutes: 15,
+            distanceKm: 1,
+            baseOneWayCost: 0,
+          },
+        ],
+      })
+
+      const evaluation = evaluateAccess({
+        ...base,
+        spot: walkSpot,
+        playerTransports: createTestTransportState({ available: [] }),
+      })
+
+      expect(evaluation.accessible).toBe(true)
+      expect(evaluation.travelOptions[0]).toMatchObject({ transportId: 'walk' })
+    })
+
+    it('still requires ownership for owned transports and list membership for rentals', () => {
+      const carSpot = createTestSpot({
+        access: [{ kind: 'capability', capability: 'road_access' }],
+        travelOptions: [
+          {
+            id: 'car-route',
+            transportTypes: ['compact_car', 'rental_car'],
+            requiredCapabilities: ['road_access'],
+            features: ['vehicle_rental'],
+            baseMinutes: 60,
+            distanceKm: 30,
+            baseOneWayCost: 400,
+          },
+        ],
+      })
+
+      const empty = createTestTransportState({ available: [] })
+      const evaluation = evaluateAccess({ ...base, spot: carSpot, playerTransports: empty })
+
+      // owned compact car は未所有、rental-car は list 非登録 → 両方使えない。
+      expect(evaluation.accessible).toBe(false)
+      expect(evaluation.travelOptions).toEqual([])
     })
 
     it('satisfies island_access and public_transport on a ferry route', () => {
