@@ -2,9 +2,9 @@ import { pathToFileURL } from 'node:url'
 import { loadFixtureContent, SAMPLE_SPECIES } from '../tests/fixtures/content'
 import type { BuiltInContent } from '../src/content/catalog/assembleContent'
 import type { GearItem, RodDefinition } from '../src/domain/gear/Gear'
-import { FishingEngine } from '../src/domain/fishing'
+import { FishingEngine, resolveFightCapability } from '../src/domain/fishing'
 import { createInitialProgression, resolveFishingModifiers } from '../src/domain/progression'
-import { composeFishingModifiers, resolveTackle } from '../src/domain/tackle'
+import { composeFishingModifiers, resolveGearForLoadout, resolveTackle } from '../src/domain/tackle'
 import type { Loadout } from '../src/domain/tackle'
 import { runFishingToTerminal } from './simulate-fishing'
 
@@ -36,7 +36,7 @@ export type BigGameResult = {
   readonly fingerprint: string
 }
 
-type Outcome = 'no_bite' | 'hook_missed' | 'hook_escape' | 'line_break' | 'landed'
+type Outcome = 'no_bite' | 'hook_missed' | 'hook_escape' | 'line_break' | 'spooled' | 'landed'
 
 type FightRecord = {
   readonly outcome: Outcome
@@ -54,6 +54,7 @@ type Stats = {
   readonly hooked: number
   readonly landed: number
   readonly lineBreak: number
+  readonly spooled: number
   readonly hookEscape: number
   readonly hookMissed: number
   readonly noBite: number
@@ -80,6 +81,15 @@ export const buildTackleLoadout = (input: {
   readonly content: BuiltInContent
   readonly rodPower: RodDefinition['power']
   readonly gearRatio: number
+  /** 部品ごとの percentile override（Spool シナリオなど）。 */
+  readonly overrides?: Partial<
+    Record<'rod' | 'reel' | 'line' | 'leader' | 'hook' | 'offering', number>
+  >
+  /**
+   * Reel の並べ替え指標。'drag'（既定）は maxDragKg、
+   * 'capacity' は容量テーブルの最大容量（小容量リールを選ぶ Spool シナリオ用）。
+   */
+  readonly reelSort?: 'drag' | 'capacity'
 }): Loadout => {
   const rods = input.content.gear.filter((item): item is RodDefinition => item.category === 'rod')
   const reels = input.content.gear.filter((item) => item.category === 'reel')
@@ -96,19 +106,23 @@ export const buildTackleLoadout = (input: {
   const rodCandidates = rods.filter((rod) => rod.power === input.rodPower)
   const rod = pick(
     rodCandidates.length === 0 ? rods : rodCandidates,
-    0.5,
+    input.overrides?.rod ?? 0.5,
     (item) => item.price,
   ) as RodDefinition
-  const reel = pick(reels, input.gearRatio, (item) =>
-    item.category === 'reel' ? item.maxDragKg : 0,
+  const reel = pick(reels, input.overrides?.reel ?? input.gearRatio, (item) =>
+    item.category === 'reel'
+      ? input.reelSort === 'capacity'
+        ? Math.max(0, ...item.lineCapacity.map((entry) => entry.capacityM))
+        : item.maxDragKg
+      : 0,
   )
-  const line = pick(lineGear, input.gearRatio, (item) =>
+  const line = pick(lineGear, input.overrides?.line ?? input.gearRatio, (item) =>
     item.category === 'line' ? item.strengthKg : 0,
   )
-  const leader = pick(leaderGear, input.gearRatio, (item) =>
+  const leader = pick(leaderGear, input.overrides?.leader ?? input.gearRatio, (item) =>
     item.category === 'leader' ? item.strengthKg : 0,
   )
-  const hook = pick(hooks, input.gearRatio, (item) =>
+  const hook = pick(hooks, input.overrides?.hook ?? input.gearRatio, (item) =>
     item.category === 'hook' ? item.strengthKg : 0,
   )
   const offeringCandidates = lures.filter(
@@ -116,7 +130,7 @@ export const buildTackleLoadout = (input: {
   )
   const offering = pick(
     offeringCandidates.length === 0 ? lures : offeringCandidates,
-    input.gearRatio,
+    input.overrides?.offering ?? input.gearRatio,
     (item) => (item.category === 'lure' ? item.weightG : 0),
   )
 
@@ -154,9 +168,22 @@ export const simulateBigGame = (): BigGameResult => {
     buildSetup('Light', 'L', 0.15),
     buildSetup('Balanced', 'MH', 0.5),
     buildSetup('Heavy', 'XH', 0.95),
+    buildSetup('Monster', 'XH', 1),
+    {
+      // Phase 18: 太いライン（切れにくい）を小容量リールに巻くと
+      // ラインを出し尽くす SPOOLED になりやすい構成。
+      label: 'Spool',
+      loadout: buildTackleLoadout({
+        content,
+        rodPower: 'XH',
+        gearRatio: 0.5,
+        reelSort: 'capacity',
+        overrides: { reel: 0, line: 1, leader: 0.6, hook: 0.9 },
+      }),
+    },
   ]
 
-  lines.push('Big Game simulation（Light / Balanced / Heavy）')
+  lines.push('Big Game simulation（Light / Balanced / Heavy / Monster / Spool）')
 
   const runSpecies = (speciesId: string): Readonly<Record<string, Stats>> => {
     const species = content.speciesById[speciesId]
@@ -198,13 +225,15 @@ export const simulateBigGame = (): BigGameResult => {
         const outcome: Outcome =
           snapshot.phase === 'LINE_BREAK'
             ? 'line_break'
-            : snapshot.phase === 'LANDED'
-              ? 'landed'
-              : snapshot.phase === 'HOOK_ESCAPE'
-                ? 'hook_escape'
-                : snapshot.phase === 'HOOK_MISSED'
-                  ? 'hook_missed'
-                  : 'no_bite'
+            : snapshot.phase === 'SPOOLED'
+              ? 'spooled'
+              : snapshot.phase === 'LANDED'
+                ? 'landed'
+                : snapshot.phase === 'HOOK_ESCAPE'
+                  ? 'hook_escape'
+                  : snapshot.phase === 'HOOK_MISSED'
+                    ? 'hook_missed'
+                    : 'no_bite'
 
         records.push({
           outcome,
@@ -216,6 +245,7 @@ export const simulateBigGame = (): BigGameResult => {
       const hooked = records.filter((record) => record.outcome !== 'no_bite').length
       const landed = records.filter((record) => record.outcome === 'landed').length
       const lineBreak = records.filter((record) => record.outcome === 'line_break').length
+      const spooled = records.filter((record) => record.outcome === 'spooled').length
       const hookEscape = records.filter((record) => record.outcome === 'hook_escape').length
       const hookMissed = records.filter((record) => record.outcome === 'hook_missed').length
       const noBite = records.filter((record) => record.outcome === 'no_bite').length
@@ -226,6 +256,7 @@ export const simulateBigGame = (): BigGameResult => {
         hooked,
         landed,
         lineBreak,
+        spooled,
         hookEscape,
         hookMissed,
         noBite,
@@ -249,17 +280,21 @@ export const simulateBigGame = (): BigGameResult => {
     return result
   }
 
-  const chinook = runSpecies('alaska-chinook-salmon')
-  const halibut = runSpecies('alaska-pacific-halibut')
+  const SETUP_LABELS = ['Light', 'Balanced', 'Heavy', 'Monster', 'Spool'] as const
+
+  const chinook = runSpecies('chinook-salmon')
+  const halibut = runSpecies('pacific-halibut')
+  const trevally = runSpecies('giant-trevally')
+  const arapaima = runSpecies('arapaima')
   const small = runSpecies(SAMPLE_SPECIES.small)
 
   const report = (title: string, stats: Readonly<Record<string, Stats>>): void => {
     lines.push('', `=== ${title} ===`)
     lines.push(
-      'setup     hook  landed  lineBreak  escape  missed  noBite  land%(hook)  land/cast  avgTicks  avgLen',
+      'setup     hook  landed  lineBreak  spooled  escape  missed  noBite  land%(hook)  land/cast  avgTicks  avgLen',
     )
 
-    for (const setup of ['Light', 'Balanced', 'Heavy']) {
+    for (const setup of SETUP_LABELS) {
       const entry = stats[setup]
 
       if (entry === undefined) {
@@ -268,8 +303,9 @@ export const simulateBigGame = (): BigGameResult => {
 
       lines.push(
         `${setup.padEnd(9)} ${String(entry.hooked).padStart(4)} ${String(entry.landed).padStart(7)} ` +
-          `${String(entry.lineBreak).padStart(10)} ${String(entry.hookEscape).padStart(7)} ` +
-          `${String(entry.hookMissed).padStart(7)} ${String(entry.noBite).padStart(7)} ` +
+          `${String(entry.lineBreak).padStart(10)} ${String(entry.spooled).padStart(8)} ` +
+          `${String(entry.hookEscape).padStart(7)} ${String(entry.hookMissed).padStart(7)} ` +
+          `${String(entry.noBite).padStart(7)} ` +
           `${(entry.landedRateOfHooked * 100).toFixed(1).padStart(11)}% ` +
           `${(entry.landedPerCast * 100).toFixed(1).padStart(9)}% ${String(entry.avgTicks).padStart(9)} ` +
           `${String(entry.avgLengthCm).padStart(7)}`,
@@ -279,7 +315,80 @@ export const simulateBigGame = (): BigGameResult => {
 
   report(`Chinook Salmon（${String(ATTEMPTS)} fights / setup）`, chinook)
   report(`Pacific Halibut（${String(ATTEMPTS)} fights / setup）`, halibut)
+  report(`Giant Trevally（${String(ATTEMPTS)} fights / setup）`, trevally)
+  report(`Arapaima / extreme（${String(ATTEMPTS)} fights / setup）`, arapaima)
   report(`Small fish（${String(ATTEMPTS)} fights / setup）`, small)
+
+  /*
+   * Phase 18: 容量制約のスプールシナリオ。
+   * 実在する最小容量リール（約 150m）では強タックルのファイトが先に終わるため、
+   * 物理ライン管理の終端（SPOOLED）は「小容量の FightCapability を与えた
+   * 強タックル」で検証する。強いライン/リーダー/フックのまま
+   * 容量だけを絞るので、LINE_BREAK ではなく SPOOLED で終わるはず。
+   */
+  const SPOOL_ATTEMPTS = 40
+  const SPOOL_CAPACITY_M = 45
+
+  const runSpoolScenario = (
+    speciesId: string,
+  ): { readonly spooled: number; readonly other: number } => {
+    const species = content.speciesById[speciesId]
+
+    if (species === undefined) {
+      throw new Error(`missing species: ${speciesId}`)
+    }
+
+    const loadout = buildTackleLoadout({ content, rodPower: 'XH', gearRatio: 1 })
+    const castingGear = resolveGearForLoadout(loadout, content.gear)
+    const tackle = resolveTackle({ loadout, gear: content.gear, methods: content.methods, species })
+
+    if (castingGear === null || tackle === null) {
+      throw new Error(`could not resolve spool-scenario tackle for ${speciesId}`)
+    }
+
+    const capability = {
+      ...resolveFightCapability(castingGear),
+      effectiveLineCapacityM: SPOOL_CAPACITY_M,
+      reserveLineM: 10,
+    }
+    const modifiers = composeFishingModifiers(skill, tackle.playerModifiers)
+
+    let spooled = 0
+    let other = 0
+
+    for (let index = 0; index < SPOOL_ATTEMPTS; index += 1) {
+      const engine = new FishingEngine({
+        encounters: [{ species, presence: 1 }],
+        seed: `spool#${speciesId}#${String(index)}`,
+        playerModifiers: modifiers,
+        encounterProfile: tackle.encounterProfile,
+        fightCapability: capability,
+      })
+      runFishingToTerminal(engine, 'balanced')
+
+      if (engine.snapshot().phase === 'SPOOLED') {
+        spooled += 1
+      } else {
+        other += 1
+      }
+    }
+
+    return { spooled, other }
+  }
+
+  const spoolHalibut = runSpoolScenario('pacific-halibut')
+  const spoolArapaima = runSpoolScenario('arapaima')
+
+  lines.push(
+    '',
+    `=== Spool scenario（容量 ${String(SPOOL_CAPACITY_M)}m / ${String(SPOOL_ATTEMPTS)} fights each） ===`,
+  )
+  lines.push(
+    `  halibut : spooled=${String(spoolHalibut.spooled)} other=${String(spoolHalibut.other)}`,
+  )
+  lines.push(
+    `  arapaima: spooled=${String(spoolArapaima.spooled)} other=${String(spoolArapaima.other)}`,
+  )
 
   const lightC = chinook['Light'] as Stats
   const balancedC = chinook['Balanced'] as Stats
@@ -287,6 +396,10 @@ export const simulateBigGame = (): BigGameResult => {
   const lightH = halibut['Light'] as Stats
   const balancedH = halibut['Balanced'] as Stats
   const heavyH = halibut['Heavy'] as Stats
+  const lightT = trevally['Light'] as Stats
+  const monsterT = trevally['Monster'] as Stats
+  const lightA = arapaima['Light'] as Stats
+  const monsterA = arapaima['Monster'] as Stats
   const lightS = small['Light'] as Stats
   const heavyS = small['Heavy'] as Stats
 
@@ -320,6 +433,22 @@ export const simulateBigGame = (): BigGameResult => {
         balancedH.landedRateOfHooked <= heavyH.landedRateOfHooked + 0.05,
     },
     {
+      label: 'Giant Trevally: Monster は Light より着地率が高い',
+      ok: monsterT.landedRateOfHooked >= lightT.landedRateOfHooked + 0.1,
+    },
+    {
+      label: 'Extreme（Arapaima）: Monster でも 100% にはならない',
+      ok: monsterA.landed < ATTEMPTS,
+    },
+    {
+      label: 'Extreme（Arapaima）: Light は Monster より失敗が多い',
+      ok: lightA.landedRateOfHooked <= monsterA.landedRateOfHooked,
+    },
+    {
+      label: 'SPOOLED は独立した負け筋として発生する（容量制約シナリオ）',
+      ok: spoolHalibut.spooled + spoolArapaima.spooled > 0,
+    },
+    {
       label: '小型魚: Heavy は万能ではない（Light の land/cast 以上にはならない）',
       ok: heavyS.landedPerCast <= lightS.landedPerCast,
     },
@@ -329,7 +458,7 @@ export const simulateBigGame = (): BigGameResult => {
     },
   ]
 
-  const again = runSpecies('alaska-chinook-salmon')
+  const again = runSpecies('chinook-salmon')
   const fingerprint = JSON.stringify(chinook)
   const deterministic = fingerprint === JSON.stringify(again)
 

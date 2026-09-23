@@ -810,3 +810,39 @@ MAP→相模湾 沖（レンタルボート）→SPOT（乗船/水深/海況/流
 Search Water・Reposition）→FISHING（狙う水深パネルと CAST の提示ラベル）→
 CONTACTS（未紹介の Captain が隠れていること）までの一本通しは 390px で確認した。
 console error は 0 件。
+
+## Phase 18 — Big Game / Endgame
+
+大型魚を「別の戦闘システム」ではなく、既存 Text Battle の capability vs demand
+として扱うことにした。魚種ごとの専用分岐は作らない。
+
+- **FightCapability / FightDemand で難度を決める。** タックル側は
+  effectiveLineCapacityM / dragCapacityKg / retrievePower / rodControl /
+  leaderAbrasionResistance / weakLink(line/leader/hook の最弱点) に、魚側は
+  massLoad / burstLoad / enduranceLoad / runPotential / divePressure /
+  demandKg に分解する。チャレンジ帯（easy/manageable/demanding/extreme）は
+  demandKg と実効 weak-link 強度の比だけで決める（種 ID を見ない）。
+- **ライン容量の authority は 1 か所。** `lineCapacity.resolveEffectiveLineCapacityM`
+  （reel の容量テーブルから「選んだライン強度に最も近いエントリ」を採用）を
+  Depth / Fight の両方が使う。容量不明（null）は無限ではなく「上限扱いしない」。
+- **物理ライン（lineOutM）と gameplay 距離（distanceM）は別変数。** 走り・
+  GIVE・着底失敗で lineOut が伸び、REEL/HOLD/PUMP で戻る。容量に達すると
+  LINE_BREAK とは別の終端 `SPOOLED`。大型魚ほど距離スケールは対数で
+  頭打ち（sublinear）にし、巨大種でも距離が発散しない。
+- **PUMP は大型魚向けの第 4 の能動コマンド。** retrievePower × rodControl +
+  サイズボーナスで距離を詰めるが、スタミナを食いテンションを上げる。
+  走っている最中は効かない。
+- **Abrasion は leaderIntegrity に効く。** dive / head_shake / surge で
+  耐摩耗性の低いリーダーが削れ、実効 break 閾値を下げる。
+- **Readiness は派生表示。** ○/△/× の 5 項目（容量/ドラグ/巻上げ/最弱点/耐摩耗）を
+  汎用 reference demand（36kg 級）または concrete demand に対して出す。
+  大型魚の経験（Codex の PB 由来）が無い間はチャレンジ帯を隠す
+  （Knowledge masking）。TACKLE パネルと遠征中パネルに出す。
+- **Big Game Records は Codex から derive。** >=20kg or >=90 percentile。
+  未捕獲 Species は出さない（Codex の非開示ルールと同じ）。
+- **Big Game spots は既存の hidden spot + discover_spot 機構。** Captain の
+  高 Trust（55）で深場/潮目、Buyer の Trust（40）で磯の大物ポイント。
+  新しい永続 state は無し（Save v9 のまま）。
+- **`simulate:big-game` を `npm run check` に組み込んだ。** Light/Balanced/
+  Heavy/Monster/Spool × Chinook/Halibut/GT/Arapaima/小型魚の着地率・
+  ラインブレイク・SPOOLED・tick 数を実 Content で検証する。

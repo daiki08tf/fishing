@@ -470,3 +470,23 @@ Spot の一部はこれを使い、discover（低い Trust）と access（やや
 Captain Loop（紹介→Charter→Trust→報酬→discover→access の分離）、Skunk Loop、
 Boat Economy のトレードオフ。
 - 高精度な流体シミュレーション
+
+## 17. Big Game / Endgame（Phase 18）
+
+Phase 17 の Depth / Offshore を踏まえ、大型魚のファイトを
+`FightCapability`（タックル能力）対 `FightDemand`（魚の要求）の比較として一般化する。
+
+- `FightCapability` はロードアウトから派生: 実効ライン容量、予備ライン、
+  ライン/リーダー/フック強度、耐摩耗、ドラグ容量、巻上げ力、ロッド主導権、
+  最弱点（line/leader/hook）。ロッドとリールは「壊れる部品」ではなく
+  主導権/ドラグとして扱う。
+- `FightDemand` はバトルプロフィールから派生: massLoad/burstLoad/
+  enduranceLoad/runPotential/divePressure → demandKg。魚種 ID には依存しない。
+- `resolveFightChallenge` は demandKg / 実効 weak-link 強度で
+  easy/manageable/demanding/extreme を返す。
+- バトル数値は物理ライン `lineOutM`（容量/予備ライン付き）を gameplay
+  距離 `distanceM` と別に持つ。容量超過は `SPOOLED`（LINE_BREAK と別終端）。
+- `suggestBattleCommand` は残りラインと予備ラインを見て、出尽くす前に
+  走りを止める判断をする（AUTO/シミュレーション戦略）。
+- Readiness（`fightReadiness`）と Big Game Records（`bigGameRecords`）は
+  どちらも派生ビューで、Save schema は変えない。
