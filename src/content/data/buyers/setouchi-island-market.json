@@ -1,0 +1,28 @@
+{
+  "id": "setouchi-island-market",
+  "name": "瀬戸内 島の魚屋",
+  "buyerType": "market",
+  "regionId": "setouchi",
+  "description": "島の港に近い小さな魚屋。島の民宿も兼ねており、水道の潮を読む目に長けている。PROVISIONAL — gameplay tuning。",
+  "pricingProfile": {
+    "baseMultiplier": 1.05,
+    "qualitySensitivity": 1,
+    "sizeSensitivity": 0.8,
+    "freshnessSensitivity": 0.6,
+    "volumeBonusPerExtraCatch": 0,
+    "maxVolumeBonus": 0
+  },
+  "trustProfile": {
+    "perTransactionBase": 2,
+    "qualityWeight": 6,
+    "maxPerTransaction": 6
+  },
+  "preferences": {
+    "preferredTags": ["local_favorite", "white_fish", "premium"],
+    "neutralTags": ["everyday", "small_table_fish", "delicate"],
+    "preferredTagMultiplier": 1.15,
+    "neutralTagMultiplier": 1,
+    "otherTagMultiplier": 0.9,
+    "localSourceMultiplier": 1.1
+  }
+}

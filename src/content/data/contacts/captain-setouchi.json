@@ -1,0 +1,9 @@
+{
+  "id": "captain-setouchi",
+  "regionId": "setouchi",
+  "name": "瀬戸内の船長",
+  "type": "captain",
+  "role": "島嶼部の水道を熟知するチャーター船の船長。潮と瀬の読みが確かで、沖の瀬を案内できる。",
+  "initiallyKnown": false,
+  "dataStatus": "provisional"
+}

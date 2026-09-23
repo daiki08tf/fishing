@@ -1,0 +1,28 @@
+{
+  "id": "setouchi-harbor-coop",
+  "name": "瀬戸内 港の共同販売所",
+  "buyerType": "wholesaler",
+  "regionId": "setouchi",
+  "description": "瀬戸内の本土港で地元の魚を扱う買取所。港の情報にも詳しい。PROVISIONAL — gameplay tuning。",
+  "pricingProfile": {
+    "baseMultiplier": 1,
+    "qualitySensitivity": 0.9,
+    "sizeSensitivity": 0.6,
+    "freshnessSensitivity": 0.5,
+    "volumeBonusPerExtraCatch": 0.02,
+    "maxVolumeBonus": 0.15
+  },
+  "trustProfile": {
+    "perTransactionBase": 3,
+    "qualityWeight": 3,
+    "maxPerTransaction": 5
+  },
+  "preferences": {
+    "preferredTags": ["everyday", "local_favorite", "small_table_fish"],
+    "neutralTags": ["white_fish", "delicate", "oily", "game_fish"],
+    "preferredTagMultiplier": 1.12,
+    "neutralTagMultiplier": 1,
+    "otherTagMultiplier": 0.92,
+    "localSourceMultiplier": 1.08
+  }
+}
