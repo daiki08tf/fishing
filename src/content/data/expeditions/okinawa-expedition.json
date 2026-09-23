@@ -3,8 +3,8 @@
   "regionId": "okinawa",
   "name": "沖縄遠征",
   "dataStatus": "provisional",
-  "flight": {
-    "transportType": "domestic_flight",
+  "journey": {
+    "kind": "domestic_flight",
     "name": "国内線 東京→沖縄",
     "oneWayCostYen": 26000,
     "oneWayMinutes": 210

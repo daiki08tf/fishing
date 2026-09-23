@@ -3,8 +3,8 @@
   "regionId": "izu-peninsula",
   "name": "伊豆遠征",
   "dataStatus": "provisional",
-  "flight": {
-    "transportType": "domestic_flight",
+  "journey": {
+    "kind": "domestic_flight",
     "name": "国内線 東京→伊豆",
     "oneWayCostYen": 14000,
     "oneWayMinutes": 90

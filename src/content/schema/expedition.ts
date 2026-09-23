@@ -1,13 +1,14 @@
 import { z } from 'zod'
 import { asExpeditionId, asPermitId, asRegionId } from '../../domain/ids'
-import { FLIGHT_TYPES } from '../../domain/expedition/Expedition'
+import { JOURNEY_KINDS } from '../../domain/expedition/Expedition'
 import { WORLD_DATA_STATUSES } from '../../domain/world/Region'
 import { nonEmptyString } from './primitives'
 
 /**
  * Expedition（遠征計画）。
  *
- * 航空券（往復）・宿泊・許可をまとめた「行き方」であり、便・座席・予約番号は持たない。
+ * 往復の移動（journey）・宿泊・許可をまとめた「行き方」であり、便・座席・予約番号は持たない。
+ * Phase 19A: journey kind は飛行機/フェリー/鉄道/車の最小集合。乗継は 1 leg に合算する。
  * 現地での移動は Phase 7A の Transport / Access をそのまま使う。
  */
 export const expeditionSchema = z
@@ -16,8 +17,8 @@ export const expeditionSchema = z
     regionId: nonEmptyString.transform(asRegionId),
     name: nonEmptyString,
     dataStatus: z.enum(WORLD_DATA_STATUSES),
-    flight: z.strictObject({
-      transportType: z.enum(FLIGHT_TYPES),
+    journey: z.strictObject({
+      kind: z.enum(JOURNEY_KINDS),
       name: nonEmptyString,
       oneWayCostYen: z.number().int().nonnegative(),
       oneWayMinutes: z.number().int().positive(),

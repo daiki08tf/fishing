@@ -42,7 +42,7 @@ const expeditionTotal = (regionId: string): number => {
   const lodging = expedition.lodgings[Math.floor((expedition.lodgings.length - 1) / 2)]
 
   return (
-    expedition.flight.oneWayCostYen * 2 +
+    expedition.journey.oneWayCostYen * 2 +
     (lodging?.nightlyCostYen ?? 0) * expedition.nights.default +
     (expedition.permit?.costYen ?? 0)
   )
@@ -173,8 +173,8 @@ describe('expedition cost curve', () => {
         regionId: String(region.id),
         total: expeditionTotal(String(region.id)),
         domestic:
-          content.expeditions.find((entry) => String(entry.regionId) === String(region.id))?.flight
-            .transportType === 'domestic_flight',
+          content.expeditions.find((entry) => String(entry.regionId) === String(region.id))?.journey
+            .kind === 'domestic_flight',
       }))
       .sort((left, right) => left.total - right.total)
 

@@ -3,8 +3,8 @@
   "regionId": "baja-california",
   "name": "バハ遠征",
   "dataStatus": "provisional",
-  "flight": {
-    "transportType": "international_flight",
+  "journey": {
+    "kind": "international_flight",
     "name": "国際線 東京→ロスカボス",
     "oneWayCostYen": 110000,
     "oneWayMinutes": 720

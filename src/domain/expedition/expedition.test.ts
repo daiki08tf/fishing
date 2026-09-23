@@ -10,8 +10,8 @@ const definition = {
   regionId: asRegionId('test-region'),
   name: 'テスト遠征',
   dataStatus: 'provisional' as const,
-  flight: {
-    transportType: 'international_flight' as const,
+  journey: {
+    kind: 'international_flight' as const,
     name: '国際線',
     oneWayCostYen: 100_000,
     oneWayMinutes: 600,
@@ -37,7 +37,7 @@ const plan = (options: { readonly nights?: number; readonly lodgingId?: string }
   })
 
 describe('expedition planning', () => {
-  it('prices the round trip as flight + lodging + permit', () => {
+  it('prices the round trip as journey + lodging + permit', () => {
     const result = plan({ nights: 4, lodgingId: 'budget' })
 
     expect(result).not.toBeNull()
@@ -58,12 +58,44 @@ describe('expedition planning', () => {
     expect(plan({ nights: 3, lodgingId: 'lodge' })?.totalCostYen).toBe(200_000 + 45_000 + 3_000)
   })
 
-  it('counts the travel time as round-trip flight plus the stay', () => {
+  it('counts the travel time as round-trip journey plus the stay', () => {
     const result = plan({ nights: 4 })
 
     expect(result?.outboundMinutes).toBe(600)
     expect(result?.returnMinutes).toBe(600)
     expect(result?.totalMinutes).toBe(600 * 2 + 4 * 24 * 60)
+  })
+
+  // Phase 19A: journey kind は計画の cost/minutes に影響しない（内訳 kind のみ変わる）。
+  it.each([
+    ['domestic_flight', 'flight'],
+    ['international_flight', 'flight'],
+    ['ferry', 'ferry'],
+    ['rail', 'fare'],
+    ['drive', 'running_cost'],
+  ] as const)('plans a %s journey with the same cost/time shape', (kind, costKind) => {
+    const journeyDefinition = {
+      ...definition,
+      journey: { kind, name: '片道移動', oneWayCostYen: 2_000, oneWayMinutes: 300 },
+    }
+    const result = planExpedition({
+      definition: journeyDefinition,
+      countryId: asCountryId('test-country'),
+      countryName: 'テスト国',
+      regionName: 'テスト地域',
+      baseId: 'test-base',
+      baseName: 'Test Base',
+      domestic: true,
+      nights: 2,
+      lodgingId: 'budget',
+    })
+
+    expect(result?.totalCostYen).toBe(4_000 + 10_000 + 3_000)
+    expect(result?.outboundMinutes).toBe(300)
+    expect(result?.returnMinutes).toBe(300)
+    expect(result?.totalMinutes).toBe(300 * 2 + 2 * 24 * 60)
+    expect(result?.costComponents[0]?.kind).toBe(costKind)
+    expect(result?.costComponents[0]?.label).toBe('片道移動（往復）')
   })
 
   it('reports the remaining days from the planned return', () => {

@@ -15,16 +15,36 @@ import { MINUTES_PER_DAY, toMinutes, type WorldTime } from '../world/WorldTime'
  * 費用は既存 Economy の円だけを使う（新通貨を作らない）。
  */
 
-/** 航空移動の種別。機種・便名までは持たない。 */
-export const FLIGHT_TYPES = ['domestic_flight', 'international_flight'] as const
-export type FlightType = (typeof FLIGHT_TYPES)[number]
+/**
+ * 遠征の移動手段の種別。便名・航路・乗継までは持たない。
+ * Phase 19A: flight 固定から最小の journey へ一般化（Japan World Design Bible §8.1）。
+ * 長時間フェリー等は kind を増やさず oneWayMinutes で表現する。
+ * 複数 leg の乗継 journey は作らない（1 leg のみ）。
+ */
+export const JOURNEY_KINDS = [
+  'domestic_flight',
+  'international_flight',
+  'ferry',
+  'rail',
+  'drive',
+] as const
+export type JourneyKind = (typeof JOURNEY_KINDS)[number]
 
-export type ExpeditionFlight = {
-  readonly transportType: FlightType
+export type ExpeditionJourney = {
+  readonly kind: JourneyKind
   readonly name: string
   /** 片道。往復分は計画時に 2 倍する。 */
   readonly oneWayCostYen: number
   readonly oneWayMinutes: number
+}
+
+/** journey kind ごとの TravelCostComponent kind（内訳表示用。料金計算には影響しない）。 */
+const JOURNEY_COST_KINDS: Record<JourneyKind, TravelCostComponent['kind']> = {
+  domestic_flight: 'flight',
+  international_flight: 'flight',
+  ferry: 'ferry',
+  rail: 'fare',
+  drive: 'running_cost',
 }
 
 export type ExpeditionLodging = {
@@ -51,7 +71,7 @@ export type ExpeditionDefinition = {
   readonly regionId: RegionId
   readonly name: string
   readonly dataStatus: WorldDataStatus
-  readonly flight: ExpeditionFlight
+  readonly journey: ExpeditionJourney
   readonly nights: ExpeditionNights
   readonly lodgings: readonly ExpeditionLodging[]
   readonly permit?: ExpeditionPermit
@@ -147,14 +167,14 @@ export const planExpedition = (input: {
     return null
   }
 
-  const flightYen = definition.flight.oneWayCostYen * 2
+  const journeyYen = definition.journey.oneWayCostYen * 2
   const lodgingYen = lodging.nightlyCostYen * nights
   const permitYen = definition.permit?.costYen ?? 0
   const components: TravelCostComponent[] = [
     {
-      kind: 'flight',
-      label: `${definition.flight.name}（往復）`,
-      amount: flightYen,
+      kind: JOURNEY_COST_KINDS[definition.journey.kind],
+      label: `${definition.journey.name}（往復）`,
+      amount: journeyYen,
       charge: 'per_trip',
     },
     {
@@ -190,9 +210,9 @@ export const planExpedition = (input: {
     nights,
     totalCostYen,
     costComponents: components,
-    outboundMinutes: definition.flight.oneWayMinutes,
-    returnMinutes: definition.flight.oneWayMinutes,
-    totalMinutes: definition.flight.oneWayMinutes * 2 + nights * MINUTES_PER_DAY,
+    outboundMinutes: definition.journey.oneWayMinutes,
+    returnMinutes: definition.journey.oneWayMinutes,
+    totalMinutes: definition.journey.oneWayMinutes * 2 + nights * MINUTES_PER_DAY,
     permitId: definition.permit?.permitId ?? null,
     permitName: definition.permit?.name ?? null,
   }
