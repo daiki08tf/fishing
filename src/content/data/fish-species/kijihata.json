@@ -8,7 +8,7 @@
   "baits": ["cut", "live"],
   "lureCategories": ["soft_plastic", "jig"],
   "fishingMethods": ["bottom", "lure"],
-  "distribution": ["okinawa", "izu-peninsula"],
+  "distribution": ["izu-peninsula", "okinawa", "setouchi"],
   "depthRange": {
     "min": 2,
     "max": 30

@@ -29,7 +29,7 @@ describe('world expansion scale', () => {
   it('reaches the Phase 16 world shape', () => {
     const playable = content.regions.filter((region) => region.stage === 'playable')
 
-    expect(playable).toHaveLength(14)
+    expect(playable).toHaveLength(15)
 
     for (const regionId of PHASE_16_REGIONS) {
       expect(
@@ -42,7 +42,7 @@ describe('world expansion scale', () => {
     expect(content.species.length).toBeGreaterThanOrEqual(200)
     expect(content.species.length).toBeLessThanOrEqual(230)
     expect(content.spots.length).toBeGreaterThanOrEqual(130)
-    expect(content.spots.length).toBeLessThanOrEqual(150)
+    expect(content.spots.length).toBeLessThanOrEqual(155)
   })
 
   it('gives every Phase 16 region spots, an expedition and a buyer', () => {

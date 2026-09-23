@@ -1266,3 +1266,10 @@ Phase 6 から持ち越した調整（プレイテスト前提）:
 - 13 planned Japan regions registered (definition-only; packKey null; hidden from all surfaces)
 - check green: 1010 tests, all sims, boot gzip 177.1kB
 - HANDOFF for 19B: island-ferry is always_available but NOT in INITIAL_AVAILABLE_TRANSPORT_IDS — ferry routes won't resolve until it is added to availableTransportIds (or equivalent). Deliberately unchanged in 19A.
+  - RESOLVED in Phase 19B: `ownershipModel === 'always_available'` no longer requires `availableTransportIds` membership (`isTransportAvailable` / `isTransportInPlayerScope`). Old and new Saves behave identically; no migration.
+
+## Phase 19B done (Setouchi vertical slice)
+- setouchi promoted planned -> playable; rail expedition; 5 spots (public 3 / hidden 2); buyers x2 + captain + charter + 7 rewards; 22 existing species gained 'setouchi' distribution (no new Species, no affinity changes); Save v9 unchanged.
+- IMPORTANT access semantics: Spot-level `access` capability requirements must be satisfied by a SINGLE transport (accessEngine resolveTravelOptions `includesAll`), not combined across transports. Multi-route spots (e.g. ferry + charter) must therefore keep spot-level capabilities to the intersection every route's transport can satisfy — put route-specific requirements in each travelOption's `requiredCapabilities`. (channel-edge: spot access = island_access; ferry route requires public_transport+island_access; charter route requires boat_required+island_access.)
+- Captain Trust grows ONLY via completed charter trips (playerStore.returnHome -> applyCharterTripOutcome). A captain's progression therefore requires at least one charter-reachable spot that is discoverable/accessible BEFORE the captain's own discover_spot threshold — otherwise deadlock (19B review found this; fixed via channel-edge charter route).
+- 19C+ candidates (deferred, not blockers): pessimistic buyer pacing to captain intro ~15 sales; tide-only encounter delta ~1.3x; some offshore headline species (madai/kanpachi/hiramasa) lack tide/flow affinity; kanto-* species file names vs generic IDs.

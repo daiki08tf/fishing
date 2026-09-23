@@ -20,8 +20,8 @@ const index = JSON.parse(
   readFileSync(`${repositoryRoot}src/content/generated/content-index.json`, 'utf8'),
 ) as ContentIndex
 
+/** Phase 19B: setouchi は playable に昇格済み（残り 12 が definition-only）。 */
 const JAPAN_PLANNED_REGIONS = [
-  'setouchi',
   'sanin',
   'oki-islands',
   'kii-peninsula',
@@ -41,7 +41,7 @@ const plannedIds = new Set(
 )
 
 describe('planned Region skeleton', () => {
-  it('registers the 13 new Japan regions as stage: planned', () => {
+  it('registers the 12 remaining Japan regions as stage: planned', () => {
     for (const id of JAPAN_PLANNED_REGIONS) {
       expect(plannedIds.has(id), id).toBe(true)
     }

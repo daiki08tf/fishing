@@ -8,7 +8,7 @@
   "baits": ["shellfish", "worm"],
   "lureCategories": ["soft_plastic", "jig"],
   "fishingMethods": ["bottom", "lure"],
-  "distribution": ["izu-peninsula"],
+  "distribution": ["izu-peninsula", "setouchi"],
   "depthRange": {
     "min": 2,
     "max": 30

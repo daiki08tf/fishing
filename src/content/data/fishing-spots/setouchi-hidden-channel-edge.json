@@ -1,0 +1,168 @@
+{
+  "id": "setouchi-hidden-channel-edge",
+  "name": "瀬戸内 水道の潮目（要人脈・暫定）",
+  "regionId": "setouchi",
+  "areaId": "setouchi-straits",
+  "environment": "nearshore",
+  "visibility": "hidden",
+  "access": [
+    {
+      "kind": "capability",
+      "capability": "island_access"
+    }
+  ],
+  "travelOptions": [
+    {
+      "id": "channel-edge-ferry",
+      "transportTypes": ["ferry"],
+      "requiredCapabilities": ["public_transport", "island_access"],
+      "features": [],
+      "baseMinutes": 45,
+      "distanceKm": 18,
+      "baseOneWayCost": 1400
+    },
+    {
+      "id": "channel-edge-charter",
+      "transportTypes": ["charter_boat"],
+      "requiredCapabilities": ["boat_required", "island_access"],
+      "features": ["boat_rental", "marina"],
+      "baseMinutes": 25,
+      "distanceKm": 18,
+      "baseOneWayCost": 0
+    }
+  ],
+  "habitatTags": ["rock", "current", "tide_race"],
+  "current": {
+    "preference": "strong"
+  },
+  "depth": {
+    "depthRangeM": {
+      "min": 3,
+      "max": 30
+    }
+  },
+  "fishingZones": [
+    {
+      "id": "slack",
+      "name": "潮のよれ",
+      "castDistanceM": {
+        "min": 0,
+        "max": 15
+      },
+      "depthRangeM": {
+        "min": 3,
+        "max": 8
+      },
+      "habitatTags": ["shore", "structure"]
+    },
+    {
+      "id": "seam",
+      "name": "潮目",
+      "castDistanceM": {
+        "min": 15,
+        "max": 45
+      },
+      "depthRangeM": {
+        "min": 8,
+        "max": 20
+      },
+      "habitatTags": ["current", "break"]
+    },
+    {
+      "id": "channel",
+      "name": "水道本流",
+      "castDistanceM": {
+        "min": 45,
+        "max": 80
+      },
+      "depthRangeM": {
+        "min": 15,
+        "max": 32
+      },
+      "habitatTags": ["current", "open", "tide_race"]
+    }
+  ],
+  "fishTable": [
+    {
+      "speciesId": "sawara",
+      "basePresence": 0.35,
+      "zoneAffinity": {
+        "slack": 0.3,
+        "seam": 1.4,
+        "channel": 1.5
+      }
+    },
+    {
+      "speciesId": "tachiuo",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "slack": 0.4,
+        "seam": 1.3,
+        "channel": 1.2
+      }
+    },
+    {
+      "speciesId": "seabass",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "slack": 0.8,
+        "seam": 1.4,
+        "channel": 0.9
+      }
+    },
+    {
+      "speciesId": "muroaji",
+      "basePresence": 0.4,
+      "zoneAffinity": {
+        "slack": 0.6,
+        "seam": 1.2,
+        "channel": 1.3
+      }
+    },
+    {
+      "speciesId": "kamasu",
+      "basePresence": 0.25,
+      "zoneAffinity": {
+        "slack": 0.8,
+        "seam": 1.1,
+        "channel": 1
+      }
+    },
+    {
+      "speciesId": "kijihata",
+      "basePresence": 0.2,
+      "zoneAffinity": {
+        "slack": 1.4,
+        "seam": 0.9,
+        "channel": 0.4
+      }
+    }
+  ],
+  "dataStatus": "provisional",
+  "knowledgeConfig": {
+    "reveals": [
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "habitat",
+        "minKnowledge": 50
+      },
+      {
+        "field": "time_pattern",
+        "minKnowledge": 60
+      },
+      {
+        "field": "season_pattern",
+        "minKnowledge": 70
+      }
+    ]
+  },
+  "sourceRefs": [
+    {
+      "id": "phase19b-provisional",
+      "title": "PROVISIONAL — gameplay-oriented spot layout; real access and regulations require verification"
+    }
+  ]
+}

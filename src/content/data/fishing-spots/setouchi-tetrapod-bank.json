@@ -1,0 +1,142 @@
+{
+  "id": "setouchi-tetrapod-bank",
+  "name": "瀬戸内 テトラ帯（暫定）",
+  "regionId": "setouchi",
+  "areaId": "setouchi-urban",
+  "environment": "bay_shore",
+  "access": [
+    {
+      "kind": "capability",
+      "capability": "reachable_on_foot"
+    }
+  ],
+  "travelOptions": [
+    {
+      "id": "tetrapod-walk",
+      "transportTypes": ["walk"],
+      "requiredCapabilities": ["reachable_on_foot"],
+      "features": [],
+      "baseMinutes": 25,
+      "distanceKm": 3,
+      "baseOneWayCost": 0
+    }
+  ],
+  "habitatTags": ["breakwater", "rock", "structure"],
+  "depth": {
+    "depthRangeM": {
+      "min": 1,
+      "max": 10
+    }
+  },
+  "fishingZones": [
+    {
+      "id": "near",
+      "name": "テトラ際",
+      "castDistanceM": {
+        "min": 0,
+        "max": 12
+      },
+      "depthRangeM": {
+        "min": 1,
+        "max": 4
+      },
+      "habitatTags": ["shore", "structure"]
+    },
+    {
+      "id": "mid",
+      "name": "沖の駆け上がり",
+      "castDistanceM": {
+        "min": 12,
+        "max": 35
+      },
+      "depthRangeM": {
+        "min": 3,
+        "max": 8
+      },
+      "habitatTags": ["open", "break"]
+    },
+    {
+      "id": "far",
+      "name": "沖の開き",
+      "castDistanceM": {
+        "min": 35,
+        "max": 65
+      },
+      "depthRangeM": {
+        "min": 6,
+        "max": 12
+      },
+      "habitatTags": ["open", "current"]
+    }
+  ],
+  "fishTable": [
+    {
+      "speciesId": "kurodai",
+      "basePresence": 0.45,
+      "zoneAffinity": {
+        "near": 1.4,
+        "mid": 1.1,
+        "far": 0.5
+      }
+    },
+    {
+      "speciesId": "kamasu",
+      "basePresence": 0.4,
+      "zoneAffinity": {
+        "near": 0.5,
+        "mid": 1.2,
+        "far": 1.3
+      }
+    },
+    {
+      "speciesId": "magochi",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "near": 1,
+        "mid": 1.2,
+        "far": 0.8
+      }
+    },
+    {
+      "speciesId": "kasago",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "near": 1.5,
+        "mid": 0.7,
+        "far": 0.2
+      }
+    },
+    {
+      "speciesId": "seabass",
+      "basePresence": 0.15,
+      "zoneAffinity": {
+        "near": 0.4,
+        "mid": 1,
+        "far": 1.4
+      }
+    }
+  ],
+  "dataStatus": "provisional",
+  "knowledgeConfig": {
+    "reveals": [
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "time_pattern",
+        "minKnowledge": 40
+      },
+      {
+        "field": "habitat",
+        "minKnowledge": 50
+      }
+    ]
+  },
+  "sourceRefs": [
+    {
+      "id": "phase19b-provisional",
+      "title": "PROVISIONAL — gameplay-oriented spot layout; real access and regulations require verification"
+    }
+  ]
+}

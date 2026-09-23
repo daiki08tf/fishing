@@ -3,7 +3,7 @@
   "japaneseName": "カマス（暫定）",
   "scientificName": "Sphyraena pinguis",
   "waterTypes": ["salt"],
-  "distribution": ["izu-peninsula", "okinawa", "tohoku-pacific", "tokyo-area"],
+  "distribution": ["izu-peninsula", "okinawa", "setouchi", "tohoku-pacific", "tokyo-area"],
   "habitats": ["bay", "open"],
   "depthRange": {
     "min": 0,

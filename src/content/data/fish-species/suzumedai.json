@@ -8,7 +8,7 @@
   "baits": ["dough", "worm"],
   "lureCategories": ["soft_plastic"],
   "fishingMethods": ["light_lure", "bait"],
-  "distribution": ["okinawa"],
+  "distribution": ["okinawa", "setouchi"],
   "depthRange": {
     "min": 0,
     "max": 12

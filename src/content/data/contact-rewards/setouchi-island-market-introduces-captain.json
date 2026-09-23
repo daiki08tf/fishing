@@ -1,0 +1,8 @@
+{
+  "id": "setouchi-island-market-introduces-captain",
+  "contactId": "setouchi-island-market",
+  "minTrust": 30,
+  "kind": "introduce_contact",
+  "message": "島の魚屋が「沖の瀬に行くならこの船長しかいない」と、島のチャーター船の船長を紹介してくれた。",
+  "targetId": "captain-setouchi"
+}

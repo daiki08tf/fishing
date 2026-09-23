@@ -1,0 +1,8 @@
+{
+  "id": "captain-setouchi-spot-offshore",
+  "contactId": "captain-setouchi",
+  "minTrust": 15,
+  "kind": "discover_spot",
+  "message": "船長が「まだ誰にも連れて行っていない瀬がある」と、沖の瀬の場所を教えてくれた。",
+  "targetId": "setouchi-hidden-se-offshore"
+}

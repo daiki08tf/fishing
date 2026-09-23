@@ -1,0 +1,8 @@
+{
+  "id": "setouchi-island-market-spot-channel-edge",
+  "contactId": "setouchi-island-market",
+  "minTrust": 15,
+  "kind": "discover_spot",
+  "message": "島の魚屋が「島の先に水道の潮目が立つ場所がある。上げ潮に行ってみな」と、潮目の場所を教えてくれた。",
+  "targetId": "setouchi-hidden-channel-edge"
+}

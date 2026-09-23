@@ -76,7 +76,7 @@ describe('journey schema', () => {
 
 describe('existing expedition compatibility', () => {
   it('every expedition has a valid journey kind', () => {
-    expect(content.expeditions.length).toBe(13)
+    expect(content.expeditions.length).toBe(14)
 
     for (const expedition of content.expeditions) {
       expect(JOURNEY_KINDS, String(expedition.id)).toContain(expedition.journey.kind)

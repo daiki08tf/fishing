@@ -2,7 +2,7 @@
   "id": "setouchi",
   "countryId": "japan",
   "name": "瀬戸内海",
-  "stage": "planned",
+  "stage": "playable",
   "dataStatus": "provisional",
   "base": {
     "id": "setouchi-base",

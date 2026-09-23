@@ -1,0 +1,29 @@
+{
+  "id": "setouchi-expedition",
+  "regionId": "setouchi",
+  "name": "瀬戸内遠征",
+  "dataStatus": "provisional",
+  "journey": {
+    "kind": "rail",
+    "name": "新幹線 東京→瀬戸内",
+    "oneWayCostYen": 17000,
+    "oneWayMinutes": 210
+  },
+  "nights": {
+    "default": 2,
+    "min": 1,
+    "max": 5
+  },
+  "lodgings": [
+    {
+      "id": "setouchi-business-hotel",
+      "name": "Business Hotel",
+      "nightlyCostYen": 7500
+    },
+    {
+      "id": "setouchi-island-minshuku",
+      "name": "島の民宿",
+      "nightlyCostYen": 11000
+    }
+  ]
+}
