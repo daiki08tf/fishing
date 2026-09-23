@@ -1251,3 +1251,9 @@ Phase 6 から持ち越した調整（プレイテスト前提）:
 - playerModifiers.test: give-efficiency test made robust (compare on low-pull behaviour steps; fight could end before give was applied)
 - Natural SPOOLED with standard real-content setups: 30; min-capacity setup: 557
 - check green: 967 tests, all sims, boot gzip 174.5kB
+
+## Phase 18.5A done (big game fight UX polish)
+- fightPresentation.ts (ui/fishing): lineStatusOf/lineRemainingText (残量注意/スプール危険 via reserveLineM), leaderConditionOf (良好/摩耗/危険), dragLabel (緩め/標準/強め), fightHint (一文ヒント), failureExplanation (SPOOLED/LINE_BREAK/HOOK_ESCAPE)
+- FishingScreen: JP labels (魚までの距離/ドラグ/決定数/リーダー/弱点), dedicated line-remaining row with warn/danger tone, contextual hint line, failure panel on terminal phases
+- Mobile smoke (playwright-core + cached chromium): 375/390/430px, no overflow, buttons 56px, console errors 0
+- check green: 985 tests (+18), all sims, boot gzip 175.35kB

@@ -18,6 +18,15 @@ import { PRESENTATION_LABELS } from '../../domain/method/FishingMethod'
 import { FishingMeter } from './FishingMeter'
 import { WaterScene } from './WaterScene'
 import { ResultView } from './ResultView'
+import {
+  LEADER_CONDITION_LABELS,
+  dragLabel,
+  failureExplanation,
+  fightHint,
+  leaderConditionOf,
+  lineRemainingText,
+  lineStatusOf,
+} from './fightPresentation'
 import { isFightUiVisible, isFishingFinished, isResultFirstPhase } from './resultFlow'
 import { useFishingSession } from './useFishingSession'
 import { usePlayerStore } from '../../state/playerStore'
@@ -291,6 +300,27 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
   const fish = snapshot.fish
   const tensionRatio = snapshot.tension / snapshot.maxTension
   const tensionDanger = tensionRatio >= 0.9
+  /*
+   * Phase 18.5A: 状況に合わせた一文ヒント（正解ではなく判断材料）。
+   * 終端フェーズの「何が起きたか」も終了時の battle state から説明する。
+   */
+  const hint =
+    snapshot.battle === null
+      ? null
+      : fightHint({
+          phase: snapshot.phase,
+          behaviour: snapshot.battle.behaviour,
+          lineRemainingM: snapshot.battle.lineRemainingM,
+          reserveLineM: snapshot.battle.reserveLineM,
+          leaderIntegrity: snapshot.battle.leaderIntegrity,
+          pumpUseful: (fish?.individual.weightKg ?? 0) >= 15,
+        })
+  const failure = failureExplanation({
+    phase: snapshot.phase,
+    weakLink: snapshot.battle?.weakLink ?? null,
+    lineCapacityM: snapshot.battle?.lineCapacityM ?? null,
+    hookHold: snapshot.battle?.hookHold ?? null,
+  })
   const finished = isFishingFinished(snapshot.phase)
   const fightUiVisible = isFightUiVisible(snapshot.phase)
   const resultFirst = isResultFirstPhase(snapshot.phase) && fish !== null
@@ -519,6 +549,19 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
       />
     )
 
+  /*
+   * Phase 18.5A: SPOOLED / LINE_BREAK / HOOK_ESCAPE の失敗説明。
+   * 終了時の battle state（弱点 / 容量 / 保持）から「何が起きたか」を述べる。
+   */
+  const failurePanel =
+    failure === null ? null : (
+      <section className="panel panel--failure">
+        <h3 className="panel__subheading">{failure.title}</h3>
+        <p className="panel__body">{failure.detail}</p>
+        {failure.state === null ? null : <p className="fishing__legend">{failure.state}</p>}
+      </section>
+    )
+
   const retryPanel = finished ? (
     <section className="panel">
       <h3 className="panel__subheading">次の一手</h3>
@@ -669,50 +712,65 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
         />
         <dl className="record">
           <div>
-            <dt>Distance</dt>
+            <dt>魚までの距離</dt>
             <dd>{snapshot.battle.distanceM} m</dd>
           </div>
           <div>
-            <dt>Drag</dt>
+            <dt>ドラグ</dt>
             <dd>
-              {snapshot.battle.drag <= 0.35
-                ? 'Loose'
-                : snapshot.battle.drag >= 0.7
-                  ? 'Tight'
-                  : 'Normal'}{' '}
-              ({Math.round(snapshot.battle.drag * 100)}%)
+              {dragLabel(snapshot.battle.drag)}（{Math.round(snapshot.battle.drag * 100)}%）
             </dd>
           </div>
           <div>
-            <dt>Step</dt>
+            <dt>決定数</dt>
             <dd>{snapshot.battle.step}</dd>
           </div>
-          {snapshot.battle.lineCapacityM === null ? null : (
-            <div>
-              <dt>Line</dt>
-              <dd>
-                {Math.round(snapshot.battle.lineOutM)} / {snapshot.battle.lineCapacityM} m（残り{' '}
-                {snapshot.battle.lineRemainingM} m）
-                {snapshot.battle.lineRemainingM !== null &&
-                snapshot.battle.lineRemainingM <= snapshot.battle.reserveLineM
-                  ? ' ⚠'
-                  : ''}
-              </dd>
-            </div>
-          )}
-          {snapshot.battle.leaderIntegrity >= 1 ? null : (
-            <div>
-              <dt>Leader</dt>
-              <dd>擦れ {Math.round(snapshot.battle.leaderIntegrity * 100)}%</dd>
-            </div>
-          )}
+          <div>
+            <dt>リーダー</dt>
+            <dd>
+              {LEADER_CONDITION_LABELS[leaderConditionOf(snapshot.battle.leaderIntegrity)]}（
+              {Math.round(snapshot.battle.leaderIntegrity * 100)}%）
+            </dd>
+          </div>
           {snapshot.battle.weakLink === null ? null : (
             <div>
-              <dt>Weak link</dt>
+              <dt>弱点</dt>
               <dd>{WEAK_LINK_LABELS[snapshot.battle.weakLink]}</dd>
             </div>
           )}
         </dl>
+
+        {/*
+         * Phase 18.5A: 物理ラインは「出ている量」ではなく「残り」を主表示にする。
+         * reserveLineM（domain 由来）で注意 / 危険を出し分ける。
+         */}
+        {snapshot.battle.lineCapacityM === null ||
+        snapshot.battle.lineRemainingM === null ? null : (
+          <p
+            className={`fight__line${
+              lineStatusOf(snapshot.battle.lineRemainingM, snapshot.battle.reserveLineM) ===
+              'critical'
+                ? ' fight__line--danger'
+                : lineStatusOf(snapshot.battle.lineRemainingM, snapshot.battle.reserveLineM) ===
+                    'reserve'
+                  ? ' fight__line--warn'
+                  : ''
+            }`}
+          >
+            ライン {Math.round(snapshot.battle.lineOutM)} / {snapshot.battle.lineCapacityM}m （
+            {lineRemainingText(
+              snapshot.battle.lineRemainingM,
+              lineStatusOf(snapshot.battle.lineRemainingM, snapshot.battle.reserveLineM),
+            )}
+            ）
+          </p>
+        )}
+
+        {/*
+         * Phase 18.5A: 状況に合わせた一文ヒント。
+         * 正解を言うのではなく、判断材料を渡すだけ（AUTO は別）。
+         */}
+        {hint === null ? null : <p className="fight__hint">{hint}</p>}
 
         <ul className="log">
           {snapshot.battle.log.slice(-8).map((line, index) => (
@@ -899,6 +957,7 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
       {fishPanel}
       {battlePanel}
       {actionPanel}
+      {failurePanel}
       {retryPanel}
       {recordPanel}
       {logPanel}
