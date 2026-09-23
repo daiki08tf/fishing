@@ -767,3 +767,14 @@ Region が「読む環境変数」（潮・天候・季節・水深等）を掲�
 5. 潮流が潮位に連動する Spot は `tideDrivenFlow` を宣言し、潮位と流れの因果を
    ConditionPanel の「流れ」表示から学習できるようにする（moving tide = 強い流れ、
    slack 寄り = 緩い流れ。high = strong のような単純対応にしない）。
+
+さらに、mechanics が成立するだけでは不十分で、**player learning loop** が必要
+（Phase 19C.5 レビュー / 19D で確認）:
+
+- **Observe → Hypothesize → Act → Feedback**: 条件表示（Observe）・NPC intel（Hypothesize）・
+  Spot/zone 選択（Act）・着水 Zone と釣果の表示（Feedback）が揃って初めて
+  「自分で読んで釣った」体験になる。
+- NPC intel の魚名は実際の hint と一致させる（教えた魚が表示に出ないと学習が途切れる）。
+- Catch Result には**実着水 Zone の観測事実だけ**を出す。「潮だから釣れた」等の
+  因果断定や multiplier / 最適解の表示はしない（攻略 Wiki にしない）。
+- 逆に、何も表示しないまま推論だけ要求するのも不可 — 観測可能な事実の提示が前提。
