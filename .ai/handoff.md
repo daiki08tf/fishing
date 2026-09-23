@@ -1219,3 +1219,11 @@ Phase 6 から持ち越した調整（プレイテスト前提）:
 - UI: TACKLE "BIG GAME READINESS" panel, expedition-in-progress outlook line, CODEX "BIG GAME RECORDS" section
 - No new save state. check green (965 tests, boot gzip 174.5kB)
 - NEXT: Phase 18D content — big-game spots (hidden, captain/guide discover_spot), heavy/endgame gear, contacts
+
+## Phase 18D done
+- Spots: norway-hidden-abyss-edge / izu-hidden-tuna-current / okinawa-hidden-gt-point (150 spots total)
+- Rewards: 2 captain discover_spot @trust55 + 1 buyer discover_spot @trust40 + 2 big-game intel @trust40 (85 total)
+- Gear: 13/0 circle 50kg, 13/0 assist 55kg, TUNAARC 285XHP rod (473 gear total)
+- check green (965 tests, boot gzip 174.5kB)
+- NOTE: simulate:big-game broken at HEAD (stale ids alaska-chinook-salmon) — fix in 18E
+- NEXT: 18E — fix+strengthen simulate:big-game (SPOOLED tracking, spool scenarios), regression docs, PR finalization
