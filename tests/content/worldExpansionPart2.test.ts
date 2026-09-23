@@ -50,11 +50,11 @@ const expeditionTotal = (regionId: string): number => {
 
 describe('content scale targets', () => {
   it('lands inside the Phase 16 production ranges', () => {
-    expect(playableRegions).toHaveLength(14)
+    expect(playableRegions).toHaveLength(15)
     expect(content.species.length).toBeGreaterThanOrEqual(200)
     expect(content.species.length).toBeLessThanOrEqual(230)
     expect(content.spots.length).toBeGreaterThanOrEqual(130)
-    expect(content.spots.length).toBeLessThanOrEqual(150)
+    expect(content.spots.length).toBeLessThanOrEqual(155)
     expect(content.buyers.length).toBeGreaterThanOrEqual(20)
     expect(content.buyers.length).toBeLessThanOrEqual(28)
   })
@@ -172,9 +172,10 @@ describe('expedition cost curve', () => {
       .map((region) => ({
         regionId: String(region.id),
         total: expeditionTotal(String(region.id)),
+        // Phase 19B: rail（国内鉄道遠征）も domestic 側に分類する。
         domestic:
           content.expeditions.find((entry) => String(entry.regionId) === String(region.id))?.journey
-            .kind === 'domestic_flight',
+            .kind !== 'international_flight',
       }))
       .sort((left, right) => left.total - right.total)
 

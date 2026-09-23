@@ -2,15 +2,15 @@
   "generatedFrom": "src/content/data",
   "counts": {
     "species": 229,
-    "spots": 150,
+    "spots": 155,
     "regions": 27,
     "countries": 9,
-    "buyers": 24,
-    "contacts": 5,
-    "contact-rewards": 85,
-    "expeditions": 13,
+    "buyers": 26,
+    "contacts": 6,
+    "contact-rewards": 92,
+    "expeditions": 14,
     "species-trade-profiles": 229,
-    "packs": 16
+    "packs": 17
   },
   "species": [
     {
@@ -24,7 +24,8 @@
       "category": "mixed",
       "regionIds": [
         "izu-peninsula",
-        "okinawa"
+        "okinawa",
+        "setouchi"
       ],
       "habitats": [
         "rock",
@@ -1717,6 +1718,7 @@
         "izu-peninsula",
         "new-zealand",
         "queensland",
+        "setouchi",
         "tokyo-area"
       ],
       "habitats": [
@@ -1857,6 +1859,7 @@
       "regionIds": [
         "hokuriku-japan-sea",
         "izu-peninsula",
+        "setouchi",
         "tokyo-area"
       ],
       "habitats": [
@@ -1875,7 +1878,8 @@
       ],
       "category": "saltwater",
       "regionIds": [
-        "izu-peninsula"
+        "izu-peninsula",
+        "setouchi"
       ],
       "habitats": [
         "rock",
@@ -2133,6 +2137,7 @@
       "regionIds": [
         "izu-peninsula",
         "okinawa",
+        "setouchi",
         "tohoku-pacific",
         "tokyo-area"
       ],
@@ -2154,6 +2159,7 @@
       "regionIds": [
         "izu-peninsula",
         "queensland",
+        "setouchi",
         "tokyo-area"
       ],
       "habitats": [
@@ -2174,6 +2180,7 @@
       "regionIds": [
         "hokuriku-japan-sea",
         "izu-peninsula",
+        "setouchi",
         "tokyo-area"
       ],
       "habitats": [
@@ -2250,8 +2257,9 @@
       ],
       "category": "saltwater",
       "regionIds": [
+        "izu-peninsula",
         "okinawa",
-        "izu-peninsula"
+        "setouchi"
       ],
       "habitats": [
         "reef",
@@ -2311,6 +2319,7 @@
       "regionIds": [
         "hokuriku-japan-sea",
         "izu-peninsula",
+        "setouchi",
         "tohoku-pacific",
         "tokyo-area"
       ],
@@ -2333,6 +2342,7 @@
       "regionIds": [
         "hokuriku-japan-sea",
         "izu-peninsula",
+        "setouchi",
         "tohoku-pacific",
         "tokyo-area"
       ],
@@ -2548,6 +2558,7 @@
         "hokuriku-japan-sea",
         "izu-peninsula",
         "okinawa",
+        "setouchi",
         "tohoku-pacific",
         "tokyo-area"
       ],
@@ -2569,6 +2580,7 @@
       "category": "saltwater",
       "regionIds": [
         "izu-peninsula",
+        "setouchi",
         "tokyo-area"
       ],
       "habitats": [
@@ -2589,6 +2601,7 @@
       "regionIds": [
         "hokuriku-japan-sea",
         "izu-peninsula",
+        "setouchi",
         "tohoku-pacific",
         "tokyo-area"
       ],
@@ -2734,6 +2747,7 @@
       "regionIds": [
         "hokuriku-japan-sea",
         "izu-peninsula",
+        "setouchi",
         "tokyo-area"
       ],
       "habitats": [
@@ -2753,6 +2767,7 @@
       "category": "saltwater",
       "regionIds": [
         "izu-peninsula",
+        "setouchi",
         "tokyo-area"
       ],
       "habitats": [
@@ -2839,6 +2854,7 @@
       "regionIds": [
         "izu-peninsula",
         "okinawa",
+        "setouchi",
         "tokyo-area"
       ],
       "habitats": [
@@ -2918,7 +2934,8 @@
       ],
       "category": "saltwater",
       "regionIds": [
-        "hokuriku-japan-sea"
+        "hokuriku-japan-sea",
+        "setouchi"
       ],
       "habitats": [
         "deep",
@@ -3572,9 +3589,10 @@
       ],
       "category": "mixed",
       "regionIds": [
-        "izu-peninsula",
-        "tohoku-pacific",
         "hokuriku-japan-sea",
+        "izu-peninsula",
+        "setouchi",
+        "tohoku-pacific",
         "tokyo-area"
       ],
       "habitats": [
@@ -3595,6 +3613,7 @@
       "regionIds": [
         "hokuriku-japan-sea",
         "izu-peninsula",
+        "setouchi",
         "tohoku-pacific"
       ],
       "habitats": [
@@ -3637,6 +3656,7 @@
         "hokkaido",
         "hokuriku-japan-sea",
         "izu-peninsula",
+        "setouchi",
         "tohoku-pacific",
         "tokyo-area"
       ],
@@ -3980,7 +4000,8 @@
       ],
       "category": "saltwater",
       "regionIds": [
-        "okinawa"
+        "okinawa",
+        "setouchi"
       ],
       "habitats": [
         "reef",
@@ -4000,6 +4021,7 @@
       "regionIds": [
         "hokuriku-japan-sea",
         "izu-peninsula",
+        "setouchi",
         "tokyo-area"
       ],
       "habitats": [
@@ -4674,8 +4696,8 @@
       "name": "瀬戸内海",
       "countryId": "japan",
       "countryName": "日本",
-      "stage": "planned",
-      "packKey": null
+      "stage": "playable",
+      "packKey": "region:setouchi"
     },
     {
       "id": "shikoku",
@@ -4852,6 +4874,18 @@
       ]
     },
     {
+      "key": "region:setouchi",
+      "kind": "region",
+      "label": "瀬戸内海",
+      "regionId": "setouchi",
+      "kinds": [
+        "fishing-spots",
+        "buyers",
+        "contacts",
+        "contact-rewards"
+      ]
+    },
+    {
       "key": "region:thailand",
       "kind": "region",
       "label": "タイ",
@@ -4992,6 +5026,16 @@
       "kind": "species",
       "label": "クイーンズランド species detail",
       "regionId": "queensland",
+      "kinds": [
+        "fish-species",
+        "species-trade-profiles"
+      ]
+    },
+    {
+      "key": "species:setouchi",
+      "kind": "species",
+      "label": "瀬戸内海 species detail",
+      "regionId": "setouchi",
       "kinds": [
         "fish-species",
         "species-trade-profiles"
@@ -5359,6 +5403,30 @@
       "red-emperor",
       "spanish-mackerel",
       "threadfin-salmon"
+    ],
+    "species:setouchi": [
+      "aigo",
+      "hiramasa",
+      "isaki",
+      "ishidai",
+      "kamasu",
+      "kanpachi",
+      "kasago",
+      "kijihata",
+      "konoshiro",
+      "kurodai",
+      "maaji",
+      "madai",
+      "magochi",
+      "mebaru",
+      "mejina",
+      "muroaji",
+      "nodoguro",
+      "sappa",
+      "sawara",
+      "seabass",
+      "suzumedai",
+      "tachiuo"
     ],
     "species:thailand": [
       "barramundi",

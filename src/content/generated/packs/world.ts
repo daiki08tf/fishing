@@ -45,32 +45,34 @@ import m37 from '../../data/transports/charter-boat-alaska.json'
 import m38 from '../../data/transports/charter-boat-hokkaido.json'
 import m39 from '../../data/transports/charter-boat-izu.json'
 import m40 from '../../data/transports/charter-boat-norway.json'
-import m41 from '../../data/transports/charter-boat.json'
-import m42 from '../../data/transports/city-bicycle.json'
-import m43 from '../../data/transports/four-wheel-drive-suv.json'
-import m44 from '../../data/transports/island-ferry.json'
-import m45 from '../../data/transports/owned-boat.json'
-import m46 from '../../data/transports/recreational-kayak.json'
-import m47 from '../../data/transports/rental-boat.json'
-import m48 from '../../data/transports/rental-car.json'
-import m49 from '../../data/transports/small-owned-boat.json'
-import m50 from '../../data/transports/standard-motorcycle.json'
-import m51 from '../../data/transports/train.json'
-import m52 from '../../data/transports/used-compact-car.json'
-import m53 from '../../data/transports/walk.json'
-import m54 from '../../data/expeditions/alaska.json'
-import m55 from '../../data/expeditions/amazon-expedition.json'
-import m56 from '../../data/expeditions/baja-expedition.json'
-import m57 from '../../data/expeditions/british-columbia.json'
-import m58 from '../../data/expeditions/hokkaido.json'
-import m59 from '../../data/expeditions/hokuriku-expedition.json'
-import m60 from '../../data/expeditions/izu-expedition.json'
-import m61 from '../../data/expeditions/norway-expedition.json'
-import m62 from '../../data/expeditions/nz-expedition.json'
-import m63 from '../../data/expeditions/okinawa-expedition.json'
-import m64 from '../../data/expeditions/queensland.json'
-import m65 from '../../data/expeditions/thailand-expedition.json'
-import m66 from '../../data/expeditions/tohoku-expedition.json'
+import m41 from '../../data/transports/charter-boat-setouchi.json'
+import m42 from '../../data/transports/charter-boat.json'
+import m43 from '../../data/transports/city-bicycle.json'
+import m44 from '../../data/transports/four-wheel-drive-suv.json'
+import m45 from '../../data/transports/island-ferry.json'
+import m46 from '../../data/transports/owned-boat.json'
+import m47 from '../../data/transports/recreational-kayak.json'
+import m48 from '../../data/transports/rental-boat.json'
+import m49 from '../../data/transports/rental-car.json'
+import m50 from '../../data/transports/small-owned-boat.json'
+import m51 from '../../data/transports/standard-motorcycle.json'
+import m52 from '../../data/transports/train.json'
+import m53 from '../../data/transports/used-compact-car.json'
+import m54 from '../../data/transports/walk.json'
+import m55 from '../../data/expeditions/alaska.json'
+import m56 from '../../data/expeditions/amazon-expedition.json'
+import m57 from '../../data/expeditions/baja-expedition.json'
+import m58 from '../../data/expeditions/british-columbia.json'
+import m59 from '../../data/expeditions/hokkaido.json'
+import m60 from '../../data/expeditions/hokuriku-expedition.json'
+import m61 from '../../data/expeditions/izu-expedition.json'
+import m62 from '../../data/expeditions/norway-expedition.json'
+import m63 from '../../data/expeditions/nz-expedition.json'
+import m64 from '../../data/expeditions/okinawa-expedition.json'
+import m65 from '../../data/expeditions/queensland.json'
+import m66 from '../../data/expeditions/setouchi-expedition.json'
+import m67 from '../../data/expeditions/thailand-expedition.json'
+import m68 from '../../data/expeditions/tohoku-expedition.json'
 
 export const m0Name = "alaska.json"
 export const m1Name = "amami.json"
@@ -113,36 +115,38 @@ export const m37Name = "charter-boat-alaska.json"
 export const m38Name = "charter-boat-hokkaido.json"
 export const m39Name = "charter-boat-izu.json"
 export const m40Name = "charter-boat-norway.json"
-export const m41Name = "charter-boat.json"
-export const m42Name = "city-bicycle.json"
-export const m43Name = "four-wheel-drive-suv.json"
-export const m44Name = "island-ferry.json"
-export const m45Name = "owned-boat.json"
-export const m46Name = "recreational-kayak.json"
-export const m47Name = "rental-boat.json"
-export const m48Name = "rental-car.json"
-export const m49Name = "small-owned-boat.json"
-export const m50Name = "standard-motorcycle.json"
-export const m51Name = "train.json"
-export const m52Name = "used-compact-car.json"
-export const m53Name = "walk.json"
-export const m54Name = "alaska.json"
-export const m55Name = "amazon-expedition.json"
-export const m56Name = "baja-expedition.json"
-export const m57Name = "british-columbia.json"
-export const m58Name = "hokkaido.json"
-export const m59Name = "hokuriku-expedition.json"
-export const m60Name = "izu-expedition.json"
-export const m61Name = "norway-expedition.json"
-export const m62Name = "nz-expedition.json"
-export const m63Name = "okinawa-expedition.json"
-export const m64Name = "queensland.json"
-export const m65Name = "thailand-expedition.json"
-export const m66Name = "tohoku-expedition.json"
+export const m41Name = "charter-boat-setouchi.json"
+export const m42Name = "charter-boat.json"
+export const m43Name = "city-bicycle.json"
+export const m44Name = "four-wheel-drive-suv.json"
+export const m45Name = "island-ferry.json"
+export const m46Name = "owned-boat.json"
+export const m47Name = "recreational-kayak.json"
+export const m48Name = "rental-boat.json"
+export const m49Name = "rental-car.json"
+export const m50Name = "small-owned-boat.json"
+export const m51Name = "standard-motorcycle.json"
+export const m52Name = "train.json"
+export const m53Name = "used-compact-car.json"
+export const m54Name = "walk.json"
+export const m55Name = "alaska.json"
+export const m56Name = "amazon-expedition.json"
+export const m57Name = "baja-expedition.json"
+export const m58Name = "british-columbia.json"
+export const m59Name = "hokkaido.json"
+export const m60Name = "hokuriku-expedition.json"
+export const m61Name = "izu-expedition.json"
+export const m62Name = "norway-expedition.json"
+export const m63Name = "nz-expedition.json"
+export const m64Name = "okinawa-expedition.json"
+export const m65Name = "queensland.json"
+export const m66Name = "setouchi-expedition.json"
+export const m67Name = "thailand-expedition.json"
+export const m68Name = "tohoku-expedition.json"
 
 export const load = async (): Promise<Readonly<Record<string, readonly unknown[]>>> => ({
     "regions": [m0, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15, m16, m17, m18, m19, m20, m21, m22, m23, m24, m25, m26],
     "countries": [m27, m28, m29, m30, m31, m32, m33, m34, m35],
-    "transports": [m36, m37, m38, m39, m40, m41, m42, m43, m44, m45, m46, m47, m48, m49, m50, m51, m52, m53],
-    "expeditions": [m54, m55, m56, m57, m58, m59, m60, m61, m62, m63, m64, m65, m66],
+    "transports": [m36, m37, m38, m39, m40, m41, m42, m43, m44, m45, m46, m47, m48, m49, m50, m51, m52, m53, m54],
+    "expeditions": [m55, m56, m57, m58, m59, m60, m61, m62, m63, m64, m65, m66, m67, m68],
 })

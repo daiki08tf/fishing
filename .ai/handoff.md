@@ -1266,3 +1266,4 @@ Phase 6 から持ち越した調整（プレイテスト前提）:
 - 13 planned Japan regions registered (definition-only; packKey null; hidden from all surfaces)
 - check green: 1010 tests, all sims, boot gzip 177.1kB
 - HANDOFF for 19B: island-ferry is always_available but NOT in INITIAL_AVAILABLE_TRANSPORT_IDS — ferry routes won't resolve until it is added to availableTransportIds (or equivalent). Deliberately unchanged in 19A.
+  - RESOLVED in Phase 19B: `ownershipModel === 'always_available'` no longer requires `availableTransportIds` membership (`isTransportAvailable` / `isTransportInPlayerScope`). Old and new Saves behave identically; no migration.
