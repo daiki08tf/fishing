@@ -3,6 +3,9 @@ import type { EncounterCandidate } from '../../domain/encounter/encounterEngine'
 import {
   FishingEngine,
   isTerminalPhase,
+  resolveAbrasionRisk,
+  resolveFightCapability,
+  type FightCapability,
   type FishingCommand,
   type FishingSnapshot,
 } from '../../domain/fishing'
@@ -70,6 +73,7 @@ const SESSION_END_EVENTS: readonly FishingEvent[] = [
   'HOOK_MISSED',
   'HOOK_ESCAPE',
   'LINE_BREAK',
+  'SPOOLED',
   'NO_BITE',
 ]
 
@@ -95,6 +99,8 @@ export type FishingSession = {
   readonly resolvedDeployment: ResolvedDeployment | null
   readonly seaState: SeaState | null
   readonly marineReadiness: MarineReadinessResult | null
+  /** Phase 18A: 今のタックルの戦闘能力（派生値・Save しない）。 */
+  readonly fightCapability: FightCapability | null
   readonly canCast: boolean
   /** Phase 17B: 今の釣法がこの Platform で使えないときだけ false。 */
   readonly methodPlatformOk: boolean
@@ -184,6 +190,16 @@ export const useFishingSession = (): FishingSession => {
 
     return resolveGearForLoadout(loadout, content.value.gear)
   }, [content, loadout])
+
+  /*
+   * Phase 18A: タックルの戦闘能力（ライン容量 / ドラグ / weak link など）。
+   * Save しない派生値。Engine へはこの解決済み DTO だけを渡す
+   * （Engine は Gear を知らない）。
+   */
+  const fightCapability = useMemo<FightCapability | null>(
+    () => (castingGear === null ? null : resolveFightCapability(castingGear)),
+    [castingGear],
+  )
 
   /*
    * Phase 17A: Fishing Platform は Save しない派生値。
@@ -438,6 +454,37 @@ export const useFishingSession = (): FishingSession => {
       : undefined
 
   /*
+   * Phase 18B: 物理ライン。gameplay 距離（initialFightDistanceM）とは別に、
+   * スプールから実際に出ているライン量を渡す。
+   * - キャスト: 実着水距離（水平距離 ≈ 出ているライン）
+   * - 垂直: 実水深 + スコープ（船から斜めに出る分を 15% 見る）
+   */
+  const initialLineOutM = isDepthTargetZone
+    ? resolvedDeployment !== null && resolvedDeployment.reachable
+      ? Math.round(resolvedDeployment.actualDepthM * 1.15)
+      : undefined
+    : resolvedCast !== null && resolvedCast.reachable
+      ? resolvedCast.actualDistanceM
+      : undefined
+
+  /*
+   * Phase 18B: 根ズレリスク。狙った（着底した）Zone の habitatTags から
+   * 解決する。Engine は Zone を知らないので数値だけ渡す。
+   */
+  const abrasionRisk = useMemo(() => {
+    const landedZoneId = isDepthTargetZone
+      ? resolvedDeployment !== null && resolvedDeployment.reachable
+        ? resolvedDeployment.landedZoneId
+        : activeTargetZoneId
+      : resolvedCast !== null && resolvedCast.reachable
+        ? resolvedCast.landedZoneId
+        : activeTargetZoneId
+    const zone = fishingZones.find((entry) => entry.id === landedZoneId)
+
+    return zone === undefined ? 0 : resolveAbrasionRisk(zone.habitatTags)
+  }, [isDepthTargetZone, resolvedDeployment, resolvedCast, activeTargetZoneId, fishingZones])
+
+  /*
    * セッションの入力（Encounter・倍率・Knowledge）。
    *
    * これらは釣行の途中で「釣果を記録した副作用」としても変わる
@@ -451,6 +498,9 @@ export const useFishingSession = (): FishingSession => {
     encounterProfile,
     knowledgeScore: spotKnowledgeScore(knowledge, spot === undefined ? '' : String(spot.id)),
     initialFightDistanceM,
+    fightCapability,
+    initialLineOutM,
+    abrasionRisk,
   })
   sessionInputsRef.current = {
     encounters,
@@ -458,6 +508,9 @@ export const useFishingSession = (): FishingSession => {
     encounterProfile,
     knowledgeScore: spotKnowledgeScore(knowledge, spot === undefined ? '' : String(spot.id)),
     initialFightDistanceM,
+    fightCapability,
+    initialLineOutM,
+    abrasionRisk,
   }
 
   // セッション開始（Spot・seed が変わったとき）。釣行中は作り直さない。
@@ -482,6 +535,9 @@ export const useFishingSession = (): FishingSession => {
       ...(inputs.encounterProfile === undefined
         ? {}
         : { encounterProfile: inputs.encounterProfile }),
+      ...(inputs.fightCapability === null ? {} : { fightCapability: inputs.fightCapability }),
+      ...(inputs.initialLineOutM === undefined ? {} : { initialLineOutM: inputs.initialLineOutM }),
+      abrasionRisk: inputs.abrasionRisk,
     })
 
     engineRef.current = engine
@@ -637,6 +693,7 @@ export const useFishingSession = (): FishingSession => {
     resolvedDeployment,
     seaState,
     marineReadiness,
+    fightCapability,
     canCast,
     methodPlatformOk,
     presentationMode,

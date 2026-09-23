@@ -1,5 +1,6 @@
 import type { TraitModifiers } from '../../fish/fishTraits'
 import { DEFAULT_BATTLE_TUNING, type BattleTuning } from '../BattleTuning'
+import { fishMassIndex } from '../fishMassIndex'
 import type { FishBattleProfile } from './BattleStep'
 
 /**
@@ -29,11 +30,12 @@ export const resolveFishBattleProfile = (input: {
   const tuning = input.tuning ?? DEFAULT_BATTLE_TUNING
   const clamp = (value: number, min: number, max: number): number =>
     Math.min(max, Math.max(min, value))
-  const sizeFactor = clamp(
-    input.weightKg / tuning.sizeFactorReferenceKg,
-    tuning.sizeFactorMin,
-    tuning.sizeFactorMax,
-  )
+  /*
+   * Phase 18A: 12.5kg までは従来の線形 sizeFactor と同一、
+   * それ以降は sqrt で伸びる sublinear の mass index（fishMassIndex 参照）。
+   * これで 30kg と 150kg が同じ魚に潰れなくなる。
+   */
+  const sizeFactor = fishMassIndex(input.weightKg, tuning)
   const sizeNorm = clamp((sizeFactor - 1) / 3, 0, 1)
   const runBoost = input.traitModifiers.runChanceMultiplier - 1
   const durationBoost = input.traitModifiers.runDurationMultiplier - 1

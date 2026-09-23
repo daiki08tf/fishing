@@ -1,0 +1,118 @@
+{
+  "id": "okinawa-hidden-gt-point",
+  "name": "沖縄 磯の大物ポイント（要情報・暫定）",
+  "regionId": "okinawa",
+  "areaId": "okinawa-outer",
+  "environment": "nearshore",
+  "visibility": "hidden",
+  "dataStatus": "provisional",
+  "access": [
+    {
+      "kind": "knowledge",
+      "minimum": 30
+    }
+  ],
+  "travelOptions": [
+    {
+      "id": "walk-1",
+      "transportTypes": ["walk", "compact_car", "suv"],
+      "requiredCapabilities": ["reachable_on_foot"],
+      "features": [],
+      "baseMinutes": 40,
+      "distanceKm": 6,
+      "baseOneWayCost": 0
+    }
+  ],
+  "habitatTags": ["open_water", "surf"],
+  "current": {
+    "preference": "strong"
+  },
+  "fishingZones": [
+    {
+      "id": "near",
+      "name": "磯際",
+      "castDistanceM": {
+        "min": 0,
+        "max": 25
+      },
+      "habitatTags": ["structure", "surf"]
+    },
+    {
+      "id": "far",
+      "name": "沖の潮目",
+      "castDistanceM": {
+        "min": 25,
+        "max": 80
+      },
+      "habitatTags": ["open_water", "surf"]
+    }
+  ],
+  "fishTable": [
+    {
+      "speciesId": "giant-trevally",
+      "basePresence": 0.24,
+      "zoneAffinity": {
+        "near": 1.2,
+        "far": 1.2
+      }
+    },
+    {
+      "speciesId": "longtail-tuna",
+      "basePresence": 0.22,
+      "zoneAffinity": {
+        "near": 0.6,
+        "far": 1.5
+      }
+    },
+    {
+      "speciesId": "giant-grouper",
+      "basePresence": 0.2,
+      "zoneAffinity": {
+        "near": 1.5,
+        "far": 0.6
+      }
+    },
+    {
+      "speciesId": "bigeye-trevally",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "near": 1.2,
+        "far": 1.0
+      }
+    },
+    {
+      "speciesId": "giant-queenfish",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "near": 1.0,
+        "far": 1.2
+      }
+    },
+    {
+      "speciesId": "onikamasu",
+      "basePresence": 0.28,
+      "zoneAffinity": {
+        "near": 1.3,
+        "far": 0.9
+      }
+    }
+  ],
+  "knowledgeConfig": {
+    "reveals": [
+      {
+        "field": "main_species",
+        "minKnowledge": 20
+      },
+      {
+        "field": "time_pattern",
+        "minKnowledge": 45
+      }
+    ]
+  },
+  "sourceRefs": [
+    {
+      "id": "phase18-provisional",
+      "title": "PROVISIONAL — fictional/generalized big-game spot; not a real location"
+    }
+  ]
+}

@@ -25,6 +25,12 @@ export type BattleTextKey =
   | 'landing_failed'
   | 'line_break'
   | 'hook_escape'
+  // Phase 18B
+  | 'pump_effective'
+  | 'pump_danger'
+  | 'spool_warning'
+  | 'spooled'
+  | 'leader_abrasion'
 
 const TEMPLATES: Readonly<Record<BattleTextKey, readonly string[]>> = {
   behaviour_start: ['魚が体勢を変えた。', '魚の動きが変わった。'],
@@ -47,6 +53,14 @@ const TEMPLATES: Readonly<Record<BattleTextKey, readonly string[]>> = {
   landing_failed: ['取り込みに失敗した。魚がまた走り出す。', 'まだ暴れている。無理に掴めない。'],
   line_break: ['ラインが鋭く張り詰めた。', '糸が限界を越えた。'],
   hook_escape: ['フックが外れた。', '針が外れて、魚の重みが消えた。'],
+  pump_effective: ['ロッドで魚を持ち上げた。', '竿の胴で魚を浮かせた。'],
+  pump_danger: [
+    '走る魚に竿を立てた。危ない負荷。',
+    '突進に合わせて竿を絞った。ラインが悲鳴を上げる。',
+  ],
+  spool_warning: ['残りラインが少ない。', 'スプールのラインが見えてきた。'],
+  spooled: ['ラインが出尽くした。', 'スプールが空になった。'],
+  leader_abrasion: ['リーダーが擦れている。', 'ラインが根に触れている。'],
 }
 
 /** 同じ event に variation を持たせる（variant は Engine が seed から決める）。 */

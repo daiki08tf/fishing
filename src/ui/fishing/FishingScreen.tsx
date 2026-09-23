@@ -4,6 +4,8 @@ import { PERK_DEFINITIONS } from '../../domain/progression'
 import { CONDITION_SUMMARY_LABELS, TIDE_LABELS, WEATHER_LABELS } from '../../domain/environment'
 import {
   ALLOWED_COMMANDS,
+  FIGHT_STAGE_LABELS,
+  WEAK_LINK_LABELS,
   type FishingCommand,
   type FishingEvent,
   type FishingPhase,
@@ -48,6 +50,7 @@ const PHASE_LABELS: Readonly<Record<FishingPhase, string>> = {
   HOOK_MISSED: 'アワセ失敗',
   HOOK_ESCAPE: 'フックが外れた',
   LINE_BREAK: 'ラインブレイク',
+  SPOOLED: 'ラインを出し尽くされた',
 }
 
 const PHASE_HINTS: Readonly<Record<FishingPhase, string>> = {
@@ -63,6 +66,7 @@ const PHASE_HINTS: Readonly<Record<FishingPhase, string>> = {
   HOOK_MISSED: 'アワセが遅れた。もう一度キャストする',
   HOOK_ESCAPE: '糸を緩めすぎた。もう一度キャストする',
   LINE_BREAK: 'テンションを上げすぎた。もう一度キャストする',
+  SPOOLED: 'ライン容量が足りなかった。走りを早めに止めるか容量の大きいリールを',
 }
 
 const BEHAVIOR_LABELS = {
@@ -104,6 +108,7 @@ const EVENT_LABELS: Readonly<Record<FishingEvent, string>> = {
   HOOK_MISSED: 'アワセが遅れた',
   HOOK_ESCAPE: '糸が緩んでフックが外れた',
   LINE_BREAK: 'テンションが上がりすぎて切れた',
+  SPOOLED: 'ラインを出し尽くされた',
   RUN_STARTED: '魚が走った',
   RUN_ENDED: '魚の走りが止まった',
   FISH_TIRED: '魚が弱った',
@@ -119,6 +124,7 @@ export const ACTION_LABELS: Readonly<Record<FishingCommand, string>> = {
   power_reel: '強く巻く',
   hold: '耐える',
   give: 'ラインを送る',
+  pump: 'パンプ',
   loosen_drag: 'ドラグ −',
   tighten_drag: 'ドラグ ＋',
   land: '取り込む',
@@ -129,6 +135,7 @@ export const ACTION_LABELS: Readonly<Record<FishingCommand, string>> = {
 export const FIGHT_COMMANDS: readonly FishingCommand[] = [
   'reel',
   'power_reel',
+  'pump',
   'hold',
   'give',
   'loosen_drag',
@@ -252,6 +259,9 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
           maxTension: snapshot.maxTension,
           behaviour: snapshot.battle?.behaviour ?? null,
           hookHold: snapshot.battle?.hookHold ?? 0,
+          lineRemainingM: snapshot.battle?.lineRemainingM ?? null,
+          reserveLineM: snapshot.battle?.reserveLineM ?? 0,
+          pumpUseful: snapshot.battle !== null && (snapshot.fish?.individual.weightKg ?? 0) >= 15,
         }),
       )
     }, 260)
@@ -645,7 +655,9 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
       <section className="panel">
         <p className="fishing__phase-code">魚の様子: {snapshot.battle.behaviourLabel}</p>
         <h3 className="panel__subheading">
-          {snapshot.phase === 'LANDING' ? '取り込みの体勢' : 'ファイト'}
+          {snapshot.phase === 'LANDING'
+            ? '取り込みの体勢'
+            : `ファイト — ${FIGHT_STAGE_LABELS[snapshot.battle.fightStage]}`}
         </h3>
 
         <FishingMeter
@@ -675,6 +687,31 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
             <dt>Step</dt>
             <dd>{snapshot.battle.step}</dd>
           </div>
+          {snapshot.battle.lineCapacityM === null ? null : (
+            <div>
+              <dt>Line</dt>
+              <dd>
+                {Math.round(snapshot.battle.lineOutM)} / {snapshot.battle.lineCapacityM} m（残り{' '}
+                {snapshot.battle.lineRemainingM} m）
+                {snapshot.battle.lineRemainingM !== null &&
+                snapshot.battle.lineRemainingM <= snapshot.battle.reserveLineM
+                  ? ' ⚠'
+                  : ''}
+              </dd>
+            </div>
+          )}
+          {snapshot.battle.leaderIntegrity >= 1 ? null : (
+            <div>
+              <dt>Leader</dt>
+              <dd>擦れ {Math.round(snapshot.battle.leaderIntegrity * 100)}%</dd>
+            </div>
+          )}
+          {snapshot.battle.weakLink === null ? null : (
+            <div>
+              <dt>Weak link</dt>
+              <dd>{WEAK_LINK_LABELS[snapshot.battle.weakLink]}</dd>
+            </div>
+          )}
         </dl>
 
         <ul className="log">

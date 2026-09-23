@@ -38,6 +38,40 @@ export type {
   FishingTickResult,
 } from './FishingEngine'
 
+export { fishMassIndex, fightDistanceSizeIndex } from './fishMassIndex'
+
+export {
+  DEFAULT_FIGHT_CAPABILITY_TUNING,
+  resolveFightCapability,
+  WEAK_LINK_COMPONENTS,
+  WEAK_LINK_LABELS,
+} from './FightCapability'
+export type { FightCapability, FightCapabilityTuning, WeakLinkComponent } from './FightCapability'
+
+export { resolveFightDemand } from './FightDemand'
+export type { FightDemand } from './FightDemand'
+
+export {
+  DEFAULT_FIGHT_CHALLENGE_BANDS,
+  FIGHT_CHALLENGE_LABELS,
+  FIGHT_CHALLENGES,
+  resolveFightChallenge,
+} from './fightChallenge'
+export type { FightChallenge, FightChallengeBands } from './fightChallenge'
+
+export { MAX_ABRASION_RISK, resolveAbrasionRisk } from './abrasion'
+export { FIGHT_STAGE_LABELS, FIGHT_STAGES, resolveFightStage } from './fightStage'
+export type { FightStage } from './fightStage'
+export {
+  BIG_GAME_REFERENCE_DEMAND_KG,
+  READINESS_ASPECT_LABELS,
+  READINESS_ASPECTS,
+  READINESS_MARK_SYMBOLS,
+  READINESS_MARKS,
+  resolveFightReadiness,
+} from './fightReadiness'
+export type { FightReadiness, ReadinessAspect, ReadinessMark } from './fightReadiness'
+
 export {
   ADDITIVE_MODIFIER_KEYS,
   FISHING_MODIFIER_KEYS,

@@ -23,18 +23,23 @@ import { runFightToTerminal } from '../fixtures/fishingPolicies'
 const content = loadContentFromDirectory()
 
 /**
- * 軽量タックル相当の倍率（Phase 10 の Text Battle は装備で結果が変わる）。
+ * 重量級タックル相当の倍率（Phase 10 の Text Battle は装備で結果が変わる）。
  *
- * 装備なし（neutral）だと大型魚はほぼ獲れないが、軽いタックルなら
+ * 装備なし（neutral）だと大型魚はほぼ獲れないが、重いタックルなら
  * 「難しいが獲れる」になる。ここで見たいのは魚種ごとの分岐が無いことなので、
  * 現実的なタックル相当の倍率で「どの魚種も獲れる」ことを確認する。
+ *
+ * Phase 18A: 大型魚のスケーリング上限が外れたため、100kg 級の魚は
+ * 軽いタックルでは通常獲れない（それが Phase 18 の狙い）。
+ * この契約が守りたいのは「十分なタックルなら全魚種を獲れる」ことであり、
+ * 倍率は endgame の heavy setup 相当（実 Content で実現可能な範囲）にする。
  */
-const LIGHT_TACKLE_MODIFIERS = {
+const HEAVY_TACKLE_MODIFIERS = {
   ...NEUTRAL_FISHING_MODIFIERS,
-  maxTensionMultiplier: 1.25,
-  reelEfficiencyMultiplier: 1.5,
-  giveEfficiencyMultiplier: 1.3,
-  landingStabilityMultiplier: 1.2,
+  maxTensionMultiplier: 2.8,
+  reelEfficiencyMultiplier: 1.8,
+  giveEfficiencyMultiplier: 1.6,
+  landingStabilityMultiplier: 1.4,
 }
 
 describe('multi species fishing', () => {
@@ -60,7 +65,7 @@ describe('multi species fishing', () => {
         const engine = new FishingEngine({
           encounters: [{ species, presence: 1 }],
           seed,
-          playerModifiers: LIGHT_TACKLE_MODIFIERS,
+          playerModifiers: HEAVY_TACKLE_MODIFIERS,
         })
 
         return { outcome: runFightToTerminal(engine), engine }

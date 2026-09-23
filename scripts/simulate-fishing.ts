@@ -80,6 +80,9 @@ export const chooseCommand = (
       maxTension: snapshot.maxTension,
       behaviour: snapshot.battle?.behaviour ?? null,
       hookHold: snapshot.battle?.hookHold ?? 0,
+      lineRemainingM: snapshot.battle?.lineRemainingM ?? null,
+      reserveLineM: snapshot.battle?.reserveLineM ?? 0,
+      pumpUseful: snapshot.battle !== null && (snapshot.fish?.individual.weightKg ?? 0) >= 15,
     })
   }
 

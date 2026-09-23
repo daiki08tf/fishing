@@ -20,6 +20,17 @@ export type BattleTuning = {
   readonly sizeFactorReferenceKg: number
   readonly sizeFactorMin: number
   readonly sizeFactorMax: number
+  /**
+   * Phase 18A: knee（referenceKg × sizeFactorMax kg）を超える魚の
+   * ファイト距離を圧縮する係数。距離 = max + log1p((sf-max)/max) × この値。
+   */
+  readonly bigGameDistanceLogFactor: number
+  /**
+   * Phase 18A: 魚の引きがテンションを押し上げるサイズ項の上限。
+   * Phase 17 までは実質 1.0 固定（中型魚で飽和）だった。大型魚は 1.0 を超えて
+   * より強く引ける（ただし線形ではなく頭打ち）。
+   */
+  readonly fishPullSizeScaleMax: number
 
   /** 「寄せ切った」と見なす距離（m）。ここで LANDING に移る。 */
   readonly landingDistanceM: number
@@ -79,16 +90,53 @@ export type BattleTuning = {
   readonly landingHookHoldFactor: number
   readonly landingAttemptFailurePenaltyM: number
   readonly landingAttemptHookHoldLoss: number
+
+  // ── Phase 18B: PUMP ───────────────────────────────────────────
+  /**
+   * PUMP（ロッドで魚を浮かせる）の距離効率（REEL 基準の倍率）。
+   * 大型魚に効く代わりにテンションコストが高い。
+   */
+  readonly pumpDistanceMultiplier: number
+  /** 走っている魚への PUMP は効率が落ちる（危険な選択）。 */
+  readonly pumpRunPenalty: number
+  /** PUMP のテンション上昇率（REEL 基準）。 */
+  readonly pumpTensionGainMultiplier: number
+  /** PUMP 1 回の魚スタミナ消費（竿で体を起こさせる負荷）。 */
+  readonly pumpStaminaDrain: number
+  /** sizeFactor 1 あたりの PUMP 効率ボーナス。大型魚ほど PUMP が効く。 */
+  readonly pumpSizeBonusPer: number
+  readonly pumpSizeBonusMin: number
+  readonly pumpSizeBonusMax: number
+
+  // ── Phase 18B: 物理ライン ──────────────────────────────────────
+  /**
+   * 走りで出ていく物理ライン量（gameplay 距離増分に対する倍率）。
+   * 1.4 = 魚が走ると gameplay 距離より多くラインが出る。
+   */
+  readonly runLineOutMultiplier: number
+  /** GIVE で出す物理ライン量の倍率（gameplay 距離増分に対して）。 */
+  readonly giveLineOutMultiplier: number
+  /** LOOSEN_DRAG 1 回でスプールから出る基礎ライン量（m）。 */
+  readonly dragPeelPerStepM: number
+  /** 根ズレ（dive / head_shake / surge）時のリーダー integrity 減少率。 */
+  readonly abrasionIntegrityLossRate: number
+  /**
+   * 擦れたリーダーが耐えられるテンション下限（integrity=0 で
+   * 実効 maxTension がこの倍率まで落ちる）。
+   */
+  readonly leaderIntegrityMinTensionFactor: number
 }
 
 export const DEFAULT_BATTLE_TUNING: BattleTuning = {
   initialTensionRatio: 0.35,
   initialDistanceBaseM: 6,
-  initialDistancePerSizeM: 10,
+  initialDistancePerSizeM: 9,
   castDistanceToFightDistanceMultiplier: 0.35,
   sizeFactorReferenceKg: 2.5,
   sizeFactorMin: 0.3,
   sizeFactorMax: 5,
+  bigGameDistanceLogFactor: 4,
+  fishPullSizeScaleMax: 1.35,
 
   landingDistanceM: 6,
 
@@ -98,7 +146,7 @@ export const DEFAULT_BATTLE_TUNING: BattleTuning = {
   powerReelDistanceMultiplier: 1.8,
   powerReelStaminaMultiplier: 2.3,
   powerReelTensionMultiplier: 4.2,
-  reelPullMin: 0.55,
+  reelPullMin: 0.65,
   reelPullMax: 2.6,
   holdDistanceMultiplier: 0.25,
   holdStaminaMultiplier: 0.35,
@@ -130,4 +178,19 @@ export const DEFAULT_BATTLE_TUNING: BattleTuning = {
   landingHookHoldFactor: 0.3,
   landingAttemptFailurePenaltyM: 6,
   landingAttemptHookHoldLoss: 0.12,
+
+  // ── Phase 18B ──
+  pumpDistanceMultiplier: 1.4,
+  pumpRunPenalty: 0.35,
+  pumpTensionGainMultiplier: 1.35,
+  pumpStaminaDrain: 0.07,
+  pumpSizeBonusPer: 0.08,
+  pumpSizeBonusMin: 0.75,
+  pumpSizeBonusMax: 1.6,
+
+  runLineOutMultiplier: 1.4,
+  giveLineOutMultiplier: 1.4,
+  dragPeelPerStepM: 2.5,
+  abrasionIntegrityLossRate: 0.09,
+  leaderIntegrityMinTensionFactor: 0.55,
 }

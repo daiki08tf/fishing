@@ -9,6 +9,7 @@ import {
   type SpeciesCatchFilter,
 } from '../../content/catalog/speciesSearch'
 import type { SpeciesSummary } from '../../content/catalog/summary'
+import { bigGameRecords } from '../../domain/codex'
 import { useAppStore } from '../../state/appStore'
 import { usePlayerStore } from '../../state/playerStore'
 import { FishSilhouette } from '../components/FishSilhouette'
@@ -95,6 +96,10 @@ export const CodexScreen = () => {
   }
 
   const page = paginateSummaries(visible, visibleCount)
+
+  // Phase 18C: Big Game 記録。既存 Codex/PB から derive（新規 Save なし）。
+  const records = bigGameRecords(codex)
+  const speciesNameById = new Map(summaries.map((entry) => [String(entry.id), entry.japaneseName]))
 
   if (!content.ok) {
     return <ContentErrorPanel message={content.message} />
@@ -217,6 +222,21 @@ export const CodexScreen = () => {
           ))}
         </div>
       </section>
+
+      {records.length === 0 ? null : (
+        <section className="panel">
+          <p className="fishing__phase-code">BIG GAME RECORDS</p>
+          <h3 className="panel__subheading">大型魚の記録</h3>
+          <ul className="log">
+            {records.map((record) => (
+              <li key={record.speciesId}>
+                {speciesNameById.get(record.speciesId) ?? record.speciesId}{' '}
+                <span className="pixel-number">{record.weightKg}</span>kg — Top {record.topPercent}%
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <section>
         {visible.length === 0 ? (

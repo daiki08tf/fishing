@@ -1,4 +1,5 @@
 import type { LineDefinition, OfferingDefinition, ReelDefinition } from '../gear/Gear'
+import { resolveEffectiveLineCapacityM } from '../tackle/lineCapacity'
 import type { FishingZone } from '../world/FishingSpot'
 import type { FishingPlatform } from './FishingPlatform'
 
@@ -55,20 +56,6 @@ const clamp = (value: number, min: number, max: number): number =>
 const clamp01 = (value: number): number => clamp(value, 0, 1)
 const round1 = (value: number): number => Math.round(value * 10) / 10
 
-const closestLineCapacityM = (reel: ReelDefinition, line: LineDefinition): number | null => {
-  let best: { readonly delta: number; readonly capacityM: number } | null = null
-
-  for (const entry of reel.lineCapacity) {
-    const delta = Math.abs(entry.lineStrengthKg - line.strengthKg)
-
-    if (best === null || delta < best.delta) {
-      best = { delta, capacityM: entry.capacityM }
-    }
-  }
-
-  return best?.capacityM ?? null
-}
-
 const offeringWeightG = (offering: OfferingDefinition, tuning: DepthTuning): number =>
   offering.category === 'lure' ? offering.weightG : tuning.defaultBaitRigWeightG
 
@@ -105,7 +92,8 @@ export const resolveDepthCapability = (input: {
   const control = clamp(0.25 + 0.4 * reelPower + 0.35 * platformControl, 0.15, 1)
   const rawMax = rawComfortable * (1.2 + 0.2 * control)
 
-  const capacityM = closestLineCapacityM(input.reel, input.line)
+  // ライン容量は共有 resolver（tackle/lineCapacity）が唯一の authority。
+  const capacityM = resolveEffectiveLineCapacityM(input.reel, input.line)
   const lineLimitedMax =
     capacityM === null ? tuning.maxHardCapM : Math.max(6, capacityM - tuning.reserveLineM)
   const maxDepthM = Math.min(rawMax, lineLimitedMax, tuning.maxHardCapM)

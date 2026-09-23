@@ -1,0 +1,8 @@
+{
+  "id": "captain-ryo-spot-tuna-current",
+  "contactId": "captain-ryo",
+  "minTrust": 55,
+  "kind": "discover_spot",
+  "message": "リョウ船長が「本気の奴だけ連れて行く潮目がある」と、沖の大きな潮目の場所を教えてくれた。",
+  "targetId": "izu-hidden-tuna-current"
+}

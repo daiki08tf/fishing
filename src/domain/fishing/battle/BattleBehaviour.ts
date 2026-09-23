@@ -81,7 +81,15 @@ export const behaviourWeights = (input: {
     dive: 0.2 * input.profile.diveTendency * runScale * roomToRun,
     come_toward: 0.12 * (0.4 + 0.6 * near),
     rest: 0.06 + 0.7 * tired,
-    second_run: tired > 0.6 ? 0.22 * input.profile.aggression * roomToRun : 0,
+    /*
+     * 第二の走りは「残った力」を絞り出す動き — スタミナが本当に尽きた
+     * 魚には発動しない（stamina 0 の魚が 4 step × 30m 級の走りを
+     * 何度も繰り返すと、Big Game のファイトが際限なく延びる）。
+     */
+    second_run:
+      tired > 0.6 && input.context.staminaRatio > 0.05
+        ? 0.22 * input.profile.aggression * roomToRun
+        : 0,
   }
 }
 

@@ -1,0 +1,8 @@
+{
+  "id": "okinawa-reef-deli-spot-gt-point",
+  "contactId": "okinawa-reef-deli",
+  "minTrust": 40,
+  "kind": "discover_spot",
+  "message": "惣菜店の店主が「常連の釣り人が大物を上げる磯があるよ」と、磯のポイントを教えてくれた。",
+  "targetId": "okinawa-hidden-gt-point"
+}

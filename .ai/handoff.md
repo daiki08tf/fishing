@@ -1212,3 +1212,42 @@ Phase 6 から持ち越した調整（プレイテスト前提）:
 - 補足: 実行環境によっては Git メタデータ（`.git`）への書き込みが制限され、
   `git add` / `git commit` が失敗することがある。
   その場合はユーザー側でコミットを実行し、本文書を更新する。
+
+## Phase 18C done (e6c29ac)
+- fightReadiness.ts: ○/△/× readiness marks (line_capacity/drag/retrieve/weak_link/abrasion) vs BIG_GAME_REFERENCE_DEMAND_KG=36 or a concrete FightDemand; challenge masked until hasBigGameExperience
+- bigGameRecords.ts: records derived from Codex PB (>=20kg or >=90 percentile); uncaught species stay hidden
+- UI: TACKLE "BIG GAME READINESS" panel, expedition-in-progress outlook line, CODEX "BIG GAME RECORDS" section
+- No new save state. check green (965 tests, boot gzip 174.5kB)
+- NEXT: Phase 18D content — big-game spots (hidden, captain/guide discover_spot), heavy/endgame gear, contacts
+
+## Phase 18D done
+- Spots: norway-hidden-abyss-edge / izu-hidden-tuna-current / okinawa-hidden-gt-point (150 spots total)
+- Rewards: 2 captain discover_spot @trust55 + 1 buyer discover_spot @trust40 + 2 big-game intel @trust40 (85 total)
+- Gear: 13/0 circle 50kg, 13/0 assist 55kg, TUNAARC 285XHP rod (473 gear total)
+- check green (965 tests, boot gzip 174.5kB)
+- NOTE: simulate:big-game broken at HEAD (stale ids alaska-chinook-salmon) — fix in 18E
+- NEXT: 18E — fix+strengthen simulate:big-game (SPOOLED tracking, spool scenarios), regression docs, PR finalization
+
+## Phase 18E done
+- simulate:big-game fixed+strengthened (5 setups x 5 species + spool scenario, in check chain)
+- simulate-fishing strategy parity with UI (line remaining / pump)
+- docs: DECISIONS.md + ARCHITECTURE.md Phase 18 sections
+- Browser smoke (Playwright 390px): HOME/TACKLE(readiness masked)/CODEX, 0 console errors
+- check green: 965 tests, all sims, boot gzip 174.5kB
+- PHASE 18 COMPLETE locally. Push/PR pending GitHub auth (gh auth login -h github.com needed)
+
+## Phase 18 review fixes (PR #20)
+- simulate:big-game now passes real FightCapability (resolveGearForLoadout + resolveFightCapability) per setup
+- Fight length measured via battle.step (player decisions): avg/p50/p90 over hooked fights
+- Natural SPOOLED occurs with real content (140 across standard setups; 588 on min-capacity setup)
+- bigGameRecords: percentile path now requires >=10kg floor (small trophy no longer unlocks Big Game experience)
+- check green: 967 tests, all sims
+
+## Phase 18 balance review fixes (PR #20, round 2)
+- Metrics: bites/fights/hookMissed split; fights = battleSteps>0 only; landedRateOfFights; p95 added
+- Pacing: second_run requires staminaRatio>0.05 (exhausted fish can't mega-run); give distance uses compressed fightDistanceSizeIndex; initialDistancePerSizeM 10->9. Heavy Big Game now avg ~21-26 / p90 47-57 (was avg 31-38 / p90 65-93)
+- Setup diagnostics printed (cap/reserve/drag/weakLink/retrieve/rodControl); 'Monster' renamed 'Max Power' — its 261m-cap high-drag reel explains worse spool behaviour vs Heavy's 925m reel
+- Phase 17->18 integration cases: real Spot zones -> cast (arakawa-lower) / depth deployment (norway-hidden-abyss-edge) -> initialLineOutM -> real FightCapability -> engine
+- playerModifiers.test: give-efficiency test made robust (compare on low-pull behaviour steps; fight could end before give was applied)
+- Natural SPOOLED with standard real-content setups: 30; min-capacity setup: 557
+- check green: 967 tests, all sims, boot gzip 174.5kB

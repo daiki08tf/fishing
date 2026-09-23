@@ -2,6 +2,7 @@ import type { FishIndividual } from '../fish/FishIndividual'
 import type { TraitModifiers } from '../fish/fishTraits'
 import type { FishBehavior } from './FishBehavior'
 import type { FishBattleProfile } from './battle/BattleStep'
+import type { FightDemand } from './FightDemand'
 
 /**
  * ファイト対象としての魚。
@@ -33,6 +34,11 @@ export type FightingFish = {
    * 既存の fightProfile / Trait / 個体サイズから解決済みの数値だけを持つ。
    */
   readonly battleProfile: FishBattleProfile
+  /**
+   * Phase 18A: この個体がファイトで要求する負荷（FightDemand）。
+   * Readiness / Challenge 評価の入力。Species ID ではなく解決済みの数値から作る。
+   */
+  readonly fightDemand: FightDemand
   /**
    * Trait から合成済みの倍率。
    * Engine は Trait 名を一切知らず、この倍率だけを見る。
