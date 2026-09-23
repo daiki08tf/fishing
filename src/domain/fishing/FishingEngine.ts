@@ -13,7 +13,8 @@ import type { RandomSource } from '../rng/RandomSource'
 import { SeededRandomSource } from '../rng/SeededRandomSource'
 import { createFightingFish } from './createFightingFish'
 import { fightDistanceSizeIndex } from './fishMassIndex'
-import type { FightCapability } from './FightCapability'
+import type { FightCapability, WeakLinkComponent } from './FightCapability'
+import { resolveFightStage, type FightStage } from './fightStage'
 import type { FishBehavior } from './FishBehavior'
 import type { FightingFishState } from './FightingFish'
 import { DEFAULT_BATTLE_TUNING, type BattleTuning } from './BattleTuning'
@@ -73,6 +74,21 @@ export type FishingBattleSnapshot = {
   readonly log: readonly string[]
   /** 取り込み可能（LANDING 中は true）。 */
   readonly landingReady: boolean
+  // ── Phase 18B: 物理ライン ──
+  /** スプールから出ている物理ライン量（m）。 */
+  readonly lineOutM: number
+  /** スプール容量（m）。null = 容量不明（SPOOLED なし）。 */
+  readonly lineCapacityM: number | null
+  /** 残りライン（m）。容量不明なら null。 */
+  readonly lineRemainingM: number | null
+  /** 警告帯として残したいライン量（m）。 */
+  readonly reserveLineM: number
+  /** リーダー / ラインの擦れ残量（1 = 無傷）。 */
+  readonly leaderIntegrity: number
+  /** タックルの最弱点。 */
+  readonly weakLink: WeakLinkComponent | null
+  /** 表示用のファイト進行度（derive されるだけ・永続しない）。 */
+  readonly fightStage: FightStage
 }
 
 export type FishingSnapshot = {
@@ -146,6 +162,17 @@ export type FishingEngineOptions = {
    */
   readonly fightCapability?: FightCapability
   /**
+   * Phase 18B: ファイト開始時にスプールから出ている物理ライン量（m）。
+   * キャストなら実着水距離、垂直なら実水深（+ スコープ）を解決済みで渡す。
+   * gameplay 距離（initialFightDistanceM）とは別物。省略時は距離と同じ扱い。
+   */
+  readonly initialLineOutM?: number
+  /**
+   * Phase 18B: 根ズレリスク（0..1）。Zone の habitatTags から解決済み。
+   * Engine は Zone / Spot を知らない。
+   */
+  readonly abrasionRisk?: number
+  /**
    * Phase 10: その Spot の Knowledge（0〜100）。
    * 予兆（telegraph）の文章の精度にだけ使う（結果は変えない）。
    */
@@ -167,6 +194,7 @@ const REVEALING_PHASES: readonly FishingPhase[] = [
   'HOOK_MISSED',
   'HOOK_ESCAPE',
   'LINE_BREAK',
+  'SPOOLED',
 ]
 
 const isFishRevealed = (phase: FishingPhase): boolean => REVEALING_PHASES.includes(phase)
@@ -207,6 +235,8 @@ export class FishingEngine {
   private readonly knowledgeScore: number
   private readonly initialFightDistanceM: number | undefined
   private readonly fightCapability: FightCapability | undefined
+  private readonly initialLineOutM: number | undefined
+  private readonly abrasionRisk: number | undefined
   private events: FishingEvent[] = []
 
   constructor(options: FishingEngineOptions) {
@@ -221,6 +251,8 @@ export class FishingEngine {
     this.knowledgeScore = options.knowledgeScore ?? 0
     this.initialFightDistanceM = options.initialFightDistanceM
     this.fightCapability = options.fightCapability
+    this.initialLineOutM = options.initialLineOutM
+    this.abrasionRisk = options.abrasionRisk
   }
 
   // ---------------------------------------------------------------- commands
@@ -274,6 +306,7 @@ export class FishingEngine {
       case 'power_reel':
       case 'hold':
       case 'give':
+      case 'pump':
       case 'loosen_drag':
       case 'tighten_drag':
         this.stepTextBattle(command)
@@ -609,6 +642,15 @@ export class FishingEngine {
       this.hitHookRetentionMultiplier * profile.hookHoldCapacity,
     )
 
+    /*
+     * Phase 18B: 物理ライン。
+     * gameplay 距離（distanceM）とは別に、スプールから出ている
+     * ライン量を追う。深場ほど lineOutFactor が大きくなる。
+     */
+    const lineCapacityM = this.fightCapability?.effectiveLineCapacityM ?? null
+    const initialLineOut = this.initialLineOutM ?? distanceM
+    const lineOutFactor = Math.min(10, Math.max(0.2, initialLineOut / Math.max(1, distanceM)))
+
     // フッキング直後は魚が引いてラインが張っている状態から始める。
     this.tension = maxTension * this.battleTuning.initialTensionRatio
     this.battle = {
@@ -624,10 +666,19 @@ export class FishingEngine {
       pendingBehaviour: null,
       slackSteps: 0,
       step: 0,
+      lineOutM: Math.round(initialLineOut * 10) / 10,
+      lineCapacityM,
+      reserveLineM: this.fightCapability?.reserveLineM ?? 0,
+      lineOutFactor,
+      leaderIntegrity: 1,
+      weakLink: this.fightCapability?.weakLink ?? null,
     }
     this.battleLog = [
       battleText('behaviour_start', 0),
       `距離 ${String(Math.round(distanceM * 10) / 10)}m からファイト開始。`,
+      ...(lineCapacityM === null
+        ? []
+        : [`ライン ${String(Math.round(initialLineOut))} / ${String(lineCapacityM)}m。`]),
     ]
     this.enterPhase('FIGHTING')
   }
@@ -650,6 +701,8 @@ export class FishingEngine {
       tuning: this.battleTuning,
       random: this.random,
       knowledgeScore: this.knowledgeScore,
+      capability: this.fightCapability ?? null,
+      abrasionRisk: this.abrasionRisk ?? 0,
     })
 
     this.applyBattleResult(result.numbers, result.log)
@@ -661,6 +714,9 @@ export class FishingEngine {
         break
       case 'hook_escape':
         this.enterPhase('HOOK_ESCAPE')
+        break
+      case 'spooled':
+        this.enterPhase('SPOOLED')
         break
       case 'landing':
         this.enterPhase('LANDING')
@@ -702,6 +758,11 @@ export class FishingEngine {
       return
     }
 
+    if (result.outcome === 'spooled') {
+      this.enterPhase('SPOOLED')
+      return
+    }
+
     // 待っているうちに距離が開いたら、また掛け合い（FIGHTING）に戻る。
     if (result.numbers.distanceM > this.battleTuning.landingDistanceM) {
       this.enterPhase('FIGHTING')
@@ -735,6 +796,9 @@ export class FishingEngine {
       return null
     }
 
+    const lineCapacityM = battle.lineCapacityM ?? null
+    const lineOutM = battle.lineOutM ?? battle.distanceM
+
     return {
       behaviour: battle.behaviour,
       behaviourLabel: BATTLE_BEHAVIOUR_LABELS[battle.behaviour],
@@ -744,6 +808,19 @@ export class FishingEngine {
       step: battle.step,
       log: [...this.battleLog],
       landingReady: this.phase === 'LANDING',
+      lineOutM: Math.round(lineOutM * 10) / 10,
+      lineCapacityM,
+      lineRemainingM:
+        lineCapacityM === null ? null : Math.max(0, Math.round(lineCapacityM - lineOutM)),
+      reserveLineM: battle.reserveLineM ?? 0,
+      leaderIntegrity: Math.round((battle.leaderIntegrity ?? 1) * 100) / 100,
+      weakLink: (battle.weakLink as WeakLinkComponent | null | undefined) ?? null,
+      fightStage: resolveFightStage({
+        phase: this.phase,
+        staminaRatio: battle.staminaMax <= 0 ? 1 : battle.stamina / battle.staminaMax,
+        distanceM: battle.distanceM,
+        step: battle.step,
+      }),
     }
   }
 }

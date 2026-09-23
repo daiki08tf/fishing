@@ -18,17 +18,24 @@ export const FISHING_PHASES = [
   'HOOK_MISSED',
   'HOOK_ESCAPE',
   'LINE_BREAK',
+  /**
+   * Phase 18B: 魚がラインを出し尽くした（スプール空）。
+   * LINE_BREAK（切れた）とは別の物理的終了 — 容量いっぱいまで
+   * ラインが出て、これ以上ファイトを続けられない。
+   */
+  'SPOOLED',
 ] as const
 
 export type FishingPhase = (typeof FISHING_PHASES)[number]
 
 /** 失敗して終了した状態。 */
-export type FishingFailurePhase = 'HOOK_MISSED' | 'HOOK_ESCAPE' | 'LINE_BREAK'
+export type FishingFailurePhase = 'HOOK_MISSED' | 'HOOK_ESCAPE' | 'LINE_BREAK' | 'SPOOLED'
 
 export const FISHING_FAILURE_PHASES: readonly FishingPhase[] = [
   'HOOK_MISSED',
   'HOOK_ESCAPE',
   'LINE_BREAK',
+  'SPOOLED',
 ]
 
 /**
@@ -43,6 +50,7 @@ export const FISHING_COMMANDS = [
   'power_reel',
   'hold',
   'give',
+  'pump',
   'loosen_drag',
   'tighten_drag',
   // Landing
@@ -78,13 +86,14 @@ export const ALLOWED_COMMANDS: Readonly<Record<FishingPhase, readonly FishingCom
   HOOK_WINDOW: ['hook'],
   HOOKED: [],
   // 1 コマンド = 1 battle step。連打では有利にならない。
-  FIGHTING: ['reel', 'power_reel', 'hold', 'give', 'loosen_drag', 'tighten_drag'],
+  FIGHTING: ['reel', 'power_reel', 'hold', 'give', 'pump', 'loosen_drag', 'tighten_drag'],
   // 取り込む（land）か、待つ（wait）。
   LANDING: ['land', 'wait'],
   LANDED: ['reset'],
   HOOK_MISSED: ['reset'],
   HOOK_ESCAPE: ['reset'],
   LINE_BREAK: ['reset'],
+  SPOOLED: ['reset'],
 }
 
 /** 釣行が終わった状態（成功・失敗の両方）。 */
@@ -117,6 +126,7 @@ export const FISHING_EVENTS = [
   'HOOK_MISSED',
   'HOOK_ESCAPE',
   'LINE_BREAK',
+  'SPOOLED',
   'RUN_STARTED',
   'RUN_ENDED',
   'FISH_TIRED',

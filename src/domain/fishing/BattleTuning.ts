@@ -90,6 +90,41 @@ export type BattleTuning = {
   readonly landingHookHoldFactor: number
   readonly landingAttemptFailurePenaltyM: number
   readonly landingAttemptHookHoldLoss: number
+
+  // ── Phase 18B: PUMP ───────────────────────────────────────────
+  /**
+   * PUMP（ロッドで魚を浮かせる）の距離効率（REEL 基準の倍率）。
+   * 大型魚に効く代わりにテンションコストが高い。
+   */
+  readonly pumpDistanceMultiplier: number
+  /** 走っている魚への PUMP は効率が落ちる（危険な選択）。 */
+  readonly pumpRunPenalty: number
+  /** PUMP のテンション上昇率（REEL 基準）。 */
+  readonly pumpTensionGainMultiplier: number
+  /** PUMP 1 回の魚スタミナ消費（竿で体を起こさせる負荷）。 */
+  readonly pumpStaminaDrain: number
+  /** sizeFactor 1 あたりの PUMP 効率ボーナス。大型魚ほど PUMP が効く。 */
+  readonly pumpSizeBonusPer: number
+  readonly pumpSizeBonusMin: number
+  readonly pumpSizeBonusMax: number
+
+  // ── Phase 18B: 物理ライン ──────────────────────────────────────
+  /**
+   * 走りで出ていく物理ライン量（gameplay 距離増分に対する倍率）。
+   * 1.4 = 魚が走ると gameplay 距離より多くラインが出る。
+   */
+  readonly runLineOutMultiplier: number
+  /** GIVE で出す物理ライン量の倍率（gameplay 距離増分に対して）。 */
+  readonly giveLineOutMultiplier: number
+  /** LOOSEN_DRAG 1 回でスプールから出る基礎ライン量（m）。 */
+  readonly dragPeelPerStepM: number
+  /** 根ズレ（dive / head_shake / surge）時のリーダー integrity 減少率。 */
+  readonly abrasionIntegrityLossRate: number
+  /**
+   * 擦れたリーダーが耐えられるテンション下限（integrity=0 で
+   * 実効 maxTension がこの倍率まで落ちる）。
+   */
+  readonly leaderIntegrityMinTensionFactor: number
 }
 
 export const DEFAULT_BATTLE_TUNING: BattleTuning = {
@@ -143,4 +178,19 @@ export const DEFAULT_BATTLE_TUNING: BattleTuning = {
   landingHookHoldFactor: 0.3,
   landingAttemptFailurePenaltyM: 6,
   landingAttemptHookHoldLoss: 0.12,
+
+  // ── Phase 18B ──
+  pumpDistanceMultiplier: 1.4,
+  pumpRunPenalty: 0.35,
+  pumpTensionGainMultiplier: 1.35,
+  pumpStaminaDrain: 0.07,
+  pumpSizeBonusPer: 0.08,
+  pumpSizeBonusMin: 0.75,
+  pumpSizeBonusMax: 1.6,
+
+  runLineOutMultiplier: 1.4,
+  giveLineOutMultiplier: 1.4,
+  dragPeelPerStepM: 2.5,
+  abrasionIntegrityLossRate: 0.09,
+  leaderIntegrityMinTensionFactor: 0.55,
 }

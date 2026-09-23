@@ -28,6 +28,7 @@ describe('fishing state machine definition', () => {
       'HOOK_MISSED',
       'HOOK_ESCAPE',
       'LINE_BREAK',
+      'SPOOLED',
     ])
   })
 
@@ -45,6 +46,7 @@ describe('fishing state machine definition', () => {
       'power_reel',
       'hold',
       'give',
+      'pump',
       'loosen_drag',
       'tighten_drag',
     ])
@@ -117,6 +119,7 @@ describe('fishing state machine definition', () => {
       'power_reel',
       'hold',
       'give',
+      'pump',
       'loosen_drag',
       'tighten_drag',
       'land',
@@ -126,5 +129,6 @@ describe('fishing state machine definition', () => {
     expect(FISHING_EVENTS).toContain('LINE_BREAK')
     expect(FISHING_EVENTS).toContain('HOOK_ESCAPE')
     expect(FISHING_EVENTS).toContain('HOOK_MISSED')
+    expect(FISHING_EVENTS).toContain('SPOOLED')
   })
 })

@@ -59,6 +59,10 @@ export {
 } from './fightChallenge'
 export type { FightChallenge, FightChallengeBands } from './fightChallenge'
 
+export { MAX_ABRASION_RISK, resolveAbrasionRisk } from './abrasion'
+export { FIGHT_STAGE_LABELS, FIGHT_STAGES, resolveFightStage } from './fightStage'
+export type { FightStage } from './fightStage'
+
 export {
   ADDITIVE_MODIFIER_KEYS,
   FISHING_MODIFIER_KEYS,
