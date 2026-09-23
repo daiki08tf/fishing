@@ -1227,3 +1227,11 @@ Phase 6 から持ち越した調整（プレイテスト前提）:
 - check green (965 tests, boot gzip 174.5kB)
 - NOTE: simulate:big-game broken at HEAD (stale ids alaska-chinook-salmon) — fix in 18E
 - NEXT: 18E — fix+strengthen simulate:big-game (SPOOLED tracking, spool scenarios), regression docs, PR finalization
+
+## Phase 18E done
+- simulate:big-game fixed+strengthened (5 setups x 5 species + spool scenario, in check chain)
+- simulate-fishing strategy parity with UI (line remaining / pump)
+- docs: DECISIONS.md + ARCHITECTURE.md Phase 18 sections
+- Browser smoke (Playwright 390px): HOME/TACKLE(readiness masked)/CODEX, 0 console errors
+- check green: 965 tests, all sims, boot gzip 174.5kB
+- PHASE 18 COMPLETE locally. Push/PR pending GitHub auth (gh auth login -h github.com needed)
