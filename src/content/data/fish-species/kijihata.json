@@ -76,10 +76,10 @@
       "windy": 0.9
     },
     "tideAffinity": {
-      "low": 0.9,
-      "rising": 1.15,
-      "high": 1.1,
-      "falling": 1
+      "low": 1.05,
+      "rising": 1.0,
+      "high": 1.05,
+      "falling": 1.0
     },
     "flowAffinity": {
       "none": 1,

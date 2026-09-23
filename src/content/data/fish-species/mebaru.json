@@ -47,5 +47,13 @@
     "worm": 1,
     "mid": 1,
     "small": 1
+  },
+  "environmentAffinity": {
+    "tideAffinity": {
+      "low": 1.05,
+      "rising": 1.0,
+      "high": 1.05,
+      "falling": 1.0
+    }
   }
 }

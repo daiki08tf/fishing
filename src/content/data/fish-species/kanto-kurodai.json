@@ -56,5 +56,13 @@
       "id": "provisional-values",
       "title": "PROVISIONAL — ゲーム調整用の暫定値であり、実在の生態データではない"
     }
-  ]
+  ],
+  "environmentAffinity": {
+    "tideAffinity": {
+      "low": 0.85,
+      "rising": 1.0,
+      "high": 1.2,
+      "falling": 0.95
+    }
+  }
 }

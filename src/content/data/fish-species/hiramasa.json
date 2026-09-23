@@ -54,5 +54,19 @@
     "worm": 1,
     "mid": 1,
     "small": 1
+  },
+  "environmentAffinity": {
+    "tideAffinity": {
+      "low": 0.8,
+      "rising": 1.2,
+      "high": 1.0,
+      "falling": 0.95
+    },
+    "flowAffinity": {
+      "none": 0.9,
+      "slow": 1.0,
+      "moderate": 1.05,
+      "strong": 1.15
+    }
   }
 }
