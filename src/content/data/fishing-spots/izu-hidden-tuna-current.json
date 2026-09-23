@@ -1,0 +1,125 @@
+{
+  "id": "izu-hidden-tuna-current",
+  "name": "伊豆 沖の潮目（要人脈・暫定）",
+  "regionId": "izu-peninsula",
+  "areaId": "izu-west",
+  "environment": "offshore",
+  "visibility": "hidden",
+  "dataStatus": "provisional",
+  "access": [
+    {
+      "kind": "capability",
+      "capability": "boat_required"
+    },
+    {
+      "kind": "capability",
+      "capability": "offshore"
+    },
+    {
+      "kind": "relationship",
+      "targetId": "captain-ryo",
+      "minimum": 55
+    }
+  ],
+  "travelOptions": [
+    {
+      "id": "izu-tuna-current-charter",
+      "transportTypes": ["charter_boat"],
+      "requiredCapabilities": ["boat_required", "offshore"],
+      "features": ["boat_rental", "marina"],
+      "baseMinutes": 75,
+      "distanceKm": 30,
+      "baseOneWayCost": 0
+    }
+  ],
+  "habitatTags": ["offshore", "open_water"],
+  "current": {
+    "preference": "strong"
+  },
+  "depth": {
+    "depthRangeM": {
+      "min": 10,
+      "max": 90
+    }
+  },
+  "fishingZones": [
+    {
+      "id": "surface",
+      "name": "表層の潮目",
+      "depthRangeM": {
+        "min": 10,
+        "max": 35
+      },
+      "habitatTags": ["surface", "open"]
+    },
+    {
+      "id": "current-edge",
+      "name": "潮目の下",
+      "depthRangeM": {
+        "min": 35,
+        "max": 90
+      },
+      "habitatTags": ["mid-water", "open"]
+    }
+  ],
+  "fishTable": [
+    {
+      "speciesId": "hiramasa",
+      "basePresence": 0.26,
+      "zoneAffinity": {
+        "surface": 1.4,
+        "current-edge": 0.9
+      }
+    },
+    {
+      "speciesId": "kanpachi",
+      "basePresence": 0.24,
+      "zoneAffinity": {
+        "surface": 0.9,
+        "current-edge": 1.4
+      }
+    },
+    {
+      "speciesId": "katsuo",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "surface": 1.5,
+        "current-edge": 0.6
+      }
+    },
+    {
+      "speciesId": "mahi-mahi",
+      "basePresence": 0.26,
+      "zoneAffinity": {
+        "surface": 1.4,
+        "current-edge": 0.6
+      }
+    },
+    {
+      "speciesId": "buri",
+      "basePresence": 0.22,
+      "zoneAffinity": {
+        "surface": 0.8,
+        "current-edge": 1.3
+      }
+    }
+  ],
+  "knowledgeConfig": {
+    "reveals": [
+      {
+        "field": "main_species",
+        "minKnowledge": 25
+      },
+      {
+        "field": "habitat",
+        "minKnowledge": 55
+      }
+    ]
+  },
+  "sourceRefs": [
+    {
+      "id": "phase18-provisional",
+      "title": "PROVISIONAL — fictional/generalized big-game spot; not a real location"
+    }
+  ]
+}

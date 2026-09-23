@@ -1,0 +1,21 @@
+{
+  "id": "blue-horizon-tunaarc-285xhp",
+  "name": "TUNAARC 285XHP",
+  "price": 78000,
+  "category": "rod",
+  "brandId": "blue-horizon",
+  "seriesId": "blue-horizon-tunaarc",
+  "seriesCategory": "big_game",
+  "lengthM": 2.85,
+  "power": "XH",
+  "action": "moderate",
+  "minLureWeightG": 80,
+  "maxLureWeightG": 300,
+  "recommendedLineMinKg": 30,
+  "recommendedLineMaxKg": 80,
+  "weightG": 240,
+  "sensitivity": 0.55,
+  "control": 0.5,
+  "fightingPower": 0.9,
+  "castingProfile": 0.5
+}

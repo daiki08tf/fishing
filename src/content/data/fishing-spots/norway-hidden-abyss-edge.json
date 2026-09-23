@@ -1,0 +1,125 @@
+{
+  "id": "norway-hidden-abyss-edge",
+  "name": "ノルウェー 深淵の縁（要人脈・暫定）",
+  "regionId": "norway-fjords",
+  "areaId": "norway-coast",
+  "environment": "offshore",
+  "visibility": "hidden",
+  "dataStatus": "provisional",
+  "access": [
+    {
+      "kind": "capability",
+      "capability": "boat_required"
+    },
+    {
+      "kind": "capability",
+      "capability": "offshore"
+    },
+    {
+      "kind": "relationship",
+      "targetId": "captain-erik",
+      "minimum": 55
+    }
+  ],
+  "travelOptions": [
+    {
+      "id": "norway-abyss-edge-charter",
+      "transportTypes": ["charter_boat"],
+      "requiredCapabilities": ["boat_required", "offshore"],
+      "features": ["boat_rental", "marina"],
+      "baseMinutes": 95,
+      "distanceKm": 44,
+      "baseOneWayCost": 0
+    }
+  ],
+  "habitatTags": ["offshore", "deep"],
+  "current": {
+    "preference": "strong"
+  },
+  "depth": {
+    "depthRangeM": {
+      "min": 80,
+      "max": 320
+    }
+  },
+  "fishingZones": [
+    {
+      "id": "shelf",
+      "name": "陸棚の縁",
+      "depthRangeM": {
+        "min": 80,
+        "max": 160
+      },
+      "habitatTags": ["mid-water", "open"]
+    },
+    {
+      "id": "abyss",
+      "name": "深淵",
+      "depthRangeM": {
+        "min": 160,
+        "max": 320
+      },
+      "habitatTags": ["bottom", "deep"]
+    }
+  ],
+  "fishTable": [
+    {
+      "speciesId": "atlantic-halibut",
+      "basePresence": 0.22,
+      "zoneAffinity": {
+        "shelf": 0.5,
+        "abyss": 1.6
+      }
+    },
+    {
+      "speciesId": "common-ling",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "shelf": 0.8,
+        "abyss": 1.4
+      }
+    },
+    {
+      "speciesId": "atlantic-cod",
+      "basePresence": 0.28,
+      "zoneAffinity": {
+        "shelf": 1.3,
+        "abyss": 0.8
+      }
+    },
+    {
+      "speciesId": "coalfish",
+      "basePresence": 0.3,
+      "zoneAffinity": {
+        "shelf": 1.4,
+        "abyss": 0.5
+      }
+    },
+    {
+      "speciesId": "atlantic-redfish",
+      "basePresence": 0.26,
+      "zoneAffinity": {
+        "shelf": 0.9,
+        "abyss": 1.2
+      }
+    }
+  ],
+  "knowledgeConfig": {
+    "reveals": [
+      {
+        "field": "main_species",
+        "minKnowledge": 25
+      },
+      {
+        "field": "habitat",
+        "minKnowledge": 55
+      }
+    ]
+  },
+  "sourceRefs": [
+    {
+      "id": "phase18-provisional",
+      "title": "PROVISIONAL — fictional/generalized big-game spot; not a real location"
+    }
+  ]
+}
