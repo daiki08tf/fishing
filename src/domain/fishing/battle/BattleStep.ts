@@ -5,6 +5,7 @@ import type { BattleTuning } from '../BattleTuning'
 import type { FightCapability } from '../FightCapability'
 import { rollBehaviour, type BattleBehaviour, type BehaviourContext } from './BattleBehaviour'
 import { battleText, behaviourHint } from './BattleText'
+import { fightDistanceSizeIndex } from '../fishMassIndex'
 
 /**
  * Text Fishing Battle の 1 step（Phase 10）。
@@ -268,7 +269,14 @@ export const stepBattle = (input: {
     }
 
     case 'give': {
-      const given = tuning.giveDistanceM * sizeGain * dragDistanceFactor(numbers.drag, tuning)
+      /*
+       * Phase 18 review: 送る距離も初期距離と同じ log 圧縮済みの
+       * mass index から出す。線形のままだと大型魚への GIVE が
+       * 1 回 8m〜14m の距離を生み、高テンション圏で GIVE を繰り返す
+       * たびにファイト距離が膨らんでいた。
+       */
+      const giveSizeGain = 1 + 0.55 * (fightDistanceSizeIndex(profile.sizeFactor, tuning) - 1)
+      const given = tuning.giveDistanceM * giveSizeGain * dragDistanceFactor(numbers.drag, tuning)
       nextDistance += given
       // GIVE は「ラインを送る」操作 — 魚が離れる分より多くラインが出る。
       lineOut += given * lineOutFactor * tuning.giveLineOutMultiplier
@@ -370,9 +378,16 @@ export const stepBattle = (input: {
           : input.command === 'loosen_drag'
             ? 1.2
             : 1
+    /*
+     * Phase 18 review: 走りの距離は線形の sizeGain ではなく、初期距離と
+     * 同じ log 圧縮済みの mass index から出す。線形のままだと knee 以上の
+     * 魚が 1 step に 40m〜50m 出し、Big Game のファイトが数十 step の
+     * 巻き直し連打になっていた（極端な個体ほど重く効く、generic な圧縮）。
+     */
+    const runSizeGain = 1 + 0.55 * (fightDistanceSizeIndex(profile.sizeFactor, tuning) - 1)
     const runGain =
       (behaviour === 'surge' ? 3 : behaviour === 'second_run' ? 3.2 : 1.8) *
-      sizeGain *
+      runSizeGain *
       dragDistanceFactor(drag, tuning) *
       (0.7 + 0.3 * profile.burstPower) *
       commandScale

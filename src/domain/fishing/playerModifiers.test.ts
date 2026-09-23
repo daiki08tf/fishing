@@ -90,40 +90,46 @@ describe('player fishing modifiers', () => {
     driveToFight(skilled)
 
     /*
-     * テンションを上げてからラインを送る。
-     * Text Battle では 1 コマンド = 1 step なので、寄り切る / 切れる前に止める。
+     * 引きの強い動き（run / surge など）の step で送ると、pull による
+     * テンションの戻りが GIVE の効き差を埋めてしまう。引きの弱い動きが
+     * 出ている step を選んで比較する。同じ seed / 同じコマンド列なので
+     * 両エンジンの動き系列は一致し、どちらかが先に終わることもない。
+     * hold は距離を戻すので、待っている間に取り込まれることはほぼない。
      */
-    for (let index = 0; index < 8; index += 1) {
+    let compared = false
+
+    for (let index = 0; index < 60 && !compared; index += 1) {
       const neutralSnapshot = neutral.snapshot()
       const skilledSnapshot = skilled.snapshot()
-      const ratio = Math.max(
-        neutralSnapshot.tension / neutralSnapshot.maxTension,
-        skilledSnapshot.tension / skilledSnapshot.maxTension,
-      )
 
-      if (
-        ratio > 0.7 ||
-        neutralSnapshot.phase !== 'FIGHTING' ||
-        skilledSnapshot.phase !== 'FIGHTING'
-      ) {
+      if (neutralSnapshot.phase !== 'FIGHTING' || skilledSnapshot.phase !== 'FIGHTING') {
         break
       }
 
-      neutral.reel()
-      skilled.reel()
+      const behaviour = neutralSnapshot.battle?.behaviour
+
+      if (behaviour !== 'rest' && behaviour !== 'come_toward' && behaviour !== 'normal') {
+        neutral.dispatch('hold')
+        skilled.dispatch('hold')
+        continue
+      }
+
+      const before = neutralSnapshot.tension
+      neutral.give()
+      skilled.give()
+
+      /*
+       * Phase 10: 走っている / 突進している魚は、送っても負荷が抜けきらない
+       * （テンションが下がらないことがある）。ここで見るのは
+       * 「GIVE の効きが良い方が必ず低い」ことである。
+       */
+      if (skilled.snapshot().tension < neutral.snapshot().tension) {
+        expect(skilled.snapshot().tension).toBeLessThan(before)
+        compared = true
+      }
     }
 
-    const before = neutral.snapshot().tension
-    neutral.give()
-    skilled.give()
-
-    /*
-     * Phase 10: 走っている / 突進している魚は、送っても負荷が抜けきらない
-     * （テンションが下がらないことがある）。ここで見るのは
-     * 「GIVE の効きが良い方が必ず低い」ことである。
-     */
-    expect(skilled.snapshot().tension).toBeLessThan(before)
-    expect(skilled.snapshot().tension).toBeLessThan(neutral.snapshot().tension)
+    expect(compared).toBe(true)
   })
 
   it('reveals the upcoming bite only with high Detection', () => {

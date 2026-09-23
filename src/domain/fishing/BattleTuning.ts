@@ -130,12 +130,12 @@ export type BattleTuning = {
 export const DEFAULT_BATTLE_TUNING: BattleTuning = {
   initialTensionRatio: 0.35,
   initialDistanceBaseM: 6,
-  initialDistancePerSizeM: 10,
+  initialDistancePerSizeM: 9,
   castDistanceToFightDistanceMultiplier: 0.35,
   sizeFactorReferenceKg: 2.5,
   sizeFactorMin: 0.3,
   sizeFactorMax: 5,
-  bigGameDistanceLogFactor: 5,
+  bigGameDistanceLogFactor: 4,
   fishPullSizeScaleMax: 1.35,
 
   landingDistanceM: 6,
@@ -146,7 +146,7 @@ export const DEFAULT_BATTLE_TUNING: BattleTuning = {
   powerReelDistanceMultiplier: 1.8,
   powerReelStaminaMultiplier: 2.3,
   powerReelTensionMultiplier: 4.2,
-  reelPullMin: 0.55,
+  reelPullMin: 0.65,
   reelPullMax: 2.6,
   holdDistanceMultiplier: 0.25,
   holdStaminaMultiplier: 0.35,

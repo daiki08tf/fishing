@@ -1242,3 +1242,12 @@ Phase 6 から持ち越した調整（プレイテスト前提）:
 - Natural SPOOLED occurs with real content (140 across standard setups; 588 on min-capacity setup)
 - bigGameRecords: percentile path now requires >=10kg floor (small trophy no longer unlocks Big Game experience)
 - check green: 967 tests, all sims
+
+## Phase 18 balance review fixes (PR #20, round 2)
+- Metrics: bites/fights/hookMissed split; fights = battleSteps>0 only; landedRateOfFights; p95 added
+- Pacing: second_run requires staminaRatio>0.05 (exhausted fish can't mega-run); give distance uses compressed fightDistanceSizeIndex; initialDistancePerSizeM 10->9. Heavy Big Game now avg ~21-26 / p90 47-57 (was avg 31-38 / p90 65-93)
+- Setup diagnostics printed (cap/reserve/drag/weakLink/retrieve/rodControl); 'Monster' renamed 'Max Power' — its 261m-cap high-drag reel explains worse spool behaviour vs Heavy's 925m reel
+- Phase 17->18 integration cases: real Spot zones -> cast (arakawa-lower) / depth deployment (norway-hidden-abyss-edge) -> initialLineOutM -> real FightCapability -> engine
+- playerModifiers.test: give-efficiency test made robust (compare on low-pull behaviour steps; fight could end before give was applied)
+- Natural SPOOLED with standard real-content setups: 30; min-capacity setup: 557
+- check green: 967 tests, all sims, boot gzip 174.5kB
