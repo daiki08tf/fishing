@@ -68,9 +68,9 @@
     },
     "tideAffinity": {
       "low": 0.9,
-      "rising": 1.15,
-      "high": 1.1,
-      "falling": 1
+      "rising": 0.95,
+      "high": 1.05,
+      "falling": 1.2
     },
     "preferredTemperatureC": {
       "min": 18,

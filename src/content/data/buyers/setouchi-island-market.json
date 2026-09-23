@@ -13,8 +13,8 @@
     "maxVolumeBonus": 0
   },
   "trustProfile": {
-    "perTransactionBase": 2,
-    "qualityWeight": 6,
+    "perTransactionBase": 3,
+    "qualityWeight": 4,
     "maxPerTransaction": 6
   },
   "preferences": {

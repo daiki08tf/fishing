@@ -96,6 +96,7 @@ export const HomeScreen = () => {
           climate: currentRegion.climate,
           regionId: String(currentRegion.id),
           environment: summarySpot.environment,
+          tideDrivenFlow: summarySpot.tideDrivenFlow,
         })
   /*
    * 釣況の計算には Species の環境嗜好（生物学）が要る。

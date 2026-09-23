@@ -32,6 +32,7 @@
     }
   ],
   "habitatTags": ["offshore", "deep", "reef", "tide_race"],
+  "tideDrivenFlow": true,
   "current": {
     "preference": "strong"
   },
@@ -64,7 +65,7 @@
   "fishTable": [
     {
       "speciesId": "madai",
-      "basePresence": 0.4,
+      "basePresence": 0.28,
       "zoneAffinity": {
         "mid": 1.1,
         "se-base": 1.3
@@ -72,7 +73,7 @@
     },
     {
       "speciesId": "ishidai",
-      "basePresence": 0.22,
+      "basePresence": 0.15,
       "zoneAffinity": {
         "mid": 0.4,
         "se-base": 1.5
@@ -80,7 +81,7 @@
     },
     {
       "speciesId": "kijihata",
-      "basePresence": 0.3,
+      "basePresence": 0.17,
       "zoneAffinity": {
         "mid": 0.7,
         "se-base": 1.3
@@ -88,7 +89,7 @@
     },
     {
       "speciesId": "kanpachi",
-      "basePresence": 0.12,
+      "basePresence": 0.2,
       "zoneAffinity": {
         "mid": 1.4,
         "se-base": 0.8
@@ -96,7 +97,7 @@
     },
     {
       "speciesId": "hiramasa",
-      "basePresence": 0.08,
+      "basePresence": 0.18,
       "zoneAffinity": {
         "mid": 1.5,
         "se-base": 0.5
@@ -104,7 +105,7 @@
     },
     {
       "speciesId": "nodoguro",
-      "basePresence": 0.1,
+      "basePresence": 0.16,
       "zoneAffinity": {
         "mid": 0.3,
         "se-base": 1.4

@@ -139,6 +139,7 @@ export const SpotScreen = () => {
           climate: region.climate,
           regionId: String(region.id),
           environment: spot.environment,
+          tideDrivenFlow: spot.tideDrivenFlow,
         })
   const spotSpecies = spot.fishTable.flatMap((occurrence) => {
     const species = content.value.speciesById[String(occurrence.speciesId)]

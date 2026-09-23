@@ -120,6 +120,13 @@ export type FishingSpot = {
   readonly current?: CurrentProfile
 
   /**
+   * Phase 19C: 潮位の変化がそのまま潮流の強弱になる水道・瀬の Spot。
+   * true のとき、resolveEnvironment が潮位（rising/falling = 動く潮、high/low = 潮止まり寄り）
+   * から流れの強さを一段上下させる。省略時は従来どおり環境固定の流れ。
+   */
+  readonly tideDrivenFlow?: boolean
+
+  /**
    * Phase 11: Spot 内の狙う水域。
    * 旧 Content との互換性のため optional。未設定時は Casting Domain が 1 つの fallback Zone を作る。
    */

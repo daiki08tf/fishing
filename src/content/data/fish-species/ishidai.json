@@ -77,9 +77,9 @@
     },
     "tideAffinity": {
       "low": 0.85,
-      "rising": 1.1,
-      "high": 1.15,
-      "falling": 1
+      "rising": 1.0,
+      "high": 1.2,
+      "falling": 0.95
     },
     "flowAffinity": {
       "none": 0.95,

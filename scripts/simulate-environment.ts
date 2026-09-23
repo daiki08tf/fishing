@@ -68,6 +68,7 @@ export const simulateEnvironment = (): EnvironmentSimulationResult => {
       climate: region.climate,
       regionId: String(region.id),
       environment: target.environment,
+      tideDrivenFlow: target.tideDrivenFlow,
     })
   }
 

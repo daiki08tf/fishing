@@ -83,10 +83,10 @@
       "windy": 0.9
     },
     "tideAffinity": {
-      "low": 0.9,
-      "rising": 1.15,
+      "low": 0.85,
+      "rising": 1.2,
       "high": 1.05,
-      "falling": 1
+      "falling": 0.95
     },
     "flowAffinity": {
       "none": 1,

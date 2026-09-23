@@ -32,6 +32,7 @@
     }
   ],
   "habitatTags": ["rock", "current", "tide_race"],
+  "tideDrivenFlow": true,
   "current": {
     "preference": "strong"
   },
@@ -112,7 +113,7 @@
     },
     {
       "speciesId": "muroaji",
-      "basePresence": 0.4,
+      "basePresence": 0.28,
       "zoneAffinity": {
         "slack": 0.6,
         "seam": 1.2,
@@ -130,7 +131,7 @@
     },
     {
       "speciesId": "kijihata",
-      "basePresence": 0.2,
+      "basePresence": 0.38,
       "zoneAffinity": {
         "slack": 1.4,
         "seam": 0.9,
