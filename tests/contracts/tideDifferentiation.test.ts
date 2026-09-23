@@ -449,6 +449,36 @@ describe('global regression (non-Setouchi spots)', () => {
   })
 })
 
+describe('tide intel stays synchronized with live hints (Phase 19D)', () => {
+  const rewardById = (id: string) => {
+    const reward = content.contactRewards.find((entry) => String(entry.id) === id)
+    if (reward === undefined) throw new Error(`missing reward: ${id}`)
+    return reward
+  }
+
+  it('island-market tide intel names species that actually surface as hints', () => {
+    const message = rewardById('setouchi-island-market-intel-tide').message
+    // 上げ = 回遊（ムロアジ / サワラ）、下げ = タチウオ / スズキ — 実 hint ranking と一致。
+    expect(message).toContain('ムロアジ')
+    expect(message).toContain('サワラ')
+    expect(message).toContain('タチウオ')
+    expect(message).toContain('スズキ')
+    // tide → flow の因果を 1 文で教える（「潮が動くと流れが速くなる」）。
+    expect(message).toMatch(/潮が動くと流れが速くなる/)
+    // 攻略表にしない: 断定表現は禁止。
+    expect(message).not.toMatch(/必ず|一番|絶対/)
+  })
+
+  it('captain intel names species that surface at the offshore spot', () => {
+    const message = rewardById('captain-setouchi-intel-se').message
+    // running = ヒラマサ / slack = タイ・イシダイ / falling = カンパチ。
+    expect(message).toContain('ヒラマサ')
+    expect(message).toContain('タイ')
+    expect(message).toContain('イシダイ')
+    expect(message).toContain('カンパチ')
+  })
+})
+
 describe('buyer progression tuning (island-market only)', () => {
   it('compresses the pessimistic tail without changing typical/best pacing', () => {
     const market = content.buyers.find((entry) => String(entry.id) === 'setouchi-island-market')

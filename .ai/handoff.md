@@ -1278,3 +1278,9 @@ Phase 6 から持ち越した調整（プレイテスト前提）:
 - Encounter environmental authority = `FishSpecies.environmentAffinity`. The top-level profile fields (`tidePreference`, `currentPreference`, `seasonality`, `timeActivity`) are INERT — declared in schema/types but read by no resolver. Do not edit them to influence gameplay; schema cleanup deferred to a later phase.
 - `FishingSpot.tideDrivenFlow?: boolean` (only setouchi-hidden-channel-edge / setouchi-hidden-se-offshore): resolveEnvironment accepts the flag from spot-aware callers and folds tide step (rising/falling +1, high/low -1) into the same net-sum as rain before a single flow clamp.
 - Tide archetypes (species authority): Flood runner / High-water / Ebb hunter / Slack structure / depth-season specialist — see tests/contracts/tideDifferentiation.test.ts for the reference table.
+
+## Phase 19D (Setouchi Learning / UX polish)
+- Catch Result shows the ACTUAL landed zone name (`landedZoneName` in useFishingSession — the same `landedZoneId` used by encounter weighting and abrasion risk). Zone-less sessions render nothing; no causal claims ("潮だから釣れた") — observation only.
+- Setouchi intel synced to live hints: island-market@5 names ムロアジ/サワラ (rising) + タチウオ/スズキ (falling) and teaches the tide→flow causal link; captain@10 says タイやイシダイ for slack.
+- island-shore audit (19C.5 Low): Case A — kept unchanged. rising アイゴ gives the 回遊 hint; ebb/high teaching belongs to channel-edge per intel.
+- Learning-loop rule recorded in Bible §19 (Observe → Hypothesize → Act → Feedback).
