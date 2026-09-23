@@ -64,7 +64,7 @@ const spot = (id: string) => {
 }
 
 describe('expedition flow', () => {
-  it('prices Alaska as flight + lodging + permit in yen', () => {
+  it('prices Alaska as journey + lodging + permit in yen', () => {
     const plan = planFor('alaska-expedition', { nights: 5, lodgingId: 'alaska-budget-lodge' })
 
     expect(plan.domestic).toBe(false)

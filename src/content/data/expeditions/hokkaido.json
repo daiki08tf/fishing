@@ -9,21 +9,9 @@
     "oneWayCostYen": 22000,
     "oneWayMinutes": 180
   },
-  "nights": {
-    "default": 3,
-    "min": 2,
-    "max": 7
-  },
+  "nights": { "default": 3, "min": 2, "max": 7 },
   "lodgings": [
-    {
-      "id": "hokkaido-business-hotel",
-      "name": "Business Hotel",
-      "nightlyCostYen": 8000
-    },
-    {
-      "id": "hokkaido-riverside-lodge",
-      "name": "Riverside Lodge",
-      "nightlyCostYen": 14000
-    }
+    { "id": "hokkaido-business-hotel", "name": "Business Hotel", "nightlyCostYen": 8000 },
+    { "id": "hokkaido-riverside-lodge", "name": "Riverside Lodge", "nightlyCostYen": 14000 }
   ]
 }

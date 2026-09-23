@@ -586,6 +586,14 @@ Endgame（国内最難度 ¥200k+ / 長時間 / 高 Trust / 外洋）
   （ferry / island_access / public transport / current / tide / hidden / Trust /
   Discovery / Charter を 1 Region で広く検証できるため）。
 
+### Phase 19B への明示的な implementation requirement（19A review の引継ぎ）
+
+- **`island-ferry` の available 化**: `island-ferry` は `always_available` だが
+  `INITIAL_AVAILABLE_TRANSPORT_IDS` に未登録のため、19B で ferry route を使う Spot を
+  追加する際は、プレイヤーの `availableTransportIds` に `island-ferry` を入れる措置が
+  必須（route が存在しても未登録だと `not_available` で option に出ない）。
+  19A では意図的に変更していない（ferry route 0 件のため無影響）。
+
 ---
 
 ## 15. Gate 1 — `stage:'planned'` の実挙動（実コード追跡済み）

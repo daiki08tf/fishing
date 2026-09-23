@@ -9,27 +9,11 @@
     "oneWayCostYen": 150000,
     "oneWayMinutes": 1080
   },
-  "nights": {
-    "default": 5,
-    "min": 3,
-    "max": 14
-  },
+  "nights": { "default": 5, "min": 3, "max": 14 },
   "lodgings": [
-    {
-      "id": "alaska-budget-lodge",
-      "name": "Budget Lodge",
-      "nightlyCostYen": 9000
-    },
-    {
-      "id": "alaska-standard-lodge",
-      "name": "Standard Lodge",
-      "nightlyCostYen": 16000
-    },
-    {
-      "id": "alaska-fishing-lodge",
-      "name": "Fishing Lodge",
-      "nightlyCostYen": 28000
-    }
+    { "id": "alaska-budget-lodge", "name": "Budget Lodge", "nightlyCostYen": 9000 },
+    { "id": "alaska-standard-lodge", "name": "Standard Lodge", "nightlyCostYen": 16000 },
+    { "id": "alaska-fishing-lodge", "name": "Fishing Lodge", "nightlyCostYen": 28000 }
   ],
   "permit": {
     "permitId": "alaska-fishing-permit",
