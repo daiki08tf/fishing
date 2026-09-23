@@ -115,6 +115,9 @@ describe('fightPresentation', () => {
         hookHold: 0.5,
       })
       expect(result?.title).toBe('ラインをすべて引き出された')
+      expect(result?.detail).toBe(
+        'ラインが出きって、スプールの容量を使い切った。ライン残量を見ながら走らせすぎないようにしよう。',
+      )
       expect(result?.state).toBe('スプール容量 45m を出し尽くした')
     })
 

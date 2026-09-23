@@ -152,7 +152,8 @@ export const failureExplanation = (input: {
     case 'SPOOLED':
       return {
         title: 'ラインをすべて引き出された',
-        detail: '魚の走りにラインを出し尽くした。走りを早めに止めるか、容量の大きいリールを。',
+        detail:
+          'ラインが出きって、スプールの容量を使い切った。ライン残量を見ながら走らせすぎないようにしよう。',
         state:
           input.lineCapacityM === null
             ? null
