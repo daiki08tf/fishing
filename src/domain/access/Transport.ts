@@ -13,6 +13,12 @@ export const TRANSPORT_TYPES = [
   'compact_car',
   'suv',
   'rental_car',
+  /**
+   * Phase 19A: 島行きの旅客フェリー。
+   * `public_transport` と `island_access` を供給するが、乗客としてしか乗れないため
+   * `boat_required` / `offshore` は満たさない（Fishing Boat ではない）。
+   */
+  'ferry',
   'kayak',
   'rental_boat',
   'owned_boat',

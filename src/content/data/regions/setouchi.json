@@ -1,0 +1,43 @@
+{
+  "id": "setouchi",
+  "countryId": "japan",
+  "name": "瀬戸内海",
+  "stage": "planned",
+  "dataStatus": "provisional",
+  "base": {
+    "id": "setouchi-base",
+    "name": "瀬戸内 ベース",
+    "areaId": "setouchi-urban"
+  },
+  "areas": [
+    {
+      "id": "setouchi-urban",
+      "name": "都市港湾帯"
+    },
+    {
+      "id": "setouchi-islands",
+      "name": "島嶼部"
+    },
+    {
+      "id": "setouchi-straits",
+      "name": "瀬（強潮流）"
+    },
+    {
+      "id": "setouchi-open",
+      "name": "外海境界"
+    }
+  ],
+  "climate": {
+    "annualMeanWaterC": 18,
+    "seasonalSwingC": 9,
+    "weatherWeights": {
+      "clear": 36,
+      "cloudy": 30,
+      "light_rain": 12,
+      "rain": 10,
+      "windy": 12
+    },
+    "tidePhaseOffset": 0.4,
+    "tideRange": "large"
+  }
+}

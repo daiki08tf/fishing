@@ -182,6 +182,12 @@ export const leaveForSpot = (input: {
     playerTransports: input.playerTransports,
     knowledge,
     permitsEnabled: true,
+    /*
+     * Phase 19A: season 条件にゲーム内月を渡す（往路のみ）。
+     * 実世界の日付・timezone には依存せず、WorldTime（ゲーム内時計）を使う。
+     * 帰路（leaveSpot）には渡さない — 月末跨ぎで帰れなくなる状態を作らない。
+     */
+    month: world.time.month,
     ...(input.permits === undefined ? {} : { permits: input.permits }),
     ...(input.contactTrust === undefined ? {} : { contactTrust: input.contactTrust }),
     ...(input.knownContactIds === undefined ? {} : { knownContactIds: input.knownContactIds }),

@@ -476,4 +476,105 @@ describe('access engine', () => {
       expect(withKnownContacts.travelOptions).toEqual(withoutKnownContacts.travelOptions)
     })
   })
+
+  describe('ferry Transport (Phase 19A)', () => {
+    const withFerry = createTestTransportState({
+      available: ['walk', 'train', 'bus', 'rental-car', 'rental-boat', 'island-ferry'],
+    })
+
+    it('satisfies island_access and public_transport on a ferry route', () => {
+      const islandPortSpot = createTestSpot({
+        access: [
+          { kind: 'capability', capability: 'public_transport' },
+          { kind: 'capability', capability: 'island_access' },
+        ],
+        travelOptions: [
+          {
+            id: 'ferry-route',
+            transportTypes: ['ferry'],
+            requiredCapabilities: ['island_access'],
+            features: [],
+            baseMinutes: 120,
+            distanceKm: 40,
+            baseOneWayCost: 2_400,
+          },
+        ],
+      })
+
+      const evaluation = evaluateAccess({
+        ...base,
+        spot: islandPortSpot,
+        playerTransports: withFerry,
+      })
+
+      expect(evaluation.accessible).toBe(true)
+      expect(evaluation.travelOptions[0]).toMatchObject({
+        transportId: 'island-ferry',
+        transportType: 'ferry',
+        oneWayCost: 2_400,
+      })
+    })
+
+    it('does NOT satisfy boat_required — a ferry is a ride, not a fishing boat', () => {
+      const boatOnlySpot = createTestSpot({
+        access: [{ kind: 'capability', capability: 'boat_required' }],
+        travelOptions: [
+          {
+            id: 'boat-route',
+            transportTypes: ['ferry', 'rental_boat'],
+            requiredCapabilities: ['boat_required'],
+            features: ['boat_rental', 'marina'],
+            baseMinutes: 40,
+            distanceKm: 8,
+            baseOneWayCost: 0,
+          },
+        ],
+      })
+
+      const evaluation = evaluateAccess({
+        ...base,
+        spot: boatOnlySpot,
+        playerTransports: withFerry,
+      })
+
+      // ferry は route type には一致するが boat_required capability を持たない。
+      // rental-boat（rental 利用可）だけが option になる。
+      expect(evaluation.travelOptions.map((option) => String(option.transportId))).toEqual([
+        'rental-boat',
+      ])
+    })
+
+    it('does NOT satisfy offshore — island port access is not offshore boat access', () => {
+      const offshoreSpot = createTestSpot({
+        access: [
+          { kind: 'capability', capability: 'boat_required' },
+          { kind: 'capability', capability: 'offshore' },
+        ],
+        travelOptions: [
+          {
+            id: 'offshore-route',
+            transportTypes: ['ferry', 'rental_boat'],
+            requiredCapabilities: ['boat_required', 'offshore'],
+            features: ['boat_rental', 'marina'],
+            baseMinutes: 60,
+            distanceKm: 30,
+            baseOneWayCost: 0,
+          },
+        ],
+      })
+
+      const evaluation = evaluateAccess({
+        ...base,
+        spot: offshoreSpot,
+        playerTransports: withFerry,
+      })
+
+      expect(
+        evaluation.travelOptions.some((option) => String(option.transportId) === 'island-ferry'),
+      ).toBe(false)
+      expect(evaluation.travelOptions.map((option) => String(option.transportId))).toEqual([
+        'rental-boat',
+      ])
+    })
+  })
 })

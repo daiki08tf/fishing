@@ -1,6 +1,6 @@
 export {
   createInitialExpeditionState,
-  FLIGHT_TYPES,
+  JOURNEY_KINDS,
   ownsPermit,
   permitIdsForAccess,
   planExpedition,
@@ -9,11 +9,11 @@ export {
 export type {
   ActiveExpedition,
   ExpeditionDefinition,
-  ExpeditionFlight,
+  ExpeditionJourney,
   ExpeditionLodging,
   ExpeditionNights,
   ExpeditionPermit,
   ExpeditionPlan,
   ExpeditionState,
-  FlightType,
+  JourneyKind,
 } from './Expedition'

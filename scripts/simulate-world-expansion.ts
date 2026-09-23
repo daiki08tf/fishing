@@ -281,7 +281,7 @@ export const simulateWorldExpansion = (): WorldExpansionResult => {
     const lodging = expedition.lodgings[Math.floor((expedition.lodgings.length - 1) / 2)]
 
     return (
-      expedition.flight.oneWayCostYen * 2 +
+      expedition.journey.oneWayCostYen * 2 +
       (lodging?.nightlyCostYen ?? 0) * expedition.nights.default +
       (expedition.permit?.costYen ?? 0)
     )
@@ -434,13 +434,13 @@ export const simulateWorldExpansion = (): WorldExpansionResult => {
     .map((expedition) => {
       const lodging = expedition.lodgings[Math.floor((expedition.lodgings.length - 1) / 2)]
       const total =
-        expedition.flight.oneWayCostYen * 2 +
+        expedition.journey.oneWayCostYen * 2 +
         (lodging?.nightlyCostYen ?? 0) * expedition.nights.default +
         (expedition.permit?.costYen ?? 0)
 
       return {
         regionId: String(expedition.regionId),
-        flightType: expedition.flight.transportType,
+        journeyKind: expedition.journey.kind,
         nights: expedition.nights.default,
         total,
         monthsOfFreeCash: total / freeCash,
@@ -449,15 +449,15 @@ export const simulateWorldExpansion = (): WorldExpansionResult => {
     .sort((left, right) => left.total - right.total)
 
   lines.push('')
-  lines.push('--- expedition economy (PROVISIONAL; return flight + default nights + permit) ---')
+  lines.push('--- expedition economy (PROVISIONAL; return journey + default nights + permit) ---')
   for (const row of expeditionRows) {
     lines.push(
-      `  ${row.regionId.padEnd(22)} ${row.flightType.padEnd(20)} nights=${String(row.nights)} total=¥${String(row.total)}（自由資金 ${row.monthsOfFreeCash.toFixed(2)} か月分）`,
+      `  ${row.regionId.padEnd(22)} ${row.journeyKind.padEnd(20)} nights=${String(row.nights)} total=¥${String(row.total)}（自由資金 ${row.monthsOfFreeCash.toFixed(2)} か月分）`,
     )
   }
 
-  const domestic = expeditionRows.filter((row) => row.flightType === 'domestic_flight')
-  const international = expeditionRows.filter((row) => row.flightType === 'international_flight')
+  const domestic = expeditionRows.filter((row) => row.journeyKind === 'domestic_flight')
+  const international = expeditionRows.filter((row) => row.journeyKind === 'international_flight')
   const mostExpensiveDomestic = Math.max(...domestic.map((row) => row.total), 0)
   const cheapestInternational = Math.min(
     ...international.map((row) => row.total),

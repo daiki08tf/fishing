@@ -3,8 +3,8 @@
   "regionId": "hokkaido",
   "name": "北海道遠征",
   "dataStatus": "provisional",
-  "flight": {
-    "transportType": "domestic_flight",
+  "journey": {
+    "kind": "domestic_flight",
     "name": "国内線 東京→北海道",
     "oneWayCostYen": 22000,
     "oneWayMinutes": 180

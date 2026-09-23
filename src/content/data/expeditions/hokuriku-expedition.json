@@ -3,8 +3,8 @@
   "regionId": "hokuriku-japan-sea",
   "name": "北陸遠征",
   "dataStatus": "provisional",
-  "flight": {
-    "transportType": "domestic_flight",
+  "journey": {
+    "kind": "domestic_flight",
     "name": "国内線 東京→北陸",
     "oneWayCostYen": 17000,
     "oneWayMinutes": 110

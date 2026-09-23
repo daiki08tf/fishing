@@ -237,8 +237,8 @@ export const ExpeditionScreen = () => {
                     {country.name} / {region.name} / 拠点 {region.base.name}
                   </p>
                   <p className="spot-card__meta">
-                    {definition.flight.name} 往復 {formatYen(definition.flight.oneWayCostYen * 2)} /
-                    移動 {formatDuration(definition.flight.oneWayMinutes * 2)}（往復）
+                    {definition.journey.name} 往復 {formatYen(definition.journey.oneWayCostYen * 2)}{' '}
+                    / 移動 {formatDuration(definition.journey.oneWayMinutes * 2)}（往復）
                   </p>
 
                   <div className="field">

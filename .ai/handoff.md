@@ -1257,3 +1257,12 @@ Phase 6 から持ち越した調整（プレイテスト前提）:
 - FishingScreen: JP labels (魚までの距離/ドラグ/決定数/リーダー/弱点), dedicated line-remaining row with warn/danger tone, contextual hint line, failure panel on terminal phases
 - Mobile smoke (playwright-core + cached chromium): 375/390/430px, no overflow, buttons 56px, console errors 0
 - check green: 985 tests (+18), all sims, boot gzip 175.35kB
+
+## Phase 19A done (Japan world skeleton + minimal infra)
+- docs/JAPAN_WORLD_DESIGN_BIBLE.md Rev.3 committed (19-region map, Gate 1 planned-region trace, 19A contract)
+- Expedition flight -> journey ({kind,name,oneWayCostYen,oneWayMinutes}); 13 JSONs mechanically renamed (values identical)
+- ferry TransportType added (public_transport+island_access; NOT boat_required/offshore); generic island-ferry definition added but no routes yet
+- access.season wired to world.time.month on leaveForSpot only (return trip never re-evaluates season)
+- 13 planned Japan regions registered (definition-only; packKey null; hidden from all surfaces)
+- check green: 1010 tests, all sims, boot gzip 177.1kB
+- HANDOFF for 19B: island-ferry is always_available but NOT in INITIAL_AVAILABLE_TRANSPORT_IDS — ferry routes won't resolve until it is added to availableTransportIds (or equivalent). Deliberately unchanged in 19A.

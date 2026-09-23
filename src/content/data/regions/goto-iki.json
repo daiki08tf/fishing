@@ -1,0 +1,43 @@
+{
+  "id": "goto-iki",
+  "countryId": "japan",
+  "name": "五島・壱岐",
+  "stage": "planned",
+  "dataStatus": "provisional",
+  "base": {
+    "id": "goto-base",
+    "name": "五島・壱岐 ベース",
+    "areaId": "goto-port"
+  },
+  "areas": [
+    {
+      "id": "goto-port",
+      "name": "福江島の港"
+    },
+    {
+      "id": "goto-rocks",
+      "name": "五島の磯群"
+    },
+    {
+      "id": "iki-island",
+      "name": "壱岐"
+    },
+    {
+      "id": "goto-offshore",
+      "name": "沖の瀬"
+    }
+  ],
+  "climate": {
+    "annualMeanWaterC": 20,
+    "seasonalSwingC": 8,
+    "weatherWeights": {
+      "clear": 28,
+      "cloudy": 30,
+      "light_rain": 12,
+      "rain": 14,
+      "windy": 16
+    },
+    "tidePhaseOffset": 0.55,
+    "tideRange": "moderate"
+  }
+}

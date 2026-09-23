@@ -1,0 +1,39 @@
+{
+  "id": "sakishima",
+  "countryId": "japan",
+  "name": "宮古・八重山",
+  "stage": "planned",
+  "dataStatus": "provisional",
+  "base": {
+    "id": "sakishima-base",
+    "name": "先島 ベース",
+    "areaId": "sakishima-yaeyama"
+  },
+  "areas": [
+    {
+      "id": "sakishima-miyako",
+      "name": "宮古島"
+    },
+    {
+      "id": "sakishima-yaeyama",
+      "name": "八重山"
+    },
+    {
+      "id": "sakishima-blue",
+      "name": "外洋・沖の瀬"
+    }
+  ],
+  "climate": {
+    "annualMeanWaterC": 26,
+    "seasonalSwingC": 5,
+    "weatherWeights": {
+      "clear": 32,
+      "cloudy": 30,
+      "light_rain": 14,
+      "rain": 12,
+      "windy": 12
+    },
+    "tidePhaseOffset": 0.15,
+    "tideRange": "moderate"
+  }
+}

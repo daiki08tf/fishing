@@ -3,7 +3,7 @@
   "counts": {
     "species": 229,
     "spots": 150,
-    "regions": 14,
+    "regions": 27,
     "countries": 9,
     "buyers": 24,
     "contacts": 5,
@@ -4510,6 +4510,14 @@
       "packKey": "region:alaska"
     },
     {
+      "id": "amami",
+      "name": "奄美",
+      "countryId": "japan",
+      "countryName": "日本",
+      "stage": "planned",
+      "packKey": null
+    },
+    {
       "id": "amazon-basin",
       "name": "アマゾン流域",
       "countryId": "brazil",
@@ -4534,6 +4542,14 @@
       "packKey": "region:british-columbia"
     },
     {
+      "id": "goto-iki",
+      "name": "五島・壱岐",
+      "countryId": "japan",
+      "countryName": "日本",
+      "stage": "planned",
+      "packKey": null
+    },
+    {
       "id": "hokkaido",
       "name": "北海道",
       "countryId": "japan",
@@ -4550,12 +4566,44 @@
       "packKey": "region:hokuriku-japan-sea"
     },
     {
+      "id": "izu-islands",
+      "name": "伊豆諸島",
+      "countryId": "japan",
+      "countryName": "日本",
+      "stage": "planned",
+      "packKey": null
+    },
+    {
       "id": "izu-peninsula",
       "name": "伊豆半島",
       "countryId": "japan",
       "countryName": "日本",
       "stage": "playable",
       "packKey": "region:izu-peninsula"
+    },
+    {
+      "id": "kii-peninsula",
+      "name": "紀伊半島",
+      "countryId": "japan",
+      "countryName": "日本",
+      "stage": "planned",
+      "packKey": null
+    },
+    {
+      "id": "kyushu-north",
+      "name": "九州北部",
+      "countryId": "japan",
+      "countryName": "日本",
+      "stage": "planned",
+      "packKey": null
+    },
+    {
+      "id": "kyushu-south",
+      "name": "九州南部",
+      "countryId": "japan",
+      "countryName": "日本",
+      "stage": "planned",
+      "packKey": null
     },
     {
       "id": "new-zealand",
@@ -4574,6 +4622,22 @@
       "packKey": "region:norway-fjords"
     },
     {
+      "id": "ogasawara",
+      "name": "小笠原",
+      "countryId": "japan",
+      "countryName": "日本",
+      "stage": "planned",
+      "packKey": null
+    },
+    {
+      "id": "oki-islands",
+      "name": "隠岐諸島",
+      "countryId": "japan",
+      "countryName": "日本",
+      "stage": "planned",
+      "packKey": null
+    },
+    {
       "id": "okinawa",
       "name": "沖縄",
       "countryId": "japan",
@@ -4588,6 +4652,38 @@
       "countryName": "オーストラリア",
       "stage": "playable",
       "packKey": "region:queensland"
+    },
+    {
+      "id": "sakishima",
+      "name": "宮古・八重山",
+      "countryId": "japan",
+      "countryName": "日本",
+      "stage": "planned",
+      "packKey": null
+    },
+    {
+      "id": "sanin",
+      "name": "山陰",
+      "countryId": "japan",
+      "countryName": "日本",
+      "stage": "planned",
+      "packKey": null
+    },
+    {
+      "id": "setouchi",
+      "name": "瀬戸内海",
+      "countryId": "japan",
+      "countryName": "日本",
+      "stage": "planned",
+      "packKey": null
+    },
+    {
+      "id": "shikoku",
+      "name": "四国",
+      "countryId": "japan",
+      "countryName": "日本",
+      "stage": "planned",
+      "packKey": null
     },
     {
       "id": "thailand",
@@ -4612,6 +4708,14 @@
       "countryName": "日本",
       "stage": "playable",
       "packKey": "region:tokyo-area"
+    },
+    {
+      "id": "tsushima",
+      "name": "対馬",
+      "countryId": "japan",
+      "countryName": "日本",
+      "stage": "planned",
+      "packKey": null
     }
   ],
   "packs": [

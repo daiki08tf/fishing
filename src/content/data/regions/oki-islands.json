@@ -1,0 +1,39 @@
+{
+  "id": "oki-islands",
+  "countryId": "japan",
+  "name": "隠岐諸島",
+  "stage": "planned",
+  "dataStatus": "provisional",
+  "base": {
+    "id": "oki-base",
+    "name": "隠岐 ベース",
+    "areaId": "oki-port"
+  },
+  "areas": [
+    {
+      "id": "oki-port",
+      "name": "島前・島後の港"
+    },
+    {
+      "id": "oki-rocks",
+      "name": "地磯・沖磯"
+    },
+    {
+      "id": "oki-offshore",
+      "name": "沖の瀬"
+    }
+  ],
+  "climate": {
+    "annualMeanWaterC": 17,
+    "seasonalSwingC": 9,
+    "weatherWeights": {
+      "clear": 26,
+      "cloudy": 28,
+      "light_rain": 12,
+      "rain": 14,
+      "windy": 20
+    },
+    "tidePhaseOffset": 0.55,
+    "tideRange": "moderate"
+  }
+}

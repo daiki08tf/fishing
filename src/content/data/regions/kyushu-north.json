@@ -1,0 +1,39 @@
+{
+  "id": "kyushu-north",
+  "countryId": "japan",
+  "name": "九州北部",
+  "stage": "planned",
+  "dataStatus": "provisional",
+  "base": {
+    "id": "kyushu-north-base",
+    "name": "九州北部 ベース",
+    "areaId": "kyushu-hakata"
+  },
+  "areas": [
+    {
+      "id": "kyushu-hakata",
+      "name": "博多湾・都市港湾"
+    },
+    {
+      "id": "kyushu-genkai",
+      "name": "玄界灘"
+    },
+    {
+      "id": "kyushu-west-coast",
+      "name": "西海岸"
+    }
+  ],
+  "climate": {
+    "annualMeanWaterC": 19,
+    "seasonalSwingC": 9,
+    "weatherWeights": {
+      "clear": 30,
+      "cloudy": 30,
+      "light_rain": 12,
+      "rain": 14,
+      "windy": 14
+    },
+    "tidePhaseOffset": 0.5,
+    "tideRange": "moderate"
+  }
+}
