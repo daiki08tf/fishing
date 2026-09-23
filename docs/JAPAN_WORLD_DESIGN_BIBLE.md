@@ -750,3 +750,20 @@ Endgame（国内最難度 ¥200k+ / 長時間 / 高 Trust / 外洋）
 | Low | 3 | (a) scientificName 重複 warn（既存、非 blocking）。(b) expedition 前提条件が無いため進行は soft order（仕様として許容）。(c) `waterKindOf` の語彙拡張は任意（habitatTags 運用で回避可） |
 
 **判定: Phase 18.5B Bible は Approved 相当。Phase 19A は §16 の contract に従い Ready for Implementation。**
+
+---
+
+## 19. Regional Gameplay Identity（Phase 19C 原則）
+
+Region が「読む環境変数」（潮・天候・季節・水深等）を掲げるだけでは Regional Identity としない。
+以下をすべて満たして初めて identity が成立する:
+
+1. その Region の主要 Species が、当該変数に対して**異なる向きの affinity curve**を持つ
+   （全 Species が同方向に反応するだけでは不成立 — Phase 19B の瀬戸内がこの失敗例）。
+2. 変数の状態遷移によって、合理的な **target / zone / Spot が少なくとも 3 状態で切り替わる**。
+3. その情報を **UI（ConditionPanel / hints）と Contact intel から攻略情報なしで推論できる**。
+4. Encounter の環境 authority は `environmentAffinity` のみ（top-level の
+   `tidePreference` / `currentPreference` / `seasonality` / `timeActivity` は inert — 編集しても効果なし）。
+5. 潮流が潮位に連動する Spot は `tideDrivenFlow` を宣言し、潮位と流れの因果を
+   ConditionPanel の「流れ」表示から学習できるようにする（moving tide = 強い流れ、
+   slack 寄り = 緩い流れ。high = strong のような単純対応にしない）。
