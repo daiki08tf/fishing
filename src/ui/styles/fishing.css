@@ -515,3 +515,39 @@
   font-size: 0.8125rem;
   color: var(--color-text);
 }
+
+/* ── Phase 18.5A: Big Game ファイトの補助表示 ─────────────── */
+
+/*
+ * 物理ライン残量。「残量注意 / スプール危険」だけ色を変える 1 行表示
+ * （画面を占有しない）。閾値は domain の reserveLineM 由来。
+ */
+.fight__line {
+  margin: 0.5rem 0 0;
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+.fight__line--warn {
+  color: var(--color-warn-text);
+  font-weight: 600;
+}
+
+.fight__line--danger {
+  color: var(--color-danger);
+  font-weight: 700;
+}
+
+/* 状況に合わせた一文ヒント（正解ではなく判断材料）。 */
+.fight__hint {
+  margin: 0.5rem 0 0;
+  border-left: 3px solid var(--color-accent);
+  padding: 0.2rem 0.55rem;
+  font-size: 0.8125rem;
+  color: var(--color-text);
+}
+
+/* 終端フェーズの失敗説明パネル。 */
+.panel--failure {
+  border-color: var(--color-danger);
+}
