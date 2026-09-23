@@ -1212,3 +1212,10 @@ Phase 6 から持ち越した調整（プレイテスト前提）:
 - 補足: 実行環境によっては Git メタデータ（`.git`）への書き込みが制限され、
   `git add` / `git commit` が失敗することがある。
   その場合はユーザー側でコミットを実行し、本文書を更新する。
+
+## Phase 18C done (e6c29ac)
+- fightReadiness.ts: ○/△/× readiness marks (line_capacity/drag/retrieve/weak_link/abrasion) vs BIG_GAME_REFERENCE_DEMAND_KG=36 or a concrete FightDemand; challenge masked until hasBigGameExperience
+- bigGameRecords.ts: records derived from Codex PB (>=20kg or >=90 percentile); uncaught species stay hidden
+- UI: TACKLE "BIG GAME READINESS" panel, expedition-in-progress outlook line, CODEX "BIG GAME RECORDS" section
+- No new save state. check green (965 tests, boot gzip 174.5kB)
+- NEXT: Phase 18D content — big-game spots (hidden, captain/guide discover_spot), heavy/endgame gear, contacts
