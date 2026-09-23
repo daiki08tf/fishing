@@ -3,7 +3,7 @@
   "japaneseName": "タチウオ（暫定）",
   "scientificName": "Trichiurus lepturus",
   "waterTypes": ["salt"],
-  "distribution": ["hokuriku-japan-sea", "izu-peninsula", "tokyo-area"],
+  "distribution": ["hokuriku-japan-sea", "izu-peninsula", "setouchi", "tokyo-area"],
   "habitats": ["open", "deep"],
   "depthRange": {
     "min": 0,

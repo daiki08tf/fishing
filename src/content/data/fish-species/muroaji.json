@@ -8,7 +8,7 @@
   "baits": ["cut"],
   "lureCategories": ["metal_jig", "spoon"],
   "fishingMethods": ["light_lure", "bait"],
-  "distribution": ["izu-peninsula", "okinawa", "tokyo-area"],
+  "distribution": ["izu-peninsula", "okinawa", "setouchi", "tokyo-area"],
   "depthRange": {
     "min": 0,
     "max": 40

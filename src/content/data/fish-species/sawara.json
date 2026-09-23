@@ -8,7 +8,7 @@
   "baits": ["cut", "live"],
   "lureCategories": ["jig", "minnow"],
   "fishingMethods": ["lure", "light_lure"],
-  "distribution": ["hokuriku-japan-sea", "izu-peninsula", "tohoku-pacific"],
+  "distribution": ["hokuriku-japan-sea", "izu-peninsula", "setouchi", "tohoku-pacific"],
   "depthRange": {
     "min": 2,
     "max": 40

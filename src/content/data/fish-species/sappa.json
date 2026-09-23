@@ -8,7 +8,13 @@
   "baits": ["dough", "worm"],
   "lureCategories": ["soft_plastic", "spoon"],
   "fishingMethods": ["light_lure", "bait"],
-  "distribution": ["izu-peninsula", "tohoku-pacific", "hokuriku-japan-sea", "tokyo-area"],
+  "distribution": [
+    "hokuriku-japan-sea",
+    "izu-peninsula",
+    "setouchi",
+    "tohoku-pacific",
+    "tokyo-area"
+  ],
   "depthRange": {
     "min": 0,
     "max": 20

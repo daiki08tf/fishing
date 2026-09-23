@@ -8,7 +8,7 @@
   "baits": ["cut", "live"],
   "lureCategories": ["soft_plastic", "jig"],
   "fishingMethods": ["bottom", "lure"],
-  "distribution": ["hokuriku-japan-sea"],
+  "distribution": ["hokuriku-japan-sea", "setouchi"],
   "depthRange": {
     "min": 20,
     "max": 120

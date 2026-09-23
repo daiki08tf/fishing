@@ -8,7 +8,7 @@
   "baits": ["dough", "worm"],
   "lureCategories": ["soft_plastic", "minnow"],
   "fishingMethods": ["light_lure", "bait"],
-  "distribution": ["izu-peninsula", "okinawa"],
+  "distribution": ["izu-peninsula", "okinawa", "setouchi"],
   "depthRange": {
     "min": 1,
     "max": 15

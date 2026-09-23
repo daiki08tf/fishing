@@ -2,7 +2,13 @@
   "id": "magochi",
   "japaneseName": "マゴチ（暫定）",
   "waterTypes": ["salt", "brackish"],
-  "distribution": ["hokuriku-japan-sea", "izu-peninsula", "tohoku-pacific", "tokyo-area"],
+  "distribution": [
+    "hokuriku-japan-sea",
+    "izu-peninsula",
+    "setouchi",
+    "tohoku-pacific",
+    "tokyo-area"
+  ],
   "habitats": ["sand", "estuary"],
   "depthRange": {
     "min": 0,
