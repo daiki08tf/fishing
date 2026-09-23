@@ -97,6 +97,8 @@ export type FishingSession = {
   /** Phase 17A: 狙う水域が depth-only Zone のときだけ埋まる。 */
   readonly depthCapability: DepthCapability | null
   readonly resolvedDeployment: ResolvedDeployment | null
+  /** Phase 19D: 釣果に実際に効いた着水 Zone の名前（Zone 無しなら null）。 */
+  readonly landedZoneName: string | null
   readonly seaState: SeaState | null
   readonly marineReadiness: MarineReadinessResult | null
   /** Phase 18A: 今のタックルの戦闘能力（派生値・Save しない）。 */
@@ -322,6 +324,20 @@ export const useFishingSession = (): FishingSession => {
     })
   }, [depthCapability, activeTargetZoneId, fishingZones, session.seed, spot])
 
+  /*
+   * Phase 19D: 釣果に実際に効いた着水 Zone の single authority。
+   * 「狙った Zone」ではなく resolveCast / resolveDeployment が返した
+   * **実着水 Zone** を使う（Encounter 重み・根ズレ・Catch Result が同じ値を見る）。
+   */
+  const landedZoneId = isDepthTargetZone
+    ? resolvedDeployment !== null && resolvedDeployment.reachable
+      ? resolvedDeployment.landedZoneId
+      : activeTargetZoneId
+    : resolvedCast !== null && resolvedCast.reachable
+      ? resolvedCast.landedZoneId
+      : activeTargetZoneId
+  const landedZoneName = fishingZones.find((zone) => zone.id === landedZoneId)?.name ?? null
+
   const seaState = useMemo<SeaState | null>(
     () => (environment === null ? null : resolveSeaState(environment)),
     [environment],
@@ -376,13 +392,6 @@ export const useFishingSession = (): FishingSession => {
       }
 
       const environmentWeight = conditions?.speciesModifiers[String(found.id)] ?? 1
-      const landedZoneId = isDepthTargetZone
-        ? resolvedDeployment !== null && resolvedDeployment.reachable
-          ? resolvedDeployment.landedZoneId
-          : activeTargetZoneId
-        : resolvedCast !== null && resolvedCast.reachable
-          ? resolvedCast.landedZoneId
-          : activeTargetZoneId
       const zoneWeight =
         landedZoneId === null ? 1 : zoneAffinityMultiplier(occurrence, landedZoneId)
       const bite = resolveBiteCompatibility({
@@ -473,17 +482,10 @@ export const useFishingSession = (): FishingSession => {
    * 解決する。Engine は Zone を知らないので数値だけ渡す。
    */
   const abrasionRisk = useMemo(() => {
-    const landedZoneId = isDepthTargetZone
-      ? resolvedDeployment !== null && resolvedDeployment.reachable
-        ? resolvedDeployment.landedZoneId
-        : activeTargetZoneId
-      : resolvedCast !== null && resolvedCast.reachable
-        ? resolvedCast.landedZoneId
-        : activeTargetZoneId
     const zone = fishingZones.find((entry) => entry.id === landedZoneId)
 
     return zone === undefined ? 0 : resolveAbrasionRisk(zone.habitatTags)
-  }, [isDepthTargetZone, resolvedDeployment, resolvedCast, activeTargetZoneId, fishingZones])
+  }, [landedZoneId, fishingZones])
 
   /*
    * セッションの入力（Encounter・倍率・Knowledge）。
@@ -692,6 +694,7 @@ export const useFishingSession = (): FishingSession => {
     platform,
     depthCapability,
     resolvedDeployment,
+    landedZoneName,
     seaState,
     marineReadiness,
     fightCapability,

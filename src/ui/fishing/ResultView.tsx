@@ -32,6 +32,12 @@ export type CatchResult = {
   readonly skillPointsGained: number
   /** この魚種の通算捕獲数（Codex 未記録なら null）。 */
   readonly catchCount: number | null
+  /**
+   * 実際に着水した Zone の名前（Phase 19D）。
+   * Zone の無い釣行では null — その場合は行ごと出さない。
+   * 観測事実だけを出し、「潮だから釣れた」のような因果は書かない。
+   */
+  readonly landedZoneName?: string | null
 }
 
 export type ResultViewProps = {
@@ -57,6 +63,10 @@ export const ResultView = ({ result, disposed, onKeep, onRelease }: ResultViewPr
       firstCatch={result.firstCatch}
       personalBest={result.personalBest}
     />
+
+    {result.landedZoneName === undefined || result.landedZoneName === null ? null : (
+      <p className="result-view__status">{result.landedZoneName}で釣れた</p>
+    )}
 
     <div className="controls controls--result result-view__actions">
       <button

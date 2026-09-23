@@ -225,6 +225,7 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
     resolvedCast,
     depthCapability,
     resolvedDeployment,
+    landedZoneName,
     marineReadiness,
     methodPlatformOk,
     presentationMode,
@@ -535,6 +536,7 @@ export const FishingScreen = ({ onExit }: FishingScreenProps) => {
           levelUpTo,
           skillPointsGained: lastCatch?.skillPointsGained ?? 0,
           catchCount: record?.catchCount ?? null,
+          landedZoneName,
         }}
         disposed={disposed}
         onKeep={() => {
