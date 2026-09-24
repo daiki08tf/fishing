@@ -1,0 +1,77 @@
+ItemID,Category,Name,Tier,Brand,Status,PriceJPY,Notes
+terminal-001,sinker,Split Shot,basic,Gamakaze,FUTURE_PHASE,325,将来の仕掛けシステム用
+terminal-002,sinker,Split Shot,premium,Gamakaze,FUTURE_PHASE,350,将来の仕掛けシステム用
+terminal-003,sinker,Egg Sinker,basic,Gamakaze,FUTURE_PHASE,375,将来の仕掛けシステム用
+terminal-004,sinker,Egg Sinker,premium,Gamakaze,FUTURE_PHASE,400,将来の仕掛けシステム用
+terminal-005,sinker,Bullet Sinker,basic,Gamakaze,FUTURE_PHASE,425,将来の仕掛けシステム用
+terminal-006,sinker,Bullet Sinker,premium,Gamakaze,FUTURE_PHASE,450,将来の仕掛けシステム用
+terminal-007,sinker,Bank Sinker,basic,Gamakaze,FUTURE_PHASE,475,将来の仕掛けシステム用
+terminal-008,sinker,Bank Sinker,premium,Gamakaze,FUTURE_PHASE,500,将来の仕掛けシステム用
+terminal-009,sinker,Casting Sinker,basic,Gamakaze,FUTURE_PHASE,525,将来の仕掛けシステム用
+terminal-010,sinker,Casting Sinker,premium,Gamakaze,FUTURE_PHASE,550,将来の仕掛けシステム用
+terminal-011,sinker,Drop Shot Weight,basic,Gamakaze,FUTURE_PHASE,575,将来の仕掛けシステム用
+terminal-012,sinker,Drop Shot Weight,premium,Gamakaze,FUTURE_PHASE,600,将来の仕掛けシステム用
+terminal-013,float,Small Float,basic,Gamakaze,FUTURE_PHASE,625,将来の仕掛けシステム用
+terminal-014,float,Small Float,premium,Gamakaze,FUTURE_PHASE,650,将来の仕掛けシステム用
+terminal-015,float,Stick Float,basic,Gamakaze,FUTURE_PHASE,675,将来の仕掛けシステム用
+terminal-016,float,Stick Float,premium,Gamakaze,FUTURE_PHASE,700,将来の仕掛けシステム用
+terminal-017,float,Round Float,basic,Gamakaze,FUTURE_PHASE,725,将来の仕掛けシステム用
+terminal-018,float,Round Float,premium,Gamakaze,FUTURE_PHASE,750,将来の仕掛けシステム用
+terminal-019,float,Sea Float,basic,Gamakaze,FUTURE_PHASE,775,将来の仕掛けシステム用
+terminal-020,float,Sea Float,premium,Gamakaze,FUTURE_PHASE,800,将来の仕掛けシステム用
+terminal-021,float,Long Cast Float,basic,Gamakaze,FUTURE_PHASE,825,将来の仕掛けシステム用
+terminal-022,float,Long Cast Float,premium,Gamakaze,FUTURE_PHASE,850,将来の仕掛けシステム用
+terminal-023,snap,Micro Snap,basic,Owner's Edge,FUTURE_PHASE,875,将来の仕掛けシステム用
+terminal-024,snap,Micro Snap,premium,Owner's Edge,FUTURE_PHASE,900,将来の仕掛けシステム用
+terminal-025,snap,Light Snap,basic,Owner's Edge,FUTURE_PHASE,925,将来の仕掛けシステム用
+terminal-026,snap,Light Snap,premium,Owner's Edge,FUTURE_PHASE,950,将来の仕掛けシステム用
+terminal-027,snap,Standard Snap,basic,Owner's Edge,FUTURE_PHASE,975,将来の仕掛けシステム用
+terminal-028,snap,Standard Snap,premium,Owner's Edge,FUTURE_PHASE,1000,将来の仕掛けシステム用
+terminal-029,snap,Heavy Snap,basic,Owner's Edge,FUTURE_PHASE,1025,将来の仕掛けシステム用
+terminal-030,snap,Heavy Snap,premium,Owner's Edge,FUTURE_PHASE,1050,将来の仕掛けシステム用
+terminal-031,snap,Offshore Snap,basic,Owner's Edge,FUTURE_PHASE,1075,将来の仕掛けシステム用
+terminal-032,snap,Offshore Snap,premium,Owner's Edge,FUTURE_PHASE,1100,将来の仕掛けシステム用
+terminal-033,swivel,Barrel Swivel,basic,Owner's Edge,FUTURE_PHASE,1125,将来の仕掛けシステム用
+terminal-034,swivel,Barrel Swivel,premium,Owner's Edge,FUTURE_PHASE,1150,将来の仕掛けシステム用
+terminal-035,swivel,Rolling Swivel,basic,Owner's Edge,FUTURE_PHASE,1175,将来の仕掛けシステム用
+terminal-036,swivel,Rolling Swivel,premium,Owner's Edge,FUTURE_PHASE,1200,将来の仕掛けシステム用
+terminal-037,swivel,Ball Bearing Swivel,basic,Owner's Edge,FUTURE_PHASE,1225,将来の仕掛けシステム用
+terminal-038,swivel,Ball Bearing Swivel,premium,Owner's Edge,FUTURE_PHASE,1250,将来の仕掛けシステム用
+terminal-039,swivel,Three Way Swivel,basic,Owner's Edge,FUTURE_PHASE,1275,将来の仕掛けシステム用
+terminal-040,swivel,Three Way Swivel,premium,Owner's Edge,FUTURE_PHASE,1300,将来の仕掛けシステム用
+terminal-041,jighead,Ajing Jighead,basic,Gamakaze,FUTURE_PHASE,1325,将来の仕掛けシステム用
+terminal-042,jighead,Ajing Jighead,premium,Gamakaze,FUTURE_PHASE,1350,将来の仕掛けシステム用
+terminal-043,jighead,Mebaru Jighead,basic,Gamakaze,FUTURE_PHASE,1375,将来の仕掛けシステム用
+terminal-044,jighead,Mebaru Jighead,premium,Gamakaze,FUTURE_PHASE,1400,将来の仕掛けシステム用
+terminal-045,jighead,Seabass Jighead,basic,Gamakaze,FUTURE_PHASE,1425,将来の仕掛けシステム用
+terminal-046,jighead,Seabass Jighead,premium,Gamakaze,FUTURE_PHASE,1450,将来の仕掛けシステム用
+terminal-047,jighead,Rockfish Jighead,basic,Gamakaze,FUTURE_PHASE,1475,将来の仕掛けシステム用
+terminal-048,jighead,Rockfish Jighead,premium,Gamakaze,FUTURE_PHASE,1500,将来の仕掛けシステム用
+terminal-049,jighead,Heavy Jighead,basic,Gamakaze,FUTURE_PHASE,1525,将来の仕掛けシステム用
+terminal-050,jighead,Heavy Jighead,premium,Gamakaze,FUTURE_PHASE,1550,将来の仕掛けシステム用
+terminal-051,rig,Sabiki Rig,basic,Owner's Edge,FUTURE_PHASE,1575,将来の仕掛けシステム用
+terminal-052,rig,Sabiki Rig,premium,Owner's Edge,FUTURE_PHASE,1600,将来の仕掛けシステム用
+terminal-053,rig,Bottom Rig,basic,Owner's Edge,FUTURE_PHASE,1625,将来の仕掛けシステム用
+terminal-054,rig,Bottom Rig,premium,Owner's Edge,FUTURE_PHASE,1650,将来の仕掛けシステム用
+terminal-055,rig,Surf Rig,basic,Owner's Edge,FUTURE_PHASE,1675,将来の仕掛けシステム用
+terminal-056,rig,Surf Rig,premium,Owner's Edge,FUTURE_PHASE,1700,将来の仕掛けシステム用
+terminal-057,rig,Rockfish Rig,basic,Owner's Edge,FUTURE_PHASE,1725,将来の仕掛けシステム用
+terminal-058,rig,Rockfish Rig,premium,Owner's Edge,FUTURE_PHASE,1750,将来の仕掛けシステム用
+terminal-059,rig,Float Rig,basic,Owner's Edge,FUTURE_PHASE,1775,将来の仕掛けシステム用
+terminal-060,rig,Float Rig,premium,Owner's Edge,FUTURE_PHASE,1800,将来の仕掛けシステム用
+terminal-061,rig,Carp Rig,basic,Owner's Edge,FUTURE_PHASE,1825,将来の仕掛けシステム用
+terminal-062,rig,Carp Rig,premium,Owner's Edge,FUTURE_PHASE,1850,将来の仕掛けシステム用
+terminal-063,assist,Light Assist,basic,Gamakaze,FUTURE_PHASE,1875,将来の仕掛けシステム用
+terminal-064,assist,Light Assist,premium,Gamakaze,FUTURE_PHASE,1900,将来の仕掛けシステム用
+terminal-065,assist,Shore Jig Assist,basic,Gamakaze,FUTURE_PHASE,1925,将来の仕掛けシステム用
+terminal-066,assist,Shore Jig Assist,premium,Gamakaze,FUTURE_PHASE,1950,将来の仕掛けシステム用
+terminal-067,assist,Offshore Assist,basic,Gamakaze,FUTURE_PHASE,1975,将来の仕掛けシステム用
+terminal-068,assist,Offshore Assist,premium,Gamakaze,FUTURE_PHASE,2000,将来の仕掛けシステム用
+terminal-069,assist,Tuna Assist,basic,Gamakaze,FUTURE_PHASE,2025,将来の仕掛けシステム用
+terminal-070,assist,Tuna Assist,premium,Gamakaze,FUTURE_PHASE,2050,将来の仕掛けシステム用
+terminal-071,tenya,Light Tenya,basic,Gamakaze,FUTURE_PHASE,2075,将来の仕掛けシステム用
+terminal-072,tenya,Light Tenya,premium,Gamakaze,FUTURE_PHASE,2100,将来の仕掛けシステム用
+terminal-073,tenya,Standard Tenya,basic,Gamakaze,FUTURE_PHASE,2125,将来の仕掛けシステム用
+terminal-074,tenya,Standard Tenya,premium,Gamakaze,FUTURE_PHASE,2150,将来の仕掛けシステム用
+terminal-075,tenya,Heavy Tenya,basic,Gamakaze,FUTURE_PHASE,2175,将来の仕掛けシステム用
+terminal-076,tenya,Heavy Tenya,premium,Gamakaze,FUTURE_PHASE,2200,将来の仕掛けシステム用

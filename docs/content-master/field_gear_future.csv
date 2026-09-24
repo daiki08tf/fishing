@@ -1,0 +1,29 @@
+ItemID,Category,Name,Brand,Status,PriceJPY,Notes
+field-001,life_jacket,Inflatable Waist,Major Crest,FUTURE_PHASE,3650,装備枠/利便性は後Phase
+field-002,life_jacket,Inflatable Vest,Major Crest,FUTURE_PHASE,4300,装備枠/利便性は後Phase
+field-003,life_jacket,Rock Shore Vest,Major Crest,FUTURE_PHASE,4950,装備枠/利便性は後Phase
+field-004,life_jacket,Offshore Vest,Major Crest,FUTURE_PHASE,5600,装備枠/利便性は後Phase
+field-005,waders,Entry Chest Wader,Major Crest,FUTURE_PHASE,6250,装備枠/利便性は後Phase
+field-006,waders,Breathable Wader,Major Crest,FUTURE_PHASE,6900,装備枠/利便性は後Phase
+field-007,waders,Surf Wader,Major Crest,FUTURE_PHASE,7550,装備枠/利便性は後Phase
+field-008,polarized,Entry Polarized,Major Crest,FUTURE_PHASE,8200,装備枠/利便性は後Phase
+field-009,polarized,High Contrast Polarized,Major Crest,FUTURE_PHASE,8850,装備枠/利便性は後Phase
+field-010,polarized,Low Light Polarized,Major Crest,FUTURE_PHASE,9500,装備枠/利便性は後Phase
+field-011,cooler,10L Cooler,Major Crest,FUTURE_PHASE,10150,装備枠/利便性は後Phase
+field-012,cooler,20L Cooler,Major Crest,FUTURE_PHASE,10800,装備枠/利便性は後Phase
+field-013,cooler,35L Cooler,Major Crest,FUTURE_PHASE,11450,装備枠/利便性は後Phase
+field-014,cooler,60L Big Game Cooler,Major Crest,FUTURE_PHASE,12100,装備枠/利便性は後Phase
+field-015,tackle_box,Compact Box,Major Crest,FUTURE_PHASE,12750,装備枠/利便性は後Phase
+field-016,tackle_box,Lure Box,Major Crest,FUTURE_PHASE,13400,装備枠/利便性は後Phase
+field-017,tackle_box,System Box,Major Crest,FUTURE_PHASE,14050,装備枠/利便性は後Phase
+field-018,tackle_box,Offshore Box,Major Crest,FUTURE_PHASE,14700,装備枠/利便性は後Phase
+field-019,bag,Shoulder Bag,Major Crest,FUTURE_PHASE,15350,装備枠/利便性は後Phase
+field-020,bag,Hip Bag,Major Crest,FUTURE_PHASE,16000,装備枠/利便性は後Phase
+field-021,bag,Backpack,Major Crest,FUTURE_PHASE,16650,装備枠/利便性は後Phase
+field-022,bag,Rock Shore Pack,Major Crest,FUTURE_PHASE,17300,装備枠/利便性は後Phase
+field-023,light,Headlamp,Major Crest,FUTURE_PHASE,17950,装備枠/利便性は後Phase
+field-024,light,High Power Headlamp,Major Crest,FUTURE_PHASE,18600,装備枠/利便性は後Phase
+field-025,light,Red Light Headlamp,Major Crest,FUTURE_PHASE,19250,装備枠/利便性は後Phase
+field-026,fish_finder,Portable Sonar,Blue Horizon,FUTURE_PHASE,19900,装備枠/利便性は後Phase
+field-027,fish_finder,Kayak Sonar,Blue Horizon,FUTURE_PHASE,20550,装備枠/利便性は後Phase
+field-028,fish_finder,Boat Fish Finder,Blue Horizon,FUTURE_PHASE,21200,装備枠/利便性は後Phase
