@@ -39,6 +39,24 @@ npm run check             # 従来の一括（simulation+test+build）
 | `./dev smoke` | ~2s |
 | `./dev save-check` | <1s |
 
+## Invariants — どこで守られているか
+
+| 不変条件 | 守るもの |
+|---|---|
+| Content id の一意性 | `validate:content`（`catalog/references.ts` の duplicate 検査） |
+| 参照切れなし | `validate:content`（references / schema） |
+| レイヤー境界（Domain は依存を持たない） | eslint patterns + `tests/architecture/` |
+| Level でステージを開かない | `tests/architecture/no-level-gate.test.ts` |
+| Save round-trip で権威状態を保つ | `tests/persistence/` + `./dev save-check` |
+| Migration は冪等・未来 version 拒否・非例外 | `migrateSave.test.ts` + `./dev save-check` |
+| hydration 前に書かない | `tests/persistence/persistenceCoordinator.test.ts` |
+| 同じ seed → 同じ結果 | `SeededRandomSource.test.ts` + `simulateTrip` fingerprint + `./dev smoke` |
+| encounter / abrasion / catch-result が同じ landed zone を見る | `tests/ui/landedZoneAuthority.test.ts` |
+| catch result は有効な species を指す | `resolveCatch.test.ts` + references 検査 |
+| 不可能な tackle 組合せを拒否 | `src/domain/tackle/*.test.ts` |
+| authority map のパスが実在する | `./dev authority --check` / `./dev doctor`（CI でも実行） |
+| project map が鮮度を保つ | `./dev map --check`（CI） |
+
 ## 決定性
 
 - `simulateTrip` / `./dev smoke` は seed 固定で2回実行し、fingerprint が一致することを確認する
