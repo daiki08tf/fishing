@@ -352,7 +352,8 @@ const runExpedition = (seed: string): RunResult => {
     salmonAccessible: accessWithPermit.accessible,
     salmonBlockedWithoutPermit: !accessWithoutPermit.accessible,
     chinookInSpot: encounters.some(
-      (candidate) => String(candidate.species.id) === 'alaska-chinook-salmon',
+      // Phase 12 以降 species id は canonical（`chinook-salmon`）。地域 prefix は付かない。
+      (candidate) => String(candidate.species.id) === 'chinook-salmon',
     ),
     landedSpeciesId,
     recordedInCodex,

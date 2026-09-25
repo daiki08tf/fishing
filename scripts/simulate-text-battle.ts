@@ -66,7 +66,7 @@ export const scenarios = (): readonly Scenario[] => [
   {
     id: 'chinook',
     label: 'Chinook',
-    speciesId: 'alaska-chinook-salmon',
+    speciesId: 'chinook-salmon',
     presence: 0.6,
     rodPower: 'MH',
     gearRatio: 0.5,
@@ -74,7 +74,7 @@ export const scenarios = (): readonly Scenario[] => [
   {
     id: 'halibut',
     label: 'Halibut',
-    speciesId: 'alaska-pacific-halibut',
+    speciesId: 'pacific-halibut',
     presence: 0.6,
     rodPower: 'MH',
     gearRatio: 0.5,

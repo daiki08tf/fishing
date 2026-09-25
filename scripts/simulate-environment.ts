@@ -196,7 +196,8 @@ export const simulateEnvironment = (): EnvironmentSimulationResult => {
     month: 1,
     timeOfDay: 'dawn',
   })
-  const chinook = content.speciesById['alaska-chinook-salmon']
+  // Phase 12 以降 species id は canonical（`chinook-salmon`）。
+  const chinook = content.speciesById['chinook-salmon']
 
   if (chinook === undefined) {
     throw new Error('missing chinook')

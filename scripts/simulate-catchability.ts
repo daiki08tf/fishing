@@ -155,8 +155,8 @@ export const simulateCatchability = (): CatchabilityResult => {
     return found
   }
 
-  const chinook = speciesById('alaska-chinook-salmon')
-  const halibut = speciesById('alaska-pacific-halibut')
+  const chinook = speciesById('chinook-salmon')
+  const halibut = speciesById('pacific-halibut')
   const smallFish = speciesById(SAMPLE_SPECIES.small)
 
   /** 1 魚種 × 1 仕掛けの Encounter candidate を作る（UI と同じ経路）。 */
