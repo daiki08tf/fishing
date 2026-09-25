@@ -460,6 +460,7 @@ export const runBuildContentIndex = (
   const root = argv[0] ?? DEFAULT_CONTENT_ROOT
   const indexPath = resolve(cwd, DEFAULT_INDEX_PATH)
   const index = buildContentIndex(root, { cwd })
+  mkdirSync(resolve(cwd, 'src/content/generated'), { recursive: true })
   writeFileSync(indexPath, serializeContentIndex(browserContentIndex(index)))
   writeFileSync(
     resolve(cwd, DEFAULT_OWNERSHIP_PATH),
