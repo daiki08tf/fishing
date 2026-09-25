@@ -853,3 +853,16 @@ console error は 0 件。
   rodControl・PUMP・自然な SPOOLED リスクが効く）。ファイト長は
   `totalTicks` ではなく `battle.step`（プレイヤー決定数）で測り、
   hooked ファイトの avg/p50/p90 を報告する。
+
+## Dev Infrastructure（Phase 19 後の tooling 層）
+
+ゲームプレイではなく、開発を支えるインフラを整備した判断を記録する。
+
+- **`./dev` を front door にする。** `npm run dev` は vite 起動なので衝突を避け、repo root の `dev` シェルスクリプトが `scripts/dev/cli.ts` を呼ぶ形にした。新しい npm script は増やさない（`npm run dev` を奪わない）。
+- **authority map はキュレート + 生成の2層。** `.dev/authority-map.json` は人が保守する定義（どこが source of truth か、どこに persist されるか、変更点はどこか）。`.dev/project-map.json` は `dev map` が import グラフから生成する派生物。 consumers / tests は手書きしない（すぐ古くなるため）。
+- **doctor は read-only。** state を変えないため何度でも実行できる。生成物の鮮度（content-index / project-map）と authority map のパス整合を見る。
+- **check は quick / full の2層。** quick は編集ごと（typecheck+lint+format+content+authority+save+smoke+tests ≈30s）、full は merge 前（+全 simulation+build ≈60s）。
+- **save-check は fixture ベース。** `tests/fixtures/save.ts` の v1..v9 を serialize→migrate→validate→再migrate（冪等）する。IndexedDB を必要としないためどこでも動く。
+- **smoke は domain API のみ。** ブラウザ自動化はしない。simulateTrip が HOME→travel→spot→fishing→home を seed 固定で2回実行し fingerprint を比較するので、これを束ねて save round-trip を追加しただけ。
+- **scope / impact / context / handoff は生成された map を使う。** 静的解析ではなく index ベースの軽量版。 agent が「どこを読むべきか」を即座に得るためのもの。
+- **生成物の commit 方針**: `.dev/project-map.json` と `src/content/generated/` はコミットする（決定論的）。CI の `./dev map --check` が鮮度を強制する。`dist/` `coverage/` `node_modules/` は ignore のまま。

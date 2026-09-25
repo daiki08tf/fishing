@@ -40,6 +40,15 @@ jobs:
       - name: Validate content
         run: npm run validate:content
 
+      # 生成物（project map / authority map）の鮮度と整合を検査する。
+      - name: Dev infrastructure
+        run: |
+          chmod +x dev
+          ./dev authority --check
+          ./dev map --check
+          ./dev save-check
+          ./dev smoke
+
       - name: Regional content audit
         run: npm run simulate:regional-content
 
