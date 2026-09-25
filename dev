@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Fishing Game developer infrastructure front door.
+# Usage: ./dev <command> — see ./dev help
+set -euo pipefail
+cd "$(dirname "$0")"
+
+if [ ! -x node_modules/.bin/tsx ]; then
+  echo "dev: node_modules not installed — run: npm ci" >&2
+  exit 1
+fi
+
+exec node_modules/.bin/tsx scripts/dev/cli.ts "$@"

@@ -1,0 +1,230 @@
+{
+  "version": 1,
+  "description": "System registry for the generated project map. `paths` are repo-relative prefixes used to bucket files; order matters (first match wins). Keep this small and stable — the detailed file list is generated.",
+  "systems": [
+    {
+      "id": "domain-access",
+      "title": "Access / transport capability resolution",
+      "paths": ["src/domain/access/"],
+      "docs": ["docs/DATA_MODEL.md"],
+      "concepts": ["access", "travel"]
+    },
+    {
+      "id": "domain-career",
+      "title": "Career state (not yet adopted gameplay)",
+      "paths": ["src/domain/career/"],
+      "docs": ["docs/DATA_MODEL.md"],
+      "concepts": []
+    },
+    {
+      "id": "domain-casting",
+      "title": "Casting distance and zone landing",
+      "paths": ["src/domain/casting/"],
+      "docs": ["docs/DATA_MODEL.md"],
+      "concepts": ["zone", "actual-landed-zone"]
+    },
+    {
+      "id": "domain-catch",
+      "title": "Catch result assembly",
+      "paths": ["src/domain/catch/"],
+      "docs": ["docs/DATA_MODEL.md"],
+      "concepts": ["catch-result"]
+    },
+    {
+      "id": "domain-codex",
+      "title": "Catch records / codex",
+      "paths": ["src/domain/codex/"],
+      "docs": ["docs/DATA_MODEL.md"],
+      "concepts": ["codex"]
+    },
+    {
+      "id": "domain-depth",
+      "title": "Depth / platform / sea state / drift",
+      "paths": ["src/domain/depth/"],
+      "docs": ["docs/DATA_MODEL.md"],
+      "concepts": ["zone"]
+    },
+    {
+      "id": "domain-economy",
+      "title": "Finance / settlement / travel cost",
+      "paths": ["src/domain/economy/"],
+      "docs": ["docs/DATA_MODEL.md"],
+      "concepts": ["economy", "travel"]
+    },
+    {
+      "id": "domain-encounter",
+      "title": "Encounter weighting and species selection",
+      "paths": ["src/domain/encounter/"],
+      "docs": ["docs/DATA_MODEL.md"],
+      "concepts": ["encounter"]
+    },
+    {
+      "id": "domain-environment",
+      "title": "Environment resolution (weather/tide/conditions)",
+      "paths": ["src/domain/environment/"],
+      "docs": ["docs/DATA_MODEL.md"],
+      "concepts": ["environment"]
+    },
+    {
+      "id": "domain-expedition",
+      "title": "Expedition / region travel permits",
+      "paths": ["src/domain/expedition/"],
+      "docs": ["docs/DATA_MODEL.md"],
+      "concepts": ["expedition"]
+    },
+    {
+      "id": "domain-fish",
+      "title": "Fish species types and individual generation",
+      "paths": ["src/domain/fish/"],
+      "docs": ["docs/DATA_MODEL.md"],
+      "concepts": ["fish-species", "fish-individual"]
+    },
+    {
+      "id": "domain-fishing",
+      "title": "Fishing engine / text battle",
+      "paths": ["src/domain/fishing/"],
+      "docs": ["docs/DATA_MODEL.md"],
+      "concepts": ["fishing-battle"]
+    },
+    {
+      "id": "domain-gear",
+      "title": "Gear types / brands / series / tuning",
+      "paths": ["src/domain/gear/"],
+      "docs": ["docs/DATA_MODEL.md"],
+      "concepts": ["gear"]
+    },
+    {
+      "id": "domain-knowledge",
+      "title": "Player knowledge",
+      "paths": ["src/domain/knowledge/"],
+      "docs": ["docs/DATA_MODEL.md"],
+      "concepts": ["knowledge"]
+    },
+    {
+      "id": "domain-method",
+      "title": "Fishing methods",
+      "paths": ["src/domain/method/"],
+      "docs": ["docs/DATA_MODEL.md"],
+      "concepts": ["gear"]
+    },
+    {
+      "id": "domain-progression",
+      "title": "Angler progression / XP / skills / perks",
+      "paths": ["src/domain/progression/"],
+      "docs": ["docs/PROGRESSION.md", "docs/DATA_MODEL.md"],
+      "concepts": ["progression"]
+    },
+    {
+      "id": "domain-regulation",
+      "title": "Fishing regulations",
+      "paths": ["src/domain/regulation/"],
+      "docs": ["docs/DATA_MODEL.md"],
+      "concepts": []
+    },
+    {
+      "id": "domain-rng",
+      "title": "Seeded RNG",
+      "paths": ["src/domain/rng/"],
+      "docs": ["docs/DATA_MODEL.md"],
+      "concepts": ["rng"]
+    },
+    {
+      "id": "domain-save",
+      "title": "Save types",
+      "paths": ["src/domain/save/"],
+      "docs": ["docs/ARCHITECTURE.md"],
+      "concepts": ["save"]
+    },
+    {
+      "id": "domain-shop",
+      "title": "Shop items and purchase rules",
+      "paths": ["src/domain/shop/"],
+      "docs": ["docs/DATA_MODEL.md"],
+      "concepts": ["economy"]
+    },
+    {
+      "id": "domain-source",
+      "title": "Source references for real-world data",
+      "paths": ["src/domain/source/"],
+      "docs": ["docs/DATA_MODEL.md"],
+      "concepts": []
+    },
+    {
+      "id": "domain-tackle",
+      "title": "Inventory / loadout / tackle resolution",
+      "paths": ["src/domain/tackle/"],
+      "docs": ["docs/DATA_MODEL.md"],
+      "concepts": ["tackle-loadout"]
+    },
+    {
+      "id": "domain-trade",
+      "title": "Fish box / buyers / contacts / freshness",
+      "paths": ["src/domain/trade/"],
+      "docs": ["docs/DATA_MODEL.md"],
+      "concepts": ["trade"]
+    },
+    {
+      "id": "domain-world",
+      "title": "World time / session / spots / regions",
+      "paths": ["src/domain/world/", "src/domain/primitives.ts", "src/domain/ids.ts"],
+      "docs": ["docs/DATA_MODEL.md", "docs/ARCHITECTURE.md"],
+      "concepts": ["world-time", "world-session", "spot", "zone", "ids"]
+    },
+    {
+      "id": "content",
+      "title": "Content data, schemas, catalog, packs",
+      "paths": ["src/content/"],
+      "docs": ["docs/DATA_MODEL.md", "docs/ARCHITECTURE.md"],
+      "concepts": ["content-pipeline", "fish-species", "spot", "gear"]
+    },
+    {
+      "id": "state",
+      "title": "Runtime stores and persisted slice",
+      "paths": ["src/state/", "src/app/persistence/"],
+      "docs": ["docs/ARCHITECTURE.md"],
+      "concepts": ["state", "save"]
+    },
+    {
+      "id": "infrastructure",
+      "title": "Persistence implementation (save schema/migrations/IndexedDB)",
+      "paths": ["src/infrastructure/"],
+      "docs": ["docs/ARCHITECTURE.md"],
+      "concepts": ["save"]
+    },
+    {
+      "id": "app",
+      "title": "App wiring",
+      "paths": ["src/app/"],
+      "docs": ["docs/ARCHITECTURE.md"],
+      "concepts": ["state"]
+    },
+    {
+      "id": "ui",
+      "title": "Screens / components / hooks",
+      "paths": ["src/ui/", "index.html", "src/main.tsx"],
+      "docs": [],
+      "concepts": ["ui", "actual-landed-zone"]
+    },
+    {
+      "id": "devtools",
+      "title": "Developer tooling and simulations",
+      "paths": ["scripts/", "dev"],
+      "docs": [],
+      "concepts": []
+    },
+    {
+      "id": "tests",
+      "title": "Test suite",
+      "paths": ["tests/"],
+      "docs": [],
+      "concepts": []
+    },
+    {
+      "id": "docs",
+      "title": "Documentation",
+      "paths": ["docs/", "README.md", "AGENTS.md"],
+      "docs": [],
+      "concepts": []
+    }
+  ]
+}
