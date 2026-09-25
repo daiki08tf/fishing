@@ -26,16 +26,15 @@
 
 `--json` を受け付けるのは今のところ `./dev status` のみ。他のコマンドは PASS/WARN/FAIL の構造化テキスト（`scripts/dev/lib/output.ts` の `CheckResult`）。将来の orchestration 層は exit code と `PASS|WARN|FAIL` 行を parse すればよい。API server は作らない。
 
-## Context Studio / Content Studio の境界（将来）
+## Content Studio（実装済み）
 
-Content Studio（content 作成・編集ツール）を将来作る場合:
+Content Studio は実装済み。`scripts/studio/`（`docs/CONTENT_STUDIO.md` 参照）。
 
-- **content の schema は `src/content/schema/` が authority**。Studio はここを読む
-- **検証は `npm run validate:content` / `./dev content-check`**。Studio からも同じ entry を呼べる
-- **id の規則は `src/domain/ids.ts` の branded type**。Studio が新 id を採番するなら衝突を避ける仕組みが要る
-- **参照検査は `src/content/catalog/references.ts`**。壊れた参照は validate で FAIL する
-- **generated index（`src/content/generated/content-index.json`）は build 時の派生物**。Studio が直接書かない。`npm run content:index` で再生成
-- **import/export は `src/content/data/**/*.json` の構造を守る**。fixture 用の合成データは `tests/fixtures/content/` へ（runtime と混ぜない）
+- Web UI: `npm run studio` → http://127.0.0.1:4310
+- CLI / AI 向け: `./dev studio <list|get|schema|refs|options|validate|diff|write>`（`--json` 可）
+- 書き込みは `scripts/studio/write.ts` のパイプライン経由のみ（schema → id 重複 → 仮想 corpus 参照検査 → atomic write → generated 再生成 → post-check）
+- 参照の表示用メタデータは `scripts/studio/references.ts` の REFERENCE_SPECS（権威は `catalog/references.ts`）
+- generated index は Studio が直接編集しない — write 後に `content:index` 相当で再生成される
 
 ## Personal AI Development OS の境界（将来）
 

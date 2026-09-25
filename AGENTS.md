@@ -44,6 +44,17 @@ npm ci            # Node は .nvmrc（24）
 - **hydration 完了前に Save を書かない**（persistenceCoordinator が保証）
 - **Zone の landed は一つの authority**（`actualLandedZoneId` — 現在 `src/ui/fishing/useFishingSession.ts`。encounter 加重・abrasion・catch result が同じ値を見る）
 
+## Content を編集するとき
+
+```bash
+npm run studio                     # Content Studio（Web UI、http://127.0.0.1:4310）
+./dev studio list fish-species     # CLI / AI 向けにも同じ操作が使える
+./dev studio write <kind> f.json --dry-run   # diff + 検証だけ（書かない）
+./dev content-check                # 編集後の全体検証
+```
+
+詳細は `docs/CONTENT_STUDIO.md`。Studio は独自の検証を持たない — schema / 参照検査 / generated index は game 側の authority をそのまま使う。
+
 ## Save を触るとき
 
 ```bash

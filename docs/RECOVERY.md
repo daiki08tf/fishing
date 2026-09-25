@@ -39,6 +39,12 @@
 - `coverage/`（再生成可能）
 - git objects（remote から再 clone 可能）
 
+## Content Studio の追加分類
+
+- `scripts/studio/`（server / CLI / UI）と `tests/studio/` — **A（Git-recoverable）**
+- Studio が作るものは `src/content/data/` と `src/content/generated/` の変更だけ — 両方とも Git 管理
+- Studio 固有のローカル state / secrets / 大きな artifact は**無い**（127.0.0.1 ローカルサーバ、状態は repo のファイルだけ）
+
 ## 将来の Recovery プロジェクトへの入力
 
 - このリポジトリの完全な復元には `git clone` + `npm ci` で十分

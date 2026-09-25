@@ -866,3 +866,10 @@ console error は 0 件。
 - **smoke は domain API のみ。** ブラウザ自動化はしない。simulateTrip が HOME→travel→spot→fishing→home を seed 固定で2回実行し fingerprint を比較するので、これを束ねて save round-trip を追加しただけ。
 - **scope / impact / context / handoff は生成された map を使う。** 静的解析ではなく index ベースの軽量版。 agent が「どこを読むべきか」を即座に得るためのもの。
 - **生成物の commit 方針**: `.dev/project-map.json` と `src/content/generated/` はコミットする（決定論的）。CI の `./dev map --check` が鮮度を強制する。`dist/` `coverage/` `node_modules/` は ignore のまま。
+
+## Content Studio（Dev Infrastructure 後の content  tooling）
+
+- **Studio は authority を持たない。** schema（`src/content/schema`）・参照検査（`catalog/references.ts`）・generated index（`build-content-index.ts`）・validate（`validate-content.ts`）はすべて game 側の既存 authority を呼ぶ。Studio 固有のメタデータは表示用の `REFERENCE_SPECS` のみで、それも「権威の規則をフォームが読める形にした写し」に留める。
+- **server は node:http + vanilla JS。** 新しい依存（Express / DB / build step）は増やさない。フォームは `z.toJSONSchema(io: input)` から組み立てるため、Zod を browser に持ち込まない。union は anyOf / oneOf の両方を受理する（zod が文脈で出し分ける）。
+- **書き込みは必ず write.ts のパイプラインを通す。** schema → id 重複（ContactId 共有空間を含む）→ 仮想 corpus の参照検査 → dry-run diff → atomic write（tmp→rename）→ generated 再生成 → validate post-check。CLI と Web UI はこの 1 本を共有し、Git commit は Studio の責務にしない。
+- **id 変更は規約どおりのときだけ rename。** `<id>.json` に倣ったファイルだけ追従 rename し、独自命名のファイル（kanto-maaji.json など）は id 変更しても動かさない。

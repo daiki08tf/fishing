@@ -54,7 +54,7 @@
 - [Architecture](docs/ARCHITECTURE.md)
 - [Roadmap](docs/ROADMAP.md)
 - [AGENTS.md](AGENTS.md) — AI / 新規開発者の front door
-- [Development](docs/DEVELOPMENT.md) / [Testing](docs/TESTING.md) / [Save Compatibility](docs/SAVE_COMPATIBILITY.md)
+- [Development](docs/DEVELOPMENT.md) / [Testing](docs/TESTING.md) / [Save Compatibility](docs/SAVE_COMPATIBILITY.md) / [Content Studio](docs/CONTENT_STUDIO.md)
 
 ## Development Tools
 
@@ -64,10 +64,12 @@
 ./dev check --full  # 全検証（merge / handoff 前）
 ./dev authority     # authority map の一覧
 ./dev impact <id>   # 変更影響分析
+./dev studio        # Content Studio CLI（serve で Web UI）
+npm run studio      # Content Studio（http://127.0.0.1:4310）
 ```
 
 `./dev` は `scripts/dev/` の TypeScript ツールを呼ぶ薄い wrapper。
-詳細は `docs/DEVELOPMENT.md`。
+詳細は `docs/DEVELOPMENT.md` / `docs/CONTENT_STUDIO.md`。
 
 ## Current Status
 
