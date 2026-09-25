@@ -550,6 +550,7 @@
         "scripts/simulate-catchability.ts",
         "scripts/simulate-offshore.ts",
         "scripts/simulate-text-battle.ts",
+        "scripts/studio/references.ts",
         "scripts/validate-content.ts",
         "src/content/catalog/assembleContent.ts",
         "src/content/catalog/mergeContent.ts",
@@ -956,6 +957,7 @@
         "scripts/build-content-index.ts",
         "scripts/simulate-offshore.ts",
         "scripts/simulate-trade-network.ts",
+        "scripts/studio/references.ts",
         "scripts/validate-content.ts",
         "src/content/catalog/assembleContent.ts",
         "src/content/catalog/mergeContent.ts",
@@ -2688,6 +2690,7 @@
         "tests/setup/contentRuntime.ts",
         "tests/statistics/individualGeneration.test.ts",
         "tests/statistics/progressionSimulation.test.ts",
+        "tests/studio/studio.test.ts",
         "tests/ui/codexScale.test.ts",
         "tests/ui/codexScreenSmoke.test.ts",
         "tests/ui/contactsScreen.test.ts",
@@ -2714,6 +2717,12 @@
         "scripts/simulate-transport.ts",
         "scripts/simulate-trip.ts",
         "scripts/simulate-world-expansion.ts",
+        "scripts/studio/cli.ts",
+        "scripts/studio/formSpec.ts",
+        "scripts/studio/model.ts",
+        "scripts/studio/references.ts",
+        "scripts/studio/server.ts",
+        "scripts/studio/write.ts",
         "scripts/validate-content.ts",
         "src/ui/AppShell.tsx",
         "src/ui/codex/CodexScreen.tsx",
@@ -2986,6 +2995,28 @@
       ]
     },
     {
+      "id": "content-studio",
+      "title": "Content Studio (browse/edit/validate/write tooling)",
+      "paths": ["scripts/studio/", "tests/studio/"],
+      "docs": ["docs/CONTENT_STUDIO.md"],
+      "concepts": ["content-pipeline"],
+      "files": [
+        "scripts/studio/cli.ts",
+        "scripts/studio/diff.ts",
+        "scripts/studio/formSpec.ts",
+        "scripts/studio/model.ts",
+        "scripts/studio/public/app.js",
+        "scripts/studio/public/index.html",
+        "scripts/studio/public/style.css",
+        "scripts/studio/references.ts",
+        "scripts/studio/server.ts",
+        "scripts/studio/write.ts"
+      ],
+      "tests": ["tests/studio/studio.test.ts"],
+      "consumers": [],
+      "dependencies": ["content", "devtools", "domain-gear", "domain-trade"]
+    },
+    {
       "id": "devtools",
       "title": "Developer tooling and simulations",
       "paths": ["scripts/", "dev"],
@@ -3041,7 +3072,7 @@
         "tests/dev/devTools.test.ts",
         "tests/dev/saveAndSmoke.test.ts"
       ],
-      "consumers": [],
+      "consumers": ["scripts/studio/write.ts"],
       "dependencies": [
         "content",
         "domain-access",
@@ -3266,6 +3297,7 @@
         "README.md",
         "docs/AI_WORKFLOW.md",
         "docs/ARCHITECTURE.md",
+        "docs/CONTENT_STUDIO.md",
         "docs/DATA_MODEL.md",
         "docs/DECISIONS.md",
         "docs/DEVELOPMENT.md",
@@ -4955,6 +4987,7 @@
         "scripts/simulate-catchability.ts",
         "scripts/simulate-offshore.ts",
         "scripts/simulate-text-battle.ts",
+        "scripts/studio/references.ts",
         "scripts/validate-content.ts",
         "src/content/catalog/assembleContent.ts",
         "src/content/catalog/mergeContent.ts",
@@ -5811,6 +5844,7 @@
         "scripts/build-content-index.ts",
         "scripts/simulate-offshore.ts",
         "scripts/simulate-trade-network.ts",
+        "scripts/studio/references.ts",
         "scripts/validate-content.ts",
         "src/content/catalog/assembleContent.ts",
         "src/content/catalog/mergeContent.ts",
@@ -7440,6 +7474,12 @@
         "scripts/simulate-tackle.ts",
         "scripts/simulate-text-battle.ts",
         "scripts/simulate-transport.ts",
+        "scripts/studio/cli.ts",
+        "scripts/studio/formSpec.ts",
+        "scripts/studio/model.ts",
+        "scripts/studio/references.ts",
+        "scripts/studio/server.ts",
+        "scripts/studio/write.ts",
         "scripts/validate-content.ts",
         "src/content/catalog/index.ts",
         "src/content/catalog/mergeContent.ts",
@@ -7501,6 +7541,7 @@
         "tests/contracts/transportCoverage.test.ts",
         "tests/fixtures/content.ts",
         "tests/setup/contentRuntime.ts",
+        "tests/studio/studio.test.ts",
         "tests/ui/contactsScreen.test.ts"
       ]
     },
@@ -7732,7 +7773,7 @@
   ],
   "fileCounts": {
     "source": 304,
-    "tests": 142,
+    "tests": 143,
     "content": 1399
   }
 }

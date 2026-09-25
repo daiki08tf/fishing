@@ -266,10 +266,23 @@ export const buildProjectMap = (): ProjectMap => {
   }
 }
 
-export const writeProjectMap = (map: ProjectMap, path: string = PROJECT_MAP_PATH): void => {
+export const writeProjectMap = async (
+  map: ProjectMap,
+  path: string = PROJECT_MAP_PATH,
+): Promise<void> => {
   const target = `${REPO_ROOT}/${path}`
   mkdirSync(dirname(target), { recursive: true })
-  writeFileSync(target, `${JSON.stringify(map, null, 2)}\n`)
+  const text = `${JSON.stringify(map, null, 2)}\n`
+  // 生成物も format:check（prettier）を通す。repo の .prettierrc を拾う。
+  let formatted = text
+  try {
+    const prettier = await import('prettier')
+    const config = (await prettier.resolveConfig(target)) ?? {}
+    formatted = await prettier.format(text, { ...config, parser: 'json' })
+  } catch {
+    /* prettier 不在時は素の JSON */
+  }
+  writeFileSync(target, formatted)
 }
 
 export const readProjectMap = (): ProjectMap | null => {

@@ -27,9 +27,11 @@ import { REPO_ROOT } from './lib/repo'
  *   ./dev save-check       save migration round-trip（v1〜current）
  *   ./dev smoke            決定論的 gameplay smoke（trip + save round-trip）
  *   ./dev content-check    content validation（npm run validate:content と同じ）
+ *   ./dev studio <args>    Content Studio（serve / list / get / schema / refs / validate / diff / write）
  *   ./dev check [--full]   統合検証（quick=編集時 / full=merge・handoff 前）
  *
- * すべてのコマンドは read-only か、生成物（.dev/project-map.json）だけを書く。
+ * `studio` 以外のコマンドは read-only か、生成物（.dev/project-map.json）だけを書く。
+ * `studio write` は Content JSON を変更する（dry-run / diff / post-check つき）。
  */
 
 const USAGE = `dev — Fishing Game developer infrastructure
@@ -45,6 +47,7 @@ const USAGE = `dev — Fishing Game developer infrastructure
   ./dev save-check       save migration round-trip
   ./dev smoke            決定論的 gameplay smoke
   ./dev content-check    content validation
+  ./dev studio <args>    Content Studio（serve で Web UI / list, get, diff, write…）
   ./dev check [--full]   統合検証（quick / --full）
 `
 
@@ -89,7 +92,7 @@ const runAsync = async (): Promise<number> => {
       }
       const map = buildProjectMap()
       if (args.includes('--write')) {
-        writeProjectMap(map)
+        await writeProjectMap(map)
         process.stdout.write(
           `wrote .dev/project-map.json (${String(map.systems.length)} systems, ${String(map.authorities.length)} authorities)\n`,
         )
@@ -151,6 +154,13 @@ const runAsync = async (): Promise<number> => {
     case 'content-check': {
       const { runValidateContent } = await import('../validate-content')
       const result = runValidateContent([], REPO_ROOT)
+      for (const line of result.lines) process.stdout.write(`${line}\n`)
+      return result.exitCode
+    }
+
+    case 'studio': {
+      const { runStudioCli } = await import('../studio/cli')
+      const result = await runStudioCli(args, REPO_ROOT)
       for (const line of result.lines) process.stdout.write(`${line}\n`)
       return result.exitCode
     }

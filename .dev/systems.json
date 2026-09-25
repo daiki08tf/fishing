@@ -206,6 +206,13 @@
       "concepts": ["ui", "actual-landed-zone"]
     },
     {
+      "id": "content-studio",
+      "title": "Content Studio (browse/edit/validate/write tooling)",
+      "paths": ["scripts/studio/", "tests/studio/"],
+      "docs": ["docs/CONTENT_STUDIO.md"],
+      "concepts": ["content-pipeline"]
+    },
+    {
       "id": "devtools",
       "title": "Developer tooling and simulations",
       "paths": ["scripts/", "dev"],

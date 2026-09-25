@@ -46,6 +46,8 @@ export default tseslint.config(
       'public/sw.js',
       // Phase 15: 生成物（scripts/build-content-index.ts が書き出す）。
       'src/content/generated/**',
+      // Content Studio の静的 asset（browser 専用・build なしの vanilla JS）。
+      'scripts/studio/public/**',
     ],
   },
   js.configs.recommended,
